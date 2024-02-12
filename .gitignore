@@ -1,0 +1,13 @@
+.vs/
+Library/
+Temp/
+.vscode/
+Logs/
+UserSettings/
+Packages/
+obj/
+*.userprefs
+*.unityproj
+*.DS_Store
+*.vsconfig
+MMO-Client/MMOGame/Assets/Animation/MMD4Mecanim
