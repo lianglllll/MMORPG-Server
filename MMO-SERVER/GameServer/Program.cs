@@ -13,6 +13,7 @@ using GameServer.Manager;
 using GameServer.AI;
 using GameServer.InventorySystem;
 using GameServer.Core;
+using GameServer.Utils;
 
 namespace GameServer
 {
@@ -28,12 +29,21 @@ namespace GameServer
             .CreateLogger();
             Log.Debug("[日志服务启动完成]");
 
-            Log.Debug("装载消息类型=>");
+            //proto类型加载
+            Log.Debug("[装载消息类型如下]");
             ProtoHelper.Init();
+
+            //加载配置文件
+            Log.Debug("[加载server配置文件]");
+            Config.Init();
 
             //装载配置文件
             DataManager.Instance.init();
             Log.Debug("[Json配置文件加载完成]");
+
+            //数据库服务
+            DbManager.Init();
+            Log.Debug("[数据库服务启动完成]");
 
             //开启网络服务
             NetService netService = new NetService();
@@ -70,10 +80,10 @@ namespace GameServer
             Log.Debug("[中心计时器任务加载完成]");
 
             //服务器启动完毕，开始工作
-            Log.Debug("[mmorpg服务器启动成功]");
+            Log.Debug("[mmorpg服务器启动成功!!!]");
 
 
-            //test
+            //test 物品实例
             Space space1 = SpaceManager.Instance.GetSpaceById(0);
             var define = DataManager.Instance.Items[1001];
             var item = new Item(define, 1, 1);

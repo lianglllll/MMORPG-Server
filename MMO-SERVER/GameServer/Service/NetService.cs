@@ -15,6 +15,7 @@ using  System.Threading;
 using GameServer.Database;
 using GameServer.Manager;
 using GameServer.core;
+using GameServer.Utils;
 
 namespace GameServer.Network
 {
@@ -35,7 +36,7 @@ namespace GameServer.Network
 
         public NetService()
         {
-            tcpServer = new TcpServer("127.0.0.1", 6666);
+            tcpServer = new TcpServer(Config.Server.ip, Config.Server.port);
             tcpServer.Connected += OnConnected;
             tcpServer.Disconnected += OnDisconnected;            
         }

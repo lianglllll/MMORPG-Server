@@ -6201,11 +6201,97 @@ Controller指的是逻辑脚本，这里就像所有数据和逻辑的中枢，�
 
 
 
+# server相关的一些东西
 
 
 
+## 1.服务器的配置文件
 
 
+
+**为什么要使用配置文件呢？**
+
+我们将来要把项目打包部署到云服务器上面，总不能改一点信息就回来重新改代码吧。
+
+比如说：
+
+- server端的ip和port
+- 数据库信息。
+- 工作线程数
+
+
+
+**常用的配置文件：**
+
+- txt,配置解析麻烦
+- json，不能写注释
+- xml，结构啰嗦
+- yml
+
+
+
+**我们使用yaml文件来做配置文件**
+
+**config.yaml**
+
+```
+database:
+  host: 127.0.0.1
+  port: 3306
+  username: root
+  password: root
+  dbName: MMORPG
+
+server:
+  ip: 127.0.0.1
+  port: 8888
+  MessageRouteworkCount: 2
+```
+
+- 用两个空格代表缩进，来区分层级
+- 使用冒号加空格代码赋值
+
+
+
+**我们使用第三方扩展库 YamlDotNet，将配置文件进行解析**
+
+![image-20240212131142560](MMORPG.assets/image-20240212131142560.png) 
+
+
+
+**GameServer/Utils/Config.cs**
+
+```
+public static void Init(string filePath = "config.yaml")
+{
+    // 读取配置文件,当前项目根目录
+    var yaml = File.ReadAllText(filePath);
+    Log.Information("LoadYamlText:\n {Yaml}", yaml);
+
+    // 反序列化配置文件
+    var deserializer = new DeserializerBuilder().Build();
+    _config = deserializer.Deserialize<AppConfig>(yaml);
+}
+```
+
+注意：File.ReadAllText(filePath)  使用相对路径时是以当前工作目标为根目录的，也就是说必须再debug目录或者release目标中有才能读取
+
+<img src="MMORPG.assets/image-20240212134552573.png" alt="image-20240212134552573" style="zoom:67%;" /> 
+
+我们可以把Config配置文件从项目中复制一份过来，但是每次修改都有复制也太麻烦了。。
+
+可以使用以下方法来解决这个问题：
+
+GameServer.csproj里面要有这段配置，配置文件回自动复制到运行目录
+
+```
+	<!--将文件复制到输出目录中 -->
+	<ItemGroup>
+		<None Update="config.yaml">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>		
+```
 
 
 
