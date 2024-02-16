@@ -70,14 +70,15 @@ namespace GameServer.Service
             //Log.Information("距离{0}，阈值{1}，间隔{2}", distance, limit, timeDistance);
             if (float.IsNaN(distance)||distance > limit)
             {
-                //将发出请求的客户端重置为原来合理的位置
-                SpaceEntitySyncResponse resp = new SpaceEntitySyncResponse();
+                //方案1：拉回原位置
+                /*SpaceEntitySyncResponse resp = new SpaceEntitySyncResponse();
                 resp.EntitySync = new NEntitySync();
                 resp.EntitySync.Entity = serverEntity.EntityData;
                 resp.EntitySync.Force = true;
-                conn.Send(resp);
+                conn.Send(resp);*/
 
-                return;
+                //方案2：记录异常【玩家、角色、原位置、目标位置、时间差、当前时间】
+
             }
 
             //更新信息并且转发

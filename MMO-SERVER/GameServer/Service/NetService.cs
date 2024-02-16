@@ -50,7 +50,7 @@ namespace GameServer.Network
             tcpServer.Start();
 
             //启动消息分发器
-            MessageRouter.Instance.Start(8);
+            MessageRouter.Instance.Start(Config.Server.WorkerCount);
 
             //订阅心跳事件
             MessageRouter.Instance.Subscribe<HeartBeatRequest>(_HeartBeatRequest);

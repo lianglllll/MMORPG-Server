@@ -124,13 +124,13 @@ namespace GameServer.AI
                 }
 
                 //符合攻击条件
-                if(targetDistance < 1500)
+                if(targetDistance < 1000)
                 {
+                    //符合攻击条件的同时其实也可以同时攻击，也就是说行走和攻击的动画需要混合。
                     if(monster.State == Proto.EntityState.Walk)
                     {
                         monster.StopMove();
                     }
-                    //Log.Information("发起攻击");
                     monster.Attack(monster.target);
                 }
                 else

@@ -32,15 +32,13 @@ namespace GameServer.Manager
 
             //获取初始化的moster信息
             //这里和创建charcter不一样，我觉得应该创建一个新的类型NMoster来和Ncharacet区分//todo
-            monster.currentSpace = curSpace;
-            monster.info.SpaceId = curSpace.SpaceId;
+ 
             monster.Id = monster.EntityId;//没啥用
             
             //添加到当前的mostermanager中管理
             monsterDict[monster.Id] = monster;
 
             //显示到当前场景
-            monster.OnEnterSpace(curSpace);
             this.curSpace.MonsterJoin(monster);
 
             return monster;

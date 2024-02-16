@@ -7,19 +7,20 @@ using System.Threading.Tasks;
 using Proto;
 using GameServer.Core;
 using GameServer.AI;
+using GameServer.Manager;
 
 namespace GameServer.Model
 {
     public class Monster : Actor
     {
          
-        public Vector3 targetPos;  //将要要移动的目标位置（tmp）
-        public Vector3 curPos;//当前移动中的位置(tmp)
-        public Vector3 initPosition;//出生点
+        public Vector3 targetPos;           //将要要移动的目标位置（tmp）
+        public Vector3 curPos;              //当前移动中的位置(tmp)
+        public Vector3 initPosition;        //出生点
         public MonsterAI AI;
         private Random random = new Random();
 
-        public Actor target;        //追击的目标
+        public Actor target;                //追击的目标
         private static Vector3Int Y1000 = new Vector3Int(0, 1000, 0);
 
         public Monster(int Tid,int level,Vector3Int position, Vector3Int direction) : base(EntityType.Monster, Tid,level, position, direction)
@@ -182,7 +183,6 @@ namespace GameServer.Model
             return eulerAngles;
         }
 
-
         /// <summary>
         /// 死亡前处理
         /// </summary>
@@ -192,6 +192,12 @@ namespace GameServer.Model
             //状态机切换
             AI.fsm.ChangeState("death");
 
+            //怪物死亡，得给击杀者奖励啥的：exp
+            var killer = EntityManager.Instance.GetEntity(killerID);
+            if (killer != null && killer is Character chr)
+            {
+                chr.SetExp(chr.Exp + 10);
+            }
         }
 
         /// <summary>

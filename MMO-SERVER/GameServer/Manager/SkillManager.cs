@@ -36,17 +36,7 @@ namespace GameServer.Manager
             //todo 初始化技能信息，正常是通过读取数据库来加载技能信息的
             //应该开一个表，每个user的character或者monster有那些技能
             //因为这个属于动态数据
-
-            if(this.owner.Define.TID == 0)      //战士
-            {
-                loadSkill(1,2,3);
-            }else if(this.owner.Define.TID == 1)//法师
-            {
-                loadSkill(101, 102);
-            }else if(this.owner.Define.TID == 1001)
-            {
-                loadSkill(1001);
-            }
+            loadSkill(owner.Define.DefaultSkills);
         }
 
         /// <summary>
@@ -57,6 +47,7 @@ namespace GameServer.Manager
         {
             foreach(int skid in ids)
             {
+                if (skid == 0) continue;
                 owner.info.Skills.Add(new Proto.SkillInfo() { Id = skid });
                 var skill = new Skill(owner, skid);
                 Skills.Add(skill);

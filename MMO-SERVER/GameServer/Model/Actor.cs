@@ -9,7 +9,6 @@ using GameServer.Core;
 using GameServer.Combat;
 using GameServer.Manager;
 using Serilog;
-using Common.Summer.core;
 
 namespace GameServer.Model
 {
@@ -25,13 +24,7 @@ namespace GameServer.Model
         public Spell spell;                                                                         //actor技能释放器
         public UnitState unitState;                                                                 //单位状态:死亡、空闲、战斗
 
-        /// <summary>
-        /// 判断actor死亡看的是状态而不是hp
-        /// </summary>
         public bool IsDeath => unitState == UnitState.Dead;                                         
-        /// <summary>
-        /// actorId:characterId、monsterId因为它们都在同一个unit配置文件里面
-        /// </summary>
         public int Id { 
             get { return info.Id; } 
             set { info.Id = value; } 
@@ -56,6 +49,8 @@ namespace GameServer.Model
         }
         public float Hp { get { return info.Hp; }}
         public float Mp { get { return info.Mp; }}
+        public int Level { get => info.Level; set => info.Level = value; }
+        public long Exp { get => info.Exp; set => info.Exp = value; }
 
         /// <summary>
         /// 构造函数
@@ -73,7 +68,7 @@ namespace GameServer.Model
             //先更新entity中的speed字段
             this.Speed = this.Define.Speed;
 
-            //再更新NetActor网络对象的信息
+            //更新NetActor网络对象的信息
             this.info.Tid = TID;                                        //TID:区分相同实体类型，不同身份。可以通过tid去找define
             this.info.EntityType = type;                                //unit类型
             this.info.Entity = this.EntityData;                         //entity的基本数据：pos dir speed entityId
@@ -86,6 +81,11 @@ namespace GameServer.Model
             this.skillManager = new SkillManager(this);                 //技能管理器
             this.spell = new Spell(this);                               //技能施法器
             this.Attr.Init(this);                                       //actor属性初始化
+
+            //再初始化
+            info.Hp = Attr.final.HPMax;
+            info.Mp = Attr.final.MPMax;
+
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace GameServer.Model
         protected void SetHp(float hp)
         {
 
-            if (MathC.Equals(info.Hp, hp)) return;
+            if (Mathf.Approximately(info.Hp, hp)) return;
             if(hp <= 0)
             {
                 hp = 0;
@@ -188,7 +188,7 @@ namespace GameServer.Model
         /// <param name="mp"></param>
         protected void SetMP(float mp)
         {
-            if (MathC.Equals(info.Mp, mp)) return;
+            if (Mathf.Approximately(info.Mp, mp)) return;
             if (mp <= 0)
             {
                 mp = 0;
@@ -231,6 +231,56 @@ namespace GameServer.Model
         }
 
         /// <summary>
+        /// 设置actor的等级
+        /// </summary>
+        private void SetLevel(int level)
+        {
+            if (Level == level) return;
+            PropertyUpdate po = new PropertyUpdate()
+            {
+                EntityId = EntityId,
+                Property = PropertyUpdate.Types.Prop.Level,
+                OldValue = new() { IntValue = Level },
+                NewValue = new() { IntValue = level }
+            };
+            info.Level = level;
+            currentSpace.fightManager.propertyUpdateQueue.Enqueue(po);
+        }
+
+        /// <summary>
+        /// 设置actor的经验
+        /// </summary>
+        public void SetExp(long exp)
+        {
+            if (Exp == exp) return;
+            long oldExp = Exp;
+            info.Exp = exp;
+
+            //如果exp达到上限就应该升级了
+            SetLevel(Level + 1);
+
+
+            //发包
+            PropertyUpdate po = new PropertyUpdate()
+            {
+                EntityId = EntityId,
+                Property = PropertyUpdate.Types.Prop.Exp,
+                OldValue = new() { LongValue = Exp },
+                NewValue = new() { LongValue = exp }
+            };
+
+            currentSpace.fightManager.propertyUpdateQueue.Enqueue(po);
+        }
+
+        /// <summary>
+        /// 死亡前的处理
+        /// </summary>
+        /// <param name="killerID"></param>
+        protected virtual void OnBeforeDie(int killerID)
+        {
+        }
+
+        /// <summary>
         /// 当前actor死亡
         /// </summary>
         /// <param name="killerID"></param>
@@ -242,14 +292,6 @@ namespace GameServer.Model
             SetHp(0);
             SetMP(0);
             OnAfterDie(killerID);
-        }
-
-        /// <summary>
-        /// 死亡前的处理
-        /// </summary>
-        /// <param name="killerID"></param>
-        protected virtual void OnBeforeDie(int killerID)
-        {
         }
 
         /// <summary>

@@ -208,7 +208,7 @@ namespace Summer.Network
             var met = fireMethod.MakeGenericMethod(message.GetType());
             met.Invoke(this, new object[] { sender, message });
 
-/*            //2.使用反射机制。再去处理下一层的触发
+/*          //2.使用反射机制。再去处理下一层的触发
             var t = message.GetType();
             foreach (var p in t.GetProperties())
             {

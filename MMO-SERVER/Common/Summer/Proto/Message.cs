@@ -73,74 +73,76 @@ namespace Proto {
             "Eg8KB3NraWxsSWQYAyABKAUSDgoGYW1vdW50GAQgASgCEiYKCmRhbWFnZVR5",
             "cGUYBSABKA4yEi5wcm90by5EYW1lYWdlVHlwZRIOCgZpc0NyaXQYBiABKAgS",
             "DgoGaXNNaXNzGAcgASgIIi0KDkRhbWFnZVJlc3BvbnNlEhsKBGxpc3QYASAD",
-            "KAsyDS5wcm90by5EYW1hZ2UilQMKDlByb3BlcnR5VXBkYXRlEhEKCWVudGl0",
+            "KAsyDS5wcm90by5EYW1hZ2UiywMKDlByb3BlcnR5VXBkYXRlEhEKCWVudGl0",
             "eV9pZBgBIAEoBRIsCghwcm9wZXJ0eRgCIAEoDjIaLnByb3RvLlByb3BlcnR5",
             "VXBkYXRlLlByb3ASNQoIb2xkVmFsdWUYAyABKAsyIy5wcm90by5Qcm9wZXJ0",
             "eVVwZGF0ZS5Qcm9wZXJ0eVZhbHVlEjUKCG5ld1ZhbHVlGAQgASgLMiMucHJv",
-            "dG8uUHJvcGVydHlVcGRhdGUuUHJvcGVydHlWYWx1ZRqFAQoNUHJvcGVydHlW",
+            "dG8uUHJvcGVydHlVcGRhdGUuUHJvcGVydHlWYWx1ZRqbAQoNUHJvcGVydHlW",
             "YWx1ZRITCglpbnRfdmFsdWUYASABKAVIABIVCgtmbG9hdF92YWx1ZRgCIAEo",
             "AkgAEhYKDHN0cmluZ192YWx1ZRgDIAEoCUgAEicKC3N0YXRlX3ZhbHVlGAQg",
-            "ASgOMhAucHJvdG8uVW5pdFN0YXRlSABCBwoFdmFsdWUiTAoEUHJvcBIGCgJI",
-            "UBAAEgYKAk1QEAESCQoFSFBNYXgQAhIJCgVNUE1heBADEgkKBVN0YXRlEAQS",
-            "CQoFTGV2ZWwQBRIICgROYW1lEAYiPAoVUHJvcGVydHlVcGRhdGVSc3BvbnNl",
-            "EiMKBGxpc3QYASADKAsyFS5wcm90by5Qcm9wZXJ0eVVwZGF0ZSIhCg1SZXZp",
-            "dmVSZXF1ZXN0EhAKCGVudGl0eUlkGAEgASgFIjkKDlJldml2ZVJlc3BvbnNl",
-            "EicKC25FbnRpdHlTeWNuGAEgASgLMhIucHJvdG8uTkVudGl0eVN5bmMioQEK",
-            "C0NoYXRNZXNzYWdlEiMKB2NoYW5uZWwYASABKA4yEi5wcm90by5DaGF0Q2hh",
-            "bm5lbBIKCgJpZBgCIAEoBRIPCgdmcm9tX2lkGAMgASgFEhEKCWZyb21fbmFt",
-            "ZRgEIAEoCRINCgV0b19pZBgFIAEoBRIPCgd0b19uYW1lGAYgASgJEg8KB2Nv",
-            "bnRlbnQYByABKAkSDAoEdGltZRgIIAEoASIyCgtDaGF0UmVxdWVzdBIjCgdt",
-            "ZXNzYWdlGAEgASgLMhIucHJvdG8uQ2hhdE1lc3NhZ2UiZwoPQ2hhdFJlc3Bv",
-            "bnNlT25lEh0KBnJlc3VsdBgBIAEoDjINLnByb3RvLlJlc3VsdBIQCghlcnJv",
-            "cm1zZxgCIAEoCRIjCgdtZXNzYWdlGAMgASgLMhIucHJvdG8uQ2hhdE1lc3Nh",
-            "Z2UiwwIKDENoYXRSZXNwb25zZRIdCgZyZXN1bHQYASABKA4yDS5wcm90by5S",
-            "ZXN1bHQSEAoIZXJyb3Jtc2cYAiABKAkSKQoNbG9jYWxNZXNzYWdlcxgDIAMo",
-            "CzISLnByb3RvLkNoYXRNZXNzYWdlEikKDXdvcmxkTWVzc2FnZXMYBCADKAsy",
-            "Ei5wcm90by5DaGF0TWVzc2FnZRIqCg5zeXN0ZW1NZXNzYWdlcxgFIAMoCzIS",
-            "LnByb3RvLkNoYXRNZXNzYWdlEisKD3ByaXZhdGVNZXNzYWdlcxgGIAMoCzIS",
-            "LnByb3RvLkNoYXRNZXNzYWdlEigKDHRlYW1NZXNzYWdlcxgHIAMoCzISLnBy",
-            "b3RvLkNoYXRNZXNzYWdlEikKDWd1aWxkTWVzc2FnZXMYCCADKAsyEi5wcm90",
-            "by5DaGF0TWVzc2FnZSJlCg1OZXRJdGVtRW50aXR5EiEKCEl0ZW1JbmZvGAEg",
-            "ASgLMg8ucHJvdG8uSXRlbUluZm8SDwoHc3BhY2VJZBgCIAEoBRIgCgZlbnRp",
-            "dHkYAyABKAsyEC5wcm90by5OZXRFbnRpdHkiQAoRTmV0SXRlbUVudGl0eVN5",
-            "bmMSKwoNbmV0SXRlbUVudGl0eRgBIAEoCzIULnByb3RvLk5ldEl0ZW1FbnRp",
-            "dHkiPAoISXRlbUluZm8SDgoGaXRlbUlkGAEgASgFEg4KBmFtb3VudBgCIAEo",
-            "BRIQCghwb3NpdGlvbhgDIAEoBSJACg1JbnZlbnRvcnlJbmZvEhAKCGNhcGFj",
-            "aXR5GAEgASgFEh0KBGxpc3QYAiADKAsyDy5wcm90by5JdGVtSW5mbyKGAQoK",
-            "SXRlbVVwZGF0ZRIqCgR0eXBlGAEgASgOMhwucHJvdG8uSXRlbVVwZGF0ZS5V",
-            "cGRhdGVUeXBlEh0KBGl0bWUYAiABKAsyDy5wcm90by5JdGVtSW5mbyItCgpV",
-            "cGRhdGVUeXBlEgcKA0FERBAAEgoKBkRFTEVURRABEgoKBlVQREFURRACIkUK",
-            "FlNwYWNlSXRlbUVudGVyUmVzcG9uc2USKwoNbmV0SXRlbUVudGl0eRgBIAEo",
-            "CzIULnByb3RvLk5ldEl0ZW1FbnRpdHkibwoUSW52ZW50b3J5SW5mb1JlcXVl",
-            "c3QSEAoIZW50aXR5SWQYASABKAUSFQoNcXVlcnlLbmFwc2FjaxgCIAEoCBIW",
-            "Cg5xdWVyeVdhcmVob3VzZRgDIAEoCBIWCg5xdWVyeUVxdWlwbWVudBgEIAEo",
-            "CCKvAQoVSW52ZW50b3J5SW5mb1Jlc3BvbnNlEhAKCGVudGl0eUlkGAEgASgF",
-            "EioKDEtuYXBzYWNrSW5mbxgCIAEoCzIULnByb3RvLkludmVudG9yeUluZm8S",
-            "KwoNV2FyZWhvdXNlSW5mbxgDIAEoCzIULnByb3RvLkludmVudG9yeUluZm8S",
-            "KwoNRXF1aXBtZW50SW5mbxgEIAEoCzIULnByb3RvLkludmVudG9yeUluZm8i",
-            "ygEKFEl0ZW1QbGFjZW1lbnRSZXF1ZXN0EhAKCGVudGl0eUlkGAEgASgFEjEK",
-            "E29yaWdpbkludmVudG9yeVRwZXkYAiABKA4yFC5wcm90by5JbnZlbnRvcnlU",
-            "eXBlEjEKE3RhcmdldEludmVudG9yeVRwZXkYAyABKA4yFC5wcm90by5JbnZl",
-            "bnRvcnlUeXBlEhMKC29yaWdpbkluZGV4GAQgASgFEhMKC3RhcmdldEluZGV4",
-            "GAUgASgFEhAKCGFjdGlvbklkGAYgASgFIlEKFUl0ZW1QbGFjZW1lbnRSZXNw",
-            "b25zZRIOCgZyZXN1bHQYASABKAgSEAoIYWN0aW9uSWQYAiABKAUSFgoOYXV4",
-            "aWxpYXJ5U3BhY2UYAyABKAUiRAoOSXRlbVVzZVJlcXVlc3QSEAoIZW50aXR5",
-            "SWQYASABKAUSEQoJc2xvdEluZGV4GAIgASgFEg0KBWNvdW50GAMgASgFIkMK",
-            "D0l0ZW1Vc2VSZXNwb25zZRIOCgZyZXN1bHQYASABKAgSEQoJc2xvdEluZGV4",
-            "GAIgASgFEg0KBWNvdW50GAMgASgFKk8KC0VudGl0eVN0YXRlEggKBE5PTkUQ",
-            "ABIICgRJRExFEAESCAoEV0FMSxACEgcKA1JVThADEggKBEpVTVAQBBIPCgtT",
-            "V09SREZMSUdIVBAFKjEKCkVudGl0eVR5cGUSDQoJQ2hhcmFjdGVyEAASCwoH",
-            "TW9uc3RlchABEgcKA05QQxACKoABCgpDYXN0UmVzdWx0EgsKB1N1Y2Nlc3MQ",
-            "ABINCglJc1Bhc3NpdmUQARIKCgZNcExhY2sQAhIOCgpFbnRpdHlEZWFkEAMS",
-            "DgoKT3V0T2ZSYW5nZRAEEgsKB1J1bm5pbmcQBRIMCghDb2xkRG93bhAGEg8K",
-            "C1RhcmdldEVycm9yEAcqPwoLRGFtZWFnZVR5cGUSCwoHVU5LTk9XThAAEgwK",
-            "CFBIWVNJQ0FMEAESCwoHTUFHSUNBTBACEggKBFJFQUwQAyo9CglVbml0U3Rh",
-            "dGUSCAoERlJFRRAAEggKBERFQUQQARIICgRSRVNUEAISCQoFRklHSFQQAxIH",
-            "CgNNQVgQBCogCgZSZXN1bHQSCwoHU1VDQ0VTUxAAEgkKBUZBVUxUEAEqWgoL",
-            "Q2hhdENoYW5uZWwSBwoDQUxMEAASCQoFTE9DQUwQARIJCgVXT1JMRBACEgoK",
-            "BlNZU1RFTRAEEgsKB1BSSVZBVEUQCBIICgRURUFNEBASCQoFR1VJTEQQICpN",
-            "Cg1JbnZlbnRvcnlUeXBlEgwKCEtuYXBzYWNrEAASDQoJV2FyZWhvdXNlEAES",
-            "DQoJRXF1aXBtZW50EAISEAoMQ3VycmVudFNjZW5lEANiBnByb3RvMw=="));
+            "ASgOMhAucHJvdG8uVW5pdFN0YXRlSAASFAoKbG9uZ192YWx1ZRgFIAEoA0gA",
+            "QgcKBXZhbHVlImwKBFByb3ASBgoCSFAQABIGCgJNUBABEgkKBUhQTWF4EAIS",
+            "CQoFTVBNYXgQAxIJCgVTdGF0ZRAEEgkKBUxldmVsEAUSCAoETmFtZRAGEgkK",
+            "BUdvbGRzEAcSBwoDRXhwEAgSCgoGRW5lcmd5EAkiPAoVUHJvcGVydHlVcGRh",
+            "dGVSc3BvbnNlEiMKBGxpc3QYASADKAsyFS5wcm90by5Qcm9wZXJ0eVVwZGF0",
+            "ZSIhCg1SZXZpdmVSZXF1ZXN0EhAKCGVudGl0eUlkGAEgASgFIjkKDlJldml2",
+            "ZVJlc3BvbnNlEicKC25FbnRpdHlTeWNuGAEgASgLMhIucHJvdG8uTkVudGl0",
+            "eVN5bmMioQEKC0NoYXRNZXNzYWdlEiMKB2NoYW5uZWwYASABKA4yEi5wcm90",
+            "by5DaGF0Q2hhbm5lbBIKCgJpZBgCIAEoBRIPCgdmcm9tX2lkGAMgASgFEhEK",
+            "CWZyb21fbmFtZRgEIAEoCRINCgV0b19pZBgFIAEoBRIPCgd0b19uYW1lGAYg",
+            "ASgJEg8KB2NvbnRlbnQYByABKAkSDAoEdGltZRgIIAEoASIyCgtDaGF0UmVx",
+            "dWVzdBIjCgdtZXNzYWdlGAEgASgLMhIucHJvdG8uQ2hhdE1lc3NhZ2UiZwoP",
+            "Q2hhdFJlc3BvbnNlT25lEh0KBnJlc3VsdBgBIAEoDjINLnByb3RvLlJlc3Vs",
+            "dBIQCghlcnJvcm1zZxgCIAEoCRIjCgdtZXNzYWdlGAMgASgLMhIucHJvdG8u",
+            "Q2hhdE1lc3NhZ2UiwwIKDENoYXRSZXNwb25zZRIdCgZyZXN1bHQYASABKA4y",
+            "DS5wcm90by5SZXN1bHQSEAoIZXJyb3Jtc2cYAiABKAkSKQoNbG9jYWxNZXNz",
+            "YWdlcxgDIAMoCzISLnByb3RvLkNoYXRNZXNzYWdlEikKDXdvcmxkTWVzc2Fn",
+            "ZXMYBCADKAsyEi5wcm90by5DaGF0TWVzc2FnZRIqCg5zeXN0ZW1NZXNzYWdl",
+            "cxgFIAMoCzISLnByb3RvLkNoYXRNZXNzYWdlEisKD3ByaXZhdGVNZXNzYWdl",
+            "cxgGIAMoCzISLnByb3RvLkNoYXRNZXNzYWdlEigKDHRlYW1NZXNzYWdlcxgH",
+            "IAMoCzISLnByb3RvLkNoYXRNZXNzYWdlEikKDWd1aWxkTWVzc2FnZXMYCCAD",
+            "KAsyEi5wcm90by5DaGF0TWVzc2FnZSJlCg1OZXRJdGVtRW50aXR5EiEKCEl0",
+            "ZW1JbmZvGAEgASgLMg8ucHJvdG8uSXRlbUluZm8SDwoHc3BhY2VJZBgCIAEo",
+            "BRIgCgZlbnRpdHkYAyABKAsyEC5wcm90by5OZXRFbnRpdHkiQAoRTmV0SXRl",
+            "bUVudGl0eVN5bmMSKwoNbmV0SXRlbUVudGl0eRgBIAEoCzIULnByb3RvLk5l",
+            "dEl0ZW1FbnRpdHkiPAoISXRlbUluZm8SDgoGaXRlbUlkGAEgASgFEg4KBmFt",
+            "b3VudBgCIAEoBRIQCghwb3NpdGlvbhgDIAEoBSJACg1JbnZlbnRvcnlJbmZv",
+            "EhAKCGNhcGFjaXR5GAEgASgFEh0KBGxpc3QYAiADKAsyDy5wcm90by5JdGVt",
+            "SW5mbyKGAQoKSXRlbVVwZGF0ZRIqCgR0eXBlGAEgASgOMhwucHJvdG8uSXRl",
+            "bVVwZGF0ZS5VcGRhdGVUeXBlEh0KBGl0bWUYAiABKAsyDy5wcm90by5JdGVt",
+            "SW5mbyItCgpVcGRhdGVUeXBlEgcKA0FERBAAEgoKBkRFTEVURRABEgoKBlVQ",
+            "REFURRACIkUKFlNwYWNlSXRlbUVudGVyUmVzcG9uc2USKwoNbmV0SXRlbUVu",
+            "dGl0eRgBIAEoCzIULnByb3RvLk5ldEl0ZW1FbnRpdHkibwoUSW52ZW50b3J5",
+            "SW5mb1JlcXVlc3QSEAoIZW50aXR5SWQYASABKAUSFQoNcXVlcnlLbmFwc2Fj",
+            "axgCIAEoCBIWCg5xdWVyeVdhcmVob3VzZRgDIAEoCBIWCg5xdWVyeUVxdWlw",
+            "bWVudBgEIAEoCCKvAQoVSW52ZW50b3J5SW5mb1Jlc3BvbnNlEhAKCGVudGl0",
+            "eUlkGAEgASgFEioKDEtuYXBzYWNrSW5mbxgCIAEoCzIULnByb3RvLkludmVu",
+            "dG9yeUluZm8SKwoNV2FyZWhvdXNlSW5mbxgDIAEoCzIULnByb3RvLkludmVu",
+            "dG9yeUluZm8SKwoNRXF1aXBtZW50SW5mbxgEIAEoCzIULnByb3RvLkludmVu",
+            "dG9yeUluZm8iygEKFEl0ZW1QbGFjZW1lbnRSZXF1ZXN0EhAKCGVudGl0eUlk",
+            "GAEgASgFEjEKE29yaWdpbkludmVudG9yeVRwZXkYAiABKA4yFC5wcm90by5J",
+            "bnZlbnRvcnlUeXBlEjEKE3RhcmdldEludmVudG9yeVRwZXkYAyABKA4yFC5w",
+            "cm90by5JbnZlbnRvcnlUeXBlEhMKC29yaWdpbkluZGV4GAQgASgFEhMKC3Rh",
+            "cmdldEluZGV4GAUgASgFEhAKCGFjdGlvbklkGAYgASgFIlEKFUl0ZW1QbGFj",
+            "ZW1lbnRSZXNwb25zZRIOCgZyZXN1bHQYASABKAgSEAoIYWN0aW9uSWQYAiAB",
+            "KAUSFgoOYXV4aWxpYXJ5U3BhY2UYAyABKAUiRAoOSXRlbVVzZVJlcXVlc3QS",
+            "EAoIZW50aXR5SWQYASABKAUSEQoJc2xvdEluZGV4GAIgASgFEg0KBWNvdW50",
+            "GAMgASgFIkMKD0l0ZW1Vc2VSZXNwb25zZRIOCgZyZXN1bHQYASABKAgSEQoJ",
+            "c2xvdEluZGV4GAIgASgFEg0KBWNvdW50GAMgASgFKk8KC0VudGl0eVN0YXRl",
+            "EggKBE5PTkUQABIICgRJRExFEAESCAoEV0FMSxACEgcKA1JVThADEggKBEpV",
+            "TVAQBBIPCgtTV09SREZMSUdIVBAFKjEKCkVudGl0eVR5cGUSDQoJQ2hhcmFj",
+            "dGVyEAASCwoHTW9uc3RlchABEgcKA05QQxACKoABCgpDYXN0UmVzdWx0EgsK",
+            "B1N1Y2Nlc3MQABINCglJc1Bhc3NpdmUQARIKCgZNcExhY2sQAhIOCgpFbnRp",
+            "dHlEZWFkEAMSDgoKT3V0T2ZSYW5nZRAEEgsKB1J1bm5pbmcQBRIMCghDb2xk",
+            "RG93bhAGEg8KC1RhcmdldEVycm9yEAcqPwoLRGFtZWFnZVR5cGUSCwoHVU5L",
+            "Tk9XThAAEgwKCFBIWVNJQ0FMEAESCwoHTUFHSUNBTBACEggKBFJFQUwQAyo9",
+            "CglVbml0U3RhdGUSCAoERlJFRRAAEggKBERFQUQQARIICgRSRVNUEAISCQoF",
+            "RklHSFQQAxIHCgNNQVgQBCogCgZSZXN1bHQSCwoHU1VDQ0VTUxAAEgkKBUZB",
+            "VUxUEAEqWgoLQ2hhdENoYW5uZWwSBwoDQUxMEAASCQoFTE9DQUwQARIJCgVX",
+            "T1JMRBACEgoKBlNZU1RFTRAEEgsKB1BSSVZBVEUQCBIICgRURUFNEBASCQoF",
+            "R1VJTEQQICpNCg1JbnZlbnRvcnlUeXBlEgwKCEtuYXBzYWNrEAASDQoJV2Fy",
+            "ZWhvdXNlEAESDQoJRXF1aXBtZW50EAISEAoMQ3VycmVudFNjZW5lEANiBnBy",
+            "b3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Proto.EntityState), typeof(global::Proto.EntityType), typeof(global::Proto.CastResult), typeof(global::Proto.DameageType), typeof(global::Proto.UnitState), typeof(global::Proto.Result), typeof(global::Proto.ChatChannel), typeof(global::Proto.InventoryType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -174,7 +176,7 @@ namespace Proto {
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.SpellFailResponse), global::Proto.SpellFailResponse.Parser, new[]{ "CasterId", "SkillId", "Reason" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.Damage), global::Proto.Damage.Parser, new[]{ "AttackerId", "TargetId", "SkillId", "Amount", "DamageType", "IsCrit", "IsMiss" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.DamageResponse), global::Proto.DamageResponse.Parser, new[]{ "List" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Proto.PropertyUpdate), global::Proto.PropertyUpdate.Parser, new[]{ "EntityId", "Property", "OldValue", "NewValue" }, null, new[]{ typeof(global::Proto.PropertyUpdate.Types.Prop) }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Proto.PropertyUpdate.Types.PropertyValue), global::Proto.PropertyUpdate.Types.PropertyValue.Parser, new[]{ "IntValue", "FloatValue", "StringValue", "StateValue" }, new[]{ "Value" }, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Proto.PropertyUpdate), global::Proto.PropertyUpdate.Parser, new[]{ "EntityId", "Property", "OldValue", "NewValue" }, null, new[]{ typeof(global::Proto.PropertyUpdate.Types.Prop) }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Proto.PropertyUpdate.Types.PropertyValue), global::Proto.PropertyUpdate.Types.PropertyValue.Parser, new[]{ "IntValue", "FloatValue", "StringValue", "StateValue", "LongValue" }, new[]{ "Value" }, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.PropertyUpdateRsponse), global::Proto.PropertyUpdateRsponse.Parser, new[]{ "List" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.ReviveRequest), global::Proto.ReviveRequest.Parser, new[]{ "EntityId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.ReviveResponse), global::Proto.ReviveResponse.Parser, new[]{ "NEntitySycn" }, null, null, null, null),
@@ -318,7 +320,7 @@ namespace Proto {
 
   #region Messages
   /// <summary>
-  ///====================心跳检测================================
+  ///============================================心跳检测==========================================
   /// </summary>
   public sealed partial class HeartBeatRequest : pb::IMessage<HeartBeatRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
@@ -625,7 +627,7 @@ namespace Proto {
   }
 
   /// <summary>
-  ///======================entity=================================
+  ///====================================entity=================================================
   ///网络三维向量
   /// </summary>
   public sealed partial class Vec3 : pb::IMessage<Vec3>
@@ -2137,7 +2139,7 @@ namespace Proto {
   }
 
   /// <summary>
-  ///=======================space================================
+  ///==================================================space=========================================
   ///进入游戏请求
   /// </summary>
   public sealed partial class GameEnterRequest : pb::IMessage<GameEnterRequest>
@@ -7582,7 +7584,7 @@ namespace Proto {
   }
 
   /// <summary>
-  ///actor属性更新
+  ///actor属性更新消息类型
   /// </summary>
   public sealed partial class PropertyUpdate : pb::IMessage<PropertyUpdate>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
@@ -7905,6 +7907,9 @@ namespace Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static partial class Types {
+      /// <summary>
+      ///属性类型枚举
+      /// </summary>
       public enum Prop {
         [pbr::OriginalName("HP")] Hp = 0,
         [pbr::OriginalName("MP")] Mp = 1,
@@ -7913,6 +7918,15 @@ namespace Proto {
         [pbr::OriginalName("State")] State = 4,
         [pbr::OriginalName("Level")] Level = 5,
         [pbr::OriginalName("Name")] Name = 6,
+        [pbr::OriginalName("Golds")] Golds = 7,
+        /// <summary>
+        ///经验
+        /// </summary>
+        [pbr::OriginalName("Exp")] Exp = 8,
+        /// <summary>
+        ///活力
+        /// </summary>
+        [pbr::OriginalName("Energy")] Energy = 9,
       }
 
       /// <summary>
@@ -7964,6 +7978,9 @@ namespace Proto {
               break;
             case ValueOneofCase.StateValue:
               StateValue = other.StateValue;
+              break;
+            case ValueOneofCase.LongValue:
+              LongValue = other.LongValue;
               break;
           }
 
@@ -8024,6 +8041,18 @@ namespace Proto {
           }
         }
 
+        /// <summary>Field number for the "long_value" field.</summary>
+        public const int LongValueFieldNumber = 5;
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+        [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+        public long LongValue {
+          get { return valueCase_ == ValueOneofCase.LongValue ? (long) value_ : 0L; }
+          set {
+            value_ = value;
+            valueCase_ = ValueOneofCase.LongValue;
+          }
+        }
+
         private object value_;
         /// <summary>Enum of possible cases for the "value" oneof.</summary>
         public enum ValueOneofCase {
@@ -8032,6 +8061,7 @@ namespace Proto {
           FloatValue = 2,
           StringValue = 3,
           StateValue = 4,
+          LongValue = 5,
         }
         private ValueOneofCase valueCase_ = ValueOneofCase.None;
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -8066,6 +8096,7 @@ namespace Proto {
           if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(FloatValue, other.FloatValue)) return false;
           if (StringValue != other.StringValue) return false;
           if (StateValue != other.StateValue) return false;
+          if (LongValue != other.LongValue) return false;
           if (ValueCase != other.ValueCase) return false;
           return Equals(_unknownFields, other._unknownFields);
         }
@@ -8078,6 +8109,7 @@ namespace Proto {
           if (valueCase_ == ValueOneofCase.FloatValue) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(FloatValue);
           if (valueCase_ == ValueOneofCase.StringValue) hash ^= StringValue.GetHashCode();
           if (valueCase_ == ValueOneofCase.StateValue) hash ^= StateValue.GetHashCode();
+          if (valueCase_ == ValueOneofCase.LongValue) hash ^= LongValue.GetHashCode();
           hash ^= (int) valueCase_;
           if (_unknownFields != null) {
             hash ^= _unknownFields.GetHashCode();
@@ -8113,6 +8145,10 @@ namespace Proto {
             output.WriteRawTag(32);
             output.WriteEnum((int) StateValue);
           }
+          if (valueCase_ == ValueOneofCase.LongValue) {
+            output.WriteRawTag(40);
+            output.WriteInt64(LongValue);
+          }
           if (_unknownFields != null) {
             _unknownFields.WriteTo(output);
           }
@@ -8139,6 +8175,10 @@ namespace Proto {
             output.WriteRawTag(32);
             output.WriteEnum((int) StateValue);
           }
+          if (valueCase_ == ValueOneofCase.LongValue) {
+            output.WriteRawTag(40);
+            output.WriteInt64(LongValue);
+          }
           if (_unknownFields != null) {
             _unknownFields.WriteTo(ref output);
           }
@@ -8160,6 +8200,9 @@ namespace Proto {
           }
           if (valueCase_ == ValueOneofCase.StateValue) {
             size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) StateValue);
+          }
+          if (valueCase_ == ValueOneofCase.LongValue) {
+            size += 1 + pb::CodedOutputStream.ComputeInt64Size(LongValue);
           }
           if (_unknownFields != null) {
             size += _unknownFields.CalculateSize();
@@ -8185,6 +8228,9 @@ namespace Proto {
               break;
             case ValueOneofCase.StateValue:
               StateValue = other.StateValue;
+              break;
+            case ValueOneofCase.LongValue:
+              LongValue = other.LongValue;
               break;
           }
 
@@ -8220,6 +8266,10 @@ namespace Proto {
                 valueCase_ = ValueOneofCase.StateValue;
                 break;
               }
+              case 40: {
+                LongValue = input.ReadInt64();
+                break;
+              }
             }
           }
         #endif
@@ -8250,6 +8300,10 @@ namespace Proto {
               case 32: {
                 value_ = input.ReadEnum();
                 valueCase_ = ValueOneofCase.StateValue;
+                break;
+              }
+              case 40: {
+                LongValue = input.ReadInt64();
                 break;
               }
             }

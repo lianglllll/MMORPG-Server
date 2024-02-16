@@ -151,6 +151,8 @@ namespace GameServer.Model
         /// <param name="monster"></param>
         public void MonsterJoin(Monster monster)
         {
+            monster.OnEnterSpace(this);
+
             var resp = new SpaceCharactersEnterResponse();
             resp.SpaceId = this.SpaceId;
             resp.CharacterList.Add(monster.info);

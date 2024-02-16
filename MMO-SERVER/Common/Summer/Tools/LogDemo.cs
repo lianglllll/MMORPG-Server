@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 
 /// <summary>
-/// 弃用
+/// 日志模块的流程
 /// </summary>
-namespace Common
+namespace Tools
 {
    
     #region 演示日志模块
