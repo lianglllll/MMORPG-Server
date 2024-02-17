@@ -196,7 +196,7 @@ namespace GameServer.Model
             var killer = EntityManager.Instance.GetEntity(killerID);
             if (killer != null && killer is Character chr)
             {
-                chr.SetExp(chr.Exp + 10);
+                chr.SetExp(chr.Exp + 20);
             }
         }
 

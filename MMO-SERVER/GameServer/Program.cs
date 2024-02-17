@@ -85,11 +85,11 @@ namespace GameServer
 
             //test 物品实例
             Space space1 = SpaceManager.Instance.GetSpaceById(0);
-            var define = DataManager.Instance.Items[1001];
+            var define = DataManager.Instance.ItemDefinedDict[1001];
             var item = new Item(define, 1, 1);
             space1.itemManager.Create(item, Vector3Int.zero, Vector3Int.zero);
 
-            var define2 = DataManager.Instance.Items[1002];
+            var define2 = DataManager.Instance.ItemDefinedDict[1002];
             var item2 = new Item(define2, 1, 1);
             space1.itemManager.Create(item2, new Vector3Int(1000,0,1000), Vector3Int.zero);
 

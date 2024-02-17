@@ -182,13 +182,14 @@ namespace GameServer.Service
         /// <param name="message"></param>
         private int PickupItemAction(ItemPlacementRequest message,Character chr)
         {
-            //这里只是简单地找附件最近的item
-
+            //这里通过entity来寻找
+            int itemEntityId = message.OriginIndex;
 
             //获取一个符合条件的item，如果没有就忽略这次请求
-            ItemEntity itemEntity = GameTools.RangeItem(chr.SpaceId, chr.Position, 2000)
-                .OrderBy(item => Vector3Int.Distance(item.Position, chr.Position)).FirstOrDefault();
-            if (itemEntity == null) return 0;
+            Entity entity = GameTools.GetEntity(itemEntityId);
+
+            if (entity == null) return 0;
+            if (!(entity is ItemEntity itemEntity)) return 0;
 
             //添加物品到背包
              var alreadyAddedAmount = chr.knapsack.AddItem(itemEntity.Item.ItemId, itemEntity.Item.Amount);
@@ -201,9 +202,8 @@ namespace GameServer.Service
             }
             else
             {
-                //更新场景中的itementity数据
+                //更新场景中的itementity数据,amount
                 itemEntity.Item.Amount -= alreadyAddedAmount;
-
                 chr.currentSpace.SyncItemEntity(itemEntity);
             }
 

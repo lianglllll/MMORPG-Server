@@ -146,10 +146,9 @@ namespace GameServer.Combat
             else if (sco is SCEntity && (sco.RealObj as Actor).IsDeath)
                 return CastResult.EntityDead;
             //施法者和目标的距离超过限制
-            var dist = Vector3Int.Distance(Owner.EntityData.Position, sco.Position);
-            if (dist > Define.SpellRange)
+            var dist = Vector3.Distance(Owner.EntityData.Position, sco.Position);
+            if (float.IsNaN(dist) ||dist > Define.SpellRange)
                 return CastResult.OutOfRange;
-
             //可用
             return CastResult.Success;
         }

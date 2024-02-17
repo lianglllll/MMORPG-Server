@@ -92,6 +92,8 @@ namespace GameServer.Manager
                 chr.Data.Mp = (int)chr.Mp;
                 chr.Data.SpaceId = chr.SpaceId;
                 chr.Data.Knapsack = chr.knapsack.InventoryInfo.ToByteArray();
+                chr.Data.Level = chr.Level;
+                chr.Data.Exp = chr.Exp;
                 //保存进入数据库
                 repo.UpdateAsync(chr.Data);//异步更新
             }

@@ -34,7 +34,8 @@ namespace GameServer.core
         {
             Predicate<Actor> match = (e) =>
             {
-                return Vector3Int.Distance(position, e.Position) <= range;
+                var dis = Vector3.Distance(position, e.Position);
+                return !float.IsNaN(dis) && dis <= range;
             };
             return EntityManager.Instance.GetEntityList(spaceId, match);
             }
@@ -55,6 +56,10 @@ namespace GameServer.core
             return EntityManager.Instance.GetEntityList(spaceId, match);
         }
 
+        public static Entity GetEntity(int entityId)
+        {
+            return EntityManager.Instance.GetEntity(entityId);
+        }
 
     }
 }

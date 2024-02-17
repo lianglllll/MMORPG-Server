@@ -91,7 +91,7 @@ namespace GameServer.InventorySystem
         /// <param name="itemInfo"></param>
         public Item(ItemInfo itemInfo)
         {
-            Define = DataManager.Instance.Items[itemInfo.ItemId];
+            Define = DataManager.Instance.ItemDefinedDict[itemInfo.ItemId];
             _itmeInfo = new ItemInfo() { ItemId = Define.ID };
             this._itmeInfo.Amount = itemInfo.Amount;
             this._itmeInfo.Position = itemInfo.Position;

@@ -21,9 +21,9 @@ public class DataManager : Singleton<DataManager>
     //技能信息
     public Dictionary<int, SkillDefine> skillDefineDict = null;
     //item信息
-    public Dictionary<int, ItemDefine> Items = null;
-
-
+    public Dictionary<int, ItemDefine> ItemDefinedDict = null;
+    //等级信息
+    public Dictionary<int, LevelDefine> levelDefindeDict = null;
 
     //初始化，就是将文件中的数据读入
     public void init()
@@ -33,7 +33,8 @@ public class DataManager : Singleton<DataManager>
         unitDefineDict = Load<UnitDefine>("Data/UnitDefine.json");
         spawnDefineDict = Load<SpawnDefine>("Data/SpawnDefine.json");
         skillDefineDict = Load<SkillDefine>("Data/SkillDefine.json");
-        Items = Load<ItemDefine>("Data/ItemDefine.json");
+        ItemDefinedDict = Load<ItemDefine>("Data/ItemDefine.json");
+        levelDefindeDict = Load<LevelDefine>("Data/LevelDefine.json");
     }
 
     //根据path加载解析json文件转换为dict

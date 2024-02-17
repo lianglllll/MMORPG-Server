@@ -20,6 +20,7 @@ namespace GameServer.Combat
         private Space space;
 
         //等待处理的技能施法队列：收集来自各个客户端的施法请求
+        //这个队列维持了actor属性的同步，比如说hp的计算是单线程的。
         public ConcurrentQueue<CastInfo> castInfoQueue = new ConcurrentQueue<CastInfo>();
 
         //当前场景下的投射物列表

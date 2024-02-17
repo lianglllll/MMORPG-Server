@@ -254,23 +254,35 @@ namespace GameServer.Model
         {
             if (Exp == exp) return;
             long oldExp = Exp;
-            info.Exp = exp;
+            Exp = exp;
 
-            //如果exp达到上限就应该升级了
-            SetLevel(Level + 1);
-
+            //判断当前经验是否足够升级
+            while (DataManager.Instance.levelDefindeDict.TryGetValue(Level, out var define))
+            {
+                if (Exp >= define.ExpLimit)
+                {
+                    this.SetLevel(Level + 1);
+                    Exp -= define.ExpLimit;
+                }
+                else
+                {
+                    break;
+                }
+            }
 
             //发包
             PropertyUpdate po = new PropertyUpdate()
             {
                 EntityId = EntityId,
                 Property = PropertyUpdate.Types.Prop.Exp,
-                OldValue = new() { LongValue = Exp },
-                NewValue = new() { LongValue = exp }
+                OldValue = new() { LongValue = oldExp },
+                NewValue = new() { LongValue = Exp }
             };
 
             currentSpace.fightManager.propertyUpdateQueue.Enqueue(po);
         }
+
+
 
         /// <summary>
         /// 死亡前的处理

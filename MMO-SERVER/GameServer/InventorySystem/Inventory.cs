@@ -120,7 +120,7 @@ namespace GameServer.InventorySystem
         public int AddItem(int itemId,int amount = 1)
         {
             //1.检查物品是否存在
-            if (!DataManager.Instance.Items.TryGetValue(itemId, out var def))
+            if (!DataManager.Instance.ItemDefinedDict.TryGetValue(itemId, out var def))
             {
                 Log.Information("物品id={0}不存在", itemId);
                 return 0;
@@ -250,7 +250,7 @@ namespace GameServer.InventorySystem
         public int RemoveItem(int itemId,int amount = 1)
         {
             //1.检查物品是否存在
-            if (!DataManager.Instance.Items.TryGetValue(itemId, out var def))
+            if (!DataManager.Instance.ItemDefinedDict.TryGetValue(itemId, out var def))
             {
                 Log.Information("物品id={0}不存在", itemId);
                 return 0;
@@ -334,7 +334,7 @@ namespace GameServer.InventorySystem
         private int CaculateMaxRemainAmount(int itemId, ref Item firstSameItem, ref int firstEmptyItemIndex)
         {
             //1.检查物品是否存在
-            if (!DataManager.Instance.Items.TryGetValue(itemId, out var def))
+            if (!DataManager.Instance.ItemDefinedDict.TryGetValue(itemId, out var def))
             {
                 Log.Information("物品id={0}不存在", itemId);
                 return 0;
