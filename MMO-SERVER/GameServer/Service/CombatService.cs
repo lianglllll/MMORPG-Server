@@ -34,7 +34,7 @@ namespace GameServer.Service
         private void _ReviveRequest(Connection conn, ReviveRequest message)
         {
             var actor = EntityManager.Instance.GetEntity(message.EntityId);
-            if(actor != null && actor is Character chr&& chr.IsDeath&& chr.conn == conn)
+            if(actor != null && actor is Character chr&& chr.IsDeath&& chr.session.Conn == conn)
             {
                 //设置当前角色的位置
                 chr.Position = new Core.Vector3Int(283000, 4000, 185000);

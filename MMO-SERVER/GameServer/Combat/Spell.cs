@@ -175,7 +175,7 @@ namespace GameServer.Combat
                     SkillId = skill_id,
                     Reason = reason
                 };
-                chr.conn.Send(resp);
+                chr.session.Send(resp);
             }
         }
 

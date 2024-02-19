@@ -6345,3 +6345,9 @@ GameServer.csproj里面要有这段配置，配置文件回自动复制到运行
 
 
 
+**token的生成**
+
+```
+var token = Guid.NewGuid().ToString();
+```
+

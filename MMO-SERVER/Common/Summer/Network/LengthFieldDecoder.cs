@@ -108,17 +108,36 @@ namespace Summer.Network
         }
 
         /// <summary>
-        /// 连接断开，并且向上传递消息断开信息
+        /// 被动关闭连接
         /// </summary>
         private void _disconnected()
         {
             try
             {
-                disconnected?.Invoke();
                 mSocket?.Shutdown(SocketShutdown.Both);
+                mSocket?.Close();
             }
-            catch { } // throws if client process has already closed
-            mSocket?.Close();//竟然可以close多次
+            catch { } 
+            mSocket = null;
+            //并且向上传递消息断开信息
+            if (isStart)
+            {
+                disconnected?.Invoke();
+            }
+        }
+
+        /// <summary>
+        /// 主动关闭连接
+        /// </summary>
+        public void ActiveClose()
+        {
+            isStart = false;
+            try
+            {
+                mSocket?.Shutdown(SocketShutdown.Both);
+                mSocket?.Close();//其实就是四次挥手的开始，发送fin信号
+            }
+            catch { }
             mSocket = null;
         }
 

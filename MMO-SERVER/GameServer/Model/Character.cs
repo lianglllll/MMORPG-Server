@@ -11,6 +11,7 @@ using GameServer.Manager;
 using Serilog;
 using GameServer.Core;
 using GameServer.InventorySystem;
+using GameServer.core;
 
 namespace GameServer.Model
 {
@@ -19,10 +20,16 @@ namespace GameServer.Model
     /// </summary>
     public class Character:Actor
     {
-
-        public Connection conn;         //当前角色的客户端
         public DbCharacter Data;        //当前角色对应的数据库对象信息
         public Inventory knapsack;      //背包 
+
+        public Session session
+        {
+            get;
+            set;
+        }
+
+        //public Connection conn => session.Conn;
 
         /// <summary>
         /// 构造函数
@@ -102,7 +109,7 @@ namespace GameServer.Model
             resp.Result = true;
             resp.SlotIndex = slotIndex;
             resp.Count = count;
-            conn.Send(resp);
+            session.Send(resp);
             return true;
         
         }

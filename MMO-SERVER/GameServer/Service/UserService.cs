@@ -11,6 +11,7 @@ using GameServer.Manager;
 using Summer;
 using GameServer.Database;
 using GameServer.core;
+using GameServer.Network;
 
 namespace GameServer.Service
 {
@@ -36,6 +37,7 @@ namespace GameServer.Service
             MessageRouter.Instance.Subscribe<Proto.CharacterListRequest>(_CharacterListRequest);
             MessageRouter.Instance.Subscribe<Proto.CharacterDeleteRequest>(_CharacterDeleteRequest);
             MessageRouter.Instance.Subscribe<Proto.UserRegisterRequest>(_UserRegisterRequest);
+            MessageRouter.Instance.Subscribe<Proto.ReconnectRequest>(_ReconnectRequest);
         }
 
         /// <summary>
@@ -88,21 +90,45 @@ namespace GameServer.Service
                 .Where(p => p.Password == password)
                 .First();
 
-            //设置响应包
-            UserLoginResponse resp = new UserLoginResponse();
-            if (dbUser != null)
-            {
-                resp.Success = true;
-                resp.Message = "登录成功";
-                //将用户信息存进conn中
-                conn.Get<Session>().dbUser = dbUser;
-            }
-            else
+            //校验
+            if (dbUser == null)
             {
                 //1.要考虑到今天限制登录，2.这个号被封了  3.被关小黑屋了  4.没实名认证
-                resp.Success = false;
-                resp.Message = "用户名或密码不正确";
+                UserLoginResponse resp1 = new UserLoginResponse();
+                resp1.Success = false;
+                resp1.Message = "用户名或密码不正确";
+                conn.Send(resp1);
+                return;
             }
+
+            //如果当前用户在线，将其踢出游戏，防止同一账号多次登录
+            var oldsession = SessionManager.Instance.GetSessionByUserId(dbUser.Id);
+            if (oldsession != null)
+            {
+                //让session失效
+                SessionManager.Instance.RemoveSession(oldsession.Id);
+
+                //让角色离开场景
+                var chr = oldsession.character;
+                if (chr != null && chr.currentSpace != null)
+                {
+                    chr.currentSpace.CharacterLeave(chr);
+                    CharacterManager.Instance.RemoveCharacter(chr.Id);
+                }
+            }
+
+            //==正常登录==
+
+            //登录成功的客户端分配session对象，并且关联conn和session
+            var session = SessionManager.Instance.NewSession(dbUser);
+            conn.Set<Session>(session);
+            session.Conn = conn;
+
+            //发送给客户端的消息
+            UserLoginResponse resp = new UserLoginResponse();
+            resp.Success = true;
+            resp.Message = "登录成功";
+            resp.SessionId = session.Id;
 
             //响应客户端
             conn.Send(resp);
@@ -311,15 +337,42 @@ namespace GameServer.Service
             //将数据库角色类转为游戏角色类，添加进管理器管理
             Character character = CharacterManager.Instance.CreateCharacter(dbCharacter);
 
-            //将characterId 与 session 进行关联
-            character.conn = conn;
+            //将character 与 session 进行关联
+            character.session = conn.Get<Session>();
             //将角色引用放入conn连接当中
-            conn.Get<Session>().character = character;
+            character.session.character = character;
 
             //告知场景新加入了一个entity,进行广播
             Space space = SpaceService.Instance.GetSpaceById(dbCharacter.SpaceId);
             space?.CharaterJoin(character);
 
         }
+
+        /// <summary>
+        /// 断线重连请求
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="message"></param>
+        private void _ReconnectRequest(Connection conn, ReconnectRequest message)
+        {
+            var sessionId = message.SessionId;
+            var session = SessionManager.Instance.GetSession(sessionId);
+
+            if(session != null && session.Conn == null && session.character != null)
+            {
+                //关联session和conn
+                session.Conn = conn;
+                conn.Set<Session>(session);
+                //发个响应
+                Log.Information("断线重连成功：entityId=" + session.character.EntityId);
+
+            }
+            else
+            {   //session过期了
+                //发一个失败响应，然后客户端应该回到选择角色的页面
+
+            }
+        }
+
     }
 }

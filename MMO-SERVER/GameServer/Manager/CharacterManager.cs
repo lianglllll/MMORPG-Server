@@ -53,8 +53,9 @@ namespace GameServer.Manager
         /// <param name="chrId"></param>
         public void RemoveCharacter(int chrId)
         {
-            Character chr;
-            if(characterDict.TryRemove(chrId,out chr)){
+            //角色列表中删除
+            if(characterDict.TryRemove(chrId,out Character chr)){
+                //entity列表中删除
                 EntityManager.Instance.RemoveEntity(chr.currentSpace.SpaceId, chr.EntityId);
             }
         }

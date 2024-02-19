@@ -46,8 +46,8 @@ namespace GameServer
             Log.Debug("[数据库服务启动完成]");
 
             //开启网络服务
-            NetService netService = new NetService();
-            netService.Start();
+            //NetService netService = new NetService();
+            NetService.Instance.Start();
             Log.Debug("[网络服务启动完成]");
 
             //开启玩家服务

@@ -1,19 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;//用于byte[]拼接的
-using System.Text;//encoding
-using System.Threading.Tasks;
-using System.Net.Sockets;
 using System.Net;
 using Summer;
 using Summer.Network;
 using Serilog;
-using Google.Protobuf;
-using GameServer.Model;
 using Proto;
-using  System.Threading;
+using System.Threading;
 using GameServer.Database;
-using GameServer.Manager;
 using GameServer.core;
 using GameServer.Utils;
 
@@ -23,7 +16,7 @@ namespace GameServer.Network
     /// <summary>
     /// 网络服务
     /// </summary>
-    public class NetService
+    public class NetService: Singleton<NetService>
     {
         //负责监听TCP连接
         TcpServer tcpServer;
@@ -72,9 +65,6 @@ namespace GameServer.Network
 
             //给conn添加心跳时间
             heartBeatPairs[conn] = DateTime.Now;
-            //给conn添加一个session
-            conn.Set<Session>(new Session());
-
         }
 
         /// <summary>
@@ -83,23 +73,15 @@ namespace GameServer.Network
         /// <param name="conn"></param>
         private void OnDisconnected(Connection conn)
         {
-
-            //到这里的时候，socket已经是null了
-
-            //如果玩家在场景中就让其离开场景
-            Character chr = conn.Get<Session>().character;
-            Space space = chr?.currentSpace;
-            if (space != null)
+            //从心跳字典中删除连接
+            if (heartBeatPairs.ContainsKey(conn))
             {
-                space.CharacterLeave(chr);
-                CharacterManager.Instance.RemoveCharacter(chr.Id);
+                heartBeatPairs.Remove(conn);
             }
 
-
-
-            //从心跳字典中删除，这里交给心跳超时统一管理
-            heartBeatPairs.Remove(conn);
-
+            //session
+            var session = conn.Get<Session>();
+            session.Conn = null;
 
             //测试信息
             DbUser dbUser =  conn.Get<Session>().dbUser;
@@ -122,18 +104,19 @@ namespace GameServer.Network
         {
             //更新心跳时间
             heartBeatPairs[conn] = DateTime.Now;
-
-            //知道当前连接还活着
-            //Log.Information("[消息]收到心跳包：" + conn);
+            var session = conn.Get<Session>();
+            if (session != null)
+            {
+                session.LastHeartTime = Time.time;
+            }
 
             //响应
             HeartBeatResponse resp = new HeartBeatResponse();
             conn.Send(resp);
         }
 
-        //todo应该转交给中心计时器处理
         /// <summary>
-        /// 检查心跳包的回调。 
+        /// 检查心跳包的回调,这里是自己启动了一个timer。可以考虑交给中心计时器
         /// </summary>
         /// <param name="state"></param>
         private void TimerCallback(object state)
@@ -148,10 +131,30 @@ namespace GameServer.Network
                     //关闭超时的客户端连接
                     Connection conn = kv.Key;
                     Log.Information("[心跳检查]心跳超时==>");//移除相关的资源
-                    conn.Close();
-                    heartBeatPairs.Remove(kv.Key);
+                    ActiveClose(conn);
                 }
             }
+        }
+
+        /// <summary>
+        /// 主动关闭某个连接
+        /// </summary>
+        public void ActiveClose(Connection conn)
+        {
+            if (conn == null) return;
+
+            //从心跳字典中删除连接
+            if (heartBeatPairs.ContainsKey(conn))
+            {
+                heartBeatPairs.Remove(conn);
+            }
+
+            //session
+            var session = conn.Get<Session>();
+            session.Conn = null;
+
+            //转交给下一层的connection去进行关闭
+            conn.ActiveClose();
         }
     }
 }

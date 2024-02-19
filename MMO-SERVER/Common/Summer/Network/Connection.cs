@@ -35,6 +35,7 @@ namespace Summer.Network
                 return _socket;
             }
         }
+        public LengthFieldDecoder lfd;
 
         public delegate void DataReceivedHandler(Connection sender,IMessage data);
         public delegate void DisconnectedHandler(Connection sender);
@@ -50,23 +51,34 @@ namespace Summer.Network
             this._socket = socket;
 
             //给这个客户端连接创建一个解码器
-            var lfd = new LengthFieldDecoder(socket, 64 * 1024, 0, 4, 0, 4);
+            lfd = new LengthFieldDecoder(socket, 64 * 1024, 0, 4, 0, 4);
             lfd.Received += OnDataRecived;
-            lfd.disconnected += ()=> OnDisconnected?.Invoke(this); //向上转发，让其删除本connection对象
+            lfd.disconnected += _OnDisconnected;
             lfd.Start();//启动解码器，开始接收消息
 
+        }
+
+        /// <summary>
+        /// 断开连接回调
+        /// </summary>
+        private void _OnDisconnected()
+        {
+            _socket = null;
+            //向上转发，让其删除本connection对象
+            OnDisconnected?.Invoke(this);
         }
 
         //todo,我们调用底层解码器的关闭连接函数
         /// <summary>
         /// 主动关闭连接
         /// </summary>
-        public void Close()
+        public void ActiveClose()
         {
-            _socket?.Close();       //其实就是四次挥手的开始，发送fin信号
             _socket = null;
+            //转交给下一层的解码器关闭连接
+            lfd.ActiveClose();
         }
-            
+
         /// <summary>
         /// 接收到消息的回调
         /// </summary>

@@ -44,7 +44,7 @@ namespace Summer
         {
             if (timer != null) return;
             //系统线程池中拿一个来用的
-            timer = new Timer(new TimerCallback(Execute), null, 0, 1);//每隔一毫秒触发
+            timer = new Timer(Execute, null, 0, 1);//每隔一毫秒触发
         }
 
         /// <summary>

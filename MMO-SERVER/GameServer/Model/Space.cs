@@ -79,7 +79,7 @@ namespace GameServer.Model
             {
                 if (kv.Value.EntityId != character.EntityId)
                 {
-                    kv.Value.conn.Send(resp);
+                    kv.Value.session.Send(resp);
                 }
             }
 
@@ -99,7 +99,7 @@ namespace GameServer.Model
             {
                 spaceEnterResponse.ItemEntityList.Add(kv.Value.NetItemEntity);
             }
-            character.conn.Send(spaceEnterResponse); 
+            character.session.Send(spaceEnterResponse); 
 
         }
 
@@ -119,7 +119,7 @@ namespace GameServer.Model
 
             foreach (var kv in characterDict)
             {
-                kv.Value.conn.Send(resp);
+                kv.Value.session.Send(resp);
             }
 
         }
@@ -140,7 +140,7 @@ namespace GameServer.Model
                 {
                     SpaceEntitySyncResponse resp = new SpaceEntitySyncResponse();
                     resp.EntitySync = entitySync;
-                    kv.Value.conn.Send(resp);
+                    kv.Value.session.Send(resp);
                 }
             }
         }
@@ -207,7 +207,7 @@ namespace GameServer.Model
         {
             foreach(var kv in characterDict)
             {
-                kv.Value.conn.Send(msg);
+                kv.Value.session.Send(msg);
             }
         }
 
