@@ -11,6 +11,7 @@ public class ItemDefine
 	public int ID; // 物品ID
 	public string Name; // 名称
 	public string ItemType; // 物品类别
+	public string EquipType; // 装备类型
 	public string Quality; // 品质
 	public string Description; // 介绍
 	public int Capicity; // 堆叠上限

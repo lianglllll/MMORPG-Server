@@ -20,16 +20,15 @@ namespace GameServer.Model
     /// </summary>
     public class Character:Actor
     {
-        public DbCharacter Data;        //当前角色对应的数据库对象信息
-        public Inventory knapsack;      //背包 
+        public DbCharacter Data;                    //当前角色对应的数据库对象信息
+        public Inventory knapsack;                  //背包 
+        public EquipmentManager equipmentManager;   //装备管理器
 
         public Session session
         {
             get;
             set;
         }
-
-        //public Connection conn => session.Conn;
 
         /// <summary>
         /// 构造函数
@@ -60,7 +59,10 @@ namespace GameServer.Model
             knapsack = new Inventory(this);
             knapsack.Init(Data.Knapsack);
 
-            Log.Information("[角色]：{0} 【背包信息】：[容量]={1},[物品]={2} ", dbCharacter.Name, knapsack.Capacity,knapsack.InventoryInfo);
+            equipmentManager = new EquipmentManager(this);
+            equipmentManager.Init(Data.EquipsData);
+
+            //Log.Information("[角色]：{0} 【背包信息】：[容量]={1},[物品]={2} ", dbCharacter.Name, knapsack.Capacity,knapsack.InventoryInfo);
         }
 
         /// <summary>
@@ -115,6 +117,64 @@ namespace GameServer.Model
         }
 
 
+        /// <summary>
+        /// 设置chr的经验
+        /// </summary>
+        public void SetExp(long exp)
+        {
+            if (Exp == exp) return;
+            long oldExp = Exp;
+            Exp = exp;
+
+            //判断当前经验是否足够升级
+            while (DataManager.Instance.levelDefindeDict.TryGetValue(Level, out var define))
+            {
+                if (Exp >= define.ExpLimit)
+                {
+                    this.SetLevel(Level + 1);
+                    Exp -= define.ExpLimit;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            //发包
+            PropertyUpdate po = new PropertyUpdate()
+            {
+                EntityId = EntityId,
+                Property = PropertyUpdate.Types.Prop.Exp,
+                OldValue = new() { LongValue = oldExp },
+                NewValue = new() { LongValue = Exp }
+            };
+
+            currentSpace.fightManager.propertyUpdateQueue.Enqueue(po);
+        }
+
+
+        /// <summary>
+        /// 设置chr的金币
+        /// </summary>
+        public void SetGold(long gold)
+        {
+            if (Gold == gold) return;
+            long oldgold = Gold;
+            Gold = gold;
+
+            //发包
+            PropertyUpdate po = new PropertyUpdate()
+            {
+                EntityId = EntityId,
+                Property = PropertyUpdate.Types.Prop.Golds,
+                OldValue = new() { LongValue = oldgold },
+                NewValue = new() { LongValue = Gold }
+            };
+
+            Log.Information("金币=" + Gold);
+
+            currentSpace.fightManager.propertyUpdateQueue.Enqueue(po);
+        }
     }
 
 

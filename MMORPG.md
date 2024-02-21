@@ -16,7 +16,21 @@
 
 **2.你这个项目有使用到多线程吗？**
 
-在我们的项目中使用到了c#的ThreadPool，每个CLR都有一个线程池实例。（Common Language Runtime）
+在我们的项目中很多地方都使用到了c#的ThreadPool，每个CLR都有一个线程池实例。（Common Language Runtime）
+
+
+
+main线程,最后阻塞在这里了，因为我们使用了控制台。后面会改写为守护进程
+
+```
+        static void Main(string[] args)
+        {	
+        	....
+            Console.ReadKey();//防止进程结束
+        }
+```
+
+
 
 比如说：MessageRouter.Start()
 
@@ -53,6 +67,40 @@ Scheduler.Start()中Timer的实现也是从ThreadPool中获取线程的
         }
 ```
 
+NetService中的心跳检测的timer
+
+```
+public void Start()
+{
+    //启动网络监听
+    tcpServer.Start();
+
+    //启动消息分发器
+    MessageRouter.Instance.Start(Config.Server.WorkerCount);
+
+    //订阅心跳事件
+    MessageRouter.Instance.Subscribe<HeartBeatRequest>(_HeartBeatRequest);
+
+    //定时检查心跳包的情况
+    Timer timer = new Timer(TimerCallback, null, TimeSpan.Zero, TimeSpan.FromSeconds(HEARTBEATQUERYTIME));
+
+}
+```
+
+SessionManager中的的session会话超时检测的timer
+
+```
+        public SessionManager()
+        {
+            //创建一个计时器,1秒触发
+            var timer = new Timer(1000);
+            timer.Elapsed += (sender, e) => CheckSession();
+            timer.Start();
+        }
+
+
+```
+
 
 
 **3.你的服务器是怎么处理socket请求的，一个socket对应一个线程？**
@@ -83,7 +131,58 @@ Scheduler.Start()中Timer的实现也是从ThreadPool中获取线程的
 
 
 
+**4.既然你的messageRouter使用了多线程，那么你的character中的信息存在线程并发问题吗？**
 
+在这些个战斗场景中产生的数据，在处理的时候我们都会使用队列来缓存某个时间段收集到的数据包，然后在一起处理这些数据包。
+
+也就是说，处理这些例如：character属性变更  我们是使用单个线程来处理的，所以是不存在一个并发的问题。
+
+```
+    public class FightManager
+    {
+        private Space space;
+
+        //等待处理的技能施法队列：收集来自各个客户端的施法请求
+        //这个队列维持了actor属性的同步，比如说hp的计算是单线程的。
+        public ConcurrentQueue<CastInfo> castInfoQueue = new ConcurrentQueue<CastInfo>();
+
+
+
+        public void OnUpdate(float deltaTime)
+        {
+            //处理施法请求
+            while(castInfoQueue.TryDequeue(out var cast))
+            {
+                RunCast(cast);
+            }
+```
+
+
+
+**5.既然你的服务器通过一个timer每隔n秒进行对character的一些属性进行保存的话，那么它和messageRouter会有并发问题吗？**
+
+```
+        private void SaveCharacterInfo()
+        {
+            foreach (var chr in characterDict.Values)
+            {
+                //更新位置
+                chr.Data.X = chr.Position.x;
+                chr.Data.Y = chr.Position.y;
+                chr.Data.Z = chr.Position.z;
+                chr.Data.Hp = (int)chr.Hp;
+                chr.Data.Mp = (int)chr.Mp;
+                chr.Data.SpaceId = chr.SpaceId;
+                chr.Data.Knapsack = chr.knapsack.InventoryInfo.ToByteArray();
+                chr.Data.Level = chr.Level;
+                chr.Data.Exp = chr.Exp;
+                //保存进入数据库
+                repo.UpdateAsync(chr.Data);//异步更新
+            }
+        }
+```
+
+其实并不会有问题，因为我们保存到数据库其实是读取操作，并发问题是指多个线程修改同一个数据造成的脏读、幻读、不可重复读
 
 
 
@@ -5798,6 +5897,114 @@ int result = await asyncObject.SomeOperationAsync();
 
 # ================================
 
+
+
+# server相关的一些东西
+
+
+
+## 1.服务器的配置文件
+
+
+
+**为什么要使用配置文件呢？**
+
+我们将来要把项目打包部署到云服务器上面，总不能改一点信息就回来重新改代码吧。
+
+比如说：
+
+- server端的ip和port
+- 数据库信息。
+- 工作线程数
+
+
+
+**常用的配置文件：**
+
+- txt,配置解析麻烦
+- json，不能写注释
+- xml，结构啰嗦
+- yml
+
+
+
+**我们使用yaml文件来做配置文件**
+
+**config.yaml**
+
+```
+database:
+  host: 127.0.0.1
+  port: 3306
+  username: root
+  password: root
+  dbName: MMORPG
+
+server:
+  ip: 127.0.0.1
+  port: 8888
+  MessageRouteworkCount: 2
+```
+
+- 用两个空格代表缩进，来区分层级
+- 使用冒号加空格代码赋值
+
+
+
+**我们使用第三方扩展库 YamlDotNet，将配置文件进行解析**
+
+![image-20240212131142560](MMORPG.assets/image-20240212131142560.png) 
+
+
+
+**GameServer/Utils/Config.cs**
+
+```
+public static void Init(string filePath = "config.yaml")
+{
+    // 读取配置文件,当前项目根目录
+    var yaml = File.ReadAllText(filePath);
+    Log.Information("LoadYamlText:\n {Yaml}", yaml);
+
+    // 反序列化配置文件
+    var deserializer = new DeserializerBuilder().Build();
+    _config = deserializer.Deserialize<AppConfig>(yaml);
+}
+```
+
+注意：File.ReadAllText(filePath)  使用相对路径时是以当前工作目标为根目录的，也就是说必须再debug目录或者release目标中有才能读取
+
+<img src="MMORPG.assets/image-20240212134552573.png" alt="image-20240212134552573" style="zoom:67%;" /> 
+
+我们可以把Config配置文件从项目中复制一份过来，但是每次修改都有复制也太麻烦了。。
+
+可以使用以下方法来解决这个问题：
+
+GameServer.csproj里面要有这段配置，配置文件回自动复制到运行目录
+
+```
+	<!--将文件复制到输出目录中 -->
+	<ItemGroup>
+		<None Update="config.yaml">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>		
+```
+
+
+
+## 2.来自客户端的数据
+
+不要相信来自客户端的数据，如果要使用请做好检测
+
+
+
+
+
+
+
+
+
 # 游戏系统设计
 
 
@@ -6225,104 +6432,6 @@ Controller指的是逻辑脚本，这里就像所有数据和逻辑的中枢，�
 
 
 
-# server相关的一些东西
-
-
-
-## 1.服务器的配置文件
-
-
-
-**为什么要使用配置文件呢？**
-
-我们将来要把项目打包部署到云服务器上面，总不能改一点信息就回来重新改代码吧。
-
-比如说：
-
-- server端的ip和port
-- 数据库信息。
-- 工作线程数
-
-
-
-**常用的配置文件：**
-
-- txt,配置解析麻烦
-- json，不能写注释
-- xml，结构啰嗦
-- yml
-
-
-
-**我们使用yaml文件来做配置文件**
-
-**config.yaml**
-
-```
-database:
-  host: 127.0.0.1
-  port: 3306
-  username: root
-  password: root
-  dbName: MMORPG
-
-server:
-  ip: 127.0.0.1
-  port: 8888
-  MessageRouteworkCount: 2
-```
-
-- 用两个空格代表缩进，来区分层级
-- 使用冒号加空格代码赋值
-
-
-
-**我们使用第三方扩展库 YamlDotNet，将配置文件进行解析**
-
-![image-20240212131142560](MMORPG.assets/image-20240212131142560.png) 
-
-
-
-**GameServer/Utils/Config.cs**
-
-```
-public static void Init(string filePath = "config.yaml")
-{
-    // 读取配置文件,当前项目根目录
-    var yaml = File.ReadAllText(filePath);
-    Log.Information("LoadYamlText:\n {Yaml}", yaml);
-
-    // 反序列化配置文件
-    var deserializer = new DeserializerBuilder().Build();
-    _config = deserializer.Deserialize<AppConfig>(yaml);
-}
-```
-
-注意：File.ReadAllText(filePath)  使用相对路径时是以当前工作目标为根目录的，也就是说必须再debug目录或者release目标中有才能读取
-
-<img src="MMORPG.assets/image-20240212134552573.png" alt="image-20240212134552573" style="zoom:67%;" /> 
-
-我们可以把Config配置文件从项目中复制一份过来，但是每次修改都有复制也太麻烦了。。
-
-可以使用以下方法来解决这个问题：
-
-GameServer.csproj里面要有这段配置，配置文件回自动复制到运行目录
-
-```
-	<!--将文件复制到输出目录中 -->
-	<ItemGroup>
-		<None Update="config.yaml">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>		
-```
-
-
-
-## 2.来自客户端的数据
-
-不要相信来自客户端的数据，如果要使用请做好检测
-
 
 
 
@@ -6345,9 +6454,44 @@ GameServer.csproj里面要有这段配置，配置文件回自动复制到运行
 
 
 
-**token的生成**
+**sessionid的生成**
 
 ```
-var token = Guid.NewGuid().ToString();
+var sessionid = Guid.NewGuid().ToString();
 ```
+
+
+
+**客户端的重连响应**
+
+1.玩家未登录
+
+没有建立session，重新连接就重新跳回登录界面就行了。
+
+2.玩家已登录，但是没有选择角色
+
+此时已经建立session了，跳转到选择角色的列表当中
+
+3.玩家已经登录，已经选择游戏在游戏中
+
+回到场景中就可以了。
+
+```
+message  ReconnectResponse{
+	bool success = 1;
+	int32 entityId = 2;//重连的角色，0代表为选择角色
+}
+```
+
+
+
+# 特效管理器
+
+- 指定坐标的特效
+- 跟随角色的特效
+- 设置特效的生命周期
+
+
+
+
 

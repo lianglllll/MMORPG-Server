@@ -14,7 +14,7 @@
     "AP": 0,
     "DEF": 30,
     "MDEF": 10,
-    "CRI": 10,
+    "CRI": 1,
     "CRD": 150,
     "HitRate": 100,
     "DodgeRate": 5,
@@ -27,7 +27,9 @@
     "GINT": 1,
     "GAGI": 0.6,
     "AI": "no",
-    "BgResource": "Texture/RoleListItemBg/role0"
+    "BgResource": "Texture/RoleListItemBg/role0",
+    "ExpReward": 0.0,
+    "GoldReward": 0.0
   },
   "1": {
     "TID": 1,
@@ -44,7 +46,7 @@
     "AP": 30,
     "DEF": 10,
     "MDEF": 30,
-    "CRI": 50,
+    "CRI": 1,
     "CRD": 150,
     "HitRate": 100,
     "DodgeRate": 5,
@@ -57,7 +59,9 @@
     "GINT": 2,
     "GAGI": 0.6,
     "AI": "no",
-    "BgResource": "Texture/RoleListItemBg/role1"
+    "BgResource": "Texture/RoleListItemBg/role1",
+    "ExpReward": 0.0,
+    "GoldReward": 0.0
   },
   "2": {
     "TID": 2,
@@ -74,7 +78,7 @@
     "AP": 30,
     "DEF": 0,
     "MDEF": 0,
-    "CRI": 10,
+    "CRI": 1,
     "CRD": 150,
     "HitRate": 100,
     "DodgeRate": 5,
@@ -87,7 +91,9 @@
     "GINT": 2,
     "GAGI": 0.6,
     "AI": "no",
-    "BgResource": "Texture/RoleListItemBg/role2"
+    "BgResource": "Texture/RoleListItemBg/role2",
+    "ExpReward": 0.0,
+    "GoldReward": 0.0
   },
   "3": {
     "TID": 3,
@@ -104,7 +110,7 @@
     "AP": 0,
     "DEF": 0,
     "MDEF": 0,
-    "CRI": 10,
+    "CRI": 1,
     "CRD": 150,
     "HitRate": 100,
     "DodgeRate": 5,
@@ -117,15 +123,17 @@
     "GINT": 1,
     "GAGI": 0.6,
     "AI": "no",
-    "BgResource": "Texture/RoleListItemBg/role3"
+    "BgResource": "Texture/RoleListItemBg/role3",
+    "ExpReward": 0.0,
+    "GoldReward": 0.0
   },
   "1001": {
     "TID": 1001,
     "Name": "山贼",
     "Resource": "Prefabs/Role/Tid-0",
     "Kind": "Monster",
-    "Desc": "偷鸡摸狗",
-    "DefaultSkills": "[3001]",
+    "Desc": "偷鸡摸狗,背刺爆发",
+    "DefaultSkills": "[10001]",
     "Speed": 3000,
     "HPMax": 1000,
     "MPMax": 500,
@@ -134,7 +142,7 @@
     "AP": 0,
     "DEF": 30,
     "MDEF": 30,
-    "CRI": 10,
+    "CRI": 5,
     "CRD": 150,
     "HitRate": 100,
     "DodgeRate": 5,
@@ -147,7 +155,9 @@
     "GINT": 1,
     "GAGI": 1,
     "AI": "Monster",
-    "BgResource": ""
+    "BgResource": "",
+    "ExpReward": 10,
+    "GoldReward": 5
   },
   "1002": {
     "TID": 1002,
@@ -155,7 +165,7 @@
     "Resource": "Prefabs/Role/Tid-1002",
     "Kind": "Monster",
     "Desc": "低攻低防,不惧死亡",
-    "DefaultSkills": "[3001]",
+    "DefaultSkills": "[10001]",
     "Speed": 3000,
     "HPMax": 300,
     "MPMax": 300,
@@ -164,7 +174,7 @@
     "AP": 0,
     "DEF": 30,
     "MDEF": 30,
-    "CRI": 10,
+    "CRI": 1,
     "CRD": 150,
     "HitRate": 100,
     "DodgeRate": 5,
@@ -177,6 +187,40 @@
     "GINT": 1,
     "GAGI": 1,
     "AI": "Monster",
-    "BgResource": ""
+    "BgResource": "",
+    "ExpReward": 20,
+    "GoldReward": 10
+  },
+  "1003": {
+    "TID": 1003,
+    "Name": "牛头战士",
+    "Resource": "Prefabs/Role/Tid-1003",
+    "Kind": "Monster",
+    "Desc": "高攻高防御,横冲直撞",
+    "DefaultSkills": "[30001,30002,30003]",
+    "Speed": 3000,
+    "HPMax": 2000,
+    "MPMax": 2000,
+    "InitLevel": 1,
+    "AD": 200,
+    "AP": 0,
+    "DEF": 180,
+    "MDEF": 100,
+    "CRI": 5,
+    "CRD": 150,
+    "HitRate": 100,
+    "DodgeRate": 10,
+    "HpRegen": 1,
+    "HpSteal": 0,
+    "STR": 1,
+    "INT": 1,
+    "AGI": 1,
+    "GSTR": 1,
+    "GINT": 1,
+    "GAGI": 1,
+    "AI": "Monster",
+    "BgResource": "",
+    "ExpReward": 2000,
+    "GoldReward": 100
   }
 }

@@ -237,7 +237,7 @@ namespace Summer
 
                 if (currentCount == RepeatCount && RepeatCount != 0)
                 {
-                    Console.WriteLine("Task completed.");
+                    //Console.WriteLine("Task completed.");
                     Completed = true;
                 }
             }

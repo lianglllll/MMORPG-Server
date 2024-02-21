@@ -20,6 +20,7 @@ namespace GameServer.Combat
         None,               //无状态
         Intonate,           //吟唱
         Active,             //已激活
+        PostRock,           //后摇
         Colding             //冷却中
     }
 
@@ -29,6 +30,7 @@ namespace GameServer.Combat
         public Actor Owner;                 //技能归属者
         public float ColdDown;              //冷却倒计时，0表示技能可用
         private float RunTime;              //技能运行时间
+        private float PostRockTime;         //后摇时间
         public Stage State;                 //当前技能状态
         public bool IsPassive;              //是否是被动技能
         private int notCrit = 0;            //未触发暴击的次数
@@ -86,11 +88,9 @@ namespace GameServer.Combat
         public void Update()
         {
             if (State == Stage.None && ColdDown == 0) return;
-            if (ColdDown > 0) ColdDown -= Time.deltaTime;
-            if (ColdDown < 0) ColdDown = 0;
             RunTime += Time.deltaTime;
 
-            //如果当前的蓄气状态且蓄气已经达到目标值，就切换到激活状态
+            //蓄气=>激活
             if(State == Stage.Intonate && RunTime >= Define.IntonateTime)
             {
                 State = Stage.Active;
@@ -98,24 +98,33 @@ namespace GameServer.Combat
                 OnActive();
             }
 
-            //active状态达到最大值,进入冷却
+            //激活=>后摇
             if(State == Stage.Active)
             {
                 if(RunTime >= Define.IntonateTime + Define.HitDelay.Max())
                 {
-                    State = Stage.Colding;
+                    State = Stage.PostRock;
+                    PostRockTime = Define.PostRockTime;
+                    OnPostRock();
                 }
             }
 
-            //冷却
-            if(State == Stage.Colding)
+            //后摇=>冷却
+            if (PostRockTime > 0) PostRockTime -= Time.deltaTime;
+            if (PostRockTime < 0) PostRockTime = 0;
+            if (State == Stage.PostRock && PostRockTime == 0)
             {
-                if(ColdDown == 0)
-                {
-                    RunTime = 0;
-                    State = Stage.None;
-                    OnFinish();
-                }
+                State = Stage.Colding;
+                OnColdDown();
+            }
+
+
+            //冷却
+            if (ColdDown > 0) ColdDown -= Time.deltaTime;
+            if (ColdDown < 0) ColdDown = 0;
+            if (State == Stage.Colding && ColdDown == 0)
+            {
+                OnFinish();
             }
 
         }
@@ -163,7 +172,17 @@ namespace GameServer.Combat
             Target = sco;
             RunTime = 0;
             State = Stage.Intonate;
+            OnIntonate();
+
             return CastResult.Success;
+        }
+
+        /// <summary>
+        /// 技能吟唱
+        /// </summary>
+        private void OnIntonate()
+        {
+            Owner.curentSkill = this;
         }
 
         /// <summary>
@@ -171,7 +190,8 @@ namespace GameServer.Combat
         /// </summary>
         private void OnActive()
         {
-            Log.Information("Skill Active Owner[{0}],skill[{1}]", Owner.EntityId,Define.Name);
+            //Log.Information("Skill Active Owner[{0}],skill[{1}]", Owner.EntityId,Define.Name);
+            Log.Information("技能激活：" + Define.Name);
 
             //如果是投射物
             if (Define.IsMissile)
@@ -182,7 +202,7 @@ namespace GameServer.Combat
             //如果不是投射物，
             else
             {
-                Log.Information("Def.HitDelay.Length=" + Define.HitDelay.Length);
+                //Log.Information("Def.HitDelay.Length=" + Define.HitDelay.Length);
                 for(int i = 0; i < Define.HitDelay.Length; i++)
                 {
                     Scheduler.Instance.AddTask(_hitTrigger, Define.HitDelay[i], 1);
@@ -191,10 +211,29 @@ namespace GameServer.Combat
         }
 
         /// <summary>
-        /// 技能施法完成，并且冷却也完成了
+        /// 技能后摇
+        /// </summary>
+        private void OnPostRock()
+        {
+        }
+
+        /// <summary>
+        /// 技能冷却
+        /// </summary>
+        private void OnColdDown()
+        {
+            Log.Information("技能后摇完成:" + Define.Name);
+            //结束后摇阶段了
+            Owner.curentSkill = null;
+        }
+
+        /// <summary>
+        /// 技能的生命周期结束
         /// </summary>
         private void OnFinish()
         {
+            RunTime = 0;
+            State = Stage.None;
             Log.Information("技能结束：Owner[{0}],skill[{1}]",Owner.EntityId, Define.Name);
         }
 
@@ -205,7 +244,7 @@ namespace GameServer.Combat
         private void _hitTrigger()
         {
             //这里还是需要做一些actor和target直接的距离运算再觉得触不触发的
-            Log.Information("_hitTrigger:Owner[{0}],Skill[{1}]", Owner.EntityData.Id, Define.Name);
+            //Log.Information("_hitTrigger:Owner[{0}],Skill[{1}]", Owner.EntityData.Id, Define.Name);
             OnHit(Target);
         }
 
@@ -215,7 +254,7 @@ namespace GameServer.Combat
         /// <param name="sco"></param>
         public void OnHit(SCObject targetSco)
         {
-            Log.Information("OnHit:Owner[{0}],Skill[{1}],SCO[{2}]", Owner.EntityData.Id, Define.Name, targetSco);
+            //Log.Information("OnHit:Owner[{0}],Skill[{1}],SCO[{2}]", Owner.EntityData.Id, Define.Name, targetSco);
 
             //单体伤害
             if(Define.Area  == 0)
@@ -247,7 +286,7 @@ namespace GameServer.Combat
         {
             if (targetActor.IsDeath || targetActor == Owner) return;
 
-            Log.Information("skill:TakeDamage:attacker[{0}],Target[{1}]", Owner.EntityId, targetActor.EntityId);
+            //Log.Information("skill:TakeDamage:attacker[{0}],Target[{1}]", Owner.EntityId, targetActor.EntityId);
             //1.计算伤害、闪避、暴击
             //人物的属性
             var attackerAttr = Owner.Attr.final;
@@ -265,14 +304,14 @@ namespace GameServer.Combat
             //伤害 = 攻击[攻] × ( 1 - 护甲[守] / ( 护甲[守] + 400 + 85 × 等级[敌人] ) )
             var ads = ad * (1 - targetAttr.DEF / (targetAttr.DEF + 400 + 85 * Owner.info.Level));
             var aps = ap * (1 - targetAttr.MDEF / (targetAttr.MDEF + 400 + 85 * Owner.info.Level));
-            Log.Information("ads=[{0}],aps=[{1}]", ads, aps);
+            //Log.Information("ads=[{0}],aps=[{1}]", ads, aps);
             damage.Amount = ads + aps;
             //计算暴击
             notCrit++;
             Random random = new Random();
             double randCri = random.NextDouble();
             double cri = attackerAttr.CRI * 0.01f;
-            Log.Information("暴击率计算：{0}/{1} | [{2}/{3}]", randCri, cri,notCrit,forceCritAfer);
+            //Log.Information("暴击率计算：{0}/{1} | [{2}/{3}]", randCri, cri,notCrit,forceCritAfer);
             if(randCri < cri || notCrit > forceCritAfer)
             {
                 notCrit = 0;
@@ -281,7 +320,7 @@ namespace GameServer.Combat
             }
             //计算是否命中
             var hitRate = (attackerAttr.HitRate - targetAttr.DodgeRate) * 0.01f;
-            Log.Information("Hit rate : {0}", hitRate);
+            //Log.Information("Hit rate : {0}", hitRate);
             if(random.NextDouble() > hitRate)
             {
                 damage.IsMiss = true;

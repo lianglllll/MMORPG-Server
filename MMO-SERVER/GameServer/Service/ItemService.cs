@@ -97,7 +97,7 @@ namespace GameServer.Service
             else if(message.OriginInventoryTpey == InventoryType.Warehouse)
             {
 
-            }else if (message.OriginInventoryTpey == InventoryType.Equipment)
+            }else if (message.OriginInventoryTpey == InventoryType.EquipmentColumn)
             {
 
             }else if(message.OriginInventoryTpey == InventoryType.CurrentScene)
@@ -124,7 +124,7 @@ namespace GameServer.Service
             else if(message.TargetInventoryTpey == InventoryType.Warehouse)
             {
 
-            }else if(message.TargetInventoryTpey == InventoryType.Equipment)
+            }else if(message.TargetInventoryTpey == InventoryType.EquipmentColumn)
             {
 
             }else if(message.TargetInventoryTpey == InventoryType.CurrentScene)
@@ -163,7 +163,7 @@ namespace GameServer.Service
             {
 
             }
-            else if (message.TargetInventoryTpey == InventoryType.Equipment)
+            else if (message.TargetInventoryTpey == InventoryType.EquipmentColumn)
             {
 
             }

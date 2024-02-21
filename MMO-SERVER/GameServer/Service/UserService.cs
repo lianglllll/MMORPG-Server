@@ -105,16 +105,7 @@ namespace GameServer.Service
             var oldsession = SessionManager.Instance.GetSessionByUserId(dbUser.Id);
             if (oldsession != null)
             {
-                //让session失效
-                SessionManager.Instance.RemoveSession(oldsession.Id);
-
-                //让角色离开场景
-                var chr = oldsession.character;
-                if (chr != null && chr.currentSpace != null)
-                {
-                    chr.currentSpace.CharacterLeave(chr);
-                    CharacterManager.Instance.RemoveCharacter(chr.Id);
-                }
+                oldsession.Leave();
             }
 
             //==正常登录==
@@ -358,20 +349,30 @@ namespace GameServer.Service
             var sessionId = message.SessionId;
             var session = SessionManager.Instance.GetSession(sessionId);
 
-            if(session != null && session.Conn == null && session.character != null)
+            //情况1.说明session过期，或者压根没登录所以没有session
+            if(session == null)
             {
-                //关联session和conn
-                session.Conn = conn;
-                conn.Set<Session>(session);
-                //发个响应
-                Log.Information("断线重连成功：entityId=" + session.character.EntityId);
+                conn.Send(new ReconnectResponse { 
+                    Success = false
+                });
+                return;
+            }
 
+            //情况2：有session，可以重连
+            //关联session和conn
+            session.Conn = conn;
+            conn.Set<Session>(session);
+            ReconnectResponse res = new ReconnectResponse();
+            res.Success = true;
+            if(session.character != null)
+            {
+                res.EntityId = session.character.EntityId;
             }
             else
-            {   //session过期了
-                //发一个失败响应，然后客户端应该回到选择角色的页面
-
+            {
+                res.EntityId = 0;
             }
+            session.Send(res);
         }
 
     }

@@ -7,28 +7,6 @@ using System.Collections.Generic;
 
 namespace GameServer.InventorySystem
 {
-    /// <summary>
-    /// 物品类型
-    /// </summary>
-    public enum ItemType
-    {
-        Consumable,  //消耗品
-        Equipment,  //武器&装备
-        Material,   //材料
-    }
-
-    /// <summary>
-    /// 物品品质
-    /// </summary>
-    public enum Quality
-    {
-        Common,         //普通
-        Uncommon,       //非凡
-        Rare,           //稀有
-        Epic,           //史诗
-        Legendary,      //传说
-        Artifact,       //神器  
-    }
 
     /// <summary>
     /// 物品基类
@@ -38,7 +16,7 @@ namespace GameServer.InventorySystem
     {
 
         public ItemDefine Define { get; set; } 
-        private ItemInfo _itmeInfo;                             //网络对象
+        protected ItemInfo _itmeInfo;                             //网络对象
 
         public int ItemId
         {
@@ -79,22 +57,13 @@ namespace GameServer.InventorySystem
         }
 
         /// <summary>
-        /// 无参构造
-        /// </summary>
-        public Item()
-        {
-        }
-
-        /// <summary>
-        /// 构造方法,初始化时用
+        /// 构造方法,network创建
         /// </summary>
         /// <param name="itemInfo"></param>
         public Item(ItemInfo itemInfo)
         {
-            Define = DataManager.Instance.ItemDefinedDict[itemInfo.ItemId];
-            _itmeInfo = new ItemInfo() { ItemId = Define.ID };
-            this._itmeInfo.Amount = itemInfo.Amount;
-            this._itmeInfo.Position = itemInfo.Position;
+            this.Define = DataManager.Instance.ItemDefinedDict[itemInfo.ItemId];
+            this._itmeInfo = itemInfo;
         }
 
         /// <summary>
@@ -133,7 +102,7 @@ namespace GameServer.InventorySystem
             switch (Define.Quality)
             {
                 case "普通": return Quality.Common;
-                case "非凡": return Quality.Uncommon;
+                case "非凡": return Quality.Fine;
                 case "稀有": return Quality.Rare;
                 case "史诗": return Quality.Epic;
                 case "传说": return Quality.Legendary;

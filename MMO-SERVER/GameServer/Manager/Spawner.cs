@@ -35,8 +35,14 @@ namespace GameServer.Manager
             reviving = false;
         }
 
+        /// <summary>
+        /// 坐标转换
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         private Vector3Int ParsePoint(string text)
         {
+            //@""表示不处理转义字符
             string pattern = @"\[(\d+),(\d+),(\d+)\]";
             Match match = Regex.Match(text, pattern);
             if (match.Success)
@@ -49,7 +55,9 @@ namespace GameServer.Manager
             return Vector3Int.zero;
         }
 
-        //刷怪
+        /// <summary>
+        /// 孵化怪物
+        /// </summary>
         private void spawn()
         {
             this.monster = this.Space.monsterManager.Create(Define.TID,Define.Level, SpawnPoint, SpawnDir);

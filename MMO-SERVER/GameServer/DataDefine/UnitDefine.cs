@@ -36,6 +36,8 @@ public class UnitDefine
 	public float GAGI; // 敏捷成长
 	public string AI; // AI名称
 	public string BgResource; // 图片资源
+	public long ExpReward; // 经验奖励
+	public long GoldReward; // 金币奖励
 }
 
 

@@ -24,22 +24,29 @@ namespace GameServer.Model
         public Spell spell;                                                                         //actor技能释放器
         public UnitState unitState;                                                                 //单位状态:死亡、空闲、战斗
 
-        public bool IsDeath => unitState == UnitState.Dead;                                         
+        public Skill curentSkill;                                                                   //当前正在使用的技能
+
+
+        public bool IsDeath => unitState == UnitState.Dead;            
+        
         public int Id { 
             get { return info.Id; } 
             set { info.Id = value; } 
-        }                                                                           
+        }                                                         
+        
         public string Name { 
             get { return info.Name; } 
             set { info.Name = value; } 
         }
+
         /// <summary>
         /// actor的类型：角色、怪物、npc
         /// </summary>
         public EntityType Type { 
             get { return info.EntityType; } 
             set { info.EntityType = value; }
-        }                                                                  
+        }                                                 
+        
         public int SpaceId
         {
             get
@@ -47,10 +54,14 @@ namespace GameServer.Model
                 return currentSpace.SpaceId;
             }
         }
+
         public float Hp { get { return info.Hp; }}
         public float Mp { get { return info.Mp; }}
         public int Level { get => info.Level; set => info.Level = value; }
         public long Exp { get => info.Exp; set => info.Exp = value; }
+        public long Gold { get => info.Gold; set => info.Gold = value; }
+
+
 
         /// <summary>
         /// 构造函数
@@ -137,7 +148,7 @@ namespace GameServer.Model
         /// <param name="damage"></param>
         public void RecvDamage(Damage damage)
         {
-            Log.Information("Actor:RecvDamage[{0}]", damage);
+            //Log.Information("Actor:RecvDamage[{0}]", damage);
             //添加广播，一个伤害发生了
             currentSpace.fightManager.damageQueue.Enqueue(damage);
             //扣血
@@ -233,7 +244,7 @@ namespace GameServer.Model
         /// <summary>
         /// 设置actor的等级
         /// </summary>
-        private void SetLevel(int level)
+        protected void SetLevel(int level)
         {
             if (Level == level) return;
             PropertyUpdate po = new PropertyUpdate()
@@ -246,43 +257,6 @@ namespace GameServer.Model
             info.Level = level;
             currentSpace.fightManager.propertyUpdateQueue.Enqueue(po);
         }
-
-        /// <summary>
-        /// 设置actor的经验
-        /// </summary>
-        public void SetExp(long exp)
-        {
-            if (Exp == exp) return;
-            long oldExp = Exp;
-            Exp = exp;
-
-            //判断当前经验是否足够升级
-            while (DataManager.Instance.levelDefindeDict.TryGetValue(Level, out var define))
-            {
-                if (Exp >= define.ExpLimit)
-                {
-                    this.SetLevel(Level + 1);
-                    Exp -= define.ExpLimit;
-                }
-                else
-                {
-                    break;
-                }
-            }
-
-            //发包
-            PropertyUpdate po = new PropertyUpdate()
-            {
-                EntityId = EntityId,
-                Property = PropertyUpdate.Types.Prop.Exp,
-                OldValue = new() { LongValue = oldExp },
-                NewValue = new() { LongValue = Exp }
-            };
-
-            currentSpace.fightManager.propertyUpdateQueue.Enqueue(po);
-        }
-
-
 
         /// <summary>
         /// 死亡前的处理

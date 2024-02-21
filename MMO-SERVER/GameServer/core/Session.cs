@@ -3,6 +3,7 @@ using GameServer.Manager;
 using GameServer.Model;
 using Google.Protobuf;
 using Serilog;
+using Summer;
 using Summer.Network;
 using System;
 using System.Collections.Concurrent;
@@ -39,6 +40,7 @@ namespace GameServer.core
         public Session(string sessionId)
         {
             Id = sessionId;
+            LastHeartTime = Time.time;
         }
 
         /// <summary>
@@ -68,9 +70,10 @@ namespace GameServer.core
         /// </summary>
         public void Leave()
         {
-            //session
+            Log.Information("session过期");
+            //让session失效
             SessionManager.Instance.RemoveSession(Id);
-            //chr
+            //移除chr
             if(character != null)
             {
                 character.currentSpace?.CharacterLeave(character);

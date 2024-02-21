@@ -95,6 +95,8 @@ namespace GameServer.Manager
                 chr.Data.Knapsack = chr.knapsack.InventoryInfo.ToByteArray();
                 chr.Data.Level = chr.Level;
                 chr.Data.Exp = chr.Exp;
+                chr.Data.Gold = chr.Gold;
+                chr.Data.EquipsData = chr.equipmentManager.InventoryInfo.ToByteArray();
                 //保存进入数据库
                 repo.UpdateAsync(chr.Data);//异步更新
             }

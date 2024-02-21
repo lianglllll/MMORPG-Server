@@ -81,13 +81,15 @@ namespace GameServer.Network
 
             //session
             var session = conn.Get<Session>();
-            session.Conn = null;
+            if (session != null)
+            {
+                session.Conn = null;
+            }
 
             //测试信息
-            DbUser dbUser =  conn.Get<Session>().dbUser;
-            if (dbUser != null)
+            if (session != null)
             {
-                Log.Information("[连接断开]用户名：" + dbUser.Username);
+                Log.Information("[连接断开]用户名：" + session.dbUser.Username);
             }
             else
             {

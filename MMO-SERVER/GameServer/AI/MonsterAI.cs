@@ -22,8 +22,8 @@ namespace GameServer.AI
         {
             public Monster owner;               //AI拥有者
             public int viewRange = 8000;        //视野范围
-            public int walkRange = 12000;        //相对于出生点的活动范围
-            public int chaseRange = 15000;      //追击范围
+            public int walkRange = 15000;       //相对于出生点的活动范围
+            public int chaseRange = 12000;      //追击范围
             public Random rand = new Random();
         }
 
@@ -102,44 +102,45 @@ namespace GameServer.AI
             {
                 var monster = param.owner;
 
-                //切换return状态
-                if(monster.target == null || monster.target.IsDeath ||
-                    !EntityManager.Instance.Exist(monster.target.EntityId))
+                //追击目标失效切换为返回状态
+                if(monster.target == null || monster.target.IsDeath ||!EntityManager.Instance.Exist(monster.target.EntityId))
                 {
+                    monster.target = null;
                     fsm.ChangeState("return");
                     return;
                 }
 
-
-                //自身和出生点的距离
+                //计算距离
                 float brithDistance = Vector3.Distance(monster.initPosition, monster.Position);
-                //自身和目标的距离
                 float targetDistance = Vector3.Distance(monster.target.Position, monster.Position);
 
-                //退出追击状态，切换为返回状态
+                //当超过我们的活动范围或者追击范围，切换返回状态
                 if (brithDistance > param.walkRange || targetDistance > param.chaseRange)
                 {
+                    monster.target = null;
                     fsm.ChangeState("return");
                     return;
                 }
 
-                //符合攻击条件
-                if(targetDistance < 1000)
-                {
-                    //符合攻击条件的同时其实也可以同时攻击，也就是说行走和攻击的动画需要混合。
-                    if(monster.State == Proto.EntityState.Walk)
-                    {
-                        monster.StopMove();
-                    }
-                    monster.Attack(monster.target);
-                }
-                else
+                //攻击距离不够，我们继续靠近目标
+                if(targetDistance > 1000)
                 {
                     monster.MoveTo(monster.target.Position);
+                    return;
                 }
 
+                //在技能后摇结束之前，我们不能再次攻击
+                if (monster.curentSkill != null) return;
 
 
+                //到这里就符合攻击条件了
+                //符合攻击条件的同时其实也可以同时攻击，也就是说行走和攻击的动画需要混合。
+/*                if (monster.State == Proto.EntityState.Walk || monster.State == Proto.EntityState.Run)
+                {
+                    monster.StopMove();
+                }*/
+
+                monster.Attack(monster.target);
 
             }
         }

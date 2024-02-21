@@ -37,8 +37,12 @@ namespace GameServer.Database
         public int Z { get; set; } = 0;
         public long Gold { get; set; } = 0;
         public int PlayerId { get; set; }
+
         [Column(DbType = "blob")]                   //声明为二进制对象，限制是64k
         public byte[] Knapsack { get; set; }
+
+        [Column(DbType = "blob")]                   
+        public byte[] EquipsData { get; set; }
     }
 
 }

@@ -8,6 +8,7 @@ using Proto;
 using GameServer.Core;
 using GameServer.AI;
 using GameServer.Manager;
+using GameServer.Combat;
 
 namespace GameServer.Model
 {
@@ -22,6 +23,9 @@ namespace GameServer.Model
 
         public Actor target;                //追击的目标
         private static Vector3Int Y1000 = new Vector3Int(0, 1000, 0);
+
+
+
 
         public Monster(int Tid,int level,Vector3Int position, Vector3Int direction) : base(EntityType.Monster, Tid,level, position, direction)
         {
@@ -122,9 +126,8 @@ namespace GameServer.Model
             }
 
             //拿一个普通攻击来放
-            var skill = skillManager.Skills.FirstOrDefault(s => s.IsNormal);
+            var skill = skillManager.Skills.FirstOrDefault(s => s.State == Combat.Stage.None && s.IsNormal);
             if (skill == null) return;
-            if (skill.State != Combat.Stage.None) return;
             spell.SpellTarget(skill.Define.ID, target.EntityId);
         }
 
@@ -196,7 +199,12 @@ namespace GameServer.Model
             var killer = EntityManager.Instance.GetEntity(killerID);
             if (killer != null && killer is Character chr)
             {
-                chr.SetExp(chr.Exp + 20);
+                //爆经验
+                chr.SetExp(chr.Exp + Define.ExpReward);
+                //也可以爆点金币
+                chr.SetGold(chr.Gold + Define.GoldReward);
+                //爆点装备，直接生成在场景中即可
+
             }
         }
 

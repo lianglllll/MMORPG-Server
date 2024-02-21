@@ -10,6 +10,7 @@ using GameServer.Model;
 using GameServer.core;
 using Serilog;
 using GameServer.Manager;
+using GameServer.InventorySystem;
 
 namespace GameServer.Service
 {
@@ -27,7 +28,7 @@ namespace GameServer.Service
             message.Message.FromId = chr.Id;
             message.Message.FromName = chr.Name;
             message.Message.Time = Time.time;     
-            Log.Information("_ChatRequest:: character:{0}-Channel:{1}-Message:{2}", chr.Id, message.Message.Channel, message.Message.Content);
+            //Log.Information("_ChatRequest:: character:{0}-Channel:{1}-Message:{2}", chr.Id, message.Message.Channel, message.Message.Content);
 
             //私聊
             if(message.Message.Channel == ChatChannel.Private)
@@ -64,6 +65,15 @@ namespace GameServer.Service
                 res.Result = Result.Success;
                 res.Message = message.Message;
                 chr.currentSpace.Broadcast(res);
+
+
+            }
+
+            if (message.Message.Content == "-wear")
+            {
+                var def = DataManager.Instance.ItemDefinedDict[1005];
+                var item = new Equipment(def);
+                chr.equipmentManager.Wear(item);
             }
         }
 

@@ -85,7 +85,25 @@ namespace GameServer.InventorySystem
             //创建物品
             foreach(var iteminfo in inv.List)
             {
-                SetItem(iteminfo.Position, new Item(iteminfo));
+                Item item = null;
+                var def = DataManager.Instance.ItemDefinedDict[iteminfo.ItemId];
+                if(def.ItemType == "消耗品")
+                {
+                    item = new Consumable(iteminfo);
+                }
+                else if(def.ItemType == "道具")
+                {
+                    item = new MaterialItem(iteminfo);
+                }else if(def.ItemType == "装备")
+                {
+                    item = new Equipment(iteminfo);
+                }
+                else
+                {
+                    continue;
+                }
+                //设置到背包中
+                SetItem(iteminfo.Position, item);
             }
             hasChanged = true;
         }
@@ -167,6 +185,22 @@ namespace GameServer.InventorySystem
 
             //返回成功添加的个数
             return amount - counter;
+        }
+
+        /// <summary>
+        /// 添加物品，返回值是 0 || 1
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public int AddItem(Item item)
+        {
+            int index = FindEmptyIndex();
+            if(index < 0)
+            {
+                return 0;
+            }
+            SetItem(index, item);
+            return item.Amount;
         }
 
         /// <summary>
