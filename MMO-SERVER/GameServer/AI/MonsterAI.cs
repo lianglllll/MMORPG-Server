@@ -137,6 +137,7 @@ namespace GameServer.AI
                 //符合攻击条件的同时其实也可以同时攻击，也就是说行走和攻击的动画需要混合。
                 //后面客户端可能就会使用原本的动画状态机了，然后网络传送传送动画的变量。。
                 //因为动画之间的切换好生硬了
+                //这里如果切换到idle在攻击，会发送idle和walk抖动
 /*                if (monster.State == Proto.EntityState.Walk || monster.State == Proto.EntityState.Run)
                 {
                     monster.StopMove();

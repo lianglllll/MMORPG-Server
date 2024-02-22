@@ -26,18 +26,18 @@ namespace Proto {
           string.Concat(
             "Cg1tZXNzYWdlLnByb3RvEgVwcm90byISChBIZWFydEJlYXRSZXF1ZXN0IhMK",
             "EUhlYXJ0QmVhdFJlc3BvbnNlIicKBFZlYzMSCQoBeBgBIAEoBRIJCgF5GAIg",
-            "ASgFEgkKAXoYAyABKAUiZQoJTmV0RW50aXR5EgoKAmlkGAEgASgFEg0KBXNw",
-            "ZWVkGAIgASgFEh0KCHBvc2l0aW9uGAMgASgLMgsucHJvdG8uVmVjMxIeCglk",
-            "aXJlY3Rpb24YBCABKAsyCy5wcm90by5WZWMzImEKC05FbnRpdHlTeW5jEiAK",
-            "BmVudGl0eRgBIAEoCzIQLnByb3RvLk5ldEVudGl0eRIhCgVzdGF0ZRgCIAEo",
-            "DjISLnByb3RvLkVudGl0eVN0YXRlEg0KBWZvcmNlGAMgASgIIrcCCghOZXRB",
-            "Y3RvchIKCgJpZBgBIAEoBRILCgN0aWQYAiABKAUSIAoGZW50aXR5GAMgASgL",
-            "MhAucHJvdG8uTmV0RW50aXR5EgwKBG5hbWUYBCABKAkSDQoFbGV2ZWwYBSAB",
-            "KAUSCwoDZXhwGAYgASgDEg8KB3NwYWNlSWQYByABKAUSDAoEZ29sZBgIIAEo",
-            "AxIKCgJocBgJIAEoAhIKCgJtcBgKIAEoAhIlCgplbnRpdHlUeXBlGAsgASgO",
-            "MhEucHJvdG8uRW50aXR5VHlwZRIgCgZza2lsbHMYDCADKAsyEC5wcm90by5T",
-            "a2lsbEluZm8SKAoKZXF1aXBzSW5mbxgNIAEoCzIULnByb3RvLkludmVudG9y",
-            "eUluZm8SDQoFaHBNYXgYDiABKAISDQoFbXBNYXgYDyABKAIiJwoQR2FtZUVu",
+            "ASgFEgkKAXoYAyABKAUiVgoJTmV0RW50aXR5EgoKAmlkGAEgASgFEh0KCHBv",
+            "c2l0aW9uGAIgASgLMgsucHJvdG8uVmVjMxIeCglkaXJlY3Rpb24YAyABKAsy",
+            "Cy5wcm90by5WZWMzImEKC05FbnRpdHlTeW5jEiAKBmVudGl0eRgBIAEoCzIQ",
+            "LnByb3RvLk5ldEVudGl0eRIhCgVzdGF0ZRgCIAEoDjISLnByb3RvLkVudGl0",
+            "eVN0YXRlEg0KBWZvcmNlGAMgASgIIsYCCghOZXRBY3RvchIKCgJpZBgBIAEo",
+            "BRILCgN0aWQYAiABKAUSIAoGZW50aXR5GAMgASgLMhAucHJvdG8uTmV0RW50",
+            "aXR5EgwKBG5hbWUYBCABKAkSDQoFbGV2ZWwYBSABKAUSCwoDZXhwGAYgASgD",
+            "Eg8KB3NwYWNlSWQYByABKAUSDAoEZ29sZBgIIAEoAxIKCgJocBgJIAEoAhIK",
+            "CgJtcBgKIAEoAhIlCgplbnRpdHlUeXBlGAsgASgOMhEucHJvdG8uRW50aXR5",
+            "VHlwZRIgCgZza2lsbHMYDCADKAsyEC5wcm90by5Ta2lsbEluZm8SKAoKZXF1",
+            "aXBzSW5mbxgNIAEoCzIULnByb3RvLkludmVudG9yeUluZm8SDQoFaHBNYXgY",
+            "DiABKAISDQoFbXBNYXgYDyABKAISDQoFc3BlZWQYECABKAUiJwoQR2FtZUVu",
             "dGVyUmVxdWVzdBITCgtjaGFyYWN0ZXJJZBgBIAEoBSJXChxTcGFjZUNoYXJh",
             "Y3RlcnNFbnRlclJlc3BvbnNlEg8KB3NwYWNlSWQYASABKAUSJgoNY2hhcmFj",
             "dGVyTGlzdBgCIAMoCzIPLnByb3RvLk5ldEFjdG9yIo4BChJTcGFjZUVudGVy",
@@ -159,9 +159,9 @@ namespace Proto {
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.HeartBeatRequest), global::Proto.HeartBeatRequest.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.HeartBeatResponse), global::Proto.HeartBeatResponse.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.Vec3), global::Proto.Vec3.Parser, new[]{ "X", "Y", "Z" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Proto.NetEntity), global::Proto.NetEntity.Parser, new[]{ "Id", "Speed", "Position", "Direction" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Proto.NetEntity), global::Proto.NetEntity.Parser, new[]{ "Id", "Position", "Direction" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.NEntitySync), global::Proto.NEntitySync.Parser, new[]{ "Entity", "State", "Force" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Proto.NetActor), global::Proto.NetActor.Parser, new[]{ "Id", "Tid", "Entity", "Name", "Level", "Exp", "SpaceId", "Gold", "Hp", "Mp", "EntityType", "Skills", "EquipsInfo", "HpMax", "MpMax" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Proto.NetActor), global::Proto.NetActor.Parser, new[]{ "Id", "Tid", "Entity", "Name", "Level", "Exp", "SpaceId", "Gold", "Hp", "Mp", "EntityType", "Skills", "EquipsInfo", "HpMax", "MpMax", "Speed" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.GameEnterRequest), global::Proto.GameEnterRequest.Parser, new[]{ "CharacterId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.SpaceCharactersEnterResponse), global::Proto.SpaceCharactersEnterResponse.Parser, new[]{ "SpaceId", "CharacterList" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.SpaceEnterResponse), global::Proto.SpaceEnterResponse.Parser, new[]{ "Character", "CharacterList", "ItemEntityList" }, null, null, null, null),
@@ -1037,7 +1037,6 @@ namespace Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public NetEntity(NetEntity other) : this() {
       id_ = other.id_;
-      speed_ = other.speed_;
       position_ = other.position_ != null ? other.position_.Clone() : null;
       direction_ = other.direction_ != null ? other.direction_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -1061,20 +1060,8 @@ namespace Proto {
       }
     }
 
-    /// <summary>Field number for the "speed" field.</summary>
-    public const int SpeedFieldNumber = 2;
-    private int speed_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int Speed {
-      get { return speed_; }
-      set {
-        speed_ = value;
-      }
-    }
-
     /// <summary>Field number for the "position" field.</summary>
-    public const int PositionFieldNumber = 3;
+    public const int PositionFieldNumber = 2;
     private global::Proto.Vec3 position_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1086,7 +1073,7 @@ namespace Proto {
     }
 
     /// <summary>Field number for the "direction" field.</summary>
-    public const int DirectionFieldNumber = 4;
+    public const int DirectionFieldNumber = 3;
     private global::Proto.Vec3 direction_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1113,7 +1100,6 @@ namespace Proto {
         return true;
       }
       if (Id != other.Id) return false;
-      if (Speed != other.Speed) return false;
       if (!object.Equals(Position, other.Position)) return false;
       if (!object.Equals(Direction, other.Direction)) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -1124,7 +1110,6 @@ namespace Proto {
     public override int GetHashCode() {
       int hash = 1;
       if (Id != 0) hash ^= Id.GetHashCode();
-      if (Speed != 0) hash ^= Speed.GetHashCode();
       if (position_ != null) hash ^= Position.GetHashCode();
       if (direction_ != null) hash ^= Direction.GetHashCode();
       if (_unknownFields != null) {
@@ -1149,16 +1134,12 @@ namespace Proto {
         output.WriteRawTag(8);
         output.WriteInt32(Id);
       }
-      if (Speed != 0) {
-        output.WriteRawTag(16);
-        output.WriteInt32(Speed);
-      }
       if (position_ != null) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(18);
         output.WriteMessage(Position);
       }
       if (direction_ != null) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(26);
         output.WriteMessage(Direction);
       }
       if (_unknownFields != null) {
@@ -1175,16 +1156,12 @@ namespace Proto {
         output.WriteRawTag(8);
         output.WriteInt32(Id);
       }
-      if (Speed != 0) {
-        output.WriteRawTag(16);
-        output.WriteInt32(Speed);
-      }
       if (position_ != null) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(18);
         output.WriteMessage(Position);
       }
       if (direction_ != null) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(26);
         output.WriteMessage(Direction);
       }
       if (_unknownFields != null) {
@@ -1199,9 +1176,6 @@ namespace Proto {
       int size = 0;
       if (Id != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Id);
-      }
-      if (Speed != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Speed);
       }
       if (position_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Position);
@@ -1223,9 +1197,6 @@ namespace Proto {
       }
       if (other.Id != 0) {
         Id = other.Id;
-      }
-      if (other.Speed != 0) {
-        Speed = other.Speed;
       }
       if (other.position_ != null) {
         if (position_ == null) {
@@ -1258,18 +1229,14 @@ namespace Proto {
             Id = input.ReadInt32();
             break;
           }
-          case 16: {
-            Speed = input.ReadInt32();
-            break;
-          }
-          case 26: {
+          case 18: {
             if (position_ == null) {
               Position = new global::Proto.Vec3();
             }
             input.ReadMessage(Position);
             break;
           }
-          case 34: {
+          case 26: {
             if (direction_ == null) {
               Direction = new global::Proto.Vec3();
             }
@@ -1295,18 +1262,14 @@ namespace Proto {
             Id = input.ReadInt32();
             break;
           }
-          case 16: {
-            Speed = input.ReadInt32();
-            break;
-          }
-          case 26: {
+          case 18: {
             if (position_ == null) {
               Position = new global::Proto.Vec3();
             }
             input.ReadMessage(Position);
             break;
           }
-          case 34: {
+          case 26: {
             if (direction_ == null) {
               Direction = new global::Proto.Vec3();
             }
@@ -1647,6 +1610,7 @@ namespace Proto {
       equipsInfo_ = other.equipsInfo_ != null ? other.equipsInfo_.Clone() : null;
       hpMax_ = other.hpMax_;
       mpMax_ = other.mpMax_;
+      speed_ = other.speed_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1841,6 +1805,18 @@ namespace Proto {
       }
     }
 
+    /// <summary>Field number for the "speed" field.</summary>
+    public const int SpeedFieldNumber = 16;
+    private int speed_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int Speed {
+      get { return speed_; }
+      set {
+        speed_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -1871,6 +1847,7 @@ namespace Proto {
       if (!object.Equals(EquipsInfo, other.EquipsInfo)) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(HpMax, other.HpMax)) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(MpMax, other.MpMax)) return false;
+      if (Speed != other.Speed) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1893,6 +1870,7 @@ namespace Proto {
       if (equipsInfo_ != null) hash ^= EquipsInfo.GetHashCode();
       if (HpMax != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(HpMax);
       if (MpMax != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(MpMax);
+      if (Speed != 0) hash ^= Speed.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1968,6 +1946,10 @@ namespace Proto {
         output.WriteRawTag(125);
         output.WriteFloat(MpMax);
       }
+      if (Speed != 0) {
+        output.WriteRawTag(128, 1);
+        output.WriteInt32(Speed);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -2035,6 +2017,10 @@ namespace Proto {
         output.WriteRawTag(125);
         output.WriteFloat(MpMax);
       }
+      if (Speed != 0) {
+        output.WriteRawTag(128, 1);
+        output.WriteInt32(Speed);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -2087,6 +2073,9 @@ namespace Proto {
       }
       if (MpMax != 0F) {
         size += 1 + 4;
+      }
+      if (Speed != 0) {
+        size += 2 + pb::CodedOutputStream.ComputeInt32Size(Speed);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -2148,6 +2137,9 @@ namespace Proto {
       }
       if (other.MpMax != 0F) {
         MpMax = other.MpMax;
+      }
+      if (other.Speed != 0) {
+        Speed = other.Speed;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -2230,6 +2222,10 @@ namespace Proto {
             MpMax = input.ReadFloat();
             break;
           }
+          case 128: {
+            Speed = input.ReadInt32();
+            break;
+          }
         }
       }
     #endif
@@ -2309,6 +2305,10 @@ namespace Proto {
           }
           case 125: {
             MpMax = input.ReadFloat();
+            break;
+          }
+          case 128: {
+            Speed = input.ReadInt32();
             break;
           }
         }

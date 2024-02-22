@@ -58,16 +58,14 @@ namespace GameServer.Service
 
             //判断合理性
             NetEntity nEntity = msg.EntitySync.Entity;//请求位置信息
-            Entity serverEntity = EntityManager.Instance.GetEntity(nEntity.Id);
+            Character chr = EntityManager.Instance.GetEntity(nEntity.Id) as Character;
             //将要移动的距离
-            float distance = Vector3Int.Distance(nEntity.Position, serverEntity.Position);
-            //使用服务端的速度
-            nEntity.Speed = serverEntity.Speed;
+            float distance = Vector3Int.Distance(nEntity.Position, chr.Position);
             //计算时间差
-            float timeDistance = Math.Min(serverEntity.PositionUpdateTimeDistance, 1.0f);
+            float timeDistance = Math.Min(chr.PositionUpdateTimeDistance, 1.0f);
             //计算距离限额
-            float limit = serverEntity.Speed * timeDistance * 1.5f;
-            //Log.Information("距离{0}，阈值{1}，间隔{2}", distance, limit, timeDistance);
+            float limit = chr.Speed * timeDistance * 1.5f;
+
             if (float.IsNaN(distance)||distance > limit)
             {
                 //方案1：拉回原位置

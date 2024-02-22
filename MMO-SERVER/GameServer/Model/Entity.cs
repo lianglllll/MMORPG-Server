@@ -18,10 +18,8 @@ namespace GameServer.Model
     {
         private Vector3Int position;                //位置
         private Vector3Int direction;               //方向
-        private int speed;                          //速度
         private NetEntity netObj;                   //网络对象  
         private long _lastUpdate;                   //最后一次更新位置的时间戳
-
 
         /// <summary>
         /// entityid存放在netObj中,这个id的赋值在entitymanager中完成
@@ -57,19 +55,6 @@ namespace GameServer.Model
         }
         
         /// <summary>
-        /// entity的速度属性
-        /// </summary>
-        public int Speed
-        {
-            get { return speed; }
-            set
-            {
-                speed = value;
-                netObj.Speed = speed;
-            }
-        }
-
-        /// <summary>
         /// NetEntity 网络对象属性
         /// </summary>
         public Proto.NetEntity EntityData
@@ -79,9 +64,9 @@ namespace GameServer.Model
             }
             set
             {
+                //id的话不更新也行
                 Position = value.Position;
                 Direction = value.Direction;
-                Speed = value.Speed;
             }
         }
 
@@ -98,9 +83,7 @@ namespace GameServer.Model
             netObj = new NetEntity();
             Position = pos;
             Direction = dir;
-
             //this.EntityId;        entityid 等待entitymanager分配id
-
         }
 
         /// <summary>

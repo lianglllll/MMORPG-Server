@@ -63,7 +63,7 @@ namespace GameServer.Model
         public int Level { get => info.Level; set => info.Level = value; }
         public long Exp { get => info.Exp; set => info.Exp = value; }
         public long Gold { get => info.Gold; set => info.Gold = value; }
-
+        public int Speed { get => info.Speed; set => info.Speed = value; }
 
 
         /// <summary>
@@ -79,9 +79,6 @@ namespace GameServer.Model
             //加载define的默认数据
             this.Define = DataManager.Instance.unitDefineDict[TID];     //todo 可能会空，可能会有人篡改json配置文件
             
-            //先更新entity中的speed字段
-            this.Speed = this.Define.Speed;
-
             //更新NetActor网络对象的信息
             this.info.Tid = TID;                                        //TID:区分相同实体类型，不同身份。可以通过tid去找define
             this.info.EntityType = type;                                //unit类型
@@ -101,6 +98,9 @@ namespace GameServer.Model
             info.Mp = Attr.final.MPMax;
             info.HpMax = Attr.final.HPMax;
             info.MpMax = Attr.final.MPMax;
+            info.Speed = Attr.final.Speed;
+
+
         }
 
         /// <summary>

@@ -14,7 +14,7 @@ namespace GameServer.Combat
     {
 
         //速度
-        public float Speed;
+        public int Speed;
         //最大生命值
         public float HPMax;
         //最大魔法值
