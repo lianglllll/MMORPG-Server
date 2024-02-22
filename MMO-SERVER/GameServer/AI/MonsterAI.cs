@@ -22,8 +22,8 @@ namespace GameServer.AI
         {
             public Monster owner;               //AI拥有者
             public int viewRange = 8000;        //视野范围
-            public int walkRange = 15000;       //相对于出生点的活动范围
-            public int chaseRange = 12000;      //追击范围
+            public int walkRange = 20000;       //相对于出生点的活动范围
+            public int chaseRange = 30000;      //追击范围
             public Random rand = new Random();
         }
 
@@ -57,8 +57,11 @@ namespace GameServer.AI
         class WalkState : IState<Param>
         {
 
-            float lastTime = Time.time;         //用于重置下次巡逻的位置
+            float lastTime = Time.time;             //用于重置下次巡逻的位置
             private static float waitTime = 10f;
+
+            float lastRestoreHpMpTime = Time.time;  //用于重置回复状态的时间点
+            private static float restoreWaitTime = 1f;
 
             public override void OnEnter()
             {
@@ -68,7 +71,8 @@ namespace GameServer.AI
             public override void OnUpdate()
             {
                 var monster = param.owner;
-                //查询viewRange内的玩家
+
+                //查询viewRange内的玩家，如果有就切换追击状态
                 var chr = EntityManager.Instance.GetGetNearEntitys(monster.SpaceId, monster.Position, param.viewRange).FirstOrDefault(a => !a.IsDeath);
                 if (chr != null)
                 {
@@ -77,6 +81,7 @@ namespace GameServer.AI
                     return;
                 }
 
+                //到了需要移动位置的时间
                 if (monster.State == Proto.EntityState.Idle)
                 {
                     //到时间刷新了（每10秒刷新一次）
@@ -89,6 +94,18 @@ namespace GameServer.AI
                         monster.MoveTo(target);
                     }
                 }
+
+                //当actor状态不健康的时候回血回蓝
+                if (!monster.ActorHealth())
+                {
+                    if(lastRestoreHpMpTime + restoreWaitTime < Time.time)
+                    {
+                        lastRestoreHpMpTime = Time.time;
+                        monster.RestoreHealthState();
+                    }
+
+                }
+
             }
 
         }
@@ -107,6 +124,10 @@ namespace GameServer.AI
                 {
                     monster.target = null;
                     fsm.ChangeState("return");
+
+/*                    if (fsm.curStateId != "death")
+                    {
+                    }*/
                     return;
                 }
 
@@ -119,6 +140,10 @@ namespace GameServer.AI
                 {
                     monster.target = null;
                     fsm.ChangeState("return");
+
+/*                    if (fsm.curStateId != "death")
+                    {
+                    }*/
                     return;
                 }
 
@@ -131,7 +156,6 @@ namespace GameServer.AI
 
                 //在技能后摇结束之前，我们不能再次攻击
                 if (monster.curentSkill != null) return;
-
 
                 //到这里就符合攻击条件了
                 //符合攻击条件的同时其实也可以同时攻击，也就是说行走和攻击的动画需要混合。
@@ -162,6 +186,8 @@ namespace GameServer.AI
             public override void OnUpdate()
             {
                 var monster = param.owner;
+
+
                 if(Vector3.Distance(monster.initPosition,monster.Position)< 100)
                 {
                     fsm.ChangeState("walk");
@@ -183,9 +209,29 @@ namespace GameServer.AI
 
             public override void OnUpdate()
             {
-
+                var monster = param.owner;
+                if (!monster.IsDeath)
+                {
+                    fsm.ChangeState("walk");
+                }
             }
 
+        }
+
+        /// <summary>
+        /// ai受到伤害的回调
+        /// </summary>
+        /// <param name="actor"></param>
+        public void RecvDamageCallBack(Actor actor)
+        {
+            if (actor == null) return;
+            //如果当前怪物没有死亡，就应该去追击攻击本monster的玩家
+            if (!fsm.param.owner.IsDeath && fsm.curStateId != "chase" && fsm.curStateId != "return")
+            {
+                var monster = fsm.param.owner;
+                monster.target = actor;
+                fsm.ChangeState("chase");
+            }
         }
 
     }

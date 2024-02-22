@@ -33,7 +33,7 @@ public class Missile
         this.InitPos = initPos;
         this.curPosition = initPos;
         this.Space = skill.Owner.currentSpace;
-        Log.Information("Missile Position:{0}", curPosition);
+        //Log.Information("Missile Position:{0}", curPosition);
     }
 
     public void OnUpdate(float deltaTime)

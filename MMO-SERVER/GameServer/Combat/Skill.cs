@@ -191,7 +191,7 @@ namespace GameServer.Combat
         private void OnActive()
         {
             //Log.Information("Skill Active Owner[{0}],skill[{1}]", Owner.EntityId,Define.Name);
-            Log.Information("技能激活：" + Define.Name);
+            //Log.Information("技能激活：" + Define.Name);
 
             //如果是投射物
             if (Define.IsMissile)
@@ -222,7 +222,7 @@ namespace GameServer.Combat
         /// </summary>
         private void OnColdDown()
         {
-            Log.Information("技能后摇完成:" + Define.Name);
+            //Log.Information("技能后摇完成:" + Define.Name);
             //结束后摇阶段了
             Owner.curentSkill = null;
         }
@@ -234,7 +234,7 @@ namespace GameServer.Combat
         {
             RunTime = 0;
             State = Stage.None;
-            Log.Information("技能结束：Owner[{0}],skill[{1}]",Owner.EntityId, Define.Name);
+            //Log.Information("技能结束：Owner[{0}],skill[{1}]",Owner.EntityId, Define.Name);
         }
 
         /// <summary>

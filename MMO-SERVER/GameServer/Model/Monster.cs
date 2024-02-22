@@ -23,17 +23,10 @@ namespace GameServer.Model
 
         public Actor target;                //追击的目标
         private static Vector3Int Y1000 = new Vector3Int(0, 1000, 0);
-
-
-
-
         public Monster(int Tid,int level,Vector3Int position, Vector3Int direction) : base(EntityType.Monster, Tid,level, position, direction)
         {
 
             //设置专属monster的info
-
-
-
 
             //任务1 状态初始化
             initPosition = position;//出生点设置
@@ -42,6 +35,8 @@ namespace GameServer.Model
             //任务2,monster位置同步
             Scheduler.Instance.AddTask(() =>
             {
+                if (IsDeath) return;
+
                 if (State != EntityState.Walk) return;
                 //广播消息
                 NEntitySync nEntitySync = new NEntitySync();
@@ -72,6 +67,7 @@ namespace GameServer.Model
             {
                 State = EntityState.Walk;//这个能触发下面的update
             }
+
             if(targetPos != target)
             {
                 targetPos = target;
@@ -193,6 +189,12 @@ namespace GameServer.Model
         /// <param name="killerID"></param>
         protected override void OnBeforeDie(int killerID)
         {
+
+        }
+
+        protected override void OnAfterDie(int killerID)
+        {
+            base.OnAfterDie(killerID);
             //状态机切换
             AI.fsm.ChangeState("death");
 
@@ -205,7 +207,6 @@ namespace GameServer.Model
                 //也可以爆点金币
                 chr.SetGold(chr.Gold + Define.GoldReward);
                 //爆点装备，直接生成在场景中即可
-
             }
         }
 
@@ -217,6 +218,19 @@ namespace GameServer.Model
         {
             //状态机切换
             AI.fsm.ChangeState("walk");
+        }
+
+        /// <summary>
+        /// 受伤后处理
+        /// </summary>
+        /// <param name="damage"></param>
+        protected override void AfterRecvDamage(Damage damage)
+        {
+            base.AfterRecvDamage(damage);
+
+
+            var killer = EntityManager.Instance.GetEntity(damage.AttackerId) as Actor;
+            AI.RecvDamageCallBack(killer);
         }
 
     }

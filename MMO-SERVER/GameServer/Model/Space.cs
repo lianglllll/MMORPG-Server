@@ -93,6 +93,7 @@ namespace GameServer.Model
             }
             foreach (var kv in monsterManager.monsterDict)
             {
+                if (kv.Value.IsDeath) continue;
                 spaceEnterResponse.CharacterList.Add(kv.Value.info);
             }
             foreach(var kv in itemManager.itemEntityDict)
@@ -135,6 +136,7 @@ namespace GameServer.Model
                 if (kv.Value.EntityId == entitySync.Entity.Id)
                 {
                     kv.Value.EntityData = entitySync.Entity;
+                    kv.Value.State = entitySync.State;
                 }
                 else
                 {

@@ -18,7 +18,7 @@ namespace GameServer.Model
         public UnitDefine Define;                                                                   //单位的一些静态数据
         public Space currentSpace;                                                                  //当前的场景
         public NetActor info  = new NetActor();                                                     //NetActor 网络对象
-        public EntityState State;                                                                   //actor状态：跑、走、跳、死亡、
+        public EntityState State;                                                                   //actor状态：跑、走、跳、
         public Attributes Attr = new Attributes();                                                  //actor属性
         public SkillManager skillManager;                                                           //actor技能管理器
         public Spell spell;                                                                         //actor技能释放器
@@ -64,7 +64,6 @@ namespace GameServer.Model
         public long Exp { get => info.Exp; set => info.Exp = value; }
         public long Gold { get => info.Gold; set => info.Gold = value; }
         public int Speed { get => info.Speed; set => info.Speed = value; }
-
 
         /// <summary>
         /// 构造函数
@@ -152,7 +151,6 @@ namespace GameServer.Model
         /// <param name="damage"></param>
         public void RecvDamage(Damage damage)
         {
-            //Log.Information("Actor:RecvDamage[{0}]", damage);
             //添加广播，一个伤害发生了
             currentSpace.fightManager.damageQueue.Enqueue(damage);
             //扣血
@@ -164,6 +162,16 @@ namespace GameServer.Model
             {
                 Die(damage.AttackerId);
             }
+
+            AfterRecvDamage(damage);
+        }
+
+        /// <summary>
+        /// 受伤后处理
+        /// </summary>
+        /// <param name="damage"></param>
+        protected virtual void AfterRecvDamage(Damage damage)
+        {
         }
 
         /// <summary>
@@ -336,9 +344,11 @@ namespace GameServer.Model
         {
             if (IsDeath) return;
             OnBeforeDie(killerID);
+
             SetState(UnitState.Dead);
             SetHp(0);
             SetMP(0);
+
             OnAfterDie(killerID);
         }
 
@@ -375,5 +385,28 @@ namespace GameServer.Model
             }
         }
 
+        //查看actor的健康状态：生命、蓝条、debuffer
+        //不健康的时候返回false
+        public virtual bool ActorHealth()
+        {
+            if (IsDeath) return true;
+
+            if(Hp < info.HpMax || Mp < info.MpMax)
+            {
+                return false;
+            }
+            return true;
+        }
+
+
+        /// <summary>
+        /// 休息时恢复状态
+        /// </summary>
+        public virtual void RestoreHealthState()
+        {
+            if (ActorHealth()) return;
+            SetHp(Hp + info.HpMax * 0.1f);
+            SetMP(Mp + info.MpMax * 0.1f);
+        }
     }
 }

@@ -49,7 +49,7 @@ namespace GameServer.Service
         {
 
             //获取当前连接的场景对象
-            Space connSpace = conn.Get<Session>().Space;
+            Space connSpace = conn.Get<Session>()?.Space;
             if (connSpace == null)
             {
                 return;

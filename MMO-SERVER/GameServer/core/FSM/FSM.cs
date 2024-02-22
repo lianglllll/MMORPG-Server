@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,6 @@ namespace GameServer.core.FSM
         public IState<T> curState;
         public string curStateId;
         private Dictionary<string, IState<T>> stateDict = new Dictionary<string, IState<T>>();
-
 
         public FSM() { }
 
@@ -52,6 +52,8 @@ namespace GameServer.core.FSM
 
             if (curStateId == stateId) return;
             if (!stateDict.ContainsKey(stateId)) return;
+
+
             if(curState != null)
             {
                 curState.OnExit();
@@ -59,6 +61,7 @@ namespace GameServer.core.FSM
             curStateId = stateId;
             curState = stateDict[stateId];
             curState.OnEnter();
+            Log.Information("怪物状态切换：" + curStateId);
         }
 
         public  void Update()
