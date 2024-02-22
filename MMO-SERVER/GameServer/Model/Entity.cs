@@ -16,7 +16,6 @@ namespace GameServer.Model
     /// </summary>
     public class Entity
     {
-
         private Vector3Int position;                //位置
         private Vector3Int direction;               //方向
         private int speed;                          //速度
@@ -99,6 +98,9 @@ namespace GameServer.Model
             netObj = new NetEntity();
             Position = pos;
             Direction = dir;
+
+            //this.EntityId;        entityid 等待entitymanager分配id
+
         }
 
         /// <summary>

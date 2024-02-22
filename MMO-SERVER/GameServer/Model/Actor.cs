@@ -29,6 +29,9 @@ namespace GameServer.Model
 
         public bool IsDeath => unitState == UnitState.Dead;            
         
+        /// <summary>
+        /// chrId
+        /// </summary>
         public int Id { 
             get { return info.Id; } 
             set { info.Id = value; } 
@@ -96,7 +99,8 @@ namespace GameServer.Model
             //再初始化
             info.Hp = Attr.final.HPMax;
             info.Mp = Attr.final.MPMax;
-
+            info.HpMax = Attr.final.HPMax;
+            info.MpMax = Attr.final.MPMax;
         }
 
         /// <summary>
@@ -122,7 +126,7 @@ namespace GameServer.Model
         }
 
         /// <summary>
-        /// actor复活，回血回蓝
+        /// actor复活
         /// </summary>
         public void Revive()
         {
@@ -242,7 +246,7 @@ namespace GameServer.Model
         }
 
         /// <summary>
-        /// 设置actor的等级
+        /// 设置actor的等级,并广播
         /// </summary>
         protected void SetLevel(int level)
         {
@@ -256,6 +260,64 @@ namespace GameServer.Model
             };
             info.Level = level;
             currentSpace.fightManager.propertyUpdateQueue.Enqueue(po);
+        }
+
+        /// <summary>
+        /// 设置移动速度
+        /// </summary>
+        /// <param name="value"></param>
+        protected void SetSpeed(int value)
+        {
+            if (this.Speed == value) return;
+            int oldValue = this.Speed;
+            this.Speed = value;
+            PropertyUpdate po = new PropertyUpdate()
+            {
+                EntityId = EntityId,
+                Property = PropertyUpdate.Types.Prop.Speed,
+                OldValue = new() { IntValue = oldValue },
+                NewValue = new() { IntValue = value },
+            };
+            currentSpace?.fightManager.propertyUpdateQueue.Enqueue(po);
+        }
+
+        /// <summary>
+        /// 设置生命上限
+        /// </summary>
+        /// <param name="value"></param>
+        protected void SetHpMax(float value)
+        {
+            if (Mathf.Approximately(info.HpMax, value)) return;
+
+            float old = info.HpMax;
+            info.HpMax = value;
+            PropertyUpdate po = new PropertyUpdate()
+            {
+                EntityId = EntityId,
+                Property = PropertyUpdate.Types.Prop.Hpmax,
+                OldValue = new() { FloatValue = old },
+                NewValue = new() { FloatValue = value },
+            };
+            currentSpace?.fightManager.propertyUpdateQueue.Enqueue(po);
+        }
+
+        /// <summary>
+        /// 设置法力上限
+        /// </summary>
+        /// <param name="value"></param>
+        protected void SetMpMax(float value)
+        {
+            if (Mathf.Approximately(info.MpMax, value)) return;
+            float old = info.MpMax;
+            info.MpMax = value;
+            PropertyUpdate po = new PropertyUpdate()
+            {
+                EntityId = EntityId,
+                Property = PropertyUpdate.Types.Prop.Mpmax,
+                OldValue = new() { FloatValue = old },
+                NewValue = new() { FloatValue = value },
+            };
+            currentSpace?.fightManager.propertyUpdateQueue.Enqueue(po);
         }
 
         /// <summary>

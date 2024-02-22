@@ -39,21 +39,17 @@ namespace GameServer.Model
 
             //将角色信息转换为Character
             this.Id = dbCharacter.Id;
-            this.Name = dbCharacter.Name;
             this.Data = dbCharacter;
 
             this.info.Name = dbCharacter.Name;              //覆盖
             this.info.Hp = dbCharacter.Hp;                  //覆盖
             this.info.Mp = dbCharacter.Mp;                  //覆盖
+            this.info.SpaceId = dbCharacter.SpaceId;        //覆盖
 
             this.info.Id = dbCharacter.Id;                  //独有
             this.info.Exp = dbCharacter.Exp;                //独有
-            this.info.SpaceId = dbCharacter.SpaceId;        //独有
             this.info.Gold = dbCharacter.Gold;              //独有
 
-            //this.info.Entity;      使用时需要自动调用entitydata进行赋值
-            //this.info.Entity.Id;
-            //this.EntityId;        entityid 等待entitymanager分配id
 
             //创建背包
             knapsack = new Inventory(this);

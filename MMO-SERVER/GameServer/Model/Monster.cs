@@ -31,7 +31,8 @@ namespace GameServer.Model
         {
 
             //设置专属monster的info
-            //用tid获取一些基本信息，so character和moster势必是需要分表写的//todo
+
+
 
 
             //任务1 状态初始化
@@ -49,7 +50,7 @@ namespace GameServer.Model
                 this.currentSpace.UpdateEntity(nEntitySync);
             }, 0.15f);
 
-            //设置AI对象
+            //任务3，设置AI对象
             switch (Define.AI)
             {
                 case "Monster":

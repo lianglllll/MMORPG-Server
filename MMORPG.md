@@ -5899,6 +5899,121 @@ int result = await asyncObject.SomeOperationAsync();
 
 
 
+# 遇到的小问题和bug
+
+
+
+## 2024.2.21 
+
+**1.skill系统问题**，ai追逐玩家释放技能，短时间内释放了多次技能，当施法消息传送到客户端的时候，由于客户端的技能表现是由状态机推动的且在技能active状态下不可打断，所以会有技能被吞的问题，释放了两个技能但是只打出1个技能。
+
+解决方法：优化了skill的生命周期，添加后摇时间，给客户端的状态机保持一个缓冲的时间。
+
+```
+    public enum Stage
+    {
+        None,               //无状态
+        Intonate,           //吟唱
+        Active,             //已激活
+        PostRock,           //后摇
+        Colding             //冷却中
+    }
+```
+
+
+
+**2.服务端怪物ai的问题**，原本追击玩家的流程是：巡逻->追击->攻击
+
+追击的时候不断调整ai的位置，逐渐靠近玩家，当达到怪物攻击范围的时候，停下来不移动，然后攻击。
+
+如果按照这样的流程，客户端ai在攻击玩家的时候就会出现一个抖动的问题（行走+不断挥刀，但是没有产生伤害），目前还没解决这个问题。正常来说服务器skill并没有影响怪物ai，初步判断应该是服务器ai的状态机和客户端的状态机的问题，存在一个攻击状态被打断的一个问题。
+
+idle->attack/move   
+
+attack->move/attack
+
+很可能就是idle和move动作之间的抖动，到达攻击范围停下脚步（idle），判断能否攻击（发现不可以），然后继续靠近target(move)
+
+重复上面，攻击范围上限浮动的时候，就会出现这个抖动。
+
+推动怪物ai的是entitymanager，场景中技能的推动也是entitymanager，也就是中心计时器，
+
+场景中推动战斗管理器也是这个中心计时器，说明这几个东西是单个线程处理的。
+
+但是skill使用的时候，需要将的施法请求放到下一帧处理，会不会就是因为这一帧的时间，导致原来满足攻击的距离现在变得不满足了，所以idle->move...，这个时间太短了。。。。。
+
+**临时方法**：当达到怪物攻击范围的时候，直接攻击，去处理停下来这个动作。倒是客户端展现的时候会出现一个攻击时滑步的问题。
+
+**问题未解决**：将方法1修复之后，这个现象没有复现了，估计也是这个攻击频率的问题，需要给一个缓冲时间，否则一个时间段内，客户端短时间接收到多次attack的施法请求可能会产生问题。
+
+**问题未解决：**
+
+这是客户端的施法响应，它没有判断就一股脑将skill.use，而技能的推动会导致状态机的状态切换
+
+这里没问题，不用改了，甚至状态机切换的active状态下不能中断也需要删除，因为客户端只是一个显示用的view层次。
+
+```
+    private void _SpellCastResponse(Connection conn, SpellCastResponse msg)
+    {
+
+        foreach (CastInfo item in msg.List)
+        {
+            var caster = EntityManager.Instance.GetEntity<Actor>(item.CasterId);
+            var skill = caster.skillManager.GetSkill(item.SkillId);
+            if (skill.IsUnitTarget)
+            {
+                var target = EntityManager.Instance.GetEntity<Actor>(item.TargetId);
+                skill.Use(new SCEntity(target));
+            }
+            else if (skill.IsPointTarget)
+            {
+
+            }else if (skill.IsNoneTarget)
+            {
+                skill.Use(new SCEntity(caster));
+            }
+
+        }
+    }
+```
+
+
+
+状态机的共有属性skill可能会受到覆盖的影响，导致后续的技能使用skill的时候导致空指针异常。
+
+这里改为有null就不能使用use。
+
+```
+        /// <summary>
+        /// 使用技能
+        /// </summary>
+        /// <param name="target"></param>
+        public void Use(SCObject target)
+        {
+            //只有本机玩家才会用到这个值
+            if (Owner.EntityId == GameApp.character.EntityId)
+            {
+                GameApp.CurrSkill = this;
+            }
+            _sco = target;
+            RunTime = 0;
+
+            Owner.StateMachine.parameter.skill = this;
+
+            //技能阶段从none切换到蓄气阶段
+            Stage = SkillStage.Intonate;
+            OnIntonate();
+        }
+```
+
+**问题解决：**其实这个抖动就是用混合书导致idle和walk之间不断切换的抖动，因为切换不平滑。捣鼓半天还是这两个抖动我就知道。
+
+现在只能接收滑步攻击这个小问题了。。。。。，后面再修改吧。
+
+
+
+
+
 # server相关的一些东西
 
 
