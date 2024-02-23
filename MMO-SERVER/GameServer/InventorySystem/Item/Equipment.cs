@@ -1,3 +1,4 @@
+using GameServer.Combat;
 using Proto;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,15 +11,18 @@ namespace GameServer.InventorySystem
     public class Equipment : Item
     {
         public EquipsType EquipsType => ParseEquipType(Define.EquipType);
+        public AttrubuteData attrubuteData;
 
         //network
         public Equipment(ItemInfo itemInfo) : base(itemInfo)
         {
+            LoadAttrubuteData();
         }
 
         //define
         public Equipment(ItemDefine define,int position = 0) : base(define, 1, position)
         {
+            LoadAttrubuteData();
         }
 
         /// <summary>
@@ -51,6 +55,29 @@ namespace GameServer.InventorySystem
                 default:
                     return EquipsType.Unset;
             }
+        }
+
+        private void LoadAttrubuteData()
+        {
+            attrubuteData = new AttrubuteData
+            {
+                Speed = Define.Speed,
+                HPMax = Define.HP,
+                MPMax = Define.MP,
+                AD = Define.AD,
+                AP = Define.AP,
+                DEF = Define.DEF,
+                MDEF = Define.MDEF,
+                CRI = Define.CRI,
+                CRD = Define.CRD,
+                STR = Define.STR,
+                INT = Define.INT,
+                AGI = Define.AGI,
+                HitRate = Define.HitRate,
+                DodgeRate = Define.DodgeRate,
+                HpRegen = Define.HpRegen,
+                HpSteal = Define.HpSteal,
+            };
         }
 
 

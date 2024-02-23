@@ -93,7 +93,6 @@ namespace GameServer.Model
             }
             foreach (var kv in monsterManager.monsterDict)
             {
-                if (kv.Value.IsDeath) continue;
                 spaceEnterResponse.CharacterList.Add(kv.Value.info);
             }
             foreach(var kv in itemManager.itemEntityDict)

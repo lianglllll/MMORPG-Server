@@ -267,7 +267,10 @@ namespace GameServer.Model
                 NewValue = new() { IntValue = level }
             };
             info.Level = level;
+            //广播通知
             currentSpace.fightManager.propertyUpdateQueue.Enqueue(po);
+            //属性刷新
+            Attr.Reload();
         }
 
         /// <summary>
@@ -408,5 +411,19 @@ namespace GameServer.Model
             SetHp(Hp + info.HpMax * 0.1f);
             SetMP(Mp + info.MpMax * 0.1f);
         }
+
+        /// <summary>
+        /// 属性发生变化时同步
+        /// </summary>
+        public void SyncAttributes()
+        {
+            SetSpeed(Attr.final.Speed);
+            SetHpMax(Attr.final.HPMax);
+            SetMpMax(Attr.final.MPMax);
+
+
+        }
+
+
     }
 }

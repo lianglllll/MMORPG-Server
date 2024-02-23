@@ -19,7 +19,7 @@ public class ItemDefine
 	public int SellPrice; // 卖出价格
 	public string Icon; // 图标资源
 	public string Model; // 场景模型
-	public float Speed; // 移动速度加成
+	public int Speed; // 移动速度加成
 	public float HP; // 生命加成
 	public float MP; // 魔法加成
 	public float AD; // 物攻加成
@@ -32,6 +32,9 @@ public class ItemDefine
 	public float DodgeRate; // 闪避率%
 	public float HpRegen; // 生命恢复/秒
 	public float HpSteal; // 伤害吸血%
+	public float STR; // 力量
+	public float INT; // 智力
+	public float AGI; // 敏捷
 }
 
 

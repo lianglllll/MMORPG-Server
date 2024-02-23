@@ -80,6 +80,10 @@ namespace GameServer.InventorySystem
             //穿戴之前，先卸下来
             if (!Unload(equipment.EquipsType)) return false;
             equipDict[equipment.EquipsType] = equipment;
+            //增加属性
+            chr.Attr.equip.Merge(equipment.attrubuteData);
+            chr.Attr.Reload();
+            //
             hasChanged = true;
             return true;
         }
@@ -101,6 +105,10 @@ namespace GameServer.InventorySystem
                 }
                 //放回背包成功,从字典中移除
                 equipDict.TryRemove(type, out _);
+                //减少属性
+                chr.Attr.equip.Sub(equipment.attrubuteData);
+                chr.Attr.Reload();
+                //
                 hasChanged = true;
                 return true;
             }
