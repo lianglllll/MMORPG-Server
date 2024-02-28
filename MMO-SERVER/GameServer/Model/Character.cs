@@ -58,7 +58,8 @@ namespace GameServer.Model
             equipmentManager = new EquipmentManager(this);
             equipmentManager.Init(Data.EquipsData);
 
-            //Log.Information("[角色]：{0} 【背包信息】：[容量]={1},[物品]={2} ", dbCharacter.Name, knapsack.Capacity,knapsack.InventoryInfo);
+            Log.Information("[角色]：{0} 【背包信息】：[容量]={1},[物品]={2} ", dbCharacter.Name, knapsack.Capacity,knapsack.InventoryInfo);
+            Log.Information("【装备信息】：" + equipmentManager.InventoryInfo.List);
         }
 
         /// <summary>

@@ -1,5 +1,7 @@
 ﻿using GameServer.Model;
+using GameServer.Service;
 using Proto;
+using Serilog;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -49,6 +51,16 @@ namespace GameServer.InventorySystem
         }
 
         /// <summary>
+        /// 获取装备栏上的装备
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public Equipment GetEquipment(EquipsType type)
+        {
+            return equipDict.GetValueOrDefault(type, null);
+        }
+
+        /// <summary>
         /// 初始化
         /// </summary>
         /// <param name="bytes"></param>
@@ -65,26 +77,41 @@ namespace GameServer.InventorySystem
             //创建物品
             foreach (var iteminfo in inv.List)
             {
-                Wear(new Equipment(iteminfo));
+                Wear(new Equipment(iteminfo), false);
             }
-        }
 
+            //更新chr装备信息
+            chr.info.EquipList.Clear();
+            chr.info.EquipList.AddRange(InventoryInfo.List);
+        }
 
         /// <summary>
         /// 穿戴装备
         /// </summary>
         /// <param name="equipment"></param>
         /// <returns></returns>
-        public bool Wear(Equipment equipment)
+        public bool Wear(Equipment equipment, bool isBroadcast)
         {
-            //穿戴之前，先卸下来
-            if (!Unload(equipment.EquipsType)) return false;
+            //穿戴之前，先卸下来身上的装备
+            Unload(equipment.EquipsType, isBroadcast);
+
+            //穿到身上
             equipDict[equipment.EquipsType] = equipment;
+            int slot = equipment.Position;
+            equipment.Position = 0;
+
+            //移除背包中的
+            chr.knapsack.removeSlot(slot);
+
             //增加属性
             chr.Attr.equip.Merge(equipment.attrubuteData);
             chr.Attr.Reload();
-            //
+
             hasChanged = true;
+
+            //更新chr的网络actor的info并且广播给其他客户端
+            UpdateCharacterInfoEquips(isBroadcast);
+
             return true;
         }
 
@@ -93,27 +120,55 @@ namespace GameServer.InventorySystem
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        public bool Unload(EquipsType type)
+        public bool Unload(EquipsType type, bool isBroadcast)
         {
-            if(equipDict.TryGetValue(type,out var equipment))
+            //没有这个装备
+            if (!equipDict.TryGetValue(type, out var equipment)) return false;
+            
+            int amount = chr.knapsack.AddItem(equipment);
+            //放回背包失败
+            if (amount > 0)
             {
-                int amount = chr.knapsack.AddItem(equipment);
-                //放回背包失败
-                if (amount <= 0)
-                {
-                    return false;
-                }
-                //放回背包成功,从字典中移除
-                equipDict.TryRemove(type, out _);
-                //减少属性
-                chr.Attr.equip.Sub(equipment.attrubuteData);
-                chr.Attr.Reload();
-                //
-                hasChanged = true;
-                return true;
+                //通知客户端
+
             }
-            return false;
+            else
+            {
+                return false;
+            }
+
+            //放回背包成功,从字典中移除
+            equipDict.TryRemove(type, out _);
+
+            //chr减少属性
+            chr.Attr.equip.Sub(equipment.attrubuteData);
+            chr.Attr.Reload();
+
+            hasChanged = true;
+
+            //更新chr的网络actor的info并且广播给其他客户端
+            UpdateCharacterInfoEquips(isBroadcast);
+
+            return true;
+
         }
 
+        /// <summary>
+        /// 装备发生变更时，通知客户端
+        /// </summary>
+        public void UpdateCharacterInfoEquips(bool isBroadcast)
+        {
+            //更新chr装备信息
+            chr.info.EquipList.Clear();
+            chr.info.EquipList.AddRange(InventoryInfo.List);
+
+            //广播
+            if (isBroadcast)
+            {
+                //Log.Information("广播装备信息");
+                ItemService.Instance._EquipsUpdateResponse(chr);
+            }
+
+        }
     }
 }

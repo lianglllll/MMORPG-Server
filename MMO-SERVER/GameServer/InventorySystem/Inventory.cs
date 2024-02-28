@@ -215,6 +215,7 @@ namespace GameServer.InventorySystem
                 return null;
             }
             ItemDict.TryRemove(slotIndex, out var _value);
+            hasChanged = true;
             return _value;
         }
 

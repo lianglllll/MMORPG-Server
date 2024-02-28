@@ -119,15 +119,25 @@ namespace Summer.Network
         /// <param name="message"></param>
         public void Send(Google.Protobuf.IMessage message)
         {
-            //获取imessage类型所对应的编号，网络传输我们只传输编号
-            using (var ds = DataStream.Allocate())
+
+
+            try
             {
-                int code = ProtoHelper.SeqCode(message.GetType());
-                ds.WriteInt(message.CalculateSize()+2);             //长度字段
-                ds.WriteUShort((ushort)code);                       //协议编号字段
-                message.WriteTo(ds);                                //数据
-                SocketSend(ds.ToArray());
+                //获取imessage类型所对应的编号，网络传输我们只传输编号
+                using (var ds = DataStream.Allocate())
+                {
+                    int code = ProtoHelper.SeqCode(message.GetType());
+                    ds.WriteInt(message.CalculateSize() + 2);             //长度字段
+                    ds.WriteUShort((ushort)code);                       //协议编号字段
+                    message.WriteTo(ds);                                //数据
+                    SocketSend(ds.ToArray());
+                }
             }
+            catch(Exception e)
+            {
+                Log.Error(e.ToString());
+            }
+
         }
 
         /// <summary>

@@ -61,7 +61,7 @@ namespace GameServer.core.FSM
             curStateId = stateId;
             curState = stateDict[stateId];
             curState.OnEnter();
-            Log.Information("怪物状态切换：" + curStateId);
+            //Log.Information("怪物状态切换：" + curStateId);
         }
 
         public  void Update()

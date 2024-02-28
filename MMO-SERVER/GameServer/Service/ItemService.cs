@@ -1,5 +1,6 @@
 ﻿using GameServer.core;
 using GameServer.Core;
+using GameServer.InventorySystem;
 using GameServer.Manager;
 using GameServer.Model;
 using Proto;
@@ -22,8 +23,11 @@ namespace GameServer.Service
             MessageRouter.Instance.Subscribe<InventoryInfoRequest>(_InventoryInfoRequest);
             MessageRouter.Instance.Subscribe<ItemPlacementRequest>(_ItemPlacementRequest);
             MessageRouter.Instance.Subscribe<ItemUseRequest>(_ItemUseRequest);
+            MessageRouter.Instance.Subscribe<ItemDiscardRequest>(_ItemDiscardRequest);
+            MessageRouter.Instance.Subscribe<ItemPickUpRequest>(_ItemPickUpRequest);
+            MessageRouter.Instance.Subscribe<WearEquipmentRequest>(_WearEquipmentRequest);
+            MessageRouter.Instance.Subscribe<UnloadEquipmentRequest>(_UnloadEquipmentRequest);
         }
-
 
         /// <summary>
         /// 处理玩家获取inventory信息请求
@@ -50,9 +54,25 @@ namespace GameServer.Service
             }
             if (message.QueryEquipment)
             {
-
+                resp.EquipmentInfo = chr.equipmentManager.InventoryInfo;
             }
             conn.Send(resp);
+        }
+
+        /// <summary>
+        /// 处理玩家item的放置请求
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="message"></param>
+        private void _ItemPlacementRequest(Connection conn, ItemPlacementRequest message)
+        {
+            var session = conn.Get<Session>();
+            if (session == null) return;
+            var chr = session.character;
+            if (chr == null) return;
+            chr.knapsack.Exchange(message.OriginIndex, message.TargetIndex);
+
+            _KnapsacUpdateResponse(conn.Get<Session>().character);
         }
 
         /// <summary>
@@ -63,136 +83,66 @@ namespace GameServer.Service
         private void _ItemUseRequest(Connection conn, ItemUseRequest message)
         {
             bool result = ItemManager.Instance.ItemUse(message);
-            if(result == false)
+            if (result == false)
             {
                 ItemUseResponse resp = new ItemUseResponse();
                 resp.Result = false;
                 conn.Send(resp);
             }
+            else
+            {
+                _KnapsacUpdateResponse(conn.Get<Session>().character);
+            }
+
         }
 
         /// <summary>
-        /// 处理玩家item的放置请求
+        /// 处理玩家物品丢弃请求
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="message"></param>
-        private void _ItemPlacementRequest(Connection conn, ItemPlacementRequest message)
+        private void _ItemDiscardRequest(Connection sender, ItemDiscardRequest message)
         {
-            //安全校验
-            Entity entity = EntityManager.Instance.GetEntity(message.EntityId);
-            if (entity == null) return;
-            if (!(entity is Character)) return;
+            var session = sender.Get<Session>();
+            if (session == null) return;
+            var chr = session.character;
+            if (chr == null) return;
+            int discardAmount = chr.knapsack.Discard(message.SlotIndex,message.Number);
 
-            //创建响应包
-            ItemPlacementResponse resp = new ItemPlacementResponse();
-            resp.ActionId = message.ActionId;
+            //刷ui
+            _KnapsacUpdateResponse(chr);
 
-
-            //分情况处理
-            bool result = false;
-            if(message.OriginInventoryTpey == InventoryType.Knapsack)
+            var res = new ItemDiscardResponse();
+            if (discardAmount > 0)
             {
-                result = ProcessKnapsackTo(message, entity as Character);
+                res.Result = Result.Success;
             }
-            else if(message.OriginInventoryTpey == InventoryType.Warehouse)
+            else
             {
-
-            }else if (message.OriginInventoryTpey == InventoryType.EquipmentColumn)
-            {
-
-            }else if(message.OriginInventoryTpey == InventoryType.CurrentScene)
-            {
-                int amount = 0;
-                result = ProcessCurrentSceneTo(message, entity as Character,ref amount);
-                resp.AuxiliarySpace = amount;               //成功添加物品的数量
+                res.Result = Result.Fault;
             }
-
-            resp.Result = result;
-            conn.Send(resp);
+            sender.Send(res);
         }
 
         /// <summary>
-        /// 处理Knapsack到某个inventory的情况
-        /// </summary>
-        /// <param name="message"></param>
-        public bool ProcessKnapsackTo(ItemPlacementRequest message,Character chr)
-        {
-            if (message.TargetInventoryTpey == InventoryType.Knapsack)
-            {
-                return chr.knapsack.Exchange(message.OriginIndex, message.TargetIndex);
-            }
-            else if(message.TargetInventoryTpey == InventoryType.Warehouse)
-            {
-
-            }else if(message.TargetInventoryTpey == InventoryType.EquipmentColumn)
-            {
-
-            }else if(message.TargetInventoryTpey == InventoryType.CurrentScene)
-            {
-                //其实是丢弃，这里的result就是丢弃的数量
-                Log.Information("丢弃物品{0}", message);
-                int result = chr.knapsack.Discard(message.OriginIndex, message.TargetIndex);
-                if(result > 0)
-                {
-                    return true;
-                }
-                return false;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// 处理CurrentScene到某个inventory的情况
-        /// </summary>
-        /// <param name="message"></param>
-        /// <param name="character"></param>
-        /// <returns></returns>
-        private bool ProcessCurrentSceneTo(ItemPlacementRequest message, Character character, ref int amount)
-        {
-            if (message.TargetInventoryTpey == InventoryType.Knapsack)
-            {
-                //current->knapsack其实就是拾起操作
-                amount =  PickupItemAction(message,character);
-                if (amount > 0)
-                {
-                    return true;
-                }
-                return false;
-            }
-            else if (message.TargetInventoryTpey == InventoryType.Warehouse)
-            {
-
-            }
-            else if (message.TargetInventoryTpey == InventoryType.EquipmentColumn)
-            {
-
-            }
-            else if (message.TargetInventoryTpey == InventoryType.CurrentScene)
-            {
-
-            }
-            return false;
-        }
-
-        //等弄一个itemmanager来统一放这些个操作，service只处理请求的，负责转发
-        /// <summary>
-        /// 拾取当前物品操作
+        /// 处理玩家物品拾取请求
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="message"></param>
-        private int PickupItemAction(ItemPlacementRequest message,Character chr)
+        private void _ItemPickUpRequest(Connection sender, ItemPickUpRequest message)
         {
-            //这里通过entity来寻找
-            int itemEntityId = message.OriginIndex;
+            var session = sender.Get<Session>();
+            if (session == null) return;
+            var chr = session.character;
+            if (chr == null) return;
 
             //获取一个符合条件的item，如果没有就忽略这次请求
-            Entity entity = GameTools.GetEntity(itemEntityId);
-
-            if (entity == null) return 0;
-            if (!(entity is ItemEntity itemEntity)) return 0;
+            Entity entity = GameTools.GetEntity(message.EntityId);
+            if (entity == null) return;
+            if (!(entity is ItemEntity itemEntity)) return;
 
             //添加物品到背包
-             var alreadyAddedAmount = chr.knapsack.AddItem(itemEntity.Item.ItemId, itemEntity.Item.Amount);
+            var alreadyAddedAmount = chr.knapsack.AddItem(itemEntity.Item.ItemId, itemEntity.Item.Amount);
 
             //判别是否装得下
             if (alreadyAddedAmount == itemEntity.Item.Amount)
@@ -207,9 +157,90 @@ namespace GameServer.Service
                 chr.currentSpace.SyncItemEntity(itemEntity);
             }
 
-            Log.Information("玩家拾起物品chr[{0}],背包[{1}]", chr.EntityId, chr.knapsack.InventoryInfo);
-            return alreadyAddedAmount;
+            //Log.Information("玩家拾起物品chr[{0}],背包[{1}]", chr.EntityId, chr.knapsack.InventoryInfo);
+            _KnapsacUpdateResponse(chr);
+
+            var res = new ItemPickupResponse();
+            if (alreadyAddedAmount > 0)
+            {
+                res.Result = Result.Success;
+            }
+            else
+            {
+                res.Result = Result.Fault;
+            }
+            sender.Send(res);
         }
 
+        /// <summary>
+        /// 装备栏中的装备卸载请求
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="message"></param>
+        private void _UnloadEquipmentRequest(Connection sender, UnloadEquipmentRequest message)
+        {
+            var session = sender.Get<Session>();
+            if (session == null) return;
+            var chr = session.character;
+            if (chr == null) return;
+
+            var equipsType = message.Type;
+            var item = chr.equipmentManager.GetEquipment(equipsType);
+            if (item == null) return;
+
+            chr.equipmentManager.Unload(equipsType, true);
+
+            _KnapsacUpdateResponse(chr);
+
+        }
+
+        /// <summary>
+        /// 背包中的装备穿戴请求
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="message"></param>
+        private void _WearEquipmentRequest(Connection sender, WearEquipmentRequest message)
+        {
+            var session = sender.Get<Session>();
+            if (session == null) return;
+            var chr = session.character;
+            if (chr == null) return;
+
+            var slotIndex = message.SlotIndex;
+            var item = chr.knapsack.GetItemBySlotIndex(slotIndex);
+            if (item == null || !(item is Equipment equipment)) return;
+
+            chr.equipmentManager.Wear(equipment, true);
+
+            _KnapsacUpdateResponse(chr);
+        }
+
+        /// <summary>
+        /// 背包更新响应
+        /// </summary>
+        /// <param name="chr"></param>
+        public void _KnapsacUpdateResponse(Character chr)
+        {
+            //响应给客户端
+            InventoryInfoResponse resp = new InventoryInfoResponse();
+            resp.EntityId = chr.EntityId;
+            resp.KnapsackInfo = chr.knapsack.InventoryInfo;
+
+            chr.session.Send(resp);
+        }
+
+        /// <summary>
+        /// 装备更新响应
+        /// </summary>
+        public void _EquipsUpdateResponse(Character chr)
+        {
+            var resp = new EquipsUpdateResponse();
+            resp.EntityId = chr.EntityId;
+            resp.EquipsList.AddRange(chr.info.EquipList);
+            //Log.Information("装备刷新=" + resp.EquipsList);
+            //Log.Information("背包刷新=" + chr.knapsack.InventoryInfo);
+            //广播
+            chr.currentSpace.Broadcast(resp);
+        }
     }
 }

@@ -421,7 +421,6 @@ namespace GameServer.Model
             SetHpMax(Attr.final.HPMax);
             SetMpMax(Attr.final.MPMax);
 
-
         }
 
 

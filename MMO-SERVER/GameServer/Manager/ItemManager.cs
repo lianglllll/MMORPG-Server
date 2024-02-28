@@ -11,6 +11,11 @@ namespace GameServer.Manager
 {
     public class ItemManager : Singleton<ItemManager>
     {
+        /// <summary>
+        /// 处理物品使用
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
         public bool ItemUse(ItemUseRequest message)
         {
             //安全校验

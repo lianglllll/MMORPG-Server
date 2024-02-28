@@ -73,7 +73,13 @@ namespace GameServer.Service
             {
                 var def = DataManager.Instance.ItemDefinedDict[1005];
                 var item = new Equipment(def);
-                chr.equipmentManager.Wear(item);
+                chr.equipmentManager.Wear(item,true);
+            }
+
+            if (message.Message.Content == "-unload")
+            {
+
+                chr.equipmentManager.Unload(EquipsType.Boots,true);
             }
         }
 
