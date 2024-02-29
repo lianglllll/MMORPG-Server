@@ -12,11 +12,10 @@ namespace GameServer.InventorySystem
     /// 物品基类
     /// </summary>
     [Serializable]
-    public class Item 
+    public abstract class Item 
     {
-
         public ItemDefine Define { get; set; } 
-        protected ItemInfo _itmeInfo;                             //网络对象
+        protected ItemInfo _itmeInfo;                               //网络对象
 
         public int ItemId
         {
@@ -47,7 +46,7 @@ namespace GameServer.InventorySystem
             {
                 return Define.Capicity;
             }
-        }
+        }                           //堆叠上限
         public ItemInfo ItemInfo
         {
             get
@@ -109,6 +108,37 @@ namespace GameServer.InventorySystem
                 case "神器": return Quality.Artifact;
             }
             return Quality.Common;
+        }
+
+        /// <summary>
+        /// 创建Item实例
+        /// </summary>
+        /// <param name="def"></param>
+        /// <param name="amount"></param>
+        /// <param name="pos"></param>
+        /// <returns></returns>
+        public static Item CreateItem(ItemDefine def,int amount,int pos)
+        {
+            Item newItem = null;
+            switch (def.ItemType)
+            {
+                case "消耗品":
+                    newItem = new Consumable(def, amount, pos);
+                    break;
+                case "道具":
+                    newItem = new MaterialItem(def, amount, pos);
+                    break;
+                case "装备":
+                    newItem = new Equipment(def);
+                    break;
+            }
+            return newItem;
+        }
+        public static Item CreateItem(ItemInfo info)
+        {
+            var def = DataManager.Instance.ItemDefinedDict[info.ItemId];
+            if (def == null) return null;
+            return Item.CreateItem(def, info.Amount, info.Position);
         }
 
     }

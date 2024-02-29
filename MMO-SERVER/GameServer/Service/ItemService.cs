@@ -136,13 +136,21 @@ namespace GameServer.Service
             var chr = session.character;
             if (chr == null) return;
 
-            //获取一个符合条件的item，如果没有就忽略这次请求
+            //获取符合条件的item，如果没有就忽略这次请求
             Entity entity = GameTools.GetEntity(message.EntityId);
             if (entity == null) return;
             if (!(entity is ItemEntity itemEntity)) return;
 
             //添加物品到背包
-            var alreadyAddedAmount = chr.knapsack.AddItem(itemEntity.Item.ItemId, itemEntity.Item.Amount);
+            int alreadyAddedAmount = 0;
+            if (itemEntity.Item.GetItemType() == ItemType.Equipment)
+            {
+                alreadyAddedAmount = chr.knapsack.AddItem(itemEntity.Item);
+            }
+            else
+            {
+                alreadyAddedAmount = chr.knapsack.AddItem(itemEntity.Item.ItemId, itemEntity.Item.Amount);
+            }
 
             //判别是否装得下
             if (alreadyAddedAmount == itemEntity.Item.Amount)
@@ -150,20 +158,25 @@ namespace GameServer.Service
                 //如果背包能装下全部，则通知场景中这个物品已经消失
                 chr.currentSpace.ItemLeave(itemEntity);
             }
-            else
+            else if(alreadyAddedAmount < itemEntity.Item.Amount && alreadyAddedAmount != 0)
             {
                 //更新场景中的itementity数据,amount
                 itemEntity.Item.Amount -= alreadyAddedAmount;
                 chr.currentSpace.SyncItemEntity(itemEntity);
             }
+            else
+            {
+                //添加失败
+            }
 
-            //Log.Information("玩家拾起物品chr[{0}],背包[{1}]", chr.EntityId, chr.knapsack.InventoryInfo);
-            _KnapsacUpdateResponse(chr);
 
+            //响应客户端
             var res = new ItemPickupResponse();
             if (alreadyAddedAmount > 0)
             {
                 res.Result = Result.Success;
+                //更新ui
+                _KnapsacUpdateResponse(chr);
             }
             else
             {

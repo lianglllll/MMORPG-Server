@@ -171,7 +171,7 @@ namespace GameServer.InventorySystem
                     {
                         //本次可以处理的数量
                         var currentProcessAmount = Math.Min(counter, def.Capicity);
-                        var newItem = new Item(def, currentProcessAmount,emptyIndex);
+                        Item newItem = Item.CreateItem(def, currentProcessAmount, emptyIndex);
                         SetItem(emptyIndex, newItem);
                         counter -= currentProcessAmount;
                     }
@@ -287,7 +287,7 @@ namespace GameServer.InventorySystem
             //1.检查物品是否存在
             if (!DataManager.Instance.ItemDefinedDict.TryGetValue(itemId, out var def))
             {
-                Log.Information("物品id={0}不存在", itemId);
+                //Log.Information("物品id={0}不存在", itemId);
                 return 0;
             }
 
@@ -349,16 +349,19 @@ namespace GameServer.InventorySystem
             if (amount < item.Amount)
             {
                 item.Amount -= amount;
-                var newItem = new Item(item.Define, amount);
+                Item newItem = Item.CreateItem(item.Define,amount,0);
                 Chr.currentSpace.itemManager.Create(newItem, Chr.Position,Vector3Int.zero);
                 return amount;
             }
+            else
+            {
+                //丢弃全部
+                removeSlot(slotIndex);
+                int tmpAmount = item.Amount;
+                Chr.currentSpace.itemManager.Create(item, Chr.Position, Vector3Int.zero);
+                return tmpAmount;
+            }
 
-            //丢弃全部
-            removeSlot(slotIndex);
-            int tmpAmount = item.Amount;
-            Chr.currentSpace.itemManager.Create(item, Chr.Position, Vector3Int.zero);
-            return tmpAmount;
         }
 
         /// <summary>

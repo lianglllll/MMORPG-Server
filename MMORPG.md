@@ -396,7 +396,67 @@ validate_password_special_char_count：密码至少要包含的特殊字符数�
 
 
 
+### 卸载
+
+自己问gpt
+
+
+
+### 导入sql文件
+
+```
+进入mysql某个数据库中
+source /path/file.sql
+```
+
+
+
+
+
+
+
 ## 2.部署c#运行环境
+
+云服务器需要dotnet环境
+
+![image-20230702103526574](MMORPG.assets/image-20230702103526574.png)
+
+```
+# 导入镜像源
+sudo rpm -Uvh https://packages.microsoft.com/config/centos/7/packages-microsoft-prod.rpm
+
+# 安装net6环境
+sudo yum install dotnet-sdk-6.0
+
+# 查看是否安装成功
+dotnet --info
+```
+
+
+
+选择release  Any Cpu
+
+![image-20230702103137449](MMORPG.assets/image-20230702103137449.png) 
+
+选择你要发布的项目，右键重写生成
+
+![image-20230702103233229](MMORPG.assets/image-20230702103233229.png) 
+
+![image-20230702103252840](MMORPG.assets/image-20230702103252840.png)
+
+可以看到重写生成的文件在这个目录下
+
+![image-20230702103329928](MMORPG.assets/image-20230702103329928.png)
+
+
+
+ .exe就是在windows下面运行的，  .dll就是在linux下面运行的
+
+然后我们可以通过xshell进行传输
+
+```
+dotnet GameServer.dll  就能运行了
+```
 
 
 
