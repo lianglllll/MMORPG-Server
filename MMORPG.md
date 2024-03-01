@@ -417,7 +417,9 @@ source /path/file.sql
 
 ## 2.部署c#运行环境
 
-云服务器需要dotnet环境
+
+
+**云服务器需要dotnet环境**
 
 ![image-20230702103526574](MMORPG.assets/image-20230702103526574.png)
 
@@ -431,6 +433,65 @@ sudo yum install dotnet-sdk-6.0
 # 查看是否安装成功
 dotnet --info
 ```
+
+
+
+**云服务器端口放行**
+
+![image-20240301003814057](MMORPG.assets/image-20240301003814057.png)
+
+
+
+**linux主机防火墙端口放行**
+
+
+在 Ubuntu 中，你可以使用 `ufw`（Uncomplicated Firewall）工具来管理防火墙规则。以下是一些基本的步骤，可以帮助你放行端口：
+
+1. **检查防火墙状态：** 在终端中输入以下命令，检查防火墙的当前状态：
+
+   ```
+   bashCopy code
+   sudo ufw status
+   ```
+
+2. **启用防火墙：** 如果防火墙没有启用，可以使用以下命令启用它：
+
+   ```
+   bashCopy code
+   sudo ufw enable
+   ```
+
+3. **放行端口：** 使用以下命令放行特定端口（例如，假设你要放行端口 80）：
+
+   ```
+   bashCopy code
+   sudo ufw allow 80
+   ```
+
+   如果你的应用程序使用其他端口，替换 `80` 为你实际使用的端口号。
+
+4. **重新加载防火墙：** 重新加载防火墙规则，以确保更改生效：
+
+   ```
+   bashCopy code
+   sudo ufw reload
+   ```
+
+5. **验证更改：** 最后，再次运行 `sudo ufw status` 来确认端口已经被正确放行。
+
+
+
+
+
+
+
+## 3.启动服务器程序
+
+**服务器的ip使用内网ip或者 0.0.0.0**
+
+**客户端连接服务器的ip使用云服务器的ip**
+
+
 
 
 
@@ -454,19 +515,64 @@ dotnet --info
 
 然后我们可以通过xshell进行传输
 
+
+
+下面这样启动当前shell关闭的时候，服务器进程也会一起关闭的，因为它在shell下启动，所以我们需要将进程设置为守护进程
+
 ```
 dotnet GameServer.dll  就能运行了
 ```
 
+**1、安装screen**
 
+```
+# 在Ubuntu上安装并使用screen
+sudo apt update  # 更新包列表
+sudo apt install screen  # 安装screen工具
+```
 
+**2、新建窗口**
 
+```
+# 创建一个新的窗口
+screen -S test
+```
 
+**3、执行文件**
 
+```
+# 进入窗口后 执行文件
+python test.py > output.log 2>&1
+```
 
-## 3.启动服务器程序
+**4、退出该窗口**
 
+```
+# 退出当前窗口
+ctrl+a+d   （方法1：保留当前窗口）
+screen -d  （方法2：保留当前窗口）
+```
 
+**5、查看程序输出文件（output.log）**
+
+![img](MMORPG.assets/a544b4f253594f29ae2318d2c69c6cef.png) 
+
+**6、停止程序**
+
+```
+# 1、重新连接窗口
+screen -r id或窗口名称
+ 
+# 示例：
+screen -r 344 
+screen -r test
+ 
+# 2、按 Ctrl + C 停止程序运行
+```
+
+![img](MMORPG.assets/00b7cc807c4d44829e8c7102079ae8a1.png) 
+
+> **实在不行，就查看程序的运行状态，也可以通过 `ps` 命令来查看程序是否在运行**
 
 
 

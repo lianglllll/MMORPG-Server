@@ -1,0 +1,11 @@
+database:
+  host: 127.0.0.1
+  port: 3306
+  username: root
+  password: root
+  dbName: mmorpg
+
+server:
+  ip: 127.0.0.1
+  port: 6688
+  workerCount: 2
