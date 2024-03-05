@@ -1,5 +1,6 @@
 ﻿using GameServer.core;
 using GameServer.Core;
+using GameServer.Database;
 using GameServer.InventorySystem;
 using GameServer.Manager;
 using GameServer.Model;
@@ -107,6 +108,8 @@ namespace GameServer.Service
             if (session == null) return;
             var chr = session.character;
             if (chr == null) return;
+            var item = chr.knapsack.GetItemBySlotIndex(message.SlotIndex);
+            //丢弃
             int discardAmount = chr.knapsack.Discard(message.SlotIndex,message.Number);
 
             //刷ui
@@ -116,6 +119,8 @@ namespace GameServer.Service
             if (discardAmount > 0)
             {
                 res.Result = Result.Success;
+                res.ItemId = item.ItemId;
+                res.Amout = discardAmount;
             }
             else
             {
@@ -183,6 +188,9 @@ namespace GameServer.Service
                 res.Result = Result.Fault;
             }
             sender.Send(res);
+
+            //test
+
         }
 
         /// <summary>

@@ -57,7 +57,7 @@ namespace GameServer.Service
         /// <param name="message"></param>
         private void _SpellCastRequest(Connection conn, SpellCastRequest message)
         {
-            Log.Information("技能施法请求：{0}", message);
+            //Log.Information("技能施法请求：{0}", message);
             //判断技能施法是否成功
             Session session  = conn.Get<Session>();
             Character chr = session.character;

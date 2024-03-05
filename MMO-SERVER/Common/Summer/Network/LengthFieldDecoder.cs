@@ -103,7 +103,12 @@ namespace Summer.Network
                 //打印一下异常，并且断开与客户端的连接
                 Console.WriteLine(e);
                 _disconnected();
-            } 
+            } catch (Exception e)
+            {
+                //打印一下异常，并且断开与客户端的连接
+                Console.WriteLine(e);
+                _disconnected();
+            }
 
         }
 

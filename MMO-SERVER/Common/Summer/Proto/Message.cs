@@ -131,40 +131,43 @@ namespace Proto {
             "bnQYAyABKAUiQwoPSXRlbVVzZVJlc3BvbnNlEg4KBnJlc3VsdBgBIAEoCBIR",
             "CglzbG90SW5kZXgYAiABKAUSDQoFY291bnQYAyABKAUiWwoSSXRlbURpc2Nh",
             "cmRSZXF1ZXN0EhEKCXNsb3RJbmRleBgBIAEoBRIOCgZudW1iZXIYAiABKAUS",
-            "IgoEdHlwZRgDIAEoDjIULnByb3RvLkludmVudG9yeVR5cGUiNAoTSXRlbURp",
-            "c2NhcmRSZXNwb25zZRIdCgZyZXN1bHQYASABKA4yDS5wcm90by5SZXN1bHQi",
-            "JQoRSXRlbVBpY2tVcFJlcXVlc3QSEAoIZW50aXR5SWQYASABKAUiMwoSSXRl",
-            "bVBpY2t1cFJlc3BvbnNlEh0KBnJlc3VsdBgBIAEoDjINLnByb3RvLlJlc3Vs",
-            "dCIPCg1FcXVpcHNSZXF1ZXN0IkcKDkVxdWlwc1Jlc3BvbnNlEhAKCGVudGl0",
-            "eUlkGAEgASgFEiMKCmVxdWlwc0xpc3QYAiADKAsyDy5wcm90by5JdGVtSW5m",
-            "byJNChRFcXVpcHNVcGRhdGVSZXNwb25zZRIQCghlbnRpdHlJZBgBIAEoBRIj",
-            "CgplcXVpcHNMaXN0GAIgAygLMg8ucHJvdG8uSXRlbUluZm8iKQoUV2VhckVx",
-            "dWlwbWVudFJlcXVlc3QSEQoJc2xvdEluZGV4GAEgASgFIjkKFlVubG9hZEVx",
-            "dWlwbWVudFJlcXVlc3QSHwoEdHlwZRgBIAEoDjIRLnByb3RvLkVxdWlwc1R5",
-            "cGUqTwoLRW50aXR5U3RhdGUSCAoETk9ORRAAEggKBElETEUQARIICgRXQUxL",
-            "EAISBwoDUlVOEAMSCAoESlVNUBAEEg8KC1NXT1JERkxJR0hUEAUqMQoKRW50",
-            "aXR5VHlwZRINCglDaGFyYWN0ZXIQABILCgdNb25zdGVyEAESBwoDTlBDEAIq",
-            "gAEKCkNhc3RSZXN1bHQSCwoHU3VjY2VzcxAAEg0KCUlzUGFzc2l2ZRABEgoK",
-            "Bk1wTGFjaxACEg4KCkVudGl0eURlYWQQAxIOCgpPdXRPZlJhbmdlEAQSCwoH",
-            "UnVubmluZxAFEgwKCENvbGREb3duEAYSDwoLVGFyZ2V0RXJyb3IQByo/CgtE",
-            "YW1lYWdlVHlwZRILCgdVTktOT1dOEAASDAoIUEhZU0lDQUwQARILCgdNQUdJ",
-            "Q0FMEAISCAoEUkVBTBADKj0KCVVuaXRTdGF0ZRIICgRGUkVFEAASCAoEREVB",
-            "RBABEggKBFJFU1QQAhIJCgVGSUdIVBADEgcKA01BWBAEKiAKBlJlc3VsdBIL",
-            "CgdTVUNDRVNTEAASCQoFRkFVTFQQASpaCgtDaGF0Q2hhbm5lbBIHCgNBTEwQ",
-            "ABIJCgVMT0NBTBABEgkKBVdPUkxEEAISCgoGU1lTVEVNEAQSCwoHUFJJVkFU",
-            "RRAIEggKBFRFQU0QEBIJCgVHVUlMRBAgKjcKCEl0ZW1UeXBlEgwKCE1hdGVy",
-            "aWFsEAASDgoKQ29uc3VtYWJsZRABEg0KCUVxdWlwbWVudBACKlAKB1F1YWxp",
-            "dHkSCgoGQ29tbW9uEAASCAoERmluZRABEggKBFJhcmUQAhIICgRFcGljEAMS",
-            "DQoJTGVnZW5kYXJ5EAQSDAoIQXJ0aWZhY3QQBSqqAQoKRXF1aXBzVHlwZRIJ",
-            "CgVVTlNFVBAAEgoKBldlYXBvbhABEhMKD1NlY29uZGFyeVdlYXBvbhACEgoK",
-            "BkhlbG1ldBADEggKBE5lY2sQBBIJCgVDaGVzdBAFEg0KCVdyaXN0YmFuZBAG",
-            "EggKBEJlbHQQBxIMCghCcmFjZWxldBAIEggKBExlZ3MQCRIICgRSaW5nEAoS",
-            "CQoFQm9vdHMQCxIJCgVXaW5ncxAMKlMKDUludmVudG9yeVR5cGUSDAoIS25h",
-            "cHNhY2sQABINCglXYXJlaG91c2UQARITCg9FcXVpcG1lbnRDb2x1bW4QAhIQ",
-            "CgxDdXJyZW50U2NlbmUQA2IGcHJvdG8z"));
+            "IgoEdHlwZRgDIAEoDjIULnByb3RvLkludmVudG9yeVR5cGUiUwoTSXRlbURp",
+            "c2NhcmRSZXNwb25zZRIdCgZyZXN1bHQYASABKA4yDS5wcm90by5SZXN1bHQS",
+            "DgoGaXRlbUlkGAIgASgFEg0KBWFtb3V0GAMgASgFIiUKEUl0ZW1QaWNrVXBS",
+            "ZXF1ZXN0EhAKCGVudGl0eUlkGAEgASgFIkMKEkl0ZW1QaWNrdXBSZXNwb25z",
+            "ZRIdCgZyZXN1bHQYASABKA4yDS5wcm90by5SZXN1bHQSDgoGaXRlbUlkGAIg",
+            "ASgFIg8KDUVxdWlwc1JlcXVlc3QiRwoORXF1aXBzUmVzcG9uc2USEAoIZW50",
+            "aXR5SWQYASABKAUSIwoKZXF1aXBzTGlzdBgCIAMoCzIPLnByb3RvLkl0ZW1J",
+            "bmZvIk0KFEVxdWlwc1VwZGF0ZVJlc3BvbnNlEhAKCGVudGl0eUlkGAEgASgF",
+            "EiMKCmVxdWlwc0xpc3QYAiADKAsyDy5wcm90by5JdGVtSW5mbyIpChRXZWFy",
+            "RXF1aXBtZW50UmVxdWVzdBIRCglzbG90SW5kZXgYASABKAUiOQoWVW5sb2Fk",
+            "RXF1aXBtZW50UmVxdWVzdBIfCgR0eXBlGAEgASgOMhEucHJvdG8uRXF1aXBz",
+            "VHlwZSpPCgtFbnRpdHlTdGF0ZRIICgROT05FEAASCAoESURMRRABEggKBFdB",
+            "TEsQAhIHCgNSVU4QAxIICgRKVU1QEAQSDwoLU1dPUkRGTElHSFQQBSoxCgpF",
+            "bnRpdHlUeXBlEg0KCUNoYXJhY3RlchAAEgsKB01vbnN0ZXIQARIHCgNOUEMQ",
+            "AiqAAQoKQ2FzdFJlc3VsdBILCgdTdWNjZXNzEAASDQoJSXNQYXNzaXZlEAES",
+            "CgoGTXBMYWNrEAISDgoKRW50aXR5RGVhZBADEg4KCk91dE9mUmFuZ2UQBBIL",
+            "CgdSdW5uaW5nEAUSDAoIQ29sZERvd24QBhIPCgtUYXJnZXRFcnJvchAHKj8K",
+            "C0RhbWVhZ2VUeXBlEgsKB1VOS05PV04QABIMCghQSFlTSUNBTBABEgsKB01B",
+            "R0lDQUwQAhIICgRSRUFMEAMqPQoJVW5pdFN0YXRlEggKBEZSRUUQABIICgRE",
+            "RUFEEAESCAoEUkVTVBACEgkKBUZJR0hUEAMSBwoDTUFYEAQqIAoGUmVzdWx0",
+            "EgsKB1NVQ0NFU1MQABIJCgVGQVVMVBABKloKC0NoYXRDaGFubmVsEgcKA0FM",
+            "TBAAEgkKBUxPQ0FMEAESCQoFV09STEQQAhIKCgZTWVNURU0QBBILCgdQUklW",
+            "QVRFEAgSCAoEVEVBTRAQEgkKBUdVSUxEECAqNwoISXRlbVR5cGUSDAoITWF0",
+            "ZXJpYWwQABIOCgpDb25zdW1hYmxlEAESDQoJRXF1aXBtZW50EAIqUAoHUXVh",
+            "bGl0eRIKCgZDb21tb24QABIICgRGaW5lEAESCAoEUmFyZRACEggKBEVwaWMQ",
+            "AxINCglMZWdlbmRhcnkQBBIMCghBcnRpZmFjdBAFKqoBCgpFcXVpcHNUeXBl",
+            "EgkKBVVOU0VUEAASCgoGV2VhcG9uEAESEwoPU2Vjb25kYXJ5V2VhcG9uEAIS",
+            "CgoGSGVsbWV0EAMSCAoETmVjaxAEEgkKBUNoZXN0EAUSDQoJV3Jpc3RiYW5k",
+            "EAYSCAoEQmVsdBAHEgwKCEJyYWNlbGV0EAgSCAoETGVncxAJEggKBFJpbmcQ",
+            "ChIJCgVCb290cxALEgkKBVdpbmdzEAwqUwoNSW52ZW50b3J5VHlwZRIMCghL",
+            "bmFwc2FjaxAAEg0KCVdhcmVob3VzZRABEhMKD0VxdWlwbWVudENvbHVtbhAC",
+            "EhAKDEN1cnJlbnRTY2VuZRADKioKCEJ1ZmZUeXBlEggKBE5vbmUQABIICgRC",
+            "dWZmEAESCgoGRGVidWZmEAIqNAoMQnVmZkNvbmZsaWN0EgsKB0NvbWJpbmUQ",
+            "ABIMCghTZXBhcmF0ZRABEgkKBUNvdmVyEAJiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Proto.EntityState), typeof(global::Proto.EntityType), typeof(global::Proto.CastResult), typeof(global::Proto.DameageType), typeof(global::Proto.UnitState), typeof(global::Proto.Result), typeof(global::Proto.ChatChannel), typeof(global::Proto.ItemType), typeof(global::Proto.Quality), typeof(global::Proto.EquipsType), typeof(global::Proto.InventoryType), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Proto.EntityState), typeof(global::Proto.EntityType), typeof(global::Proto.CastResult), typeof(global::Proto.DameageType), typeof(global::Proto.UnitState), typeof(global::Proto.Result), typeof(global::Proto.ChatChannel), typeof(global::Proto.ItemType), typeof(global::Proto.Quality), typeof(global::Proto.EquipsType), typeof(global::Proto.InventoryType), typeof(global::Proto.BuffType), typeof(global::Proto.BuffConflict), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.HeartBeatRequest), global::Proto.HeartBeatRequest.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.HeartBeatResponse), global::Proto.HeartBeatResponse.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.Vec3), global::Proto.Vec3.Parser, new[]{ "X", "Y", "Z" }, null, null, null, null),
@@ -218,9 +221,9 @@ namespace Proto {
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.ItemUseRequest), global::Proto.ItemUseRequest.Parser, new[]{ "EntityId", "SlotIndex", "Count" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.ItemUseResponse), global::Proto.ItemUseResponse.Parser, new[]{ "Result", "SlotIndex", "Count" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.ItemDiscardRequest), global::Proto.ItemDiscardRequest.Parser, new[]{ "SlotIndex", "Number", "Type" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Proto.ItemDiscardResponse), global::Proto.ItemDiscardResponse.Parser, new[]{ "Result" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Proto.ItemDiscardResponse), global::Proto.ItemDiscardResponse.Parser, new[]{ "Result", "ItemId", "Amout" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.ItemPickUpRequest), global::Proto.ItemPickUpRequest.Parser, new[]{ "EntityId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Proto.ItemPickupResponse), global::Proto.ItemPickupResponse.Parser, new[]{ "Result" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Proto.ItemPickupResponse), global::Proto.ItemPickupResponse.Parser, new[]{ "Result", "ItemId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.EquipsRequest), global::Proto.EquipsRequest.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.EquipsResponse), global::Proto.EquipsResponse.Parser, new[]{ "EntityId", "EquipsList" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.EquipsUpdateResponse), global::Proto.EquipsUpdateResponse.Parser, new[]{ "EntityId", "EquipsList" }, null, null, null, null),
@@ -453,6 +456,33 @@ namespace Proto {
     [pbr::OriginalName("Warehouse")] Warehouse = 1,
     [pbr::OriginalName("EquipmentColumn")] EquipmentColumn = 2,
     [pbr::OriginalName("CurrentScene")] CurrentScene = 3,
+  }
+
+  /// <summary>
+  ///buff类型
+  /// </summary>
+  public enum BuffType {
+    [pbr::OriginalName("None")] None = 0,
+    [pbr::OriginalName("Buff")] Buff = 1,
+    [pbr::OriginalName("Debuff")] Debuff = 2,
+  }
+
+  /// <summary>
+  ///buff叠加方式
+  /// </summary>
+  public enum BuffConflict {
+    /// <summary>
+    ///合并为一个buff，叠层(提升等级)
+    /// </summary>
+    [pbr::OriginalName("Combine")] Combine = 0,
+    /// <summary>
+    ///独立存在
+    /// </summary>
+    [pbr::OriginalName("Separate")] Separate = 1,
+    /// <summary>
+    ///覆盖，后者覆盖前者
+    /// </summary>
+    [pbr::OriginalName("Cover")] Cover = 2,
   }
 
   #endregion
@@ -14267,6 +14297,8 @@ namespace Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ItemDiscardResponse(ItemDiscardResponse other) : this() {
       result_ = other.result_;
+      itemId_ = other.itemId_;
+      amout_ = other.amout_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -14288,6 +14320,30 @@ namespace Proto {
       }
     }
 
+    /// <summary>Field number for the "itemId" field.</summary>
+    public const int ItemIdFieldNumber = 2;
+    private int itemId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int ItemId {
+      get { return itemId_; }
+      set {
+        itemId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "amout" field.</summary>
+    public const int AmoutFieldNumber = 3;
+    private int amout_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int Amout {
+      get { return amout_; }
+      set {
+        amout_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -14304,6 +14360,8 @@ namespace Proto {
         return true;
       }
       if (Result != other.Result) return false;
+      if (ItemId != other.ItemId) return false;
+      if (Amout != other.Amout) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -14312,6 +14370,8 @@ namespace Proto {
     public override int GetHashCode() {
       int hash = 1;
       if (Result != global::Proto.Result.Success) hash ^= Result.GetHashCode();
+      if (ItemId != 0) hash ^= ItemId.GetHashCode();
+      if (Amout != 0) hash ^= Amout.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -14334,6 +14394,14 @@ namespace Proto {
         output.WriteRawTag(8);
         output.WriteEnum((int) Result);
       }
+      if (ItemId != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(ItemId);
+      }
+      if (Amout != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(Amout);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -14348,6 +14416,14 @@ namespace Proto {
         output.WriteRawTag(8);
         output.WriteEnum((int) Result);
       }
+      if (ItemId != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(ItemId);
+      }
+      if (Amout != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(Amout);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -14360,6 +14436,12 @@ namespace Proto {
       int size = 0;
       if (Result != global::Proto.Result.Success) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Result);
+      }
+      if (ItemId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(ItemId);
+      }
+      if (Amout != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Amout);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -14375,6 +14457,12 @@ namespace Proto {
       }
       if (other.Result != global::Proto.Result.Success) {
         Result = other.Result;
+      }
+      if (other.ItemId != 0) {
+        ItemId = other.ItemId;
+      }
+      if (other.Amout != 0) {
+        Amout = other.Amout;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -14395,6 +14483,14 @@ namespace Proto {
             Result = (global::Proto.Result) input.ReadEnum();
             break;
           }
+          case 16: {
+            ItemId = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            Amout = input.ReadInt32();
+            break;
+          }
         }
       }
     #endif
@@ -14412,6 +14508,14 @@ namespace Proto {
             break;
           case 8: {
             Result = (global::Proto.Result) input.ReadEnum();
+            break;
+          }
+          case 16: {
+            ItemId = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            Amout = input.ReadInt32();
             break;
           }
         }
@@ -14648,6 +14752,7 @@ namespace Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ItemPickupResponse(ItemPickupResponse other) : this() {
       result_ = other.result_;
+      itemId_ = other.itemId_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -14669,6 +14774,18 @@ namespace Proto {
       }
     }
 
+    /// <summary>Field number for the "itemId" field.</summary>
+    public const int ItemIdFieldNumber = 2;
+    private int itemId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int ItemId {
+      get { return itemId_; }
+      set {
+        itemId_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -14685,6 +14802,7 @@ namespace Proto {
         return true;
       }
       if (Result != other.Result) return false;
+      if (ItemId != other.ItemId) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -14693,6 +14811,7 @@ namespace Proto {
     public override int GetHashCode() {
       int hash = 1;
       if (Result != global::Proto.Result.Success) hash ^= Result.GetHashCode();
+      if (ItemId != 0) hash ^= ItemId.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -14715,6 +14834,10 @@ namespace Proto {
         output.WriteRawTag(8);
         output.WriteEnum((int) Result);
       }
+      if (ItemId != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(ItemId);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -14729,6 +14852,10 @@ namespace Proto {
         output.WriteRawTag(8);
         output.WriteEnum((int) Result);
       }
+      if (ItemId != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(ItemId);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -14741,6 +14868,9 @@ namespace Proto {
       int size = 0;
       if (Result != global::Proto.Result.Success) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Result);
+      }
+      if (ItemId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(ItemId);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -14756,6 +14886,9 @@ namespace Proto {
       }
       if (other.Result != global::Proto.Result.Success) {
         Result = other.Result;
+      }
+      if (other.ItemId != 0) {
+        ItemId = other.ItemId;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -14776,6 +14909,10 @@ namespace Proto {
             Result = (global::Proto.Result) input.ReadEnum();
             break;
           }
+          case 16: {
+            ItemId = input.ReadInt32();
+            break;
+          }
         }
       }
     #endif
@@ -14793,6 +14930,10 @@ namespace Proto {
             break;
           case 8: {
             Result = (global::Proto.Result) input.ReadEnum();
+            break;
+          }
+          case 16: {
+            ItemId = input.ReadInt32();
             break;
           }
         }

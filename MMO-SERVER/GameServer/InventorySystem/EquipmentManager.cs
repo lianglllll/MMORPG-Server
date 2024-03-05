@@ -98,7 +98,7 @@ namespace GameServer.InventorySystem
             //穿到身上
             equipDict[equipment.EquipsType] = equipment;
             int slot = equipment.Position;
-            equipment.Position = 0;
+            equipment.Position = -1;
 
             //移除背包中的
             chr.knapsack.removeSlot(slot);

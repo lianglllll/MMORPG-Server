@@ -9,22 +9,24 @@ using GameServer.Core;
 using GameServer.Combat;
 using GameServer.Manager;
 using Serilog;
+using GameServer.Buffs;
 
 namespace GameServer.Model
 {
 
     public class Actor : Entity
     {
-        public UnitDefine Define;                                                                   //单位的一些静态数据
-        public Space currentSpace;                                                                  //当前的场景
-        public NetActor info  = new NetActor();                                                     //NetActor 网络对象
+        public UnitDefine Define;                                                                   //actor的define数据(静态数据)
+        public NetActor info  = new NetActor();                                                     //actor的NetActor数据(动态数据)
+        public Space currentSpace;                                                                  //actor所在的当前场景
         public EntityState State;                                                                   //actor状态：跑、走、跳、
+        public UnitState unitState;                                                                 //actor活动状态:死亡、空闲、战斗
         public Attributes Attr = new Attributes();                                                  //actor属性
         public SkillManager skillManager;                                                           //actor技能管理器
         public Spell spell;                                                                         //actor技能释放器
-        public UnitState unitState;                                                                 //单位状态:死亡、空闲、战斗
+        public BuffManager buffManager;                                                             //actor的buff管理器
 
-        public Skill curentSkill;                                                                   //当前正在使用的技能
+        public Skill curentSkill;                                                                   //actor当前正在使用的技能
 
 
         public bool IsDeath => unitState == UnitState.Dead;            
@@ -90,6 +92,7 @@ namespace GameServer.Model
             //给当前actor添加相对应的组件
             this.skillManager = new SkillManager(this);                 //技能管理器
             this.spell = new Spell(this);                               //技能施法器
+            this.buffManager = new BuffManager(this);                   //buff管理器
             this.Attr.Init(this);                                       //actor属性初始化
 
             //再初始化
@@ -99,7 +102,6 @@ namespace GameServer.Model
             info.MpMax = Attr.final.MPMax;
             info.Speed = Attr.final.Speed;
 
-
         }
 
         /// <summary>
@@ -108,6 +110,7 @@ namespace GameServer.Model
         public override void Update()
         {
             this.skillManager.Update();//驱动技能系统
+            this.buffManager.OnUpdate(Time.deltaTime);
         }
 
         /// <summary>

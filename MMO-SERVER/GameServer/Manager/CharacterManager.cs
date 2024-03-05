@@ -2,6 +2,7 @@
 using GameServer.Database;
 using GameServer.Model;
 using Google.Protobuf;
+using Serilog;
 using Summer;
 using System;
 using System.Collections.Concurrent;
@@ -19,7 +20,7 @@ namespace GameServer.Manager
     /// </summary>
     public class CharacterManager: Singleton<CharacterManager>
     {
-        //游戏中全部的角色<characterId,characterObj>,支持线程安全的字典
+        //游戏中全部的角色<entityid,characterObj>,支持线程安全的字典
         private ConcurrentDictionary<int, Character> characterDict = new ConcurrentDictionary<int, Character>();
 
         //角色表的数据库对象
@@ -43,7 +44,7 @@ namespace GameServer.Manager
         {
             Character chr = new Character(dbchr);
             EntityManager.Instance.AddEntity(dbchr.SpaceId, chr);
-            characterDict[chr.Id] = chr;
+            characterDict[chr.EntityId] = chr;
             return chr;
         }
 
@@ -51,12 +52,16 @@ namespace GameServer.Manager
         /// 移除一个角色
         /// </summary>
         /// <param name="chrId"></param>
-        public void RemoveCharacter(int chrId)
+        public void RemoveCharacter(int entityId)
         {
             //角色列表中删除
-            if(characterDict.TryRemove(chrId,out Character chr)){
+            if(characterDict.TryRemove(entityId, out Character chr)){
                 //entity列表中删除
                 EntityManager.Instance.RemoveEntity(chr.currentSpace.SpaceId, chr.EntityId);
+            }
+            else
+            {
+                Log.Error($"[CharacterManager]移除角色失败，没有entityid为{entityId}的角色。");
             }
         }
 
@@ -65,9 +70,9 @@ namespace GameServer.Manager
         /// </summary>
         /// <param name="chrId"></param>
         /// <returns></returns>
-        public Character GetCharacter(int chrId)
+        public Character GetCharacter(int entityId)
         {
-            return characterDict.GetValueOrDefault(chrId, null);//不存在就返回null
+            return characterDict.GetValueOrDefault(entityId, null);//不存在就返回null
         }
 
         /// <summary>

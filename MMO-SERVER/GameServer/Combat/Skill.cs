@@ -1,4 +1,5 @@
-﻿using GameServer.core;
+﻿using GameServer.Buffs;
+using GameServer.core;
 using GameServer.Core;
 using GameServer.Model;
 using Proto;
@@ -196,7 +197,7 @@ namespace GameServer.Combat
             //如果是投射物
             if (Define.IsMissile)
             {
-                var missile = new Missile(this, Owner.Position, Target);
+                var missile = Missile.Create(this, Owner.Position, Target);
                 Owner.currentSpace.fightManager.missiles.Add(missile);
             }
             //如果不是投射物，
@@ -286,7 +287,6 @@ namespace GameServer.Combat
         {
             if (targetActor.IsDeath || targetActor == Owner) return;
 
-            //Log.Information("skill:TakeDamage:attacker[{0}],Target[{1}]", Owner.EntityId, targetActor.EntityId);
             //1.计算伤害、闪避、暴击
             //人物的属性
             var attackerAttr = Owner.Attr.final;
@@ -329,6 +329,35 @@ namespace GameServer.Combat
 
             //2.扣除目标Hp
             targetActor.RecvDamage(damage);
+
+            //3.选择是否添加buff
+
         }
+
+        /// <summary>
+        /// 技能的附加效果
+        /// </summary>
+        private void AdditionalEffects(Actor targetActor)
+        {
+            //buff
+            var buffs = Define.BUFF;
+            if (buffs.Count() <= 0) return;
+            foreach(var item in buffs)
+            {
+                var buffDef = DataManager.Instance.buffDefindeDict[item];
+                if (buffDef == null) continue;
+
+                string className = "BurnBuff";
+                Type classType = Type.GetType(className);
+                if (classType == null) continue;
+                BuffBase buff = Activator.CreateInstance(classType) as BuffBase;
+
+
+
+            }
+        }
+
+          
+
     }
 }

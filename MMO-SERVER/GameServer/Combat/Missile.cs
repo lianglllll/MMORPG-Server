@@ -1,3 +1,4 @@
+using Common.Summer;
 using GameServer.Combat;
 using GameServer.Core;
 using GameServer.Model;
@@ -13,6 +14,8 @@ using System.Collections.Generic;
 /// </summary>
 public class Missile 
 {
+    //对象池
+    private static  ObjectPool<Missile> _pool = new(()=>new Missile() );
 
     //所属技能
     public Skill Skill { get; private set; }
@@ -25,15 +28,18 @@ public class Missile
     //投射物创建时的场景
     public Space Space { get; private set; }
 
+    /// <summary>
+    /// 构造函数
+    /// </summary>
+    Missile() { }
 
-    public Missile(Skill skill,Vector3 initPos,SCObject target)
+    public void Init(Skill skill,Vector3 initPos,SCObject target)
     {
         this.Skill = skill;
         this.Target = target;
         this.InitPos = initPos;
         this.curPosition = initPos;
         this.Space = skill.Owner.currentSpace;
-        //Log.Information("Missile Position:{0}", curPosition);
     }
 
     public void OnUpdate(float deltaTime)
@@ -48,6 +54,7 @@ public class Missile
             curPosition = b;
             Skill.OnHit(Target);
             Space.fightManager.missiles.Remove(this);
+            _pool.ReturnObject(this);
         }
         else
         {
@@ -56,7 +63,18 @@ public class Missile
 
     }
 
-
-
+    /// <summary>
+    /// 创建投射物
+    /// </summary>
+    /// <param name="skill"></param>
+    /// <param name="initPos"></param>
+    /// <param name="target"></param>
+    /// <returns></returns>
+    public static Missile Create(Skill skill, Vector3 initPos, SCObject target)
+    {
+        var obj = _pool.GetObject();
+        obj.Init(skill, initPos, target);
+        return obj;
+    }
 
 }

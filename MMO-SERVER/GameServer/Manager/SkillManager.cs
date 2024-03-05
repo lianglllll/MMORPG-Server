@@ -51,7 +51,7 @@ namespace GameServer.Manager
                 owner.info.Skills.Add(new Proto.SkillInfo() { Id = skid });
                 var skill = new Skill(owner, skid);
                 Skills.Add(skill);
-                Log.Information("角色[{0}]加载技能[{1}-{2}]", owner.Name, skill.Define.ID, skill.Define.Name);
+                //Log.Information("角色[{0}]加载技能[{1}-{2}]", owner.Name, skill.Define.ID, skill.Define.Name);
             }
         }
 

@@ -88,7 +88,7 @@ namespace GameServer.Model
             spaceEnterResponse.Character = character.info;
             foreach (var kv in characterDict)
             {
-                if (kv.Value.EntityId != character.EntityId) continue;
+                if (kv.Value.EntityId == character.EntityId) continue;
                 spaceEnterResponse.CharacterList.Add(kv.Value.info);
             }
             foreach (var kv in monsterManager.monsterDict)

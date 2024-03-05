@@ -1,0 +1,15 @@
+{
+  "1": {
+    "BID": 1,
+    "Name": "中毒",
+    "Description": "持续中毒伤害",
+    "IconPath": "Texture/Buff/Icon/Methysis",
+    "MaxDuration": 5,
+    "MaxLevel": 1,
+    "BuffType": "负增益",
+    "BuffConflict": "覆盖",
+    "Dispellable": 1,
+    "Demotion": 1,
+    "TimeScale": 1
+  }
+}

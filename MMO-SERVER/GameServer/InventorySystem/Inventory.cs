@@ -1,4 +1,5 @@
 ﻿using GameServer.Core;
+using GameServer.Database;
 using GameServer.Manager;
 using GameServer.Model;
 using Proto;
@@ -44,12 +45,10 @@ namespace GameServer.InventorySystem
                     foreach(var item in ItemDict.Values)
                     {
                         _inventoryInfo.List.Add(item.ItemInfo);
-
                     }
 
                     hasChanged = false;
                 }
-
                 return _inventoryInfo;
             }
         }
@@ -152,7 +151,8 @@ namespace GameServer.InventorySystem
             var counter = amount;
 
             //3.循环放置
-            while(counter > 0)
+            hasChanged = true;
+            while (counter > 0)
             {
                 //寻找背包种存放着相同物品的格子
                 var sameItem = FindFirstItemByItemIdAndNotFull(itemId);
@@ -178,7 +178,7 @@ namespace GameServer.InventorySystem
                     else
                     {
                         //没有空格了
-                        return amount - counter;
+                        break;
                     }
                 }
             }
@@ -199,6 +199,7 @@ namespace GameServer.InventorySystem
             {
                 return 0;
             }
+            hasChanged = true;
             SetItem(index, item);
             return item.Amount;
         }
@@ -214,8 +215,8 @@ namespace GameServer.InventorySystem
             {
                 return null;
             }
-            ItemDict.TryRemove(slotIndex, out var _value);
             hasChanged = true;
+            ItemDict.TryRemove(slotIndex, out var _value);
             return _value;
         }
 
@@ -238,7 +239,8 @@ namespace GameServer.InventorySystem
             }
 
             //2.查找目标插槽物品，如果为空直接放置
-            if(!ItemDict.TryGetValue(targetSlotIndex, out var targetItem))
+            hasChanged = true;
+            if (!ItemDict.TryGetValue(targetSlotIndex, out var targetItem))
             {
                 SetItem(targetSlotIndex, originItem);
                 removeSlot(originSlotIndex);
@@ -272,7 +274,6 @@ namespace GameServer.InventorySystem
                 }
             }
 
-            hasChanged = true;
             return true;
         }
 

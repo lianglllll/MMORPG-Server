@@ -6190,6 +6190,52 @@ attack->move/attack
 
 
 
+
+
+## 2024.3.5
+
+**关于背包打开没有数据。**
+
+```
+    protected  override void Start()
+    {
+        base.Start();
+
+        //监听一些个事件
+        Kaiyun.Event.RegisterOut("UpdateCharacterKnapsackData", this, "RefreshKnapsackUI");
+        Kaiyun.Event.RegisterOut("UpdateCharacterKnapsackPickupItemBox", this, "RefreshPickUpBox");
+        Kaiyun.Event.RegisterOut("GoldChange", this, "UpdateCurrency");
+        Kaiyun.Event.RegisterOut("UpdateCharacterEquipmentData", this, "RefreshEquipsUI");
+
+        Init();
+
+    }
+```
+
+原本是先进行init()然后在进行事件监听的，我们先初始化，里面会向服务器拉取背包数据，响应的时候就会通过事件来进行回调刷新ui。但是响应的速度很快，我们没来得及监听事件，就已经到达了，所以就会导致第一次刷新会不成功的问题。
+
+**解决方法**：1.调整监听的位置，如上面的代码
+
+​					2.在角色上线的时候我们就拉取背包数据
+
+
+
+**每次上线背包中第0个位置的物品消失问题。**
+
+我们的装备系统在穿戴装备的时候，会将背包中对应的位置的物品移除。0位也是背包合理位置
+
+我们粗心讲武器的pos属性设置为0，所以导致每次穿戴的时候，都将背包中第0位的物品移除。
+
+**解决方法：**
+
+​	将物品的pos属性默认置为-1，-1是背包中不合理的位置
+
+
+
+
+
+
+
 # server相关的一些东西
 
 

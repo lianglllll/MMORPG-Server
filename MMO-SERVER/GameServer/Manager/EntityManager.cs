@@ -1,4 +1,5 @@
-﻿using GameServer.Core;
+﻿using Common.Summer;
+using GameServer.Core;
 using GameServer.Model;
 using Summer;
 using System;
@@ -16,31 +17,28 @@ namespace GameServer.Manager
     /// </summary>
     public class EntityManager : Singleton<EntityManager>
     {
-        private int index = 1;
+        private  IdGenerator _idGenerator = new IdGenerator();
+
         //记录全部entity对象<entityId,entity>
         private ConcurrentDictionary<int, Entity> allEntitiesDict = new ConcurrentDictionary<int, Entity>();
         //记录单个场景中的entity列表，<spaceId,entityList>
         private ConcurrentDictionary<int, List<Entity>> spaceEntitiesDict = new ConcurrentDictionary<int, List<Entity>>();
         
-        //获取唯一的entityId
-        public int NewEntityId
+        public void Update()
         {
-            get
+            foreach (var entity in allEntitiesDict)
             {
-                lock (this)
-                {
-                    return index++;
-                }
+                entity.Value.Update();
             }
         }
-
 
         public void AddEntity(int spaceId, Entity entity)
         {
             lock (this)
             {
                 //给角色分配一个独一无二的id
-                entity.EntityId = NewEntityId;//给entity里面的netObj赋值了
+                //给entity里面的netObj赋值了
+                entity.EntityId = _idGenerator.GetId();
                 allEntitiesDict[entity.EntityId] = entity;
 
                 if (!spaceEntitiesDict.ContainsKey(spaceId))
@@ -56,6 +54,10 @@ namespace GameServer.Manager
         {
             if (!allEntitiesDict.ContainsKey(entityId)) return;
             allEntitiesDict.TryRemove(entityId, out var item);
+            if(item != null)
+            {
+                _idGenerator.ReturnId(entityId);
+            }
             GetSpaceEntitytList(spaceId, (list) => list.Remove(item));
         }
 
@@ -67,14 +69,6 @@ namespace GameServer.Manager
         public Entity GetEntity(int entityId)
         {
             return allEntitiesDict.GetValueOrDefault(entityId);
-        }
-
-        public void Update()
-        {
-            foreach (var entity in allEntitiesDict)
-            {
-                entity.Value.Update();
-            }
         }
 
         /// <summary>
@@ -149,6 +143,7 @@ namespace GameServer.Manager
             GetSpaceEntitytList(oldSpaceId, (list) => list.Remove(entity));
             GetSpaceEntitytList(newSpaceId, (list) => list.Add(entity));
         }
+
     }
 }
 

@@ -151,14 +151,7 @@ namespace GameServer.Combat
             SCObject sco = new SCPosition(position);
         }
 
-        /// <summary>
-        /// 吟唱技能
-        /// </summary>
-        /// <param name="skill"></param>
-        public void Intonate(Skill skill)
-        {
 
-        }
 
         /// <summary>
         /// 通知玩家技能施法失败 
