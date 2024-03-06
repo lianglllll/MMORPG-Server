@@ -96,6 +96,12 @@ namespace GameServer.Buffs
             buff.CurrentLevel = level;
             buff.OnGet();
             Observer?.Invoke(buff);
+
+            //通知客户端
+            var resp = new BuffsAddResponse();
+            resp.List.Add(buff.Info);
+            Owner?.currentSpace?.Broadcast(resp);
+
         }
 
         /// <summary>
@@ -113,6 +119,12 @@ namespace GameServer.Buffs
                 item.OnLost();
                 buffs.Remove(item);
                 _idGenerator.ReturnId(item.ID);
+
+                //通知客户端
+                var resp = new BuffsRemoveResponse();
+                resp.List.Add(item.Info);
+                Owner?.currentSpace?.Broadcast(resp);
+
                 return true;
             }
             return false;

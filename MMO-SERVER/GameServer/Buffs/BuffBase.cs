@@ -30,6 +30,27 @@ namespace GameServer.Buffs
         private float m_ResidualDuration = 3;       //当前剩余持续事件
         private bool m_Initialized = false;         //是否初始化
 
+        //网络对象
+        private BuffInfo _info;
+        public BuffInfo Info
+        {
+            get
+            {
+                if(_info == null)
+                {
+                    _info = new BuffInfo();
+                    _info.Id = this.ID;
+                    _info.Bid = this.BID;
+                    _info.OwnerId = this.Owner.EntityId;
+                    _info.ProviderId = this.Provider.EntityId;
+                }
+
+                _info.CurrentLevel = this.CurrentLevel;
+                _info.ResidualDuration = this.ResidualDuration; ;
+                return _info;
+            }
+        }
+
 
         public BuffBase() { }
         /// <summary>
