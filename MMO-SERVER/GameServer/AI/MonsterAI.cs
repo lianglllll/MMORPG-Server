@@ -12,6 +12,10 @@ using System.Threading.Tasks;
 
 namespace GameServer.AI
 {
+
+    //继续拆分ai行为
+    //巡逻(idle、motion)  返回(motion)  追击(motion speed)  攻击(skill)   死亡(death)
+
     //这个就相当于我们客户端的controller脚本，用于控制我们的fsm
     public class MonsterAI : AIBase
     {
@@ -148,7 +152,7 @@ namespace GameServer.AI
                 }
 
                 //攻击距离不够，我们继续靠近目标
-                if(targetDistance > 1000)
+                if(targetDistance > 2000)
                 {
                     monster.MoveTo(monster.target.Position);
                     return;
@@ -162,10 +166,10 @@ namespace GameServer.AI
                 //后面客户端可能就会使用原本的动画状态机了，然后网络传送传送动画的变量。。
                 //因为动画之间的切换好生硬了
                 //这里如果切换到idle在攻击，会发送idle和walk抖动
-/*                if (monster.State == Proto.EntityState.Walk || monster.State == Proto.EntityState.Run)
+                if (monster.State == Proto.EntityState.Motion)
                 {
                     monster.StopMove();
-                }*/
+                }
 
                 monster.Attack(monster.target);
 

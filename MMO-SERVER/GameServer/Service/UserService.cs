@@ -204,6 +204,7 @@ namespace GameServer.Service
 
 
             //存放入数据库中
+            var pointDef = DataManager.Instance.revivalPointDefindeDict[0];
             DbCharacter dbCharacter = new DbCharacter()
             {
                 Name = message.Name,
@@ -214,8 +215,12 @@ namespace GameServer.Service
                 Exp = 0,
                 SpaceId = 0,//新手村
                 Gold = 0,
-                PlayerId = dbUser.Id
-                //还有xyz默认即可
+                PlayerId = dbUser.Id,
+                //出生坐标 
+                X = pointDef.X,
+                Y = pointDef.Y,
+                Z = pointDef.Z,
+
             };
             int aff = DbManager.fsql.Insert(dbCharacter).ExecuteAffrows();
             

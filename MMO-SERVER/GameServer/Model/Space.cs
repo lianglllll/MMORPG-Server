@@ -227,5 +227,29 @@ namespace GameServer.Model
             Broadcast(resp);
         }
 
+
+        /// <summary>
+        /// 寻找场景中最近的复活点
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        public Vector3Int SearchNearestRevivalPoint(Character chr)
+        {
+            float comparativetGap = float.MaxValue;
+            Vector3Int pos = chr.Position;
+            foreach(var pointId in def.RevivalPointS)
+            {
+                var pointDef = DataManager.Instance.revivalPointDefindeDict[pointId];
+                if (pointDef == null) continue;
+                var tempPos = new Vector3Int(pointDef.X, pointDef.Y, pointDef.Z);
+                var gap = Vector3Int.Distance(chr.Position, tempPos);   
+                if(gap < comparativetGap)
+                {
+                    comparativetGap = gap;
+                    pos = tempPos;
+                }
+            }
+            return pos;
+        }
     }
 }

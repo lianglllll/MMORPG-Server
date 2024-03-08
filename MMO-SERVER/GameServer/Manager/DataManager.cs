@@ -26,6 +26,9 @@ public class DataManager : Singleton<DataManager>
     public Dictionary<int, LevelDefine> levelDefindeDict = null;
     //buffxinx
     public Dictionary<int,BuffDefine> buffDefindeDict = null;
+    //一些复活点信息
+    public Dictionary<int, RevivalPointDefine> revivalPointDefindeDict = null;
+
 
     //初始化，就是将文件中的数据读入
     public void init()
@@ -38,6 +41,7 @@ public class DataManager : Singleton<DataManager>
         ItemDefinedDict = Load<ItemDefine>("Data/ItemDefine.json");
         levelDefindeDict = Load<LevelDefine>("Data/LevelDefine.json");
         buffDefindeDict = Load<BuffDefine>("Data/BuffDefine.json");
+        revivalPointDefindeDict = Load<RevivalPointDefine>("Data/RevivalPointDefine.json");
     }
 
     //根据path加载解析json文件转换为dict

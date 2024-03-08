@@ -35,9 +35,9 @@ namespace GameServer.Model
             //任务2,monster位置同步
             Scheduler.Instance.AddTask(() =>
             {
-                if (IsDeath) return;
+                //if (IsDeath) return;
+                if (State != EntityState.Motion) return;
 
-                if (State != EntityState.Walk) return;
                 //广播消息
                 NEntitySync nEntitySync = new NEntitySync();
                 nEntitySync.Entity = EntityData;
@@ -65,7 +65,7 @@ namespace GameServer.Model
         {
             if(this.State == EntityState.Idle)
             {
-                State = EntityState.Walk;//这个能触发下面的update
+                State = EntityState.Motion;//这个能触发下面的update
             }
 
             if(targetPos != target)
@@ -88,10 +88,10 @@ namespace GameServer.Model
         public override void Update()
         {
             base.Update();      //技能更新
-            AI?.Update();
+            AI?.Update();       //推动ai
 
-            //monster移动实现
-            if(State == EntityState.Walk)
+            //推动ai的移动行为
+            if(State == EntityState.Motion)
             {
                 //移动方向
                 var dir = (targetPos - curPos).normalized;

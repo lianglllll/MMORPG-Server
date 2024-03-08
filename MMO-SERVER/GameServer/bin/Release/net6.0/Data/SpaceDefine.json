@@ -4,27 +4,31 @@
     "Name": "新手村",
     "Resource": "Scene0",
     "Kind": "场景",
-    "AllowPK": 0
+    "AllowPK": 0,
+    "RevivalPointS": "[0,1]"
   },
   "1": {
     "SID": 1,
     "Name": "迷雾森林",
     "Resource": "Scene1",
     "Kind": "场景",
-    "AllowPK": 0
+    "AllowPK": 0,
+    "RevivalPointS": "[1000]"
   },
   "2": {
     "SID": 2,
     "Name": "河阳城",
     "Resource": "Scene2",
     "Kind": "场景",
-    "AllowPK": 1
+    "AllowPK": 1,
+    "RevivalPointS": ""
   },
   "3": {
     "SID": 3,
     "Name": "阳光海岸",
     "Resource": "Scene3",
     "Kind": "副本",
-    "AllowPK": 0
+    "AllowPK": 0,
+    "RevivalPointS": ""
   }
 }

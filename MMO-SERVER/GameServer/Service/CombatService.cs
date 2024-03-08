@@ -37,13 +37,17 @@ namespace GameServer.Service
             if(actor != null && actor is Character chr&& chr.IsDeath&& chr.session.Conn == conn)
             {
                 //设置当前角色的位置
-                chr.Position = new Core.Vector3Int(283000, 4000, 185000);
+                //找到场景中最近的复活点
+                chr.Position = chr.currentSpace.SearchNearestRevivalPoint(chr);
                 chr.Revive();
+
+
+                //这里应该发一个响应回去更好吧？
                 //给客户端广播发送更新位置的数据
                 SpaceEntitySyncResponse resp = new SpaceEntitySyncResponse();
                 NEntitySync nEntitySync = new NEntitySync();
                 nEntitySync.Entity = conn.Get<Session>().character.EntityData;
-                nEntitySync.State = EntityState.None;//客户端会处理复活逻辑，状态就无需关心了
+                nEntitySync.State = EntityState.NoneState;//客户端会处理复活逻辑，状态就无需关心了
                 resp.EntitySync = nEntitySync;
                 resp.EntitySync.Force = true;
                 conn.Send(resp);
@@ -84,11 +88,13 @@ namespace GameServer.Service
             var sp = SpaceManager.Instance.GetSpaceById(message.SpaceId);
             if(message.SpaceId == 0)
             {
-                chr.TransmitSpace(sp, new Core.Vector3Int(-20700, 2000, -3127));
+                var def = DataManager.Instance.revivalPointDefindeDict[0];
+                chr.TransmitSpace(sp, new Core.Vector3Int(def.X,def.Y,def.Z));
             }
             else if(message.SpaceId == 1)
             {
-                chr.TransmitSpace(sp, new Core.Vector3Int(275425, 2000, 186176));
+                var def = DataManager.Instance.revivalPointDefindeDict[1000];
+                chr.TransmitSpace(sp, new Core.Vector3Int(def.X, def.Y, def.Z));
             }
 
         }
