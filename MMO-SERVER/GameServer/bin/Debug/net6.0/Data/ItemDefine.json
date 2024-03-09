@@ -127,7 +127,7 @@
     "SellPrice": 50,
     "Icon": "Texture/Inventory/apple",
     "Model": "Prefabs/Item/BoxOfPandora",
-    "Speed": 2000,
+    "Speed": 3000,
     "HP": 0,
     "MP": 0,
     "AD": 0,

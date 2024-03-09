@@ -20,6 +20,7 @@ namespace GameServer.Service
     /// <summary>
     /// 玩家服务
     /// 注册，登录，创建角色，进入游戏
+    /// 应该还需要一个userManager，service只负责接收来到的请求并且向mananger传递，根据manager传回来的信息进行响应结果
     /// </summary>
     public class UserService:Singleton<UserService>
     {
@@ -192,7 +193,7 @@ namespace GameServer.Service
             }
 
             //角色类型有误
-            if(message.JobType>=4 || message.JobType < 0)
+            if(message.JobType>=5 || message.JobType < 0)
             {
                 Log.Information("角色类型有误："+message.JobType);
                 resp.Success = false;
@@ -315,8 +316,7 @@ namespace GameServer.Service
         /// <param name="msg"></param>
         private void _GameEnterRequest(Connection conn, GameEnterRequest msg)
         {
-
-            Log.Information($"有玩家进入游戏,角色id={msg.CharacterId}");
+            //Log.Information($"有玩家进入游戏,角色id={msg.CharacterId}");
 
             //获取当前用户，通过userid寻找有无这个角色
             DbUser dbUser = conn.Get<Session>().dbUser;
