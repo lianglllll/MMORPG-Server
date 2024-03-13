@@ -1,6 +1,7 @@
 ﻿using Common.Summer;
 using GameServer.Model;
 using Proto;
+using Serilog;
 using Summer;
 using System;
 using System.Collections;
@@ -112,6 +113,7 @@ namespace GameServer.Buffs
         /// <returns>是否成功，如果失败说明目标不存在</returns>
         public bool RemoveBuff(BuffBase buff)
         {
+            //Log.Information("移除的buff" + buff.Name);
             var item = buffs.FirstOrDefault(x => x == buff);
             if (item != null)
             {
@@ -128,6 +130,16 @@ namespace GameServer.Buffs
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// 查询身上是否有指定类型的buff存在
+        /// </summary>
+        /// <param name="bid"></param>
+        /// <returns></returns>
+        public bool HasBuffByBid(int bid)
+        {
+            return buffs.Any(x=>x.BID == bid);
         }
 
         /// <summary>
@@ -162,12 +174,10 @@ namespace GameServer.Buffs
             for (int i = buffs.Count - 1; i >= 0; i--)
             {
                 var buff = buffs[i];
-                //如果等级为0，则移除
-                if (buff.CurrentLevel == 0)
-                {
-                    RemoveBuff(buff);
-                    continue;
-                }
+                //降低持续时间
+                buff.ResidualDuration -= delta;
+
+
                 //如果持续时间为0，则降级,
                 //降级后如果等级为0则移除，否则刷新持续时间
                 if (buff.ResidualDuration <= 0)
@@ -183,8 +193,8 @@ namespace GameServer.Buffs
                         buff.ResidualDuration = buff.MaxDuration;
                     }
                 }
-                //降低持续时间
-                buff.ResidualDuration -= delta;
+
+
             }
 
         }

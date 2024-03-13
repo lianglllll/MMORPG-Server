@@ -12,6 +12,7 @@ using Serilog;
 using GameServer.Core;
 using GameServer.InventorySystem;
 using GameServer.core;
+using System.Runtime.ConstrainedExecution;
 
 namespace GameServer.Model
 {
@@ -173,6 +174,20 @@ namespace GameServer.Model
             Log.Information("金币=" + Gold);
 
             currentSpace.fightManager.propertyUpdateQueue.Enqueue(po);
+        }
+
+        public override void Revive()
+        {
+            if (!IsDeath) return;
+            SetHp(Attr.final.HPMax);
+            SetMP(Attr.final.MPMax);
+            SetState(UnitState.Free);
+            //设置当前角色的位置
+            //找到场景中最近的复活点
+            Position = currentSpace.SearchNearestRevivalPoint(this);
+            Log.Information("当前复活的位置：" + Position);
+            SetEntityState(EntityState.Idle);
+            OnAfterRevive();
         }
     }
 

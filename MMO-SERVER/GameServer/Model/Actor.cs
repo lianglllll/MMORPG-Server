@@ -10,6 +10,8 @@ using GameServer.Combat;
 using GameServer.Manager;
 using Serilog;
 using GameServer.Buffs;
+using GameServer.core;
+using GameServer.Combat.Skill;
 
 namespace GameServer.Model
 {
@@ -19,7 +21,7 @@ namespace GameServer.Model
         public UnitDefine Define;                                                                   //actor的define数据(静态数据)
         public NetActor info  = new NetActor();                                                     //actor的NetActor数据(动态数据)
         public Space currentSpace;                                                                  //actor所在的当前场景
-        public EntityState State;                                                                   //actor状态：跑、走、跳、
+        public EntityState State;                                                                   //actor动画状态：跑、走、跳、
         public UnitState unitState;                                                                 //actor活动状态:死亡、空闲、战斗
         public Attributes Attr = new Attributes();                                                  //actor属性
         public SkillManager skillManager;                                                           //actor技能管理器
@@ -127,26 +129,9 @@ namespace GameServer.Model
             this.info.SpaceId = space.SpaceId;
         }
 
-        /// <summary>
-        /// actor复活
-        /// </summary>
-        public void Revive()
-        {
-            if (!IsDeath) return;
-            SetHp(Attr.final.HPMax);
-            SetMP(Attr.final.MPMax);
-            SetState(UnitState.Free);
-            OnAfterRevive();
-        }
 
-        /// <summary>
-        /// 复活后处理
-        /// </summary>
-        /// <param name="killerID"></param>
-        protected virtual void OnAfterRevive()
-        {
 
-        }
+
 
         /// <summary>
         /// 当前actor收到扣血通知
@@ -154,6 +139,13 @@ namespace GameServer.Model
         /// <param name="damage"></param>
         public void RecvDamage(Damage damage)
         {
+            //无敌
+            if (buffManager.HasBuffByBid(5))
+            {
+                damage.IsImmune = true;
+                damage.Amount = 0;
+            }
+
             //添加广播，一个伤害发生了
             currentSpace.fightManager.damageQueue.Enqueue(damage);
             //扣血
@@ -181,14 +173,13 @@ namespace GameServer.Model
         /// 设置actor的hp，并广播
         /// </summary>
         /// <param name="hp"></param>
-        protected void SetHp(float hp)
+        public void SetHp(float hp)
         {
 
             if (Mathf.Approximately(info.Hp, hp)) return;
             if(hp <= 0)
             {
                 hp = 0;
-                this.unitState = UnitState.Dead;
             }
             if (hp > Attr.final.HPMax)
             {
@@ -212,7 +203,7 @@ namespace GameServer.Model
         /// 设置actor的mp，并广播
         /// </summary>
         /// <param name="mp"></param>
-        protected void SetMP(float mp)
+        public void SetMP(float mp)
         {
             if (Mathf.Approximately(info.Mp, mp)) return;
             if (mp <= 0)
@@ -238,10 +229,25 @@ namespace GameServer.Model
         }
 
         /// <summary>
+        /// 设置动画状态,并广播
+        /// </summary>
+        /// <param name="state"></param>
+        public void SetEntityState(EntityState state)
+        {
+            this.State = state;
+            var resp = new SpaceEntitySyncResponse();
+            resp.EntitySync = new NEntitySync();
+            resp.EntitySync.Entity = EntityData;
+            resp.EntitySync.Force = true;
+            resp.EntitySync.State = state;
+            currentSpace.Broadcast(resp);
+        }
+
+        /// <summary>
         /// 设置actor的unitstate,并广播
         /// </summary>
         /// <param name="unitState"></param>
-        private void SetState(UnitState unitState)
+        protected void SetState(UnitState unitState)
         {
             if (this.unitState == unitState) return;
             UnitState oldValue = this.unitState;
@@ -351,18 +357,37 @@ namespace GameServer.Model
             if (IsDeath) return;
             OnBeforeDie(killerID);
 
-            SetState(UnitState.Dead);
             SetHp(0);
-            SetMP(0);
+            SetState(UnitState.Dead);
+            SetEntityState(EntityState.Death);
 
             OnAfterDie(killerID);
         }
+
 
         /// <summary>
         /// 死亡后的处理
         /// </summary>
         /// <param name="killerID"></param>
         protected virtual void OnAfterDie(int killerID)
+        {
+
+        }
+
+        /// <summary>
+        /// actor复活
+        /// </summary>
+        public virtual void Revive()
+        {
+
+        }
+
+
+        /// <summary>
+        /// 复活后处理
+        /// </summary>
+        /// <param name="killerID"></param>
+        protected virtual void OnAfterRevive()
         {
 
         }
@@ -404,7 +429,6 @@ namespace GameServer.Model
             return true;
         }
 
-
         /// <summary>
         /// 休息时恢复状态
         /// </summary>
@@ -425,7 +449,6 @@ namespace GameServer.Model
             SetMpMax(Attr.final.MPMax);
 
         }
-
 
     }
 }

@@ -14,6 +14,7 @@ using GameServer.AI;
 using GameServer.InventorySystem;
 using GameServer.Core;
 using GameServer.Utils;
+using GameServer.Skills;
 
 namespace GameServer
 {
@@ -30,8 +31,12 @@ namespace GameServer
             Log.Debug("[日志服务启动完成]");
 
             //proto类型加载
-            Log.Debug("[装载消息类型如下]");
+            Log.Debug("[proto类型加载]");
             ProtoHelper.Init();
+
+            //加载自定义技能类
+            Log.Debug("[加载自定义技能类]");
+            SkillSanner.Start();
 
             //加载配置文件
             Log.Debug("[加载server配置文件]");

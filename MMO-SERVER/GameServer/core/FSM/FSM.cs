@@ -26,12 +26,6 @@ namespace GameServer.core.FSM
         //添加状态
         public void AddState(string stateId, IState<T> state)
         {
-            if(curState == null)
-            {
-                curState = state;
-                curStateId = stateId;
-            }
-
             stateDict[stateId] = state;
             state.fsm = this;
         }
@@ -49,27 +43,18 @@ namespace GameServer.core.FSM
         //状态切换
         public void ChangeState(string stateId)
         {
-
             if (curStateId == stateId) return;
             if (!stateDict.ContainsKey(stateId)) return;
 
-
-            if(curState != null)
-            {
-                curState.OnExit();
-            }
+            curState?.OnExit();
             curStateId = stateId;
             curState = stateDict[stateId];
             curState.OnEnter();
-            //Log.Information("怪物状态切换：" + curStateId);
         }
 
         public  void Update()
         {
-            if (curState != null)
-            {
-                curState.OnUpdate();
-            }
+            curState?.OnUpdate();
         }
 
     }

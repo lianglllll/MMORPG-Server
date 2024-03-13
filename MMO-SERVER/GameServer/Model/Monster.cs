@@ -8,7 +8,9 @@ using Proto;
 using GameServer.Core;
 using GameServer.AI;
 using GameServer.Manager;
-using GameServer.Combat;
+using GameServer.core.FSM;
+using GameServer.Combat.Skill;
+using Serilog;
 
 namespace GameServer.Model
 {
@@ -18,11 +20,22 @@ namespace GameServer.Model
         public Vector3 targetPos;           //将要要移动的目标位置（tmp）
         public Vector3 curPos;              //当前移动中的位置(tmp)
         public Vector3 initPosition;        //出生点
-        public MonsterAI AI;
-        private Random random = new Random();
+        public MonsterAI AI;                //怪物Ai
 
         public Actor target;                //追击的目标
-        private static Vector3Int Y1000 = new Vector3Int(0, 1000, 0);
+
+
+        private static Vector3Int Y1000 = new Vector3Int(0, 1000, 0);   //Y单位方向
+        private Random random = new Random();
+
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="Tid"></param>
+        /// <param name="level"></param>
+        /// <param name="position"></param>
+        /// <param name="direction"></param>
         public Monster(int Tid,int level,Vector3Int position, Vector3Int direction) : base(EntityType.Monster, Tid,level, position, direction)
         {
 
@@ -57,38 +70,21 @@ namespace GameServer.Model
 
         }
 
-        /// <summary>
-        /// 移动到某个点
-        /// </summary>
-        /// <param name="target"></param>
-        public void MoveTo(Vector3 target)
-        {
-            if(this.State == EntityState.Idle)
-            {
-                State = EntityState.Motion;//这个能触发下面的update
-            }
-
-            if(targetPos != target)
-            {
-                targetPos = target;
-                curPos = Position;
-                var dir = (targetPos - curPos).normalized;//计算方向
-                Direction = LookRotation(dir) * Y1000;
-                //广播消息
-                NEntitySync nEntitySync = new NEntitySync();
-                nEntitySync.Entity = EntityData;
-                nEntitySync.State = State;
-                this.currentSpace.UpdateEntity(nEntitySync);
-            }
-        }
 
         /// <summary>
         /// 主要是计算服务端位移的数据，每秒50次
         /// </summary>
         public override void Update()
         {
-            base.Update();      //技能更新
-            AI?.Update();       //推动ai
+            base.Update();      
+
+            //特殊状态就不需要推动状态机了，因为我们限制没有处理死亡和眩晕的状态
+            //如果后面添加了这两个状态就可以去掉这两个校验了
+            if (IsDeath) return;
+            if (State == EntityState.Dizzy) return;
+
+            //推动ai状态跃迁
+            AI?.Update();       
 
             //推动ai的移动行为
             if(State == EntityState.Motion)
@@ -110,6 +106,8 @@ namespace GameServer.Model
             }
         }
 
+
+
         /// <summary>
         /// 怪物攻击
         /// </summary>
@@ -123,13 +121,44 @@ namespace GameServer.Model
             }
 
             //拿一个普通攻击来放
-            var skill = skillManager.Skills.FirstOrDefault(s => s.State == Combat.Stage.None && s.IsNormal);
+            var skill = skillManager.Skills.FirstOrDefault(s => s.State == Stage.None && s.IsNormal);
             if (skill == null) return;
             spell.SpellTarget(skill.Define.ID, target.EntityId);
         }
 
         /// <summary>
-        /// 停止移动
+        /// monstor移动到目标点
+        /// </summary>
+        /// <param name="targetPos"></param>
+        public void MoveTo(Vector3 targetPos)
+        {
+            if (State == EntityState.Dizzy || State == EntityState.Death)
+            {
+                return;
+            }
+
+
+            if (this.State == EntityState.Idle)
+            {
+                State = EntityState.Motion;//这个能触发下面的update
+            }
+
+            if (this.targetPos != targetPos)
+            {
+                this.targetPos = targetPos;
+                curPos = Position;
+                var dir = (this.targetPos - curPos).normalized;//计算方向
+                Direction = LookRotation(dir) * Y1000;
+                //广播消息
+                NEntitySync nEntitySync = new NEntitySync();
+                nEntitySync.Entity = EntityData;
+                nEntitySync.State = State;
+                this.currentSpace.UpdateEntity(nEntitySync);
+            }
+        }
+
+        /// <summary>
+        /// monster停止移动
         /// </summary>
         public void StopMove()
         {
@@ -139,8 +168,10 @@ namespace GameServer.Model
             NEntitySync nEntitySync = new NEntitySync();
             nEntitySync.Entity = EntityData;
             nEntitySync.State = State;
-            this.currentSpace.UpdateEntity(nEntitySync);
+            this.currentSpace?.UpdateEntity(nEntitySync);
         }
+
+
 
         /// <summary>
         /// 计算出生点附近的随机坐标
@@ -183,15 +214,12 @@ namespace GameServer.Model
             return eulerAngles;
         }
 
+
+
         /// <summary>
-        /// 死亡前处理
+        /// 死亡后处理
         /// </summary>
         /// <param name="killerID"></param>
-        protected override void OnBeforeDie(int killerID)
-        {
-
-        }
-
         protected override void OnAfterDie(int killerID)
         {
             base.OnAfterDie(killerID);
@@ -210,6 +238,18 @@ namespace GameServer.Model
             }
         }
 
+        public override void Revive()
+        {
+            if (!IsDeath) return;
+            SetHp(Attr.final.HPMax);
+            SetMP(Attr.final.MPMax);
+            SetState(UnitState.Free);
+            //设置当前怪物的位置
+            Position = initPosition;
+            SetEntityState(EntityState.Idle);
+            OnAfterRevive();
+        }
+
         /// <summary>
         /// 复活后处理
         /// </summary>
@@ -217,7 +257,7 @@ namespace GameServer.Model
         protected override void OnAfterRevive()
         {
             //状态机切换
-            AI.fsm.ChangeState("walk");
+            AI.fsm.ChangeState("patrol");
         }
 
         /// <summary>
@@ -228,9 +268,15 @@ namespace GameServer.Model
         {
             base.AfterRecvDamage(damage);
 
-
+            //如果当前怪物没有死亡，就应该去追击攻击本monster的玩家
             var killer = EntityManager.Instance.GetEntity(damage.AttackerId) as Actor;
-            AI.RecvDamageCallBack(killer);
+            if (killer == null) return;
+            if (!AI.fsm.param.owner.IsDeath && AI.fsm.curStateId != "chase" && AI.fsm.curStateId != "return")
+            {
+                this.target = killer;
+                AI.fsm.ChangeState("chase");
+            }
+
         }
 
     }

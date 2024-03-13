@@ -1,5 +1,6 @@
-﻿using GameServer.Combat;
+﻿using GameServer.Combat.Skill;
 using GameServer.Model;
+using GameServer.Skills;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -49,7 +50,7 @@ namespace GameServer.Manager
             {
                 if (skid == 0) continue;
                 owner.info.Skills.Add(new Proto.SkillInfo() { Id = skid });
-                var skill = new Skill(owner, skid);
+                var skill = SkillSanner.CreateSkill(owner, skid);   
                 Skills.Add(skill);
                 //Log.Information("角色[{0}]加载技能[{1}-{2}]", owner.Name, skill.Define.ID, skill.Define.Name);
             }

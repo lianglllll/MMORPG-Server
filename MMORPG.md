@@ -551,6 +551,11 @@ python test.py > output.log 2>&1
 # 退出当前窗口
 ctrl+a+d   （方法1：保留当前窗口）
 screen -d  （方法2：保留当前窗口）
+
+
+screen -list   查看存在的窗口
+screen -X -S sessionID quit		关闭某个窗口，包括它允许的进程
+
 ```
 
 **5、查看程序输出文件（output.log）**

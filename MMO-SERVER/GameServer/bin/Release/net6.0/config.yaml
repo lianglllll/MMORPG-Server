@@ -7,5 +7,5 @@ database:
 
 server:
   ip: 127.0.0.1
-  port: 6688
+  port: 6666
   workerCount: 2

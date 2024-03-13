@@ -202,16 +202,15 @@ namespace GameServer.Service
                 return;
             }
 
-
-
             //存放入数据库中
             var pointDef = DataManager.Instance.revivalPointDefindeDict[0];
+            var unitDef = DataManager.Instance.unitDefineDict[message.JobType];
             DbCharacter dbCharacter = new DbCharacter()
             {
                 Name = message.Name,
                 JobId = message.JobType,
-                Hp = 100,
-                Mp = 100,
+                Hp = (int)unitDef.HPMax,
+                Mp = (int)unitDef.MPMax,
                 Level = 1,
                 Exp = 0,
                 SpaceId = 0,//新手村

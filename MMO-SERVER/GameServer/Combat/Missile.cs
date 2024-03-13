@@ -1,5 +1,6 @@
 using Common.Summer;
 using GameServer.Combat;
+using GameServer.Combat.Skill;
 using GameServer.Core;
 using GameServer.Model;
 using Serilog;

@@ -1,6 +1,19 @@
 {
   "1": {
     "BID": 1,
+    "Name": "燃烧",
+    "Description": "持续燃烧伤害",
+    "IconPath": "Texture/Buff/Icon/Burn",
+    "MaxDuration": 5,
+    "MaxLevel": 1,
+    "BuffType": "负增益",
+    "BuffConflict": "覆盖",
+    "Dispellable": 1,
+    "Demotion": 1,
+    "TimeScale": 1
+  },
+  "2": {
+    "BID": 2,
     "Name": "中毒",
     "Description": "持续中毒伤害",
     "IconPath": "Texture/Buff/Icon/Methysis",
@@ -9,6 +22,45 @@
     "BuffType": "负增益",
     "BuffConflict": "覆盖",
     "Dispellable": 1,
+    "Demotion": 1,
+    "TimeScale": 1
+  },
+  "3": {
+    "BID": 3,
+    "Name": "眩晕",
+    "Description": "无法操作",
+    "IconPath": "Texture/Buff/Icon/Dizzy",
+    "MaxDuration": 5,
+    "MaxLevel": 1,
+    "BuffType": "负增益",
+    "BuffConflict": "覆盖",
+    "Dispellable": 1,
+    "Demotion": 1,
+    "TimeScale": 1
+  },
+  "4": {
+    "BID": 4,
+    "Name": "风行术",
+    "Description": "提高移动速度和闪避能力",
+    "IconPath": "Texture/Buff/Icon/Fengxingshu",
+    "MaxDuration": 10,
+    "MaxLevel": 1,
+    "BuffType": "正增益",
+    "BuffConflict": "覆盖",
+    "Dispellable": 0,
+    "Demotion": 1,
+    "TimeScale": 1
+  },
+  "5": {
+    "BID": 5,
+    "Name": "无敌",
+    "Description": "一段时间内免疫全部伤害",
+    "IconPath": "Texture/Buff/Icon/Invincible",
+    "MaxDuration": 10,
+    "MaxLevel": 1,
+    "BuffType": "正增益",
+    "BuffConflict": "覆盖",
+    "Dispellable": 0,
     "Demotion": 1,
     "TimeScale": 1
   }

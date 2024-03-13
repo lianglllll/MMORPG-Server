@@ -36,21 +36,7 @@ namespace GameServer.Service
             var actor = EntityManager.Instance.GetEntity(message.EntityId);
             if(actor != null && actor is Character chr&& chr.IsDeath&& chr.session.Conn == conn)
             {
-                //设置当前角色的位置
-                //找到场景中最近的复活点
-                chr.Position = chr.currentSpace.SearchNearestRevivalPoint(chr);
                 chr.Revive();
-
-
-                //这里应该发一个响应回去更好吧？
-                //给客户端广播发送更新位置的数据
-                SpaceEntitySyncResponse resp = new SpaceEntitySyncResponse();
-                NEntitySync nEntitySync = new NEntitySync();
-                nEntitySync.Entity = conn.Get<Session>().character.EntityData;
-                nEntitySync.State = EntityState.NoneState;//客户端会处理复活逻辑，状态就无需关心了
-                resp.EntitySync = nEntitySync;
-                resp.EntitySync.Force = true;
-                conn.Send(resp);
             }
         }
 

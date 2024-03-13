@@ -80,6 +80,7 @@ namespace GameServer.Combat
                 OnSpellFailure(skill_id, res);
                 return;
             }
+
             //执行技能
             skill.Use(sco);
 

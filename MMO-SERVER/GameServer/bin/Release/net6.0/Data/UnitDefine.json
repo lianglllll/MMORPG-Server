@@ -37,7 +37,7 @@
     "Resource": "Prefabs/Role/Tid-1",
     "Kind": "Character",
     "Desc": "血低高魔伤",
-    "DefaultSkills": "[2001,2002]",
+    "DefaultSkills": "[2001,2002,2003,2004]",
     "Speed": 3000,
     "HPMax": 300,
     "MPMax": 600,
