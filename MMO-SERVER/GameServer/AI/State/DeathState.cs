@@ -19,14 +19,13 @@ namespace GameServer.AI.State
 
         public override void OnEnter()
         {
-
+            
         }
 
         public override void OnUpdate()
         {
-            //寻找退出死亡状态时间
-            var monster = param.owner;
-            if (!monster.IsDeath)
+            //寻找退出死亡状态时间点
+            if (!param.owner.IsDeath)
             {
                 fsm.ChangeState("patrol");
             }

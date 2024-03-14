@@ -38,6 +38,8 @@ namespace GameServer.Combat
         /// <param name="castInfo"></param>
         public void RunCast(CastInfo castInfo)
         {
+            if (Owner.curentSkill != null) return;//actor处于技能后摇中，无法释放技能
+
             var skill = Owner.skillManager.GetSkill(castInfo.SkillId);
 
             if (skill.IsNoneTarget)
@@ -98,7 +100,7 @@ namespace GameServer.Combat
         /// </summary>
         /// <param name="skill_id"></param>
         /// <param name="target_id"></param>
-        public void SpellTarget(int skill_id,int target_id)
+        private void SpellTarget(int skill_id,int target_id)
         {
             //Log.Information("Spell::SpellTarget():Caster[{0}]:Skill[{1}]：Targert[{2}]", Owner.EntityId, skill_id, target_id);
 

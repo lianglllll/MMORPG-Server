@@ -1,6 +1,7 @@
 ﻿using GameServer.Combat.Skill;
 using GameServer.Model;
 using GameServer.Skills;
+using Proto;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -46,14 +47,19 @@ namespace GameServer.Manager
         /// <param name="ids"></param>
         private void loadSkill(params int[] ids)
         {
+            List<SkillInfo> list = new List<SkillInfo>();
             foreach(int skid in ids)
             {
                 if (skid == 0) continue;
-                owner.info.Skills.Add(new Proto.SkillInfo() { Id = skid });
+                var skillinfo = new SkillInfo() { Id = skid };
+                list.Add(skillinfo);
                 var skill = SkillSanner.CreateSkill(owner, skid);   
                 Skills.Add(skill);
-                //Log.Information("角色[{0}]加载技能[{1}-{2}]", owner.Name, skill.Define.ID, skill.Define.Name);
             }
+            if(list.Count> 0) { 
+                owner._info.Skills.AddRange(list);
+            }
+
         }
 
         /// <summary>

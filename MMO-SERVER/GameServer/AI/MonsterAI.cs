@@ -15,7 +15,7 @@ namespace GameServer.AI
 {
 
     /// <summary>
-    /// 状态间共享数据
+    /// 行为间共享数据
     /// </summary>
     public class Param
     {
@@ -26,10 +26,10 @@ namespace GameServer.AI
         public Random rand = new Random();
     }
 
-    //继续拆分ai行为
-    //巡逻(idle、motion)  返回(motion)  追击(motion speed)  攻击(skill)   死亡(death)
-
-    //这个就相当于我们客户端的controller脚本，用于控制我们的fsm
+    /// <summary>
+    /// 怪物AI，与其说是状态机，不如说是行为机，这里是基于怪物的行为而不是状态来驱动的
+    /// 行为=状态1+状态2+...
+    /// </summary>
     public class MonsterAI : AIBase
     {
         public FSM<Param> fsm;
@@ -40,14 +40,14 @@ namespace GameServer.AI
             param.owner = owner;
             fsm = new FSM<Param>(param);
 
-            //添加状态
+            //添加行为
             fsm.AddState("patrol", new PatrolState(fsm));
             fsm.AddState("chase",new ChaseState(fsm));
             fsm.AddState("return",new ReturnState(fsm));
             fsm.AddState("death",new DeathState(fsm));
-            fsm.AddState("skill",new AttackState(fsm));
+            fsm.AddState("attack",new AttackState(fsm));
 
-            //设置初始状态
+            //设置初始行为
             fsm.ChangeState("patrol");
         }
 
@@ -60,4 +60,5 @@ namespace GameServer.AI
         }
 
     }
+
 }

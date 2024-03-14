@@ -42,14 +42,14 @@ namespace GameServer.Model
             this.Id = dbCharacter.Id;
             this.Data = dbCharacter;
 
-            this.info.Name = dbCharacter.Name;              //覆盖
-            this.info.Hp = dbCharacter.Hp;                  //覆盖
-            this.info.Mp = dbCharacter.Mp;                  //覆盖
-            this.info.SpaceId = dbCharacter.SpaceId;        //覆盖
+            this.Name = dbCharacter.Name;              //覆盖
+            this.Hp = dbCharacter.Hp;                  //覆盖
+            this.Mp = dbCharacter.Mp;                  //覆盖
+            this.SpaceId = dbCharacter.SpaceId;        //覆盖
 
-            this.info.Id = dbCharacter.Id;                  //独有
-            this.info.Exp = dbCharacter.Exp;                //独有
-            this.info.Gold = dbCharacter.Gold;              //独有
+            this.Id = dbCharacter.Id;                  //独有
+            this.Exp = dbCharacter.Exp;                //独有
+            this.Gold = dbCharacter.Gold;              //独有
 
 
             //创建背包

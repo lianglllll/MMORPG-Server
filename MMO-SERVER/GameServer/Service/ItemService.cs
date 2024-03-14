@@ -257,9 +257,8 @@ namespace GameServer.Service
         {
             var resp = new EquipsUpdateResponse();
             resp.EntityId = chr.EntityId;
-            resp.EquipsList.AddRange(chr.info.EquipList);
-            //Log.Information("装备刷新=" + resp.EquipsList);
-            //Log.Information("背包刷新=" + chr.knapsack.InventoryInfo);
+            resp.EquipsList.AddRange(chr._info.EquipList);
+
             //广播
             chr.currentSpace.Broadcast(resp);
         }

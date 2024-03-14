@@ -28,7 +28,7 @@ namespace GameServer.Combat
 
             owner = actor;
             var define = actor.Define;
-            int level = actor.info.Level;
+            int level = actor.Level;
 
 
             basic = new AttrubuteData();
@@ -73,7 +73,7 @@ namespace GameServer.Combat
         public void Reload()
         {
             var define = owner.Define;
-            int level = owner.info.Level;
+            int level = owner.Level;
 
             //等级成长属性
             growth.Reset();

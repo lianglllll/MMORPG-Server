@@ -46,24 +46,15 @@ namespace GameServer.AI.State
             //攻击距离不够，我们继续靠近目标
             if (targetDistance > 2000)
             {
-                monster.MoveTo(monster.target.Position);
+                monster.StartMoveTo(monster.target.Position);
                 return;
             }
 
             //在技能后摇结束之前，我们不能再次攻击
             if (monster.curentSkill != null) return;
 
-            //到这里就符合攻击条件了
-            //符合攻击条件的同时其实也可以同时攻击，也就是说行走和攻击的动画需要混合。
-            //后面客户端可能就会使用原本的动画状态机了，然后网络传送传送动画的变量。。
-            //因为动画之间的切换好生硬了
-            //这里如果切换到idle在攻击，会发送idle和walk抖动
-            if (monster.State == Proto.EntityState.Motion)
-            {
-                monster.StopMove();
-            }
-
-            monster.Attack(monster.target);
+            //切换攻击行为
+            fsm.ChangeState("attack");
 
         }
     }

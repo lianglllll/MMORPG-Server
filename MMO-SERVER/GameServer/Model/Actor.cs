@@ -12,6 +12,7 @@ using Serilog;
 using GameServer.Buffs;
 using GameServer.core;
 using GameServer.Combat.Skill;
+using Google.Protobuf.Collections;
 
 namespace GameServer.Model
 {
@@ -19,7 +20,7 @@ namespace GameServer.Model
     public class Actor : Entity
     {
         public UnitDefine Define;                                                                   //actor的define数据(静态数据)
-        public NetActor info  = new NetActor();                                                     //actor的NetActor数据(动态数据)
+        public NetActor _info  = new NetActor();                                                     //actor的NetActor数据(动态数据)
         public Space currentSpace;                                                                  //actor所在的当前场景
         public EntityState State;                                                                   //actor动画状态：跑、走、跳、
         public UnitState unitState;                                                                 //actor活动状态:死亡、空闲、战斗
@@ -30,44 +31,66 @@ namespace GameServer.Model
 
         public Skill curentSkill;                                                                   //actor当前正在使用的技能
 
-
         public bool IsDeath => unitState == UnitState.Dead;            
         
+        public NetActor Info
+        {
+            get
+            {
+                //更新actor中的buff网络信息
+                _info.BuffsList.Clear();
+                foreach (BuffBase item in buffManager.buffs)
+                {
+                    _info.BuffsList.Add(item.Info);
+                }
+
+                return _info;
+            }
+            set
+            {
+                _info = value;
+            }
+        }
+
         /// <summary>
         /// chrId
         /// </summary>
         public int Id { 
-            get { return info.Id; } 
-            set { info.Id = value; } 
+            get { return _info.Id; } 
+            set { _info.Id = value; } 
         }                                                         
         
         public string Name { 
-            get { return info.Name; } 
-            set { info.Name = value; } 
+            get { return _info.Name; } 
+            set { _info.Name = value; } 
         }
 
         /// <summary>
         /// actor的类型：角色、怪物、npc
         /// </summary>
         public EntityType Type { 
-            get { return info.EntityType; } 
-            set { info.EntityType = value; }
+            get { return _info.EntityType; } 
+            set { _info.EntityType = value; }
         }                                                 
         
         public int SpaceId
         {
             get
             {
-                return currentSpace.SpaceId;
+                return _info.SpaceId;
+            }
+            set
+            {
+                _info.SpaceId = value;
             }
         }
 
-        public float Hp { get { return info.Hp; }}
-        public float Mp { get { return info.Mp; }}
-        public int Level { get => info.Level; set => info.Level = value; }
-        public long Exp { get => info.Exp; set => info.Exp = value; }
-        public long Gold { get => info.Gold; set => info.Gold = value; }
-        public int Speed { get => info.Speed; set => info.Speed = value; }
+        public float Hp { get { return _info.Hp; } set { _info.Hp = value; } }
+        public float Mp { get { return _info.Mp; } set { _info.Mp = value; } }
+        public int Level { get => _info.Level; set => _info.Level = value; }
+        public long Exp { get => _info.Exp; set => _info.Exp = value; }
+        public long Gold { get => _info.Gold; set => _info.Gold = value; }
+        public int Speed { get => _info.Speed; set => _info.Speed = value; }
 
         /// <summary>
         /// 构造函数
@@ -83,13 +106,13 @@ namespace GameServer.Model
             this.Define = DataManager.Instance.unitDefineDict[TID];     //todo 可能会空，可能会有人篡改json配置文件
             
             //更新NetActor网络对象的信息
-            this.info.Tid = TID;                                        //TID:区分相同实体类型，不同身份。可以通过tid去找define
-            this.info.EntityType = type;                                //unit类型
-            this.info.Entity = this.EntityData;                         //entity的基本数据：pos dir speed entityId
-            this.info.Name = Define.Name;                               //defind中的角色默认名字，可以给子类进行覆盖
-            this.info.Hp = (int)this.Define.HPMax;                      //hp
-            this.info.Mp = (int)this.Define.MPMax;                      //mp
-            this.info.Level = level;                                    //level
+            this._info.Tid = TID;                                        //TID:区分相同实体类型，不同身份。可以通过tid去找define
+            this._info.EntityType = type;                                //unit类型
+            this._info.Entity = this.EntityData;                         //entity的基本数据：pos dir speed entityId
+            this._info.Name = Define.Name;                               //defind中的角色默认名字，可以给子类进行覆盖
+            this._info.Hp = (int)this.Define.HPMax;                      //hp
+            this._info.Mp = (int)this.Define.MPMax;                      //mp
+            this._info.Level = level;                                    //level
 
             //给当前actor添加相对应的组件
             this.skillManager = new SkillManager(this);                 //技能管理器
@@ -98,11 +121,11 @@ namespace GameServer.Model
             this.Attr.Init(this);                                       //actor属性初始化
 
             //再初始化
-            info.Hp = Attr.final.HPMax;
-            info.Mp = Attr.final.MPMax;
-            info.HpMax = Attr.final.HPMax;
-            info.MpMax = Attr.final.MPMax;
-            info.Speed = Attr.final.Speed;
+            _info.Hp = Attr.final.HPMax;
+            _info.Mp = Attr.final.MPMax;
+            _info.HpMax = Attr.final.HPMax;
+            _info.MpMax = Attr.final.MPMax;
+            _info.Speed = Attr.final.Speed;
 
         }
 
@@ -126,7 +149,7 @@ namespace GameServer.Model
                 EntityManager.Instance.ChangeSpace(this, currentSpace.SpaceId, space.SpaceId);
             }
             this.currentSpace = space;
-            this.info.SpaceId = space.SpaceId;
+            SpaceId = space.SpaceId;
         }
 
 
@@ -176,7 +199,7 @@ namespace GameServer.Model
         public void SetHp(float hp)
         {
 
-            if (Mathf.Approximately(info.Hp, hp)) return;
+            if (Mathf.Approximately(Hp, hp)) return;
             if(hp <= 0)
             {
                 hp = 0;
@@ -185,8 +208,8 @@ namespace GameServer.Model
             {
                 hp = Attr.final.HPMax;
             }
-            float oldValue = info.Hp;
-            info.Hp = hp;
+            float oldValue = Hp;
+            Hp = hp;
 
             //发包
             PropertyUpdate po = new PropertyUpdate()
@@ -194,7 +217,7 @@ namespace GameServer.Model
                 EntityId = EntityId,
                 Property = PropertyUpdate.Types.Prop.Hp,
                 OldValue = new() { FloatValue = oldValue },
-                NewValue = new() { FloatValue = info.Hp },
+                NewValue = new() { FloatValue = Hp },
             };
             currentSpace.fightManager.propertyUpdateQueue.Enqueue(po);
         }
@@ -205,7 +228,7 @@ namespace GameServer.Model
         /// <param name="mp"></param>
         public void SetMP(float mp)
         {
-            if (Mathf.Approximately(info.Mp, mp)) return;
+            if (Mathf.Approximately(Mp, mp)) return;
             if (mp <= 0)
             {
                 mp = 0;
@@ -214,8 +237,8 @@ namespace GameServer.Model
             {
                 mp = Attr.final.MPMax;
             }
-            float oldValue = info.Mp;
-            info.Mp = mp;
+            float oldValue = Mp;
+            Mp = mp;
 
             //发包
             PropertyUpdate po = new PropertyUpdate()
@@ -223,7 +246,7 @@ namespace GameServer.Model
                 EntityId = EntityId,
                 Property = PropertyUpdate.Types.Prop.Mp,
                 OldValue = new() { FloatValue = oldValue },
-                NewValue = new() { FloatValue = info.Mp },
+                NewValue = new() { FloatValue = Mp },
             };
             currentSpace.fightManager.propertyUpdateQueue.Enqueue(po);
         }
@@ -275,7 +298,7 @@ namespace GameServer.Model
                 OldValue = new() { IntValue = Level },
                 NewValue = new() { IntValue = level }
             };
-            info.Level = level;
+            Level = level;
             //广播通知
             currentSpace.fightManager.propertyUpdateQueue.Enqueue(po);
             //属性刷新
@@ -307,10 +330,10 @@ namespace GameServer.Model
         /// <param name="value"></param>
         protected void SetHpMax(float value)
         {
-            if (Mathf.Approximately(info.HpMax, value)) return;
+            if (Mathf.Approximately(_info.HpMax, value)) return;
 
-            float old = info.HpMax;
-            info.HpMax = value;
+            float old = _info.HpMax;
+            _info.HpMax = value;
             PropertyUpdate po = new PropertyUpdate()
             {
                 EntityId = EntityId,
@@ -327,9 +350,9 @@ namespace GameServer.Model
         /// <param name="value"></param>
         protected void SetMpMax(float value)
         {
-            if (Mathf.Approximately(info.MpMax, value)) return;
-            float old = info.MpMax;
-            info.MpMax = value;
+            if (Mathf.Approximately(_info.MpMax, value)) return;
+            float old = _info.MpMax;
+            _info.MpMax = value;
             PropertyUpdate po = new PropertyUpdate()
             {
                 EntityId = EntityId,
@@ -422,7 +445,7 @@ namespace GameServer.Model
         {
             if (IsDeath) return true;
 
-            if(Hp < info.HpMax || Mp < info.MpMax)
+            if(Hp < _info.HpMax || Mp < _info.MpMax)
             {
                 return false;
             }
@@ -435,8 +458,8 @@ namespace GameServer.Model
         public virtual void RestoreHealthState()
         {
             if (ActorHealth()) return;
-            SetHp(Hp + info.HpMax * 0.1f);
-            SetMP(Mp + info.MpMax * 0.1f);
+            SetHp(Hp + _info.HpMax * 0.1f);
+            SetMP(Mp + _info.MpMax * 0.1f);
         }
 
         /// <summary>

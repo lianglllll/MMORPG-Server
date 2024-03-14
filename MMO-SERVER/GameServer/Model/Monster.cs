@@ -16,17 +16,14 @@ namespace GameServer.Model
 {
     public class Monster : Actor
     {
-         
-        public Vector3 targetPos;           //将要要移动的目标位置（tmp）
-        public Vector3 curPos;              //当前移动中的位置(tmp)
-        public Vector3 initPosition;        //出生点
-        public MonsterAI AI;                //怪物Ai
-
+        public MonsterAI AI;                //怪物Ai(灵魂所在)
         public Actor target;                //追击的目标
-
+        public Vector3 targetPos;           //移动时的目标位置
+        public Vector3 curPos;              //移动时的当前位置
+        public Vector3 initPosition;        //出生点
 
         private static Vector3Int Y1000 = new Vector3Int(0, 1000, 0);   //Y单位方向
-        private Random random = new Random();
+        private Random random = new Random();                                   //随机数生成器
 
 
         /// <summary>
@@ -39,13 +36,11 @@ namespace GameServer.Model
         public Monster(int Tid,int level,Vector3Int position, Vector3Int direction) : base(EntityType.Monster, Tid,level, position, direction)
         {
 
-            //设置专属monster的info
+            //初始化
+            initPosition = position;    //出生点设置
+            State = EntityState.Idle;   //monster状态设置
 
-            //任务1 状态初始化
-            initPosition = position;//出生点设置
-            State = EntityState.Idle;
-
-            //任务2,monster位置同步
+/*            //添加怪物同步定时任务
             Scheduler.Instance.AddTask(() =>
             {
                 //if (IsDeath) return;
@@ -56,9 +51,10 @@ namespace GameServer.Model
                 nEntitySync.Entity = EntityData;
                 nEntitySync.State = State;
                 this.currentSpace.UpdateEntity(nEntitySync);
-            }, 0.15f);
+            }, 0.15f);*/
 
-            //任务3，设置AI对象
+
+            //给monster注入灵魂
             switch (Define.AI)
             {
                 case "Monster":
@@ -69,7 +65,6 @@ namespace GameServer.Model
             }
 
         }
-
 
         /// <summary>
         /// 主要是计算服务端位移的数据，每秒50次
@@ -83,15 +78,67 @@ namespace GameServer.Model
             if (IsDeath) return;
             if (State == EntityState.Dizzy) return;
 
-            //推动ai状态跃迁
-            AI?.Update();       
+            //推动AI状态跃迁
+            AI?.Update();
 
-            //推动ai的移动行为
-            if(State == EntityState.Motion)
+            //推动ai的移动
+            Move();
+        }
+
+        /// <summary>
+        /// 怪物攻击
+        /// </summary>
+        /// <param name="target"></param>
+        public Skill Attack(Actor target)
+        {
+            //目标死亡，丢弃本次请求
+            if (target.IsDeath)
             {
-                //移动方向
+                target = null;
+                return null;
+            }
+
+            //拿一个普通攻击来放,目标技能
+            var skill = skillManager.Skills.FirstOrDefault(s => s.State == Stage.None && s.IsNormal);
+            if (skill == null) return null;
+
+            spell.RunCast(new CastInfo { CasterId = target.EntityId, TargetId = target.EntityId ,SkillId = skill.Define.ID});
+
+            //看向敌人
+            LookAtTarget();
+
+            return skill;
+        }
+
+        /// <summary>
+        /// 看向敌人
+        /// </summary>
+        public void LookAtTarget()
+        {
+            if(target == null) return;
+            Vector3 curV = Position;
+            Vector3 targetV = target.Position;
+            var dir = (targetV-curV).normalized;
+            Direction = LookRotation(dir) * Y1000;
+
+            //广播消息，主要是广播了monster这个状态：motion
+            NEntitySync nEntitySync = new NEntitySync();
+            nEntitySync.Entity = EntityData;
+            nEntitySync.State = State;
+            this.currentSpace.UpdateEntity(nEntitySync);
+        }
+
+        /// <summary>
+        /// monster移动，驱动monster不断靠近目标点
+        /// 当到达目标点时，自动停止移动
+        /// </summary>
+        private void Move()
+        {
+            if (State == EntityState.Motion)
+            {
+                //移动向量
                 var dir = (targetPos - curPos).normalized;
-                this.Direction = LookRotation(dir)* Y1000;
+                this.Direction = LookRotation(dir) * Y1000;
                 float dist = Speed * Time.deltaTime;
                 if (Vector3.Distance(targetPos, curPos) < dist)
                 {
@@ -103,53 +150,42 @@ namespace GameServer.Model
                 }
                 this.Position = curPos;
 
+                //广播消息
+                NEntitySync nEntitySync = new NEntitySync();
+                nEntitySync.Entity = EntityData;
+                nEntitySync.State = State;
+                this.currentSpace.UpdateEntity(nEntitySync);
             }
-        }
-
-
-
-        /// <summary>
-        /// 怪物攻击
-        /// </summary>
-        /// <param name="target"></param>
-        public void Attack(Actor target)
-        {
-            if (target.IsDeath)
-            {
-                target = null;
-                return;
-            }
-
-            //拿一个普通攻击来放
-            var skill = skillManager.Skills.FirstOrDefault(s => s.State == Stage.None && s.IsNormal);
-            if (skill == null) return;
-            spell.SpellTarget(skill.Define.ID, target.EntityId);
         }
 
         /// <summary>
         /// monstor移动到目标点
         /// </summary>
         /// <param name="targetPos"></param>
-        public void MoveTo(Vector3 targetPos)
+        public void StartMoveTo(Vector3 targetPos)
         {
+            //如果处于monster处于特殊状态则不允许移动
             if (State == EntityState.Dizzy || State == EntityState.Death)
             {
                 return;
             }
 
-
-            if (this.State == EntityState.Idle)
+            //设置monster的状态
+            if(State != EntityState.Motion)
             {
-                State = EntityState.Motion;//这个能触发下面的update
+                State = EntityState.Motion;
             }
 
+            //设置monster的目标坐标和当前坐标
             if (this.targetPos != targetPos)
             {
                 this.targetPos = targetPos;
                 curPos = Position;
+
                 var dir = (this.targetPos - curPos).normalized;//计算方向
                 Direction = LookRotation(dir) * Y1000;
-                //广播消息
+
+                //广播消息，主要是广播了monster这个状态：motion
                 NEntitySync nEntitySync = new NEntitySync();
                 nEntitySync.Entity = EntityData;
                 nEntitySync.State = State;
@@ -164,57 +200,13 @@ namespace GameServer.Model
         {
             State = EntityState.Idle;
             curPos = targetPos;
-            //广播消息
+
+            //广播消息,广播移动结束时的坐标和monster状态
             NEntitySync nEntitySync = new NEntitySync();
             nEntitySync.Entity = EntityData;
             nEntitySync.State = State;
             this.currentSpace?.UpdateEntity(nEntitySync);
         }
-
-
-
-        /// <summary>
-        /// 计算出生点附近的随机坐标
-        /// </summary>
-        /// <param name="range"></param>
-        /// <returns></returns>
-        public Vector3 RandomPointWithBirth(float range)
-        {
-            double x = random.NextDouble()*2f-1f;//[-1,1]
-            double z = random.NextDouble()*2f- 1f;
-            Vector3 dir = new Vector3(((float)x), 0, ((float)z)).normalized;
-            return initPosition + dir * range * ((float)random.NextDouble());
-        }
-
-        /// <summary>
-        /// 方向向量转换位欧拉角
-        /// </summary>
-        /// <param name="fromDir"></param>
-        /// <returns></returns>
-        public Vector3 LookRotation(Vector3 fromDir)
-        {
-            float Rad2Deg = 57.29578f;
-            Vector3 eulerAngles = new Vector3();
-
-            // 计算欧拉角X
-            eulerAngles.x = MathF.Acos(MathF.Sqrt((fromDir.x * fromDir.x + fromDir.z * fromDir.z) / (fromDir.x * fromDir.x + fromDir.y * fromDir.y + fromDir.z * fromDir.z))) * Rad2Deg;
-            if (fromDir.y > 0)
-                eulerAngles.x = 360 - eulerAngles.x;
-
-            // 计算欧拉角Y
-            eulerAngles.y = MathF.Atan2(fromDir.x, fromDir.z) * Rad2Deg;
-            if (eulerAngles.y < 0)
-                eulerAngles.y += 180;
-            if (fromDir.x < 0)
-                eulerAngles.y += 180;
-
-            // 欧拉角Z为0
-            eulerAngles.z = 0;
-
-            return eulerAngles;
-        }
-
-
 
         /// <summary>
         /// 死亡后处理
@@ -238,6 +230,9 @@ namespace GameServer.Model
             }
         }
 
+        /// <summary>
+        /// 复活
+        /// </summary>
         public override void Revive()
         {
             if (!IsDeath) return;
@@ -277,6 +272,49 @@ namespace GameServer.Model
                 AI.fsm.ChangeState("chase");
             }
 
+        }
+
+
+
+        /// <summary>
+        /// 计算出生点附近的随机坐标
+        /// </summary>
+        /// <param name="range"></param>
+        /// <returns></returns>
+        public Vector3 RandomPointWithBirth(float range)
+        {
+            double x = random.NextDouble() * 2f - 1f;//[-1,1]
+            double z = random.NextDouble() * 2f - 1f;
+            Vector3 dir = new Vector3(((float)x), 0, ((float)z)).normalized;
+            return initPosition + dir * range * ((float)random.NextDouble());
+        }
+
+        /// <summary>
+        /// 方向向量转换位欧拉角
+        /// </summary>
+        /// <param name="fromDir"></param>
+        /// <returns></returns>
+        public Vector3 LookRotation(Vector3 fromDir)
+        {
+            float Rad2Deg = 57.29578f;
+            Vector3 eulerAngles = new Vector3();
+
+            // 计算欧拉角X
+            eulerAngles.x = MathF.Acos(MathF.Sqrt((fromDir.x * fromDir.x + fromDir.z * fromDir.z) / (fromDir.x * fromDir.x + fromDir.y * fromDir.y + fromDir.z * fromDir.z))) * Rad2Deg;
+            if (fromDir.y > 0)
+                eulerAngles.x = 360 - eulerAngles.x;
+
+            // 计算欧拉角Y
+            eulerAngles.y = MathF.Atan2(fromDir.x, fromDir.z) * Rad2Deg;
+            if (eulerAngles.y < 0)
+                eulerAngles.y += 180;
+            if (fromDir.x < 0)
+                eulerAngles.y += 180;
+
+            // 欧拉角Z为0
+            eulerAngles.z = 0;
+
+            return eulerAngles;
         }
 
     }

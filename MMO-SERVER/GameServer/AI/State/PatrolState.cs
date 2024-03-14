@@ -10,15 +10,16 @@ using System.Threading.Tasks;
 namespace GameServer.AI.State
 {
     /// <summary>
-    /// 巡逻状态
+    /// monster的巡逻行为
+    /// 1.逻辑：原地罚站(waitTime)->巡逻(起始就是走到某个坐标点)->原地罚站->...
+    /// 2.在巡逻这个行为时间内，如果ai的状态不是满的，就缓慢恢复状态
     /// </summary>
     public class PatrolState : IState<Param>
     {
+        float lastTime = Time.time;                 //ai上次开始巡逻的时间
+        private static float waitTime = 10f;        //ai原地等待的时间
 
-        float lastTime = Time.time;             //用于重置下次巡逻的位置
-        private static float waitTime = 10f;
-
-        float lastRestoreHpMpTime = Time.time;  //用于重置回复状态的时间点
+        float lastRestoreHpMpTime = Time.time;      //用于重置回复状态的时间点
         private static float restoreWaitTime = 1f;
 
         public PatrolState(FSM<Param> fsm)
@@ -54,7 +55,7 @@ namespace GameServer.AI.State
                     waitTime = (float)(param.rand.NextDouble() * 20f) + 10f;
                     //移动到随机位置
                     var target = monster.RandomPointWithBirth(param.walkRange);
-                    monster.MoveTo(target);
+                    monster.StartMoveTo(target);
                 }
             }
 

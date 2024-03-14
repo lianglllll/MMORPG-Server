@@ -145,7 +145,7 @@ namespace GameServer.Combat.Skill
             if (IsPassive)
                 return CastResult.IsPassive;
             //MP不足
-            else if (Owner.info.Mp < Define.Cost)
+            else if (Owner.Mp < Define.Cost)
                 return CastResult.MpLack;
             //正在进行
             else if (State != Stage.None)
@@ -251,7 +251,7 @@ namespace GameServer.Combat.Skill
         /// </summary>
         private void _hitTrigger()
         {
-            //这里还是需要做一些actor和target直接的距离运算再觉得触不触发的
+            //超出距离就不告知伤害了
             var dist = Vector3.Distance(Owner.EntityData.Position, Target.Position);
             if (float.IsNaN(dist) || dist <= Define.SpellRange)
             {
@@ -311,8 +311,8 @@ namespace GameServer.Combat.Skill
             var ap = Define.AP + attackerAttr.AP * Define.APC;
             //计算伤害
             //伤害 = 攻击[攻] × ( 1 - 护甲[守] / ( 护甲[守] + 400 + 85 × 等级[敌人] ) )
-            var ads = ad * (1 - targetAttr.DEF / (targetAttr.DEF + 400 + 85 * Owner.info.Level));
-            var aps = ap * (1 - targetAttr.MDEF / (targetAttr.MDEF + 400 + 85 * Owner.info.Level));
+            var ads = ad * (1 - targetAttr.DEF / (targetAttr.DEF + 400 + 85 * Owner.Level));
+            var aps = ap * (1 - targetAttr.MDEF / (targetAttr.MDEF + 400 + 85 * Owner.Level));
             //Log.Information("ads=[{0}],aps=[{1}]", ads, aps);
             damage.Amount = ads + aps;
             //计算暴击

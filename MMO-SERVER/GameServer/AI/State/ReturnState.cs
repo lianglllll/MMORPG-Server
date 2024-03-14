@@ -21,7 +21,7 @@ namespace GameServer.AI.State
 
         public override void OnEnter()
         {
-            param.owner.MoveTo(param.owner.initPosition);
+            param.owner.StartMoveTo(param.owner.initPosition);
         }
 
         public override void OnUpdate()

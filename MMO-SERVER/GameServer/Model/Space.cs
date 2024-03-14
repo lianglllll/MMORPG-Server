@@ -74,7 +74,7 @@ namespace GameServer.Model
             //2.广播给场景中的其他玩家,有新玩家进入
             var resp = new SpaceCharactersEnterResponse();
             resp.SpaceId = this.SpaceId;
-            resp.CharacterList.Add(character.info);
+            resp.CharacterList.Add(character.Info);
             foreach (var kv in characterDict)
             {
                 if (kv.Value.EntityId != character.EntityId)
@@ -85,15 +85,15 @@ namespace GameServer.Model
 
             //3.新上线的玩家需要获取场景中:全部的角色/怪物/物品的信息
             SpaceEnterResponse spaceEnterResponse = new SpaceEnterResponse();
-            spaceEnterResponse.Character = character.info;
+            spaceEnterResponse.Character = character.Info;
             foreach (var kv in characterDict)
             {
                 if (kv.Value.EntityId == character.EntityId) continue;
-                spaceEnterResponse.CharacterList.Add(kv.Value.info);
+                spaceEnterResponse.CharacterList.Add(kv.Value.Info);
             }
             foreach (var kv in monsterManager.monsterDict)
             {
-                spaceEnterResponse.CharacterList.Add(kv.Value.info);
+                spaceEnterResponse.CharacterList.Add(kv.Value.Info);
             }
             foreach(var kv in itemManager.itemEntityDict)
             {
@@ -156,7 +156,7 @@ namespace GameServer.Model
 
             var resp = new SpaceCharactersEnterResponse();
             resp.SpaceId = this.SpaceId;
-            resp.CharacterList.Add(monster.info);
+            resp.CharacterList.Add(monster.Info);
 
             //广播地图内所有玩家
             Broadcast(resp);

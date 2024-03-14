@@ -1,5 +1,6 @@
 ﻿using Common.Summer;
 using GameServer.Model;
+using GameServer.Service;
 using Proto;
 using Serilog;
 using Summer;
@@ -7,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -43,7 +45,6 @@ namespace GameServer.Buffs
         /// <param name="level"></param>
         public void AddBuff<T>(Actor provider, int level = 1) where T : BuffBase, new()
         {
-
             //遍历看看目标身上有没有已存在的要挂的buff。
             List<T> temp01 = buffs.OfType<T>().ToList();
 
@@ -98,7 +99,7 @@ namespace GameServer.Buffs
             buff.OnGet();
             Observer?.Invoke(buff);
 
-            //通知客户端
+            //广播通知客户端
             var resp = new BuffsAddResponse();
             resp.List.Add(buff.Info);
             Owner?.currentSpace?.Broadcast(resp);
@@ -122,7 +123,7 @@ namespace GameServer.Buffs
                 buffs.Remove(item);
                 _idGenerator.ReturnId(item.ID);
 
-                //通知客户端
+                //广播通知客户端
                 var resp = new BuffsRemoveResponse();
                 resp.List.Add(item.Info);
                 Owner?.currentSpace?.Broadcast(resp);
@@ -198,6 +199,7 @@ namespace GameServer.Buffs
             }
 
         }
+
 
     }
 }

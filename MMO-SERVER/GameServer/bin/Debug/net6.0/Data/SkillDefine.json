@@ -256,7 +256,7 @@
     "Duration": 0.85,
     "Interval": 0,
     "HitDelay": "[0.5]",
-    "PostRockTime": 0.5,
+    "PostRockTime": 0.7,
     "BUFF": "",
     "AD": 50,
     "AP": 0,
