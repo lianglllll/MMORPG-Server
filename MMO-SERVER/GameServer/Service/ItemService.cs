@@ -180,6 +180,8 @@ namespace GameServer.Service
             if (alreadyAddedAmount > 0)
             {
                 res.Result = Result.Success;
+                res.ItemId = itemEntity.Item.ItemId;
+                res.Amout = alreadyAddedAmount;
                 //更新ui
                 _KnapsacUpdateResponse(chr);
             }

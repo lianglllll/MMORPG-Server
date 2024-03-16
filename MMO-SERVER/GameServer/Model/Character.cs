@@ -43,7 +43,14 @@ namespace GameServer.Model
             this.Data = dbCharacter;
 
             this.Name = dbCharacter.Name;              //覆盖
-            this.Hp = dbCharacter.Hp;                  //覆盖
+            if(dbCharacter.Hp <= 0)
+            {
+                this.Hp = Attr.final.HPMax;
+            }
+            else
+            {
+                this.Hp = dbCharacter.Hp;                  //覆盖
+            }
             this.Mp = dbCharacter.Mp;                  //覆盖
             this.SpaceId = dbCharacter.SpaceId;        //覆盖
 
@@ -56,8 +63,7 @@ namespace GameServer.Model
             knapsack = new Inventory(this);
             knapsack.Init(Data.Knapsack);
 
-
-
+            //装备栏
             equipmentManager = new EquipmentManager(this);
             equipmentManager.Init(Data.EquipsData);
 
@@ -116,7 +122,6 @@ namespace GameServer.Model
         
         }
 
-
         /// <summary>
         /// 设置chr的经验
         /// </summary>
@@ -152,7 +157,6 @@ namespace GameServer.Model
             currentSpace.fightManager.propertyUpdateQueue.Enqueue(po);
         }
 
-
         /// <summary>
         /// 设置chr的金币
         /// </summary>
@@ -176,6 +180,9 @@ namespace GameServer.Model
             currentSpace.fightManager.propertyUpdateQueue.Enqueue(po);
         }
 
+        /// <summary>
+        /// 复活
+        /// </summary>
         public override void Revive()
         {
             if (!IsDeath) return;

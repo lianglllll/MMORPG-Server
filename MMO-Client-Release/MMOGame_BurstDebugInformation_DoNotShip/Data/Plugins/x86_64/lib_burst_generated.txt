@@ -112,6 +112,7 @@ Library: lib_burst_generated
 --compilation-defines=ENABLE_INPUT_SYSTEM
 --compilation-defines=ENABLE_LEGACY_INPUT_MANAGER
 --compilation-defines=DEBUG_MODE_FOLIAGE
+--compilation-defines=UNITY_POST_PROCESSING_STACK_V2
 --compilation-defines=PACKAGE_PHYSICS
 --compilation-defines=PACKAGE_PHYSICS2D
 --compilation-defines=PACKAGE_TILEMAP
@@ -137,6 +138,7 @@ Library: lib_burst_generated
 --compilation-defines=ENABLE_BURST_1_0_0_OR_NEWER
 --compilation-defines=USING_ANIMATION_MODULE
 --compilation-defines=USING_PHYSICS2D_MODULE
+--compilation-defines=UNIVERSAL_1_0_0_OR_NEWER
 --compilation-defines=TIMELINE_FRAMEACCURATE
 --compilation-defines=UNITY_2D_SPRITE
 --linker-options=PdbAltPath="MMOGame_Data/Plugins/x86_64"
@@ -152,6 +154,7 @@ Library: lib_burst_generated
 --root-assembly=E:\MyProject\MMORPG\MMO-Client\MMOGame\Temp\StagingArea\Data\Managed\Assembly-CSharp.dll
 --root-assembly=E:\MyProject\MMORPG\MMO-Client\MMOGame\Temp\StagingArea\Data\Managed\Unity.VisualScripting.Core.dll
 --root-assembly=E:\MyProject\MMORPG\MMO-Client\MMOGame\Temp\StagingArea\Data\Managed\Unity.RenderPipelines.Universal.Runtime.dll
+--root-assembly=E:\MyProject\MMORPG\MMO-Client\MMOGame\Temp\StagingArea\Data\Managed\Unity.Postprocessing.Runtime.dll
 --root-assembly=E:\MyProject\MMORPG\MMO-Client\MMOGame\Temp\StagingArea\Data\Managed\Assembly-CSharp-firstpass.dll
 --root-assembly=E:\MyProject\MMORPG\MMO-Client\MMOGame\Temp\StagingArea\Data\Managed\Unity.Burst.dll
 --root-assembly=E:\MyProject\MMORPG\MMO-Client\MMOGame\Temp\StagingArea\Data\Managed\Unity.TextMeshPro.dll
@@ -291,6 +294,7 @@ Library: lib_burst_generated
 --compilation-defines=ENABLE_INPUT_SYSTEM
 --compilation-defines=ENABLE_LEGACY_INPUT_MANAGER
 --compilation-defines=DEBUG_MODE_FOLIAGE
+--compilation-defines=UNITY_POST_PROCESSING_STACK_V2
 --compilation-defines=PACKAGE_PHYSICS
 --compilation-defines=PACKAGE_PHYSICS2D
 --compilation-defines=PACKAGE_TILEMAP
@@ -316,6 +320,7 @@ Library: lib_burst_generated
 --compilation-defines=ENABLE_BURST_1_0_0_OR_NEWER
 --compilation-defines=USING_ANIMATION_MODULE
 --compilation-defines=USING_PHYSICS2D_MODULE
+--compilation-defines=UNIVERSAL_1_0_0_OR_NEWER
 --compilation-defines=TIMELINE_FRAMEACCURATE
 --compilation-defines=UNITY_2D_SPRITE
 --linker-options=PdbAltPath="MMOGame_Data/Plugins/x86_64"
@@ -331,6 +336,7 @@ Library: lib_burst_generated
 --root-assembly=E:\MyProject\MMORPG\MMO-Client\MMOGame\Temp\StagingArea\Data\Managed\Assembly-CSharp.dll
 --root-assembly=E:\MyProject\MMORPG\MMO-Client\MMOGame\Temp\StagingArea\Data\Managed\Unity.VisualScripting.Core.dll
 --root-assembly=E:\MyProject\MMORPG\MMO-Client\MMOGame\Temp\StagingArea\Data\Managed\Unity.RenderPipelines.Universal.Runtime.dll
+--root-assembly=E:\MyProject\MMORPG\MMO-Client\MMOGame\Temp\StagingArea\Data\Managed\Unity.Postprocessing.Runtime.dll
 --root-assembly=E:\MyProject\MMORPG\MMO-Client\MMOGame\Temp\StagingArea\Data\Managed\Assembly-CSharp-firstpass.dll
 --root-assembly=E:\MyProject\MMORPG\MMO-Client\MMOGame\Temp\StagingArea\Data\Managed\Unity.Burst.dll
 --root-assembly=E:\MyProject\MMORPG\MMO-Client\MMOGame\Temp\StagingArea\Data\Managed\Unity.TextMeshPro.dll
