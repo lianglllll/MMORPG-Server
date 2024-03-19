@@ -13,7 +13,7 @@ public class UnitDefine
 	public string Resource; // 资源
 	public string Kind; // 类型
 	public string Desc; // 介绍
-	public int[] DefaultSkills; // 默认技能组
+	public int[] DefaultSkills; // 默认技能组,这里其实就是普通攻击
 	public int Speed; // 速度
 	public float HPMax; // 生命值
 	public float MPMax; // 法力值

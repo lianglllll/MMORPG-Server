@@ -189,13 +189,29 @@ namespace GameServer.Model
             SetHp(Attr.final.HPMax);
             SetMP(Attr.final.MPMax);
             SetState(UnitState.Free);
-            //设置当前角色的位置
-            //找到场景中最近的复活点
+            //设置当前角色的位置：找到场景中最近的复活点
             Position = currentSpace.SearchNearestRevivalPoint(this);
-            Log.Information("当前复活的位置：" + Position);
             SetEntityState(EntityState.Idle);
             OnAfterRevive();
         }
+
+        public override void SetEntityState(EntityState state)
+        {
+            //这里我们同步给别人和同步给自己的客户端不使用同一个协议
+            this.State = state;
+            var resp = new CtlClientSpaceEntitySyncResponse();
+            resp.EntitySync = new NEntitySync();
+            resp.EntitySync.Entity = EntityData;
+            resp.EntitySync.Force = true;
+            resp.EntitySync.State = state;
+            //发给其他玩家
+            currentSpace.UpdateEntity(resp.EntitySync);
+            //发给自己
+            session.Send(resp);
+
+        }
+
+
     }
 
 

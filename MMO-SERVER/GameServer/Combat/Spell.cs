@@ -65,7 +65,7 @@ namespace GameServer.Combat
         {
 
             //判断owner是否拥有这个技能
-            var skill = Owner.skillManager.GetSkill(skill_id);
+                var skill = Owner.skillManager.GetSkill(skill_id);
             if (skill == null)
             {
                 Log.Warning("Spell::SpellTarget():Owner[{0}]:Skill[{1}] not found", Owner.EntityId, skill_id);

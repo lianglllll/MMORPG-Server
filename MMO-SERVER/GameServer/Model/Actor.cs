@@ -255,7 +255,7 @@ namespace GameServer.Model
         /// 设置动画状态,并广播
         /// </summary>
         /// <param name="state"></param>
-        public void SetEntityState(EntityState state)
+        public virtual void SetEntityState(EntityState state)
         {
             this.State = state;
             var resp = new SpaceEntitySyncResponse();

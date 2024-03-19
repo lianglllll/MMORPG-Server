@@ -22,7 +22,6 @@ namespace GameServer.Combat.Skill
         None,               //无状态
         Intonate,           //吟唱
         Active,             //已激活
-        PostRock,           //后摇
         Colding             //冷却中
     }
 
@@ -32,7 +31,6 @@ namespace GameServer.Combat.Skill
         public Actor Owner;                 //技能归属者
         public float ColdDown;              //冷却倒计时，0表示技能可用
         private float RunTime;              //技能运行时间
-        private float PostRockTime;         //后摇时间
         public Stage State;                 //当前技能状态
         public bool IsPassive;              //是否是被动技能
         private int notCrit = 0;            //未触发暴击的次数
@@ -96,32 +94,20 @@ namespace GameServer.Combat.Skill
             if (State == Stage.Intonate && RunTime >= Define.IntonateTime)
             {
                 State = Stage.Active;
-                ColdDown = Define.CD;//此时真正进入冷却
                 OnActive();
             }
 
-            //激活=>后摇
+            //激活=>冷却
             if (State == Stage.Active)
             {
-                if (RunTime >= Define.IntonateTime + Define.HitDelay.Max())
+                if (RunTime >= Define.IntonateTime + Define.Duration)
                 {
-                    State = Stage.PostRock;
-                    PostRockTime = Define.PostRockTime;
-                    OnPostRock();
+                    State = Stage.Colding;
+                    OnColdDown();
                 }
             }
 
-            //后摇=>冷却
-            if (PostRockTime > 0) PostRockTime -= Time.deltaTime;
-            if (PostRockTime < 0) PostRockTime = 0;
-            if (State == Stage.PostRock && PostRockTime == 0)
-            {
-                State = Stage.Colding;
-                OnColdDown();
-            }
-
-
-            //冷却
+            //冷却=>结束
             if (ColdDown > 0) ColdDown -= Time.deltaTime;
             if (ColdDown < 0) ColdDown = 0;
             if (State == Stage.Colding && ColdDown == 0)
@@ -197,8 +183,8 @@ namespace GameServer.Combat.Skill
         /// </summary>
         public virtual void OnActive()
         {
-            //Log.Information("Skill Active Owner[{0}],skill[{1}]", Owner.EntityId,Define.Name);
-            //Log.Information("技能激活：" + Define.Name);
+
+            ColdDown = Define.CD;//此时真正进入冷却
 
             //如果是投射物
             if (Define.IsMissile)
@@ -217,13 +203,6 @@ namespace GameServer.Combat.Skill
             }
         }
 
-        /// <summary>
-        /// 技能后摇
-        /// </summary>
-        public virtual void OnPostRock()
-        {
-
-        }
 
         /// <summary>
         /// 技能冷却
@@ -242,7 +221,6 @@ namespace GameServer.Combat.Skill
         {
             RunTime = 0;
             State = Stage.None;
-            //Log.Information("技能结束：Owner[{0}],skill[{1}]",Owner.EntityId, Define.Name);
         }
 
         /// <summary>
