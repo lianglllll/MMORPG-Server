@@ -6837,3 +6837,63 @@ message  ReconnectResponse{
 
 
 
+
+
+
+
+# 战斗管理器
+
+
+
+**目前这个控制操作是产生了一个比较大的分歧**
+
+1.类似原神/永劫无间的操作方式：鼠标左右键位都是攻击的，特点就是技能比较少，依赖于普通攻击，也就是依赖鼠标。
+
+2.逆水寒操作方式，鼠标左是选中人或者是寻路，鼠标右键是旋转视野的，技能和普通攻击全部依赖于键盘。
+
+
+
+## 普通攻击连招的锁敌机制
+
+这里参考永劫无间
+
+
+
+1.人物周围有一个sphere的检测，当检测圆内有敌人就必须锁定一个。当超出检测范围的时候，锁定取消。
+
+ <img src="MMORPG.assets/image-20240320102508927.png" alt="image-20240320102508927" style="zoom:50%;" />
+
+ <img src="MMORPG.assets/image-20240320102454378.png" alt="image-20240320102454378" style="zoom:50%;" />
+
+<img src="MMORPG.assets/image-20240320102534493.png" alt="image-20240320102534493" style="zoom:50%;" /> 
+
+
+
+**2.检测圆内有多名敌人的时候按照距离索敌**
+
+<img src="MMORPG.assets/image-20240320102750391.png" alt="image-20240320102750391" style="zoom:50%;" /> 
+
+<img src="MMORPG.assets/image-20240320102812666.png" alt="image-20240320102812666" style="zoom:50%;" /> 
+
+
+
+**3.检测圆内有多名敌人的时候也可通过鼠标执行的方向的一个扇形区域内切换敌人**，这个检测优先级高于距离
+
+<img src="MMORPG.assets/image-20240320102955858.png" alt="image-20240320102955858" style="zoom:50%;" /> 
+
+<img src="MMORPG.assets/image-20240320103042417.png" alt="image-20240320103042417" style="zoom:50%;" /> 
+
+
+
+4.永劫无间的人物在中间偏左的位置
+
+![image-20240320112712000](MMORPG.assets/image-20240320112712000.png)
+
+
+
+
+
+
+
+
+

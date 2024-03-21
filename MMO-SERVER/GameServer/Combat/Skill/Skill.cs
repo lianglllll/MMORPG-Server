@@ -32,7 +32,6 @@ namespace GameServer.Combat.Skill
         public float ColdDown;              //冷却倒计时，0表示技能可用
         private float RunTime;              //技能运行时间
         public Stage State;                 //当前技能状态
-        public bool IsPassive;              //是否是被动技能
         private int notCrit = 0;            //未触发暴击的次数
         //强制触发暴击的次数(理论的暴击次数，如果你是百分之10的暴击率，那么你10次攻击会有一次暴击)（这里给你保底）（+2是宽限一点）
         private int forceCritAfer => (int)(100f / Owner.Attr.final.CRI) + 2;
@@ -66,6 +65,9 @@ namespace GameServer.Combat.Skill
         /// 是不是普通攻击
         /// </summary>
         public bool IsNormal => Define.Type == "普通攻击";
+
+        //是否是被动技能
+        public bool IsPassive => Define.Type == "被动技能";
 
         /// <summary>
         /// 构造函数

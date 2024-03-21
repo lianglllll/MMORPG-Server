@@ -135,7 +135,7 @@
     "Desc": "近战物理",
     "DefaultSkills": "[4001,4002,4003]",
     "Speed": 3000,
-    "HPMax": 600,
+    "HPMax": 50000,
     "MPMax": 600,
     "InitLevel": 1,
     "AD": 100,
