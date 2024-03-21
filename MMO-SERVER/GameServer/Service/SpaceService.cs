@@ -47,18 +47,11 @@ namespace GameServer.Service
         /// <param name="msg"></param>
         private void _SpaceEntitySyncRequest(Connection conn, SpaceEntitySyncRequest msg)
         {
-
             //获取当前连接的场景对象
-            Space connSpace = conn.Get<Session>()?.Space;
-            if (connSpace == null)
-            {
-                return;
-            }
-
+            Character chr = conn.Get<Session>().character;
 
             //判断合理性
             NetEntity nEntity = msg.EntitySync.Entity;//请求位置信息
-            Character chr = EntityManager.Instance.GetEntity(nEntity.Id) as Character;
             //将要移动的距离
             float distance = Vector3Int.Distance(nEntity.Position, chr.Position);
             //计算时间差
@@ -80,8 +73,9 @@ namespace GameServer.Service
             }
 
             //更新信息并且转发
-            connSpace.UpdateEntity(msg.EntitySync);
-
+            chr.EntityData = msg.EntitySync.Entity;
+            chr.State = msg.EntitySync.State;
+            chr.currentSpace.SyncActor(msg.EntitySync,chr);
         }
 
     }

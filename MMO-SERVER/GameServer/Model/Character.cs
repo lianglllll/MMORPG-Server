@@ -13,6 +13,7 @@ using GameServer.Core;
 using GameServer.InventorySystem;
 using GameServer.core;
 using System.Runtime.ConstrainedExecution;
+using AOIMap;
 
 namespace GameServer.Model
 {
@@ -79,6 +80,53 @@ namespace GameServer.Model
         {
             return new Character(dbCharacter);
         }
+
+
+        /// <summary>
+        /// aoi区域内有新entity进入
+        /// </summary>
+        /// <param name="unit"></param>
+        public override void OnUnitEnter(IAOIUnit unit)
+        {
+            if (currentSpace == null) return;
+            //告知客户端有东西进入
+            if(unit is Actor actor)
+            {
+                var resp = new SpaceCharactersEnterResponse();
+                resp.SpaceId = this.SpaceId;
+                resp.CharacterList.Add(actor.Info);
+                session.Send(resp); 
+            }
+            else if(unit is ItemEntity item)
+            {
+                var resp = new SpaceItemEnterResponse();
+                resp.NetItemEntity = item.NetItemEntity;
+                session.Send(resp);
+            }
+        }
+
+        /// <summary>
+        /// aoi区域内有entity离开
+        /// </summary>
+        /// <param name="unit"></param>
+        public override void OnUnitLeave(IAOIUnit unit)
+        {
+            if (currentSpace == null) return;
+            //告知客户端有东西离开
+            if (unit is Actor actor)
+            {
+                SpaceEntityLeaveResponse resp = new SpaceEntityLeaveResponse();
+                resp.EntityId = actor.EntityId;
+                session.Send(resp);
+            }
+            else if (unit is ItemEntity item)
+            {
+                SpaceEntityLeaveResponse resp = new SpaceEntityLeaveResponse();
+                resp.EntityId = item.EntityId;
+                session.Send(resp);
+            }
+        }
+
 
         /// <summary>
         /// 使用物品
@@ -195,6 +243,10 @@ namespace GameServer.Model
             OnAfterRevive();
         }
 
+        /// <summary>
+        /// 设置角色的状态
+        /// </summary>
+        /// <param name="state"></param>
         public override void SetEntityState(EntityState state)
         {
             //这里我们同步给别人和同步给自己的客户端不使用同一个协议
@@ -205,7 +257,7 @@ namespace GameServer.Model
             resp.EntitySync.Force = true;
             resp.EntitySync.State = state;
             //发给其他玩家
-            currentSpace.UpdateEntity(resp.EntitySync);
+            currentSpace.SyncActor(resp.EntitySync,this);
             //发给自己
             session.Send(resp);
 

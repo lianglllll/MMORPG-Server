@@ -13,6 +13,7 @@ using GameServer.Buffs;
 using GameServer.core;
 using GameServer.Combat.Skill;
 using Google.Protobuf.Collections;
+using AOIMap;
 
 namespace GameServer.Model
 {
@@ -21,7 +22,6 @@ namespace GameServer.Model
     {
         public UnitDefine Define;                                                                   //actor的define数据(静态数据)
         public NetActor _info  = new NetActor();                                                     //actor的NetActor数据(动态数据)
-        public Space currentSpace;                                                                  //actor所在的当前场景
         public EntityState State;                                                                   //actor动画状态：跑、走、跳、
         public UnitState unitState;                                                                 //actor活动状态:死亡、空闲、战斗
         public Attributes Attr = new Attributes();                                                  //actor属性
@@ -151,10 +151,6 @@ namespace GameServer.Model
             this.currentSpace = space;
             SpaceId = space.SpaceId;
         }
-
-
-
-
 
         /// <summary>
         /// 当前actor收到扣血通知
@@ -427,10 +423,14 @@ namespace GameServer.Model
                 //1.退出当前场景
                 currentSpace.CharacterLeave(chr);
                 //设置坐标
+                var tempSpace = currentSpace;
+                currentSpace = null;
                 chr.Position = pos;
                 chr.Direction = dir;
+                currentSpace = tempSpace;
                 //2.进入新场景
                 targetSpace.CharaterJoin(chr);
+
             }
             //传送的是同一场景
             else

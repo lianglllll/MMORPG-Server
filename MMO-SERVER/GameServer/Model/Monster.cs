@@ -125,7 +125,7 @@ namespace GameServer.Model
             NEntitySync nEntitySync = new NEntitySync();
             nEntitySync.Entity = EntityData;
             nEntitySync.State = State;
-            this.currentSpace.UpdateEntity(nEntitySync);
+            this.currentSpace.SyncActor(nEntitySync,this);
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace GameServer.Model
                 NEntitySync nEntitySync = new NEntitySync();
                 nEntitySync.Entity = EntityData;
                 nEntitySync.State = State;
-                this.currentSpace.UpdateEntity(nEntitySync);
+                this.currentSpace.SyncActor(nEntitySync,this);
             }
         }
 
@@ -189,7 +189,7 @@ namespace GameServer.Model
                 NEntitySync nEntitySync = new NEntitySync();
                 nEntitySync.Entity = EntityData;
                 nEntitySync.State = State;
-                this.currentSpace.UpdateEntity(nEntitySync);
+                this.currentSpace.SyncActor(nEntitySync, this);
             }
         }
 
@@ -205,7 +205,7 @@ namespace GameServer.Model
             NEntitySync nEntitySync = new NEntitySync();
             nEntitySync.Entity = EntityData;
             nEntitySync.State = State;
-            this.currentSpace?.UpdateEntity(nEntitySync);
+            this.currentSpace?.SyncActor(nEntitySync,this);
         }
 
         /// <summary>

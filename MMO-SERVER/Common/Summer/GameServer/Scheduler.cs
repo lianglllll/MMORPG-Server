@@ -222,6 +222,7 @@ namespace Summer
             public void Run()
             {
                 lastTick = GetCurrentTime();
+
                 try
                 {
                     TaskMethod.Invoke();
