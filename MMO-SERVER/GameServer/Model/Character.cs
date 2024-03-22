@@ -89,6 +89,7 @@ namespace GameServer.Model
         public override void OnUnitEnter(IAOIUnit unit)
         {
             if (currentSpace == null) return;
+            if (((Entity)unit).EntityId == EntityId) return;
             //告知客户端有东西进入
             if(unit is Actor actor)
             {
@@ -112,6 +113,7 @@ namespace GameServer.Model
         public override void OnUnitLeave(IAOIUnit unit)
         {
             if (currentSpace == null) return;
+            if (((Entity)unit).EntityId == EntityId) return;
             //告知客户端有东西离开
             if (unit is Actor actor)
             {

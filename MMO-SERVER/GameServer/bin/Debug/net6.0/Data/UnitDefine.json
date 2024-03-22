@@ -133,7 +133,7 @@
     "Resource": "Prefabs/Role/Tid-4",
     "Kind": "Character",
     "Desc": "近战物理",
-    "DefaultSkills": "[4001,4002,4003]",
+    "DefaultSkills": "[4001,4002,4003,4004]",
     "Speed": 3000,
     "HPMax": 50000,
     "MPMax": 600,

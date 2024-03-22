@@ -69,23 +69,11 @@ namespace GameServer.Service
         {
             var chr = conn.Get<Session>().character;
             if (chr == null) return;
-
-            //todo 这应该在表中取静态数据复活点的
             var sp = SpaceManager.Instance.GetSpaceById(message.SpaceId);
-            if(message.SpaceId == 0)
-            {
-                var def = DataManager.Instance.revivalPointDefindeDict[0];
-                chr.TransmitSpace(sp, new Core.Vector3Int(def.X,def.Y,def.Z));
-            }
-            else if(message.SpaceId == 1)
-            {
-                var def = DataManager.Instance.revivalPointDefindeDict[1000];
-                chr.TransmitSpace(sp, new Core.Vector3Int(def.X, def.Y, def.Z));
-            }
+            DataManager.Instance.revivalPointDefindeDict.TryGetValue(message.PointId, out var pointDef);
+            if (sp == null || pointDef == null) return;
 
+            chr.TransmitSpace(sp, new Core.Vector3Int(pointDef.X, pointDef.Y, pointDef.Z));
         }
-
-
-
     }
 }

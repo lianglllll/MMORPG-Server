@@ -262,7 +262,7 @@ namespace GameServer.Service
             resp.EquipsList.AddRange(chr._info.EquipList);
 
             //广播
-            chr.currentSpace.Broadcast(resp);
+            chr.currentSpace.AOIBroadcast(chr, resp);
         }
     }
 }

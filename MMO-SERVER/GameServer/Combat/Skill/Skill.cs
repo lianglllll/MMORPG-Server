@@ -136,7 +136,7 @@ namespace GameServer.Combat.Skill
             else if (Owner.Mp < Define.Cost)
                 return CastResult.MpLack;
             //正在进行
-            else if (State != Stage.None)
+            else if (State != Stage.None && State != Stage.Colding)
                 return CastResult.Running;
             //冷却中
             else if (ColdDown > 0)

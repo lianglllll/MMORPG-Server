@@ -1,4 +1,5 @@
-﻿using GameServer.Manager;
+﻿using GameServer.core;
+using GameServer.Manager;
 using GameServer.Model;
 using Proto;
 using Serilog;
@@ -95,7 +96,31 @@ namespace GameServer.Combat
 
             if(spellCastResponse.List.Count() > 0)
             {
-                space.Broadcast(spellCastResponse);
+                //找出所有受影响的玩家们,这里使用set是保证唯一性
+                //谁需要看到这个施法的过程，当然是施法者九宫格范围内的玩家。
+                var hashSet = new HashSet<Character>();
+                foreach (var item in spellCastResponse.List)
+                {
+                    //当事人
+                    var entity = GameTools.GetUnit(item.CasterId);
+                    if (entity == null) continue;
+                    var li = space?.AOIManager?.GetEntities(entity.AoiPos.x, entity.AoiPos.y);
+                    if (li != null)
+                    {
+                        foreach (Character cc in li.OfType<Character>())
+                        {
+                            hashSet.Add(cc);
+                        }
+                    }
+                }
+
+                //广播
+                //space.Broadcast(spellCastResponse);
+                foreach (var cc in hashSet)
+                {
+                    cc.session.Send(spellCastResponse);
+                }
+
                 spellCastResponse.List.Clear();
             }
 
@@ -112,7 +137,31 @@ namespace GameServer.Combat
             }
             if(damageResponse.List.Count > 0)
             {
-                space.Broadcast(damageResponse);
+                //找出所有受影响的玩家们,这里使用set是保证唯一性
+                //谁需要看到这个伤害信息，当然是受伤害目标九宫格范围内的玩家。
+                var hashSet = new HashSet<Character>();
+                foreach (var item in damageResponse.List)
+                {
+                    //当事人,你需要让这个给
+                    var entity = GameTools.GetUnit(item.TargetId);
+                    if (entity == null) continue;
+                    var li = space?.AOIManager?.GetEntities(entity.AoiPos.x, entity.AoiPos.y);
+                    if (li != null)
+                    {
+                        foreach (Character cc in li.OfType<Character>())
+                        {
+                            hashSet.Add(cc);
+                        }
+                    }
+                }
+
+                //广播
+                //space.Broadcast(damageResponse);
+                foreach (var cc in hashSet)
+                {
+                    cc.session.Send(damageResponse);
+                }
+
                 damageResponse.List.Clear();
             }
 
@@ -129,7 +178,31 @@ namespace GameServer.Combat
             }
             if (propertyUpdateRsponse.List.Count > 0)
             {
-                space.Broadcast(propertyUpdateRsponse);
+                //找出所有受影响的玩家们,这里使用set是保证唯一性
+                //谁需要看到这个属性变换的过程，当然是属性变化者九宫格范围内的玩家。
+                var hashSet = new HashSet<Character>();
+                foreach(var item in propertyUpdateRsponse.List)
+                {
+                    //当事人
+                    var entity = GameTools.GetUnit(item.EntityId);
+                    if (entity == null) continue;
+                    var li = space?.AOIManager?.GetEntities(entity.AoiPos.x,entity.AoiPos.y);
+                    if (li != null)
+                    {
+                        foreach(Character cc in li.OfType<Character>())
+                        {
+                            hashSet.Add(cc);
+                        }
+                    }
+                }
+
+                //广播
+                //space.Broadcast(propertyUpdateRsponse);
+                foreach (var cc in hashSet)
+                {
+                    cc.session.Send(propertyUpdateRsponse);
+                }
+
                 propertyUpdateRsponse.List.Clear();
             }
 

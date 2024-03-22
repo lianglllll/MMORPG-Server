@@ -14,7 +14,7 @@ namespace AOIMap
     {
         public int GID { get; private set; }
         private HashSet<IAOIUnit> aoiSet;           //我们需要同步的单位：角色、怪物、npc、物品
-        private ReaderWriterLockSlim pIDLock;
+        private ReaderWriterLockSlim pIDLock;       //读写锁
 
         public Grid(int id)
         {

@@ -46,12 +46,7 @@ namespace GameServer.Model
             def = spaceDefine;
             SpaceId = spaceDefine.SID;
             Name = spaceDefine.Name;
-            AOIManager = spaceDefine.SID switch
-            {
-                0 => new(-99, -73, 200, 226),
-                1 => new(0, 0, 1000, 1000),
-                _ => throw new NotImplementedException(),
-            };
+            AOIManager = new AOIManager<Entity>(spaceDefine.Area[0], spaceDefine.Area[1], spaceDefine.Area[2], spaceDefine.Area[3]);
             monsterManager.Init(this);
             spawnManager.Init(this);
             fightManager.Init(this);
@@ -263,7 +258,7 @@ namespace GameServer.Model
 
 
         /// <summary>
-        /// 往aoi区域内进行广播(all Character)
+        /// 往aoi九宫格内进行广播(all Character)一个proto消息
         /// </summary>
         /// <param name="entity"></param>
         /// <param name="msg"></param>
@@ -278,7 +273,7 @@ namespace GameServer.Model
         }
 
         /// <summary>
-        /// 工具方法广播一个proto消息，给场景的全体玩家
+        /// 广播一个proto消息给场景的全体玩家
         /// </summary>
         /// <param name="msg"></param>
         public void Broadcast(IMessage msg)
@@ -297,13 +292,15 @@ namespace GameServer.Model
             actor.Position = pos;
             actor.Direction = dir;
 
+            //通知客户端，需要强制到达这个地点
+            //否则，客户端会用原来的pos来覆盖新的位置
             SpaceEntitySyncResponse resp = new SpaceEntitySyncResponse();
             resp.EntitySync = new NEntitySync();
             resp.EntitySync.Entity = actor.EntityData;
             resp.EntitySync.State = EntityState.Idle;
             resp.EntitySync.Force = true;
-
             AOIBroadcast(actor,resp);
+
         }
 
         /// <summary>

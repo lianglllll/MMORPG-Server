@@ -259,7 +259,7 @@ namespace GameServer.Model
             resp.EntitySync.Entity = EntityData;
             resp.EntitySync.Force = true;
             resp.EntitySync.State = state;
-            currentSpace.Broadcast(resp);
+            currentSpace.AOIBroadcast(this,resp);
         }
 
         /// <summary>
@@ -360,21 +360,12 @@ namespace GameServer.Model
         }
 
         /// <summary>
-        /// 死亡前的处理
-        /// </summary>
-        /// <param name="killerID"></param>
-        protected virtual void OnBeforeDie(int killerID)
-        {
-        }
-
-        /// <summary>
         /// 当前actor死亡
         /// </summary>
         /// <param name="killerID"></param>
         public virtual void Die(int killerID)
         {
             if (IsDeath) return;
-            OnBeforeDie(killerID);
 
             SetHp(0);
             SetState(UnitState.Dead);
@@ -390,7 +381,7 @@ namespace GameServer.Model
         /// <param name="killerID"></param>
         protected virtual void OnAfterDie(int killerID)
         {
-
+            buffManager.RemoveAllBuff();
         }
 
         /// <summary>

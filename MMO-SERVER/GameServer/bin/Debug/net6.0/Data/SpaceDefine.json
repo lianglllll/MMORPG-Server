@@ -5,7 +5,8 @@
     "Resource": "Scene0",
     "Kind": "场景",
     "AllowPK": 0,
-    "RevivalPointS": "[0,1]"
+    "RevivalPointS": "[0,1]",
+    "Area": "[-99,-73,200,226]"
   },
   "1": {
     "SID": 1,
@@ -13,6 +14,7 @@
     "Resource": "Scene1",
     "Kind": "场景",
     "AllowPK": 0,
-    "RevivalPointS": "[1000]"
+    "RevivalPointS": "[1000]",
+    "Area": "[0,0,1000,1000]"
   }
 }
