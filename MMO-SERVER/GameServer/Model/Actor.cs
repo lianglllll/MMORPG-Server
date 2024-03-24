@@ -186,6 +186,7 @@ namespace GameServer.Model
         /// <param name="damage"></param>
         protected virtual void AfterRecvDamage(Damage damage)
         {
+
         }
 
         /// <summary>

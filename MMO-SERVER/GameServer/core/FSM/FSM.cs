@@ -45,6 +45,7 @@ namespace GameServer.core.FSM
         {
             if (curStateId == stateId) return;
             if (!stateDict.ContainsKey(stateId)) return;
+            //Log.Information($"{curStateId}=>{stateId}");
 
             curState?.OnExit();
             curStateId = stateId;

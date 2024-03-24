@@ -264,8 +264,6 @@ namespace GameServer.Model
             session.Send(resp);
 
         }
-
-
     }
 
 

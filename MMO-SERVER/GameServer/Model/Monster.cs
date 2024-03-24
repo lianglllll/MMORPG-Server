@@ -11,6 +11,7 @@ using GameServer.Manager;
 using GameServer.core.FSM;
 using GameServer.Combat.Skill;
 using Serilog;
+using System.Threading;
 
 namespace GameServer.Model
 {
@@ -92,7 +93,7 @@ namespace GameServer.Model
         public Skill Attack(Actor target)
         {
             //目标死亡，丢弃本次请求
-            if (target.IsDeath)
+            if (target == null || target.IsDeath)
             {
                 target = null;
                 return null;
@@ -102,10 +103,11 @@ namespace GameServer.Model
             var skill = skillManager.Skills.FirstOrDefault(s => s.State == Stage.None && s.IsNormal);
             if (skill == null) return null;
 
-            spell.RunCast(new CastInfo { CasterId = target.EntityId, TargetId = target.EntityId ,SkillId = skill.Define.ID});
-
             //看向敌人
             LookAtTarget();
+
+            //施放技能
+            spell.RunCast(new CastInfo { CasterId = target.EntityId, TargetId = target.EntityId ,SkillId = skill.Define.ID});
 
             return skill;
         }
@@ -121,10 +123,10 @@ namespace GameServer.Model
             var dir = (targetV-curV).normalized;
             Direction = LookRotation(dir) * Y1000;
 
-            //广播消息，主要是广播了monster这个状态：motion
+            //广播消息，主要是广播了monster这个旋转
             NEntitySync nEntitySync = new NEntitySync();
             nEntitySync.Entity = EntityData;
-            nEntitySync.State = State;
+            nEntitySync.State = EntityState.NoneState;
             this.currentSpace.SyncActor(nEntitySync,this);
         }
 
@@ -263,14 +265,20 @@ namespace GameServer.Model
         {
             base.AfterRecvDamage(damage);
 
-            //如果当前怪物没有死亡，就应该去追击攻击本monster的玩家
-            var killer = EntityManager.Instance.GetEntity(damage.AttackerId) as Actor;
-            if (killer == null) return;
-            if (!AI.fsm.param.owner.IsDeath && AI.fsm.curStateId != "chase" && AI.fsm.curStateId != "return")
+            if (IsDeath) return;
+
+            //标记伤害来源为我们的target
+            target = EntityManager.Instance.GetEntity(damage.AttackerId) as Actor;
+
+            //切换为hit状态
+            //设置/重置 受击时间
+            if(AI.fsm.curStateId != "return")
             {
-                this.target = killer;
-                AI.fsm.ChangeState("chase");
+                LookAtTarget();
+                AI.fsm.param.remainHitWaitTime = AI.fsm.param.hitWaitTime;
+                AI.fsm.ChangeState("hit");
             }
+
 
         }
 

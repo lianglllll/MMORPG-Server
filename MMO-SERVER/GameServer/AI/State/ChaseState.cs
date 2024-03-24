@@ -1,6 +1,8 @@
 ﻿using GameServer.core.FSM;
 using GameServer.Core;
 using GameServer.Manager;
+using Serilog;
+using Summer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,13 +16,24 @@ namespace GameServer.AI.State
     /// </summary>
     public class ChaseState : IState<Param>
     {
+        private int flag;
+
         public ChaseState(FSM<Param> fsm)
         {
             this.fsm = fsm;
         }
 
+        public override void OnEnter()
+        {
+            base.OnEnter();
+            flag = 1;
+
+        }
+
+
         public override void OnUpdate()
         {
+
             var monster = param.owner;
 
             //追击目标失效切换为返回状态
@@ -53,9 +66,10 @@ namespace GameServer.AI.State
             //在技能后摇结束之前，我们不能再次攻击
             if (monster.curentSkill != null) return;
 
-            //切换攻击行为
+            //进入攻击状态
             fsm.ChangeState("attack");
-
         }
+
+
     }
 }

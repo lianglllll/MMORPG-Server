@@ -2,6 +2,7 @@
 using GameServer.core.FSM;
 using GameServer.Model;
 using Proto;
+using Serilog;
 using Summer;
 using System;
 using System.Collections.Generic;
@@ -11,11 +12,12 @@ using System.Threading;
 
 namespace GameServer.AI.State
 {
+
     public class AttackState: IState<Param>
     {
         private Skill curUsedSkill;
-        private float waitTime;         //需要等待的时间（技能后摇/攻击失败的惩罚时间）
-        private float PunishmentTime;   //攻击的失败惩罚时间
+        private float afterWaitTime;         
+
 
         public AttackState(FSM<Param> fsm)
         {
@@ -39,26 +41,27 @@ namespace GameServer.AI.State
             }
 
             //找一个技能，打击目标
-            curUsedSkill = monster.Attack(monster.target);
+            curUsedSkill = param.owner.Attack(param.owner.target);
 
-            //攻击失败的惩罚
+            //攻击失败的惩罚和攻击后摇时间
             if (curUsedSkill == null)
             {
-                waitTime = PunishmentTime;
+                afterWaitTime = 3f;
             }
             else
             {
-                waitTime = curUsedSkill.Define.PostRockTime;
+                afterWaitTime = curUsedSkill.Define.PostRockTime;
             }
 
         }
 
         public override void OnUpdate()
-        {   
-            //退出当前状态的条件
-            if(waitTime <= 0)
+        {
+
+            //技能释放后的后摇时间，这里傻站着不动
+            if (afterWaitTime <= 0)
             {
-                waitTime = 0;
+                afterWaitTime = 0;
                 var monster = param.owner;
                 if (monster.target != null && !monster.target.IsDeath)
                 {
@@ -71,9 +74,7 @@ namespace GameServer.AI.State
                     return;
                 }
             }
-            waitTime -= Time.deltaTime;
-
-
+            afterWaitTime -= Time.deltaTime;
 
         }
     }

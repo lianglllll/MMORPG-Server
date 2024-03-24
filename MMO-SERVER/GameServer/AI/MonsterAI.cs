@@ -24,6 +24,10 @@ namespace GameServer.AI
         public int walkRange = 20000;       //相对于出生点的活动范围
         public int chaseRange = 30000;      //追击范围
         public Random rand = new Random();
+
+        public float hitWaitTime = 1.5f;
+        public float remainHitWaitTime;
+
     }
 
     /// <summary>
@@ -46,9 +50,11 @@ namespace GameServer.AI
             fsm.AddState("return",new ReturnState(fsm));
             fsm.AddState("death",new DeathState(fsm));
             fsm.AddState("attack",new AttackState(fsm));
+            fsm.AddState("hit",new HitState(fsm));
 
             //设置初始行为
             fsm.ChangeState("patrol");
+
         }
 
         /// <summary>
