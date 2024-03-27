@@ -3,6 +3,7 @@ using GameServer.Buffs.BuffImplement;
 using GameServer.core;
 using GameServer.Core;
 using GameServer.Model;
+using Google.Protobuf.WellKnownTypes;
 using Proto;
 using Serilog;
 using Summer;
@@ -40,6 +41,7 @@ namespace GameServer.Combat.Skill
         /// 技能的目标：pos、actor
         /// </summary>
         public SCObject Target { get; private set; }
+
         /// <summary>
         /// 是不是一个无目标类型
         /// </summary>
@@ -47,6 +49,7 @@ namespace GameServer.Combat.Skill
         {
             get => Define.TargetType == "None";
         }
+
         /// <summary>
         /// 是不是一个单位类型
         /// </summary>
@@ -54,6 +57,7 @@ namespace GameServer.Combat.Skill
         {
             get => Define.TargetType == "单位";
         }
+
         /// <summary>
         /// 是不是一个点目标类型
         /// </summary>
@@ -61,13 +65,22 @@ namespace GameServer.Combat.Skill
         {
             get => Define.TargetType == "点";
         }
+
         /// <summary>
         /// 是不是普通攻击
         /// </summary>
         public bool IsNormal => Define.Type == "普通攻击";
 
-        //是否是被动技能
+        /// <summary>
+        /// 是否是被动技能
+        /// </summary>
         public bool IsPassive => Define.Type == "被动技能";
+
+        /// <summary>
+        /// 是否是群体伤害
+        /// </summary>
+        public bool IsGroupAttack => Define.IsGroupAttack;
+
 
         /// <summary>
         /// 构造函数
@@ -166,7 +179,6 @@ namespace GameServer.Combat.Skill
             RunTime = 0;
             State = Stage.Intonate;
             OnIntonate();
-
             return CastResult.Success;
         }
 
@@ -205,7 +217,6 @@ namespace GameServer.Combat.Skill
             }
         }
 
-
         /// <summary>
         /// 技能冷却
         /// </summary>
@@ -231,12 +242,7 @@ namespace GameServer.Combat.Skill
         /// </summary>
         private void _hitTrigger()
         {
-            //超出距离就不告知伤害了
-            var dist = Vector3.Distance(Owner.EntityData.Position, Target.Position);
-            if (float.IsNaN(dist) || dist <= Define.SpellRange)
-            {
-                OnHit(Target);
-            }
+            OnHit(Target);
         }
 
         /// <summary>
@@ -245,13 +251,25 @@ namespace GameServer.Combat.Skill
         /// <param name="sco"></param>
         public virtual void OnHit(SCObject targetSco)
         {
-
+            /*
+            
             //单体伤害
             if (Define.Area == 0)
             {
                 if (targetSco is SCEntity)
                 {
                     var acotr = targetSco.RealObj as Actor;
+
+                    //超出距离就不告知伤害了
+                    var dist = Vector3.Distance(Owner.EntityData.Position, Target.Position);
+                    //不在攻击的角度也不攻击
+                    bool isLegalAngle = CheckForLegalSectorArea(acotr, 90, 3000);
+
+                    if (float.IsNaN(dist) || dist > Define.SpellRange || !isLegalAngle)
+                    {
+                        return;
+                    }
+
                     TakeDamage(acotr);
                 }
             }
@@ -265,8 +283,52 @@ namespace GameServer.Combat.Skill
                 }
             }
 
+            */
+
+            //群攻型技能，
+            if (Define.IsGroupAttack)
+            {
+                OnHitGroup(targetSco);
+            }
+            //单体技能
+            else
+            {
+                OnHitOne(targetSco.RealObj as Actor);
+            }
+                
 
         }
+
+
+        /// <summary>
+        /// 单体命中,大部分都是使用扇形区域作为攻击判断是否有效
+        /// </summary>
+        public virtual void OnHitOne(Actor target)
+        {
+            //不在攻击的区域内
+            bool isLegalArea = CheckForLegalSectorArea(Owner,target, 90, 3000);
+
+            if (isLegalArea)
+            {
+                TakeDamage(target);
+            }
+
+        }
+
+        /// <summary>
+        /// 群体命中
+        /// </summary>
+        public virtual void OnHitGroup(SCObject targetSco)
+        {
+            //在无目标的情况下，targetSco一般是指向自己的
+            //在点目标的情况下，targetSco一般是一个位置
+            var list = GetAttackAreaEntitysNoOwner(Define.EffectAreaType, targetSco);
+            foreach (var item in list)
+            {
+                TakeDamage(item);
+            }
+        }
+
 
         /// <summary>
         /// 对目标造成伤害，计算伤害并且通知目标它被伤害了
@@ -336,24 +398,160 @@ namespace GameServer.Combat.Skill
         /// <summary>
         /// 技能的附加效果
         /// </summary>
-        private void AdditionalEffects(Actor targetActor)
+        protected virtual void AdditionalEffects(Actor targetActor)
         {
-            //buff
-            var buffs = Define.BUFF;
-            if (buffs.Count() <= 0) return;
-            foreach (var item in buffs)
+        }
+
+
+        /// <summary>
+        /// 获取攻击区域内的目标们
+        /// </summary>
+        /// <param name="EffectAreaType"></param>
+        /// <param name="targetSco"></param>
+        /// <returns></returns>
+        private List<Actor> GetAttackAreaEntitysNoOwner(string EffectAreaType, SCObject targetSco)
+        {
+            List<Actor> result = new List<Actor>();
+
+            //以targetSco 为起始的区域
+            if(targetSco is SCEntity target)
             {
-                var buffDef = DataManager.Instance.buffDefindeDict[item];
-                if (buffDef == null) continue;
+                var acotr = targetSco.RealObj as Actor;
+                var entityList = Owner.currentSpace.AOIManager.GetEntities(acotr.AoiPos).OfType<Actor>();
 
-                string className = "BurnBuff";
-                Type classType = Type.GetType(className);
-                if (classType == null) continue;
-                BuffBase buff = Activator.CreateInstance(classType) as BuffBase;
-
-
-
+                if (Define.EffectAreaType == "扇形")
+                {
+                    foreach (var entity in entityList)
+                    {
+                        if (entity == Owner) continue;//忽略技能持有者
+                        if (CheckForLegalSectorArea(acotr, entity, Define.EffectAreaAngle, Define.Area))
+                        {
+                            result.Add(entity);
+                        }
+                    }
+                }
+                else if (Define.EffectAreaType == "圆形")
+                {
+                    //这里要区分targetSco是actor和一个点的区别
+                    foreach (var entity in entityList)
+                    {
+                        if (entity == Owner) continue;
+                        if (CheckForLegalCircularArea(acotr, entity, Define.Area))
+                        {
+                            result.Add(entity);
+                        }
+                    }
+                }
+                else if (Define.EffectAreaType == "矩形")
+                {
+                    //这里要区分targetSco是actor和一个点的区别
+                    foreach (var entity in entityList)
+                    {
+                        if (entity == Owner) continue;
+                        if (CheckForLegalRectangularArea(acotr, entity, Define.EffectAreaLengthWidth[0], Define.EffectAreaLengthWidth[1]))
+                        {
+                            result.Add(entity);
+                        }
+                    }
+                }
+                else
+                {
+                    //none
+                }
             }
+
+
+            return result;
+
+        }
+
+        /// <summary>
+        /// 检查当前目标是否在合法的扇形区域中
+        /// </summary>
+        /// <param name="targetActor"></param>
+        protected bool CheckForLegalSectorArea(Actor ownerActor, Actor targetActor,  float detectionAngle, float detectionRadius)
+        {
+            // 将欧拉角转换为弧度
+            float yaw = ownerActor.Direction.y * Mathf.Deg2Rad *0.001f;
+
+            // 计算当前技能拥有者朝向的单位向量
+            Vector3 forwardVector = new Vector3(Mathf.Sin(yaw), 0, Mathf.Cos(yaw));
+
+            // 计算角色到敌人的向量
+            Vector3 toEnemy = targetActor.Position - ownerActor.Position;
+
+            // 计算角度差
+            float angle = Vector3.Angle(forwardVector, toEnemy);
+
+            // 如果敌人在扇形区域内并且在检测半径范围内
+            if (angle <= detectionAngle / 2 && toEnemy.magnitude <= detectionRadius)
+            {
+                // 在这里可以执行相应的逻辑，比如标记敌人等
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// 检查当前目标是否在合法的圆形区域内
+        /// </summary>
+        /// <param name="ownerActor"></param>
+        /// <param name="targetActor"></param>
+        /// <param name="detectionRadius"></param>
+        /// <returns></returns>
+        protected bool CheckForLegalCircularArea(Actor ownerActor, Actor targetActor, float detectionRadius)
+        {
+            // 计算角色到敌人的向量
+            Vector3 toEnemy = targetActor.Position - ownerActor.Position;
+
+            if(toEnemy.magnitude <= detectionRadius) { return true; }
+            return false;
+        }
+
+        /// <summary>
+        /// 检查当前目标是否在合法的矩形区域内
+        /// </summary>
+        /// <param name="ownerActor"></param>
+        /// <param name="targetActor"></param>
+        /// <param name="length"></param>
+        /// <param name="width"></param>
+        /// <returns></returns>
+        protected bool CheckForLegalRectangularArea(Actor ownerActor, Actor targetActor, float length, float width) {
+
+            // 计算目标相对于所有者的位置向量
+            Vector3 directionToTarget = targetActor.Position - ownerActor.Position;
+
+            // 将欧拉角转换为弧度
+            float yaw = ownerActor.Direction.y * Mathf.Deg2Rad * 0.001f;
+
+            // 计算角色朝向的单位向量
+            Vector3 forwardVector = new Vector3(Mathf.Sin(yaw), 0, Mathf.Cos(yaw));
+
+            // 计算这个向量在所有者面向方向上的投影长度，即目标在所有者前方多远
+            float forwardDistance = Vector3.Dot(directionToTarget, forwardVector);
+
+            // 如果目标在所有者背后，或者超出了指定的长度，则不在区域内
+            if (forwardDistance < 0 || forwardDistance > length)
+            {
+                return false;
+            }
+
+
+            // 计算右向单位向量
+            Vector3 rightVector = Vector3.Cross(Vector3.up, forwardVector).normalized;
+
+            // 计算目标在所有者右侧的距离，以判断宽度
+            float rightDistance = Vector3.Dot(directionToTarget, rightVector);
+
+            // 如果目标相对于中心的距离超出了宽度的一半，则不在区域内
+            if (Mathf.Abs(rightDistance) > width / 2)
+            {
+                return false;
+            }
+
+            // 如果以上条件都不满足，则目标在矩形区域内
+            return true;
         }
 
     }

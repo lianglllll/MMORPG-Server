@@ -18,7 +18,7 @@ namespace GameServer.Model
     public class Entity : IAOIUnit
     {
         private Vector3Int position;                //位置
-        private Vector3Int direction;               //方向
+        private Vector3Int direction;               //方向 direction = transform.rotation.eulerAngles
         private NetEntity netObj;                   //网络对象  
         public Space currentSpace;                  //entity所在的当前场景
         private long _lastUpdate;                   //最后一次更新位置的时间戳

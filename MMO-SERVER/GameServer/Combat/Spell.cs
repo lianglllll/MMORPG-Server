@@ -75,6 +75,7 @@ namespace GameServer.Combat
             //执行技能,目标选择自己得了
             SCObject sco = new SCEntity(Owner);
             var res = skill.CanUse(sco);
+
             //通知施法者,执行失败
             if (res != CastResult.Success)
             {

@@ -195,6 +195,10 @@ public class AOIManager<T> where T : IAOIUnit
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <returns></returns>
+    public List<T> GetEntities(Vector2 vec)
+    {
+        return GetEntities(vec.x, vec.y);
+    }
     public List<T> GetEntities(float x, float y)
     {
         int gID = GetGidByPos(x, y);
