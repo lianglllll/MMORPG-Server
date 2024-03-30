@@ -11,6 +11,7 @@ public class UnitDefine
 	public int TID; // 类型编号
 	public string Name; // 名称
 	public string Resource; // 资源
+	public string BgResource; // 图片资源
 	public string Kind; // 类型
 	public string Desc; // 介绍
 	public int[] DefaultSkills; // 默认技能组,这里其实就是普通攻击
@@ -35,7 +36,6 @@ public class UnitDefine
 	public float GINT; // 智力成长
 	public float GAGI; // 敏捷成长
 	public string AI; // AI名称
-	public string BgResource; // 图片资源
 	public long ExpReward; // 经验奖励
 	public long GoldReward; // 金币奖励
 }

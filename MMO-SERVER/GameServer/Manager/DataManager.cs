@@ -35,13 +35,14 @@ public class DataManager : Singleton<DataManager>
     {
         //获取文件对象信息
         spaceDefineDict = Load<SpaceDefine>("Data/SpaceDefine.json");
-        unitDefineDict = Load<UnitDefine>("Data/UnitDefine.json");
         spawnDefineDict = Load<SpawnDefine>("Data/SpawnDefine.json");
         skillDefineDict = Load<SkillDefine>("Data/SkillDefine.json");
         ItemDefinedDict = Load<ItemDefine>("Data/ItemDefine.json");
         levelDefindeDict = Load<LevelDefine>("Data/LevelDefine.json");
         buffDefindeDict = Load<BuffDefine>("Data/BuffDefine.json");
         revivalPointDefindeDict = Load<RevivalPointDefine>("Data/RevivalPointDefine.json");
+        unitDefineDict = Load<UnitDefine>("Data/UnitDefine.json");
+
     }
 
     //根据path加载解析json文件转换为dict

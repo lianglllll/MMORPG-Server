@@ -24,6 +24,8 @@ public class SkillDefine
 	public int EffectAreaAngle; // 影响的扇形角度，以角色的forword为中心
 	public int[] EffectAreaLengthWidth; // 影响的矩形区域，以角色的forword为起始方向
 	public string Icon; // 技能图标
+	public string IntonateArt; // 蓄气自身的粒子效果
+	public string HitArt; // 击中效果，粒子特效
 	public int SpellRange; // 施法距离
 	public int Cost; // 魔法消耗
 	public float AD; // 物理攻击
@@ -39,7 +41,6 @@ public class SkillDefine
 	public bool IsMissile; // 是否是投射物
 	public string Missile; // 投射物
 	public int MissileSpeed; // 投射速度
-	public string HitArt; // 击中效果，粒子特效
 	public float Interval; // 伤害间隔
 	public float[] HitDelay; // 命中时间,伤害次数
 	public int[] BUFF; // 附加效果，这里面填buffId如流血效果

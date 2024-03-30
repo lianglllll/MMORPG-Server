@@ -398,7 +398,40 @@ validate_password_special_char_count：密码至少要包含的特殊字符数�
 
 ### 卸载
 
-自己问gpt
+
+
+#### 1.查看 **MySQL** 依赖
+
+```
+dpkg --list|grep mysql
+```
+
+#### 2.卸载 mysql-common
+
+```
+sudo apt remove mysql-common
+```
+
+#### 3.卸载 mysql-server
+
+```
+sudo apt autoremove --purge mysql-server
+```
+
+#### 4.清除残留数据
+
+```
+dpkg -l|grep ^rc|awk '{print $2}'|sudo xargs dpkg -P
+```
+
+如果还有残留就继续删除
+
+```
+dpkg --list|grep mysql
+sudo apt autoremove --purge mysql-apt-config
+```
+
+
 
 
 
@@ -5775,6 +5808,44 @@ static int bufferSize = 26; //缓存大小，26个字节
 
 ## IOCP
 
+![image-20240328192124638](MMORPG.assets/image-20240328192124638.png)
+
+![image-20240328192145490](MMORPG.assets/image-20240328192145490.png)
+
+它内部创建了一个队列，这个队列所有的io请求的数据结果，当这个输入放入队列的时候起始是已经完成了读写操作了，所以我们称之为完成端口，实际上这里我们应该把它理解为完成队列，这是它最明显的特征。
+
+
+
+**关键概念**
+
+<img src="MMORPG.assets/image-20240328192500716.png" alt="image-20240328192500716" style="zoom:33%;" /> 
+
+
+
+**模型图**
+
+<img src="MMORPG.assets/image-20240328192608459.png" alt="image-20240328192608459" style="zoom:50%;" /> 
+
+
+
+**完成端口**相当于老板
+
+**队列**就需要放入一个个工作任务
+
+**线程池**就是我们的员工
+
+
+
+当一个工作任务到来的时候，老板首先将其加入队列，然后对其进行分发。
+
+如何进行分发？他不是随机找一个员工，而是最近查询过，向老板汇报过，手头中没有任务，是清闲的员工，那么老板就把这个任务交给它。  这样的好处是避免带来不必要的线程切换开销。所以对于这个线程池的调度是一个后进先出的一个策略。
+
+
+
+
+
+
+
 
 
 ### 1.网络io都在干什么？
@@ -6924,6 +6995,26 @@ A和C相互看不见，如果C使用技能打B，A是看不见C是怎么打B的�
 **由于我们的伤害数据包是按照帧来发送的，所以我们需要解决重复发送的问题。**
 
 ![image-20240322164847302](MMORPG.assets/image-20240322164847302.png) 
+
+
+
+# 热更新
+
+资源服务器（网站）我们使用宝塔面板
+
+http https
+
+
+
+我们使用**yooAsset**热更框架
+
+https://www.yooasset.com/
+
+
+
+
+
+
 
 
 

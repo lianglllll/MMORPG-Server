@@ -12,6 +12,7 @@ public class BuffDefine
 	public string Name; // 名称
 	public string Description; // 介绍
 	public string IconPath; // 图标路径
+	public string OwerEffects; // buff拥有者的粒子特效
 	public float MaxDuration; // 持续时间
 	public int MaxLevel; // 堆叠上限
 	public string BuffType; // 种类

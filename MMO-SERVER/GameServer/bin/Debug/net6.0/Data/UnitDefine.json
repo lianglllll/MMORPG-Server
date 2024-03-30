@@ -2,7 +2,8 @@
   "0": {
     "TID": 0,
     "Name": "战士",
-    "Resource": "Prefabs/Role/Tid-0",
+    "Resource": "Combat/Prefabs/Unit/Tid-0",
+    "BgResource": "UI/Texture/RoleListItemBg/role0",
     "Kind": "Character",
     "Desc": "近战物理",
     "DefaultSkills": "[1001,1002,1003]",
@@ -27,14 +28,14 @@
     "GINT": 1,
     "GAGI": 0.6,
     "AI": "no",
-    "BgResource": "Texture/RoleListItemBg/role0",
-    "ExpReward": 0.0,
-    "GoldReward": 0.0
+    "ExpReward": 0,
+    "GoldReward": 0
   },
   "1": {
     "TID": 1,
     "Name": "法师",
-    "Resource": "Prefabs/Role/Tid-1",
+    "Resource": "Combat/Prefabs/Unit/Tid-1",
+    "BgResource": "UI/Texture/RoleListItemBg/role1",
     "Kind": "Character",
     "Desc": "血低高魔伤",
     "DefaultSkills": "[2001,2002,2003,2004]",
@@ -59,17 +60,17 @@
     "GINT": 2,
     "GAGI": 0.6,
     "AI": "no",
-    "BgResource": "Texture/RoleListItemBg/role1",
-    "ExpReward": 0.0,
-    "GoldReward": 0.0
+    "ExpReward": 0,
+    "GoldReward": 0
   },
   "2": {
     "TID": 2,
     "Name": "仙术",
-    "Resource": "Prefabs/Role/Tid-0",
+    "Resource": "Combat/Prefabs/Unit/Tid-0",
+    "BgResource": "UI/Texture/RoleListItemBg/role2",
     "Kind": "Character",
     "Desc": "法系辅助",
-    "DefaultSkills": "",
+    "DefaultSkills": "[0]",
     "Speed": 3000,
     "HPMax": 400,
     "MPMax": 400,
@@ -91,17 +92,17 @@
     "GINT": 2,
     "GAGI": 0.6,
     "AI": "no",
-    "BgResource": "Texture/RoleListItemBg/role2",
-    "ExpReward": 0.0,
-    "GoldReward": 0.0
+    "ExpReward": 0,
+    "GoldReward": 0
   },
   "3": {
     "TID": 3,
     "Name": "游侠",
-    "Resource": "Prefabs/Role/Tid-0",
+    "Resource": "Combat/Prefabs/Unit/Tid-0",
+    "BgResource": "UI/Texture/RoleListItemBg/role3",
     "Kind": "Character",
     "Desc": "远程高爆发",
-    "DefaultSkills": "",
+    "DefaultSkills": "[0]",
     "Speed": 3000,
     "HPMax": 400,
     "MPMax": 400,
@@ -123,14 +124,14 @@
     "GINT": 1,
     "GAGI": 0.6,
     "AI": "no",
-    "BgResource": "Texture/RoleListItemBg/role3",
-    "ExpReward": 0.0,
-    "GoldReward": 0.0
+    "ExpReward": 0,
+    "GoldReward": 0
   },
   "4": {
     "TID": 4,
     "Name": "俏皮女枪",
-    "Resource": "Prefabs/Role/Tid-4",
+    "Resource": "Combat/Prefabs/Unit/Tid-4",
+    "BgResource": "UI/Texture/RoleListItemBg/role4",
     "Kind": "Character",
     "Desc": "近战物理",
     "DefaultSkills": "[4001,4002,4003,4004]",
@@ -155,14 +156,14 @@
     "GINT": 1,
     "GAGI": 0.6,
     "AI": "no",
-    "BgResource": "Texture/RoleListItemBg/role4",
-    "ExpReward": 0.0,
-    "GoldReward": 0.0
+    "ExpReward": 0,
+    "GoldReward": 0
   },
   "1001": {
     "TID": 1001,
     "Name": "山贼",
-    "Resource": "Prefabs/Role/Tid-0",
+    "Resource": "Combat/Prefabs/Unit/Tid-0",
+    "BgResource": "",
     "Kind": "Monster",
     "Desc": "偷鸡摸狗,背刺爆发",
     "DefaultSkills": "[10001,10002]",
@@ -187,14 +188,14 @@
     "GINT": 1,
     "GAGI": 1,
     "AI": "Monster",
-    "BgResource": "",
     "ExpReward": 10,
     "GoldReward": 5
   },
   "1002": {
     "TID": 1002,
     "Name": "骷髅小兵",
-    "Resource": "Prefabs/Role/Tid-1002",
+    "Resource": "Combat/Prefabs/Unit/Tid-1002",
+    "BgResource": "",
     "Kind": "Monster",
     "Desc": "低攻低防,不惧死亡",
     "DefaultSkills": "[10001,10002]",
@@ -219,14 +220,14 @@
     "GINT": 1,
     "GAGI": 1,
     "AI": "Monster",
-    "BgResource": "",
     "ExpReward": 20,
     "GoldReward": 10
   },
   "1003": {
     "TID": 1003,
     "Name": "牛头战士",
-    "Resource": "Prefabs/Role/Tid-1003",
+    "Resource": "Combat/Prefabs/Unit/Tid-1003",
+    "BgResource": "",
     "Kind": "Monster",
     "Desc": "高攻高防御,横冲直撞",
     "DefaultSkills": "[30001,30002,30003]",
@@ -251,7 +252,6 @@
     "GINT": 1,
     "GAGI": 1,
     "AI": "Monster",
-    "BgResource": "",
     "ExpReward": 2000,
     "GoldReward": 100
   }
