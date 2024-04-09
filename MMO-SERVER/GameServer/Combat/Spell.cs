@@ -151,7 +151,7 @@ namespace GameServer.Combat
         /// <param name="position"></param>
         private void SpellPosition(int skill_id,Vector3 position)
         {
-            Log.Information("Spell::SpellPosition():Caster[{0}]:Pos[{1}]", Owner.EntityId, position);
+           // Log.Information("Spell::SpellPosition():Caster[{0}]:Pos[{1}]", Owner.EntityId, position);
             SCObject sco = new SCPosition(position);
         }
 

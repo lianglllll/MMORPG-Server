@@ -53,7 +53,7 @@ public class Missile
         if (distance >= Vector3.Distance(a, b))
         {
             curPosition = b;
-            Skill.OnHit(Target);
+            Skill.OnHitByMissile(Target);
             Space.fightManager.missiles.Remove(this);
             _pool.ReturnObject(this);
         }

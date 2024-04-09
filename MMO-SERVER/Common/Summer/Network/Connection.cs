@@ -12,6 +12,7 @@ using Serilog;
 using Summer.core;
 using Proto;
 using System.Threading;
+using System.Collections;
 
 namespace Summer.Network
 {
@@ -172,8 +173,12 @@ namespace Summer.Network
         /// <param name="ar"></param>
         private void SendCallback(IAsyncResult ar)
         {
-            // 发送的字节数
-            int len = _socket.EndSend(ar);
+            if (_socket != null && _socket.Connected)
+            {
+                // 发送的字节数
+                int len = _socket.EndSend(ar);
+            }
+
         }
 
         #endregion

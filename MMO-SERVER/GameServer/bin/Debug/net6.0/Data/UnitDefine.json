@@ -130,7 +130,7 @@
   "4": {
     "TID": 4,
     "Name": "俏皮女枪",
-    "Resource": "Combat/Prefabs/Unit/Tid-4",
+    "Resource": "Assets/AssetPackage/Combat/Prefabs/Unit/Tid-4",
     "BgResource": "UI/Texture/RoleListItemBg/role4",
     "Kind": "Character",
     "Desc": "近战物理",
@@ -194,7 +194,7 @@
   "1002": {
     "TID": 1002,
     "Name": "骷髅小兵",
-    "Resource": "Combat/Prefabs/Unit/Tid-1002",
+    "Resource": "Assets/AssetPackage/Combat/Prefabs/Unit/Tid-1002",
     "BgResource": "",
     "Kind": "Monster",
     "Desc": "低攻低防,不惧死亡",

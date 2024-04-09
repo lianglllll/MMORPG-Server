@@ -20,13 +20,12 @@ public class SkillDefine
 	public string TargetType; // 目标类型
 	public bool IsGroupAttack; // 是否是群体体攻击
 	public string EffectAreaType; // 技能影响的有效范围类别
-	public int Area; // 影响半径区域
+	public int EffectAreaRadius; // 影响半径区域，也作施法距离
 	public int EffectAreaAngle; // 影响的扇形角度，以角色的forword为中心
 	public int[] EffectAreaLengthWidth; // 影响的矩形区域，以角色的forword为起始方向
 	public string Icon; // 技能图标
 	public string IntonateArt; // 蓄气自身的粒子效果
 	public string HitArt; // 击中效果，粒子特效
-	public int SpellRange; // 施法距离
 	public int Cost; // 魔法消耗
 	public float AD; // 物理攻击
 	public float AP; // 法术攻击
@@ -39,6 +38,8 @@ public class SkillDefine
 	public float PostRockTime; // 技能的后摇时间，我这里用作缓冲
 	public float CD; // 冷却时间
 	public bool IsMissile; // 是否是投射物
+	public bool MissileIsGroupAttack; // 投射物是否造成群体伤害
+	public int MissileEffectRadius; // 投射物造成伤害的半径
 	public string Missile; // 投射物
 	public int MissileSpeed; // 投射速度
 	public float Interval; // 伤害间隔
