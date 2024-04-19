@@ -76,22 +76,7 @@ namespace GameServer.Model
             character.OnEnterSpace(this);
             characterDict[character.EntityId] = character;
 
-            //2.广播给场景中的其他玩家,有新玩家进入
-            AOIManager.Enter(character);
-            /*
-            var resp = new SpaceCharactersEnterResponse();
-            resp.SpaceId = this.SpaceId;
-            resp.CharacterList.Add(character.Info);
-            foreach (var kv in characterDict)
-            {
-                if (kv.Value.EntityId != character.EntityId)
-                {
-                    kv.Value.session.Send(resp);
-                }
-            }
-            */
-
-            //3.新上线的玩家需要获取场景中:全部的角色/怪物/物品的信息
+            //2.新上线的玩家需要获取场景中:全部的角色/怪物/物品的信息
             SpaceEnterResponse resp = new SpaceEnterResponse();
             resp.Character = character.Info;
             var loc = character.AoiPos;//获取aoi坐标
@@ -109,24 +94,9 @@ namespace GameServer.Model
             }
             character.session.Send(resp);
 
-            /*
-            SpaceEnterResponse spaceEnterResponse = new SpaceEnterResponse();
-            spaceEnterResponse.Character = character.Info;
-            foreach (var kv in characterDict)
-            {
-                if (kv.Value.EntityId == character.EntityId) continue;
-                spaceEnterResponse.CharacterList.Add(kv.Value.Info);
-            }
-            foreach (var kv in monsterManager.monsterDict)
-            {
-                spaceEnterResponse.CharacterList.Add(kv.Value.Info);
-            }
-            foreach(var kv in itemManager.itemEntityDict)
-            {
-                spaceEnterResponse.ItemEntityList.Add(kv.Value.NetItemEntity);
-            }
-            character.session.Send(spaceEnterResponse); 
-            */
+
+            //3.广播给场景中的其他玩家,有新玩家进入
+            AOIManager.Enter(character);
         }
 
         /// <summary>
@@ -137,18 +107,7 @@ namespace GameServer.Model
         public void CharacterLeave(Character character)
         {
             characterDict.Remove(character.EntityId);
-
             AOIManager.Leave(character);
-
-            /* 我们不需要再向整个场景进行广播了
-            //广播
-            SpaceEntityLeaveResponse resp = new SpaceEntityLeaveResponse();
-            resp.EntityId = character.EntityId;
-            foreach (var kv in characterDict)
-            {
-                kv.Value.session.Send(resp);
-            }
-            */
         }
 
         /// <summary>

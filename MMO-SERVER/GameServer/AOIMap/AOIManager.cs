@@ -17,6 +17,7 @@ public interface IAOIUnit
     public Vector2 AoiPos { get; }          //这个单位在aoi体系下的二维坐标
     public void OnUnitEnter(IAOIUnit unit);
     public void OnUnitLeave(IAOIUnit unit);
+    public void OnPosError();
 }
 
 /// <summary>
@@ -223,6 +224,11 @@ public class AOIManager<T> where T : IAOIUnit
     {
         var pos = obj.AoiPos;
         var grid = GetGridByPos(pos.x, pos.y);
+        if(grid == null)
+        {
+            obj.OnPosError();
+            return;
+        }
         grid.Add(obj);
         Move(obj, -9, grid.GID);
     }
@@ -232,6 +238,10 @@ public class AOIManager<T> where T : IAOIUnit
     {
         var pos = obj.AoiPos;
         var grid = GetGridByPos(pos.x, pos.y);
+        if(grid == null)
+        {
+            return;
+        }
         grid.Remove(obj);
         Move(obj, grid.GID, -9);
     }

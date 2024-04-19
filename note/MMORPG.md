@@ -2,7 +2,7 @@
 
 
 
-**1.在游戏服务器中，我们要获取某个角色周围的敌人，除了遍历当前场景的所有角色，我们还有什么好的方法来获取？**
+##### **1.在游戏服务器中，我们要获取某个角色周围的敌人，除了遍历当前场景的所有角色，我们还有什么好的方法来获取？**
 
 在游戏服务器中，获取某个角色周围的敌人通常涉及到处理网络同步和优化性能的问题。以下是一些常见的方法，特别适用于游戏服务器环境：
 
@@ -14,7 +14,7 @@
 
 
 
-**2.你这个项目有使用到多线程吗？**
+##### **2.你这个项目有使用到多线程吗？**
 
 在我们的项目中很多地方都使用到了c#的ThreadPool，每个CLR都有一个线程池实例。（Common Language Runtime）
 
@@ -103,7 +103,7 @@ SessionManager中的的session会话超时检测的timer
 
 
 
-**3.你的服务器是怎么处理socket请求的，一个socket对应一个线程？**
+##### **3.你的服务器是怎么处理socket请求的，一个socket对应一个线程？**
 
 我使用的是c#给我们提供的**异步io编程模型**iocp   APM  TAP
 
@@ -131,7 +131,7 @@ SessionManager中的的session会话超时检测的timer
 
 
 
-**4.既然你的messageRouter使用了多线程，那么你的character中的信息存在线程并发问题吗？**
+##### **4.既然你的messageRouter使用了多线程，那么你的character中的信息存在线程并发问题吗？**
 
 在这些个战斗场景中产生的数据，在处理的时候我们都会使用队列来缓存某个时间段收集到的数据包，然后在一起处理这些数据包。
 
@@ -159,7 +159,7 @@ SessionManager中的的session会话超时检测的timer
 
 
 
-**5.既然你的服务器通过一个timer每隔n秒进行对character的一些属性进行保存的话，那么它和messageRouter会有并发问题吗？**
+##### **5.既然你的服务器通过一个timer每隔n秒进行对character的一些属性进行保存的话，那么它和messageRouter会有并发问题吗？**
 
 ```
         private void SaveCharacterInfo()
@@ -186,757 +186,27 @@ SessionManager中的的session会话超时检测的timer
 
 
 
-# 在linux环境下部署环境
 
 
 
-## 1.ubuntu下安装mysql服务
 
 
 
-### **1.1安装 MySQL-Server**
 
-通过 apt 包管理器安装 MySQL
 
-```
-sudo apt update
-sudo apt install mysql-server
-```
 
 
 
-### **1.2启动mysql服务,并确定active**
 
-```
-systemctl start mysql
-```
 
-![image-20231222170326277](MMORPG.assets/image-20231222170326277.png)
 
 
 
-### **1.3验证 MySQL-Server**
 
-你可以通过运行以下命令来验证安装结果，该命令将输出系统中所安装的 MySQL 版本和发行版。
 
-```
-mysql --version
-```
 
-![image-20231222170435939](MMORPG.assets/image-20231222170435939.png) 
 
 
-
-### **1.4保护加固 MySQL**
-
-MySQL 安装文件附带了一个名为`mysql_secure_installation`的脚本，它允许你很容易地提高[数据库服务](https://cloud.tencent.com/product/dbexpert?from_column=20065&from=20065)器的安全性。
-
-不带参数运行这个脚本：
-
-```
-sudo mysql_secure_installation
-```
-
-你将会被要求配置`VALIDATE PASSWORD PLUGIN`，它被用来测试 MySQL 用户密码的强度，并且提高安全性：
-
-![image-20231222172421839](MMORPG.assets/image-20231222172421839.png) 
-
-看着按吧。
-
-
-
-### **1.5以root身份登录并调整用户身份验证**
-
-MySQL Server 带有一个客户端实用程序，可以从 Linux 终端访问数据库并与之交互。
-
-通常，未做任何配置时，在 Ubuntu 上全新安装 MySQL 后，访问服务器的用户将使用 auth_socket 插件进行身份验证。
-
-auth_socket 的使用会阻止服务器使用密码对用户进行身份验证。它不仅会引发安全问题，而且还会使用户无法借助外部程序（如 phpMyAdmin）访问数据库。因此我们需要将身份验证方法从 auth_socket 更改为使用 mysql_native_password。
-
-为此需要打开 MySQL 控制台，并在 Linux 终端上运行以下命令。
-
-```
-mysql
-```
-
-现在，我们需要检查数据库对不同用户使用的身份验证方法。你可以通过运行以下命令来执行此操作。
-
-```
-SELECT user,authentication_string,plugin,host FROM mysql.user;
-```
-
-![image-20231222174909028](MMORPG.assets/image-20231222174909028.png) 
-
-从上图中，我们可以确认 root 用户确实使用 auth_socket 进行了身份验证。我们需要使用下面的“ALTER USER”命令切换到密码验证的使用。另外需要注意的是，确保使用较强的安全密码（应超过 8 个字符，结合数字、字符串和特殊符号等），因为它将替换你在执行上述命令“sudo mysql_secure_installation” 时设置的密码。运行以下命令。
-
-```
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'your_password';
-```
-
-现在，我们需要重新加载授权表并将更改更新到 MySQL 数据库。通过执行以下命令来执行此操作。
-
-```
-FLUSH PRIVILEGES;
-```
-
-完成后，我们需要确认 root 用户不再使用 auth_socket 进行身份验证。通过再次运行以下命令来执行此操作。
-
-```
-SELECT user,authentication_string,plugin,host FROM mysql.user;
-```
-
-![image-20231222175044710](MMORPG.assets/image-20231222175044710.png)
-
-从上图中，我们看到 root 身份验证方法已从“auth_socket”更改为“mysql_native_password”。
-
-由于我们更改了 root 的身份验证方法，因此我们无法使用之前使用的相同命令打开 MySQL 控制台。即“sudo mysql”。我们需要包括用户名和密码参数，如下所示。
-
-```
-mysql -u root -p
-```
-
-“-u”表示用户，这里是“root”，“-p”代表“password”，一旦你按下 Enter 键，服务器就会提示你输入密码。
-
-
-
-### **1.6创建新用户**
-
-一切都设置好后，你可以创建一个新用户，并授予该用户适当的权限。我们将创建一个用户 'PyDataStudio' 并分配对所有数据库表的权限以及更改、删除和添加用户权限的权限。逐行执行下面的命令。
-
-```
-CREATE USER 'PyDataStudio'@'localhost' IDENTIFIED BY 'strong_password';
-
-GRANT ALL PRIVILEGES ON *.* TO 'PyDataStudio'@'localhost' WITH GRANT OPTION;
-```
-
-第一个命令将创建新用户，第二个命令分配所需的权限。
-
-我们现在可以通过运行以下命令来测试我们的新用户。
-
-```
-mysql -u PyDataStudio -p
-```
-
-![image-20231222180040915](MMORPG.assets/image-20231222180040915.png) 
-
-
-
-### **1.7服务器上的配置**
-
-在 Ubuntu 服务器上安装 MySQL-server 与上述步骤没有太大区别。但是，由于服务器是远程访问的，我们还需要为服务器启用远程访问。
-
-安装成功后，需要启用远程访问。从逻辑上讲，我们需要在 Ubuntu 服务器防火墙上打开一个端口，以便 MySQL 数据库进行通信。默认情况下，MySQL 服务在 3306 端口上运行。执行以下命令。
-
-```
-sudo ufw enable
-sudo ufw allow mysql
-```
-
-为了增强 MySQL 数据库的可靠性和可访问性，可以将 MySQL-server 服务配置为在启动时开始运行。执行以下命令。
-
-```
-sudo systemctl enable mysql
-```
-
-现在需要配置服务器的接口，从而服务器能够侦听远程可访问的接口。我们需要编辑“mysqld.cnf”文件。运行以下命令。
-
-```
-sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
-```
-
-![图片](MMORPG.assets/f3f74bc525f3167aeef2581ecedf97cf3134c7.png)
-
-默认情况下，绑定地址为“127.0.0.1”。为公网接口添加绑定地址，为服务网络接口添加另一个绑定地址。你可以将所有 IP 地址的绑定地址配置为“0.0.0.0”。
-
-
-
-
-
-### **bug**
-
-如果你在选择密码规则的时候不小心选择了2，也就是数字、大小写字母、特殊符号和字典文件的组合。这时候设置密码会出现如下提示：
-
-```
-Your password does not satisfy the current policy requirements.
-```
-
-这时候重新运行`mysql_secure_installation`也不会再给你机会重新设置了。手动微笑，mmp。
-
-**解决方案如下：**
-
-使用命令`mysql -uroot`登陆，执行：
-
-```
-set global validate_password.policy = 0;
-#将密码规则设置为LOW，就可以使用纯数字纯字母密码
-```
-
-```
-set global validate_password_length=4;  
-#最低位数为4位
-```
-
-这个时候重新运行`mysql_secure_installation`就可以安心设置了。
-
-**相关参数**
-
-```
-validate_password_dictionary_file：插件用于验证密码强度的字典文件路径。
-
-validate_password_length：密码最小长度。
-
-validate_password_mixed_case_count：密码至少要包含的小写字母个数和大写字母个数。
-
-validate_password_number_count：密码至少要包含的数字个数。
-
-validate_password_policy：密码强度检查等级，0/LOW、1/MEDIUM、2/STRONG。
-
-validate_password_special_char_count：密码至少要包含的特殊字符数。
-```
-
-
-
-### 卸载
-
-
-
-#### 1.查看 **MySQL** 依赖
-
-```
-dpkg --list|grep mysql
-```
-
-#### 2.卸载 mysql-common
-
-```
-sudo apt remove mysql-common
-```
-
-#### 3.卸载 mysql-server
-
-```
-sudo apt autoremove --purge mysql-server
-```
-
-#### 4.清除残留数据
-
-```
-dpkg -l|grep ^rc|awk '{print $2}'|sudo xargs dpkg -P
-```
-
-如果还有残留就继续删除
-
-```
-dpkg --list|grep mysql
-sudo apt autoremove --purge mysql-apt-config
-```
-
-
-
-
-
-### 导入sql文件
-
-```
-进入mysql某个数据库中
-source /path/file.sql
-```
-
-
-
-
-
-
-
-## 2.部署c#运行环境
-
-
-
-**云服务器需要dotnet环境**
-
-![image-20230702103526574](MMORPG.assets/image-20230702103526574.png)
-
-```
-# 导入镜像源
-sudo rpm -Uvh https://packages.microsoft.com/config/centos/7/packages-microsoft-prod.rpm
-
-# 安装net6环境
-sudo yum install dotnet-sdk-6.0
-
-# 查看是否安装成功
-dotnet --info
-```
-
-
-
-**云服务器端口放行**
-
-![image-20240301003814057](MMORPG.assets/image-20240301003814057.png)
-
-
-
-**linux主机防火墙端口放行**
-
-
-在 Ubuntu 中，你可以使用 `ufw`（Uncomplicated Firewall）工具来管理防火墙规则。以下是一些基本的步骤，可以帮助你放行端口：
-
-1. **检查防火墙状态：** 在终端中输入以下命令，检查防火墙的当前状态：
-
-   ```
-   bashCopy code
-   sudo ufw status
-   ```
-
-2. **启用防火墙：** 如果防火墙没有启用，可以使用以下命令启用它：
-
-   ```
-   bashCopy code
-   sudo ufw enable
-   ```
-
-3. **放行端口：** 使用以下命令放行特定端口（例如，假设你要放行端口 80）：
-
-   ```
-   bashCopy code
-   sudo ufw allow 80
-   ```
-
-   如果你的应用程序使用其他端口，替换 `80` 为你实际使用的端口号。
-
-4. **重新加载防火墙：** 重新加载防火墙规则，以确保更改生效：
-
-   ```
-   bashCopy code
-   sudo ufw reload
-   ```
-
-5. **验证更改：** 最后，再次运行 `sudo ufw status` 来确认端口已经被正确放行。
-
-
-
-
-
-
-
-## 3.启动服务器程序
-
-**服务器的ip使用内网ip或者 0.0.0.0**
-
-**客户端连接服务器的ip使用云服务器的ip**
-
-
-
-
-
-选择release  Any Cpu
-
-![image-20230702103137449](MMORPG.assets/image-20230702103137449.png) 
-
-选择你要发布的项目，右键重写生成
-
-![image-20230702103233229](MMORPG.assets/image-20230702103233229.png) 
-
-![image-20230702103252840](MMORPG.assets/image-20230702103252840.png)
-
-可以看到重写生成的文件在这个目录下
-
-![image-20230702103329928](MMORPG.assets/image-20230702103329928.png)
-
-
-
- .exe就是在windows下面运行的，  .dll就是在linux下面运行的
-
-然后我们可以通过xshell进行传输
-
-
-
-下面这样启动当前shell关闭的时候，服务器进程也会一起关闭的，因为它在shell下启动，所以我们需要将进程设置为守护进程
-
-```
-dotnet GameServer.dll  就能运行了
-```
-
-**1、安装screen**
-
-```
-# 在Ubuntu上安装并使用screen
-sudo apt update  # 更新包列表
-sudo apt install screen  # 安装screen工具
-```
-
-**2、新建窗口**
-
-```
-# 创建一个新的窗口
-screen -S test
-```
-
-**3、执行文件**
-
-```
-# 进入窗口后 执行文件
-python test.py > output.log 2>&1
-```
-
-**4、退出该窗口**
-
-```
-# 退出当前窗口
-ctrl+a+d   （方法1：保留当前窗口）
-screen -d  （方法2：保留当前窗口）
-
-
-screen -list   查看存在的窗口
-screen -X -S sessionID quit		关闭某个窗口，包括它允许的进程
-
-```
-
-**5、查看程序输出文件（output.log）**
-
-![img](MMORPG.assets/a544b4f253594f29ae2318d2c69c6cef.png) 
-
-**6、停止程序**
-
-```
-# 1、重新连接窗口
-screen -r id或窗口名称
- 
-# 示例：
-screen -r 344 
-screen -r test
- 
-# 2、按 Ctrl + C 停止程序运行
-```
-
-![img](MMORPG.assets/00b7cc807c4d44829e8c7102079ae8a1.png) 
-
-> **实在不行，就查看程序的运行状态，也可以通过 `ps` 命令来查看程序是否在运行**
-
-
-
-
-
-
-
-# 网络游戏服务器技术栈
-
-![image-20230509221031992](MMORPG.assets/image-20230509221031992.png)
-
-
-
-
-
-
-
-
-
-## 状态同步和帧同步
-
-![image-20230509221659094](MMORPG.assets/image-20230509221659094.png)
-
-
-
-**状态同步：**
-
-比如说你现在要向一个npc购买商品，此时客户端就会向服务端发送这个购买商品的操作（携带playerId，NpcId,ItemId）,然后服务器经过系列的逻辑操作，来给你返回状态数据（比如说你背包里面多了什么少了什么）。
-
-优点：安全性比较好，因为逻辑操作都是在服务端上完成的，客户端没法作弊。
-
-缺点：因为服务端返回的状态的数据可能会很大（同步的数据量比较大）
-
-
-
-**帧同步：**
-
-比如说：你在游戏中按下了'WASD'键位来控制角色的方向，我们客户端给服务端发送的就是这些操作指令‘wasd’，服务端不会对这些操作做任何的运算，他就把这些操作之间发给其他玩家了（以这种广播的形式）。
-
-我们把这个网络数据收下来，然后我们要按照一定的频率去模拟收到的数据产生的操作。也就是说如果是一个前进，客户端它每一帧应该前进几个单位，前进到什么位置去。
-
-优点：运算十分简洁，就好像做一个客户端工作一样，服务器并没有做很多其他的操作。
-
-
-
-
-
-## 思考：如何控制100个游戏单位移动？
-
-
-
-1.状态同步和帧同步分布要发送什么数据到服务器？
-
-2.服务器要做什么运算？
-
-3.服务器会给客户端发送什么数据包，该数据包多大？
-
-![image-20230509223934966](MMORPG.assets/image-20230509223934966.png)
-
-
-
-
-
-
-
-## 状态同步vs帧同步
-
-![image-20230509224011510](MMORPG.assets/image-20230509224011510.png)
-
-
-
-字典是无序的列表，所以不能用
-
- 数学和物理都会涉及到一些浮点数，浮点数具有不稳定性和不精确性。所以我们不能使用传统uinity中实现的数学库，要自己去实现。  
-
-
-
-**追帧：**需要在游戏开始的状态一直去做运算，算到游戏当前是什么状态。 
-
-就比如说一个不能拉动进度条的视频，假如你看到30分钟的时候你中途退出了，再次进入你需要重新从第0秒开始看到30分钟才能恢复这个中途退出的状态。
-
-
-
-
-
-## 采用不同同步方案的商业游戏
-
-![image-20230510105947975](MMORPG.assets/image-20230510105947975.png)
-
-
-
-## 什么游戏使用帧同步？
-
-![image-20230509221411015](MMORPG.assets/image-20230509221411015.png)
-
-
-
-## 帧同步的原理和实现
-
-
-
-
-
-![image-20230510110333306](MMORPG.assets/image-20230510110333306.png)
-
-
-
-![image-20230510110352504](MMORPG.assets/image-20230510110352504.png)
-
-
-
-## 一套完整的帧同步游戏框架要实现什么？
-
-![image-20230510111241723](MMORPG.assets/image-20230510111241723.png)
-
-
-
-### 1.可靠UDP
-
-![image-20230510111645561](MMORPG.assets/image-20230510111645561.png)
-
-
-
-### 2.确定性的数学和物理运算库
-
-![image-20230510111725035](MMORPG.assets/image-20230510111725035.png)
-
-
-
-解决方法
-
-![image-20230510111927297](MMORPG.assets/image-20230510111927297.png)
-
-
-
-
-
-### 3.断线重连
-
-
-
-
-
-### 4.比赛回放  
-
-服务器记录关键帧
-
-下放客户端进行回放
-
-
-
-
-
-### 5.反作弊
-
-重演
-
-仲裁
-
-
-
-### 6.避免等待
-
-
-
-
-
-
-
-## 王室战争中的帧同步
-
-![image-20230510112736912](MMORPG.assets/image-20230510112736912.png)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Sokcet
-
-
-
-## Socket.Shutdown()
-
-`Socket.Shutdown()` 方法是用于关闭 `Socket` 的一部分功能，而不是关闭整个 `Socket` 连接。
-
-在网络编程中，`Socket` 类通常用于在计算机之间进行通信，而 `Shutdown` 方法可以用于关闭连接的一端的发送或接收功能，或者同时关闭两者。
-
-### 1)关闭发送功能：
-
- 通过调用 `Shutdown(SocketShutdown.Send)`，可以关闭 `Socket` 的发送功能。这意味着在调用这个方法后，不能再使用 `Socket` 发送数据，但仍然可以接收数据。这对于表示不再发送数据的情况很有用，但仍然需要接收对方发送的数据。
-
-```
-// 关闭发送功能
-socket.Shutdown(SocketShutdown.Send);
-```
-
-### **2)关闭接收功能：**
-
- 通过调用 `Shutdown(SocketShutdown.Receive)`，可以关闭 `Socket` 的接收功能。这意味着在调用这个方法后，不能再使用 `Socket` 接收数据，但仍然可以发送数据。
-
-```
-// 关闭接收功能
-socket.Shutdown(SocketShutdown.Receive);
-```
-
-### **3)关闭发送和接收功能：** 
-
-通过调用 `Shutdown(SocketShutdown.Both)`，可以关闭 `Socket` 的发送和接收功能，等效于关闭整个 `Socket` 连接。在调用这个方法后，不能再使用 `Socket` 发送或接收数据。
-
-```
-// 关闭发送和接收功能，等效于关闭整个 Socket 连接
-socket.Shutdown(SocketShutdown.Both);
-```
-
-需要注意的是，一旦调用了 `Shutdown` 方法，就不能再使用 `Socket` 进行相应功能的操作。如果需要关闭整个 `Socket` 连接，通常建议在调用 `Shutdown` 后紧接着调用 `Close` 方法来释放相关资源。
-
-```
-// 关闭发送和接收功能，并关闭整个 Socket 连接
-socket.Shutdown(SocketShutdown.Both);
-socket.Close();
-```
-
-### 4)注意
-
-你可以直接调用 `Close` 方法来关闭 `Socket` 连接，而不调用 `Shutdown` 方法。在许多情况下，直接调用 `Close` 方法就足够了，因为 `Close` 方法会自动关闭连接的发送和接收功能，并释放相关的资源。
-
-```
-// 直接关闭 Socket 连接
-socket.Close();
-```
-
-这行代码将关闭 `Socket` 连接并释放相关资源。在这种情况下，系统会默认关闭发送和接收功能，因此你不必显式调用 `Shutdown` 方法。
-
-然而，如果你有特殊需求，例如想在关闭连接之前显式地关闭发送或接收功能，你可以使用 `Shutdown` 方法来实现更精确的控制。通常情况下，对于简单的用例，直接调用 `Close` 就足够了。
-
-
-
-## Sokcet.Close()
-
-`socket.Close()` 是用于关闭 `Socket` 连接的方法。当调用这个方法时，它会执行以下操作：
-
-1. **关闭连接：** 关闭 `Socket` 连接，使其不能再进行数据的发送和接收。
-2. **释放资源：** 释放与 `Socket` 相关的资源，包括操作系统资源。这包括套接字使用的文件描述符或句柄等资源。
-
-在网络编程中，调用 `Close` 方法通常是在你确定不再需要该 `Socket` 连接时进行的。这可能是因为通信已经完成，或者发生了错误，需要关闭连接等情况。
-
-示例代码如下：
-
-```
-// 关闭 Socket 连接并释放资源
-socket.Close();
-```
-
-在调用 `Close` 方法之后，应该避免再次使用该 `Socket` 对象，因为它已经被关闭。如果需要重新建立连接，你可能需要创建一个新的 `Socket` 实例。
-
-需要注意的是，`Close` 方法可能会抛出异常，例如在关闭时发生错误。因此，通常建议使用 `try...catch` 块来处理可能的异常。
-
-```
-try
-{
-    // 关闭 Socket 连接并释放资源
-    socket.Close();
-}
-catch (Exception ex)
-{
-    // 处理异常
-    Console.WriteLine($"Error closing socket: {ex.Message}");
-}
-
-```
-
-
-
-### 关闭时发生错误
-
-在调用 `socket.Close()` 方法时，可能会发生各种错误，这些错误通常是由于底层操作系统或网络库的特定情况引起的。一些可能的错误包括：
-
-1. **Socket 已关闭：** 如果你尝试关闭一个已经关闭的 `Socket`，可能会抛出 `ObjectDisposedException`。这表示你试图对已经被释放的资源执行操作。
-2. **Socket 正在使用中：** 如果在关闭之前仍在进行读取或写入操作，可能会导致 `SocketException`。在关闭之前确保所有的读写操作都已完成是一个好的实践。
-3. **底层操作系统错误：** 由于网络编程涉及底层的操作系统调用，因此在关闭连接时可能会发生与网络或操作系统相关的错误，这可能导致 `SocketException` 的抛出。
-
-为了更好地处理可能的异常，可以使用 `try...catch` 块来捕获并处理异常。例如：
-
-```
-try
-{
-    // 关闭 Socket 连接并释放资源
-    socket.Close();
-}
-catch (SocketException ex)
-{
-    Console.WriteLine($"SocketException: {ex.ErrorCode}, {ex.Message}");
-}
-catch (ObjectDisposedException ex)
-{
-    Console.WriteLine($"ObjectDisposedException: {ex.Message}");
-}
-catch (Exception ex)
-{
-    Console.WriteLine($"An unexpected error occurred: {ex.Message}");
-}
-```
-
-在捕获异常时，你可以根据异常的类型和属性进行适当的处理，以便记录错误信息、进行调试或采取其他必要的措施
 
 
 
@@ -5802,7 +5072,319 @@ static int bufferSize = 26; //缓存大小，26个字节
 
 
 
-# 相关小知识
+# 杂谈
+
+
+
+## 网络游戏服务器技术栈
+
+![image-20230509221031992](MMORPG.assets/image-20230509221031992.png)
+
+
+
+
+
+
+
+
+
+### 状态同步和帧同步
+
+![image-20230509221659094](MMORPG.assets/image-20230509221659094.png)
+
+
+
+**状态同步：**
+
+比如说你现在要向一个npc购买商品，此时客户端就会向服务端发送这个购买商品的操作（携带playerId，NpcId,ItemId）,然后服务器经过系列的逻辑操作，来给你返回状态数据（比如说你背包里面多了什么少了什么）。
+
+优点：安全性比较好，因为逻辑操作都是在服务端上完成的，客户端没法作弊。
+
+缺点：因为服务端返回的状态的数据可能会很大（同步的数据量比较大）
+
+
+
+**帧同步：**
+
+比如说：你在游戏中按下了'WASD'键位来控制角色的方向，我们客户端给服务端发送的就是这些操作指令‘wasd’，服务端不会对这些操作做任何的运算，他就把这些操作之间发给其他玩家了（以这种广播的形式）。
+
+我们把这个网络数据收下来，然后我们要按照一定的频率去模拟收到的数据产生的操作。也就是说如果是一个前进，客户端它每一帧应该前进几个单位，前进到什么位置去。
+
+优点：运算十分简洁，就好像做一个客户端工作一样，服务器并没有做很多其他的操作。
+
+
+
+
+
+### 思考：如何控制100个游戏单位移动？
+
+
+
+1.状态同步和帧同步分布要发送什么数据到服务器？
+
+2.服务器要做什么运算？
+
+3.服务器会给客户端发送什么数据包，该数据包多大？
+
+![image-20230509223934966](MMORPG.assets/image-20230509223934966.png)
+
+
+
+
+
+
+
+### 状态同步vs帧同步
+
+![image-20230509224011510](MMORPG.assets/image-20230509224011510.png)
+
+
+
+字典是无序的列表，所以不能用
+
+ 数学和物理都会涉及到一些浮点数，浮点数具有不稳定性和不精确性。所以我们不能使用传统uinity中实现的数学库，要自己去实现。  
+
+
+
+**追帧：**需要在游戏开始的状态一直去做运算，算到游戏当前是什么状态。 
+
+就比如说一个不能拉动进度条的视频，假如你看到30分钟的时候你中途退出了，再次进入你需要重新从第0秒开始看到30分钟才能恢复这个中途退出的状态。
+
+
+
+
+
+### 采用不同同步方案的商业游戏
+
+![image-20230510105947975](MMORPG.assets/image-20230510105947975.png)
+
+
+
+### 什么游戏使用帧同步？
+
+![image-20230509221411015](MMORPG.assets/image-20230509221411015.png)
+
+
+
+### 帧同步的原理和实现
+
+
+
+
+
+![image-20230510110333306](MMORPG.assets/image-20230510110333306.png)
+
+
+
+![image-20230510110352504](MMORPG.assets/image-20230510110352504.png)
+
+
+
+### 一套完整的帧同步游戏框架要实现什么？
+
+![image-20230510111241723](MMORPG.assets/image-20230510111241723.png)
+
+
+
+#### 1.可靠UDP
+
+![image-20230510111645561](MMORPG.assets/image-20230510111645561.png)
+
+
+
+#### 2.确定性的数学和物理运算库
+
+![image-20230510111725035](MMORPG.assets/image-20230510111725035.png)
+
+
+
+解决方法
+
+![image-20230510111927297](MMORPG.assets/image-20230510111927297.png)
+
+
+
+
+
+#### 3.断线重连
+
+
+
+
+
+#### 4.比赛回放  
+
+服务器记录关键帧
+
+下放客户端进行回放
+
+
+
+
+
+#### 5.反作弊
+
+重演
+
+仲裁
+
+
+
+#### 6.避免等待
+
+
+
+
+
+
+
+### 王室战争中的帧同步
+
+![image-20230510112736912](MMORPG.assets/image-20230510112736912.png)
+
+
+
+
+
+
+
+
+
+## Sokcet
+
+
+
+### Socket.Shutdown()
+
+`Socket.Shutdown()` 方法是用于关闭 `Socket` 的一部分功能，而不是关闭整个 `Socket` 连接。
+
+在网络编程中，`Socket` 类通常用于在计算机之间进行通信，而 `Shutdown` 方法可以用于关闭连接的一端的发送或接收功能，或者同时关闭两者。
+
+#### 1)关闭发送功能：
+
+ 通过调用 `Shutdown(SocketShutdown.Send)`，可以关闭 `Socket` 的发送功能。这意味着在调用这个方法后，不能再使用 `Socket` 发送数据，但仍然可以接收数据。这对于表示不再发送数据的情况很有用，但仍然需要接收对方发送的数据。
+
+```
+// 关闭发送功能
+socket.Shutdown(SocketShutdown.Send);
+```
+
+#### **2)关闭接收功能：**
+
+ 通过调用 `Shutdown(SocketShutdown.Receive)`，可以关闭 `Socket` 的接收功能。这意味着在调用这个方法后，不能再使用 `Socket` 接收数据，但仍然可以发送数据。
+
+```
+// 关闭接收功能
+socket.Shutdown(SocketShutdown.Receive);
+```
+
+#### **3)关闭发送和接收功能：** 
+
+通过调用 `Shutdown(SocketShutdown.Both)`，可以关闭 `Socket` 的发送和接收功能，等效于关闭整个 `Socket` 连接。在调用这个方法后，不能再使用 `Socket` 发送或接收数据。
+
+```
+// 关闭发送和接收功能，等效于关闭整个 Socket 连接
+socket.Shutdown(SocketShutdown.Both);
+```
+
+需要注意的是，一旦调用了 `Shutdown` 方法，就不能再使用 `Socket` 进行相应功能的操作。如果需要关闭整个 `Socket` 连接，通常建议在调用 `Shutdown` 后紧接着调用 `Close` 方法来释放相关资源。
+
+```
+// 关闭发送和接收功能，并关闭整个 Socket 连接
+socket.Shutdown(SocketShutdown.Both);
+socket.Close();
+```
+
+#### 4)注意
+
+你可以直接调用 `Close` 方法来关闭 `Socket` 连接，而不调用 `Shutdown` 方法。在许多情况下，直接调用 `Close` 方法就足够了，因为 `Close` 方法会自动关闭连接的发送和接收功能，并释放相关的资源。
+
+```
+// 直接关闭 Socket 连接
+socket.Close();
+```
+
+这行代码将关闭 `Socket` 连接并释放相关资源。在这种情况下，系统会默认关闭发送和接收功能，因此你不必显式调用 `Shutdown` 方法。
+
+然而，如果你有特殊需求，例如想在关闭连接之前显式地关闭发送或接收功能，你可以使用 `Shutdown` 方法来实现更精确的控制。通常情况下，对于简单的用例，直接调用 `Close` 就足够了。
+
+
+
+### Sokcet.Close()
+
+`socket.Close()` 是用于关闭 `Socket` 连接的方法。当调用这个方法时，它会执行以下操作：
+
+1. **关闭连接：** 关闭 `Socket` 连接，使其不能再进行数据的发送和接收。
+2. **释放资源：** 释放与 `Socket` 相关的资源，包括操作系统资源。这包括套接字使用的文件描述符或句柄等资源。
+
+在网络编程中，调用 `Close` 方法通常是在你确定不再需要该 `Socket` 连接时进行的。这可能是因为通信已经完成，或者发生了错误，需要关闭连接等情况。
+
+示例代码如下：
+
+```
+// 关闭 Socket 连接并释放资源
+socket.Close();
+```
+
+在调用 `Close` 方法之后，应该避免再次使用该 `Socket` 对象，因为它已经被关闭。如果需要重新建立连接，你可能需要创建一个新的 `Socket` 实例。
+
+需要注意的是，`Close` 方法可能会抛出异常，例如在关闭时发生错误。因此，通常建议使用 `try...catch` 块来处理可能的异常。
+
+```
+try
+{
+    // 关闭 Socket 连接并释放资源
+    socket.Close();
+}
+catch (Exception ex)
+{
+    // 处理异常
+    Console.WriteLine($"Error closing socket: {ex.Message}");
+}
+
+```
+
+
+
+#### 关闭时发生错误
+
+在调用 `socket.Close()` 方法时，可能会发生各种错误，这些错误通常是由于底层操作系统或网络库的特定情况引起的。一些可能的错误包括：
+
+1. **Socket 已关闭：** 如果你尝试关闭一个已经关闭的 `Socket`，可能会抛出 `ObjectDisposedException`。这表示你试图对已经被释放的资源执行操作。
+2. **Socket 正在使用中：** 如果在关闭之前仍在进行读取或写入操作，可能会导致 `SocketException`。在关闭之前确保所有的读写操作都已完成是一个好的实践。
+3. **底层操作系统错误：** 由于网络编程涉及底层的操作系统调用，因此在关闭连接时可能会发生与网络或操作系统相关的错误，这可能导致 `SocketException` 的抛出。
+
+为了更好地处理可能的异常，可以使用 `try...catch` 块来捕获并处理异常。例如：
+
+```
+try
+{
+    // 关闭 Socket 连接并释放资源
+    socket.Close();
+}
+catch (SocketException ex)
+{
+    Console.WriteLine($"SocketException: {ex.ErrorCode}, {ex.Message}");
+}
+catch (ObjectDisposedException ex)
+{
+    Console.WriteLine($"ObjectDisposedException: {ex.Message}");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"An unexpected error occurred: {ex.Message}");
+}
+```
+
+在捕获异常时，你可以根据异常的类型和属性进行适当的处理，以便记录错误信息、进行调试或采取其他必要的措施
+
+
+
+
+
+
+
+
 
 
 
@@ -5812,7 +5394,7 @@ static int bufferSize = 26; //缓存大小，26个字节
 
 ![image-20240328192145490](MMORPG.assets/image-20240328192145490.png)
 
-它内部创建了一个队列，这个队列所有的io请求的数据结果，当这个输入放入队列的时候起始是已经完成了读写操作了，所以我们称之为完成端口，实际上这里我们应该把它理解为完成队列，这是它最明显的特征。
+它内部创建了一个队列，这个队列所有的**io请求的数据结果**，当这个输入放入队列的时候起始是已经完成了读写操作了，所以我们称之为完成端口，实际上这里我们应该把它理解为完成队列，这是它最明显的特征。
 
 
 
@@ -5830,7 +5412,7 @@ static int bufferSize = 26; //缓存大小，26个字节
 
 **完成端口**相当于老板
 
-**队列**就需要放入一个个工作任务
+**队列**就需要放入一个个已经的工作任务（）
 
 **线程池**就是我们的员工
 
@@ -5986,6 +5568,86 @@ windows的IOCP模型，则可以描述如下：
 
 
 
+## await 和  async
+
+
+
+### 例子1：
+
+![image-20240410215436234](MMORPG.assets/image-20240410215436234.png)
+
+这个例子中，await会等待Task完成之后，再执行后面的ui代码（菜都做好了）
+
+当在函数中使用await 会标识这个方法是一个异步方法，所以要加上async标记
+
+
+
+[C#基础教程 多线程编程入门 Thread/Task/async/await 简单秒懂!_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV16G4y1c72R/?spm_id_from=333.788&vd_source=ff929fb8407b30d15d4d258e14043130)
+
+
+
+### 例子2：
+
+从网站中下载文件的例子
+
+[C# Async/Await: 让你的程序变身时间管理大师_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1b54y1J72M/?spm_id_from=333.337.search-card.all.click&vd_source=ff929fb8407b30d15d4d258e14043130)
+
+
+
+### 例子3：
+
+```
+private void button1_Click(object sender, EventArgs e)
+{
+    Console.WriteLine("111 balabala. My Thread ID is :" + Thread.CurrentThread.ManagedThreadId);
+    AsyncMethod();
+    Console.WriteLine("222 balabala. My Thread ID is :" + Thread.CurrentThread.ManagedThreadId);
+}
+
+private async Task AsyncMethod()
+{
+    var ResultFromTimeConsumingMethod = TimeConsumingMethod();
+    string Result = await ResultFromTimeConsumingMethod + " + AsyncMethod. My Thread ID is :" + 	Thread.CurrentThread.ManagedThreadId;
+    Console.WriteLine(Result);
+    //返回值是`Task`的函数可以不用`return`，或者将`Task`改为void
+}
+
+//这个函数就是一个耗时函数，可能是`IO`操作，也可能是`cpu`密集型工作。
+private Task<string> TimeConsumingMethod()
+{            
+    var task = Task.Run(()=> {
+        Console.WriteLine("Helo I am TimeConsumingMethod. My Thread ID is :" + Thread.CurrentThread.ManagedThreadId);
+        Thread.Sleep(5000);
+        Console.WriteLine("Helo I am TimeConsumingMethod after Sleep(5000). My Thread ID is :" + Thread.CurrentThread.ManagedThreadId);
+        return "Hello I am TimeConsumingMethod";
+    });
+    return task;
+}
+
+```
+
+![image](MMORPG.assets/814410-20220128153957077-656401758.png) 
+
+
+
+[C# 彻底搞懂async/await - 五维思考 - 博客园 (cnblogs.com)](https://www.cnblogs.com/zhaoshujie/p/11192036.html#!comments)
+
+**await之前是在之前的线程，之后的依然是在新的线程里继续执行。**
+
+[对于 《C# 彻底搞懂async/await》 一文中的观点，提出自己的修正观点。 - 金尘 - 博客园 (cnblogs.com)](https://www.cnblogs.com/jinchentech/p/14908750.html)
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Task调度和await（残缺）
 
 ![image-20240116153242568](MMORPG.assets/image-20240116153242568.png)
@@ -6134,6 +5796,707 @@ int result = await asyncObject.SomeOperationAsync();
 3. **任务组合：** 可以使用 `Task.WhenAll` 和 `Task.WhenAny` 等方法更方便地组合多个任务。
 
 总的来说，TAP 模式是目前推荐的异步编程模式，除非你需要与老的异步 API 交互，否则应该优先选择使用 TAP 模式。
+
+
+
+
+
+## unity 协程(Coroutine)
+
+### 前言
+
+[协程](https://so.csdn.net/so/search?q=协程&spm=1001.2101.3001.7020)在`Unity`中是一个很重要的概念，我们知道，在使用`Unity`进行游戏开发时，一般（注意是一般）不考虑[多线程](https://so.csdn.net/so/search?q=多线程&spm=1001.2101.3001.7020)，那么如何处理一些在主任务之外的需求呢，`Unity`给我们提供了协程这种方式
+
+
+
+**为啥在Unity中一般不考虑多线程**
+
+- 因为在`Unity`中，只能在主线程中获取物体的组件、方法、对象，如果脱离这些，`Unity`的很多功能无法实现，那么多线程的存在与否意义就不大了
+
+
+
+**既然这样，线程与协程有什么区别呢：**
+
+- 对于协程而言，同一时间只能执行一个协程，而线程则是并发的，可以同时有多个线程在运行
+- 两者在内存的使用上是相同的，共享堆，不共享栈
+
+其实对于两者最关键，最简单的区别是微观上线程是并行（对于多核CPU）的，而协程是串行的，如果你不理解没有关系，通过下面的解释你就明白了
+
+
+
+### 关于协程
+
+### 1，什么是协程
+
+协程，从字面意义上理解就是协助程序的意思，我们在主任务进行的同时，需要一些分支任务配合工作来达到最终的效果
+
+稍微形象的解释一下，想象一下，在进行主任务的过程中我们需要一个对资源消耗极大的操作时候，如果在一帧中实现这样的操作，游戏就会变得十分卡顿，这个时候，我们就可以通过协程，在一定帧内完成该工作的处理，同时不影响主任务的进行
+
+### 2，协程的原理
+
+首先需要了解协程不是线程，协程依旧是在主线程中进行
+
+**然后要知道协程是通过迭代器来实现功能的**，通过关键字`IEnumerator`来定义一个迭代方法，
+
+注意使用的是`IEnumerator`，而不是`IEnumerable`：
+
+两者之间的区别：
+
+- `IEnumerator`：是一个实现迭代器功能的接口
+- `IEnumerable`：是在`IEnumerator`基础上的一个封装接口，有一个`GetEnumerator()`方法返回`IEnumerator`
+
+在迭代器中呢，最关键的是`yield` 的使用，这是实现我们协程功能的主要途径，通过该关键方法，可以使得协程的运行暂停、记录下一次启动的时间与位置等等：
+
+由于`yield` 在协程中的特殊性，与关键性，我们到后面在单独解释，先介绍一下协程如何通过代码实现
+
+### 3、协程的使用
+
+首先通过一个迭代器定义一个返回值为`IEnumerator`的方法，然后再程序中通过`StartCoroutine`来开启一个协程即可：
+
+在正式开始代码之前，需要了解StartCoroutine的两种重载方式：
+
+- StartCoroutine（string methodName）：这种是没有参数的情况，直接通过方法名（字符串形式）来开启协程
+
+- StartCoroutine（IEnumerator routine）：通过方法形式调用
+- StartCoroutine（string methodName，object values):带参数的通过方法名进行调用
+
+协程开启的方式主要是上面的三种形式
+
+```
+ 	//通过迭代器定义一个方法
+ 	IEnumerator Demo(int i)
+    {
+        //代码块
+
+        yield return 0; 
+		//代码块
+       
+    }
+
+    //在程序种调用协程
+    public void Test()
+    {
+        //第一种与第二种调用方式,通过方法名与参数调用
+        StartCoroutine("Demo", 1);
+
+        //第三种调用方式， 通过调用方法直接调用
+        StartCoroutine(Demo(1));
+    }
+
+```
+
+在一个协程开始后，同样会对应一个结束协程的方法`StopCoroutine`与`StopAllCoroutines`两种方式，但是需要注意的是，两者的使用需要遵循一定的规则，在介绍规则之前，同样介绍一下关于`StopCoroutine`重载：
+
+- `StopCoroutine（string methodName）`：通过方法名（字符串）来进行
+- `StopCoroutine（IEnumerator routine）`:通过方法形式来调用
+- `StopCoroutine(Coroutine routine)`：通过指定的协程来关闭
+
+刚刚我们说到他们的使用是有一定的规则的，那么规则是什么呢，答案是前两种结束协程方法的使用上，如果我们是使用StartCoroutine（string methodName）来开启一个协程的，那么结束协程就只能使用StopCoroutine（string methodName）和StopCoroutine(Coroutine routine)来结束协程，可以在文档中找到这句话：
+![img](MMORPG.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWxpbmdlcg==,size_16,color_FFFFFF,t_70.png)
+
+### 4、关于yield
+
+在上面，我们已经知道`yield` 的关键性，要想理解协程，就要理解`yield`
+
+如果你了解`Unity`的脚本的生命周期，你一定对`yield`这几个关键词很熟悉，没错，`yield` 也是脚本生命周期的一些执行方法，不同的`yield` 的方法处于生命周期的不同位置，可以通过下图查看：
+
+![在这里插入图片描述](MMORPG.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWxpbmdlcg==,size_16,color_FFFFFF,t_70-171275895535052.png)
+
+通过这张图可以看出大部分`yield`位置`Update`与`LateUpdate`之间，而一些特殊的则分布在其他位置，这些`yield` 代表什么意思呢，又为啥位于这个位置呢
+
+首先解释一下位于Update与LateUpdate之间这些yield 的含义：
+
+yield return null; 暂停协程等待下一帧继续执行
+
+yield return 0或其他数字; 暂停协程等待下一帧继续执行
+
+yield return new WairForSeconds(时间); 等待规定时间后继续执行
+
+yield return StartCoroutine("协程方法名");开启一个协程（嵌套协程)
+
+
+在了解这些yield的方法后，可以通过下面的代码来理解其执行顺序：
+
+```
+ void Update()
+    {
+        Debug.Log("001");
+        StartCoroutine("Demo");
+        Debug.Log("003");
+
+    }
+    private void LateUpdate()
+    {
+        Debug.Log("005");
+    }
+
+    IEnumerator Demo()
+    {
+        Debug.Log("002");
+
+        yield return 0;
+        Debug.Log("004");
+    }
+
+```
+
+![在这里插入图片描述](MMORPG.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWxpbmdlcg==,size_16,color_FFFFFF,t_70-171275914328555.png)
+
+
+
+可以很清晰的看出，协程虽然是在`Update`中开启，但是关于`yield return null`后面的代码会在下一帧运行，并且是在Update执行完之后才开始执行，但是会在`LateUpdate`之前执行
+
+接下来看几个特殊的yield，他们是用在一些特殊的区域，一般不会有机会去使用，但是对于某些特殊情况的应对会很方便
+
+yield return GameObject; 当游戏对象被获取到之后执行
+yield return new WaitForFixedUpdate()：等到下一个固定帧数更新
+yield return new WaitForEndOfFrame():等到所有相机画面被渲染完毕后更新
+yield break; 跳出协程对应方法，其后面的代码不会被执行
+
+通过上面的一些`yield`一些用法以及其在脚本生命周期中的位置，我们也可以看到关于协程不是线程的概念的具体的解释，所有的这些方法都是在主线程中进行的，只是有别于我们正常使用的`Update`与`LateUpdate`这些可视的方法
+
+### 5、协程几个小用法
+
+#### **5.1、将一个复杂程序分帧执行：**
+
+如果一个复杂的函数对于一帧的性能需求很大，我们就可以通过`yield return null`将步骤拆除，从而将性能压力分摊开来，最终获取一个流畅的过程，这就是一个简单的应用
+
+举一个案例，如果某一时刻需要使用`Update`读取一个列表，这样一般需要一个循环去遍历列表，这样每帧的代码执行量就比较大，就可以将这样的执行放置到协程中来处理：
+
+```
+public class Test : MonoBehaviour
+{
+    public List<int> nums = new List<int> { 1, 2, 3, 4, 5, 6 };
+
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            StartCoroutine(PrintNum(nums));
+        }
+    }
+	//通过协程分帧处理
+    IEnumerator PrintNum(List<int> nums)
+    {
+        foreach(int i in nums)
+        {
+            Debug.Log(i);
+            yield return null;
+                 
+        }
+
+    }
+}
+
+```
+
+上面只是列举了一个小小的案例，在实际工作中会有一些很消耗性能的操作的时候，就可以通过这样的方式来进行性能消耗的分消
+
+#### **5.2、进行计时器工作**
+
+当然这种应用场景很少，如果我们需要计时器有很多其他更好用的方式，但是你可以了解是存在这样的操作的，要实现这样的效果，需要通过`yield return new WaitForSeconds()`的延时执行的功能：
+
+```
+	IEnumerator Test()
+    {
+        Debug.Log("开始");
+        yield return new WaitForSeconds(3);
+        Debug.Log("输出开始后三秒后执行我");
+    }
+```
+
+
+
+#### **5.3、异步加载等功能**
+
+只要一说到异步，就必定离不开协程，因为在异步加载过程中可能会影响到其他任务的进程，这个时候就需要通过协程将这些可能被影响的任务剥离出来
+
+常见的异步操作有：
+
+- `AB`包资源的异步加载
+- `Reaources`资源的异步加载
+- 场景的异步加载
+- `WWW`模块的异步请求
+
+这些异步操作的实现都需要协程的支持
+
+
+
+这里以场景加载为例子：
+
+
+
+
+
+
+
+### 参考文献
+
+[Unity 协程(Coroutine)原理与用法详解_unity coroutine-CSDN博客](https://blog.csdn.net/xinzhilinger/article/details/116240688)
+
+[迭代器 - C# | Microsoft Learn](https://learn.microsoft.com/zh-cn/dotnet/csharp/iterators)
+
+[Unity 场景异步加载（加载界面的实现）_unity异步加载场景-CSDN博客](https://blog.csdn.net/xinzhilinger/article/details/110836837?ops_request_misc=%7B%22request%5Fid%22%3A%22161968340716780255223084%22%2C%22scm%22%3A%2220140713.130102334.pc%5Fblog.%22%7D&request_id=161968340716780255223084&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~blog~first_rank_v2~rank_v29-1-110836837.pc_v2_rank_blog_default&utm_term=加载&spm=1018.2226.3001.4450)
+
+
+
+
+
+## c# 迭代器
+
+
+
+### **IEnumerable**和**IEnumerator**
+
+#### 概要
+
+
+
+下面我们先看**IEnumerable**和**IEnumerator**两个接口的语法定义。
+
+其实**IEnumerable**接口非常简单，只包含一个抽象的方法GetEnumerator()，它返回一个可用于循环访问集合的IEnumerator对象。
+
+那**IEnumerator**对象有什么呢？其实，它是一个真正的集合访问器，没有它，就不能使用foreach语句遍历数组或集合，因为只有IEnumerator对象才能访问集合中的项，假如连集合中的项都访问不了，那么进行集合的循环遍历是不可能的事情了。
+
+再让我们看看IEnumerator接口又定义了什么东西。看下图我们知道IEnumerator接口定义了一个Current属性，MoveNext和Reset两个方法，这是多么的简约。既然IEnumerator对象是一个访问器，那至少应该有一个Current属性，来获取当前集合中的项吧。
+
+MoveNext方法只是将游标的内部位置向前移动（就是移到一下个元素而已），要想进行循环遍历，不向前移动一下怎么行呢？
+![image-20240411123317604](MMORPG.assets/image-20240411123317604.png)
+
+
+
+#### **详细讲解：**
+
+说到IEnumerable总是会和IEnumerator、foreach联系在一起。
+
+C# 支持关键字foreach，允许我们遍历任何数组类型的内容：
+
+```
+//遍历数组的项
+int[] myArrayOfInts = {10,20,30,40};
+
+foreach(int i in my myArrayOfInts)
+
+{
+    Console.WirteLine(i);
+}
+```
+
+虽然看上去只有数组才可以使用这个结构，其实任何支持GetEnumerator()方法的类型都可以通过foreach结构进行运算。
+
+```csharp
+public class Garage
+{
+    Car[] carArray = new Car[4];  //在Garage中定义一个Car类型的数组carArray,其实carArray在这里的本质是一个数组字段
+    //启动时填充一些Car对象
+    public Garage()
+    {
+        //为数组字段赋值
+        carArray[0] = new Car("Rusty", 30);
+        carArray[1] = new Car("Clunker", 50);
+        carArray[2] = new Car("Zippy", 30);
+        carArray[3] = new Car("Fred", 45);
+    }
+}
+```
+
+理想情况下，与数据值数组一样，使用foreach构造迭代Garage对象中的每一个子项比较方便：
+
+```csharp
+//这看起来好像是可行的
+class Program
+{
+    static void Main(string[] args)
+    {
+        Console.WriteLine("*********Fun with IEnumberable/IEnumerator************\n");
+        Garage carLot = new Garage();
+
+        //交出集合中的每一Car对象吗
+        foreach (Car c in carLot)
+        {
+            Console.WriteLine("{0} is going {1} MPH", c.CarName, c.CurrentSpeed);
+        }
+
+        Console.ReadLine();
+    }
+}
+```
+
+让人沮丧的是，编译器通知我们Garage类没有实现名为GetEnumerator()的方法（显然用foreach遍历Garage对象是不可能的事情，因为Garage类没有实现GetEnumerator()方法，Garage对象就不可能返回一个IEnumerator对象，没有IEnumerator对象，就不可能调用方法MoveNext()，调用不了MoveNext，就不可能循环的了）。
+
+这个方法是有隐藏在System.collections命名空间中的IEnumerable接口定义的。（特别注意，其实我们循环遍历的都是对象而不是类，只是这个对象是一个集合对象）
+
+支持这种行为的类或结构实际上是宣告它们向调用者公开所包含的子项：
+
+```
+//这个接口告知调方对象的子项可以枚举
+
+public interface IEnumerable
+
+{
+    IEnumerator GetEnumerator();
+}
+```
+
+可以看到，GetEnumerator方法返回对另一个接口System.Collections.IEnumerator的引用。这个接口提供了基础设施，调用方可以用来移动IEnumerable兼容容器包含的内部对象。
+
+```
+//这个接口允许调用方获取一个容器的子项
+public interface IEnumerator
+{
+    bool MoveNext();             //将游标的内部位置向前移动
+    object Current{get;}       //获取当前的项（只读属性）
+    void Reset();                 //将游标重置到第一个成员前面
+}
+```
+
+所以，要想Garage类也可以使用foreach遍历其中的项，那我们就要修改Garage类型使之支持这些接口，可以手工实现每一个方法，不过这得花费不少功夫。虽然自己开发GetEnumerator()、MoveNext()、Current和Reset()也没有问题，但有一个更简单的办法。
+
+**因为System.Array类型和其他许多类型（如List）已经实现了IEnumerable和IEnumerator接口，你可以简单委托请求到System.Array**,如下所示：
+
+```
+namespace MyCarIEnumerator
+{
+    public class Garage:IEnumerable
+    {
+        Car[] carArray = new Car[4];
+ 
+        //启动时填充一些Car对象
+        public Garage()
+        {
+            carArray[0] = new Car("Rusty", 30);
+            carArray[1] = new Car("Clunker", 50);
+            carArray[2] = new Car("Zippy", 30);
+            carArray[3] = new Car("Fred", 45);
+        }
+        public IEnumerator GetEnumerator()
+        {
+            return this.carArray.GetEnumerator();
+        }
+    }
+}
+//修改Garage类型之后，就可以在C#foreach结构中安全使用该类型了。
+```
+
+```
+//除此之外，GetEnumerator()被定义为公开的，对象用户可以与IEnumerator类型交互： 
+namespace MyCarIEnumerator
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("*********Fun with IEnumberable/IEnumerator************\n");
+            Garage carLot = new Garage();
+ 
+            //交出集合中的每一Car对象吗
+            //之所以遍历carLot，是因为carLot.GetEnumerator()返回的项时Car类型，这个十分重要
+            foreach (Car c in carLot)  
+            {
+                Console.WriteLine("{0} is going {1} MPH", c.CarName, c.CurrentSpeed);
+            }
+ 
+            Console.WriteLine("GetEnumerator被定义为公开的，对象用户可以与IEnumerator类型交互，下面的结果与上面是一致的");
+            //手动与IEnumerator协作
+            IEnumerator i = carLot.GetEnumerator();
+            while (i.MoveNext())
+            { 
+                Car myCar = (Car)i.Current;
+                Console.WriteLine("{0} is going {1} MPH", myCar.CarName, myCar.CurrentSpeed);
+            }
+            Console.ReadLine();
+        }
+    }
+}
+ 
+```
+
+
+
+**下面我们来看看手工实现IEnumberable接口和IEnumerator接口中的方法：
+**
+
+```csharp
+namespace ForeachTestCase
+{
+      //继承IEnumerable接口，其实也可以不继承这个接口，只要类里面含有返回IEnumberator引用的GetEnumerator()方法即可
+    class ForeachTest:IEnumerable     {
+        private string[] elements;  //装载字符串的数组
+        private int ctr = 0;  //数组的下标计数器
+ 
+        /// <summary>
+        /// 初始化的字符串
+        /// </summary>
+        /// <param name="initialStrings"></param>
+        ForeachTest(params string[] initialStrings)
+        { 
+            //为字符串分配内存空间
+            elements = new String[8];
+            //复制传递给构造方法的字符串
+            foreach (string s in initialStrings)
+            {
+                elements[ctr++] = s; 
+            }
+        }
+ 
+        /// <summary>
+        ///  构造函数
+        /// </summary>
+        /// <param name="source">初始化的字符串</param>
+        /// <param name="delimiters">分隔符，可以是一个或多个字符分隔</param>
+        ForeachTest(string initialStrings, char[] delimiters) 
+        {
+            elements = initialStrings.Split(delimiters);
+        }
+ 
+        //实现接口中得方法
+        public IEnumerator GetEnumerator()
+        {
+            return  new ForeachTestEnumerator(this);
+        }
+ 
+        private class ForeachTestEnumerator : IEnumerator
+        {
+            private int position = -1;
+            private ForeachTest t;
+            public ForeachTestEnumerator(ForeachTest t)
+            {
+                this.t = t;
+            }
+ 
+            #region 实现接口
+ 
+            public object Current
+            {
+                get
+                {
+                    return t.elements[position];
+                }
+            }
+ 
+            public bool MoveNext()
+            {
+                if (position < t.elements.Length - 1)
+                {
+                    position++;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+ 
+            public void Reset()
+            {
+                position = -1;
+            }
+ 
+            #endregion
+        }
+        static void Main(string[] args)
+        {
+            // ForeachTest f = new ForeachTest("This is a sample sentence.", new char[] { ' ', '-' });
+            ForeachTest f = new ForeachTest("This", "is", "a", "sample", "sentence.");
+            foreach (string item in f)
+            {
+                System.Console.WriteLine(item);
+            }
+            Console.ReadKey();
+        }
+    }
+}
+```
+
+
+
+**IEnumerable<T>接口**
+
+实现了IEnmerable<T>接口的集合，是强类型的。它为子对象的迭代提供类型更加安全的方式。
+
+```csharp
+public  class ListBoxTest:IEnumerable<String>
+{
+    private string[] strings;
+    private int ctr = 0;
+
+    #region IEnumerable<string> 成员
+    //可枚举的类可以返回枚举
+    public IEnumerator<string> GetEnumerator()
+    {
+        foreach (string s in strings)
+        {
+            yield return s;
+        }
+    }
+    #endregion
+
+    #region IEnumerable 成员
+    //显式实现接口
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+    #endregion
+
+    //用字符串初始化列表框
+    public ListBoxTest(params string[] initialStrings)
+    { 
+        //为字符串分配内存空间
+        strings = new String[8];
+        //复制传递给构造方法的字符串
+        foreach (string s in initialStrings)
+        {
+            strings[ctr++] = s; 
+        }
+    }
+
+    //在列表框最后添加一个字符串
+    public void Add(string theString)
+    { 
+        strings[ctr] = theString;
+        ctr++;
+    }
+
+    //允许数组式的访问
+    public string this[int index]
+    {
+        get {
+            if (index < 0 || index >= strings.Length)
+            { 
+                //处理不良索引
+            }
+            return strings[index];
+        }
+        set { 
+            strings[index] = value;
+        }
+    }
+
+    //发布拥有的字符串数
+    public int GetNumEntries()
+    {
+        return ctr;
+    }
+}
+```
+
+
+
+```
+  class Program
+    {
+        static void Main(string[] args)
+        {
+            //创建一个新的列表框并初始化
+            ListBoxTest lbt = new ListBoxTest("Hello", "World");
+ 
+            //添加新的字符串
+            lbt.Add("Who");
+            lbt.Add("Is");
+            lbt.Add("Douglas");
+            lbt.Add("Adams");
+ 
+            //测试访问
+            string subst = "Universe";
+            lbt[1] = subst;
+ 
+            //访问所有的字符串
+            foreach (string s in lbt)
+            {
+                Console.WriteLine("Value:{0}", s);
+            }
+            Console.ReadKey();
+        }
+    }
+```
+
+ 综上所述，一个类型是否支持foreach遍历，必须满足下面条件：
+
+方案1：让这个类实现IEnumerable接口
+
+方案2：这个类有一个public的GetEnumerator的实例方法，并且返回类型中有public 的bool MoveNext()实例方法和public的Current实例属性。
+
+
+
+
+
+### yield 
+
+Yield Return关键字的作用就是退出当前函数，并且会保存当前函数执行到什么地方，也就上下文。你发现没下次执行这个函数上次跑来的代码是不会重复执行的
+
+
+
+例子1：
+
+```
+List<int> MyFun1(){
+	nums = {1,2,3,...,100};
+	List<int>res = new();
+	for(var i in nums){
+		//do some else
+		res.add(i);
+	}
+}
+
+main{
+	foreach(var item in MyFun1()){
+		print(item);
+	}
+}
+```
+
+例子2：
+
+```
+IEnumerator MyFun2(){
+	nums = {1,2,3,...,100};
+	foreach(var i in nums){
+		//do some else
+		yield return i;
+	}
+}
+
+
+main{
+	foreach(var item in MyFun2()){
+		print(item);
+	}
+}
+```
+
+在我们这个两个伪代码例子中：
+
+MyFun1是直接返回一个集合，然后在main函数中对集合进行遍历。
+
+MyFun2是返回一个迭代器，main函数中对迭代器的每次遍历都会让MyFun2函数在上次yield退出处恢复运行，然后再次通过yield返回相应的元素并且跳出函数。
+
+**好处：**是显而易见的，我们遍历某个集合的时候也许并不需要它全部的元素。
+
+
+
+**问题：所以通过MyFun2获得的IEnumerator包含这MyFun2函数的信息？上次yield退出函数的位置？**
+
+yield退出的时候这个语法糖肯定是记录了当前退出的地址，然后构造一个迭代器对象返回出去，下次调用者就可以通知这个迭代器再次进来这地址里面来了。
+
+```
+IEnumerator{
+	info[];		//记录上次yield退出的地址。
+	hasnext();	
+	next();
+}
+```
+
+
+
+### 参考文献：
+
+[迭代器 - C# | Microsoft Learn](https://learn.microsoft.com/zh-cn/dotnet/csharp/iterators)
+
+[IEnumerable和IEnumerator 详解-CSDN博客](https://blog.csdn.net/byondocean/article/details/6871881)
+
+[彻底搞懂C#之Yield Return语法的作用和好处-CSDN博客](https://blog.csdn.net/qq_33060405/article/details/78484825)
 
 
 
@@ -6320,7 +6683,437 @@ unity控制台中的error pause 遇到错误打印就停止。导致我以为是
 
 
 
-# server相关的一些东西
+# 在linux环境下部署环境
+
+
+
+## 1.ubuntu下安装mysql服务
+
+
+
+### **1.1安装 MySQL-Server**
+
+通过 apt 包管理器安装 MySQL
+
+```
+sudo apt update
+sudo apt install mysql-server
+```
+
+
+
+### **1.2启动mysql服务,并确定active**
+
+```
+systemctl start mysql
+```
+
+![image-20231222170326277](MMORPG.assets/image-20231222170326277.png)
+
+
+
+### **1.3验证 MySQL-Server**
+
+你可以通过运行以下命令来验证安装结果，该命令将输出系统中所安装的 MySQL 版本和发行版。
+
+```
+mysql --version
+```
+
+![image-20231222170435939](MMORPG.assets/image-20231222170435939.png) 
+
+
+
+### **1.4保护加固 MySQL**
+
+MySQL 安装文件附带了一个名为`mysql_secure_installation`的脚本，它允许你很容易地提高[数据库服务](https://cloud.tencent.com/product/dbexpert?from_column=20065&from=20065)器的安全性。
+
+不带参数运行这个脚本：
+
+```
+sudo mysql_secure_installation
+```
+
+你将会被要求配置`VALIDATE PASSWORD PLUGIN`，它被用来测试 MySQL 用户密码的强度，并且提高安全性：
+
+![image-20231222172421839](MMORPG.assets/image-20231222172421839.png) 
+
+看着按吧。
+
+
+
+### **1.5以root身份登录并调整用户身份验证**
+
+MySQL Server 带有一个客户端实用程序，可以从 Linux 终端访问数据库并与之交互。
+
+通常，未做任何配置时，在 Ubuntu 上全新安装 MySQL 后，访问服务器的用户将使用 auth_socket 插件进行身份验证。
+
+auth_socket 的使用会阻止服务器使用密码对用户进行身份验证。它不仅会引发安全问题，而且还会使用户无法借助外部程序（如 phpMyAdmin）访问数据库。因此我们需要将身份验证方法从 auth_socket 更改为使用 mysql_native_password。
+
+为此需要打开 MySQL 控制台，并在 Linux 终端上运行以下命令。
+
+```
+mysql
+```
+
+现在，我们需要检查数据库对不同用户使用的身份验证方法。你可以通过运行以下命令来执行此操作。
+
+```
+SELECT user,authentication_string,plugin,host FROM mysql.user;
+```
+
+![image-20231222174909028](MMORPG.assets/image-20231222174909028.png) 
+
+从上图中，我们可以确认 root 用户确实使用 auth_socket 进行了身份验证。我们需要使用下面的“ALTER USER”命令切换到密码验证的使用。另外需要注意的是，确保使用较强的安全密码（应超过 8 个字符，结合数字、字符串和特殊符号等），因为它将替换你在执行上述命令“sudo mysql_secure_installation” 时设置的密码。运行以下命令。
+
+```
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'your_password';
+```
+
+现在，我们需要重新加载授权表并将更改更新到 MySQL 数据库。通过执行以下命令来执行此操作。
+
+```
+FLUSH PRIVILEGES;
+```
+
+完成后，我们需要确认 root 用户不再使用 auth_socket 进行身份验证。通过再次运行以下命令来执行此操作。
+
+```
+SELECT user,authentication_string,plugin,host FROM mysql.user;
+```
+
+![image-20231222175044710](MMORPG.assets/image-20231222175044710.png)
+
+从上图中，我们看到 root 身份验证方法已从“auth_socket”更改为“mysql_native_password”。
+
+由于我们更改了 root 的身份验证方法，因此我们无法使用之前使用的相同命令打开 MySQL 控制台。即“sudo mysql”。我们需要包括用户名和密码参数，如下所示。
+
+```
+mysql -u root -p
+```
+
+“-u”表示用户，这里是“root”，“-p”代表“password”，一旦你按下 Enter 键，服务器就会提示你输入密码。
+
+
+
+### **1.6创建新用户**
+
+一切都设置好后，你可以创建一个新用户，并授予该用户适当的权限。我们将创建一个用户 'PyDataStudio' 并分配对所有数据库表的权限以及更改、删除和添加用户权限的权限。逐行执行下面的命令。
+
+```
+CREATE USER 'PyDataStudio'@'localhost' IDENTIFIED BY 'strong_password';
+
+GRANT ALL PRIVILEGES ON *.* TO 'PyDataStudio'@'localhost' WITH GRANT OPTION;
+```
+
+第一个命令将创建新用户，第二个命令分配所需的权限。
+
+我们现在可以通过运行以下命令来测试我们的新用户。
+
+```
+mysql -u PyDataStudio -p
+```
+
+![image-20231222180040915](MMORPG.assets/image-20231222180040915.png) 
+
+
+
+### **1.7服务器上的配置**
+
+在 Ubuntu 服务器上安装 MySQL-server 与上述步骤没有太大区别。但是，由于服务器是远程访问的，我们还需要为服务器启用远程访问。
+
+安装成功后，需要启用远程访问。从逻辑上讲，我们需要在 Ubuntu 服务器防火墙上打开一个端口，以便 MySQL 数据库进行通信。默认情况下，MySQL 服务在 3306 端口上运行。执行以下命令。
+
+```
+sudo ufw enable
+sudo ufw allow mysql
+```
+
+为了增强 MySQL 数据库的可靠性和可访问性，可以将 MySQL-server 服务配置为在启动时开始运行。执行以下命令。
+
+```
+sudo systemctl enable mysql
+```
+
+现在需要配置服务器的接口，从而服务器能够侦听远程可访问的接口。我们需要编辑“mysqld.cnf”文件。运行以下命令。
+
+```
+sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
+```
+
+![图片](MMORPG.assets/f3f74bc525f3167aeef2581ecedf97cf3134c7.png)
+
+默认情况下，绑定地址为“127.0.0.1”。为公网接口添加绑定地址，为服务网络接口添加另一个绑定地址。你可以将所有 IP 地址的绑定地址配置为“0.0.0.0”。
+
+
+
+
+
+### **bug**
+
+如果你在选择密码规则的时候不小心选择了2，也就是数字、大小写字母、特殊符号和字典文件的组合。这时候设置密码会出现如下提示：
+
+```
+Your password does not satisfy the current policy requirements.
+```
+
+这时候重新运行`mysql_secure_installation`也不会再给你机会重新设置了。手动微笑，mmp。
+
+**解决方案如下：**
+
+使用命令`mysql -uroot`登陆，执行：
+
+```
+set global validate_password.policy = 0;
+#将密码规则设置为LOW，就可以使用纯数字纯字母密码
+```
+
+```
+set global validate_password_length=4;  
+#最低位数为4位
+```
+
+这个时候重新运行`mysql_secure_installation`就可以安心设置了。
+
+**相关参数**
+
+```
+validate_password_dictionary_file：插件用于验证密码强度的字典文件路径。
+
+validate_password_length：密码最小长度。
+
+validate_password_mixed_case_count：密码至少要包含的小写字母个数和大写字母个数。
+
+validate_password_number_count：密码至少要包含的数字个数。
+
+validate_password_policy：密码强度检查等级，0/LOW、1/MEDIUM、2/STRONG。
+
+validate_password_special_char_count：密码至少要包含的特殊字符数。
+```
+
+
+
+### 卸载
+
+
+
+#### 1.查看 **MySQL** 依赖
+
+```
+dpkg --list|grep mysql
+```
+
+#### 2.卸载 mysql-common
+
+```
+sudo apt remove mysql-common
+```
+
+#### 3.卸载 mysql-server
+
+```
+sudo apt autoremove --purge mysql-server
+```
+
+#### 4.清除残留数据
+
+```
+dpkg -l|grep ^rc|awk '{print $2}'|sudo xargs dpkg -P
+```
+
+如果还有残留就继续删除
+
+```
+dpkg --list|grep mysql
+sudo apt autoremove --purge mysql-apt-config
+```
+
+
+
+
+
+### 导入sql文件
+
+```
+进入mysql某个数据库中
+source /path/file.sql
+```
+
+
+
+
+
+
+
+## 2.部署c#运行环境
+
+
+
+**云服务器需要dotnet环境**
+
+![image-20230702103526574](MMORPG.assets/image-20230702103526574.png)
+
+```
+# 导入镜像源
+sudo rpm -Uvh https://packages.microsoft.com/config/centos/7/packages-microsoft-prod.rpm
+
+# 安装net6环境
+sudo yum install dotnet-sdk-6.0
+
+# 查看是否安装成功
+dotnet --info
+```
+
+
+
+**云服务器端口放行**
+
+![image-20240301003814057](MMORPG.assets/image-20240301003814057.png)
+
+
+
+**linux主机防火墙端口放行**
+
+
+在 Ubuntu 中，你可以使用 `ufw`（Uncomplicated Firewall）工具来管理防火墙规则。以下是一些基本的步骤，可以帮助你放行端口：
+
+1. **检查防火墙状态：** 在终端中输入以下命令，检查防火墙的当前状态：
+
+   ```
+   bashCopy code
+   sudo ufw status
+   ```
+
+2. **启用防火墙：** 如果防火墙没有启用，可以使用以下命令启用它：
+
+   ```
+   bashCopy code
+   sudo ufw enable
+   ```
+
+3. **放行端口：** 使用以下命令放行特定端口（例如，假设你要放行端口 80）：
+
+   ```
+   bashCopy code
+   sudo ufw allow 80
+   ```
+
+   如果你的应用程序使用其他端口，替换 `80` 为你实际使用的端口号。
+
+4. **重新加载防火墙：** 重新加载防火墙规则，以确保更改生效：
+
+   ```
+   bashCopy code
+   sudo ufw reload
+   ```
+
+5. **验证更改：** 最后，再次运行 `sudo ufw status` 来确认端口已经被正确放行。
+
+
+
+
+
+
+
+## 3.启动服务器程序
+
+**服务器的ip使用内网ip或者 0.0.0.0**
+
+**客户端连接服务器的ip使用云服务器的ip**
+
+
+
+
+
+选择release  Any Cpu
+
+![image-20230702103137449](MMORPG.assets/image-20230702103137449.png) 
+
+选择你要发布的项目，右键重写生成
+
+![image-20230702103233229](MMORPG.assets/image-20230702103233229.png) 
+
+![image-20230702103252840](MMORPG.assets/image-20230702103252840.png)
+
+可以看到重写生成的文件在这个目录下
+
+![image-20230702103329928](MMORPG.assets/image-20230702103329928.png)
+
+
+
+ .exe就是在windows下面运行的，  .dll就是在linux下面运行的
+
+然后我们可以通过xshell进行传输
+
+
+
+下面这样启动当前shell关闭的时候，服务器进程也会一起关闭的，因为它在shell下启动，所以我们需要将进程设置为守护进程
+
+```
+dotnet GameServer.dll  就能运行了
+```
+
+**1、安装screen**
+
+```
+# 在Ubuntu上安装并使用screen
+sudo apt update  # 更新包列表
+sudo apt install screen  # 安装screen工具
+```
+
+**2、新建窗口**
+
+```
+# 创建一个新的窗口
+screen -S test
+```
+
+**3、执行文件**
+
+```
+# 进入窗口后 执行文件
+python test.py > output.log 2>&1
+```
+
+**4、退出该窗口**
+
+```
+# 退出当前窗口
+ctrl+a+d   （方法1：保留当前窗口）
+screen -d  （方法2：保留当前窗口）
+
+
+screen -list   查看存在的窗口
+screen -X -S sessionID quit		关闭某个窗口，包括它允许的进程
+
+```
+
+**5、查看程序输出文件（output.log）**
+
+![img](MMORPG.assets/a544b4f253594f29ae2318d2c69c6cef.png) 
+
+**6、停止程序**
+
+```
+# 1、重新连接窗口
+screen -r id或窗口名称
+ 
+# 示例：
+screen -r 344 
+screen -r test
+ 
+# 2、按 Ctrl + C 停止程序运行
+```
+
+![img](MMORPG.assets/00b7cc807c4d44829e8c7102079ae8a1.png) 
+
+> **实在不行，就查看程序的运行状态，也可以通过 `ps` 命令来查看程序是否在运行**
+
+
+
+
+
+# server相关的一些注意事项
 
 
 
@@ -6934,7 +7727,9 @@ message  ReconnectResponse{
 
 ## 普通攻击连招的锁敌机制
 
-这里参考永劫无间
+
+
+### 这里参考永劫无间
 
 
 
@@ -6967,6 +7762,16 @@ message  ReconnectResponse{
 4.永劫无间的人物在中间偏左的位置
 
 ![image-20240320112712000](MMORPG.assets/image-20240320112712000.png)
+
+
+
+
+
+### 其他参考
+
+
+
+
 
 
 
@@ -7006,17 +7811,667 @@ A和C相互看不见，如果C使用技能打B，A是看不见C是怎么打B的�
 
 
 
+
+
+
+
 # 热更新
 
-这里使用了现成的框架，只学到了一点理论知识。
 
-资源服务器（网站）我们使用宝塔面板
+
+## 一、什么是热更新？
+
+ **热更新** 是一种App软件开发者常用的更新方式。简单来说，就是在用户通过下载安装APP之后，打开App时遇到的即时更新。
+
+**游戏热更新** 是指在不需要重新编译打包游戏的情况下，在线更新游戏中的一些非核心代码和资源，比如活动运营和打补丁。
+
+（1）游戏上线后，在运营过过程中，如果需要更换UI显示，或者修改游戏的逻辑行为。传统的更新模式下，需要重新打包游戏，让玩家重新下载包体，造成用户体验不佳的情况。
+
+ （2）热更新允许在不重新下载游戏客户端的情况下，更新游戏内容。
+
+
+
+**热更新分为 资源热更新 和 代码热更新 两种**，代码热更新实际上也是把代码当成资源的一种热更新，但通常所说的热更新一般是指代码热更新。
+
+- **资源热更新** 主要通过AssetBundle来实现，在Unity编辑器内为游戏中所用到的资源指定AB包的名称和后缀，然后进行打包并上传[服务器](https://cloud.tencent.com/act/pro/promotion-cvm?from_column=20065&from=20065)，待游戏运行时动态加载服务器上的AB资源包。
+- **代码热更新** 主要包括Lua热更新、ILRuntime热更新和C#直接反射热更新等。由于ILRuntime热更新还不成熟可能存在一些坑，而C#直接反射热更新又不支持IOS平台，因此目前大多采用更成熟的、没有平台限制的Lua热更新方案。
+
+
+
+## 二、热更新必要性作用
+
+  一个游戏中有个很最重要的部分就是要想方设法的留住用户，如果每次游戏内容发生变化时(这在网游中经常会发生)，都需要用户去重新下载一个安装包(客户端)，这无疑是对游戏用户的留存产生了一个极大的威胁。
+
+**热更新作用**：能够缩短用户取得新版客户端的流程，改善用户体验。
+
+-  没有热更新情况： 
+  - pc用户：下载客户端->等待下载->安装客户端->等待安装->启动->等待加载->玩 
+  - 手机用户：商城下载APP->等待下载->等待安装->启动->等待加载->玩 
+-  有了热更新情况： 
+  - pc用户：启动->等待热更新->等待加载->玩 
+  - 有独立loader的pc用户：启动loader->等待热更新->启动游戏->等待加载->玩 
+  - 手机用户：启动->等待热更新->等待加载->玩
+
+ 通过对比就可以看出，有没有热更新对于用户体验的影响还是挺大的，主要就是省去用户自行更新客户端的步骤。
+
+尤其手游是快节奏的应用，功能和资源更新频繁，特别是重度手游安装包常常接近1个G，如果不热更新，哪怕改动一行代码也要重新打个包上传到网上让玩家下载。 
+
+ 对于IOS版本的手游包IPA，要上传到苹果商店进行审核，周期漫长，这对于BUG修复类操作是个灾难。
+
+所以说就需要热更新技术的出现来解决这个问题。
+
+
+
+## 三、热更新原理
+
+​	游戏中一些UI界面和某些模型等等的显示都是通过去加载相应的素材来实现的，当我们只把对应的素材资源进行替换就可以界面和模型发生变化，这个时候我们可以让客户端通过资源对比后从而进行相关资源的下载就可以实现热更新
+
+  比如在一个游戏中的某些资源我们是放在服务器中的，当我们需要更换游戏中的某些资源时(如UI界面，某个英雄数值需要调整)。 我们只需要把这些新的资源与旧的资源进行替换，而不需要重新下载整个安装包就可以完成一个游戏版本的更迭，就相当于实现了一次热更新。
+
+- **C#热更原理**：将需要频繁更改的逻辑部分独立出来做成DLL，在主模块调用这些DLL，主模块代码是不修改的，只有作为业务（逻辑）模块的DLL部分需要修改。游戏运行时通过反射机制加载这些DLL就实现了热更新。
+- **lua热更原理**：逻辑代码转化为脚本，脚本转化为文本资源，以更新资源的形式更新程序。
+
+
+
+**为什么实现热更新一般都是用Lua，而不是C#？**
+
+既然游戏需要热更新，那么我们既然使用了 `Unity引擎`，为什么不能直接使用 `C#` 脚本去进行游戏热更新，反而大多都是使用Lua语言去实现热更新呢？
+
+  这就不得不提一下C#语言的特性了，热更新本身对于资源热更新是非常容易的，Unity自带的AB包就可以轻松解决，难的是代码热更新，因为Unity中的C#是**编译型语言**，Unity在打包后，会将C#编译成一种中间代码，再由Mono虚拟机编译成汇编代码供各个平台执行，它打包以后就变成了二进制了，会跟着程序同时启动，就无法进行任何修改了。
+
+所以直接使用C#进行热更新显然是不可行的，但是也不是说一点办法也没有。在安卓上可以通过C#的语言特性-反射机制实现动态代码加载从而实现热更新。
+
+C#的编译流程：写好的代码->编译成.dll扩展程序（UnityEditor完成）->运行于Unity 
+
+**C#热更具体做法**：将需要频繁更改的逻辑部分独立出来做成DLL，在主模块调用这些DLL，主模块代码是不修改的，只有作为业务（逻辑）模块的DLL部分需要修改。游戏运行时通过反射机制加载这些DLL就实现了热更新。
+
+但苹果对反射机制有限制，不能实现这样的热更。为了安全起见，不能给程序太强的能力，因为反射机制实在太过强大，会给系统带来安全隐患。
+
+其中 `ILRuntime` 就是使用C#进行的热更新(后边主流热更新方案中会讲到，这里先提一下)。
+
+  而 `LUA` 则是**解释型语言**，并不需要事先编译成块，而是运行时动态解释执行的。这样LUA就和普通的游戏资源如图片，文本没有区别，因此可以在运行时直接从WEB服务器上下载到持久化目录并被其它LUA文件调用。
+
+Lua热更新解决方案是通过一个Lua热更新插件（如ulua、slua、tolua、xlua等）来提供一个Lua的运行环境以及和C#进行交互。
+
+**lua热更原理**：逻辑代码转化为脚本，脚本转化为文本资源，以更新资源的形式更新程序。
+
+
+
+## 四、热更新流程
+
+![在这里插入图片描述](MMORPG.assets/5a98381a3ef9d2908bf4e3deddeef9c0.png)
+
+
+
+热更的基本流程可以分成2部分：
+
+- 第一步：导出热更新所需资源
+- 第二步：游戏运行后的热更新流程
+
+
+
+**第一步、导出热更新所需资源**
+
+1. 打包热更资源的对应的md5信息（涉及到增量打包）
+2. 上传热更对应的ab包到热更服务器
+3. 上传版本信息到版本服务器
+
+
+
+**第二步、游戏运行后的热更新流程**
+
+1. 启动游戏
+2. 根据当前版本号，和平台号去版本服务器上检查是否有热更
+3. 从热更服务器上下载md5文件，比对需要热更的具体文件列表
+4. 从热更服务器上下载需要热更的资源，解压到热更资源目录
+5. 游戏运行加载资源，优先到热更目录中加载，再到母包资源目录加载
+
+
+
+ 更新注意： 
+
+- 要有下载失败重试几次机制； 
+- 要进行超时检测； 
+- 要记录更新日志，例如哪几个资源时整个更新流程失败。
+
+
+
+## 五、目前主流热更新方案
+
+下面举例了目前市面上比较主流的几种热更新方案，后面会针对这几种热更新方案都做一个比较详细的介绍，看一看各自的优缺点。
+
+- LUA热更(xLua/toLua等)（LUA与C#绑定，方案成熟）
+- ILRuntime热更
+- puerts
+- HyBridCLR（原huatuo）
+
+
+
+### 5.1 LUA热更(XLua/ToLua)（LUA与C#绑定，方案成熟）
+
+`Lua热更`原理：逻辑代码转化为脚本，脚本转化为文本资源，以更新资源的形式更新程序 
+
+Lua系解决方案: 内置一个Lua虚拟机,做好UnityEngine与C#框架的Lua导出。典型的框架有xLua, uLua,大体都差不多。
+
+  Lua热更新解决方案是通过一个Lua热更新插件（如ulua、slua、tolua、xlua等）来提供一个Lua的运行环境以及和C#进行交互。xLua是腾讯开源的热更新插件，有大厂背书和专职人员维护，插件的稳定性和可持续性较强。
+
+  由于Lua不需要编译，因此Lua代码可以直接在Lua虚拟机里运行，Python和JavaScript等脚本语言也是同理。而xLua热更新插件就是为Unity、.Net、Mono等C#环境提供一个Lua虚拟机，使这些环境里也可以运行Lua代码，从而为它们增加Lua脚本编程的能力。
+
+借助xLua，这些Lua代码就可以方便的和C#相互调用。这样平时开发时使用C#，等需要热更新时再使用Lua，等下次版本更新时再把之前的Lua代码转换成C#代码，从而保证游戏正常运营。
+
+
+
+### 5.2 ILRuntime热更
+
+ `ILRuntime` 项目是掌趣科技开源的热更新项目，它为基于C#的平台（例如Unity）提供了一个纯C#、快速、方便和可靠的IL运行时，使得能够在不支持JIT的硬件环境（如iOS）能够实现代码热更新。 ILRuntime项目的原理实际上就是先用VS把需要热更新的C#代码封装成DLL（动态链接库）文件，然后通过Mono.Cecil库读取DLL信息并得到对应的IL中间代码（IL是.NET平台上的C#、F#等高级语言编译后产生的中间代码，IL的具体形式为.NET平台编译后得到的.dll动态链接库文件或.exe可执行文件），最后再用内置的IL解译执行虚拟机来执行DLL文件中的IL代码。
+
+  由于ILRuntime项目是使用C#来完成热更新，因此很多时候会用到反射来实现某些功能。而反射是.NET平台在运行时获取类型（包括类、接口、结构体、委托和枚举等类型）信息的重要机制，即从对象外部获取内部的信息，包括字段、属性、方法、构造函数和特性等。我们可以使用反射动态获取类型的信息，并利用这些信息动态创建对应类型的对象。
+
+ILRuntime中的反射有两种：
+
+- 一种是在热更新DLL中直接使用C#反射获取到System.Type类对象；
+- 另一种是在Unity主工程中通过appdomain.LoadedTypes来获取继承自System.Type类的IType类对象，因为在Unity主工程中无法直接通过System.Type类来获取热更新DLL中的类。
+
+
+
+#### 5.3 puerts（普洱TS）
+
+git地址：[https://github.com/Tencent/puerts](https://cloud.tencent.com/developer/tools/blog-entry?target=https%3A%2F%2Fgithub.com%2FTencent%2Fpuerts&source=article&objectId=2239496)
+
+`puerts` 解决方案: 内置一个JavaScript/TypeScript解释器，解释执行TypeScript代码。
+
+- 强大的生态 引入Node.js以及JavaScript生态众多的库和工具链，结合专业商业引擎的渲染能力，快速打造游戏。
+- 拥有静态检查的脚本 相比游戏领域常用的lua脚本，TypeScript的静态类型检查有助于编写更健壮，可维护性更好的程序
+- 高效/高性能 支持反射Binding，无需额外（生成代码）步骤即可开发。也支持静态Binding，兼顾了高性能的场景。
+
+
+
+#### 5.4 HyBridCLR（原huatuo）
+
+官方地址：[https://focus-creative-games.github.io/hybridclr/about/#%E6%96%87%E6%A1%A3](https://cloud.tencent.com/developer/tools/blog-entry?target=https%3A%2F%2Ffocus-creative-games.github.io%2Fhybridclr%2Fabout%2F%23%E6%96%87%E6%A1%A3&source=article&objectId=2239496)
+
+`HybridCLR(代号wolong)` 是一个特性完整、零成本、高性能、低内存的近乎完美的Unity全平台原生c#热更方案。
+
+  HybridCLR扩充了il2cpp的代码，使它由纯AOT (opens new window) runtime变成‘AOT+Interpreter’ 混合runtime，进而原生支持动态加载assembly，使得基于il2cpp backend打包的游戏不仅能在Android平台，也能在IOS、Consoles等限制了JIT的平台上高效地以AOT+interpreter混合模式执行。从底层彻底支持了热更新。   HybridCLR开创性地实现了 Differential Hybrid Execution(DHE) 差分混合执行技术。即可以对AOT dll任意增删改，会智能地让变化或者新增的类和函数以interpreter模式运行，但未改动的类和函数以AOT方式运行，让热更新的游戏逻辑的运行性能基本达到原生AOT的水平。
+
+个人觉得HyBridCLR最大的优点就是对Unity开发者们非常友好，在使用前搭建好各种配置之后，热更新方面的操作就不需要我们下功夫了，按照之前的开发正常进行就好，只要更换对应的dll文件就可以自动实现热更新功能，恐怖如斯~
+
+后续会详细介绍下HybridCLR，并按照文档做一些案例用于学习使用HybridCLR进行热更新。
+
+
+
+
+
+## 六 AssetBundle
+
+
+
+### 什么是AssetBundle？
+
+ `AssetBundle`(简称AB包)是一个资源压缩包，可以包含模型、贴图、音频、预制体等。如在网络游戏中需要在运行时加载资源，而AssetBundle可以将资源构建成 AssetBundle 文件。
+
+![在这里插入图片描述](MMORPG.assets/c1f14f1a83a57f41f5e48ffc5b8f997f.png) 
+
+
+
+### AssetBundle作用
+
+1、AssetBundle是一个压缩包包含模型、贴图、预制体、声音、甚至整个场景，可以在游戏运行的时候被加载； 
+
+2、AssetBundle自身保存着互相的依赖关系； 
+
+3、压缩包可以使用LZMA和LZ4压缩算法，减少包大小，更快的进行网络传输； 
+
+4、把一些可以下载内容放在AssetBundle里面，可以减少安装包的大小；
+
+
+
+### AssetBundle三种压缩格式
+
+AssetBundle 提供了三种压缩格式：
+
+1. 不压缩（BuildAssetBundleOptions.UncompressedAssetBundle）：优点是需要加载资源时速度非常快，缺点是构建的 AssetBundle 资源文件会比较大。
+2. LZMA压缩（BuildAssetBundleOptions.None）：unity中默认的压缩方式，优点是会将文件压缩的非常小，缺点是每次使用都需要将压缩的文件全部解压，非常耗费时间，可能会造成游戏的卡顿，不推荐在项目中使用。
+3. **LZ4压缩**（BuildAssetBundleOptions.ChunkBasedCompression）：是LZMA和不压缩之间的折中方案，构建的 AssetBundle 资源文件会略大于 LZMA 压缩，但是在加载资源时不需要将所有的资源都加载下来，所以速度会比 LZMA 快。建议项目中使用它。
+
+
+
+### AB打包流程
+
+1. 设置资源AssetBundle名称
+2. BuildPipeline,BuildAssetBundles打包
+3. 处理打包后的文件
+4. Ab包依赖描述
+
+![在这里插入图片描述](MMORPG.assets/218ba74c1bf100916e643a134e0b9763.png)
+
+
+
+### AB包具体使用方式
+
+### AssetBundle Browser
+
+
+
+####  1.官方提供的打包工具：AssetBundle Browser
+
+
+
+下载官方提供的打包工具，两种下载方式：
+
+1. git地址：[https://github.com/Unity-Technologies/AssetBundles-Browser](https://cloud.tencent.com/developer/tools/blog-entry?target=https%3A%2F%2Fgithub.com%2FUnity-Technologies%2FAssetBundles-Browser&source=article&objectId=2240554)
+2. 在资源管理器中打开Packages的manifest.json文件，在"dependencies": {}中添加一行代码：“com.unity.assetbundlebrowser”: “1.7.0”,
+
+下载之后导入Unity工程即可，如遇报错可以删掉Test文件夹即可。
+
+打开方式：`Windows -> AssetBundle Browser` 启动打包除窗口。 
+
+![在这里插入图片描述](MMORPG.assets/e404f47016ffaf1a417ac0a875e54299.png) 
+
+
+
+#### 2 将对象保存为预制体并为预制体设置AB包信息
+
+在场景中新建几个游戏对象做测试，将其拖到Resources下当做预制体。
+
+![在这里插入图片描述](MMORPG.assets/94958dc38a67a23f44e47f9e2bb34de2.png) 
+
+然后在监视器面板中设置AB包的信息，选中该物体，在右下角设置AB包名称。
+
+![在这里插入图片描述](MMORPG.assets/4e1349a192b7a7a69af60571c2086fb8.png)
+
+这样就可以在面板中看到我们设置的AB包信息了。设置的时候会根据AB包不同名称分别打到不同的包中。
+
+![在这里插入图片描述](MMORPG.assets/50945cd3a943b1ea0b21670fe1badd86.png)
+
+
+
+
+
+#### 3 执行打包方法
+
+选择对应的平台及输出路径，然后根据情况选择其他配置。
+
+![在这里插入图片描述](MMORPG.assets/6fe068af9c7196da92f15dbb61ffa645.png)
+
+参数含义如下
+
+- Build Target：打包平台选择
+- Output Path ：文件输出路径
+- Clear Folders：清空路径内容
+- Copy to StreamingAssets：将打包后的内容复制到Assets/StreamingAssets文件夹下
+- Advanced Settings
+  - Exclude Type Infomation：在资源包中 不包含资源的类型信息
+  - Force Rebuild：重新打包时需要重新构建包 和ClearFolder不同，他不会删除不再存在的包
+  - Ignore Type Tree Changes：增量构建检查时，忽略类型数的修改
+  - Apped Hash：将文件哈希值附加到资源包名上
+  - Strict Mode：严格模式，如果打包报错了，则打包直接失败无法成功
+  - Dry Run Build：运行时构建
+
+
+
+点击Build后会执行打包方法，等待打包完成即可获得对应的AB包文件。
+
+若是上面选择了 Copy to StreamingAssets，则会打包出来两份资源。 
+
+ 一个与Asset同级目录，另一个则是在Assets/StreamingAssets文件夹下。
+
+![在这里插入图片描述](MMORPG.assets/2ce8aaccb031f7cb4e97c62ebdea5931.png)
+
+其中有一个主包文件和对应的AB包资源文件。
+
+内容大致为以下几个部分：
+
+- AB包文件：资源文件
+- manifest文件：AB包文件信息（资源信息，依赖关系，版本信息等等）
+- 关键AB包（与打包目录名相同的包）：主包文件，包含AB包依赖的关键信息
+
+![在这里插入图片描述](MMORPG.assets/a916247916c552b3092d420f89ff0690.png) 
+
+![在这里插入图片描述](MMORPG.assets/5e04028f7ff92844d16db0adfaa386b5.png) 
+
+
+
+#### 4 加载AB包，并使用其中的资源文件
+
+上面已经讲到了打包AB包的方法，下面就是学习怎样加载我们打包好的AB包，并使用其中的资源。
+
+![在这里插入图片描述](MMORPG.assets/90b5ae0c3f30de72fbc5742256417da3.png)
+
+下面直接使用`LoadFromFile()`方法进行AB包的加载及使用，代码如下：
+
+1.使用同步加载方法 LoadFromFile()
+
+```javascript
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class ABLoadDemo : MonoBehaviour
+{
+    public Button LoadAb_Btn;
+    private string LoadPath;//AB包路径
+
+    private void Awake()
+    {
+        LoadPath = Application.streamingAssetsPath;
+        LoadAb_Btn.onClick.AddListener(LoadAB);
+    }
+
+    /// <summary>
+    /// 同步加载
+    /// </summary>
+    private void LoadAB()
+    {
+        //第一步：加载AB包
+        AssetBundle ab = AssetBundle.LoadFromFile(LoadPath + "/"+"module");
+        //第二步：加载AB包中的资源
+        //GameObject abGO = ab.LoadAsset<GameObject>("bullet");//方法一：使用LoadAsset<>泛型加载
+        //GameObject abGO = ab.LoadAsset("bullet") as GameObject;//方法二：使用LoadAsset名字加载（不推荐，会出现同名不同类型的对象无法区分的问题）
+        GameObject abGO = ab.LoadAsset("bullet", typeof(GameObject)) as GameObject;//方法三：使用LoadAsset(Type)指定类型加载
+        Instantiate(abGO);
+    }
+}
+```
+
+2.使用异步加载方法 LoadFromFileAsync()，使用协程辅助异步加载。
+
+```javascript
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class ABLoadDemo : MonoBehaviour
+{
+    public Button LoadAbAsync_Btn;
+    public Image image;//场景测试图片
+    private string LoadPath;//AB包路径
+
+    private void Awake()
+    {
+        LoadPath = Application.streamingAssetsPath;
+        LoadAbAsync_Btn.onClick.AddListener(()=> 
+        {
+        	//启动协程完成异步加载
+            StartCoroutine(LoadABAsync()); 
+        });
+    }
+    /// <summary>
+    /// 异步加载
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator LoadABAsync()
+    {
+    	//第一步：加载AB包
+        AssetBundleCreateRequest abcr = AssetBundle.LoadFromFileAsync(LoadPath + "/" + "test");
+        yield return abcr;
+        //第二步：加载AB包中的资源
+        AssetBundleRequest abr = abcr.assetBundle.LoadAssetAsync("head",typeof(Sprite));
+        yield return abr;
+        image.sprite = abr.asset as Sprite;
+        Debug.Log("加载AB包赋值图片完成");
+    }
+}
+```
+
+**同步加载实例化一个球体** 和 **异步加载一张图片赋值给Image组件** 的示例如下：
+
+![在这里插入图片描述](MMORPG.assets/5fa5b4f8d2d5b03250b167e536c3a74a.png)
+
+这样我们就学会最基本的Ab包加载和使用其中资源的方法了。
+
+其中有个点需要注意：
+
+ 同一AB包不能重复加载多次，否则会报错（卸载后可重新加载） 
+
+![在这里插入图片描述](MMORPG.assets/70f70ca3e5712374fc1f84d6e372b06b.png) 
+
+AB包卸载方式如下：
+
+```javascript
+AssetBundle ab = AssetBundle.LoadFromFile(LoadPath + "/"+"module");
+
+//卸载所有AB包资源。若参数为true表示将所有使用该AB包中的资源全部卸载，反之则不会
+AssetBundle.UnloadAllAssetBundles(false);
+
+//卸载某个指定AB包的方法。若参数为true表示将会把使用该AB包的场景资源也全部卸载，反之则不会
+ab.Unload(false);
+```
+
+下面是几种常用的AB包加载方式，简单记录一下：
+
+1. 异步加载：AssetBundle.LoadFromMemoryAsync 从内存区域异步创建 AssetBundle。
+
+```
+ /// <summary>
+    /// 从本地异步加载AssetBundle资源，Path是AB包路径+AB包名称
+    /// </summary>
+    /// <param name="path">路径</param>
+    /// <returns></returns>
+    IEnumerator LoadFromMemoryAsync(string path)
+    {
+        AssetBundleCreateRequest createRequest = AssetBundle.LoadFromMemoryAsync(File.ReadAllBytes(path));
+        yield return createRequest;
+        AssetBundle bundle = createRequest.assetBundle;
+        var prefab = bundle.LoadAsset<GameObject>("bullet");
+        Instantiate(prefab);
+    }
+```
+
+1. 同步加载，将等待 AssetBundle 对象创建完毕才返回。 AssetBundle.LoadFromMemory AssetBundle.LoadFromMemory由AssetBundle.LoadFromMemoryAsync变化而来，与 LoadFromMemoryAsync 相比，该版本是同步的，将等待 AssetBundle 对象创建完毕才返回。
+
+```
+AssetBundle bundle = AssetBundle.LoadFromMemory(File.ReadAllBytes(ABPath));
+        var prefab = bundle.LoadAsset<GameObject>("bullet");
+        Instantiate(prefab);
+```
+
+1. 同步加载AssetBundle.LoadFromFile 从磁盘上的文件同步加载 AssetBundle。 该函数支持任意压缩类型的捆绑包。 如果是 lzma 压缩，则将数据解压缩到内存。可以从磁盘直接读取未压缩和使用块压缩的捆绑包。
+
+与 LoadFromFileAsync 相比，该版本是同步的，将等待 AssetBundle 对象创建完毕才返回。 这是加载 AssetBundle 的最快方法。
+
+```
+/// <summary>
+/// 从磁盘上的文件同步加载 AssetBundle。
+/// </summary>
+void LoadFromFile()
+{
+    AssetBundle ab = AssetBundle.LoadFromFile(Application.dataPath + "/StreamingAssets/"+ assetBundle);
+    var go = ab.LoadAsset<GameObject>("ZAY");
+    Instantiate(go);
+}
+```
+
+1. 异步加载：AssetBundle.LoadFromFileAsync LoadFromFileAsync AssetBundle 的异步创建请求。加载后使用 assetBundle 属性获取 AssetBundle。 从磁盘上的文件异步加载 AssetBundle。
+
+该函数支持任意压缩类型的捆绑包。 如果是 lzma 压缩，则将数据解压缩到内存。可以从磁盘直接读取未压缩和使用块压缩的捆绑包。
+
+```
+IEnumerator LoadFromFileASync(string path)
+    {
+        AssetBundleCreateRequest createRequest = AssetBundle.LoadFromFileAsync(path);
+        yield return createRequest;
+        AssetBundle bundle = createRequest.assetBundle;
+        if (bundle == null)
+        {
+            Debug.Log("Failed to load AssetBundle!");
+            yield break;
+        }
+        var parefab = bundle.LoadAsset<GameObject>("bullet");
+        Instantiate(parefab);
+    }
+```
+
+
+
+1. UnityWebRequestAssetBundle 和 DownloadHandlerAssetBundle UnityWebRequestAssetBundle 此方法将 DownloadHandlerAssetBundle 附加到 UnityWebRequest。
+
+DownloadHandlerAssetBundle.GetContent(UnityWebRequest) 作为参数。GetContent 方法将返回你的 AssetBundle 对象。
+
+```javascript
+   IEnumerator WEB(string url)
+    {
+        UnityWebRequest request = UnityWebRequestAssetBundle.GetAssetBundle(url, 3, 0);
+        //此方法将返回 WebRequestAsyncOperation 对象。在协程内部生成 WebRequestAsyncOperation 将导致协程暂停，
+        //直到 UnityWebRequest 遇到系统错误或结束通信为止。
+        yield return request.SendWebRequest();
+        //如果加载失败
+        if (request.result != UnityWebRequest.Result.Success)
+        {
+            Debug.Log(request.error);
+            yield break;
+        }
+        //返回下载的 AssetBundle 或 null。
+        AssetBundle bundle = DownloadHandlerAssetBundle.GetContent(request);
+        var parefab = bundle.LoadAsset<GameObject>("ZAY");
+        Instantiate(parefab);
+    }
+```
+
+
+
+#### 5 AB包的加载流程
+
+![在这里插入图片描述](MMORPG.assets/d255d25c1e928323e42dd83e5177db18.png)
+
+
+
+### AssetBundle依赖关系
+
+  上面讲了一下基本的 AssetBundle打包 和 加载 的方法。 
+
+ 在加载流程中也提到了依赖关系，下面就来讲一下**AssetBundle的依赖关系**，所谓依赖关系就是指某个AB包中的某个资源可能是依赖于另外一个AB包的。
+
+比如我们打包的时候，一个AB包中的内容全是模型，而另外一个AB包中的资源都是材质，此时模型AB包中就可能需要使用到材质AB包中的资源，此时两个AB包就存在依赖关系。
+
+下面用一个例子看一下具体效果： 首先新建一个Material材质球，改为黄色并将其赋给Player对象。
+
+![在这里插入图片描述](MMORPG.assets/878d4da7b8bef0f2f7e09ae1808311ce.png) 
+
+Player对象是勾选了AB包的，我们现在重新使用Build打包看一下AB包情况。
+
+![在这里插入图片描述](MMORPG.assets/986ea6f809ca12d17dd4603feefb2b6d.png)
+
+可以看到这个材质也被自动打包进了AB包中，而且Budle名是默认设置的auto。 在包中的一个资源如果使用了另外一个资源，那么打包的时候会把另外一个资源也默认打包进该包中。 此时我们可以手动修改该材质的AB包名称，然后重新打包一下。
+
+![在这里插入图片描述](MMORPG.assets/c6ff367bf939213b6ee52ef52819c8b1.png)
+
+此时我们再去加载AB包module获取Player对象试一下效果：
+
+```javascript
+		//加载AB包
+        AssetBundle ab = AssetBundle.LoadFromFile(LoadPath + "/"+"module");
+        //加载AB包中的资源
+        GameObject abGO = ab.LoadAsset("player", typeof(GameObject)) as GameObject;
+        //实例化对象
+        Instantiate(abGO);
+```
+
+可以看到游戏对象被加载出来了，但是材质发生了丢失。 
+
+![在这里插入图片描述](MMORPG.assets/c55329194aa9105553e32729afa77dad.png)
+
+原因就是因为该AB包module中的Player对象使用到了materials包中的材质球资源，但是我们没有加载materials包。所以出现了材质丢失。 这就是说module包中有资源对象依赖对materials包中的资源，所以他们存在AB包依赖关系。
+
+出现这种有依赖关系的情况时，如果只加载自己的AB包，那么通过它创建的对象就会出现资源丢失的情况(比如上方的材质丢失等)，此时就需要将依赖包一起进行加载，才能保证材质不丢失。
+
+比如上方加载module包的代码多加一行，如下所示：
+
+```javascript
+		//加载AB包
+        AssetBundle ab = AssetBundle.LoadFromFile(LoadPath + "/"+"module");
+        //加载依赖包
+        AssetBundle abMaterials = AssetBundle.LoadFromFile(LoadPath + "/" + "materials");
+        //加载AB包中的资源
+        GameObject abGO = ab.LoadAsset("player", typeof(GameObject)) as GameObject;
+        //实例化对象
+        Instantiate(abGO);
+```
+
+此时运行项目就会发现，一切正常了，模型和材质都是正常显示了。 
+
+![在这里插入图片描述](MMORPG.assets/c66c1a0a1c5db33d7c79aa68d6a7e6a9.png)
+
+但问题是如果此时我们打包了很多的AB包，并且各个AB包中的依赖关系比较复杂时，我们就没办法上面那样根据依赖包的名称手动加载了。
+
+此时我们就可以打开AB包中的主包的manifest文件查看具体的依赖关系： 
+
+![在这里插入图片描述](MMORPG.assets/9f14da2a5681e548869718fb3d8e0b90.png)
+
+ 可以看到manifest中有标志说 资源包info_0(module包) 对 Info_1(materials包)有依赖关系。
+
+所以说我们在代码中就可以使用主包的manifest文件来对每个AB包的依赖包进行加载。 所以代码可以更改为如下所示：
+
+```
+        //加载AB包
+        AssetBundle ab = AssetBundle.LoadFromFile(LoadPath + "/"+"module");
+        //加载主包
+        AssetBundle abMain = AssetBundle.LoadFromFile(LoadPath + "/" + "StandaloneWindows");
+        //加载主包中的固定文件
+        AssetBundleManifest abManifest = abMain.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
+        //从固定文件中得到依赖信息
+        string[] strs = abManifest.GetAllDependencies("module");
+        //得到依赖包的名字并加载
+        foreach (var s in strs)
+        {
+            Debug.Log("依赖包："+s);
+            AssetBundle.LoadFromFile(LoadPath + "/" + s);
+        }
+        //加载AB包中的资源 实例化对象 卸载所有AB包资源
+        GameObject abGO = ab.LoadAsset("player", typeof(GameObject)) as GameObject;
+        Instantiate(abGO);
+        AssetBundle.UnloadAllAssetBundles(false);
+```
+
+![在这里插入图片描述](MMORPG.assets/d88f41a17e3995b3d0b850d9b9f335eb.png) 
+
+此处注意点：在manifest文件中只能看到某个AB包依赖于哪些其他AB包，并不能看到某个AB包中资源依赖于哪个AB包中的具体资源。
+
+
+
+### AssetBundle分组策略
+
+上面提到了AssetBundle的依赖关系，那么就不得不提一下AssetBundle的分组策略啦。
+
+我们现在已经知道不同的AB包之间可能会存在各种依赖关系，那么此时对AB包的分组就显得尤为重要了。 不然的话等到项目资源越来越多、各个AB间的依赖关系越来越复杂时，足够让开发者们搞的头皮发麻。
+
+分组策略可根据自己的项目规划进行划分，一般有下面几种分组参考：
+
+**逻辑实体分组** 
+
+a,一个UI界面或者所有UI界面一个包（这个界面里面的贴图和布局信息一个包） 
+
+b,一个角色或者所有角色一个包（这个角色里面的模型和动画一个包） 
+
+c,所有的场景所共享的部分一个包（包括贴图和模型）
+
+**按照类型分组** 所有声音资源打成一个包，所有shader打成一个包，所有模型打成一个包，所有材质打成一个包
+
+**按照使用类型分组** 把在某一时间内使用的所有资源打成一个包。可以按照关卡分，一个关卡所需要的所有资源包括角色、贴图、声音等打成一个包。也可以按照场景分，一个场景所需要的资源一个包
+
+**按更新频率分组** 不经常更新的放在一个包，经常更新的放在一个包分别管理。
+
+![在这里插入图片描述](MMORPG.assets/b7d76f5d2ca563fc85d13df537c4fab9.png)
+
+
+
+
+
+## 我们的资源热更
+
+
+
+这里使用了现成的框架--yooAsset，只学到了一点理论知识。
+
+1.资源服务器（网站）我们使用宝塔面板
 
 http https
 
 
 
-我们使用**yooAsset**热更框架
+2.我们使用**yooAsset**资源热更框架，进行资源的加载
 
 https://www.yooasset.com/
 
@@ -7036,3 +8491,12 @@ https://www.yooasset.com/
 
 
 
+
+
+
+
+## 参考文献
+
+[Unity 热更新技术 | （一） 热更新的基本概念原理及主流热更新方案介绍-腾讯云开发者社区-腾讯云 (tencent.com)](https://cloud.tencent.com/developer/article/2239496)
+
+[Unity 热更新技术 | （二） AssetBundle - 完整系列教程学习-腾讯云开发者社区-腾讯云 (tencent.com)](https://cloud.tencent.com/developer/article/2240554)

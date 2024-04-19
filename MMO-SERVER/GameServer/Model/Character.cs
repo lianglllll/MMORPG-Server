@@ -131,6 +131,29 @@ namespace GameServer.Model
 
 
         /// <summary>
+        /// chrAOI坐标异常
+        /// </summary>
+        public override void OnPosError()
+        {
+            base.OnPosError();
+            //传送回默认出生点
+            Space sp = null;
+            if (currentSpace == null)
+            {
+                sp = SpaceManager.Instance.GetSpaceById(0);
+            }
+            else
+            {
+                sp = currentSpace;
+            }
+            var pointDef = DataManager.Instance.revivalPointDefindeDict.Values.Where(def => def.SID == sp.SpaceId).First();
+            if(pointDef != null)
+            {
+                TransmitSpace(sp, new Core.Vector3Int(pointDef.X, pointDef.Y, pointDef.Z));
+            }
+        }
+
+        /// <summary>
         /// 使用物品
         /// </summary>
         /// <param name="slotIndex"></param>
@@ -264,6 +287,8 @@ namespace GameServer.Model
             session.Send(resp);
 
         }
+
+
     }
 
 
