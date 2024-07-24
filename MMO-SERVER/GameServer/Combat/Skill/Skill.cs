@@ -209,13 +209,12 @@ namespace GameServer.Combat.Skill
 
             ColdDown = Define.CD;//此时真正进入冷却
 
-            //如果是投射物
+            //是否有投射物
             if (Define.IsMissile)
             {
                 var missile = Missile.Create(this, Owner.Position, Target);
                 Owner.currentSpace.fightManager.missiles.Add(missile);
             }
-            //如果不是投射物，
             else
             {
                 //Log.Information("Def.HitDelay.Length=" + Define.HitDelay.Length);
@@ -303,7 +302,36 @@ namespace GameServer.Combat.Skill
             //target : actor、pos
             if (Define.MissileIsGroupAttack)
             {
-                OnHitGroup(targetSco);
+                List<Actor> result = new List<Actor>();
+                List<Actor> entityList;
+                if (targetSco is SCEntity target)
+                {
+                    var acotr = targetSco.RealObj as Actor;
+                    entityList = Owner.currentSpace.AOIManager.GetEntities(acotr.AoiPos).OfType<Actor>().ToList<Actor>();
+                }
+                else if (targetSco is SCPosition scPos)
+                {
+                    entityList = (List<Actor>)Owner.currentSpace.AOIManager.GetEntities(scPos.Position.x / 1000, scPos.Position.z / 1000).OfType<Actor>();
+                }
+                else
+                {
+                    entityList = new List<Actor>();
+                }
+
+                foreach (var entity in entityList)
+                {
+                    if (entity == Owner) continue;
+                    if (CheckForLegalCircularArea(targetSco.Position, entity, Define.MissileEffectRadius))
+                    {
+                        result.Add(entity);
+                    }
+                }
+
+                foreach (var item in result)
+                {
+                    TakeDamage(item);
+                }
+
             }
             //单体技能
             //target : actor

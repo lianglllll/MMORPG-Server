@@ -10,3 +10,12 @@ obj/
 *.unityproj
 *.DS_Store
 *.vsconfig
+
+./MMO-Client-Release
+
+/**/[Bb]uild*/
+/**/[Bb]uilds*/
+HybridCLRData/
+/**/StreamingAssets/yoo/
+/**/StreamingAssets/*.dll.bytes
+/**/StreamingAssets/*.dll.bytes.meta

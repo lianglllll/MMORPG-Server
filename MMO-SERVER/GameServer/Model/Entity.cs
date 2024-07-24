@@ -122,12 +122,11 @@ namespace GameServer.Model
         /// <exception cref="NotImplementedException"></exception>
         public virtual void OnUnitLeave(IAOIUnit unit)
         {
-            Log.Warning("AOI坐标错误：eid={0},pos={1}", EntityId, Position);
         }
 
         public virtual void OnPosError()
         {
-            throw new NotImplementedException();
+            Log.Warning("AOI坐标错误：eid={0},pos={1}", EntityId, Position);
         }
 
         /// <summary>

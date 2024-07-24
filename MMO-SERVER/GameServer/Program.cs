@@ -89,14 +89,14 @@ namespace GameServer
 
 
             //test 物品实例
-            Space space1 = SpaceManager.Instance.GetSpaceById(0);
+/*            Space space1 = SpaceManager.Instance.GetSpaceById(0);
             var define = DataManager.Instance.ItemDefinedDict[1001];
             var item = new Consumable(define, 1, 0);
             space1.itemManager.Create(item, Vector3Int.zero, Vector3Int.zero);
 
             var define2 = DataManager.Instance.ItemDefinedDict[1002];
             var item2 = new Consumable(define2, 1, 0);
-            space1.itemManager.Create(item2, new Vector3Int(1000,0,1000), Vector3Int.zero);
+            space1.itemManager.Create(item2, new Vector3Int(1000,0,1000), Vector3Int.zero);*/
 
             Console.ReadKey();//防止进程结束
         }

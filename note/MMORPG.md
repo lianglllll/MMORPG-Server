@@ -1,3 +1,15 @@
+# 网络游戏哲学
+
+
+
+
+
+
+
+
+
+
+
 # 在面试中被问到本项目的问题
 
 
@@ -190,6 +202,178 @@ SessionManager中的的session会话超时检测的timer
 
 
 
+# 遇到的小问题和bug
+
+
+
+## 2024.2.21 
+
+**1.skill系统问题**，ai追逐玩家释放技能，短时间内释放了多次技能，当施法消息传送到客户端的时候，由于客户端的技能表现是由状态机推动的且在技能active状态下不可打断，所以会有技能被吞的问题，释放了两个技能但是只打出1个技能。
+
+解决方法：优化了skill的生命周期，添加后摇时间，给客户端的状态机保持一个缓冲的时间。
+
+```
+    public enum Stage
+    {
+        None,               //无状态
+        Intonate,           //吟唱
+        Active,             //已激活
+        PostRock,           //后摇
+        Colding             //冷却中
+    }
+```
+
+
+
+**2.服务端怪物ai的问题**，原本追击玩家的流程是：巡逻->追击->攻击
+
+追击的时候不断调整ai的位置，逐渐靠近玩家，当达到怪物攻击范围的时候，停下来不移动，然后攻击。
+
+如果按照这样的流程，客户端ai在攻击玩家的时候就会出现一个抖动的问题（行走+不断挥刀，但是没有产生伤害），目前还没解决这个问题。正常来说服务器skill并没有影响怪物ai，初步判断应该是服务器ai的状态机和客户端的状态机的问题，存在一个攻击状态被打断的一个问题。
+
+idle->attack/move   
+
+attack->move/attack
+
+很可能就是idle和move动作之间的抖动，到达攻击范围停下脚步（idle），判断能否攻击（发现不可以），然后继续靠近target(move)
+
+重复上面，攻击范围上限浮动的时候，就会出现这个抖动。
+
+推动怪物ai的是entitymanager，场景中技能的推动也是entitymanager，也就是中心计时器，
+
+场景中推动战斗管理器也是这个中心计时器，说明这几个东西是单个线程处理的。
+
+但是skill使用的时候，需要将的施法请求放到下一帧处理，会不会就是因为这一帧的时间，导致原来满足攻击的距离现在变得不满足了，所以idle->move...，这个时间太短了。。。。。
+
+**临时方法**：当达到怪物攻击范围的时候，直接攻击，去处理停下来这个动作。倒是客户端展现的时候会出现一个攻击时滑步的问题。
+
+**问题未解决**：将方法1修复之后，这个现象没有复现了，估计也是这个攻击频率的问题，需要给一个缓冲时间，否则一个时间段内，客户端短时间接收到多次attack的施法请求可能会产生问题。
+
+**问题未解决：**
+
+这是客户端的施法响应，它没有判断就一股脑将skill.use，而技能的推动会导致状态机的状态切换
+
+这里没问题，不用改了，甚至状态机切换的active状态下不能中断也需要删除，因为客户端只是一个显示用的view层次。
+
+```
+    private void _SpellCastResponse(Connection conn, SpellCastResponse msg)
+    {
+
+        foreach (CastInfo item in msg.List)
+        {
+            var caster = EntityManager.Instance.GetEntity<Actor>(item.CasterId);
+            var skill = caster.skillManager.GetSkill(item.SkillId);
+            if (skill.IsUnitTarget)
+            {
+                var target = EntityManager.Instance.GetEntity<Actor>(item.TargetId);
+                skill.Use(new SCEntity(target));
+            }
+            else if (skill.IsPointTarget)
+            {
+
+            }else if (skill.IsNoneTarget)
+            {
+                skill.Use(new SCEntity(caster));
+            }
+
+        }
+    }
+```
+
+
+
+状态机的共有属性skill可能会受到覆盖的影响，导致后续的技能使用skill的时候导致空指针异常。
+
+这里改为有null就不能使用use。
+
+```
+        /// <summary>
+        /// 使用技能
+        /// </summary>
+        /// <param name="target"></param>
+        public void Use(SCObject target)
+        {
+            //只有本机玩家才会用到这个值
+            if (Owner.EntityId == GameApp.character.EntityId)
+            {
+                GameApp.CurrSkill = this;
+            }
+            _sco = target;
+            RunTime = 0;
+
+            Owner.StateMachine.parameter.skill = this;
+
+            //技能阶段从none切换到蓄气阶段
+            Stage = SkillStage.Intonate;
+            OnIntonate();
+        }
+```
+
+**问题解决：**其实这个抖动就是用混合书导致idle和walk之间不断切换的抖动，因为切换不平滑。捣鼓半天还是这两个抖动我就知道。
+
+现在只能接收滑步攻击这个小问题了。。。。。，后面再修改吧。
+
+
+
+## 2024.2.21
+
+关于awake和start的问题
+
+当你在某些场景下，比如两个对象都在start中修改了同一东西，这就会导致修改后的状态不符合预期。
+
+因为我们确定不了这两个对象谁先执行，这就导致了我以为setactive(bool)实现，其实并没有失效，就是结果被覆盖了。
+
+因为我一直将awake里写获取组件  ，start中设置变量值的
+
+
+
+
+
+## 2024.3.5
+
+**关于背包打开没有数据。**
+
+```
+    protected  override void Start()
+    {
+        base.Start();
+
+        //监听一些个事件
+        Kaiyun.Event.RegisterOut("UpdateCharacterKnapsackData", this, "RefreshKnapsackUI");
+        Kaiyun.Event.RegisterOut("UpdateCharacterKnapsackPickupItemBox", this, "RefreshPickUpBox");
+        Kaiyun.Event.RegisterOut("GoldChange", this, "UpdateCurrency");
+        Kaiyun.Event.RegisterOut("UpdateCharacterEquipmentData", this, "RefreshEquipsUI");
+
+        Init();
+
+    }
+```
+
+原本是先进行init()然后在进行事件监听的，我们先初始化，里面会向服务器拉取背包数据，响应的时候就会通过事件来进行回调刷新ui。但是响应的速度很快，我们没来得及监听事件，就已经到达了，所以就会导致第一次刷新会不成功的问题。
+
+**解决方法**：1.调整监听的位置，如上面的代码
+
+​					2.在角色上线的时候我们就拉取背包数据
+
+
+
+**每次上线背包中第0个位置的物品消失问题。**
+
+我们的装备系统在穿戴装备的时候，会将背包中对应的位置的物品移除。0位也是背包合理位置
+
+我们粗心讲武器的pos属性设置为0，所以导致每次穿戴的时候，都将背包中第0位的物品移除。
+
+**解决方法：**
+
+​	将物品的pos属性默认置为-1，-1是背包中不合理的位置
+
+
+
+
+
+## 2024.4.9
+
+unity控制台中的error pause 遇到错误打印就停止。导致我以为是我的热更代码有问题。浪费我一下午。
 
 
 
@@ -199,6 +383,29 @@ SessionManager中的的session会话超时检测的timer
 
 
 
+# 技术框架易沉迷，请勿上瘾
+
+
+
+<img src="MMORPG.assets/image-20240430112005937.png" alt="image-20240430112005937" style="zoom:50%;" /> 
+
+
+
+## 被隐盖的原理和价值
+
+<img src="MMORPG.assets/image-20240430111955084.png" alt="image-20240430111955084" style="zoom:50%;" /> 
+
+
+
+比如说数据库，大部分人只会用ORM框架 
+
+<img src="MMORPG.assets/image-20240430112129186.png" alt="image-20240430112129186" style="zoom:50%;" /> 
+
+![image-20240430112418871](MMORPG.assets/image-20240430112418871.png)
+
+
+
+## 没用永恒的框架，只有永恒的原理
 
 
 
@@ -208,9 +415,7 @@ SessionManager中的的session会话超时检测的timer
 
 
 
-
-
-
+# ================================
 
 
 
@@ -5072,175 +5277,7 @@ static int bufferSize = 26; //缓存大小，26个字节
 
 
 
-# 杂谈
-
-
-
-## 网络游戏服务器技术栈
-
-![image-20230509221031992](MMORPG.assets/image-20230509221031992.png)
-
-
-
-
-
-
-
-
-
-### 状态同步和帧同步
-
-![image-20230509221659094](MMORPG.assets/image-20230509221659094.png)
-
-
-
-**状态同步：**
-
-比如说你现在要向一个npc购买商品，此时客户端就会向服务端发送这个购买商品的操作（携带playerId，NpcId,ItemId）,然后服务器经过系列的逻辑操作，来给你返回状态数据（比如说你背包里面多了什么少了什么）。
-
-优点：安全性比较好，因为逻辑操作都是在服务端上完成的，客户端没法作弊。
-
-缺点：因为服务端返回的状态的数据可能会很大（同步的数据量比较大）
-
-
-
-**帧同步：**
-
-比如说：你在游戏中按下了'WASD'键位来控制角色的方向，我们客户端给服务端发送的就是这些操作指令‘wasd’，服务端不会对这些操作做任何的运算，他就把这些操作之间发给其他玩家了（以这种广播的形式）。
-
-我们把这个网络数据收下来，然后我们要按照一定的频率去模拟收到的数据产生的操作。也就是说如果是一个前进，客户端它每一帧应该前进几个单位，前进到什么位置去。
-
-优点：运算十分简洁，就好像做一个客户端工作一样，服务器并没有做很多其他的操作。
-
-
-
-
-
-### 思考：如何控制100个游戏单位移动？
-
-
-
-1.状态同步和帧同步分布要发送什么数据到服务器？
-
-2.服务器要做什么运算？
-
-3.服务器会给客户端发送什么数据包，该数据包多大？
-
-![image-20230509223934966](MMORPG.assets/image-20230509223934966.png)
-
-
-
-
-
-
-
-### 状态同步vs帧同步
-
-![image-20230509224011510](MMORPG.assets/image-20230509224011510.png)
-
-
-
-字典是无序的列表，所以不能用
-
- 数学和物理都会涉及到一些浮点数，浮点数具有不稳定性和不精确性。所以我们不能使用传统uinity中实现的数学库，要自己去实现。  
-
-
-
-**追帧：**需要在游戏开始的状态一直去做运算，算到游戏当前是什么状态。 
-
-就比如说一个不能拉动进度条的视频，假如你看到30分钟的时候你中途退出了，再次进入你需要重新从第0秒开始看到30分钟才能恢复这个中途退出的状态。
-
-
-
-
-
-### 采用不同同步方案的商业游戏
-
-![image-20230510105947975](MMORPG.assets/image-20230510105947975.png)
-
-
-
-### 什么游戏使用帧同步？
-
-![image-20230509221411015](MMORPG.assets/image-20230509221411015.png)
-
-
-
-### 帧同步的原理和实现
-
-
-
-
-
-![image-20230510110333306](MMORPG.assets/image-20230510110333306.png)
-
-
-
-![image-20230510110352504](MMORPG.assets/image-20230510110352504.png)
-
-
-
-### 一套完整的帧同步游戏框架要实现什么？
-
-![image-20230510111241723](MMORPG.assets/image-20230510111241723.png)
-
-
-
-#### 1.可靠UDP
-
-![image-20230510111645561](MMORPG.assets/image-20230510111645561.png)
-
-
-
-#### 2.确定性的数学和物理运算库
-
-![image-20230510111725035](MMORPG.assets/image-20230510111725035.png)
-
-
-
-解决方法
-
-![image-20230510111927297](MMORPG.assets/image-20230510111927297.png)
-
-
-
-
-
-#### 3.断线重连
-
-
-
-
-
-#### 4.比赛回放  
-
-服务器记录关键帧
-
-下放客户端进行回放
-
-
-
-
-
-#### 5.反作弊
-
-重演
-
-仲裁
-
-
-
-#### 6.避免等待
-
-
-
-
-
-
-
-### 王室战争中的帧同步
-
-![image-20230510112736912](MMORPG.assets/image-20230510112736912.png)
+# c#杂谈
 
 
 
@@ -5518,7 +5555,7 @@ Overlapped
 
 
 
-## 线程池 epoll和IOCP之比较
+## epoll和IOCP之比较
 
 总结：IOCP ：我的打印文件放在店里面排队，轮到我打印了，店长帮我打印一下，打印好了通知我来拿
 
@@ -5635,12 +5672,6 @@ private Task<string> TimeConsumingMethod()
 **await之前是在之前的线程，之后的依然是在新的线程里继续执行。**
 
 [对于 《C# 彻底搞懂async/await》 一文中的观点，提出自己的修正观点。 - 金尘 - 博客园 (cnblogs.com)](https://www.cnblogs.com/jinchentech/p/14908750.html)
-
-
-
-
-
-
 
 
 
@@ -5800,244 +5831,6 @@ int result = await asyncObject.SomeOperationAsync();
 
 
 
-
-## unity 协程(Coroutine)
-
-### 前言
-
-[协程](https://so.csdn.net/so/search?q=协程&spm=1001.2101.3001.7020)在`Unity`中是一个很重要的概念，我们知道，在使用`Unity`进行游戏开发时，一般（注意是一般）不考虑[多线程](https://so.csdn.net/so/search?q=多线程&spm=1001.2101.3001.7020)，那么如何处理一些在主任务之外的需求呢，`Unity`给我们提供了协程这种方式
-
-
-
-**为啥在Unity中一般不考虑多线程**
-
-- 因为在`Unity`中，只能在主线程中获取物体的组件、方法、对象，如果脱离这些，`Unity`的很多功能无法实现，那么多线程的存在与否意义就不大了
-
-
-
-**既然这样，线程与协程有什么区别呢：**
-
-- 对于协程而言，同一时间只能执行一个协程，而线程则是并发的，可以同时有多个线程在运行
-- 两者在内存的使用上是相同的，共享堆，不共享栈
-
-其实对于两者最关键，最简单的区别是微观上线程是并行（对于多核CPU）的，而协程是串行的，如果你不理解没有关系，通过下面的解释你就明白了
-
-
-
-### 关于协程
-
-### 1，什么是协程
-
-协程，从字面意义上理解就是协助程序的意思，我们在主任务进行的同时，需要一些分支任务配合工作来达到最终的效果
-
-稍微形象的解释一下，想象一下，在进行主任务的过程中我们需要一个对资源消耗极大的操作时候，如果在一帧中实现这样的操作，游戏就会变得十分卡顿，这个时候，我们就可以通过协程，在一定帧内完成该工作的处理，同时不影响主任务的进行
-
-### 2，协程的原理
-
-首先需要了解协程不是线程，协程依旧是在主线程中进行
-
-**然后要知道协程是通过迭代器来实现功能的**，通过关键字`IEnumerator`来定义一个迭代方法，
-
-注意使用的是`IEnumerator`，而不是`IEnumerable`：
-
-两者之间的区别：
-
-- `IEnumerator`：是一个实现迭代器功能的接口
-- `IEnumerable`：是在`IEnumerator`基础上的一个封装接口，有一个`GetEnumerator()`方法返回`IEnumerator`
-
-在迭代器中呢，最关键的是`yield` 的使用，这是实现我们协程功能的主要途径，通过该关键方法，可以使得协程的运行暂停、记录下一次启动的时间与位置等等：
-
-由于`yield` 在协程中的特殊性，与关键性，我们到后面在单独解释，先介绍一下协程如何通过代码实现
-
-### 3、协程的使用
-
-首先通过一个迭代器定义一个返回值为`IEnumerator`的方法，然后再程序中通过`StartCoroutine`来开启一个协程即可：
-
-在正式开始代码之前，需要了解StartCoroutine的两种重载方式：
-
-- StartCoroutine（string methodName）：这种是没有参数的情况，直接通过方法名（字符串形式）来开启协程
-
-- StartCoroutine（IEnumerator routine）：通过方法形式调用
-- StartCoroutine（string methodName，object values):带参数的通过方法名进行调用
-
-协程开启的方式主要是上面的三种形式
-
-```
- 	//通过迭代器定义一个方法
- 	IEnumerator Demo(int i)
-    {
-        //代码块
-
-        yield return 0; 
-		//代码块
-       
-    }
-
-    //在程序种调用协程
-    public void Test()
-    {
-        //第一种与第二种调用方式,通过方法名与参数调用
-        StartCoroutine("Demo", 1);
-
-        //第三种调用方式， 通过调用方法直接调用
-        StartCoroutine(Demo(1));
-    }
-
-```
-
-在一个协程开始后，同样会对应一个结束协程的方法`StopCoroutine`与`StopAllCoroutines`两种方式，但是需要注意的是，两者的使用需要遵循一定的规则，在介绍规则之前，同样介绍一下关于`StopCoroutine`重载：
-
-- `StopCoroutine（string methodName）`：通过方法名（字符串）来进行
-- `StopCoroutine（IEnumerator routine）`:通过方法形式来调用
-- `StopCoroutine(Coroutine routine)`：通过指定的协程来关闭
-
-刚刚我们说到他们的使用是有一定的规则的，那么规则是什么呢，答案是前两种结束协程方法的使用上，如果我们是使用StartCoroutine（string methodName）来开启一个协程的，那么结束协程就只能使用StopCoroutine（string methodName）和StopCoroutine(Coroutine routine)来结束协程，可以在文档中找到这句话：
-![img](MMORPG.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWxpbmdlcg==,size_16,color_FFFFFF,t_70.png)
-
-### 4、关于yield
-
-在上面，我们已经知道`yield` 的关键性，要想理解协程，就要理解`yield`
-
-如果你了解`Unity`的脚本的生命周期，你一定对`yield`这几个关键词很熟悉，没错，`yield` 也是脚本生命周期的一些执行方法，不同的`yield` 的方法处于生命周期的不同位置，可以通过下图查看：
-
-![在这里插入图片描述](MMORPG.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWxpbmdlcg==,size_16,color_FFFFFF,t_70-171275895535052.png)
-
-通过这张图可以看出大部分`yield`位置`Update`与`LateUpdate`之间，而一些特殊的则分布在其他位置，这些`yield` 代表什么意思呢，又为啥位于这个位置呢
-
-首先解释一下位于Update与LateUpdate之间这些yield 的含义：
-
-yield return null; 暂停协程等待下一帧继续执行
-
-yield return 0或其他数字; 暂停协程等待下一帧继续执行
-
-yield return new WairForSeconds(时间); 等待规定时间后继续执行
-
-yield return StartCoroutine("协程方法名");开启一个协程（嵌套协程)
-
-
-在了解这些yield的方法后，可以通过下面的代码来理解其执行顺序：
-
-```
- void Update()
-    {
-        Debug.Log("001");
-        StartCoroutine("Demo");
-        Debug.Log("003");
-
-    }
-    private void LateUpdate()
-    {
-        Debug.Log("005");
-    }
-
-    IEnumerator Demo()
-    {
-        Debug.Log("002");
-
-        yield return 0;
-        Debug.Log("004");
-    }
-
-```
-
-![在这里插入图片描述](MMORPG.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWxpbmdlcg==,size_16,color_FFFFFF,t_70-171275914328555.png)
-
-
-
-可以很清晰的看出，协程虽然是在`Update`中开启，但是关于`yield return null`后面的代码会在下一帧运行，并且是在Update执行完之后才开始执行，但是会在`LateUpdate`之前执行
-
-接下来看几个特殊的yield，他们是用在一些特殊的区域，一般不会有机会去使用，但是对于某些特殊情况的应对会很方便
-
-yield return GameObject; 当游戏对象被获取到之后执行
-yield return new WaitForFixedUpdate()：等到下一个固定帧数更新
-yield return new WaitForEndOfFrame():等到所有相机画面被渲染完毕后更新
-yield break; 跳出协程对应方法，其后面的代码不会被执行
-
-通过上面的一些`yield`一些用法以及其在脚本生命周期中的位置，我们也可以看到关于协程不是线程的概念的具体的解释，所有的这些方法都是在主线程中进行的，只是有别于我们正常使用的`Update`与`LateUpdate`这些可视的方法
-
-### 5、协程几个小用法
-
-#### **5.1、将一个复杂程序分帧执行：**
-
-如果一个复杂的函数对于一帧的性能需求很大，我们就可以通过`yield return null`将步骤拆除，从而将性能压力分摊开来，最终获取一个流畅的过程，这就是一个简单的应用
-
-举一个案例，如果某一时刻需要使用`Update`读取一个列表，这样一般需要一个循环去遍历列表，这样每帧的代码执行量就比较大，就可以将这样的执行放置到协程中来处理：
-
-```
-public class Test : MonoBehaviour
-{
-    public List<int> nums = new List<int> { 1, 2, 3, 4, 5, 6 };
-
-
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            StartCoroutine(PrintNum(nums));
-        }
-    }
-	//通过协程分帧处理
-    IEnumerator PrintNum(List<int> nums)
-    {
-        foreach(int i in nums)
-        {
-            Debug.Log(i);
-            yield return null;
-                 
-        }
-
-    }
-}
-
-```
-
-上面只是列举了一个小小的案例，在实际工作中会有一些很消耗性能的操作的时候，就可以通过这样的方式来进行性能消耗的分消
-
-#### **5.2、进行计时器工作**
-
-当然这种应用场景很少，如果我们需要计时器有很多其他更好用的方式，但是你可以了解是存在这样的操作的，要实现这样的效果，需要通过`yield return new WaitForSeconds()`的延时执行的功能：
-
-```
-	IEnumerator Test()
-    {
-        Debug.Log("开始");
-        yield return new WaitForSeconds(3);
-        Debug.Log("输出开始后三秒后执行我");
-    }
-```
-
-
-
-#### **5.3、异步加载等功能**
-
-只要一说到异步，就必定离不开协程，因为在异步加载过程中可能会影响到其他任务的进程，这个时候就需要通过协程将这些可能被影响的任务剥离出来
-
-常见的异步操作有：
-
-- `AB`包资源的异步加载
-- `Reaources`资源的异步加载
-- 场景的异步加载
-- `WWW`模块的异步请求
-
-这些异步操作的实现都需要协程的支持
-
-
-
-这里以场景加载为例子：
-
-
-
-
-
-
-
-### 参考文献
-
-[Unity 协程(Coroutine)原理与用法详解_unity coroutine-CSDN博客](https://blog.csdn.net/xinzhilinger/article/details/116240688)
-
-[迭代器 - C# | Microsoft Learn](https://learn.microsoft.com/zh-cn/dotnet/csharp/iterators)
-
-[Unity 场景异步加载（加载界面的实现）_unity异步加载场景-CSDN博客](https://blog.csdn.net/xinzhilinger/article/details/110836837?ops_request_misc=%7B%22request%5Fid%22%3A%22161968340716780255223084%22%2C%22scm%22%3A%2220140713.130102334.pc%5Fblog.%22%7D&request_id=161968340716780255223084&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~blog~first_rank_v2~rank_v29-1-110836837.pc_v2_rank_blog_default&utm_term=加载&spm=1018.2226.3001.4450)
 
 
 
@@ -6500,190 +6293,778 @@ IEnumerator{
 
 
 
+
+
+
+
+# unity杂谈
+
+
+
+## unity 协程(Coroutine)
+
+### 前言
+
+[协程](https://so.csdn.net/so/search?q=协程&spm=1001.2101.3001.7020)在`Unity`中是一个很重要的概念，我们知道，在使用`Unity`进行游戏开发时，一般（注意是一般）不考虑[多线程](https://so.csdn.net/so/search?q=多线程&spm=1001.2101.3001.7020)，那么如何处理一些在主任务之外的需求呢，`Unity`给我们提供了协程这种方式
+
+
+
+**为啥在Unity中一般不考虑多线程**
+
+- 因为在`Unity`中，只能在主线程中获取物体的组件、方法、对象，如果脱离这些，`Unity`的很多功能无法实现，那么多线程的存在与否意义就不大了
+
+
+
+**既然这样，线程与协程有什么区别呢：**
+
+- 对于协程而言，同一时间只能执行一个协程，而线程则是并发的，可以同时有多个线程在运行
+- 两者在内存的使用上是相同的，共享堆，不共享栈
+
+其实对于两者最关键，最简单的区别是微观上线程是并行（对于多核CPU）的，而协程是串行的，如果你不理解没有关系，通过下面的解释你就明白了
+
+
+
+### 关于协程
+
+### 1，什么是协程
+
+协程，从字面意义上理解就是协助程序的意思，我们在主任务进行的同时，需要一些分支任务配合工作来达到最终的效果
+
+稍微形象的解释一下，想象一下，在进行主任务的过程中我们需要一个对资源消耗极大的操作时候，如果在一帧中实现这样的操作，游戏就会变得十分卡顿，这个时候，我们就可以通过协程，在一定帧内完成该工作的处理，同时不影响主任务的进行
+
+### 2，协程的原理
+
+首先需要了解协程不是线程，协程依旧是在主线程中进行
+
+**然后要知道协程是通过迭代器来实现功能的**，通过关键字`IEnumerator`来定义一个迭代方法，
+
+注意使用的是`IEnumerator`，而不是`IEnumerable`：
+
+两者之间的区别：
+
+- `IEnumerator`：是一个实现迭代器功能的接口
+- `IEnumerable`：是在`IEnumerator`基础上的一个封装接口，有一个`GetEnumerator()`方法返回`IEnumerator`
+
+在迭代器中呢，最关键的是`yield` 的使用，这是实现我们协程功能的主要途径，通过该关键方法，可以使得协程的运行暂停、记录下一次启动的时间与位置等等：
+
+由于`yield` 在协程中的特殊性，与关键性，我们到后面在单独解释，先介绍一下协程如何通过代码实现
+
+### 3、协程的使用
+
+首先通过一个迭代器定义一个返回值为`IEnumerator`的方法，然后再程序中通过`StartCoroutine`来开启一个协程即可：
+
+在正式开始代码之前，需要了解StartCoroutine的两种重载方式：
+
+- StartCoroutine（string methodName）：这种是没有参数的情况，直接通过方法名（字符串形式）来开启协程
+
+- StartCoroutine（IEnumerator routine）：通过方法形式调用
+- StartCoroutine（string methodName，object values):带参数的通过方法名进行调用
+
+协程开启的方式主要是上面的三种形式
+
+```
+ 	//通过迭代器定义一个方法
+ 	IEnumerator Demo(int i)
+    {
+        //代码块
+
+        yield return 0; 
+		//代码块
+       
+    }
+
+    //在程序种调用协程
+    public void Test()
+    {
+        //第一种与第二种调用方式,通过方法名与参数调用
+        StartCoroutine("Demo", 1);
+
+        //第三种调用方式， 通过调用方法直接调用
+        StartCoroutine(Demo(1));
+    }
+
+```
+
+在一个协程开始后，同样会对应一个结束协程的方法`StopCoroutine`与`StopAllCoroutines`两种方式，但是需要注意的是，两者的使用需要遵循一定的规则，在介绍规则之前，同样介绍一下关于`StopCoroutine`重载：
+
+- `StopCoroutine（string methodName）`：通过方法名（字符串）来进行
+- `StopCoroutine（IEnumerator routine）`:通过方法形式来调用
+- `StopCoroutine(Coroutine routine)`：通过指定的协程来关闭
+
+刚刚我们说到他们的使用是有一定的规则的，那么规则是什么呢，答案是前两种结束协程方法的使用上，如果我们是使用StartCoroutine（string methodName）来开启一个协程的，那么结束协程就只能使用StopCoroutine（string methodName）和StopCoroutine(Coroutine routine)来结束协程，可以在文档中找到这句话：
+![img](MMORPG.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWxpbmdlcg==,size_16,color_FFFFFF,t_70.png)
+
+### 4、关于yield
+
+在上面，我们已经知道`yield` 的关键性，要想理解协程，就要理解`yield`
+
+如果你了解`Unity`的脚本的生命周期，你一定对`yield`这几个关键词很熟悉，没错，`yield` 也是脚本生命周期的一些执行方法，不同的`yield` 的方法处于生命周期的不同位置，可以通过下图查看：
+
+![在这里插入图片描述](MMORPG.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWxpbmdlcg==,size_16,color_FFFFFF,t_70-171275895535052.png)
+
+通过这张图可以看出大部分`yield`位置`Update`与`LateUpdate`之间，而一些特殊的则分布在其他位置，这些`yield` 代表什么意思呢，又为啥位于这个位置呢
+
+首先解释一下位于Update与LateUpdate之间这些yield 的含义：
+
+yield return null; 暂停协程等待下一帧继续执行
+
+yield return 0或其他数字; 暂停协程等待下一帧继续执行
+
+yield return new WairForSeconds(时间); 等待规定时间后继续执行
+
+yield return StartCoroutine("协程方法名");开启一个协程（嵌套协程)
+
+
+在了解这些yield的方法后，可以通过下面的代码来理解其执行顺序：
+
+```
+ void Update()
+    {
+        Debug.Log("001");
+        StartCoroutine("Demo");
+        Debug.Log("003");
+
+    }
+    private void LateUpdate()
+    {
+        Debug.Log("005");
+    }
+
+    IEnumerator Demo()
+    {
+        Debug.Log("002");
+
+        yield return 0;
+        Debug.Log("004");
+    }
+
+```
+
+![在这里插入图片描述](MMORPG.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWxpbmdlcg==,size_16,color_FFFFFF,t_70-171275914328555.png)
+
+
+
+可以很清晰的看出，协程虽然是在`Update`中开启，但是关于`yield return null`后面的代码会在下一帧运行，并且是在Update执行完之后才开始执行，但是会在`LateUpdate`之前执行
+
+接下来看几个特殊的yield，他们是用在一些特殊的区域，一般不会有机会去使用，但是对于某些特殊情况的应对会很方便
+
+yield return GameObject; 当游戏对象被获取到之后执行
+yield return new WaitForFixedUpdate()：等到下一个固定帧数更新
+yield return new WaitForEndOfFrame():等到所有相机画面被渲染完毕后更新
+yield break; 跳出协程对应方法，其后面的代码不会被执行
+
+通过上面的一些`yield`一些用法以及其在脚本生命周期中的位置，我们也可以看到关于协程不是线程的概念的具体的解释，所有的这些方法都是在主线程中进行的，只是有别于我们正常使用的`Update`与`LateUpdate`这些可视的方法
+
+### 5、协程几个小用法
+
+#### **5.1、将一个复杂程序分帧执行：**
+
+如果一个复杂的函数对于一帧的性能需求很大，我们就可以通过`yield return null`将步骤拆除，从而将性能压力分摊开来，最终获取一个流畅的过程，这就是一个简单的应用
+
+举一个案例，如果某一时刻需要使用`Update`读取一个列表，这样一般需要一个循环去遍历列表，这样每帧的代码执行量就比较大，就可以将这样的执行放置到协程中来处理：
+
+```
+public class Test : MonoBehaviour
+{
+    public List<int> nums = new List<int> { 1, 2, 3, 4, 5, 6 };
+
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            StartCoroutine(PrintNum(nums));
+        }
+    }
+	//通过协程分帧处理
+    IEnumerator PrintNum(List<int> nums)
+    {
+        foreach(int i in nums)
+        {
+            Debug.Log(i);
+            yield return null;
+                 
+        }
+
+    }
+}
+
+```
+
+上面只是列举了一个小小的案例，在实际工作中会有一些很消耗性能的操作的时候，就可以通过这样的方式来进行性能消耗的分消
+
+#### **5.2、进行计时器工作**
+
+当然这种应用场景很少，如果我们需要计时器有很多其他更好用的方式，但是你可以了解是存在这样的操作的，要实现这样的效果，需要通过`yield return new WaitForSeconds()`的延时执行的功能：
+
+```
+	IEnumerator Test()
+    {
+        Debug.Log("开始");
+        yield return new WaitForSeconds(3);
+        Debug.Log("输出开始后三秒后执行我");
+    }
+```
+
+
+
+#### **5.3、异步加载等功能**
+
+只要一说到异步，就必定离不开协程，因为在异步加载过程中可能会影响到其他任务的进程，这个时候就需要通过协程将这些可能被影响的任务剥离出来
+
+常见的异步操作有：
+
+- `AB`包资源的异步加载
+- `Reaources`资源的异步加载
+- 场景的异步加载
+- `WWW`模块的异步请求
+
+这些异步操作的实现都需要协程的支持
+
+
+
+这里以场景加载为例子：
+
+
+
+
+
+
+
+### 参考文献
+
+[Unity 协程(Coroutine)原理与用法详解_unity coroutine-CSDN博客](https://blog.csdn.net/xinzhilinger/article/details/116240688)
+
+[迭代器 - C# | Microsoft Learn](https://learn.microsoft.com/zh-cn/dotnet/csharp/iterators)
+
+[Unity 场景异步加载（加载界面的实现）_unity异步加载场景-CSDN博客](https://blog.csdn.net/xinzhilinger/article/details/110836837?ops_request_misc=%7B%22request%5Fid%22%3A%22161968340716780255223084%22%2C%22scm%22%3A%2220140713.130102334.pc%5Fblog.%22%7D&request_id=161968340716780255223084&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~blog~first_rank_v2~rank_v29-1-110836837.pc_v2_rank_blog_default&utm_term=加载&spm=1018.2226.3001.4450)
+
+
+
+
+
+## unity 怎么编译c#？
+
+
+
+### 1.简要
+
+- 编译器的工作流水线：源代码-词法分析-语法分析-语义分析-目标代码-链接-可执行文件 （现代编译器会更复杂，比如优化）
+- 虚拟机执行中间代码的方式分为 2 种：**解释执行(Interpreted Execution)**和 **即时编译(Just-In-Time Compilation)**。解释执行即逐条执行每条指令，JIT 则是先将中间代码在开始运行的时候编译成机器码，然后执行机器码。
+- C# 编译 **CIL语言**，放到**CLR虚拟机**内执行 （CIL，Common Intermediate Language，也叫 MSIL）（CLR Common Language Runtime）
+- **.Net Framework定义**：通常我们把 C#、CIL、CLR，再加上微软提供的一套基础类库称为 .Net Framework
+- **Mono 是跨平台的 .Net Framework 的实现**。Mono 做了一件很了不起的事情，将 CLR 在所有支持的平台上重新实现了一遍，将 .Net Framework 提供的基础类库也重新实现了一遍。
+- 理论上，你创造了一门语言，并且实现了所有平台下的编译器，就能跨语言了。
+
+
+
+**为什么 Unity3D 可以运行 C#，C# 和 Mono 是什么关系，Mono 和 .Net Framework 又是什么关系？我们深入的来聊一聊这个话题！**
+
+
+
+### 2.从编译原理说起
+
+一句话介绍编译器：编译器是将用某种程式语言写成的源代码（源语言），转换成另一种程式语言（目标语言）等价形式的程序。通常我们是将某种高级语言（如C、C++、C# 、Java）转换成低级语言（汇编语言、机器语言）。
+编译器以流水线的形式进行工作，分为几个阶段：源代码 → 词法分析 → 语法分析 → 语义分析 → 目标代码 → 链接 → 可执行文件。
+**链接（linking）解释：**上一步骤的结果可能会引用外部的函数，把外部函数的代码（通常是后缀名为.lib和.a的文件），添加到可执行文件中，这就叫做链接。——两种，静态链接（编译时）和动态链接（runtime）。
+
+现代编译器还会更复杂，中间会增加更多的处理过程，比如预处理器，中间代码生成，代码优化等。
+
+![img](MMORPG.assets/1565924-20200701114702874-781504239.png) 
+
+### 3.虚拟机是什么
+
+虚拟机（VM），简单理解，就是可以执行特定指令的一种程序。为了执行指令，还需要一些配套的设施，如寄存器、栈等。虚拟机可以很复杂，复杂到模拟真正的计算机硬件，也可以很简单，简单到只能做加减乘除。
+在编译器领域，虚拟机通常执行一种叫中间代码的语言，中间代码由高级语言转换而成，以 Java 为例，Java 编译后产生的并不是一个可执行的文件，而是一个 ByteCode （字节码）文件，里面包含了从 Java 源代码转换成等价的字节码形式的代码。Java 虚拟机（JVM）负责执行这个文件。
+**虚拟机执行中间代码的方式分为 2 种：解释执行和 JIT（即时编译）。**
+
+- 解释执行即逐条执行每条指令。
+- JIT 则是先将中间代码在开始运行的时候编译成机器码，然后执行机器码。
+
+**由于执行的是中间代码，所以，在不同的平台实现不同的虚拟机，都可以执行同样的中间代码，也就实现了跨平台。**
+
+```
+int run(context* ctx, code* c) {
+    for (cmd in c->cmds) {
+        switch (cmd.type) {
+            case ADD:
+            // todo add            break;
+            case SUB:
+            // todo subtract            break;
+            // ...        }
+    }
+    return 0;
+}
+```
+
+总结一下，虚拟机本身并不跨平台，而是语言是跨平台的，对于开发人员来说，只需要关心开发语言即可，不需要关心虚拟机是怎么实现的，这也是 Java 可以跨平台的原因，C# 也是同样的。推而广之，理论上任何语言都可以跨平台，只要在相应平台实现了编译器或者虚拟机等配套设施。
+
+
+
+
+
+### 4.C# 是什么，IL 又是什么
+
+C# 是微软推出的一种基于 .NET 框架的、面向对象的高级编程语言。微软在 2000 年发布了这种语言，希望借助这种语言来取代Java。
+
+C# 是一个语言，微软给它定制了一份语言规范，提供了从开发、编译、部署、执行的完整的一条龙的服务，每隔一段时间会发布一份最新的规范，添加一些新的语言特性。从语法层面来说，C# 是一个很完善，写起来非常舒服的语言。
+
+C# 和 Java 类似，C# 会编译成一个中间语言（CIL，Common Intermediate Language，也叫 MSIL），CIL 也是一个高级语言，而运行 CIL 的虚拟机叫 CLR（Common Language Runtime）。通常我们把 C#、CIL、CLR，再加上微软提供的一套基础类库称为 .Net Framework。
+
+![img](MMORPG.assets/1565924-20200701114739327-1650561553.png) 
+
+C# 天生就是为征服宇宙设计的，不过非常遗憾，由于微软的封闭，这个目标并没有实现。当然 C# 现在还过得很好，因为游戏而焕发了新的活力，因为 Unity3D，因为 Mono。
+
+
+
+**IL科普**
+IL的全称是 Intermediate Language，很多时候还会看到**CIL**（特指在.Net平台下的IL标准）。翻译过来就是中间语言。
+它是一种属于通用语言架构和.NET框架的低阶的人类可读的编程语言。
+CIL类似一个面向对象的汇编语言，并且它是完全基于堆栈的，它运行在虚拟机上（.Net Framework, Mono VM）的语言。
+
+
+
+
+
+
+
+### 4.Mono
+
+Mono 是跨平台的 .Net Framework 的实现。Mono 做了一件很了不起的事情，将 CLR 在所有支持的平台上重新实现了一遍，将 .Net Framework 提供的基础类库也重新实现了一遍。
+![img](MMORPG.assets/1565924-20200701114759725-520977280.png)
+
+以上，Compile Time 的工作实际上可以直接用微软已有的成果，只要将 Runtime 的 CLR 在其他平台实现，这个工作量不仅大，而且需要保证兼容，非常浩大的一个工程，Mono 做到了，致敬！
+
+Unity3D 中的 C#
+**Unity3D 内嵌了一个 Mono 虚拟机**，从上文可以知道，当实现了某个平台的虚拟机，那语言就可以在该平台运行，所以，严格的讲，**Unity3D 是通过 Mono 虚拟机，运行 C# 编译器编译后生成的 IL 代码。**
+
+Unity3D 默认使用 C# 作为开发语言，除此之外，还支持 JS 和 BOO，因为 Unity3D 开发了相应的编译器，将 JS 和 BOO 编译成了 IL。
+
+C# 在 Windows 下，是通过微软的 C# 编译器，生成了 IL 代码，运行在 CLR 中。
+C# 在除 Windows 外的平台下，是通过 Mono 的编译器，生成了 IL 代码，运行在 Mono 虚拟机中，也可以直接运行将已经编译好的 IL 代码（通过任意平台编译）。
+理论上，你创造了一门语言，并且实现了某一平台下的编译器，然后实现了所有平台下符合语言规范的虚拟机，你的语言就可以运行在任意平台啦。
+
+
+
+![img](MMORPG.assets/v2-822e8c5f5036ab4c5ac7650bf546ccaf_r.jpg)
+
+<img src="MMORPG.assets/v2-670b054e66530097db8806463ffc3240_720w.webp" alt="img" style="zoom:67%;" /> 
+
+
+
+**优点**
+
+1. 构建应用非常快
+2. 由于Mono的JIT(Just In Time compilation ) 机制, 所以支持更多托管类库
+3. 支持运行时代码执行
+4. 必须将代码发布成托管程序集(.dll 文件 , 由mono或者.net 生成 )
+5. Mono VM在各个平台移植异常麻烦，有几个平台就得移植几个VM（WebGL和UWP这两个平台只支持 IL2CPP）
+6. Mono版本授权受限，C#很多新特性无法使用
+7. iOS仍然支持Mono , 但是不再允许Mono(32位)应用提交到Apple Store
+
+**Unity 2018 mono版本仍然是mono2.0、unity2020的版本更新到了mono 5.11。**
+
+
+
+
+
+
+
+
+
+### IL2CPP， IL2CPP VM
+
+本 文的主角终于出来了：IL2CPP。有了上面的知识，大家很容易就理解其意义了：**把IL中间语言转换成CPP文件。**
+
+
+
+**IL2CPP【AOT编译】**
+
+> IL2CPP分为两个独立的部分：
+>
+> 1. AOT（静态编译）编译器：把IL中间语言转换成CPP文件
+> 2. 运行时库：例如**垃圾回收、线程/文件获取（独立于平台，与平台无关）、内部调用直接修改托管数据结构的原生代码**的服务与抽象
+
+**AOT编译器**
+
+> IL2CPP AOT编译器名为il2cpp.exe。
+> 在Windows上，您可以在`Editor \ Data \ il2cpp`目录中找到它。
+> 在OSX上，它位于Unity安装的`Contents / Frameworks / il2cpp / build`目录中
+> il2cpp.exe 是由C#编写的受托管的可执行程序，它接受我们在Unity中通过Mono编译器生成的托管程序集，并生成指定平台下的C++代码。
+
+**IL2CPP工具链：**
+
+![img](MMORPG.assets/v2-f2e9975835f3d2cc8e41b38dc94f6545_720w.webp) 
+
+
+
+**运行时库**
+
+> IL2CPP技术的另一部分是运行时库（libil2cpp），用于支持IL2CPP虚拟机的运行。
+> 这个简单且可移植的运行时库是IL2CPP技术的主要优势之一！
+> 通过查看我们随Unity一起提供的libil2cpp的头文件，您可以找到有关libil2cpp代码组织方式的一些线索
+> 您可以在Windows的`Editor \ Data \ PlaybackEngines \ webglsupport \ BuildTools \ Libraries \ libil2cpp \ include`目录中找到它们
+> 或OSX上的`Contents / Frameworks / il2cpp / libil2cpp`目录。
+
+
+
+
+
+大家如果看明白了上面动态语言的 CLI(Common Language Infrastructure)， IL以及VM，再看到IL2CPP一定心中充满了疑惑。现在的大趋势都是把语言加上动态特性，哪怕是c++这样的静态语言，也出现了适合IL的c++编译器，为啥Unity要反其道而行之，把IL再弄回静态的CPP呢？这不是吃饱了撑着嘛。
+
+根据本文最前面给出的Unity官方博客所解释的，原因有以下几 个：
+
+1. 运行效率快
+
+> 根据官方的实验数据，换成IL2CPP以后，程序的运行效率有了1.5-2.0倍的提升。
+
+2. Mono VM在各个平台移植，维护非常耗时，有时甚至不可能完成
+
+> Mono的跨平台是通过Mono VM实现的，有几个平台，就要实现几个VM，像Unity这样支持多平台的引擎，Mono官方的VM肯定是不能满足需求的。所以针对不同的新平台，Unity的项目组就要把VM给移植一遍，同时解决VM里面发现的bug。这非常耗时耗力。这些能移植的平台还好说，还有比如WebGL这样基于浏览器的平台。要让WebGL支持Mono的VM几乎是不可能的。
+
+3. 可以利用**现成的在各个平台的C++编译器**对代码执行**编译期优化**，这样可以进一步**减小最终游戏的尺寸并提高游戏运行速度**。
+
+4. 由于动态语言的特性，他们多半无需程序员太多关心内存管理，所有的内存分配和回收都由一个叫做GC（Garbage Collector）的组件完成。虽然通过IL2CPP以后代码变成了静态的C++，但是内存管理这块还是遵循C#的方式，这也是为什么最后还要有一个 **IL2CPP VM**的原因：**它负责提供诸如GC管理，线程创建这类的服务性工作。**但是由于去除了**IL加载和动态解析**的工作，**使得IL2CPP VM可以做的很小**，**并且使得游戏载入时间缩短**。
+
+5. Mono版本授权受限
+
+   大家有没有意识到Mono的版本已经更新到3.X了，但是在Unity中，C#的运行时版本一直停留在2.8，这也是Unity社区开发者抱怨的最多一 条：很多C#的新特性无法使用。这是因为Mono 授权受限，导致Unity无法升级Mono。如果换做是IL2CPP，IL2CPP VM这套完全自己开发的组件，就解决了这个问题。
+
+
+
+
+
+
+
+![img](MMORPG.assets/v2-dd8ec43772f9025f42762bf9aa98d287_720w.webp) 
+
+
+
+
+
+**mono和IL2CPP**编译区别
+
+使用Mono的时候，脚本的编译运行如下图所示：
+
+![img](MMORPG.assets/v2-659e796f814f9d0ac258b370ae289584_720w.webp) 
+
+3大脚本被编译成IL，在游戏运行的时候，IL和项目里其他第三方兼容的DLL一起，放入Mono VM虚拟机，由虚拟机解析成机器码。
+
+并且执行IL2CPP做的改变由下图红色部分标明：
+
+![img](MMORPG.assets/v2-dd8ec43772f9025f42762bf9aa98d287_720w-17216417879349.webp) 
+
+在得到中间语言IL后，使用IL2CPP将他们重新变回C++代码，然后**再由各个平台的C++编译器直接编译成能执行的原生汇编代码。**
+
+
+
+**优点**
+
+1. 相比Mono, 代码生成有很大的提高
+2. 可以调试生成的C++代码
+3. 可以启用引擎代码剥离(Engine code stripping)来减少代码的大小
+4. 程序的运行效率比Mono高，运行速度快
+5. 多平台移植非常方便
+6. 相比Mono构建应用慢
+7. 只支持AOT(Ahead of Time)编译
+
+
+
+### Mono与IL2CPP的区别
+
+IL2CPP比较适合开发和发布项目 ，但是为了提高版本迭代速度，可以在开发期间切换到Mono模式（构建应用快）。
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 参考文献
+
+[Unity - 深度理解C# 的执行原理及Unity跨平台 - 笔记 - 天山鸟 - 博客园 (cnblogs.com)](https://www.cnblogs.com/Jaysonhome/p/13218403.html)
+
+[【Unity游戏开发】Mono和IL2CPP的区别 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/352463394)
+
+
+
+
+
+
+
+
+
+## struct和class区别？
+
+在许多编程语言中，包括C#，`struct` 和 `class` 都是用于定义自定义数据类型的关键字，但它们有一些重要的区别：
+
+1. **内存分配**：
+   - `class` 是引用类型，它的实例在堆上分配内存。当你创建一个类的实例时，实际上创建的是一个引用（或者说指向实例的引用），而这个实例存储在堆上的一个内存块中。多个引用可以指向同一个实例。
+   - `struct` 是值类型，它的实例在栈上分配内存。当你创建一个结构体的实例时，实际上创建的是该结构体的一个完整副本，它直接存储在栈上。因此，每个结构体实例是独立的，修改一个实例不会影响其他实例。
+
+2. **继承**：
+   - `class` 支持继承，一个类可以派生自另一个类，从而可以通过继承实现代码重用和抽象。
+   - `struct` 不支持继承，它们不能作为其他结构体或类的基类。它们通常用于定义简单的数据类型，而不是用于建模具有复杂行为和层次结构的对象。
+
+3. **默认访问修饰符**：
+   - 类中的字段和方法默认为私有访问修饰符（`private`），而结构体中的字段和方法默认为公共访问修饰符（`public`）。这是因为结构体通常用于存储数据，而类则用于封装数据和行为。
+
+4. **性能**：
+   - 由于结构体是值类型，它们通常比类更高效。因为结构体存储在栈上，而且在内存布局上更加紧凑，因此在某些情况下，使用结构体可以减少内存占用和提高性能。
+   - 但在某些情况下，如果结构体较大，频繁地进行复制和传递结构体的副本可能会导致性能下降。在这种情况下，使用类可能更合适。
+
+结构体和类都有各自的适用场景，通常情况下，你应该根据具体情况来选择使用哪种类型。如果你需要表示一个复杂的对象，并且需要继承、多态等面向对象的特性，那么使用类会更合适。如果你只是需要存储一些简单的数据，并且不需要进行继承，那么使用结构体可能更合适。
+
+
+
+## gc优化？
+
+
+
+## 状态机和行为树的区别？
+
+
+
+## ugui的合批规则？
+
+
+
+## ugui的优化？
+
+
+
+## 怎么做到视图逻辑分离？
+
+
+
+
+
+# 项目杂谈
+
+
+
+## 网络游戏服务器技术栈
+
+![image-20230509221031992](MMORPG.assets/image-20230509221031992.png)
+
+
+
+
+
+
+
+
+
+### 状态同步和帧同步
+
+![image-20230509221659094](MMORPG.assets/image-20230509221659094.png)
+
+
+
+**状态同步：**
+
+比如说你现在要向一个npc购买商品，此时客户端就会向服务端发送这个购买商品的操作（携带playerId，NpcId,ItemId）,然后服务器经过系列的逻辑操作，来给你返回状态数据（比如说你背包里面多了什么少了什么）。
+
+优点：安全性比较好，因为逻辑操作都是在服务端上完成的，客户端没法作弊。
+
+缺点：因为服务端返回的状态的数据可能会很大（同步的数据量比较大）
+
+
+
+**帧同步：**
+
+比如说：你在游戏中按下了'WASD'键位来控制角色的方向，我们客户端给服务端发送的就是这些操作指令‘wasd’，服务端不会对这些操作做任何的运算，他就把这些操作之间发给其他玩家了（以这种广播的形式）。
+
+我们把这个网络数据收下来，然后我们要按照一定的频率去模拟收到的数据产生的操作。也就是说如果是一个前进，客户端它每一帧应该前进几个单位，前进到什么位置去。
+
+优点：运算十分简洁，就好像做一个客户端工作一样，服务器并没有做很多其他的操作。
+
+
+
+
+
+### 思考：如何控制100个游戏单位移动？
+
+
+
+1.状态同步和帧同步分布要发送什么数据到服务器？
+
+2.服务器要做什么运算？
+
+3.服务器会给客户端发送什么数据包，该数据包多大？
+
+![image-20230509223934966](MMORPG.assets/image-20230509223934966.png)
+
+
+
+
+
+
+
+### 状态同步vs帧同步
+
+![image-20230509224011510](MMORPG.assets/image-20230509224011510.png)
+
+
+
+字典是无序的列表，所以不能用
+
+ 数学和物理都会涉及到一些浮点数，浮点数具有不稳定性和不精确性。所以我们不能使用传统uinity中实现的数学库，要自己去实现。  
+
+
+
+**追帧：**需要在游戏开始的状态一直去做运算，算到游戏当前是什么状态。 
+
+就比如说一个不能拉动进度条的视频，假如你看到30分钟的时候你中途退出了，再次进入你需要重新从第0秒开始看到30分钟才能恢复这个中途退出的状态。
+
+
+
+
+
+### 采用不同同步方案的商业游戏
+
+![image-20230510105947975](MMORPG.assets/image-20230510105947975.png)
+
+
+
+### 什么游戏使用帧同步？
+
+![image-20230509221411015](MMORPG.assets/image-20230509221411015.png)
+
+
+
+### 帧同步的原理和实现
+
+
+
+
+
+![image-20230510110333306](MMORPG.assets/image-20230510110333306.png)
+
+
+
+![image-20230510110352504](MMORPG.assets/image-20230510110352504.png)
+
+
+
+### 一套完整的帧同步游戏框架要实现什么？
+
+![image-20230510111241723](MMORPG.assets/image-20230510111241723.png)
+
+
+
+#### 1.可靠UDP
+
+![image-20230510111645561](MMORPG.assets/image-20230510111645561.png)
+
+
+
+#### 2.确定性的数学和物理运算库
+
+![image-20230510111725035](MMORPG.assets/image-20230510111725035.png)
+
+
+
+解决方法
+
+![image-20230510111927297](MMORPG.assets/image-20230510111927297.png)
+
+
+
+
+
+#### 3.断线重连
+
+
+
+
+
+#### 4.比赛回放  
+
+服务器记录关键帧
+
+下放客户端进行回放
+
+
+
+
+
+#### 5.反作弊
+
+重演
+
+仲裁
+
+
+
+#### 6.避免等待
+
+
+
+
+
+
+
+### 王室战争中的帧同步
+
+![image-20230510112736912](MMORPG.assets/image-20230510112736912.png)
+
+
+
+
+
+## protobuf哪里快了？
+
+.proto文件中某个message
+
+```
+message Person {
+  optional int32 id = 1;
+  optional string name = 2;
+  optional string email = 3;
+}
+```
+
+- 更小的数据量：
+- 更快的序列化和反序列化速度：
+- 跨语言：基于二进制编码的，转换由protobuf来做当然能实现啦
+- .proto文件的易于维护可扩展
+
+![img](MMORPG.assets/dv2bqhh.webp)
+
+
+
+### 参考文献
+
+[Protobuf: 高效数据传输的秘密武器 - 程序猿阿朗 - 博客园 (cnblogs.com)](https://www.cnblogs.com/niumoo/p/17390027.html)
+
+
+
+# Git
+
+
+
+
+
+
+
 # ================================
 
 
 
-# 遇到的小问题和bug
 
 
 
-## 2024.2.21 
 
-**1.skill系统问题**，ai追逐玩家释放技能，短时间内释放了多次技能，当施法消息传送到客户端的时候，由于客户端的技能表现是由状态机推动的且在技能active状态下不可打断，所以会有技能被吞的问题，释放了两个技能但是只打出1个技能。
 
-解决方法：优化了skill的生命周期，添加后摇时间，给客户端的状态机保持一个缓冲的时间。
 
-```
-    public enum Stage
-    {
-        None,               //无状态
-        Intonate,           //吟唱
-        Active,             //已激活
-        PostRock,           //后摇
-        Colding             //冷却中
-    }
-```
-
-
-
-**2.服务端怪物ai的问题**，原本追击玩家的流程是：巡逻->追击->攻击
-
-追击的时候不断调整ai的位置，逐渐靠近玩家，当达到怪物攻击范围的时候，停下来不移动，然后攻击。
-
-如果按照这样的流程，客户端ai在攻击玩家的时候就会出现一个抖动的问题（行走+不断挥刀，但是没有产生伤害），目前还没解决这个问题。正常来说服务器skill并没有影响怪物ai，初步判断应该是服务器ai的状态机和客户端的状态机的问题，存在一个攻击状态被打断的一个问题。
-
-idle->attack/move   
-
-attack->move/attack
-
-很可能就是idle和move动作之间的抖动，到达攻击范围停下脚步（idle），判断能否攻击（发现不可以），然后继续靠近target(move)
-
-重复上面，攻击范围上限浮动的时候，就会出现这个抖动。
-
-推动怪物ai的是entitymanager，场景中技能的推动也是entitymanager，也就是中心计时器，
-
-场景中推动战斗管理器也是这个中心计时器，说明这几个东西是单个线程处理的。
-
-但是skill使用的时候，需要将的施法请求放到下一帧处理，会不会就是因为这一帧的时间，导致原来满足攻击的距离现在变得不满足了，所以idle->move...，这个时间太短了。。。。。
-
-**临时方法**：当达到怪物攻击范围的时候，直接攻击，去处理停下来这个动作。倒是客户端展现的时候会出现一个攻击时滑步的问题。
-
-**问题未解决**：将方法1修复之后，这个现象没有复现了，估计也是这个攻击频率的问题，需要给一个缓冲时间，否则一个时间段内，客户端短时间接收到多次attack的施法请求可能会产生问题。
-
-**问题未解决：**
-
-这是客户端的施法响应，它没有判断就一股脑将skill.use，而技能的推动会导致状态机的状态切换
-
-这里没问题，不用改了，甚至状态机切换的active状态下不能中断也需要删除，因为客户端只是一个显示用的view层次。
-
-```
-    private void _SpellCastResponse(Connection conn, SpellCastResponse msg)
-    {
-
-        foreach (CastInfo item in msg.List)
-        {
-            var caster = EntityManager.Instance.GetEntity<Actor>(item.CasterId);
-            var skill = caster.skillManager.GetSkill(item.SkillId);
-            if (skill.IsUnitTarget)
-            {
-                var target = EntityManager.Instance.GetEntity<Actor>(item.TargetId);
-                skill.Use(new SCEntity(target));
-            }
-            else if (skill.IsPointTarget)
-            {
-
-            }else if (skill.IsNoneTarget)
-            {
-                skill.Use(new SCEntity(caster));
-            }
-
-        }
-    }
-```
-
-
-
-状态机的共有属性skill可能会受到覆盖的影响，导致后续的技能使用skill的时候导致空指针异常。
-
-这里改为有null就不能使用use。
-
-```
-        /// <summary>
-        /// 使用技能
-        /// </summary>
-        /// <param name="target"></param>
-        public void Use(SCObject target)
-        {
-            //只有本机玩家才会用到这个值
-            if (Owner.EntityId == GameApp.character.EntityId)
-            {
-                GameApp.CurrSkill = this;
-            }
-            _sco = target;
-            RunTime = 0;
-
-            Owner.StateMachine.parameter.skill = this;
-
-            //技能阶段从none切换到蓄气阶段
-            Stage = SkillStage.Intonate;
-            OnIntonate();
-        }
-```
-
-**问题解决：**其实这个抖动就是用混合书导致idle和walk之间不断切换的抖动，因为切换不平滑。捣鼓半天还是这两个抖动我就知道。
-
-现在只能接收滑步攻击这个小问题了。。。。。，后面再修改吧。
-
-
-
-## 2024.2.21
-
-关于awake和start的问题
-
-当你在某些场景下，比如两个对象都在start中修改了同一东西，这就会导致修改后的状态不符合预期。
-
-因为我们确定不了这两个对象谁先执行，这就导致了我以为setactive(bool)实现，其实并没有失效，就是结果被覆盖了。
-
-因为我一直将awake里写获取组件  ，start中设置变量值的
-
-
-
-
-
-## 2024.3.5
-
-**关于背包打开没有数据。**
-
-```
-    protected  override void Start()
-    {
-        base.Start();
-
-        //监听一些个事件
-        Kaiyun.Event.RegisterOut("UpdateCharacterKnapsackData", this, "RefreshKnapsackUI");
-        Kaiyun.Event.RegisterOut("UpdateCharacterKnapsackPickupItemBox", this, "RefreshPickUpBox");
-        Kaiyun.Event.RegisterOut("GoldChange", this, "UpdateCurrency");
-        Kaiyun.Event.RegisterOut("UpdateCharacterEquipmentData", this, "RefreshEquipsUI");
-
-        Init();
-
-    }
-```
-
-原本是先进行init()然后在进行事件监听的，我们先初始化，里面会向服务器拉取背包数据，响应的时候就会通过事件来进行回调刷新ui。但是响应的速度很快，我们没来得及监听事件，就已经到达了，所以就会导致第一次刷新会不成功的问题。
-
-**解决方法**：1.调整监听的位置，如上面的代码
-
-​					2.在角色上线的时候我们就拉取背包数据
-
-
-
-**每次上线背包中第0个位置的物品消失问题。**
-
-我们的装备系统在穿戴装备的时候，会将背包中对应的位置的物品移除。0位也是背包合理位置
-
-我们粗心讲武器的pos属性设置为0，所以导致每次穿戴的时候，都将背包中第0位的物品移除。
-
-**解决方法：**
-
-​	将物品的pos属性默认置为-1，-1是背包中不合理的位置
-
-
-
-
-
-## 2024.4.9
-
-unity控制台中的error pause 遇到错误打印就停止。导致我以为是我的热更代码有问题。浪费我一下午。
-
-
-
-
-
-
-
-# 在linux环境下部署环境
+# [在linux环境下部署环境]
 
 
 
@@ -7113,7 +7494,7 @@ screen -r test
 
 
 
-# server相关的一些注意事项
+# [server相关的一些注意事项]
 
 
 
@@ -7223,7 +7604,11 @@ GameServer.csproj里面要有这段配置，配置文件回自动复制到运行
 
 
 
-## 1.游戏系统开发中遇到的问题？
+## 概要
+
+
+
+### 1.游戏系统开发中遇到的问题？
 
 1.不知道如何下手，先做什么？再做什么？
 
@@ -7235,13 +7620,13 @@ GameServer.csproj里面要有这段配置，配置文件回自动复制到运行
 
 
 
-## 2.设计的作用
+### 2.设计的作用
 
 <img src="MMORPG.assets/image-20231214083513220.png" alt="image-20231214083513220" style="zoom: 33%;" /> 
 
 
 
-## 3.设计到底是在讲什么？
+### 3.设计到底是在讲什么？
 
 解决问题
 
@@ -7255,7 +7640,7 @@ GameServer.csproj里面要有这段配置，配置文件回自动复制到运行
 
 
 
-# 频道聊天系统
+## 频道聊天系统
 
 涉及到社交，对于游戏是很重要的。
 
@@ -7263,11 +7648,11 @@ GameServer.csproj里面要有这段配置，配置文件回自动复制到运行
 
 
 
-## 1.需求分析
+### 1.需求分析
 
 最重要的一环
 
-<img src="D:/Development Learning/GameDeveloper/服务端学习/网游系统开发.assets/image-20231214084031606.png" alt="image-20231214084031606" style="zoom:50%;" /> <img src="MMORPG.assets/image-20231214084442470.png" alt="image-20231214084442470" style="zoom:50%;" /> 
+<img src="MMORPG.assets/image-20231214084442470.png" alt="image-20231214084442470" style="zoom:50%;" /> 
 
 上图：首先是一个聊天框用来显示消息，然后有一排按钮，用来切换频道的。这样起码我们知道ui可以怎么拼了
 
@@ -7283,7 +7668,7 @@ GameServer.csproj里面要有这段配置，配置文件回自动复制到运行
 
 
 
-## 2.proto协议
+### 2.proto协议
 
 
 
@@ -7378,19 +7763,19 @@ NetMessage{
 
 
 
-## 3.Client
+### 3.Client
 
 ChatService  主要负责消息的发送与接收（在我们mmorpg项目中其实是与messagRouter来通信
 
 
 
-## 4.server
+### 4.server
 
 
 
 
 
-## 5.UI
+### 5.UI
 
 ![image-20231214221319581](MMORPG.assets/image-20231214221319581.png) 
 
@@ -7402,7 +7787,7 @@ ChatService  主要负责消息的发送与接收（在我们mmorpg项目中其�
 
 
 
-# 背包系统
+## 背包系统
 
 当我们谈论游戏开发中的角色扮演游戏（RPG）或冒险游戏时，背包系统往往是不可或缺的一部分。无论是在探索未知世界、击败怪兽，还是在积累各种宝贵资源，背包系统都扮演着重要的角色。它是游戏中管理物品、装备和资源的关键工具，为玩家提供了储存、组织和使用游戏中各种物品的便捷方式。
 
@@ -7412,13 +7797,13 @@ ChatService  主要负责消息的发送与接收（在我们mmorpg项目中其�
 
 
 
-## 原神背包系统需求分析
+### 1.案例：原神背包系统需求分析
 
 需求分析，简而言之就是把你想做的事情罗列清楚。一般情况下，这部分内容是策划同学负责的。但是作为独立游戏开发者，几乎得什么都会。核心目标，就是把自己想做的玩法写清楚，这里我用xmind进行梳理。
 
 ![img](MMORPG.assets/FjeCtrMBmIilgVhwzKmCDPe0WRuw.png)
 
-### 1.场景角色
+#### 场景角色
 
 场景中的角色可以通过拾取场景中的物体来增加背包的东西 
 
@@ -7438,7 +7823,7 @@ ChatService  主要负责消息的发送与接收（在我们mmorpg项目中其�
 
 
 
-### 2.背包浏览
+#### 背包浏览
 
 (整体浏览)
 
@@ -7479,7 +7864,7 @@ ChatService  主要负责消息的发送与接收（在我们mmorpg项目中其�
 
 
 
-### 3.背包交互
+#### 背包交互
 
 在背包系统中，可以对物体进行的一些操作，这些操作是用户输入后才会发生的变化。
 
@@ -7495,7 +7880,7 @@ ChatService  主要负责消息的发送与接收（在我们mmorpg项目中其�
 
 
 
-### 4.用户交互
+#### 用户交互
 
 那么在原神的背包系统中，用到了哪些交互方式呢？
 
@@ -7525,7 +7910,7 @@ ChatService  主要负责消息的发送与接收（在我们mmorpg项目中其�
 
 
 
-## 技术分析
+### 2.技术分析
 
 需求是站在产品的角度思考问题，技术分析则是站在程序的角度分析解决方案。
 
@@ -7537,13 +7922,13 @@ ChatService  主要负责消息的发送与接收（在我们mmorpg项目中其�
 
 
 
-## 设计框架模式
+### 3.设计框架模式
 
 这里我采用了MVC的程序设计框架，将数据、表现、逻辑进行分离，即降低耦合性，又可提高逻辑的复用性。
 
 
 
-### Model
+#### Model
 
 其中Model指的是数据，我们的背包系统包含两部分数据，一是静态数据（即固定不变的数据，比如武器的描述文本），另一部分是动态数据（即玩家拥有几把武器、几个食品，分别是什么武器、什么食品，这里应该要会随着玩家拾取道具进行变化）。
 
@@ -7553,19 +7938,19 @@ ChatService  主要负责消息的发送与接收（在我们mmorpg项目中其�
 
 
 
-### View
+#### View
 
 View指的是视图，在Unity中我们可以使用UGUI来进行展示。为了实现原神的背包系统，可以预见的，我们要使用到的一些UGUI功能是：滚动容器、UI预制件、UI交互（点击、悬浮、长按）。
 
 
 
-### Controller
+#### Controller
 
 Controller指的是逻辑脚本，这里就像所有数据和逻辑的中枢，一般我喜欢将其做成单例类方便使用。所有关于数据的逻辑处理最好都放在这里，这样方便表现层复用这些逻辑。当然，为了方便使用，我们的动态数据、静态数据加载完毕后，都会在这里有一份缓存，方便下次使用，而不是每次都需要重新加载，消耗IO性能。
 
 
 
-### 事件分发和处理
+### 4.事件分发和处理
 
 事件的分发和处理，当玩家的一个命令发出时：比如销毁某件武器，那么有多个地方会收到这个命令的影响，比方说：
 
@@ -7585,7 +7970,7 @@ Controller指的是逻辑脚本，这里就像所有数据和逻辑的中枢，�
 
 
 
-## UI制作
+### 5.UI制作
 
 ![image-20231227132159353](MMORPG.assets/image-20231227132159353.png)
 
@@ -7593,7 +7978,7 @@ Controller指的是逻辑脚本，这里就像所有数据和逻辑的中枢，�
 
 
 
-## 存储框架设计
+### 6.存储框架设计
 
 
 
@@ -7622,7 +8007,19 @@ Controller指的是逻辑脚本，这里就像所有数据和逻辑的中枢，�
 
 
 
-# 等级经验系统
+### 其他的背包UI设计思路
+
+![image-20240425141746813](MMORPG.assets/image-20240425141746813.png)
+
+
+
+
+
+## 等级经验系统
+
+
+
+### 1.data处理
 
 其实和我们的hp mp差不多啊，我们可以同时属性更新来实现这个功能
 
@@ -7648,13 +8045,31 @@ Controller指的是逻辑脚本，这里就像所有数据和逻辑的中枢，�
 
 
 
-
-
-# User系统
+### 2.ui设计
 
 
 
-## 断线重连
+#### 获得经验时的ui和特效
+
+![image-20240425141923985](MMORPG.assets/image-20240425141923985.png) 
+
+
+
+#### 升级时的ui和特效
+
+
+
+#### 经验条
+
+
+
+
+
+## User系统
+
+
+
+### 断线重连
 
 当tcp连接断开之后，可以为玩家角色保留60秒，如果这段时间客户端重新连接，则可以继续游戏。
 
@@ -7699,7 +8114,67 @@ message  ReconnectResponse{
 
 
 
-# 特效管理器
+
+
+## AOI系统
+
+AOI（Area of Interest，兴趣区域），服务器根据玩家当前位置动态更新周围玩家和NPC的信息，以减少不必要的数据传输和计算，提高游戏性能和效率。
+
+**AOI的理念：视野之外的角色不传输**
+
+AOI系统的基本原理是将游戏世界划分为多个区域，玩家或NPC只能看到和与其所在区域内的实体进行交互。当玩家移动到新区域时，服务器会通知周围区域内的玩家和NPC，并更新它们的可见范围，同时隐藏超出视野范围的实体。
+
+**AOI系统的优点包括：**
+
+减少网络通信量、减少不必要的计算
+
+
+
+![image-20240321174311738](MMORPG.assets/image-20240321174311738.png)   
+
+ABC问题：
+
+A和C相互看不见，如果C使用技能打B，A是看不见C是怎么打B的，A只能看见B掉血了，其实这样已经足够了，因为每一个格子很大，离得很远看不看得见已经无所谓了，因为只是一个小黑点。
+
+我们保证核心数据同步就行了(血、蓝)
+
+特效不同步也没关系了，因为不重要。
+
+
+
+
+
+**由于我们的伤害数据包是按照帧来发送的，所以我们需要解决重复发送的问题。**
+
+![image-20240322164847302](MMORPG.assets/image-20240322164847302.png) 
+
+
+
+
+
+
+
+# unity基础模块
+
+
+
+## 1.UI管理器
+
+
+
+## 2.事件系统
+
+
+
+## 3.资源加载系统
+
+
+
+## 4.定时器系统
+
+
+
+## 5.特效管理器
 
 - 指定坐标的特效
 - 跟随角色的特效
@@ -7707,13 +8182,19 @@ message  ReconnectResponse{
 
 
 
+## 6.音频管理器
 
 
 
+## 7.对象池
 
 
 
-# 战斗管理器
+## 8.单例模块
+
+
+
+# 战斗系统
 
 
 
@@ -7725,11 +8206,11 @@ message  ReconnectResponse{
 
 
 
-## 普通攻击连招的锁敌机制
+## 1.普通攻击锁敌机制
 
 
 
-### 这里参考永劫无间
+### 永劫无间
 
 
 
@@ -7771,43 +8252,9 @@ message  ReconnectResponse{
 
 
 
+## 2.技能编辑器
 
 
-
-
-
-
-# AOI
-
-AOI（Area of Interest，兴趣区域），服务器根据玩家当前位置动态更新周围玩家和NPC的信息，以减少不必要的数据传输和计算，提高游戏性能和效率。
-
-**AOI的理念：视野之外的角色不传输**
-
-AOI系统的基本原理是将游戏世界划分为多个区域，玩家或NPC只能看到和与其所在区域内的实体进行交互。当玩家移动到新区域时，服务器会通知周围区域内的玩家和NPC，并更新它们的可见范围，同时隐藏超出视野范围的实体。
-
-**AOI系统的优点包括：**
-
-减少网络通信量、减少不必要的计算
-
-
-
-![image-20240321174311738](MMORPG.assets/image-20240321174311738.png)   
-
-ABC问题：
-
-A和C相互看不见，如果C使用技能打B，A是看不见C是怎么打B的，A只能看见B掉血了，其实这样已经足够了，因为每一个格子很大，离得很远看不看得见已经无所谓了，因为只是一个小黑点。
-
-我们保证核心数据同步就行了(血、蓝)
-
-特效不同步也没关系了，因为不重要。
-
-
-
-
-
-**由于我们的伤害数据包是按照帧来发送的，所以我们需要解决重复发送的问题。**
-
-![image-20240322164847302](MMORPG.assets/image-20240322164847302.png) 
 
 
 
@@ -7819,7 +8266,11 @@ A和C相互看不见，如果C使用技能打B，A是看不见C是怎么打B的�
 
 
 
-## 一、什么是热更新？
+## 知识概要
+
+
+
+### 一、什么是热更新？
 
  **热更新** 是一种App软件开发者常用的更新方式。简单来说，就是在用户通过下载安装APP之后，打开App时遇到的即时更新。
 
@@ -7838,7 +8289,7 @@ A和C相互看不见，如果C使用技能打B，A是看不见C是怎么打B的�
 
 
 
-## 二、热更新必要性作用
+### 二、热更新必要性作用
 
   一个游戏中有个很最重要的部分就是要想方设法的留住用户，如果每次游戏内容发生变化时(这在网游中经常会发生)，都需要用户去重新下载一个安装包(客户端)，这无疑是对游戏用户的留存产生了一个极大的威胁。
 
@@ -7862,7 +8313,7 @@ A和C相互看不见，如果C使用技能打B，A是看不见C是怎么打B的�
 
 
 
-## 三、热更新原理
+### 三、热更新原理
 
 ​	游戏中一些UI界面和某些模型等等的显示都是通过去加载相应的素材来实现的，当我们只把对应的素材资源进行替换就可以界面和模型发生变化，这个时候我们可以让客户端通过资源对比后从而进行相关资源的下载就可以实现热更新
 
@@ -7897,7 +8348,7 @@ Lua热更新解决方案是通过一个Lua热更新插件（如ulua、slua、tol
 
 
 
-## 四、热更新流程
+### 四、热更新流程
 
 ![在这里插入图片描述](MMORPG.assets/5a98381a3ef9d2908bf4e3deddeef9c0.png)
 
@@ -7936,7 +8387,7 @@ Lua热更新解决方案是通过一个Lua热更新插件（如ulua、slua、tol
 
 
 
-## 五、目前主流热更新方案
+### 五、目前主流热更新方案
 
 下面举例了目前市面上比较主流的几种热更新方案，后面会针对这几种热更新方案都做一个比较详细的介绍，看一看各自的优缺点。
 
@@ -7947,7 +8398,7 @@ Lua热更新解决方案是通过一个Lua热更新插件（如ulua、slua、tol
 
 
 
-### 5.1 LUA热更(XLua/ToLua)（LUA与C#绑定，方案成熟）
+#### 5.1 LUA热更(XLua/ToLua)（LUA与C#绑定，方案成熟）
 
 `Lua热更`原理：逻辑代码转化为脚本，脚本转化为文本资源，以更新资源的形式更新程序 
 
@@ -7961,7 +8412,7 @@ Lua系解决方案: 内置一个Lua虚拟机,做好UnityEngine与C#框架的Lua�
 
 
 
-### 5.2 ILRuntime热更
+#### 5.2 ILRuntime热更
 
  `ILRuntime` 项目是掌趣科技开源的热更新项目，它为基于C#的平台（例如Unity）提供了一个纯C#、快速、方便和可靠的IL运行时，使得能够在不支持JIT的硬件环境（如iOS）能够实现代码热更新。 ILRuntime项目的原理实际上就是先用VS把需要热更新的C#代码封装成DLL（动态链接库）文件，然后通过Mono.Cecil库读取DLL信息并得到对应的IL中间代码（IL是.NET平台上的C#、F#等高级语言编译后产生的中间代码，IL的具体形式为.NET平台编译后得到的.dll动态链接库文件或.exe可执行文件），最后再用内置的IL解译执行虚拟机来执行DLL文件中的IL代码。
 
@@ -8002,11 +8453,11 @@ git地址：[https://github.com/Tencent/puerts](https://cloud.tencent.com/develo
 
 
 
-## 六 AssetBundle
+### 六 AssetBundle
 
 
 
-### 什么是AssetBundle？
+#### 什么是AssetBundle？
 
  `AssetBundle`(简称AB包)是一个资源压缩包，可以包含模型、贴图、音频、预制体等。如在网络游戏中需要在运行时加载资源，而AssetBundle可以将资源构建成 AssetBundle 文件。
 
@@ -8014,7 +8465,7 @@ git地址：[https://github.com/Tencent/puerts](https://cloud.tencent.com/develo
 
 
 
-### AssetBundle作用
+#### AssetBundle作用
 
 1、AssetBundle是一个压缩包包含模型、贴图、预制体、声音、甚至整个场景，可以在游戏运行的时候被加载； 
 
@@ -8026,7 +8477,7 @@ git地址：[https://github.com/Tencent/puerts](https://cloud.tencent.com/develo
 
 
 
-### AssetBundle三种压缩格式
+#### AssetBundle三种压缩格式
 
 AssetBundle 提供了三种压缩格式：
 
@@ -8036,7 +8487,7 @@ AssetBundle 提供了三种压缩格式：
 
 
 
-### AB打包流程
+#### AB打包流程
 
 1. 设置资源AssetBundle名称
 2. BuildPipeline,BuildAssetBundles打包
@@ -8047,13 +8498,13 @@ AssetBundle 提供了三种压缩格式：
 
 
 
-### AB包具体使用方式
+#### AB包具体使用方式
 
-### AssetBundle Browser
+#### AssetBundle Browser
 
 
 
-####  1.官方提供的打包工具：AssetBundle Browser
+#####  1.官方提供的打包工具：AssetBundle Browser
 
 
 
@@ -8070,7 +8521,7 @@ AssetBundle 提供了三种压缩格式：
 
 
 
-#### 2 将对象保存为预制体并为预制体设置AB包信息
+##### 2 将对象保存为预制体并为预制体设置AB包信息
 
 在场景中新建几个游戏对象做测试，将其拖到Resources下当做预制体。
 
@@ -8088,7 +8539,7 @@ AssetBundle 提供了三种压缩格式：
 
 
 
-#### 3 执行打包方法
+##### 3 执行打包方法
 
 选择对应的平台及输出路径，然后根据情况选择其他配置。
 
@@ -8132,7 +8583,7 @@ AssetBundle 提供了三种压缩格式：
 
 
 
-#### 4 加载AB包，并使用其中的资源文件
+##### 4 加载AB包，并使用其中的资源文件
 
 上面已经讲到了打包AB包的方法，下面就是学习怎样加载我们打包好的AB包，并使用其中的资源。
 
@@ -8332,13 +8783,13 @@ DownloadHandlerAssetBundle.GetContent(UnityWebRequest) 作为参数。GetContent
 
 
 
-#### 5 AB包的加载流程
+##### 5 AB包的加载流程
 
 ![在这里插入图片描述](MMORPG.assets/d255d25c1e928323e42dd83e5177db18.png)
 
 
 
-### AssetBundle依赖关系
+#### AssetBundle依赖关系
 
   上面讲了一下基本的 AssetBundle打包 和 加载 的方法。 
 
@@ -8431,7 +8882,7 @@ Player对象是勾选了AB包的，我们现在重新使用Build打包看一下A
 
 
 
-### AssetBundle分组策略
+#### AssetBundle分组策略
 
 上面提到了AssetBundle的依赖关系，那么就不得不提一下AssetBundle的分组策略啦。
 
@@ -8459,11 +8910,29 @@ c,所有的场景所共享的部分一个包（包括贴图和模型）
 
 
 
-## 我们的资源热更
+### 参考文献
+
+[Unity 热更新技术 | （一） 热更新的基本概念原理及主流热更新方案介绍-腾讯云开发者社区-腾讯云 (tencent.com)](https://cloud.tencent.com/developer/article/2239496)
+
+[Unity 热更新技术 | （二） AssetBundle - 完整系列教程学习-腾讯云开发者社区-腾讯云 (tencent.com)](https://cloud.tencent.com/developer/article/2240554)
 
 
+
+
+
+## 本项目的资源热更
+
+
+
+### 概要
 
 这里使用了现成的框架--yooAsset，只学到了一点理论知识。
+
+通过对比双端的资源清单来进行增量更新，少补多删。
+
+
+
+### 简要操作步骤
 
 1.资源服务器（网站）我们使用宝塔面板
 
@@ -8475,15 +8944,7 @@ http https
 
 https://www.yooasset.com/
 
-
-
-![image-20240409160647740](MMORPG.assets/image-20240409160647740.png)
-
-
-
-
-
-
+<img src="MMORPG.assets/image-20240409160647740.png" alt="image-20240409160647740" style="zoom: 80%;" />  
 
 下载的热更文件放到了yoo文件夹下
 
@@ -8495,8 +8956,408 @@ https://www.yooasset.com/
 
 
 
-## 参考文献
+## 本项目的代码热更
 
-[Unity 热更新技术 | （一） 热更新的基本概念原理及主流热更新方案介绍-腾讯云开发者社区-腾讯云 (tencent.com)](https://cloud.tencent.com/developer/article/2239496)
 
-[Unity 热更新技术 | （二） AssetBundle - 完整系列教程学习-腾讯云开发者社区-腾讯云 (tencent.com)](https://cloud.tencent.com/developer/article/2240554)
+
+这里我们使用HybridCLR
+
+客户端内置c#解释器，把dll当作资源下载，客户端解释执行
+
+[介绍 | HybridCLR (code-philosophy.com)](https://hybridclr.doc.code-philosophy.com/docs/intro)
+
+- 支持2019.4.x、2020.3.x、2021.3.x、2022.3.x全系列LTS版本。`2023.2.0ax`版本也已支持，但未对外发布。
+- 支持所有il2cpp支持的平台
+
+案例演示
+
+[快速上手 | HybridCLR (code-philosophy.com)](https://hybridclr.doc.code-philosophy.com/docs/beginner/quickstart)
+
+
+
+
+
+添加BetterStreammingAssets组件，可以更方便的读取：
+
+https://gitee.com/HellGame/BetterStreamingAssets.git
+
+
+
+
+
+
+
+
+
+# UI
+
+
+
+## 伤害跳字
+
+
+
+### 是什么？
+
+<img src="MMORPG.assets/image-20240430113423441.png" alt="image-20240430113423441" style="zoom:50%;" /> 
+
+<img src="MMORPG.assets/image-20240430113458241.png" alt="image-20240430113458241" style="zoom:50%;" /> 
+
+
+
+### 为什么？
+
+<img src="MMORPG.assets/image-20240430113556333.png" alt="image-20240430113556333" style="zoom:67%;" /> 
+
+
+
+### 怎么做？
+
+<img src="MMORPG.assets/image-20240430114032218.png" alt="image-20240430114032218" style="zoom:67%;" /> 
+
+
+
+
+
+
+
+### 参考文献
+
+[如何制作高质量的伤害跳字_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1qx4y1Y7wv/?spm_id_from=333.1007.tianma.2-2-5.click&vd_source=ff929fb8407b30d15d4d258e14043130)
+
+
+
+
+
+
+
+## 击杀提示
+
+![image-20240508180756993](MMORPG.assets/image-20240508180756993.png) 
+
+
+
+
+
+
+
+# 未来任务
+
+
+
+## 需要解决的问题
+
+
+
+#### **4.mmo info显示**
+
+​	用世界ui而不是实时在平面上渲染，每个actor头上都顶着一个ui，并且面向我们的主角。
+
+
+
+#### **9.技能编辑器简化声音和粒子的播放**
+
+
+
+#### **11.跳跃下蹲行为**
+
+​	跳跃的状态：起跳上升、fall、落地
+
+​	问题1：
+​	这三个状态需要分开，还是说放到一个jump状态内完成？
+
+```
+方案1：分开实现
+方案2：不分开实现，但是jump状态需要监测actor的行为，而这些行为又是remote传送过来的，比如说怎么判断他在空中的时候是上升还是下降呢？
+	这样做得需要一个标志位来判断，这样一想这个还比较麻烦一点呢。
+结论：我们分开实现
+```
+
+
+
+#### **13.技能自动索敌使用现有数据而不是碰撞体**
+
+​	受击和眩晕的优先级,索敌的方法将碰撞体改为逻辑判断距离即可，毕竟我们同步的数据不用白不用嘛。
+
+
+
+#### **14.伤害跳字问题**
+
+​	现阶段使用的这个插件比较丑陋，我们需要研究研究这个插件以达到更好的伤害数字效果
+
+
+
+#### **16.fps小demo**
+
+
+
+#### **17.帧同步的demo 1000块那个**
+
+
+
+#### **18.redis**
+
+
+
+#### **19.音效管理器   对象池**
+
+
+
+#### **20.御剑飞行**
+
+添加人物的动作罢了，进入这个动作，关掉重力，同步y轴。 音效吧。
+mode 模式，普通模式 武器模式 御剑飞行模式。。。似乎没我想得这么简单
+
+问题1：
+	需要和普通的 等待 行走 奔跑 进行区分，甚至说后面还有骑马的 、游泳的都需要区分？
+
+```
+方案1.根据不同模式下我们根据其标志来切换相应的御剑飞行等待|普通等待|游泳等待
+
+方案2.我们需要弄分层状态机多套状态机吗：比如说不带武器的状态机、带武器的状态机、御剑飞行的状态机。
+    缺点就是会类爆炸。
+    所以需要弄一个fsmManager来管理多套状态机，根据人物状态flag来进行区分：0普通状态  1带武器的状态  2御剑飞行状态 3游泳状态  4骑马状态
+
+方案3 还是使用一个状态机，但是每个状态里面细分，比如说idle状态， 里面通过 人物状态标志 委托来更换不同的执行方法。 普通状态的idle方法 带武器状态的idle方法
+    感觉这个方法比较好哎。
+```
+
+问题2：
+    ctl的状态机和sync的状态机是否需要区分？
+
+
+​    
+​        比如说跳跃，假设跳跃转发给服务器的代码写在state中，ctl角色需要转发因为是我们自己触发的，而sync的跳跃不需要我们转发。
+​        但是上面这个问题只需要判断当前entity是不是ctl角色就行了，只是这样写会好一点吗？
+​        考虑到如果分开的话就要重复写一遍其他state的逻辑，十分麻烦，所以我们用判断就行了。
+​        所以得出结论，我们不需要区分这个状态机，直接复用即可。
+
+
+
+问题3：
+
+​	关于人物特殊状态标志的转换放在哪里完成？
+
+    首先这个标志目前是已经存在了，放在actor中。
+    输入的捕获在哪里呢？战斗管理器吗？但是战斗管理器目前是做连招和索敌的工作哎。
+    
+    是否需要专门的一个转换器类来完成这个工作,这个切换可以用状态机来实现喔。
+
+问题4：
+
+​	mode标志是放在actor还是character呢？
+
+```
+感觉现阶段的mode的行为都符合character的，普通小怪啥的有必要去切换吗？？
+如果ai要做得好一些，这个东西是需要的，所以mode放在actor好了
+```
+
+
+
+#### **22  某些动画的切换的时机和同步**
+
+比如说起跳、fall、down，这个jump系列动作就必须告诉服务器转发了。放到响应的动作里面取发送就可以了
+    关于gameentity那个类，感觉有点傻，应该进行区分：ctlgameentity  和syncgameentity，它们的功能混在一起了，看起来是否不好，并且它还有移动的功能，这就更加奇怪了。
+    所以还得由一个syncmovementmanager，并且重力需要收归movementmanager来进行管理。
+
+    所以目前的sync需要挂载：
+        syncgameentity
+        syncmovementmanager
+        控制当前actor的状态机
+
+
+
+#### **23 巨人化，搞个艾尔迪亚角色**
+
+
+
+ **1.首先是声音：**
+
+​	巨人化时的音效我十分喜欢，然后是背景音乐attack ON titan
+
+​	或者叛变神曲-YouSeeBIGGIRL/T:T
+
+参考:https://www.bilibili.com/video/BV1X8411h7PJ/?spm_id_from=333.788.recommend_more_video.1&vd_source=ff929fb8407b30d15d4d258e14043130
+
+2.然后是特效，一道炫酷的闪电，我们的镜头也需要拉长，来看到这个震撼的一幕，天空变暗。相当于过场动画吧。
+
+特效可以找普通的闪电有现成的，然后就是那个光球了。
+
+<img src="MMORPG.assets/image-20240523152312830.png" alt="image-20240523152312830" style="zoom:50%;" /> <img src="MMORPG.assets/image-20240523152557808.png" alt="image-20240523152557808" style="zoom:50%;" /> 
+
+
+
+​	阿尼的变身也很好看：开机甲一样
+
+<img src="MMORPG.assets/image-20240523153010501.png" alt="image-20240523153010501" style="zoom: 33%;" /> <img src="MMORPG.assets/image-20240523153049959.png" alt="image-20240523153049959" style="zoom: 33%;" /> 
+
+<img src="MMORPG.assets/image-20240523153130926.png" alt="image-20240523153130926" style="zoom: 50%;" /> 
+
+小人->骨头和肌肉的逐渐生成->巨人。
+
+
+
+还有枭的：
+
+<img src="MMORPG.assets/image-20240523153527503.png" alt="image-20240523153527503" style="zoom:50%;" /> <img src="MMORPG.assets/image-20240523154010760.png" alt="image-20240523154010760" style="zoom:50%;" /> 
+
+<img src="MMORPG.assets/image-20240523153647510.png" alt="image-20240523153647510" style="zoom:50%;" /> 
+
+
+
+**3.变身时的爆炸效果，**
+
+首先是闪电落下，然后是一个逐渐变大的圆球，人物就就在里面生成好了。
+
+范围伤害啥的，超大型巨人那样的核弹不爽歪歪。
+
+还有风的粒子效果，可以用摄像机旁边的草来衬托风的律动。
+
+
+
+**4.然后需要讨论巨人的攻击啥的：**
+
+​	首先得有一套动作打小人用的。
+
+
+
+
+
+#### **24 unity编辑扩展器，可以把ai那本书看看。**
+
+
+
+#### 25.关于弹窗的重入问题思考
+
+当触发某事件时需要弹出窗口进行确认，此时没有选择，又有另外一个事件触发需要弹出显示，这时我们就将旧的弹窗压栈保存，先处理新到达的弹窗。
+
+使用栈而不是队列，可以避免比如靠近传送门时弹窗，离开传送门时弹窗这个情况。
+
+
+
+#### 26.死亡提示
+
+被杀时显示凶手，显示一个大大的菜字，暗屏的遮罩。
+
+
+
+![image-20240620171034814](MMORPG.assets/image-20240620171034814.png)
+
+
+
+#### 27.关于剧情，现代修仙体系
+
+坏孩子联盟
+
+现代修仙体系
+
+去月球
+
+
+
+##### 符箓
+
+看魔法使葬送的芙莉莲中的 **菲伦的瞬发杀人魔法**，和传统观念里面那种吟唱魔法好。
+
+还有就是关于魔力存储的问题，可以把魔力纯粹到武器中充能，然后战斗的时候将其释放，与修仙者中的符箓十分类似
+
+<img src="MMORPG.assets/image-20240621214209833.png" alt="image-20240621214209833" style="zoom:50%;" /> 
+
+<img src="MMORPG.assets/image-20240621214230913.png" alt="image-20240621214230913" style="zoom:50%;" /> 
+
+
+
+
+
+
+
+
+
+
+
+#### 29.关于实力外显示的讨论
+
+在游戏中怎么样区分一个敌人的实力呢？
+
+通常是：等级、属性等，我们可以稍微颠覆一下这个传统观念，这样就可以玩扮猪吃老虎流了。
+
+可以有衍生出修仙者识别其他人真正实力的能力，而且也有隐藏自身修为的功夫之类的。
+
+
+
+葬送的芙莉莲中魔力的显现也可以作为一种参考，
+
+
+
+芙拉梅压制：
+
+<img src="MMORPG.assets/image-20240621215541824.png" alt="image-20240621215541824" style="zoom:50%;" /> 
+
+芙拉梅展开：
+
+<img src="MMORPG.assets/image-20240621215521099.png" alt="image-20240621215521099" style="zoom:50%;" /> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 物品获取框
+
+提示消失时fade并且向左移动
+
+<img src="MMORPG.assets/image-20240428002517421.png" alt="image-20240428002517421" style="zoom: 50%;" /> 
+
+<img src="MMORPG.assets/image-20240428002534835.png" alt="image-20240428002534835" style="zoom:50%;" /> 
+
+
+
+## 任务提示框
+
+任务提示不错、或者等级提升也不错
+
+![image-20240428002258790](MMORPG.assets/image-20240428002258790.png)
+
+![image-20240508180819623](MMORPG.assets/image-20240508180819623.png)
+
+
+
+## 按键指南
+
+![image-20240426165823421](MMORPG.assets/image-20240426165823421.png)
+
+
+
+
+
+## 目标锁定的问题
+
+z锁定，可以锁定也可以不锁定，但是锁定可以让你更容易看到目标
+
+参考巫师3的战斗系统
+
+
+
+
+
+
+
+## 末日世界的想法
+
+
+
+工会的形态以避难所展开，避难所为一个服务器，外面的世界就是开放世界了，这就需要我们考虑混服怎么解决多人联机的问题
+
+
+
+
+
+
+

@@ -1,16 +1,14 @@
 # mmorpg学习项目
 
-MMO-Client：客户端的源码。
+MMO-Client：unity客户端的源码。
 
-MMO-SERVER：服务端源码。
+MMO-SERVER：服务端C#源代码。
 
-MMO-Client-Release：暂时去掉了。
-
-Tools：里面有proto工具和excel工具、还有构建mysql数据库的sql文件
+Tools：里面有proto工具和excel工具、还有构建mysql数据库的sql文件。
 
 note:是本人在学习项目的时候所做笔记。
 
-
+演示视频：https://www.bilibili.com/video/BV1Rw4m1m7vS/?spm_id_from=333.999.0.0&vd_source=ff929fb8407b30d15d4d258e14043130
 
 # 项目部署运行
 

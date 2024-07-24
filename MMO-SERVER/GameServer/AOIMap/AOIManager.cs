@@ -46,7 +46,7 @@ public class AOIManager<T> where T : IAOIUnit
     public int CntsY { get; private set; }
 
     //每个格子的尺寸 
-    private int cellSize = 30;
+    private int cellSize = 50;
 
 
     // 9个方向的位置偏移,除了自己这个点
@@ -240,6 +240,7 @@ public class AOIManager<T> where T : IAOIUnit
         var grid = GetGridByPos(pos.x, pos.y);
         if(grid == null)
         {
+            obj.OnPosError();
             return;
         }
         grid.Remove(obj);
