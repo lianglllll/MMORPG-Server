@@ -377,9 +377,13 @@ unity控制台中的error pause 遇到错误打印就停止。导致我以为是
 
 
 
+## 2024.7.25
 
+使用热更新之后，打包出来的游戏，会有游戏对象脚本组件丢失的问题。而在编辑器里面是没有任何问题的。
 
+使用Resource.load加载资源的
 
+我们换成使用yoo的异步加载就好了。
 
 
 
@@ -7418,7 +7422,7 @@ message Person {
 
     ```bash
     这里的 --soft 选项表示重置到上一个提交（HEAD~1），但保留所有更改在暂存区（staging area）。
-    git reset --soft HEAD~1m
+    git reset --soft HEAD~1
     如果你想保留修改内容，但不保留在暂存区，可以使用：
     git reset --mixed HEAD~1
     ```
@@ -9384,7 +9388,7 @@ https://www.yooasset.com/
 
 
 
-
+在编辑器运行时，yoo插件好像build时好像不会将资源更新进来，需要资源服务器。
 
 
 
