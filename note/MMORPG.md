@@ -5840,11 +5840,17 @@ int result = await asyncObject.SomeOperationAsync();
 
 
 
+### 迭代器
+
+迭代器（Iterator）通过持有迭代状态可以获取当前迭代元素并且识别下一个需要迭代的元素，从而可以遍历集合中每一个元素而不用了解集合的具体实现方式；
+
+
+
 ### **IEnumerable**和**IEnumerator**
 
+
+
 #### 概要
-
-
 
 下面我们先看**IEnumerable**和**IEnumerator**两个接口的语法定义。
 
@@ -6285,11 +6291,355 @@ IEnumerator{
 
 ### 参考文献：
 
+[详解C#迭代器 - Minotauros - 博客园 (cnblogs.com)](https://www.cnblogs.com/minotauros/p/10439094.html)
+
 [迭代器 - C# | Microsoft Learn](https://learn.microsoft.com/zh-cn/dotnet/csharp/iterators)
 
 [IEnumerable和IEnumerator 详解-CSDN博客](https://blog.csdn.net/byondocean/article/details/6871881)
 
 [彻底搞懂C#之Yield Return语法的作用和好处-CSDN博客](https://blog.csdn.net/qq_33060405/article/details/78484825)
+
+
+
+
+
+## 程序集Assembly
+
+程序集是代码进行编译是的一个逻辑单元，把相关的代码和类型进行组合，然后生成PE文件。程序集只是逻辑上的划分，一个程序集可以只由一个文件组成，也可由多个文件组成。不管是单文件程序集还是多文件程序集，它们都由固定的结构组成
+
+
+
+### **常见的两种程序集：**
+
+可执行文件（.exe文件）和 类库文件（.dll文件）。
+
+在VS开发环境中，一个解决方案可以包含多个项目，而每个项目就是一个程序集。
+
+
+
+### **应用程序结构：**
+
+　　包含 应用程序域（AppDomain），程序集（Assembly），模块（Module），类型（Type），成员（EventInfo、FieldInfo、MethodInfo、PropertyInfo） 几个层次
+
+他们之间是一种从属关系，也就是说，一个AppDomain能够包括N个Assembly，一个Assembly能够包括N个Module，一个Module能够包括N个Type，一个Type能够包括N个成员。他们都在System.Reflection命名空间下。
+
+【[公共语言运行库CLR](https://baike.baidu.com/item/公共语言运行库/2882128?fr=aladdin)】加载器 管理 应用程序域，这种管理包括 将每个程序集加载到相应的应用程序域 以及 控制每个程序集中类型层次结构的内存布局。
+
+从【应用程序结构】中不难看出程序集Assembly的组成：
+
+![img](MMORPG.assets/1146926-20191213170622555-1910463621.png)
+
+MemberInfo 该类是一个基类，它定义了EventInfo、FieldInfo、MethodInfo、PropertyInfo的多个公用行为 
+
+一个程序运行起来以后，有一个应用程序域（AppDomain），在这个应用程序域（AppDomain）中放了我们用到的所有程序集（Assembly）。我们所写的所有代码都会编译到【程序集】文件（.exe .dll）中，并在运行时以【Assembly对象】方式加载到内存中运行，每个类（Class Interface）以【Type对象】方式加载到内存，类的成员（方法，字段，属性，事件，构造器）加载到内存也有相应的对象。
+
+
+
+### **程序集的结构：**
+
+程序集元数据，类型元数据，MSIL代码，资源。
+
+**①程序集元数据**，程序集元数据也叫清单，它记录了程序集的许多重要信息，是程序集进行自我说明的核心文档。当程序运行时，CLR 通过这份清单就能获取运行程序集所必需的全部信息。清单中主要主要包含如下信息：**标识信息**（包括程序集的名称、版本、文化和公钥等）；**文件列表**（程序集由哪些文件组成）；**引用程序集列表**（该程序集所引用的其他程序集）；**一组许可请求**（运行这个程序集需要的许可）。
+
+**②类型元数据**，类型元数据列举了程序集中包含的类型信息，**详细说明了程序集中定义了哪些类**，每个类包含哪些属性和方法，每个方法有哪些参数和返回值类型，等等。
+
+**③MSIL代码**，程序集元数据和类型元数据只是一些辅助性的说明信息，它们都是为描述MSIL代码而存在的。MSIL 代码是程序集的真正核心部分，正是它们实现了程序集的功能。比如在“Animals”项目中，五个动物类的C#代码最终都被转换为MSIL 代码，保存在程序集Animals.dll 中，当运行程序时，就是通过这些MSIL 代码绘制动物图像的。
+
+**④资源**，程序集中还可能包含图像、图标、声音等资源。
+
+
+
+### 私有程序集和共享程序集
+
+私有程序集是仅供单个软件使用的程序集，安装很简单，只需把私有程序集复制到软件包所在文件夹中即可。而那些被不同软件共同使用的程序就是共享程序集，.NET类库的程序集就是共享程序集，共享程序集为不同的程序所共用，所以它的部署就不像私有程序集那么简单，必须考虑命名冲突和版本冲突等问题。解决这些问题的办法是把共享程序集放在系统的一个特定文件夹内，这个特定文件夹称为全局程序集高速缓存（GAC）。这个过程可用专门的.NET 工具完成
+
+
+
+### 程序集的特性
+
+![img](MMORPG.assets/1146926-20191213171719416-369295763.png) 
+
+```
+// 将 ComVisible 设置为 false 使此程序集中的类型对 COM 组件不可见。如果需要从 COM 访问此程序集中的类型，则将该类型上的 ComVisible 属性设置为 true。
+[assembly: ComVisible(false)]
+
+// 如果此项目向 COM 公开，则下列 GUID 是用于类型库的 ID
+[assembly: Guid("816a1507-8ca5-438d-87b4-9f3bef5b2481")]
+
+// 程序集的版本信息由下面四个值组成:主版本、次版本、内部版本号、修订号
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
+```
+
+程序集的属性信息是由特性实现的，与普通特性的不同的是，描述程序集的特性前要添加前缀“assembly：”
+
+
+
+### Assembly 程序集对象
+
+**Assembly 是一个抽象类，我们用的都是RuntimeAssembly的对象。**
+
+**获得程序集的方式：**
+
+- 获得当前程序域中的所有程序集
+  - Assembly[] ass = AppDomain.CurrentDomain.GetAssemblies();
+  - 所有用到过得aessembly。如果只是add ref了，没有在程序中用到，AppDomain.CurrentDomain.GetAssemblies()中没有。用到时才被JIT加载到内存。
+  - 每个app都有一个AppDomain，OS不允许其他app访问这个程序的AppDomain
+- 获得当前对象所属的类所在的程序集
+  - this.GetType().Assembly;
+  - Type对象肯定在一个assembly对象中
+  - 可以通过Type对象得到程序集
+
+- 根据路径加载程序集
+  - Assembly.LoadFrom(assPath);
+
+```
+Assembly assembly = Assembly.LoadFrom(@"E:\Work\VSCode\ConsoleApp1\ClassLibrary1\bin\Debug\netstandard2.0\ClassLibrary1.dll");
+Type[] allTypes = assembly.GetTypes();
+Type stu = assembly.GetType("ClassLibrary1.Student");
+object stu1 = Activator.CreateInstance(stu);
+Console.WriteLine(stu1);
+```
+
+
+
+### Type 类型对象
+
+**Type 是一个抽象类，我们用的都是TypeInfo类的对象。**
+
+程序运行时，一个class对应一个Type类的对象。通过Type对象可以获得类的所有信息。
+
+**获得Type对象的方式：**
+
+- 通过类获得对应的Type
+  - Type t1 = typeof(Person);
+- 通过对象获得Type用assembly对象，通过类的full name类获得type对象
+  - Type t2 = person.GetType();  
+  - this.GetType();
+  - Type stu = assembly.GetType("ClassLibrary1.Student");
+
+- 获得程序集中定义的所有的public类
+  - Type[] allPublicTypes = ass1.GetExportedTypes();
+- 获得程序集中定义的所有的类
+  - Type[] allTypes = ass1.GetTypes();
+
+#### Type类的属性：
+
+- t.Assembly; 获取t所在的程序集
+- t.FullName; 获取t所对应的类的full name
+- t.Name; 获取t所对应的类的 name
+- t.IsArray; 判断t是否是一个数组类
+- t.IsEnum; 判断t是否是一个枚举类
+- t.IsAbstract; 判断t是否是一个抽象类
+- t.IsInterface; 判断t是否是一个interface
+
+#### Type类的方法：
+
+![img](MMORPG.assets/1146926-20191217163250665-1225957363.png)
+
+- notebookInterfaceType.IsAssignableFrom(Type t);判断t是否实现了 notebookInterfaceType 接口
+- t.IsSubclassOf(Type parent); t是否是parent的子类
+- t.IsInstanceOfType(object o); o是否是t类的对象
+- t.GetFields();  //method, property  得到所有的public的fields，methods，properties
+
+
+
+#### Type类示例：
+
+ View Code
+
+```
+static void TypeTest1()
+        {
+            Person p = new Person { Name = "NaNa", Age = 5 };
+            Type typePerson = p.GetType();
+
+            //搜索具有指定名称的公共属性
+            PropertyInfo pf = typePerson.GetProperty("Name");
+            pf.SetValue(p, "LiLi", null);
+            Console.WriteLine(p.Name);
+
+            //返回所有公共属性
+            PropertyInfo[] props = typePerson.GetProperties();
+            StringBuilder builder = new StringBuilder(30);
+            foreach (PropertyInfo item in props)
+            {
+                builder.Append(item.Name + "=" + item.GetValue(p, null) + "\n");
+            }
+            builder.Append("----------------------\n");
+
+            //返回所有公共字段
+            FieldInfo[] fieIds = typePerson.GetFields();
+            foreach (FieldInfo item in fieIds)
+            {
+                builder.Append(item.Name + "=" + item.GetValue(p) + "\n");
+            }
+            builder.Append("----------------------\n");
+
+            //返回所有公共方法
+            MethodInfo[] methods = typePerson.GetMethods();
+            foreach (MethodInfo item in methods)
+            {
+                builder.Append(item + "\n");
+            }
+            builder.Append("----------------------\n");
+            Console.WriteLine(builder);
+
+            //返回所有公共构造函数
+            ConstructorInfo[] cons = typePerson.GetConstructors();
+            foreach (ConstructorInfo item in cons)
+            {
+                //Name都是 .ctor  
+                Console.WriteLine(item.Name + "\n");
+                //构造函数的参数个数  
+                Console.WriteLine(item.GetParameters().Length + "\n");
+
+                ParameterInfo[] parames = item.GetParameters();
+                foreach (var pars in parames)
+                {
+                    Console.WriteLine(pars.Name+"："+pars.ParameterType);
+                }
+            } 
+        }
+```
+
+
+
+### 参考文献
+
+[C# 程序集（Assembly） - 智者见智 - 博客园 (cnblogs.com)](https://www.cnblogs.com/zhaoyl9/p/12036037.html)
+
+
+
+
+
+## JIT
+
+
+
+### 什么是JIT？
+
+ 一些其他解释的网站：http://www.sohu.com/a/169704040_464084
+
+1、***动态编译*（dynamic compilation）**指的是“在运行时进行编译”；与之相对的是**事前编译（ahead-of-time compilation，简称AOT）**，也叫*静态编译*（static compilation）。
+
+2、***JIT*编译（just-in-time compilation）**狭义来说是当某段代码即将第一次被执行时进行编译，因而叫“即时编译”。*JIT编译是动态编译的一种特例*。JIT编译一词后来被*泛化*，时常与动态编译等价；但要注意广义与狭义的JIT编译所指的区别。
+3、*自适应动态编译*（adaptive dynamic compilation）也是一种动态编译，但它通常执行的时机比JIT编译迟，先让程序“以某种式”先运行起来，收集一些信息之后再做动态编译。这样的编译可以更加优化。
+
+
+
+### JVM运行原理
+
+![img](MMORPG.assets/Center.jpeg) 
+
+在部分商用虚拟机中（如HotSpot），Java程序最初是通过解释器（Interpreter）进行解释执行的，当虚拟机发现某个方法或代码块的运行特别频繁时，就会把这些代码认定为“*热点代码*”。为了提高热点代码的执行效率，在运行时，虚拟机将会把这些代码编译成与本地平台相关的机器码，并进行各种层次的优化，完成这个任务的编译器称为*即时编译器*（Just In Time Compiler，下文统称JIT编译器）。
+
+即时编译器并不是虚拟机必须的部分，Java虚拟机规范并没有规定Java虚拟机内必须要有即时编译器存在，更没有限定或指导即时编译器应该如何去实现。但是，即时编译器编译性能的好坏、代码优化程度的高低却是衡量一款商用虚拟机优秀与否的最关键的指标之一，它也是虚拟机中最核心且最能体现虚拟机技术水平的部分。
+
+由于Java虚拟机规范并没有具体的约束规则去限制即使编译器应该如何实现，所以这部分功能完全是与虚拟机具体实现相关的内容，如无特殊说明，我们提到的编译器、即时编译器都是指Hotspot虚拟机内的即时编译器，虚拟机也是特指HotSpot虚拟机。
+
+
+
+### 为什么HotSpot虚拟机要使用解释器与编译器并存的架构？
+
+尽管并不是所有的Java虚拟机都采用解释器与编译器并存的架构，但许多主流的商用虚拟机（如HotSpot），都同时包含解释器和编译器。解释器与编译器两者各有优势：当程序需要*迅速启动和执行*的时候，解释器可以首先发挥作用，省去编译的时间，立即执行。在程序运行后，随着时间的推移，编译器逐渐发挥作用，把越来越多的代码编译成本地代码之后，可以获取*更高的执行效率*。当程序运行环境中*内存资源限制较大*（如部分嵌入式系统中），可以使用*解释器执行节约内存*，反之可以使用*编译执行来提升效率*。此外，如果编译后出现“罕见陷阱”，可以通过逆优化退回到解释执行。
+
+![img](MMORPG.assets/Center-172179960410022.png) 
+
+
+
+#### 编译的时间开销
+
+解释器的执行，抽象的看是这样的：
+*输入的代码 -> [ 解释器 解释执行 ] -> 执行结果
+*而要JIT编译然后再执行的话，抽象的看则是：
+*输入的代码 -> [ 编译器 编译 ] -> 编译后的代码 -> [ 执行 ] -> 执行结果
+*说JIT比解释快，其实说的是“执行编译后的代码”比“解释器解释执行”要快，并不是说“编译”这个动作比“解释”这个动作快。
+JIT编译再怎么快，至少也比解释执行一次略慢一些，而要得到最后的执行结果还得再经过一个“执行编译后的代码”的过程。
+所以，对“只执行一次”的代码而言，解释执行其实总是比JIT编译执行要快。
+怎么算是“只执行一次的代码”呢？粗略说，下面两个条件同时满足时就是严格的“只执行一次”
+1、只被调用一次，例如类的构造器（class initializer，<clinit>()）
+2、没有循环
+对只执行一次的代码做JIT编译再执行，可以说是得不偿失。
+对只执行少量次数的代码，JIT编译带来的执行速度的提升也未必能抵消掉最初编译带来的开销。
+
+*只有对频繁执行的代码，JIT编译才能保证有正面的收益。*
+
+
+
+#### 编译的空间开销
+
+对一般的Java方法而言，编译后代码的大小相对于字节码的大小，膨胀比达到10x是很正常的。同上面说的时间开销一样，这里的空间开销也是，只有对执行频繁的代码才值得编译，如果把所有代码都编译则会显著增加代码所占空间，导致“代码爆炸”。
+
+*这也就解释了为什么有些JVM会选择不总是做JIT编译，而是选择用解释器+JIT编译器的混合执行引擎。*
+
+
+
+### 为何HotSpot虚拟机要实现两个不同的即时编译器？
+
+HotSpot虚拟机中内置了两个即时编译器：Client Complier和Server Complier，简称为C1、C2编译器，分别用在客户端和服务端。目前主流的HotSpot虚拟机中默认是采用解释器与其中一个编译器直接配合的方式工作。程序使用哪个编译器，取决于虚拟机运行的模式。HotSpot虚拟机会根据自身版本与宿主机器的硬件性能自动选择运行模式，用户也可以使用“-client”或“-server”参数去强制指定虚拟机运行在Client模式或Server模式。
+
+用Client Complier获取更高的*编译速度*，用Server Complier 来获取更好的*编译质量*。为什么提供多个即时编译器与为什么提供多个垃圾收集器类似，都是为了适应不同的应用场景。
+
+
+
+
+
+### 哪些程序代码会被编译为本地代码？如何编译为本地代码？
+
+程序中的代码只有是热点代码时，才会编译为本地代码，那么什么是*热点代码*呢？
+
+运行过程中会被即时编译器编译的“热点代码”有两类：
+1、被多次调用的方法。
+
+2、被多次执行的循环体。
+
+两种情况，编译器都是以整个方法作为编译对象。 这种编译方法因为编译发生在方法执行过程之中，因此形象的称之为栈上替换（On Stack Replacement，OSR），即方法栈帧还在栈上，方法就被替换了。
+
+
+
+### 如何判断方法或一段代码或是不是热点代码呢？
+
+要知道方法或一段代码是不是热点代码，是不是需要触发即时编译，需要进行Hot Spot Detection（热点探测）。
+
+目前主要的热点探测方式有以下两种：
+**（1）基于采样的热点探测**
+采用这种方法的虚拟机会周期性地检查各个线程的栈顶，如果发现某些方法经常出现在栈顶，那这个方法就是“热点方法”。这种探测方法的好处是实现简单高效，还可以很容易地获取方法调用关系（将调用堆栈展开即可），缺点是很难精确地确认一个方法的热度，容易因为受到线程阻塞或别的外界因素的影响而扰乱热点探测。
+**(2)基于计数器的热点探测**
+
+采用这种方法的虚拟机会为每个方法（甚至是代码块）建立计数器，统计方法的执行次数，如果执行次数超过一定的阀值，就认为它是“热点方法”。这种统计方法实现复杂一些，需要为每个方法建立并维护计数器，而且不能直接获取到方法的调用关系，但是它的统计结果相对更加精确严谨。
+
+### HotSpot虚拟机中使用的是哪钟热点检测方式呢？
+
+在HotSpot虚拟机中使用的是第二种——基于计数器的热点探测方法，因此它为每个方法准备了两个计数器：*方法调用计数器*和*回边计数器*。在确定虚拟机运行参数的前提下，这两个计数器都有一个确定的阈值，当计数器超过阈值溢出了，就会触发JIT编译。
+
+
+
+#### 方法调用计数器
+
+顾名思义，这个计数器用于统计方法被调用的次数。
+当一个方法被调用时，会先检查该方法是否存在被JIT编译过的版本，如果存在，则优先使用编译后的本地代码来执行。如果不存在已被编译过的版本，则将此方法的调用计数器值加1，然后判断方法调用计数器与回边计数器值之和是否超过方法调用计数器的阈值。如果超过阈值，那么将会向即时编译器提交一个该方法的代码编译请求。
+如果不做任何设置，执行引擎并不会同步等待编译请求完成，而是继续进行解释器按照解释方式执行字节码，直到提交的请求被编译器编译完成。当编译工作完成之后，这个方法的调用入口地址就会系统自动改写成新的，下一次调用该方法时就会使用已编译的版本。
+
+![img](MMORPG.assets/Center-172179990057125.png)
+
+#### 回边计数器
+
+它的作用就是统计一个方法中*循环体*代码执行的次数，在字节码中遇到控制流向后跳转的指令称为“回边”。
+
+![img](MMORPG.assets/Center-172179990057126.png)
+
+
+
+
+
+### 参考文献
+
+[什么是JIT，写的很好 - ddzh2020 - 博客园 (cnblogs.com)](https://www.cnblogs.com/dzhou/p/9549839.html)
+
+
+
+
 
 
 
@@ -6678,27 +7028,31 @@ C# 在除 Windows 外的平台下，是通过 Mono 的编译器，生成了 IL �
 
 
 
-**IL2CPP【AOT编译】**
+#### **IL2CPP【AOT编译】**
 
 > IL2CPP分为两个独立的部分：
 >
 > 1. AOT（静态编译）编译器：把IL中间语言转换成CPP文件
 > 2. 运行时库：例如**垃圾回收、线程/文件获取（独立于平台，与平台无关）、内部调用直接修改托管数据结构的原生代码**的服务与抽象
 
-**AOT编译器**
+
+
+#### **AOT编译器**
 
 > IL2CPP AOT编译器名为il2cpp.exe。
 > 在Windows上，您可以在`Editor \ Data \ il2cpp`目录中找到它。
 > 在OSX上，它位于Unity安装的`Contents / Frameworks / il2cpp / build`目录中
 > il2cpp.exe 是由C#编写的受托管的可执行程序，它接受我们在Unity中通过Mono编译器生成的托管程序集，并生成指定平台下的C++代码。
 
-**IL2CPP工具链：**
+
+
+#### **IL2CPP工具链：**
 
 ![img](MMORPG.assets/v2-f2e9975835f3d2cc8e41b38dc94f6545_720w.webp) 
 
 
 
-**运行时库**
+#### **运行时库，IL2CPP VM**
 
 > IL2CPP技术的另一部分是运行时库（libil2cpp），用于支持IL2CPP虚拟机的运行。
 > 这个简单且可移植的运行时库是IL2CPP技术的主要优势之一！
@@ -6706,9 +7060,15 @@ C# 在除 Windows 外的平台下，是通过 Mono 的编译器，生成了 IL �
 > 您可以在Windows的`Editor \ Data \ PlaybackEngines \ webglsupport \ BuildTools \ Libraries \ libil2cpp \ include`目录中找到它们
 > 或OSX上的`Contents / Frameworks / il2cpp / libil2cpp`目录。
 
+说是虚拟机，还不如说是一个库，用于提供服务。
+
+服务：gc、Thread
+
+运行时：unity = IL2CPP 技术编译出来的二进制指令 + IL2CPP runtime的环境(GC,Thread等)
 
 
 
+#### 转换cpp的原因
 
 大家如果看明白了上面动态语言的 CLI(Common Language Infrastructure)， IL以及VM，再看到IL2CPP一定心中充满了疑惑。现在的大趋势都是把语言加上动态特性，哪怕是c++这样的静态语言，也出现了适合IL的c++编译器，为啥Unity要反其道而行之，把IL再弄回静态的CPP呢？这不是吃饱了撑着嘛。
 
@@ -6732,13 +7092,19 @@ C# 在除 Windows 外的平台下，是通过 Mono 的编译器，生成了 IL �
 
 
 
-
-
-
-
 ![img](MMORPG.assets/v2-dd8ec43772f9025f42762bf9aa98d287_720w.webp) 
 
 
+
+
+
+
+
+
+
+### Mono与IL2CPP的区别
+
+IL2CPP比较适合开发和发布项目 ，但是为了提高版本迭代速度，可以在开发期间切换到Mono模式（构建应用快）。
 
 
 
@@ -6767,14 +7133,6 @@ C# 在除 Windows 外的平台下，是通过 Mono 的编译器，生成了 IL �
 5. 多平台移植非常方便
 6. 相比Mono构建应用慢
 7. 只支持AOT(Ahead of Time)编译
-
-
-
-### Mono与IL2CPP的区别
-
-IL2CPP比较适合开发和发布项目 ，但是为了提高版本迭代速度，可以在开发期间切换到Mono模式（构建应用快）。
-
-
 
 
 
@@ -7047,6 +7405,46 @@ message Person {
 
 
 # Git
+
+
+
+## 提交撤销
+
+使用 `git reset` 命令只会影响本地仓库，不会直接影响远程仓库。如果你希望将更改推送到远程仓库，撤销远程仓库中的提交，需要进一步操作。
+
+具体步骤如下：
+
+1. **本地撤销提交：**
+
+    ```bash
+    这里的 --soft 选项表示重置到上一个提交（HEAD~1），但保留所有更改在暂存区（staging area）。
+    git reset --soft HEAD~1m
+    如果你想保留修改内容，但不保留在暂存区，可以使用：
+    git reset --mixed HEAD~1
+    ```
+
+2. **强制推送到远程仓库：**
+
+    ```bash
+    git push origin main --force
+    ```
+
+   注意：这里的 `main` 是你的主分支的名称，如果你的主分支名称不同，请替换为相应的名称。使用 `--force` 选项会强制更新远程分支，将其重置为与你本地仓库一致。
+
+强制推送操作需要谨慎，因为它会覆盖远程仓库的历史记录，可能会影响其他团队成员的工作。确保你已经与团队其他成员沟通，并确认这种操作不会带来意外问题。
+
+如果你不确定，或者不希望影响其他人的工作流，可以考虑使用 `git revert`，它会创建一个新的提交来撤销之前的更改，而不是直接修改提交历史：
+
+```bash
+git revert <commit-hash>
+git push origin main
+```
+
+这样，远程仓库会保持完整的提交历史，同时撤销指定的更改。
+
+
+
+
 
 
 
@@ -7494,11 +7892,21 @@ screen -r test
 
 
 
-# [server相关的一些注意事项]
 
 
 
-## 1.服务器的配置文件
+
+
+
+
+
+
+
+## server相关的一些注意事项
+
+
+
+### 1.服务器的配置文件
 
 
 
@@ -7588,9 +7996,35 @@ GameServer.csproj里面要有这段配置，配置文件回自动复制到运行
 
 
 
-## 2.来自客户端的数据
+### 2.来自客户端的数据
 
 不要相信来自客户端的数据，如果要使用请做好检测
+
+
+
+
+
+
+
+## 宝塔面板
+
+```
+bt
+```
+
+
+
+
+
+
+
+
+
+# [Client项目结构说明]
+
+
+
+# [Server项目结构说明]
 
 
 
@@ -8447,8 +8881,6 @@ git地址：[https://github.com/Tencent/puerts](https://cloud.tencent.com/develo
 
 个人觉得HyBridCLR最大的优点就是对Unity开发者们非常友好，在使用前搭建好各种配置之后，热更新方面的操作就不需要我们下功夫了，按照之前的开发正常进行就好，只要更换对应的dll文件就可以自动实现热更新功能，恐怖如斯~
 
-后续会详细介绍下HybridCLR，并按照文档做一些案例用于学习使用HybridCLR进行热更新。
-
 
 
 
@@ -8946,7 +9378,7 @@ https://www.yooasset.com/
 
 <img src="MMORPG.assets/image-20240409160647740.png" alt="image-20240409160647740" style="zoom: 80%;" />  
 
-下载的热更文件放到了yoo文件夹下
+下载的热更文件放到了yoo文件夹下，yoo存放是联网下载的缓冲包
 
 ![image-20240409180030376](MMORPG.assets/image-20240409180030376.png)
 
@@ -8960,7 +9392,83 @@ https://www.yooasset.com/
 
 
 
-这里我们使用HybridCLR
+### HybridCLR原理
+
+
+
+**IL2CPP技术原理和AOT**
+
+[unity杂谈-unity 怎么编译c#？]
+
+
+
+**Hybrid热更新原理**
+
+![img](MMORPG.assets/v2-dd8ec43772f9025f42762bf9aa98d287_720w.webp) 
+
+**hybridclr热更新，它是针对IL2CPP VM。**
+
+相对于其他热更技术：Lua内置Lua虚拟机 + lua代码；ILRuntime方案：内置C#虚拟机+解释执行ILRuntime
+
+内置虚拟机：自己解释执行的一个运行环境，无法直接继承MonoBehaviour(IL2CPP级别的数据对象)，需要封装一层。
+
+这就会导致：跨域访问，接口导出这些问题，需要开发者自己来处理，比较麻烦，不符合我们标准的Unity开发。
+
+**hybridclr到底做了什么？**
+
+IL2CPP runtime环境(IL2CPP VM)编写了一个解释器，解释执行IL代码指令 + 使用的是AOT的数据内存对象。
+
+c/c++角度：数据内存+代码逻辑指令(二进制机器指令)
+
+hybridclr角度：数据内存+代码逻辑指令(二进制机器指令) + **IL代码指令解释执行**
+
+就是扩展了解释执行的功能。
+
+
+
+那么在热更项目里面，我们可以随意地继承使用我们的GameObject,MonoBehaviour;
+
+数据对象都是AOT的，在AOT编译的时候，把热更项目的类型编译进去就可以了，
+
+解释执行IL new GameObjct ---> new AOT的GameObjcet对象。
+
+
+
+将热更文件转换为IL.dll,在运行的时候，我们的hybridclr就会加载IL.dll来解释执行了。
+
+**没懂。。。。。**
+
+
+
+**为什么Hybrid性能高？**
+
+1.直接使用我们AOT项目的内存对象，内存占用，跨域都没有什么问题，内存占用少？
+
+2.不需要改变上层的开发习惯，内置一个虚拟机，搞一个热更项目。
+
+3.热更项目例如：Lua，ILRuntime 热更新1.0~2.0 都是解释执行的，
+
+​	华佗1.0 可以解释执行，2.0时配置一个apk，可以直接aot执行，新版本可以获得更好的性能
+
+4.开发方式：使用普通的unity开发模式就可以了。
+
+
+
+**环境搭建和测试**
+
+看官方吧
+
+
+
+
+
+
+
+
+
+### 插件
+
+**1.这里我们使用HybridCLR**
 
 客户端内置c#解释器，把dll当作资源下载，客户端解释执行
 
@@ -8975,11 +9483,121 @@ https://www.yooasset.com/
 
 
 
-
-
-添加BetterStreammingAssets组件，可以更方便的读取：
+**2.添加BetterStreammingAssets组件，可以更方便的读取**
 
 https://gitee.com/HellGame/BetterStreamingAssets.git
+
+
+
+### 核心代码分析
+
+1.LoadDll:加载全部的dll到我们的vm中
+
+
+
+ 
+
+
+
+
+
+### 程序集划分
+
+
+
+**程序集划分方案A：**
+
+项目核心框架.dll
+
+第三方包.dll 
+
+自定义游戏逻辑.dll
+
+基础包(首包=Assembly-c#)
+
+
+
+**程序集划分方案B：**
+
+Assembly-CSharp.dll （项目默认程序集）
+
+基础包（Main程序集）
+
+
+
+**这里我们使用方案b，因为一开始没有先做热更新，所以现在修改起来十分麻烦**
+
+
+
+MMOGame\HybridCLRData\HotUpdateDlls\StandaloneWindows64
+
+**HybridCLRData**就是一个临时目录
+
+**StandaloneWindows64**这里面存放着我们所以代码生成的dll文件
+
+
+
+
+
+### 首包资源定制
+
+玩家下载的游戏安装包我们称为首包，
+
+首包如果携带补丁资源，那么玩家就可以直接进入游戏。
+
+首包内置补丁：
+
+```
+/StreamingAssets/yoo/包名/补丁
+```
+
+项目启动时会检查这个目录是否存在对应补丁。
+
+![image-20240724230336670](MMORPG.assets/image-20240724230336670.png) 
+
+项目打包这些东西就跟着了。
+
+
+
+### 代码变更测试热更新
+
+1.生成dll
+
+![image-20240724205707587](MMORPG.assets/image-20240724205707587.png) 
+
+构建资源并且复杂到StreamingAssets目录
+
+![image-20240724205748496](MMORPG.assets/image-20240724205748496.png) 
+
+将生成的dll文件放到 yoo指定的资源目录，准备打包发布。
+
+![image-20240724205821692](MMORPG.assets/image-20240724205821692.png) 
+
+然后使用yoo进行打包发布
+
+![image-20240724205923641](MMORPG.assets/image-20240724205923641.png) 
+
+
+
+### BUG：平台不被支持的问题
+
+![image-20240724210200863](MMORPG.assets/image-20240724210200863.png) 
+
+Newtonsoft.Json不支持IL2CPP 环境
+
+换一个适配unity的即可。
+
+[com.unity.nuget.newtonsoft-json@3.2.1.zip官方版下载丨最新版下载丨绿色版下载丨APP下载-123云盘 (123pan.com)](https://www.123pan.com/s/HNyA-68g4.html)
+
+放到Library\PackageCache下面
+
+![image-20240724222227751](MMORPG.assets/image-20240724222227751.png) 
+
+
+
+com.unity.nuget.newtonsoft-json
+
+<img src="MMORPG.assets/image-20240724225027181.png" alt="image-20240724225027181" style="zoom:50%;" /> 
 
 
 
@@ -9037,7 +9655,15 @@ https://gitee.com/HellGame/BetterStreamingAssets.git
 
 
 
+# 小工具
 
+
+
+## **Debug Console**
+
+游戏界面控制台，方便我们调试
+
+https://assetstore.unity.com/packages/tools/gui/in-game-debug-console-68068
 
 
 

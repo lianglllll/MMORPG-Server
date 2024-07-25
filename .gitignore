@@ -11,7 +11,7 @@ obj/
 *.DS_Store
 *.vsconfig
 
-./MMO-Client-Release
+MMO-Client-Release/
 
 /**/[Bb]uild*/
 /**/[Bb]uilds*/
