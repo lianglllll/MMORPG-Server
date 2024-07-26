@@ -6,10 +6,6 @@
 
 
 
-
-
-
-
 # 在面试中被问到本项目的问题
 
 
@@ -5871,6 +5867,8 @@ MoveNext方法只是将游标的内部位置向前移动（就是移到一下个
 
 #### **详细讲解：**
 
+##### 简要
+
 说到IEnumerable总是会和IEnumerator、foreach联系在一起。
 
 C# 支持关键字foreach，允许我们遍历任何数组类型的内容：
@@ -6017,8 +6015,7 @@ namespace MyCarIEnumerator
 
 
 
-**下面我们来看看手工实现IEnumberable接口和IEnumerator接口中的方法：
-**
+##### **下面我们来看看手工实现IEnumberable接口和IEnumerator接口中的方法：**
 
 ```csharp
 namespace ForeachTestCase
@@ -6114,7 +6111,7 @@ namespace ForeachTestCase
 
 
 
-**IEnumerable<T>接口**
+##### **IEnumerable<T>接口**
 
 实现了IEnmerable<T>接口的集合，是强类型的。它为子对象的迭代提供类型更加安全的方式。
 
@@ -6241,6 +6238,7 @@ List<int> MyFun1(){
 		//do some else
 		res.add(i);
 	}
+	return res;
 }
 
 main{
@@ -9599,11 +9597,117 @@ Newtonsoft.Json不支持IL2CPP 环境
 
 
 
-com.unity.nuget.newtonsoft-json
+
 
 <img src="MMORPG.assets/image-20240724225027181.png" alt="image-20240724225027181" style="zoom:50%;" /> 
 
+com.unity.nuget.newtonsoft-json
 
+
+
+
+
+### 多平台资源适配
+
+```
+private string GetHostServerURL()
+{
+    string hostServer = "http://.../mmo";
+    if (Application.platform == RuntimePlatform.Android)
+        return $"{hostServer}/Android";
+    else if (Application.platform == RuntimePlatform.IPhonePlayer)
+        return $"{hostServer}/IPhone";
+    else if (Application.platform == RuntimePlatform.WebGLPlayer)
+        return $"{hostServer}/WebGL";
+    else //Windows、MacOS、Linux
+        return $"{hostServer}/PC";
+}
+```
+
+
+
+
+
+### **安卓环境注意事项**
+
+出现代码被裁切的问题：
+
+```
+Could not produce class with ID 137.
+This could be caused by a class being stripped from the build even though it is needed. Try disabling 'Strip Engine Code' in Player Settings.
+```
+
+ ![image-20240726214723223](MMORPG.assets/image-20240726214723223.png)
+
+出现无访问权限的问题：
+
+```
+CollisionMeshData couldn't be created because the mesh has been 
+
+marked as non-accessible. Mesh asset path "" Mesh name "Plane017"
+```
+
+勾线读写权限即可
+
+![image-20240726215011782](MMORPG.assets/image-20240726215011782.png) 
+
+
+
+Animancer Lite不支持运行时，需要专业版，自己找吧。
+
+```
+Animancer Pro-Only Feature Used: Animator Controllers (https://kybernetik.com.au/animancer/docs/manual/animator-controllers). Animancer Lite allows you to try out this feature in the Unity Editor, but using it in runtime builds requires Animancer Pro: https://kybernetik.com.au/animancer/pro
+UnityEngine.Debug:LogError(Object, Object)
+Animancer.AnimancerPlayable:PrepareFrame(Playable, FrameData)
+```
+
+
+
+建议允许“不安全代码”
+
+![image-20240726214749387](MMORPG.assets/image-20240726214749387.png)  
+
+
+
+```
+    static IEnumerator RunLoad(string sceneName, OnSceneLoaded action)
+    {
+#if UNITY_EDITOR
+        var scenePath = $"Assets/AssetPackage/Scenes/{sceneName}.unity";
+        LoadSceneParameters parameters = new LoadSceneParameters() { loadSceneMode = LoadSceneMode.Single, localPhysicsMode = LocalPhysicsMode.None };
+        AsyncOperation asyncOperation = UnityEditor.SceneManagement.EditorSceneManager.LoadSceneAsyncInPlayMode(scenePath, parameters);
+        Scene loadedScene = UnityEditor.SceneManagement.EditorSceneManager.LoadSceneInPlayMode(scenePath, parameters);
+        Debug.Log($"===>Loaded scene: {loadedScene.name}");
+        Progress = 1;
+        action?.Invoke(loadedScene);
+        Kaiyun.Event.FireOut("SceneCompleted", loadedScene);
+
+#else
+
+        var package = YooAssets.GetPackage("DefaultPackage");
+        string location = sceneName;
+        var sceneMode = LoadSceneMode.Single;
+        bool suspendLoad = false;
+        Progress = 0;
+        var handle = package.LoadSceneAsync(location, sceneMode, suspendLoad);
+        yield return handle;
+        yield return WaitForSceneLoaded(handle);
+        Progress = 1;
+        Debug.Log($"Scene name is {handle.SceneObject.name}");
+        action?.Invoke(handle.SceneObject);
+        Kaiyun.Event.FireOut("SceneCompleted", handle.SceneObject);
+#endif
+        yield break;
+    }
+```
+
+
+
+
+
+### 其他注意事项
+
+1.plugins目录和main目录的代码发生改变时需要重新发布程序，基础目录不能热更新
 
 
 
@@ -9672,6 +9776,14 @@ https://assetstore.unity.com/packages/tools/gui/in-game-debug-console-68068
 
 
 # 未来任务
+
+
+
+## 世界观
+
+![image-20240725130828354](MMORPG.assets/image-20240725130828354.png)
+
+![image-20240725130903020](MMORPG.assets/image-20240725130903020.png)
 
 
 

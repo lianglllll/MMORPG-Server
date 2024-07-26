@@ -2,7 +2,7 @@
   "0": {
     "TID": 0,
     "Name": "战士",
-    "Resource": "Unit_Tid-0",
+    "Resource": "Units/Tid-0",
     "BgResource": "UI/Texture/RoleListItemBg/role0",
     "Kind": "Character",
     "Desc": "近战物理",
@@ -34,7 +34,7 @@
   "1": {
     "TID": 1,
     "Name": "法师",
-    "Resource": "Unit_Tid-1",
+    "Resource": "Units/Tid-1",
     "BgResource": "UI/Texture/RoleListItemBg/role1",
     "Kind": "Character",
     "Desc": "血低高魔伤",
@@ -66,7 +66,7 @@
   "2": {
     "TID": 2,
     "Name": "仙术",
-    "Resource": "Unit_Tid-0",
+    "Resource": "Units/Tid-0",
     "BgResource": "UI/Texture/RoleListItemBg/role2",
     "Kind": "Character",
     "Desc": "法系辅助",
@@ -98,7 +98,7 @@
   "3": {
     "TID": 3,
     "Name": "游侠",
-    "Resource": "Unit_Tid-0",
+    "Resource": "Units/Tid-0",
     "BgResource": "UI/Texture/RoleListItemBg/role3",
     "Kind": "Character",
     "Desc": "远程高爆发",
@@ -130,7 +130,7 @@
   "4": {
     "TID": 4,
     "Name": "俏皮女枪",
-    "Resource": "Unit_Tid-4",
+    "Resource": "Units/Tid-4",
     "BgResource": "UI/Texture/RoleListItemBg/role4",
     "Kind": "Character",
     "Desc": "近战物理",
@@ -162,7 +162,7 @@
   "1001": {
     "TID": 1001,
     "Name": "山贼",
-    "Resource": "Unit_Tid-0",
+    "Resource": "Units/Tid-0",
     "BgResource": "",
     "Kind": "Monster",
     "Desc": "偷鸡摸狗,背刺爆发",
@@ -194,7 +194,7 @@
   "1002": {
     "TID": 1002,
     "Name": "骷髅小兵",
-    "Resource": "Unit_Tid-1002",
+    "Resource": "Units/Tid-1002",
     "BgResource": "",
     "Kind": "Monster",
     "Desc": "低攻低防,不惧死亡",
@@ -226,7 +226,7 @@
   "1003": {
     "TID": 1003,
     "Name": "牛头战士",
-    "Resource": "Unit_Tid-1003",
+    "Resource": "Units/Tid-1003",
     "BgResource": "",
     "Kind": "Monster",
     "Desc": "高攻高防御,横冲直撞",
