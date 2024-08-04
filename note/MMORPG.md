@@ -1,196 +1,12 @@
 # 网络游戏哲学
 
+变化不是连续的，而是以普朗克长度为单位的时间间隔变化。十分像我们游戏世界中的tick。
 
 
 
 
 
 
-# 在面试中被问到本项目的问题
-
-
-
-##### **1.在游戏服务器中，我们要获取某个角色周围的敌人，除了遍历当前场景的所有角色，我们还有什么好的方法来获取？**
-
-在游戏服务器中，获取某个角色周围的敌人通常涉及到处理网络同步和优化性能的问题。以下是一些常见的方法，特别适用于游戏服务器环境：
-
-1. **区域兴趣（Interest Management）：** 引入区域兴趣系统，该系统在服务器上负责跟踪和维护玩家周围的对象。当玩家移动到新区域时，服务器只需通知客户端或服务器更新该区域的信息，而不需要遍历整个场景。
-2. **空间分割和空间索引：** 使用空间分割方法，如八叉树（Octree）或四叉树（Quadtree），将场景划分为空间单元。当需要查找周围的敌人时，只需检查相邻的空间单元，而不是整个场景。这样可以大大提高查找效率。
-3. **索引数据结构：** 使用索引数据结构，如哈希表或空间网格，来存储场景中的对象信息。这样可以通过直接查找索引而不是遍历来获取所需的对象。
-4. **消息系统：** 使用消息系统，允许对象在特定事件发生时广播消息。当敌人进入或离开某个区域时，它可以向周围的对象发送消息，通知它们进行相应的处理。
-5. **服务器端碰撞检测：** 在服务器上执行碰撞检测，以确定角色周围的敌人。这通常涉及使用服务器端物理引擎或其他碰撞检测算法来处理对象之间的碰撞。
-
-
-
-##### **2.你这个项目有使用到多线程吗？**
-
-在我们的项目中很多地方都使用到了c#的ThreadPool，每个CLR都有一个线程池实例。（Common Language Runtime）
-
-
-
-main线程,最后阻塞在这里了，因为我们使用了控制台。后面会改写为守护进程
-
-```
-        static void Main(string[] args)
-        {	
-        	....
-            Console.ReadKey();//防止进程结束
-        }
-```
-
-
-
-比如说：MessageRouter.Start()
-
-```
-        public void Start(int ThreadCount)
-        {
-            if (running) return;
-
-            running = true;
-            this.ThreadCount = Math.Min(Math.Max(1, ThreadCount),10);
-
-
-            for(int i = 0; i < this.ThreadCount; i++)
-            {
-                //创建线程
-                ThreadPool.QueueUserWorkItem(new WaitCallback(MessageWork));
-            }
-            //等待一会,让全部线程
-            while (WorkerCount < this.ThreadCount)
-            {
-                Thread.Sleep(100);
-            }
-        }
-```
-
-Scheduler.Start()中Timer的实现也是从ThreadPool中获取线程的
-
-```
-        public void Start()
-        {
-            if (timer != null) return;
-            //系统线程池中拿一个来用的
-            timer = new Timer(new TimerCallback(Execute), null, 0, 1);//每隔一毫秒触发
-        }
-```
-
-NetService中的心跳检测的timer
-
-```
-public void Start()
-{
-    //启动网络监听
-    tcpServer.Start();
-
-    //启动消息分发器
-    MessageRouter.Instance.Start(Config.Server.WorkerCount);
-
-    //订阅心跳事件
-    MessageRouter.Instance.Subscribe<HeartBeatRequest>(_HeartBeatRequest);
-
-    //定时检查心跳包的情况
-    Timer timer = new Timer(TimerCallback, null, TimeSpan.Zero, TimeSpan.FromSeconds(HEARTBEATQUERYTIME));
-
-}
-```
-
-SessionManager中的的session会话超时检测的timer
-
-```
-        public SessionManager()
-        {
-            //创建一个计时器,1秒触发
-            var timer = new Timer(1000);
-            timer.Elapsed += (sender, e) => CheckSession();
-            timer.Start();
-        }
-
-
-```
-
-
-
-##### **3.你的服务器是怎么处理socket请求的，一个socket对应一个线程？**
-
-我使用的是c#给我们提供的**异步io编程模型**iocp   APM  TAP
-
-在异步 I/O 模型中，底层系统会负责管理异步操作的执行，并在操作完成时通知相关的回调函数。这种方式可以有效地利用系统资源，而无需为每个异步操作创建一个新的线程。
-
-比如说：`Socket.BeginAccept` 和 `Socket.EndAccept` 方法是用于异步接受连接请求的一对方法。以下是它们的基本流程：
-
-`BeginAccept` 方法启动异步操作，开始监听传入的连接**请求**。
-
-异步操作在后台进行，而不会阻塞主线程。
-
-当有连接请求到达时，系统会调用你提供的回调函数。
-
-在回调函数内，你调用 `Socket.EndAccept` 方法来完成异步操作，并获取新建立的连接的 `Socket` 对象。
-
-对于`Socket.BeginAccept`和`Socket.EndAccept`，异步操作的实现通常基于I/O完成端口（I/O Completion Port）等底层机制，而不是简单地创建一个新线程来处理。这允许系统在没有创建新线程的情况下，有效地处理多个异步操作。（内核线程池）
-
-在Windows操作系统上，I/O完成端口（IOCP）是一种高效的异步I/O机制，它使用线程池来管理异步操作的执行。但重要的是要理解，线程池并不是为每个异步操作都创建一个新线程，而是通过重用池中的现有线程来提高效率。
-
-
-
-`Socket.AcceptAsync` 方法是.NET Framework中引入的更现代的异步模型的一部分，它属于TAP（Task-based Asynchronous Pattern）模式。与传统的`Socket.BeginAccept`和`Socket.EndAccept` APM 模式不同，`Socket.AcceptAsync` 返回一个 `Task<Socket>`，使得异步代码更加清晰和易于管理。
-
-`Socket.AcceptAsync` 不会创建新线程来处理异步操作，而是通过底层的异步I/O机制（例如，I/O完成端口）来实现异步操作。这样可以更高效地利用系统资源，而不必为每个异步操作都分配一个新的线程。
-
-
-
-##### **4.既然你的messageRouter使用了多线程，那么你的character中的信息存在线程并发问题吗？**
-
-在这些个战斗场景中产生的数据，在处理的时候我们都会使用队列来缓存某个时间段收集到的数据包，然后在一起处理这些数据包。
-
-也就是说，处理这些例如：character属性变更  我们是使用单个线程来处理的，所以是不存在一个并发的问题。
-
-```
-    public class FightManager
-    {
-        private Space space;
-
-        //等待处理的技能施法队列：收集来自各个客户端的施法请求
-        //这个队列维持了actor属性的同步，比如说hp的计算是单线程的。
-        public ConcurrentQueue<CastInfo> castInfoQueue = new ConcurrentQueue<CastInfo>();
-
-
-
-        public void OnUpdate(float deltaTime)
-        {
-            //处理施法请求
-            while(castInfoQueue.TryDequeue(out var cast))
-            {
-                RunCast(cast);
-            }
-```
-
-
-
-##### **5.既然你的服务器通过一个timer每隔n秒进行对character的一些属性进行保存的话，那么它和messageRouter会有并发问题吗？**
-
-```
-        private void SaveCharacterInfo()
-        {
-            foreach (var chr in characterDict.Values)
-            {
-                //更新位置
-                chr.Data.X = chr.Position.x;
-                chr.Data.Y = chr.Position.y;
-                chr.Data.Z = chr.Position.z;
-                chr.Data.Hp = (int)chr.Hp;
-                chr.Data.Mp = (int)chr.Mp;
-                chr.Data.SpaceId = chr.SpaceId;
-                chr.Data.Knapsack = chr.knapsack.InventoryInfo.ToByteArray();
-                chr.Data.Level = chr.Level;
-                chr.Data.Exp = chr.Exp;
-                //保存进入数据库
-                repo.UpdateAsync(chr.Data);//异步更新
-            }
-        }
-```
-
-其实并不会有问题，因为我们保存到数据库其实是读取操作，并发问题是指多个线程修改同一个数据造成的脏读、幻读、不可重复读
 
 
 
@@ -422,6 +238,8 @@ unity控制台中的error pause 遇到错误打印就停止。导致我以为是
 
 
 # c#多线程编程
+
+
 
 ## Lambda表达式 - 委托进化史
 
@@ -7406,6 +7224,206 @@ message Person {
 
 
 
+
+
+## [思考：问到本项目的问题]
+
+
+
+##### **1.在游戏服务器中，我们要获取某个角色周围的敌人，除了遍历当前场景的所有角色，我们还有什么好的方法来获取？**
+
+在游戏服务器中，获取某个角色周围的敌人通常涉及到处理网络同步和优化性能的问题。以下是一些常见的方法，特别适用于游戏服务器环境：
+
+1. **区域兴趣（Interest Management）：** 引入区域兴趣系统，该系统在服务器上负责跟踪和维护玩家周围的对象。当玩家移动到新区域时，服务器只需通知客户端或服务器更新该区域的信息，而不需要遍历整个场景。
+2. **空间分割和空间索引：** 使用空间分割方法，如八叉树（Octree）或四叉树（Quadtree），将场景划分为空间单元。当需要查找周围的敌人时，只需检查相邻的空间单元，而不是整个场景。这样可以大大提高查找效率。
+3. **索引数据结构：** 使用索引数据结构，如哈希表或空间网格，来存储场景中的对象信息。这样可以通过直接查找索引而不是遍历来获取所需的对象。
+4. **消息系统：** 使用消息系统，允许对象在特定事件发生时广播消息。当敌人进入或离开某个区域时，它可以向周围的对象发送消息，通知它们进行相应的处理。
+5. **服务器端碰撞检测：** 在服务器上执行碰撞检测，以确定角色周围的敌人。这通常涉及使用服务器端物理引擎或其他碰撞检测算法来处理对象之间的碰撞。
+
+
+
+##### **2.你这个项目有使用到多线程吗？**
+
+在我们的项目中很多地方都使用到了c#的ThreadPool，每个CLR都有一个线程池实例。（Common Language Runtime）
+
+
+
+main线程,最后阻塞在这里了，因为我们使用了控制台。后面会改写为守护进程
+
+```
+        static void Main(string[] args)
+        {	
+        	....
+            Console.ReadKey();//防止进程结束
+        }
+```
+
+
+
+比如说：MessageRouter.Start()
+
+```
+        public void Start(int ThreadCount)
+        {
+            if (running) return;
+
+            running = true;
+            this.ThreadCount = Math.Min(Math.Max(1, ThreadCount),10);
+
+
+            for(int i = 0; i < this.ThreadCount; i++)
+            {
+                //创建线程
+                ThreadPool.QueueUserWorkItem(new WaitCallback(MessageWork));
+            }
+            //等待一会,让全部线程
+            while (WorkerCount < this.ThreadCount)
+            {
+                Thread.Sleep(100);
+            }
+        }
+```
+
+Scheduler.Start()中Timer的实现也是从ThreadPool中获取线程的
+
+```
+        public void Start()
+        {
+            if (timer != null) return;
+            //系统线程池中拿一个来用的
+            timer = new Timer(new TimerCallback(Execute), null, 0, 1);//每隔一毫秒触发
+        }
+```
+
+NetService中的心跳检测的timer
+
+```
+public void Start()
+{
+    //启动网络监听
+    tcpServer.Start();
+
+    //启动消息分发器
+    MessageRouter.Instance.Start(Config.Server.WorkerCount);
+
+    //订阅心跳事件
+    MessageRouter.Instance.Subscribe<HeartBeatRequest>(_HeartBeatRequest);
+
+    //定时检查心跳包的情况
+    Timer timer = new Timer(TimerCallback, null, TimeSpan.Zero, TimeSpan.FromSeconds(HEARTBEATQUERYTIME));
+
+}
+```
+
+SessionManager中的的session会话超时检测的timer
+
+```
+        public SessionManager()
+        {
+            //创建一个计时器,1秒触发
+            var timer = new Timer(1000);
+            timer.Elapsed += (sender, e) => CheckSession();
+            timer.Start();
+        }
+
+
+```
+
+
+
+##### **3.你的服务器是怎么处理socket请求的，一个socket对应一个线程？**
+
+我使用的是c#给我们提供的**异步io编程模型**iocp   APM  TAP
+
+在异步 I/O 模型中，底层系统会负责管理异步操作的执行，并在操作完成时通知相关的回调函数。这种方式可以有效地利用系统资源，而无需为每个异步操作创建一个新的线程。
+
+比如说：`Socket.BeginAccept` 和 `Socket.EndAccept` 方法是用于异步接受连接请求的一对方法。以下是它们的基本流程：
+
+`BeginAccept` 方法启动异步操作，开始监听传入的连接**请求**。
+
+异步操作在后台进行，而不会阻塞主线程。
+
+当有连接请求到达时，系统会调用你提供的回调函数。
+
+在回调函数内，你调用 `Socket.EndAccept` 方法来完成异步操作，并获取新建立的连接的 `Socket` 对象。
+
+对于`Socket.BeginAccept`和`Socket.EndAccept`，异步操作的实现通常基于I/O完成端口（I/O Completion Port）等底层机制，而不是简单地创建一个新线程来处理。这允许系统在没有创建新线程的情况下，有效地处理多个异步操作。（内核线程池）
+
+在Windows操作系统上，I/O完成端口（IOCP）是一种高效的异步I/O机制，它使用线程池来管理异步操作的执行。但重要的是要理解，线程池并不是为每个异步操作都创建一个新线程，而是通过重用池中的现有线程来提高效率。
+
+
+
+`Socket.AcceptAsync` 方法是.NET Framework中引入的更现代的异步模型的一部分，它属于TAP（Task-based Asynchronous Pattern）模式。与传统的`Socket.BeginAccept`和`Socket.EndAccept` APM 模式不同，`Socket.AcceptAsync` 返回一个 `Task<Socket>`，使得异步代码更加清晰和易于管理。
+
+`Socket.AcceptAsync` 不会创建新线程来处理异步操作，而是通过底层的异步I/O机制（例如，I/O完成端口）来实现异步操作。这样可以更高效地利用系统资源，而不必为每个异步操作都分配一个新的线程。
+
+
+
+##### **4.既然你的messageRouter使用了多线程，那么你的character中的信息存在线程并发问题吗？**
+
+在这些个战斗场景中产生的数据，在处理的时候我们都会使用队列来缓存某个时间段收集到的数据包，然后在一起处理这些数据包。
+
+也就是说，处理这些例如：character属性变更  我们是使用单个线程来处理的，所以是不存在一个并发的问题。
+
+```
+    public class FightManager
+    {
+        private Space space;
+
+        //等待处理的技能施法队列：收集来自各个客户端的施法请求
+        //这个队列维持了actor属性的同步，比如说hp的计算是单线程的。
+        public ConcurrentQueue<CastInfo> castInfoQueue = new ConcurrentQueue<CastInfo>();
+
+
+
+        public void OnUpdate(float deltaTime)
+        {
+            //处理施法请求
+            while(castInfoQueue.TryDequeue(out var cast))
+            {
+                RunCast(cast);
+            }
+```
+
+
+
+##### **5.既然你的服务器通过一个timer每隔n秒进行对character的一些属性进行保存的话，那么它和messageRouter会有并发问题吗？**
+
+```
+        private void SaveCharacterInfo()
+        {
+            foreach (var chr in characterDict.Values)
+            {
+                //更新位置
+                chr.Data.X = chr.Position.x;
+                chr.Data.Y = chr.Position.y;
+                chr.Data.Z = chr.Position.z;
+                chr.Data.Hp = (int)chr.Hp;
+                chr.Data.Mp = (int)chr.Mp;
+                chr.Data.SpaceId = chr.SpaceId;
+                chr.Data.Knapsack = chr.knapsack.InventoryInfo.ToByteArray();
+                chr.Data.Level = chr.Level;
+                chr.Data.Exp = chr.Exp;
+                //保存进入数据库
+                repo.UpdateAsync(chr.Data);//异步更新
+            }
+        }
+```
+
+其实并不会有问题，因为我们保存到数据库其实是读取操作，并发问题是指多个线程修改同一个数据造成的脏读、幻读、不可重复读
+
+
+
+##### 6.为什么使用TCP而不是UDP,如果使用UDP该怎么实现？
+
+不考虑性能原因外，因为TCP在传输层为我们提供了可靠的通信信道，我们拿起来用更加简单。
+
+如果使用UDP的话我们还需要自己去定制可靠性机制。
+
+
+
+
+
 # Git
 
 
@@ -8027,6 +8045,54 @@ bt
 
 
 # [Server项目结构说明]
+
+
+
+
+
+
+
+# 网络模块
+
+
+
+## 服务器选择
+
+
+
+1.服务器选择的配置文件，我们使用json格式
+
+```
+{
+    "ServerList":[
+        {
+            "name":"本地服务器",
+            "host":"127.0.0.1",
+            "port":6666,
+            "state":0
+        },
+        {
+            "name":"云服务器",
+            "host":"49.7.227.178",
+            "port":32510,
+            "state":0
+        }
+    ]
+```
+
+2.将其上传到我们的资源服务器上面
+
+![image-20240804230426385](MMORPG.assets/image-20240804230426385.png)
+
+3.通过web请求拉取json文件，然后进行解析即可。
+
+
+
+
+
+
+
+
 
 
 
@@ -9763,6 +9829,30 @@ Animancer.AnimancerPlayable:PrepareFrame(Playable, FrameData)
 
 
 
+
+
+# 安全模块
+
+比如说一些敏感信息，需要加密传输；
+
+登录密码，保险箱密码等
+
+
+
+持久化是密码这些敏感信息也需要加密存储。
+
+
+
+
+
+
+
+
+
+
+
+
+
 # 小工具
 
 
@@ -9789,7 +9879,9 @@ https://assetstore.unity.com/packages/tools/gui/in-game-debug-console-68068
 
 ## 需要解决的问题
 
+### 已解决
 
+### 未解决
 
 #### **4.mmo info显示**
 
