@@ -119,8 +119,10 @@ namespace GameServer.Model
             //aoi区域广播
             var loc = actor.AoiPos;//获取aoi坐标
             var all = AOIManager.GetEntities(loc.x, loc.y);
+
             SpaceEntitySyncResponse resp = new SpaceEntitySyncResponse();
             resp.EntitySync = entitySync;
+
             foreach (var chr in all.OfType<Character>())
             {
                 if(chr.EntityId != actor.EntityId)
@@ -129,23 +131,6 @@ namespace GameServer.Model
                 }
             }
 
-
-            /*
-            foreach (var kv in characterDict)
-            {
-                if (kv.Value.EntityId == entitySync.Entity.Id)
-                {
-                    kv.Value.EntityData = entitySync.Entity;
-                    kv.Value.State = entitySync.State;
-                }
-                else
-                {
-                    SpaceEntitySyncResponse resp = new SpaceEntitySyncResponse();
-                    resp.EntitySync = entitySync;
-                    kv.Value.session.Send(resp);
-                }
-            }
-            */
         }
 
         /// <summary>

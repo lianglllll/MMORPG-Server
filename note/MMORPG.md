@@ -1,5 +1,9 @@
 # 网络游戏哲学
 
+
+
+## 世界是怎么活起来的
+
 变化不是连续的，而是以普朗克长度为单位的时间间隔变化。十分像我们游戏世界中的tick。
 
 
@@ -10,196 +14,7 @@
 
 
 
-
-
-
-
-# 遇到的小问题和bug
-
-
-
-## 2024.2.21 
-
-**1.skill系统问题**，ai追逐玩家释放技能，短时间内释放了多次技能，当施法消息传送到客户端的时候，由于客户端的技能表现是由状态机推动的且在技能active状态下不可打断，所以会有技能被吞的问题，释放了两个技能但是只打出1个技能。
-
-解决方法：优化了skill的生命周期，添加后摇时间，给客户端的状态机保持一个缓冲的时间。
-
-```
-    public enum Stage
-    {
-        None,               //无状态
-        Intonate,           //吟唱
-        Active,             //已激活
-        PostRock,           //后摇
-        Colding             //冷却中
-    }
-```
-
-
-
-**2.服务端怪物ai的问题**，原本追击玩家的流程是：巡逻->追击->攻击
-
-追击的时候不断调整ai的位置，逐渐靠近玩家，当达到怪物攻击范围的时候，停下来不移动，然后攻击。
-
-如果按照这样的流程，客户端ai在攻击玩家的时候就会出现一个抖动的问题（行走+不断挥刀，但是没有产生伤害），目前还没解决这个问题。正常来说服务器skill并没有影响怪物ai，初步判断应该是服务器ai的状态机和客户端的状态机的问题，存在一个攻击状态被打断的一个问题。
-
-idle->attack/move   
-
-attack->move/attack
-
-很可能就是idle和move动作之间的抖动，到达攻击范围停下脚步（idle），判断能否攻击（发现不可以），然后继续靠近target(move)
-
-重复上面，攻击范围上限浮动的时候，就会出现这个抖动。
-
-推动怪物ai的是entitymanager，场景中技能的推动也是entitymanager，也就是中心计时器，
-
-场景中推动战斗管理器也是这个中心计时器，说明这几个东西是单个线程处理的。
-
-但是skill使用的时候，需要将的施法请求放到下一帧处理，会不会就是因为这一帧的时间，导致原来满足攻击的距离现在变得不满足了，所以idle->move...，这个时间太短了。。。。。
-
-**临时方法**：当达到怪物攻击范围的时候，直接攻击，去处理停下来这个动作。倒是客户端展现的时候会出现一个攻击时滑步的问题。
-
-**问题未解决**：将方法1修复之后，这个现象没有复现了，估计也是这个攻击频率的问题，需要给一个缓冲时间，否则一个时间段内，客户端短时间接收到多次attack的施法请求可能会产生问题。
-
-**问题未解决：**
-
-这是客户端的施法响应，它没有判断就一股脑将skill.use，而技能的推动会导致状态机的状态切换
-
-这里没问题，不用改了，甚至状态机切换的active状态下不能中断也需要删除，因为客户端只是一个显示用的view层次。
-
-```
-    private void _SpellCastResponse(Connection conn, SpellCastResponse msg)
-    {
-
-        foreach (CastInfo item in msg.List)
-        {
-            var caster = EntityManager.Instance.GetEntity<Actor>(item.CasterId);
-            var skill = caster.skillManager.GetSkill(item.SkillId);
-            if (skill.IsUnitTarget)
-            {
-                var target = EntityManager.Instance.GetEntity<Actor>(item.TargetId);
-                skill.Use(new SCEntity(target));
-            }
-            else if (skill.IsPointTarget)
-            {
-
-            }else if (skill.IsNoneTarget)
-            {
-                skill.Use(new SCEntity(caster));
-            }
-
-        }
-    }
-```
-
-
-
-状态机的共有属性skill可能会受到覆盖的影响，导致后续的技能使用skill的时候导致空指针异常。
-
-这里改为有null就不能使用use。
-
-```
-        /// <summary>
-        /// 使用技能
-        /// </summary>
-        /// <param name="target"></param>
-        public void Use(SCObject target)
-        {
-            //只有本机玩家才会用到这个值
-            if (Owner.EntityId == GameApp.character.EntityId)
-            {
-                GameApp.CurrSkill = this;
-            }
-            _sco = target;
-            RunTime = 0;
-
-            Owner.StateMachine.parameter.skill = this;
-
-            //技能阶段从none切换到蓄气阶段
-            Stage = SkillStage.Intonate;
-            OnIntonate();
-        }
-```
-
-**问题解决：**其实这个抖动就是用混合书导致idle和walk之间不断切换的抖动，因为切换不平滑。捣鼓半天还是这两个抖动我就知道。
-
-现在只能接收滑步攻击这个小问题了。。。。。，后面再修改吧。
-
-
-
-## 2024.2.21
-
-关于awake和start的问题
-
-当你在某些场景下，比如两个对象都在start中修改了同一东西，这就会导致修改后的状态不符合预期。
-
-因为我们确定不了这两个对象谁先执行，这就导致了我以为setactive(bool)实现，其实并没有失效，就是结果被覆盖了。
-
-因为我一直将awake里写获取组件  ，start中设置变量值的
-
-
-
-
-
-## 2024.3.5
-
-**关于背包打开没有数据。**
-
-```
-    protected  override void Start()
-    {
-        base.Start();
-
-        //监听一些个事件
-        Kaiyun.Event.RegisterOut("UpdateCharacterKnapsackData", this, "RefreshKnapsackUI");
-        Kaiyun.Event.RegisterOut("UpdateCharacterKnapsackPickupItemBox", this, "RefreshPickUpBox");
-        Kaiyun.Event.RegisterOut("GoldChange", this, "UpdateCurrency");
-        Kaiyun.Event.RegisterOut("UpdateCharacterEquipmentData", this, "RefreshEquipsUI");
-
-        Init();
-
-    }
-```
-
-原本是先进行init()然后在进行事件监听的，我们先初始化，里面会向服务器拉取背包数据，响应的时候就会通过事件来进行回调刷新ui。但是响应的速度很快，我们没来得及监听事件，就已经到达了，所以就会导致第一次刷新会不成功的问题。
-
-**解决方法**：1.调整监听的位置，如上面的代码
-
-​					2.在角色上线的时候我们就拉取背包数据
-
-
-
-**每次上线背包中第0个位置的物品消失问题。**
-
-我们的装备系统在穿戴装备的时候，会将背包中对应的位置的物品移除。0位也是背包合理位置
-
-我们粗心讲武器的pos属性设置为0，所以导致每次穿戴的时候，都将背包中第0位的物品移除。
-
-**解决方法：**
-
-​	将物品的pos属性默认置为-1，-1是背包中不合理的位置
-
-
-
-
-
-## 2024.4.9
-
-unity控制台中的error pause 遇到错误打印就停止。导致我以为是我的热更代码有问题。浪费我一下午。
-
-
-
-## 2024.7.25
-
-使用热更新之后，打包出来的游戏，会有游戏对象脚本组件丢失的问题。而在编辑器里面是没有任何问题的。
-
-使用Resource.load加载资源的
-
-我们换成使用yoo的异步加载就好了。
-
-
-
-# 技术框架易沉迷，请勿上瘾
+## 技术框架易沉迷，请勿上瘾
 
 
 
@@ -207,7 +22,7 @@ unity控制台中的error pause 遇到错误打印就停止。导致我以为是
 
 
 
-## 被隐盖的原理和价值
+### 被隐盖的原理和价值
 
 <img src="MMORPG.assets/image-20240430111955084.png" alt="image-20240430111955084" style="zoom:50%;" /> 
 
@@ -221,7 +36,7 @@ unity控制台中的error pause 遇到错误打印就停止。导致我以为是
 
 
 
-## 没用永恒的框架，只有永恒的原理
+### 没用永恒的框架，只有永恒的原理
 
 
 
@@ -232,6 +47,14 @@ unity控制台中的error pause 遇到错误打印就停止。导致我以为是
 
 
 # ================================
+
+
+
+# c#基础
+
+
+
+
 
 
 
@@ -6461,6 +6284,34 @@ HotSpot虚拟机中内置了两个即时编译器：Client Complier和Server Com
 
 
 
+## 委托，事件，Action，Func区别
+
+<img src="MMORPG.assets/image-20240805163201958.png" alt="image-20240805163201958" style="zoom:67%;" /> 
+
+<img src="MMORPG.assets/image-20240805163231346.png" alt="image-20240805163231346" style="zoom: 67%;" /> 
+
+
+
+<img src="MMORPG.assets/image-20240805163400845.png" alt="image-20240805163400845" style="zoom:67%;" /> 
+
+写成Event这个赋值操作就不会发生
+
+<img src="MMORPG.assets/image-20240805163416594.png" alt="image-20240805163416594" style="zoom:67%;" /> 
+
+![image-20240805163537876](MMORPG.assets/image-20240805163537876.png)
+
+
+
+Action是Delegate的简写，c#为我们封装好的，当然它也会有像委托那样被覆盖的风险。
+
+![image-20240805163711253](MMORPG.assets/image-20240805163711253.png)
+
+![image-20240805163737236](MMORPG.assets/image-20240805163737236.png)
+
+
+
+
+
 
 
 
@@ -8048,7 +7899,188 @@ bt
 
 
 
+# [遇到的奇奇怪怪的BUG]
 
+
+
+## 2024.2.21 
+
+**1.skill系统问题**，ai追逐玩家释放技能，短时间内释放了多次技能，当施法消息传送到客户端的时候，由于客户端的技能表现是由状态机推动的且在技能active状态下不可打断，所以会有技能被吞的问题，释放了两个技能但是只打出1个技能。
+
+解决方法：优化了skill的生命周期，添加后摇时间，给客户端的状态机保持一个缓冲的时间。
+
+```
+    public enum Stage
+    {
+        None,               //无状态
+        Intonate,           //吟唱
+        Active,             //已激活
+        PostRock,           //后摇
+        Colding             //冷却中
+    }
+```
+
+
+
+**2.服务端怪物ai的问题**，原本追击玩家的流程是：巡逻->追击->攻击
+
+追击的时候不断调整ai的位置，逐渐靠近玩家，当达到怪物攻击范围的时候，停下来不移动，然后攻击。
+
+如果按照这样的流程，客户端ai在攻击玩家的时候就会出现一个抖动的问题（行走+不断挥刀，但是没有产生伤害），目前还没解决这个问题。正常来说服务器skill并没有影响怪物ai，初步判断应该是服务器ai的状态机和客户端的状态机的问题，存在一个攻击状态被打断的一个问题。
+
+idle->attack/move   
+
+attack->move/attack
+
+很可能就是idle和move动作之间的抖动，到达攻击范围停下脚步（idle），判断能否攻击（发现不可以），然后继续靠近target(move)
+
+重复上面，攻击范围上限浮动的时候，就会出现这个抖动。
+
+推动怪物ai的是entitymanager，场景中技能的推动也是entitymanager，也就是中心计时器，
+
+场景中推动战斗管理器也是这个中心计时器，说明这几个东西是单个线程处理的。
+
+但是skill使用的时候，需要将的施法请求放到下一帧处理，会不会就是因为这一帧的时间，导致原来满足攻击的距离现在变得不满足了，所以idle->move...，这个时间太短了。。。。。
+
+**临时方法**：当达到怪物攻击范围的时候，直接攻击，去处理停下来这个动作。倒是客户端展现的时候会出现一个攻击时滑步的问题。
+
+**问题未解决**：将方法1修复之后，这个现象没有复现了，估计也是这个攻击频率的问题，需要给一个缓冲时间，否则一个时间段内，客户端短时间接收到多次attack的施法请求可能会产生问题。
+
+**问题未解决：**
+
+这是客户端的施法响应，它没有判断就一股脑将skill.use，而技能的推动会导致状态机的状态切换
+
+这里没问题，不用改了，甚至状态机切换的active状态下不能中断也需要删除，因为客户端只是一个显示用的view层次。
+
+```
+    private void _SpellCastResponse(Connection conn, SpellCastResponse msg)
+    {
+
+        foreach (CastInfo item in msg.List)
+        {
+            var caster = EntityManager.Instance.GetEntity<Actor>(item.CasterId);
+            var skill = caster.skillManager.GetSkill(item.SkillId);
+            if (skill.IsUnitTarget)
+            {
+                var target = EntityManager.Instance.GetEntity<Actor>(item.TargetId);
+                skill.Use(new SCEntity(target));
+            }
+            else if (skill.IsPointTarget)
+            {
+
+            }else if (skill.IsNoneTarget)
+            {
+                skill.Use(new SCEntity(caster));
+            }
+
+        }
+    }
+```
+
+
+
+状态机的共有属性skill可能会受到覆盖的影响，导致后续的技能使用skill的时候导致空指针异常。
+
+这里改为有null就不能使用use。
+
+```
+        /// <summary>
+        /// 使用技能
+        /// </summary>
+        /// <param name="target"></param>
+        public void Use(SCObject target)
+        {
+            //只有本机玩家才会用到这个值
+            if (Owner.EntityId == GameApp.character.EntityId)
+            {
+                GameApp.CurrSkill = this;
+            }
+            _sco = target;
+            RunTime = 0;
+
+            Owner.StateMachine.parameter.skill = this;
+
+            //技能阶段从none切换到蓄气阶段
+            Stage = SkillStage.Intonate;
+            OnIntonate();
+        }
+```
+
+**问题解决：**其实这个抖动就是用混合书导致idle和walk之间不断切换的抖动，因为切换不平滑。捣鼓半天还是这两个抖动我就知道。
+
+现在只能接收滑步攻击这个小问题了。。。。。，后面再修改吧。
+
+
+
+## 2024.2.21
+
+关于awake和start的问题
+
+当你在某些场景下，比如两个对象都在start中修改了同一东西，这就会导致修改后的状态不符合预期。
+
+因为我们确定不了这两个对象谁先执行，这就导致了我以为setactive(bool)实现，其实并没有失效，就是结果被覆盖了。
+
+因为我一直将awake里写获取组件  ，start中设置变量值的
+
+
+
+
+
+## 2024.3.5
+
+**关于背包打开没有数据。**
+
+```
+    protected  override void Start()
+    {
+        base.Start();
+
+        //监听一些个事件
+        Kaiyun.Event.RegisterOut("UpdateCharacterKnapsackData", this, "RefreshKnapsackUI");
+        Kaiyun.Event.RegisterOut("UpdateCharacterKnapsackPickupItemBox", this, "RefreshPickUpBox");
+        Kaiyun.Event.RegisterOut("GoldChange", this, "UpdateCurrency");
+        Kaiyun.Event.RegisterOut("UpdateCharacterEquipmentData", this, "RefreshEquipsUI");
+
+        Init();
+
+    }
+```
+
+原本是先进行init()然后在进行事件监听的，我们先初始化，里面会向服务器拉取背包数据，响应的时候就会通过事件来进行回调刷新ui。但是响应的速度很快，我们没来得及监听事件，就已经到达了，所以就会导致第一次刷新会不成功的问题。
+
+**解决方法**：1.调整监听的位置，如上面的代码
+
+​					2.在角色上线的时候我们就拉取背包数据
+
+
+
+**每次上线背包中第0个位置的物品消失问题。**
+
+我们的装备系统在穿戴装备的时候，会将背包中对应的位置的物品移除。0位也是背包合理位置
+
+我们粗心讲武器的pos属性设置为0，所以导致每次穿戴的时候，都将背包中第0位的物品移除。
+
+**解决方法：**
+
+​	将物品的pos属性默认置为-1，-1是背包中不合理的位置
+
+
+
+
+
+## 2024.4.9
+
+unity控制台中的error pause 遇到错误打印就停止。导致我以为是我的热更代码有问题。浪费我一下午。
+
+
+
+## 2024.7.25
+
+使用热更新之后，打包出来的游戏，会有游戏对象脚本组件丢失的问题。而在编辑器里面是没有任何问题的。
+
+使用Resource.load加载资源的
+
+我们换成使用yoo的异步加载就好了。
 
 
 
@@ -9826,6 +9858,135 @@ Animancer.AnimancerPlayable:PrepareFrame(Playable, FrameData)
 ## 击杀提示
 
 ![image-20240508180756993](MMORPG.assets/image-20240508180756993.png) 
+
+
+
+
+
+## 角色名和血条
+
+弄个三维的UI即可，没什么难度，主要需要一直面向摄像机。
+
+需要一个好看的ui，我这里这就就是一个滑动条。
+
+
+
+## 过程进度条/海报
+
+找个好看的进度条才行
+
+
+
+
+
+
+
+
+
+# AI
+
+
+
+
+
+## 状态机
+
+
+
+
+
+
+
+
+
+## 行为树
+
+
+
+### 行为树的基本要素
+
+
+
+- 行为
+- 行为状态
+- 读写状态（条件）
+- 控制行为
+
+
+
+
+
+#### 行为状态
+
+完成态：失败、成功
+
+执行态：执行中(中间状态)
+
+
+
+#### 读写行为
+
+![image-20240805165413144](MMORPG.assets/image-20240805165413144.png)
+
+
+
+#### 控制行为
+
+![image-20240805165713975](MMORPG.assets/image-20240805165713975.png) 
+
+![image-20240805170300077](MMORPG.assets/image-20240805170300077.png)
+
+
+
+### AI举例
+
+![image-20240805171020092](MMORPG.assets/image-20240805171020092.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 参考文献
+
+[行为树(上-理论)_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV18V411y7Xu?p=1&vd_source=ff929fb8407b30d15d4d258e14043130)
+
+​	
+
+
+
+
+
+## Behavior Designer
+
+
+
+
+
+
+
+
+
+## 手搓行为树
+
+[手撸unity行为树_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV17s4y137m3/?spm_id_from=333.788.recommend_more_video.1&vd_source=ff929fb8407b30d15d4d258e14043130)
+
+
+
+
+
+
+
+
 
 
 
