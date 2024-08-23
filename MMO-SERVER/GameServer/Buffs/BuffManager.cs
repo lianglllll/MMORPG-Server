@@ -133,6 +133,9 @@ namespace GameServer.Buffs
             return false;
         }
 
+        /// <summary>
+        /// 移除所有buff
+        /// </summary>
         public void RemoveAllBuff()
         {
             int len = buffs.Count;
@@ -214,6 +217,14 @@ namespace GameServer.Buffs
 
         }
 
+
+        /// <summary>
+        /// 更新actor网络对象上面的buff信息。
+        /// </summary>
+        private void ReloadBuffsInfo()
+        {
+            //目前这个功能写在actor获取时再重新更新网络对象里面的buff信息
+        }
 
     }
 }

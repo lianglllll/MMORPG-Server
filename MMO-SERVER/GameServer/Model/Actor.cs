@@ -23,7 +23,7 @@ namespace GameServer.Model
         public UnitDefine Define;                                                                   //actor的define数据(静态数据)
         public NetActor _info  = new NetActor();                                                     //actor的NetActor数据(动态数据)
         public EntityState State;                                                                   //actor动画状态：跑、走、跳、
-        public UnitState unitState;                                                                 //actor活动状态:死亡、空闲、战斗
+        public UnitState unitState;                                                                 //actor活动状态:空闲、战斗、不可操控状态
         public Attributes Attr = new Attributes();                                                  //actor属性
         public SkillManager skillManager;                                                           //actor技能管理器
         public Spell spell;                                                                         //actor技能释放器

@@ -269,7 +269,7 @@ namespace GameServer.Model
         }
 
         /// <summary>
-        /// 设置角色的状态
+        /// 设置角色的状态（动画）
         /// </summary>
         /// <param name="state"></param>
         public override void SetEntityState(EntityState state)
