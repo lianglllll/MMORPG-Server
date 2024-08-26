@@ -37,7 +37,7 @@ namespace GameServer.AI.State
             var monster = param.owner;
 
             //追击目标失效切换为返回状态
-            if (monster.target == null || monster.target.IsDeath || !EntityManager.Instance.Exist(monster.target.EntityId))
+            if (monster.target == null || monster.target.IsDeath || !EntityManager.Instance.EntityExists(monster.target.EntityId))
             {
                 monster.target = null;
                 fsm.ChangeState("return");

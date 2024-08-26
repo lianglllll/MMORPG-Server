@@ -26,8 +26,9 @@ namespace GameServer.Manager
             foreach(var kv in DataManager.Instance.spaceDefineDict)
             {
                 spaceDict[kv.Key] = new Space(kv.Value);
-                Log.Information("初始化地图：{0}", kv.Value.Name);
+                //Log.Information("初始化地图：{0}", kv.Value.Name);
             }
+            Log.Debug("==>共加载{0}个地图", DataManager.Instance.spaceDefineDict.Count);
         }
 
         /// <summary>

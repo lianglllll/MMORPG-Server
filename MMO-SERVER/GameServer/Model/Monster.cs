@@ -18,10 +18,11 @@ namespace GameServer.Model
     public class Monster : Actor
     {
         public MonsterAI AI;                //怪物Ai(灵魂所在)
+        public Vector3 initPosition;        //出生点
+
         public Actor target;                //追击的目标
         public Vector3 targetPos;           //移动时的目标位置
         public Vector3 curPos;              //移动时的当前位置
-        public Vector3 initPosition;        //出生点
 
         private static Vector3Int Y1000 = new Vector3Int(0, 1000, 0);   //Y单位方向
         private Random random = new Random();                                   //随机数生成器
@@ -221,7 +222,7 @@ namespace GameServer.Model
             AI.fsm.ChangeState("death");
 
             //怪物死亡，得给击杀者奖励啥的：exp
-            var killer = EntityManager.Instance.GetEntity(killerID);
+            var killer = EntityManager.Instance.GetEntityById(killerID);
             if (killer != null && killer is Character chr)
             {
                 //爆经验
@@ -240,7 +241,7 @@ namespace GameServer.Model
             if (!IsDeath) return;
             SetHp(Attr.final.HPMax);
             SetMP(Attr.final.MPMax);
-            SetState(UnitState.Free);
+            SetMacroState(UnitState.Free);
             //设置当前怪物的位置
             Position = initPosition;
             SetEntityState(EntityState.Idle);
@@ -268,7 +269,7 @@ namespace GameServer.Model
             if (IsDeath) return;
 
             //标记伤害来源为我们的target
-            target = EntityManager.Instance.GetEntity(damage.AttackerId) as Actor;
+            target = EntityManager.Instance.GetEntityById(damage.AttackerId) as Actor;
 
             //切换为hit状态
             //设置/重置 受击时间
@@ -281,8 +282,6 @@ namespace GameServer.Model
 
 
         }
-
-
 
         /// <summary>
         /// 计算出生点附近的随机坐标

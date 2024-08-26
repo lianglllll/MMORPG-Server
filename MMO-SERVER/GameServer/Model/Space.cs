@@ -14,6 +14,7 @@ using Google.Protobuf;
 using GameServer.Core;
 using AOIMap;
 using GameServer.Database;
+using AOI;
 
 namespace GameServer.Model
 {
@@ -31,6 +32,8 @@ namespace GameServer.Model
         public SpawnManager spawnManager = new SpawnManager();                                      //怪物孵化器，负责怪物的孵化
         public FightManager fightManager = new FightManager();                                      //战斗管理器，负责技能、投射物、伤害、actor信息的更新
         public ItemEntityManager itemManager = new ItemEntityManager();                             //物品管理器，管理场景中出现的物品
+        public AoiZone aoiZone = new AoiZone(0.001f,0.001f);                    //十字链表空间(unity坐标系)
+
         public AOIManager<Entity> AOIManager { get;}
 
         /// <summary>
@@ -53,6 +56,7 @@ namespace GameServer.Model
             itemManager.Init(this);
         }
 
+
         /// <summary>
         /// 推动场景下的各个管理器运行
         /// </summary>
@@ -61,7 +65,6 @@ namespace GameServer.Model
             spawnManager.Update();
             fightManager.OnUpdate(Time.deltaTime);
         }
-
 
 
         /// <summary>
@@ -100,6 +103,26 @@ namespace GameServer.Model
         }
 
         /// <summary>
+        /// 怪物进入地图,广播给场景内的client
+        /// </summary>
+        /// <param name="monster"></param>
+        public void MonsterJoin(Monster monster)
+        {
+            monster.OnEnterSpace(this);
+            AOIManager.Enter(monster);
+        }
+
+        /// <summary>
+        /// 物品进入场景，广播给场景内的client
+        /// </summary>
+        /// <param name="ie"></param>
+        public void ItemJoin(ItemEntity ie)
+        {
+            AOIManager.Enter(ie);
+        }
+
+
+        /// <summary>
         /// 角色离开地图(客户端离线、切换地图)
         /// </summary>
         /// <param name="conn"></param>
@@ -108,6 +131,25 @@ namespace GameServer.Model
         {
             characterDict.Remove(character.EntityId);
             AOIManager.Leave(character);
+        }
+
+        /// <summary>
+        /// 物品离开场景，广播给场景内的client
+        /// </summary>
+        /// <param name="ie"></param>
+        public void ItemLeave(ItemEntity ie)
+        {
+            if (!itemManager.RemoveItem(ie.EntityId))
+            {
+                return;
+            }
+            AOIManager.Leave(ie);
+            /*
+            //广播
+            SpaceEntityLeaveResponse resp = new SpaceEntityLeaveResponse();
+            resp.EntityId = ie.EntityId;
+            Broadcast(resp);
+            */
         }
 
         /// <summary>
@@ -133,56 +175,7 @@ namespace GameServer.Model
 
         }
 
-        /// <summary>
-        /// 怪物进入地图,广播给场景内的client
-        /// </summary>
-        /// <param name="monster"></param>
-        public void MonsterJoin(Monster monster)
-        {
-            monster.OnEnterSpace(this);
-            AOIManager.Enter(monster);
-            /*
-            var resp = new SpaceCharactersEnterResponse();
-            resp.SpaceId = this.SpaceId;
-            resp.CharacterList.Add(monster.Info);
 
-            //广播地图内所有玩家
-            Broadcast(resp);
-            */
-        }
-
-        /// <summary>
-        /// 物品进入场景，广播给场景内的client
-        /// </summary>
-        /// <param name="ie"></param>
-        public void ItemJoin(ItemEntity ie)
-        {
-            AOIManager.Enter(ie);
-            /*
-            var resp = new SpaceItemEnterResponse();
-            resp.NetItemEntity = ie.NetItemEntity;
-            Broadcast(resp);
-            */
-        }
-
-        /// <summary>
-        /// 物品离开场景，广播给场景内的client
-        /// </summary>
-        /// <param name="ie"></param>
-        public void ItemLeave(ItemEntity ie)
-        {
-            if (!itemManager.RemoveItem(ie.EntityId))
-            {
-                return;
-            }
-            AOIManager.Leave(ie);
-            /*
-            //广播
-            SpaceEntityLeaveResponse resp = new SpaceEntityLeaveResponse();
-            resp.EntityId = ie.EntityId;
-            Broadcast(resp);
-            */
-        }
 
         /// <summary>
         /// 更新itementity的信息，向其他玩家进行转发
@@ -199,7 +192,6 @@ namespace GameServer.Model
             Broadcast(resp);
             */
         }
-
 
         /// <summary>
         /// 往aoi九宫格内进行广播(all Character)一个proto消息
@@ -227,6 +219,7 @@ namespace GameServer.Model
                 kv.Value.session.Send(msg);
             }
         }
+
 
         /// <summary>
         /// 场景内传送

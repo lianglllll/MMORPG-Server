@@ -22,15 +22,14 @@ namespace GameServer.Model
     /// </summary>
     public class Character:Actor
     {
-        public DbCharacter Data;                    //当前角色对应的数据库对象信息
-        public Inventory knapsack;                  //背包 
-        public EquipmentManager equipmentManager;   //装备管理器
-
         public Session session
         {
             get;
             set;
         }
+        public DbCharacter Data;                    //当前角色对应的数据库对象信息
+        public Inventory knapsack;                  //背包 
+        public EquipmentManager equipmentManager;   //装备管理器
 
         /// <summary>
         /// 构造函数
@@ -39,26 +38,16 @@ namespace GameServer.Model
         public Character(DbCharacter dbCharacter) : base(EntityType.Character,dbCharacter.JobId,dbCharacter.Level,new Vector3Int(dbCharacter.X, dbCharacter.Y, dbCharacter.Z), Vector3Int.zero)
         {
 
-            //将角色信息转换为Character
-            this.Id = dbCharacter.Id;
             this.Data = dbCharacter;
 
-            this.Name = dbCharacter.Name;              //覆盖
-            if(dbCharacter.Hp <= 0)
-            {
-                this.Hp = Attr.final.HPMax;
-            }
-            else
-            {
-                this.Hp = dbCharacter.Hp;                  //覆盖
-            }
-            this.Mp = dbCharacter.Mp;                  //覆盖
-            this.SpaceId = dbCharacter.SpaceId;        //覆盖
-
-            this.Id = dbCharacter.Id;                  //独有
-            this.Exp = dbCharacter.Exp;                //独有
-            this.Gold = dbCharacter.Gold;              //独有
-
+            //将部分Character信息更新到ActorNetInfo中
+            this.AcotrId = dbCharacter.Id;
+            this.Name = dbCharacter.Name;
+            this.CurSpaceId = dbCharacter.SpaceId;
+            this.Hp = dbCharacter.Hp <= 0? Attr.final.HPMax : dbCharacter.Hp;
+            this.Mp = dbCharacter.Mp <= 0 ? Attr.final.MPMax : dbCharacter.Mp;
+            this.Exp = dbCharacter.Exp;                
+            this.Gold = dbCharacter.Gold;              
 
             //创建背包
             knapsack = new Inventory(this);
@@ -81,7 +70,6 @@ namespace GameServer.Model
             return new Character(dbCharacter);
         }
 
-
         /// <summary>
         /// aoi区域内有新entity进入
         /// </summary>
@@ -94,7 +82,7 @@ namespace GameServer.Model
             if(unit is Actor actor)
             {
                 var resp = new SpaceCharactersEnterResponse();
-                resp.SpaceId = this.SpaceId;
+                resp.SpaceId = this.CurSpaceId;
                 resp.CharacterList.Add(actor.Info);
                 session.Send(resp); 
             }
@@ -129,7 +117,6 @@ namespace GameServer.Model
             }
         }
 
-
         /// <summary>
         /// chrAOI坐标异常
         /// </summary>
@@ -149,7 +136,7 @@ namespace GameServer.Model
             var pointDef = DataManager.Instance.revivalPointDefindeDict.Values.Where(def => def.SID == sp.SpaceId).First();
             if(pointDef != null)
             {
-                TransmitSpace(sp, new Core.Vector3Int(pointDef.X, pointDef.Y, pointDef.Z));
+                TransmitTo(sp, new Core.Vector3Int(pointDef.X, pointDef.Y, pointDef.Z));
             }
         }
 
@@ -261,7 +248,7 @@ namespace GameServer.Model
             if (!IsDeath) return;
             SetHp(Attr.final.HPMax);
             SetMP(Attr.final.MPMax);
-            SetState(UnitState.Free);
+            SetMacroState(UnitState.Free);
             //设置当前角色的位置：找到场景中最近的复活点
             Position = currentSpace.SearchNearestRevivalPoint(this);
             SetEntityState(EntityState.Idle);
@@ -269,7 +256,7 @@ namespace GameServer.Model
         }
 
         /// <summary>
-        /// 设置角色的状态（动画）
+        /// 设置角色的状态
         /// </summary>
         /// <param name="state"></param>
         public override void SetEntityState(EntityState state)
@@ -287,7 +274,6 @@ namespace GameServer.Model
             session.Send(resp);
 
         }
-
 
     }
 

@@ -41,7 +41,7 @@ namespace GameServer.Model
 
             //获取各个频道的信息
 
-            this.localIndex = ChatManager.Instance.GetLocalMessages(this.Owner.SpaceId, this.localIndex, res.LocalMessages);
+            this.localIndex = ChatManager.Instance.GetLocalMessages(this.Owner.CurSpaceId, this.localIndex, res.LocalMessages);
             //this.worldIndex = ChatManager.Instance.GetWorldMessages(this.Owner.SpaceId, this.worldIndex, res.LocalMessages);
             //this.systemIndex = ChatManager.Instance.GetSystemMessages(this.Owner.SpaceId, this.systemIndex, res.LocalMessages);
 

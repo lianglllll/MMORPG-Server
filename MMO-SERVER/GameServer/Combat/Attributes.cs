@@ -15,7 +15,7 @@ namespace GameServer.Combat
         private AttrubuteData growth;       //人物等级成长属性
         public AttrubuteData equip;        //装备属性
         public AttrubuteData buff;         //Buff属性
-        public AttrubuteData final;         //最终属性
+        public AttrubuteData final;        //最终属性
 
         public Actor owner { get; private set; }
 
@@ -103,7 +103,7 @@ namespace GameServer.Combat
             final.Merge(extra);
 
             //告诉actor
-            owner.SyncAttributes();
+            owner.UpdateAttributes();
 
         }
     }

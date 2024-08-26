@@ -33,7 +33,7 @@ namespace GameServer.Service
         /// <param name="message"></param>
         private void _ReviveRequest(Connection conn, ReviveRequest message)
         {
-            var actor = EntityManager.Instance.GetEntity(message.EntityId);
+            var actor = EntityManager.Instance.GetEntityById(message.EntityId);
             if(actor != null && actor is Character chr&& chr.IsDeath&& chr.session.Conn == conn)
             {
                 chr.Revive();
@@ -73,7 +73,7 @@ namespace GameServer.Service
             DataManager.Instance.revivalPointDefindeDict.TryGetValue(message.PointId, out var pointDef);
             if (sp == null || pointDef == null) return;
 
-            chr.TransmitSpace(sp, new Core.Vector3Int(pointDef.X, pointDef.Y, pointDef.Z));
+            chr.TransmitTo(sp, new Core.Vector3Int(pointDef.X, pointDef.Y, pointDef.Z));
         }
     }
 }

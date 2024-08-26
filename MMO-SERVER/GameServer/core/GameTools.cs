@@ -13,16 +13,18 @@ namespace GameServer.core
     {
 
 
-        /// <summary>
-        /// 根据entityId获取一个actor
-        /// </summary>
-        /// <param name="entityId"></param>
-        /// <returns></returns>
-        public static Actor GetUnit(int entityId)
+        public static Actor GetActorByEntityId(int entityId)
         {
-            return EntityManager.Instance.GetEntity(entityId) as Actor;
+            return EntityManager.Instance.GetEntityById(entityId) as Actor;
         }
 
+
+        public static Entity GetEntityByEntityId(int entityId)
+        {
+            return EntityManager.Instance.GetEntityById(entityId);
+        }
+
+        /*
         /// <summary>
         /// 返回指定范围内的actor
         /// </summary>
@@ -38,7 +40,7 @@ namespace GameServer.core
                 return !float.IsNaN(dis) && dis <= range;
             };
             return EntityManager.Instance.GetEntityList(spaceId, match);
-            }
+        }
 
         /// <summary>
         /// 返回指定范围内的itementity
@@ -55,11 +57,6 @@ namespace GameServer.core
             };
             return EntityManager.Instance.GetEntityList(spaceId, match);
         }
-
-        public static Entity GetEntity(int entityId)
-        {
-            return EntityManager.Instance.GetEntity(entityId);
-        }
-
+        */
     }
 }

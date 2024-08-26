@@ -114,7 +114,7 @@ namespace GameServer.Combat
             }
 
             //检测目标
-            var target = EntityManager.Instance.GetEntity(target_id) as Actor;
+            var target = EntityManager.Instance.GetEntityById(target_id) as Actor;
             if(target == null)
             {
                 Log.Warning("Spell::SpellTarget():Owner[{0}]:target[{1}] not found", Owner.EntityId, target_id);

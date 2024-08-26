@@ -27,7 +27,7 @@ namespace GameServer.Manager
             switch (message.Channel)
             {
                 case ChatChannel.Local:
-                    this.AddLocalMessage(chr.SpaceId, message);         
+                    this.AddLocalMessage(chr.CurSpaceId, message);         
                     break;
                 case ChatChannel.World:
                     //this.AddWorldMessage(message);

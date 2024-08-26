@@ -30,7 +30,7 @@ namespace GameServer.Manager
             Space = space;
             SpawnPoint = ParsePoint(define.Pos);
             SpawnDir = ParsePoint(define.Dir);
-            Log.Debug("New Spawner:场景[{0}],坐标[{1}],单位类型[{2}]", space.Name, SpawnPoint, define.TID);
+            //Log.Debug("New Spawner:场景[{0}],坐标[{1}],单位类型[{2}]", space.Name, SpawnPoint, define.TID);
             this.spawn();
             reviving = false;
         }

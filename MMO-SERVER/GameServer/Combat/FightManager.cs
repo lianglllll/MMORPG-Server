@@ -74,7 +74,7 @@ namespace GameServer.Combat
         private void RunCast(CastInfo cast)
         {
             //1.判断施法者是否存在
-            var caster = EntityManager.Instance.GetEntity(cast.CasterId) as Actor;
+            var caster = EntityManager.Instance.GetEntityById(cast.CasterId) as Actor;
             if (caster == null)
             {
                 Log.Error("RunCast: Caster is null {0}", cast.CasterId);
@@ -102,7 +102,7 @@ namespace GameServer.Combat
                 foreach (var item in spellCastResponse.List)
                 {
                     //当事人
-                    var entity = GameTools.GetUnit(item.CasterId);
+                    var entity = GameTools.GetActorByEntityId(item.CasterId);
                     if (entity == null) continue;
                     var li = space?.AOIManager?.GetEntities(entity.AoiPos.x, entity.AoiPos.y);
                     if (li != null)
@@ -143,7 +143,7 @@ namespace GameServer.Combat
                 foreach (var item in damageResponse.List)
                 {
                     //当事人,你需要让这个给
-                    var entity = GameTools.GetUnit(item.TargetId);
+                    var entity = GameTools.GetActorByEntityId(item.TargetId);
                     if (entity == null) continue;
                     var li = space?.AOIManager?.GetEntities(entity.AoiPos.x, entity.AoiPos.y);
                     if (li != null)
@@ -184,7 +184,7 @@ namespace GameServer.Combat
                 foreach(var item in propertyUpdateRsponse.List)
                 {
                     //当事人
-                    var entity = GameTools.GetUnit(item.EntityId);
+                    var entity = GameTools.GetActorByEntityId(item.EntityId);
                     if (entity == null) continue;
                     var li = space?.AOIManager?.GetEntities(entity.AoiPos.x,entity.AoiPos.y);
                     if (li != null)

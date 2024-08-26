@@ -78,15 +78,15 @@ namespace Summer
                 return string.Compare(x, y, StringComparison.Ordinal);
             });
 
-            //打印信息
             for (int i = 0; i < list.Count; i++)
             {
                 var fname = list[i];
-                Log.Debug("Proto类型注册：{0}  {1}", i,fname);
+                //Log.Debug("Proto类型注册：{0}  {1}", i,fname);
                 var t = _registry[fname];
                 mDict1.Add(i, t);
                 mDict2.Add(t, i);
             }
+            Log.Debug("==>共加载{0}个proto协议", list.Count);
 
         }
 

@@ -1,4 +1,5 @@
 ﻿using Common.Summer;
+using GameServer.Combat;
 using GameServer.Core;
 using GameServer.Model;
 using Summer;
@@ -45,105 +46,88 @@ namespace GameServer.Manager
                 {
                     spaceEntitiesDict[spaceId] = new List<Entity>();
                 }
-                GetSpaceEntitytList(spaceId, (list) => list.Add(entity));
-            }
 
+                if (spaceEntitiesDict.TryGetValue(spaceId, out var list))
+                {
+                    lock (list)
+                    {
+                        list.Add(entity);
+                    }
+                }
+            }
         }
 
         public void RemoveEntity(int spaceId, int entityId)
         {
             if (!allEntitiesDict.ContainsKey(entityId)) return;
-            allEntitiesDict.TryRemove(entityId, out var item);
-            if(item != null)
+            allEntitiesDict.TryRemove(entityId, out var entity);
+            if(entity != null)
             {
                 _idGenerator.ReturnId(entityId);
             }
-            GetSpaceEntitytList(spaceId, (list) => list.Remove(item));
+            if (spaceEntitiesDict.TryGetValue(spaceId, out var list))
+            {
+                lock (list)
+                {
+                    list.Remove(entity);
+                }
+            }
+
         }
 
-        /// <summary>
-        /// 根据entityid获取单个entity
-        /// </summary>
-        /// <param name="entityId"></param>
-        /// <returns></returns>
-        public Entity GetEntity(int entityId)
+        public Entity GetEntityById(int entityId)
         {
             return allEntitiesDict.GetValueOrDefault(entityId);
         }
 
-        /// <summary>
-        /// 根据条件match查找entity对象(T),T:character||monster||...
-        /// 比如说：生命值为0的，在某个范围内的，
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="spaceId"></param>
-        /// <param name="match"></param>
-        /// <returns></returns>
-        public List<T> GetEntityList<T>(int spaceId,Predicate<T> match)where T : Entity
+        public List<T> GetEntitiesAroundPoint<T>(int spaceId, Vector3Int center, int range) where T : Entity
         {
             if (!spaceEntitiesDict.TryGetValue(spaceId, out var list)) return null;
-
             return list?
                 .OfType<T>()                            //根据类型赛选
-                .Where(entity => match.Invoke(entity))  //根据条件赛选
+                .Where(entity => {                      //根据条件赛选
+
+                    return Vector3Int.Distance(center, entity.Position) <= range;
+                })  
                 .ToList();
         }
-
-        /// <summary>
-        /// 寻找目标点范围内的character
-        /// </summary>
-        /// <param name="sapceId"></param>
-        /// <param name="center"></param>
-        /// <param name="range"></param>
-        /// <returns></returns>
-        public List<Character> GetGetNearEntitys(int sapceId, Vector3Int center, int range) 
+        public List<Entity> GetEntitiesByIds(HashSet<long> ids)
         {
-            Predicate<Character> match = (e) =>
+            List<Entity> res = new List<Entity>(); 
+            foreach (var id in ids)
             {
-                return Vector3Int.Distance(center, e.Position) <= range;
-            };
-            return GetEntityList<Character>(sapceId, match);
+                if(allEntitiesDict.TryGetValue((int)id,out var entity))
+                {
+                    res.Add(entity);
+                }
+            }
+            return res;
         }
 
-        /// <summary>
-        /// 判断某个entity是否存在
-        /// </summary>
-        /// <param name="entityId"></param>
-        /// <returns></returns>
-        public bool Exist(int entityId)
+        public bool EntityExists(int entityId)
         {
             return allEntitiesDict.ContainsKey(entityId);
         }
 
-        /// <summary>
-        /// 获取某个场景内全部的entity
-        /// </summary>
-        /// <param name="spaceId"></param>
-        /// <param name="action"></param>
-        public void GetSpaceEntitytList(int spaceId,Action<List<Entity>> action)
-        {
-            if(spaceEntitiesDict.TryGetValue(spaceId,out var list))
-            {
-                lock (list)
-                {
-                    action.Invoke(list);
-                }
-            }
-        }
-
-        /// <summary>
-        /// entity切换场景
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <param name="oldSpaceId"></param>
-        /// <param name="newSpaceId"></param>
-        public void ChangeSpace(Entity entity,int oldSpaceId,int newSpaceId)
+        public void EntityChangeSpace(Entity entity,int oldSpaceId,int newSpaceId)
         {
             if (oldSpaceId == newSpaceId) return;
-            GetSpaceEntitytList(oldSpaceId, (list) => list.Remove(entity));
-            GetSpaceEntitytList(newSpaceId, (list) => list.Add(entity));
-        }
+            if (spaceEntitiesDict.TryGetValue(oldSpaceId, out var list1))
+            {
+                lock (list1)
+                {
+                    list1.Remove(entity);
+                }
+            }
+            if (spaceEntitiesDict.TryGetValue(oldSpaceId, out var list2))
+            {
+                lock (list2)
+                {
+                    list2.Add(entity);
+                }
+            }
 
+        }
     }
 }
 

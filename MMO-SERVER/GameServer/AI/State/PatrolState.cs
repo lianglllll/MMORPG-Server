@@ -1,5 +1,6 @@
 ﻿using GameServer.core.FSM;
 using GameServer.Manager;
+using GameServer.Model;
 using Summer;
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,7 @@ namespace GameServer.AI.State
             var monster = param.owner;
 
             //查询viewRange内的玩家，如果有就切换追击状态
-            var chr = EntityManager.Instance.GetGetNearEntitys(monster.SpaceId, monster.Position, param.viewRange).FirstOrDefault(a => !a.IsDeath);
+            var chr = EntityManager.Instance.GetEntitiesAroundPoint<Character>(monster.CurSpaceId, monster.Position, param.viewRange).FirstOrDefault(a => !a.IsDeath);
             if (chr != null)
             {
                 monster.target = chr;
@@ -60,12 +61,12 @@ namespace GameServer.AI.State
             }
 
             //当actor状态不健康的时候回血回蓝
-            if (!monster.ActorHealth())
+            if (!monster.IsDeath && monster.Check_HpAndMp_Needs())
             {
                 if (lastRestoreHpMpTime + restoreWaitTime < Time.time)
                 {
                     lastRestoreHpMpTime = Time.time;
-                    monster.RestoreHealthState();
+                    monster.Restore_HpAndMp();
                 }
 
             }

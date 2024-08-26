@@ -25,7 +25,7 @@ namespace GameServer.Service
         {
             //获取当前的sender的info，填充信息
             Character chr = conn.Get<Session>().character;
-            message.Message.FromId = chr.Id;
+            message.Message.FromId = chr.AcotrId;
             message.Message.FromName = chr.Name;
             message.Message.Time = Time.time;     
             //Log.Information("_ChatRequest:: character:{0}-Channel:{1}-Message:{2}", chr.Id, message.Message.Channel, message.Message.Content);

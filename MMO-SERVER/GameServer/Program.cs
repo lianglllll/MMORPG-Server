@@ -28,7 +28,7 @@ namespace GameServer
             .WriteTo.Console()
             .WriteTo.File("logs\\server-log.txt", rollingInterval: RollingInterval.Day)
             .CreateLogger();
-            Log.Debug("[日志服务启动完成]");
+            Log.Debug("[日志服务启动]");
 
             //proto类型加载
             Log.Debug("[proto类型加载]");
@@ -39,41 +39,40 @@ namespace GameServer
             SkillSanner.Start();
 
             //加载配置文件
-            Log.Debug("[加载server配置文件]");
+            Log.Debug("[加载server配置信息]");
             Config.Init();
 
             //装载配置文件
+            Log.Debug("[加载Json配置文件]");
             DataManager.Instance.init();
-            Log.Debug("[Json配置文件加载完成]");
 
             //数据库服务
+            Log.Debug("[启动数据库服务]");
             DbManager.Init();
-            Log.Debug("[数据库服务启动完成]");
 
             //开启网络服务
-            //NetService netService = new NetService();
+            Log.Debug("[启动网络服务]");
             NetService.Instance.Start();
-            Log.Debug("[网络服务启动完成]");
 
             //开启玩家服务
+            Log.Debug("[启动玩家服务]");
             UserService.Instance.Start();
-            Log.Debug("[玩家服务启动完成]");
 
             //开启地图服务
+            Log.Debug("[启动地图服务]");
             SpaceService.Instance.Start();
-            Log.Debug("[地图服务启动完成]");
 
             //开启战斗服务
             CombatService.Instance.Start();
-            Log.Debug("[战斗服务启动完成]");
+            Log.Debug("[启动战斗服务]");
 
             //开启频道聊天服务
             ChatService.Instance.start();
-            Log.Debug("[频道服务启动完成]");
+            Log.Debug("[启动频道服务]");
 
             //开启物品服务
             ItemService.Instance.start();
-            Log.Debug("[物品服务启动完成]");
+            Log.Debug("[启动物品服务]");
 
             //中心计时器任务加载(使用了Timer)
             Scheduler.Instance.Start();
@@ -82,21 +81,7 @@ namespace GameServer
                 EntityManager.Instance.Update();
                 SpaceManager.Instance.Update();
             }, 0.02f);
-            Log.Debug("[中心计时器任务加载完成]");
-
-            //服务器启动完毕，开始工作
-            Log.Debug("[mmorpg服务器启动成功!!!]");
-
-
-            //test 物品实例
-/*            Space space1 = SpaceManager.Instance.GetSpaceById(0);
-            var define = DataManager.Instance.ItemDefinedDict[1001];
-            var item = new Consumable(define, 1, 0);
-            space1.itemManager.Create(item, Vector3Int.zero, Vector3Int.zero);
-
-            var define2 = DataManager.Instance.ItemDefinedDict[1002];
-            var item2 = new Consumable(define2, 1, 0);
-            space1.itemManager.Create(item2, new Vector3Int(1000,0,1000), Vector3Int.zero);*/
+            Log.Debug("[激活世界心跳Tick]");
 
             Console.ReadKey();//防止进程结束
         }

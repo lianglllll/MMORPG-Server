@@ -38,9 +38,9 @@ namespace GameServer.Service
         private void _InventoryInfoRequest(Connection conn, InventoryInfoRequest message)
         {
             //安全校验
-            Entity entity = EntityManager.Instance.GetEntity(message.EntityId);
+            Entity entity = EntityManager.Instance.GetEntityById(message.EntityId);
             if (entity == null) return;
-            if (!((EntityManager.Instance.GetEntity(message.EntityId)) is Character chr)) return;
+            if (!((EntityManager.Instance.GetEntityById(message.EntityId)) is Character chr)) return;
 
             //响应给客户端
             InventoryInfoResponse resp = new InventoryInfoResponse();
@@ -142,7 +142,7 @@ namespace GameServer.Service
             if (chr == null) return;
 
             //获取符合条件的item，如果没有就忽略这次请求
-            Entity entity = GameTools.GetEntity(message.EntityId);
+            Entity entity = GameTools.GetEntityByEntityId(message.EntityId);
             if (entity == null) return;
             if (!(entity is ItemEntity itemEntity)) return;
 
@@ -259,7 +259,7 @@ namespace GameServer.Service
         {
             var resp = new EquipsUpdateResponse();
             resp.EntityId = chr.EntityId;
-            resp.EquipsList.AddRange(chr._info.EquipList);
+            resp.EquipsList.AddRange(chr.Info.EquipList);
 
             //广播
             chr.currentSpace.AOIBroadcast(chr, resp);

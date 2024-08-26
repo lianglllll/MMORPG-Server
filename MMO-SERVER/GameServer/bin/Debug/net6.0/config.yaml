@@ -9,3 +9,4 @@ server:
   ip: 127.0.0.1
   port: 6666
   workerCount: 2
+  aoiViewArea: 50

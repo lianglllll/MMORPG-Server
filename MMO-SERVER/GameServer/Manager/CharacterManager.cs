@@ -96,7 +96,7 @@ namespace GameServer.Manager
                 chr.Data.Z = chr.Position.z;
                 chr.Data.Hp = (int)chr.Hp;
                 chr.Data.Mp = (int)chr.Mp;
-                chr.Data.SpaceId = chr.SpaceId;
+                chr.Data.SpaceId = chr.CurSpaceId;
                 chr.Data.Knapsack = chr.knapsack.InventoryInfo.ToByteArray();
                 chr.Data.Level = chr.Level;
                 chr.Data.Exp = chr.Exp;

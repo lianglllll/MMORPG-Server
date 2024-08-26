@@ -38,6 +38,51 @@ namespace GameServer.Buffs
         }
 
         /// <summary>
+        /// 推动buff运行
+        /// </summary>
+        /// <param name="delta"></param>
+        public void OnUpdate(float delta)
+        {
+            //所有Buff执行Update
+            foreach (BuffBase item in buffs)
+            {
+                if (item.CurrentLevel > 0 && item.Owner != null)
+                {
+                    item.OnUpdate(delta);
+                }
+            }
+
+            //降低持续时间,清理无用buff
+            //这里从尾部开始，避免破坏list顺序
+            for (int i = buffs.Count - 1; i >= 0; i--)
+            {
+                var buff = buffs[i];
+                //降低持续时间
+                buff.ResidualDuration -= delta;
+
+
+                //如果持续时间为0，则降级,
+                //降级后如果等级为0则移除，否则刷新持续时间
+                if (buff.ResidualDuration <= 0)
+                {
+                    buff.CurrentLevel -= buff.Demotion;
+                    if (buff.CurrentLevel <= 0)
+                    {
+                        RemoveBuff(buff);
+                        continue;
+                    }
+                    else
+                    {
+                        buff.ResidualDuration = buff.MaxDuration;
+                    }
+                }
+
+
+            }
+
+        }
+
+        /// <summary>
         /// 添加一个buff
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -99,6 +144,8 @@ namespace GameServer.Buffs
             buff.OnGet();
             Observer?.Invoke(buff);
 
+            BuffsChangePostProcessing();
+
             //广播通知客户端
             var resp = new BuffsAddResponse();
             resp.List.Add(buff.Info);
@@ -123,6 +170,8 @@ namespace GameServer.Buffs
                 buffs.Remove(item);
                 _idGenerator.ReturnId(item.ID);
 
+                BuffsChangePostProcessing();
+
                 //广播通知客户端
                 var resp = new BuffsRemoveResponse();
                 resp.List.Add(item.Info);
@@ -132,10 +181,6 @@ namespace GameServer.Buffs
             }
             return false;
         }
-
-        /// <summary>
-        /// 移除所有buff
-        /// </summary>
         public void RemoveAllBuff()
         {
             int len = buffs.Count;
@@ -166,65 +211,23 @@ namespace GameServer.Buffs
         /// <typeparam name="T"></typeparam>
         /// <param name="Owner"></param>
         /// <returns></returns>
-        public List<T> FindBuff<T>() where T : BuffBase, new()
+        public List<T> GetBuffs<T>() where T : BuffBase, new()
         {
             List<T> result = buffs.OfType<T>().ToList();
             return result;
         }
 
         /// <summary>
-        /// 推动buff运行
+        /// bufflist变更的后处理
         /// </summary>
-        /// <param name="delta"></param>
-        public void OnUpdate(float delta)
+        private void BuffsChangePostProcessing()
         {
-            //所有Buff执行Update
+            //更新actor网络对象上面的buff信息
+            Owner.Info.BuffsList.Clear();
             foreach (BuffBase item in buffs)
             {
-                if (item.CurrentLevel > 0 && item.Owner != null)
-                {
-                    item.OnUpdate(delta);
-                }
+                Owner.Info.BuffsList.Add(item.Info);
             }
-
-            //降低持续时间,清理无用buff
-            //这里从尾部开始，避免破坏list顺序
-            for (int i = buffs.Count - 1; i >= 0; i--)
-            {
-                var buff = buffs[i];
-                //降低持续时间
-                buff.ResidualDuration -= delta;
-
-
-                //如果持续时间为0，则降级,
-                //降级后如果等级为0则移除，否则刷新持续时间
-                if (buff.ResidualDuration <= 0)
-                {
-                    buff.CurrentLevel -= buff.Demotion;
-                    if (buff.CurrentLevel <= 0)
-                    {
-                        RemoveBuff(buff);
-                        continue;
-                    }
-                    else
-                    {
-                        buff.ResidualDuration = buff.MaxDuration;
-                    }
-                }
-
-
-            }
-
         }
-
-
-        /// <summary>
-        /// 更新actor网络对象上面的buff信息。
-        /// </summary>
-        private void ReloadBuffsInfo()
-        {
-            //目前这个功能写在actor获取时再重新更新网络对象里面的buff信息
-        }
-
     }
 }

@@ -6,6 +6,7 @@ namespace GameServer.Skills
     using Serilog;
     using System;
     using System.Collections.Concurrent;
+    using System.Diagnostics;
     using System.Reflection;
 
     [AttributeUsage(AttributeTargets.Class)]
@@ -34,6 +35,7 @@ namespace GameServer.Skills
 
             Type skillType = typeof(Skill);
 
+            int count = 0;
             foreach (Type type in types)
             {
                 if (Attribute.IsDefined(type, typeof(SkillAttribute)))
@@ -43,7 +45,8 @@ namespace GameServer.Skills
                     
                     if (skillType.IsAssignableFrom(type.BaseType))
                     {
-                        Log.Information("加载技能类型:Code=[{0}],Name=[{1}]", skid, type.Name);
+                        count++;
+                        //Log.Information("加载技能类型:Code=[{0}],Name=[{1}]", skid, type.Name);
                         SkillTypeDict[skid] = type;
                     }
                     else
@@ -53,6 +56,8 @@ namespace GameServer.Skills
                     
                 }
             }
+
+            Log.Debug("==>共加载{0}个自定义技能", count);
         }
 
         /// <summary>

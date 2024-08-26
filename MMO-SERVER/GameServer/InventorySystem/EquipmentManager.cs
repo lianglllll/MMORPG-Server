@@ -81,8 +81,8 @@ namespace GameServer.InventorySystem
             }
 
             //更新chr装备信息
-            chr._info.EquipList.Clear();
-            chr._info.EquipList.AddRange(InventoryInfo.List);
+            chr.Info.EquipList.Clear();
+            chr.Info.EquipList.AddRange(InventoryInfo.List);
         }
 
         /// <summary>
@@ -159,8 +159,8 @@ namespace GameServer.InventorySystem
         public void UpdateCharacterInfoEquips(bool isBroadcast)
         {
             //更新chr装备信息
-            chr._info.EquipList.Clear();
-            chr._info.EquipList.AddRange(InventoryInfo.List);
+            chr.Info.EquipList.Clear();
+            chr.Info.EquipList.AddRange(InventoryInfo.List);
 
             //广播
             if (isBroadcast)

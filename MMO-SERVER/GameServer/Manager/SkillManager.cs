@@ -57,7 +57,7 @@ namespace GameServer.Manager
                 Skills.Add(skill);
             }
             if(list.Count> 0) { 
-                owner._info.Skills.AddRange(list);
+                owner.Info.Skills.AddRange(list);
             }
 
         }

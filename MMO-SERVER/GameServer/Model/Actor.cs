@@ -20,30 +20,22 @@ namespace GameServer.Model
 
     public class Actor : Entity
     {
-        public UnitDefine Define;                                                                   //actor的define数据(静态数据)
-        public NetActor _info  = new NetActor();                                                     //actor的NetActor数据(动态数据)
-        public EntityState State;                                                                   //actor动画状态：跑、走、跳、
-        public UnitState unitState;                                                                 //actor活动状态:空闲、战斗、不可操控状态
+        public UnitDefine Define;                                                                   //actor的define数据    (静态数据)
+        private NetActor _info  = new NetActor();                                                   //actor的NetActor数据  (动态数据)
         public Attributes Attr = new Attributes();                                                  //actor属性
+        public EntityState State;                                                                   //actor微状态：用于描述角色在特定时刻所执行的具体动作或行为。通常包括：Idle、Run、Walk、Jump、Attack 等。
+        public UnitState macroState;                                                                 //actor宏状态：用于描述角色在某一段时间内的大范围行为模式。通常包括：空闲、战斗
         public SkillManager skillManager;                                                           //actor技能管理器
         public Spell spell;                                                                         //actor技能释放器
+        public Skill curentSkill;                                                                   //actor当前正在使用的技能
         public BuffManager buffManager;                                                             //actor的buff管理器
 
-        public Skill curentSkill;                                                                   //actor当前正在使用的技能
-
-        public bool IsDeath => unitState == UnitState.Dead;            
+        public bool IsDeath => macroState == UnitState.Dead;            
         
         public NetActor Info
         {
             get
             {
-                //更新actor中的buff网络信息
-                _info.BuffsList.Clear();
-                foreach (BuffBase item in buffManager.buffs)
-                {
-                    _info.BuffsList.Add(item.Info);
-                }
-
                 return _info;
             }
             set
@@ -52,10 +44,7 @@ namespace GameServer.Model
             }
         }
 
-        /// <summary>
-        /// chrId
-        /// </summary>
-        public int Id { 
+        public int AcotrId { 
             get { return _info.Id; } 
             set { _info.Id = value; } 
         }                                                         
@@ -73,7 +62,7 @@ namespace GameServer.Model
             set { _info.EntityType = value; }
         }                                                 
         
-        public int SpaceId
+        public int CurSpaceId
         {
             get
             {
@@ -129,13 +118,155 @@ namespace GameServer.Model
 
         }
 
-        /// <summary>
-        /// 推动actor再mmo世界的运行
-        /// </summary>
         public override void Update()
         {
-            this.skillManager.Update();//驱动技能系统
+            this.skillManager.Update();
             this.buffManager.OnUpdate(Time.deltaTime);
+        }
+
+
+        public void SetHp(float hp)
+        {
+
+            if (Mathf.Approximately(Hp, hp)) return;
+            if(hp <= 0)
+            {
+                hp = 0;
+            }
+            if (hp > Attr.final.HPMax)
+            {
+                hp = Attr.final.HPMax;
+            }
+            float oldValue = Hp;
+            Hp = hp;
+
+            //发包
+            PropertyUpdate po = new PropertyUpdate()
+            {
+                EntityId = EntityId,
+                Property = PropertyUpdate.Types.Prop.Hp,
+                OldValue = new() { FloatValue = oldValue },
+                NewValue = new() { FloatValue = Hp },
+            };
+            currentSpace.fightManager.propertyUpdateQueue.Enqueue(po);
+        }
+        public void SetMP(float mp)
+        {
+            if (Mathf.Approximately(Mp, mp)) return;
+            if (mp <= 0)
+            {
+                mp = 0;
+            }
+            if (mp > Attr.final.MPMax)
+            {
+                mp = Attr.final.MPMax;
+            }
+            float oldValue = Mp;
+            Mp = mp;
+
+            //发包
+            PropertyUpdate po = new PropertyUpdate()
+            {
+                EntityId = EntityId,
+                Property = PropertyUpdate.Types.Prop.Mp,
+                OldValue = new() { FloatValue = oldValue },
+                NewValue = new() { FloatValue = Mp },
+            };
+            currentSpace.fightManager.propertyUpdateQueue.Enqueue(po);
+        }
+        protected void SetHpMax(float value)
+        {
+            if (Mathf.Approximately(_info.HpMax, value)) return;
+
+            float old = _info.HpMax;
+            _info.HpMax = value;
+            PropertyUpdate po = new PropertyUpdate()
+            {
+                EntityId = EntityId,
+                Property = PropertyUpdate.Types.Prop.Hpmax,
+                OldValue = new() { FloatValue = old },
+                NewValue = new() { FloatValue = value },
+            };
+            currentSpace?.fightManager.propertyUpdateQueue.Enqueue(po);
+        }
+        protected void SetMpMax(float value)
+        {
+            if (Mathf.Approximately(_info.MpMax, value)) return;
+            float old = _info.MpMax;
+            _info.MpMax = value;
+            PropertyUpdate po = new PropertyUpdate()
+            {
+                EntityId = EntityId,
+                Property = PropertyUpdate.Types.Prop.Mpmax,
+                OldValue = new() { FloatValue = old },
+                NewValue = new() { FloatValue = value },
+            };
+            currentSpace?.fightManager.propertyUpdateQueue.Enqueue(po);
+        }
+        protected void SetSpeed(int value)
+        {
+            if (this.Speed == value) return;
+            int oldValue = this.Speed;
+            this.Speed = value;
+            PropertyUpdate po = new PropertyUpdate()
+            {
+                EntityId = EntityId,
+                Property = PropertyUpdate.Types.Prop.Speed,
+                OldValue = new() { IntValue = oldValue },
+                NewValue = new() { IntValue = value },
+            };
+            currentSpace?.fightManager.propertyUpdateQueue.Enqueue(po);
+        }
+        protected void SetLevel(int level)
+        {
+            if (Level == level) return;
+            PropertyUpdate po = new PropertyUpdate()
+            {
+                EntityId = EntityId,
+                Property = PropertyUpdate.Types.Prop.Level,
+                OldValue = new() { IntValue = Level },
+                NewValue = new() { IntValue = level }
+            };
+            Level = level;
+            //广播通知
+            currentSpace.fightManager.propertyUpdateQueue.Enqueue(po);
+            //属性刷新
+            Attr.Reload();
+        }
+        public virtual void SetEntityState(EntityState state)
+        {
+            this.State = state;
+            var resp = new SpaceEntitySyncResponse();
+            resp.EntitySync = new NEntitySync();
+            resp.EntitySync.Entity = EntityData;
+            resp.EntitySync.Force = true;
+            resp.EntitySync.State = state;
+            currentSpace.AOIBroadcast(this,resp);
+        }
+        protected void SetMacroState(UnitState unitState)
+        {
+            if (this.macroState == unitState) return;
+            UnitState oldValue = this.macroState;
+            this.macroState = unitState;
+            PropertyUpdate po = new PropertyUpdate()
+            {
+                EntityId = EntityId,
+                Property = PropertyUpdate.Types.Prop.State,
+                OldValue = new() { StateValue = oldValue },
+                NewValue = new() { StateValue = unitState } 
+            };
+            currentSpace.fightManager.propertyUpdateQueue.Enqueue(po);
+        }
+
+        /// <summary>
+        /// 属性更新回调
+        /// </summary>
+        public void UpdateAttributes()
+        {
+            //问就是netinfo中暂时只有这几个
+            SetSpeed(Attr.final.Speed);
+            SetHpMax(Attr.final.HPMax);
+            SetMpMax(Attr.final.MPMax);
         }
 
         /// <summary>
@@ -146,10 +277,10 @@ namespace GameServer.Model
         {
             if(currentSpace!= null && space != null)
             {
-                EntityManager.Instance.ChangeSpace(this, currentSpace.SpaceId, space.SpaceId);
+                EntityManager.Instance.EntityChangeSpace(this, currentSpace.SpaceId, space.SpaceId);
             }
             this.currentSpace = space;
-            SpaceId = space.SpaceId;
+            CurSpaceId = space.SpaceId;
         }
 
         /// <summary>
@@ -179,185 +310,9 @@ namespace GameServer.Model
 
             AfterRecvDamage(damage);
         }
-
-        /// <summary>
-        /// 受伤后处理
-        /// </summary>
-        /// <param name="damage"></param>
         protected virtual void AfterRecvDamage(Damage damage)
         {
 
-        }
-
-        /// <summary>
-        /// 设置actor的hp，并广播
-        /// </summary>
-        /// <param name="hp"></param>
-        public void SetHp(float hp)
-        {
-
-            if (Mathf.Approximately(Hp, hp)) return;
-            if(hp <= 0)
-            {
-                hp = 0;
-            }
-            if (hp > Attr.final.HPMax)
-            {
-                hp = Attr.final.HPMax;
-            }
-            float oldValue = Hp;
-            Hp = hp;
-
-            //发包
-            PropertyUpdate po = new PropertyUpdate()
-            {
-                EntityId = EntityId,
-                Property = PropertyUpdate.Types.Prop.Hp,
-                OldValue = new() { FloatValue = oldValue },
-                NewValue = new() { FloatValue = Hp },
-            };
-            currentSpace.fightManager.propertyUpdateQueue.Enqueue(po);
-        }
-
-        /// <summary>
-        /// 设置actor的mp，并广播
-        /// </summary>
-        /// <param name="mp"></param>
-        public void SetMP(float mp)
-        {
-            if (Mathf.Approximately(Mp, mp)) return;
-            if (mp <= 0)
-            {
-                mp = 0;
-            }
-            if (mp > Attr.final.MPMax)
-            {
-                mp = Attr.final.MPMax;
-            }
-            float oldValue = Mp;
-            Mp = mp;
-
-            //发包
-            PropertyUpdate po = new PropertyUpdate()
-            {
-                EntityId = EntityId,
-                Property = PropertyUpdate.Types.Prop.Mp,
-                OldValue = new() { FloatValue = oldValue },
-                NewValue = new() { FloatValue = Mp },
-            };
-            currentSpace.fightManager.propertyUpdateQueue.Enqueue(po);
-        }
-
-        /// <summary>
-        /// 设置动画状态,并广播
-        /// </summary>
-        /// <param name="state"></param>
-        public virtual void SetEntityState(EntityState state)
-        {
-            this.State = state;
-            var resp = new SpaceEntitySyncResponse();
-            resp.EntitySync = new NEntitySync();
-            resp.EntitySync.Entity = EntityData;
-            resp.EntitySync.Force = true;
-            resp.EntitySync.State = state;
-            currentSpace.AOIBroadcast(this,resp);
-        }
-
-        /// <summary>
-        /// 设置actor的unitstate,并广播
-        /// </summary>
-        /// <param name="unitState"></param>
-        protected void SetState(UnitState unitState)
-        {
-            if (this.unitState == unitState) return;
-            UnitState oldValue = this.unitState;
-            this.unitState = unitState;
-            PropertyUpdate po = new PropertyUpdate()
-            {
-                EntityId = EntityId,
-                Property = PropertyUpdate.Types.Prop.State,
-                OldValue = new() { StateValue = oldValue },
-                NewValue = new() { StateValue = unitState } 
-            };
-            currentSpace.fightManager.propertyUpdateQueue.Enqueue(po);
-        }
-
-        /// <summary>
-        /// 设置actor的等级,并广播
-        /// </summary>
-        protected void SetLevel(int level)
-        {
-            if (Level == level) return;
-            PropertyUpdate po = new PropertyUpdate()
-            {
-                EntityId = EntityId,
-                Property = PropertyUpdate.Types.Prop.Level,
-                OldValue = new() { IntValue = Level },
-                NewValue = new() { IntValue = level }
-            };
-            Level = level;
-            //广播通知
-            currentSpace.fightManager.propertyUpdateQueue.Enqueue(po);
-            //属性刷新
-            Attr.Reload();
-        }
-
-        /// <summary>
-        /// 设置移动速度
-        /// </summary>
-        /// <param name="value"></param>
-        protected void SetSpeed(int value)
-        {
-            if (this.Speed == value) return;
-            int oldValue = this.Speed;
-            this.Speed = value;
-            PropertyUpdate po = new PropertyUpdate()
-            {
-                EntityId = EntityId,
-                Property = PropertyUpdate.Types.Prop.Speed,
-                OldValue = new() { IntValue = oldValue },
-                NewValue = new() { IntValue = value },
-            };
-            currentSpace?.fightManager.propertyUpdateQueue.Enqueue(po);
-        }
-
-        /// <summary>
-        /// 设置生命上限
-        /// </summary>
-        /// <param name="value"></param>
-        protected void SetHpMax(float value)
-        {
-            if (Mathf.Approximately(_info.HpMax, value)) return;
-
-            float old = _info.HpMax;
-            _info.HpMax = value;
-            PropertyUpdate po = new PropertyUpdate()
-            {
-                EntityId = EntityId,
-                Property = PropertyUpdate.Types.Prop.Hpmax,
-                OldValue = new() { FloatValue = old },
-                NewValue = new() { FloatValue = value },
-            };
-            currentSpace?.fightManager.propertyUpdateQueue.Enqueue(po);
-        }
-
-        /// <summary>
-        /// 设置法力上限
-        /// </summary>
-        /// <param name="value"></param>
-        protected void SetMpMax(float value)
-        {
-            if (Mathf.Approximately(_info.MpMax, value)) return;
-            float old = _info.MpMax;
-            _info.MpMax = value;
-            PropertyUpdate po = new PropertyUpdate()
-            {
-                EntityId = EntityId,
-                Property = PropertyUpdate.Types.Prop.Mpmax,
-                OldValue = new() { FloatValue = old },
-                NewValue = new() { FloatValue = value },
-            };
-            currentSpace?.fightManager.propertyUpdateQueue.Enqueue(po);
         }
 
         /// <summary>
@@ -369,17 +324,11 @@ namespace GameServer.Model
             if (IsDeath) return;
 
             SetHp(0);
-            SetState(UnitState.Dead);
+            SetMacroState(UnitState.Dead);
             SetEntityState(EntityState.Death);
 
             OnAfterDie(killerID);
         }
-
-
-        /// <summary>
-        /// 死亡后的处理
-        /// </summary>
-        /// <param name="killerID"></param>
         protected virtual void OnAfterDie(int killerID)
         {
             buffManager.RemoveAllBuff();
@@ -392,12 +341,6 @@ namespace GameServer.Model
         {
 
         }
-
-
-        /// <summary>
-        /// 复活后处理
-        /// </summary>
-        /// <param name="killerID"></param>
         protected virtual void OnAfterRevive()
         {
 
@@ -406,7 +349,7 @@ namespace GameServer.Model
         /// <summary>
         /// 传送
         /// </summary>
-        public virtual void TransmitSpace(Space targetSpace,Vector3Int pos,Vector3Int dir = new Vector3Int())
+        public virtual void TransmitTo(Space targetSpace,Vector3Int pos,Vector3Int dir = new Vector3Int())
         {
             if (this is not Character chr) return;
             //传送的不是同一场景
@@ -431,38 +374,22 @@ namespace GameServer.Model
             }
         }
 
-        //查看actor的健康状态：生命、蓝条、debuffer
-        //不健康的时候返回false
-        public virtual bool ActorHealth()
+        /// <summary>
+        /// 自动回血调用
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool Check_HpAndMp_Needs()
         {
-            if (IsDeath) return true;
-
             if(Hp < _info.HpMax || Mp < _info.MpMax)
             {
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
-
-        /// <summary>
-        /// 休息时恢复状态
-        /// </summary>
-        public virtual void RestoreHealthState()
+        public virtual void Restore_HpAndMp()
         {
-            if (ActorHealth()) return;
             SetHp(Hp + _info.HpMax * 0.1f);
             SetMP(Mp + _info.MpMax * 0.1f);
-        }
-
-        /// <summary>
-        /// 属性发生变化时同步
-        /// </summary>
-        public void SyncAttributes()
-        {
-            SetSpeed(Attr.final.Speed);
-            SetHpMax(Attr.final.HPMax);
-            SetMpMax(Attr.final.MPMax);
-
         }
 
     }

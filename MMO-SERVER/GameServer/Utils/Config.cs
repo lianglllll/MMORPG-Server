@@ -33,7 +33,10 @@ namespace GameServer.Utils
         public int port { get; set; }
 
         [YamlMember(Alias = "workerCount")]
-        public int WorkerCount { get; set; }
+        public int WorkerCount { get; set; }        
+        
+        [YamlMember(Alias = "aoiViewArea")]
+        public float AoiViewArea { get; set; }
     }
 
     public class AppConfig
@@ -63,6 +66,7 @@ namespace GameServer.Utils
         public static DatabaseConfig Database => _config?.Database;
 
         public static ServerConfig Server => _config?.Server;
+
     }
 
 }
