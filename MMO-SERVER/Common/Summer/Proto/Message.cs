@@ -155,18 +155,18 @@ namespace Proto {
             "dGlvbhgGIAEoAiIxChBCdWZmc0FkZFJlc3BvbnNlEh0KBGxpc3QYASADKAsy",
             "Dy5wcm90by5CdWZmSW5mbyI0ChNCdWZmc1JlbW92ZVJlc3BvbnNlEh0KBGxp",
             "c3QYASADKAsyDy5wcm90by5CdWZmSW5mbyI0ChNCdWZmc1VwZGF0ZVJlc3Bv",
-            "bnNlEh0KBGxpc3QYASADKAsyDy5wcm90by5CdWZmSW5mbyrAAQoLRW50aXR5",
-            "U3RhdGUSDQoJTm9uZVN0YXRlEAASCAoESWRsZRABEgoKBk1vdGlvbhACEgcK",
-            "A0hpdBADEggKBEp1bXAQBBIJCgVEZWF0aBAFEgkKBVNoaWZ0EAYSDwoLU1dP",
-            "UkRGTElHSFQQBxIQCgxTdHJpa2VBbmRGbHkQCBIRCg1TdHJpa2VBbmRCYWNr",
-            "EAkSCQoFRGl6enkQChIRCg1Ta2lsbEludG9uYXRlEAsSDwoLU2tpbGxBY3Rp",
-            "dmUQDCoxCgpFbnRpdHlUeXBlEg0KCUNoYXJhY3RlchAAEgsKB01vbnN0ZXIQ",
-            "ARIHCgNOUEMQAiqAAQoKQ2FzdFJlc3VsdBILCgdTdWNjZXNzEAASDQoJSXNQ",
-            "YXNzaXZlEAESCgoGTXBMYWNrEAISDgoKRW50aXR5RGVhZBADEg4KCk91dE9m",
-            "UmFuZ2UQBBILCgdSdW5uaW5nEAUSDAoIQ29sZERvd24QBhIPCgtUYXJnZXRF",
-            "cnJvchAHKj8KC0RhbWVhZ2VUeXBlEgsKB1VOS05PV04QABIMCghQSFlTSUNB",
-            "TBABEgsKB01BR0lDQUwQAhIICgRSRUFMEAMqPQoJVW5pdFN0YXRlEggKBEZS",
-            "RUUQABIICgRERUFEEAESCAoEUkVTVBACEgkKBUZJR0hUEAMSBwoDTUFYEAQq",
+            "bnNlEh0KBGxpc3QYASADKAsyDy5wcm90by5CdWZmSW5mbyo9CglVbml0U3Rh",
+            "dGUSCAoERlJFRRAAEggKBERFQUQQARIICgRSRVNUEAISCQoFRklHSFQQAxIH",
+            "CgNNQVgQBCrAAQoLRW50aXR5U3RhdGUSDQoJTm9uZVN0YXRlEAASCAoESWRs",
+            "ZRABEgoKBk1vdGlvbhACEgcKA0hpdBADEggKBEp1bXAQBBIJCgVEZWF0aBAF",
+            "EgkKBVNoaWZ0EAYSDwoLU1dPUkRGTElHSFQQBxIQCgxTdHJpa2VBbmRGbHkQ",
+            "CBIRCg1TdHJpa2VBbmRCYWNrEAkSCQoFRGl6enkQChIRCg1Ta2lsbEludG9u",
+            "YXRlEAsSDwoLU2tpbGxBY3RpdmUQDCoxCgpFbnRpdHlUeXBlEg0KCUNoYXJh",
+            "Y3RlchAAEgsKB01vbnN0ZXIQARIHCgNOUEMQAiqAAQoKQ2FzdFJlc3VsdBIL",
+            "CgdTdWNjZXNzEAASDQoJSXNQYXNzaXZlEAESCgoGTXBMYWNrEAISDgoKRW50",
+            "aXR5RGVhZBADEg4KCk91dE9mUmFuZ2UQBBILCgdSdW5uaW5nEAUSDAoIQ29s",
+            "ZERvd24QBhIPCgtUYXJnZXRFcnJvchAHKj8KC0RhbWVhZ2VUeXBlEgsKB1VO",
+            "S05PV04QABIMCghQSFlTSUNBTBABEgsKB01BR0lDQUwQAhIICgRSRUFMEAMq",
             "IAoGUmVzdWx0EgsKB1NVQ0NFU1MQABIJCgVGQVVMVBABKloKC0NoYXRDaGFu",
             "bmVsEgcKA0FMTBAAEgkKBUxPQ0FMEAESCQoFV09STEQQAhIKCgZTWVNURU0Q",
             "BBILCgdQUklWQVRFEAgSCAoEVEVBTRAQEgkKBUdVSUxEECAqNwoISXRlbVR5",
@@ -183,7 +183,7 @@ namespace Proto {
             "B0NvbWJpbmUQABIMCghTZXBhcmF0ZRABEgkKBUNvdmVyEAJiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Proto.EntityState), typeof(global::Proto.EntityType), typeof(global::Proto.CastResult), typeof(global::Proto.DameageType), typeof(global::Proto.UnitState), typeof(global::Proto.Result), typeof(global::Proto.ChatChannel), typeof(global::Proto.ItemType), typeof(global::Proto.Quality), typeof(global::Proto.EquipsType), typeof(global::Proto.InventoryType), typeof(global::Proto.BuffType), typeof(global::Proto.BuffConflict), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Proto.UnitState), typeof(global::Proto.EntityState), typeof(global::Proto.EntityType), typeof(global::Proto.CastResult), typeof(global::Proto.DameageType), typeof(global::Proto.Result), typeof(global::Proto.ChatChannel), typeof(global::Proto.ItemType), typeof(global::Proto.Quality), typeof(global::Proto.EquipsType), typeof(global::Proto.InventoryType), typeof(global::Proto.BuffType), typeof(global::Proto.BuffConflict), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.HeartBeatRequest), global::Proto.HeartBeatRequest.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.HeartBeatResponse), global::Proto.HeartBeatResponse.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Proto.Vec3), global::Proto.Vec3.Parser, new[]{ "X", "Y", "Z" }, null, null, null, null),
@@ -261,7 +261,30 @@ namespace Proto {
   }
   #region Enums
   /// <summary>
-  ///entity状态
+  ///活动单位的广义状态
+  /// </summary>
+  public enum UnitState {
+    /// <summary>
+    ///自由进行任何操作
+    /// </summary>
+    [pbr::OriginalName("FREE")] Free = 0,
+    /// <summary>
+    ///死亡，无法操作。
+    /// </summary>
+    [pbr::OriginalName("DEAD")] Dead = 1,
+    /// <summary>
+    ///休息，挂机 回血回蓝
+    /// </summary>
+    [pbr::OriginalName("REST")] Rest = 2,
+    /// <summary>
+    ///战斗状态，持续一段时间，期间可能无法骑马吧。
+    /// </summary>
+    [pbr::OriginalName("FIGHT")] Fight = 3,
+    [pbr::OriginalName("MAX")] Max = 4,
+  }
+
+  /// <summary>
+  ///活动单位的狭义状态
   /// </summary>
   public enum EntityState {
     /// <summary>
@@ -379,23 +402,6 @@ namespace Proto {
     ///真伤,不受任何防御属性影响
     /// </summary>
     [pbr::OriginalName("REAL")] Real = 3,
-  }
-
-  public enum UnitState {
-    /// <summary>
-    ///自由进行任何操作
-    /// </summary>
-    [pbr::OriginalName("FREE")] Free = 0,
-    [pbr::OriginalName("DEAD")] Dead = 1,
-    /// <summary>
-    ///休息，挂机 回血回蓝
-    /// </summary>
-    [pbr::OriginalName("REST")] Rest = 2,
-    /// <summary>
-    ///持续一段时间
-    /// </summary>
-    [pbr::OriginalName("FIGHT")] Fight = 3,
-    [pbr::OriginalName("MAX")] Max = 4,
   }
 
   public enum Result {

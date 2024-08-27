@@ -149,7 +149,7 @@ namespace GameServer.Buffs
             //广播通知客户端
             var resp = new BuffsAddResponse();
             resp.List.Add(buff.Info);
-            Owner?.currentSpace?.AOIBroadcast(Owner, resp);
+            Owner?.currentSpace?.AOIBroadcast(Owner, resp,true);
 
         }
 
@@ -175,7 +175,7 @@ namespace GameServer.Buffs
                 //广播通知客户端
                 var resp = new BuffsRemoveResponse();
                 resp.List.Add(item.Info);
-                Owner?.currentSpace?.AOIBroadcast(Owner, resp);
+                Owner?.currentSpace?.AOIBroadcast(Owner, resp, true);
 
                 return true;
             }
@@ -192,7 +192,7 @@ namespace GameServer.Buffs
                 resp.List.Add(item.Info);
             }
             buffs.Clear();
-            Owner?.currentSpace?.AOIBroadcast(Owner, resp);
+            Owner?.currentSpace?.AOIBroadcast(Owner, resp, true);
         }
 
         /// <summary>

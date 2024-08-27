@@ -40,11 +40,6 @@ namespace GameServer.Model
             get { return position; }
             set {
 
-                //aoi更新
-                var a = new Vector2(position.x, position.z) / 1000;
-                var b = new Vector2(value.x, value.z) / 1000;
-                currentSpace?.AOIManager.Move(this, a, b);
-
                 //更新本地数据
                 position = value;
                 netObj.Position = value;  //重载了'='，prot是Vec3  服务器是VectorInt

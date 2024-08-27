@@ -24,39 +24,37 @@ namespace GameServer.core
             return EntityManager.Instance.GetEntityById(entityId);
         }
 
-        /*
-        /// <summary>
-        /// 返回指定范围内的actor
-        /// </summary>
-        /// <param name="spaceId"></param>
-        /// <param name="position"></param>
-        /// <param name="range"></param>
-        /// <returns></returns>
-        public static List<Actor> RangActor(int spaceId, Vector3 position,int range)
+        public static IEnumerable<Actor> RangeUnit(Entity entity,float range,bool includeSelf = true)
         {
-            Predicate<Actor> match = (e) =>
+            if(entity?.currentSpace == null) {
+                return new HashSet<Actor>();
+            }
+
+            //转换为客户端坐标
+            Vector3 pos = (Vector3)entity.Position * 0.001f;
+
+            //通过aoi查找矩形范围内的角色
+            var space = entity.currentSpace;
+            var hanle = space.aoiZone.Refresh(entity.EntityId,new System.Numerics.Vector2(range, range));
+            if(hanle.ViewEntity == null) {
+                return new List<Actor>();
+            }
+            var all = EntityManager.Instance.GetEntitiesByIds(hanle.ViewEntity);
+            if (includeSelf)
             {
-                var dis = Vector3.Distance(position, e.Position);
-                return !float.IsNaN(dis) && dis <= range;
-            };
-            return EntityManager.Instance.GetEntityList(spaceId, match);
+                all.Add(entity);
+            }
+
+            //筛选圆形范围
+            var res = all.Where((e) => { 
+                Vector3 targetPos = e.Position;
+                var dis = Vector3.Distance(pos, targetPos*0.001f);
+                return !float.IsNaN(dis) && dis <= range; 
+            }).OfType<Actor>();
+
+            return res;
         }
 
-        /// <summary>
-        /// 返回指定范围内的itementity
-        /// </summary>
-        /// <param name="spaceId"></param>
-        /// <param name="pos"></param>
-        /// <param name="range"></param>
-        /// <returns></returns>
-        public static List<ItemEntity> RangeItem(int spaceId,Vector3 pos,int range)
-        {
-            Predicate<ItemEntity> match = (e) =>
-            {
-                return Vector3Int.Distance(pos, e.Position) <= range;
-            };
-            return EntityManager.Instance.GetEntityList(spaceId, match);
-        }
-        */
+
     }
 }

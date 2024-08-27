@@ -104,7 +104,7 @@ namespace GameServer.Combat
                     //当事人
                     var entity = GameTools.GetActorByEntityId(item.CasterId);
                     if (entity == null) continue;
-                    var li = space?.AOIManager?.GetEntities(entity.AoiPos.x, entity.AoiPos.y);
+                    var li = space?.aoiZone.FindViewEntity(entity.EntityId, true);
                     if (li != null)
                     {
                         foreach (Character cc in li.OfType<Character>())
@@ -145,7 +145,7 @@ namespace GameServer.Combat
                     //当事人,你需要让这个给
                     var entity = GameTools.GetActorByEntityId(item.TargetId);
                     if (entity == null) continue;
-                    var li = space?.AOIManager?.GetEntities(entity.AoiPos.x, entity.AoiPos.y);
+                    var li = space?.aoiZone.FindViewEntity(entity.EntityId, true);
                     if (li != null)
                     {
                         foreach (Character cc in li.OfType<Character>())
@@ -179,14 +179,14 @@ namespace GameServer.Combat
             if (propertyUpdateRsponse.List.Count > 0)
             {
                 //找出所有受影响的玩家们,这里使用set是保证唯一性
-                //谁需要看到这个属性变换的过程，当然是属性变化者九宫格范围内的玩家。
+                //谁需要看到这个属性变换的过程，当然是属性变化者view范围内的玩家。
                 var hashSet = new HashSet<Character>();
                 foreach(var item in propertyUpdateRsponse.List)
                 {
                     //当事人
                     var entity = GameTools.GetActorByEntityId(item.EntityId);
                     if (entity == null) continue;
-                    var li = space?.AOIManager?.GetEntities(entity.AoiPos.x,entity.AoiPos.y);
+                    var li = space?.aoiZone.FindViewEntity(entity.EntityId, true);
                     if (li != null)
                     {
                         foreach(Character cc in li.OfType<Character>())
@@ -197,7 +197,6 @@ namespace GameServer.Combat
                 }
 
                 //广播
-                //space.Broadcast(propertyUpdateRsponse);
                 foreach (var cc in hashSet)
                 {
                     cc.session.Send(propertyUpdateRsponse);

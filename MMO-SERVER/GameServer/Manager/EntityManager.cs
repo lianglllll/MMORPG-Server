@@ -80,7 +80,7 @@ namespace GameServer.Manager
             return allEntitiesDict.GetValueOrDefault(entityId);
         }
 
-        public List<T> GetEntitiesAroundPoint<T>(int spaceId, Vector3Int center, int range) where T : Entity
+        public List<T> GetEntitiesAroundPoint<T>(int spaceId, Vector3Int center, float range) where T : Entity
         {
             if (!spaceEntitiesDict.TryGetValue(spaceId, out var list)) return null;
             return list?
@@ -91,7 +91,7 @@ namespace GameServer.Manager
                 })  
                 .ToList();
         }
-        public List<Entity> GetEntitiesByIds(HashSet<long> ids)
+        public List<Entity> GetEntitiesByIds(IEnumerable<long> ids)
         {
             List<Entity> res = new List<Entity>(); 
             foreach (var id in ids)

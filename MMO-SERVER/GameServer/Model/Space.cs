@@ -15,6 +15,10 @@ using GameServer.Core;
 using AOIMap;
 using GameServer.Database;
 using AOI;
+using System.Security.Policy;
+using GameServer.Utils;
+using MySqlX.XDevAPI;
+using System.Runtime.ConstrainedExecution;
 
 namespace GameServer.Model
 {
@@ -32,56 +36,74 @@ namespace GameServer.Model
         public SpawnManager spawnManager = new SpawnManager();                                      //怪物孵化器，负责怪物的孵化
         public FightManager fightManager = new FightManager();                                      //战斗管理器，负责技能、投射物、伤害、actor信息的更新
         public ItemEntityManager itemManager = new ItemEntityManager();                             //物品管理器，管理场景中出现的物品
-        public AoiZone aoiZone = new AoiZone(0.001f,0.001f);                    //十字链表空间(unity坐标系)
 
-        public AOIManager<Entity> AOIManager { get;}
+        public AoiZone aoiZone = new AoiZone(0.001f,0.001f);                    //十字链表空间(unity坐标系)
+        private System.Numerics.Vector2 viewArea = new(Config.Server.AoiViewArea, Config.Server.AoiViewArea);
 
         /// <summary>
         /// 构造函数
         /// </summary>
         public Space(){}
-        
-        /// <summary>
-        /// 构造函数
-        /// </summary>
         public Space(SpaceDefine spaceDefine)
         {
             def = spaceDefine;
             SpaceId = spaceDefine.SID;
             Name = spaceDefine.Name;
-            AOIManager = new AOIManager<Entity>(spaceDefine.Area[0], spaceDefine.Area[1], spaceDefine.Area[2], spaceDefine.Area[3]);
             monsterManager.Init(this);
             spawnManager.Init(this);
             fightManager.Init(this);
             itemManager.Init(this);
+            //AOIManager = new AOIManager<Entity>(spaceDefine.Area[0], spaceDefine.Area[1], spaceDefine.Area[2], spaceDefine.Area[3]);
+
         }
 
-
-        /// <summary>
-        /// 推动场景下的各个管理器运行
-        /// </summary>
         public void Update()
         {
             spawnManager.Update();
             fightManager.OnUpdate(Time.deltaTime);
         }
 
-
         /// <summary>
-        /// 新角色进入地图
+        ///  entity加入space
         /// </summary>
-        /// <param name="conn"></param>
-        /// <param name="character"></param>
         public void CharaterJoin(Character character)
         {
-
             //1.将新加入的character交给当前场景来管理
             character.OnEnterSpace(this);
             characterDict[character.EntityId] = character;
 
-            //2.新上线的玩家需要获取场景中:全部的角色/怪物/物品的信息
+            //2.加入aoi空间
+            aoiZone.Enter(character);
+            
+            //3.新上线的玩家需要获取场景中:全部的角色/怪物/物品的信息
             SpaceEnterResponse resp = new SpaceEnterResponse();
             resp.Character = character.Info;
+            var views = aoiZone.FindViewEntity(character.EntityId);
+            foreach (var ent in views)
+            {
+                if (ent is Actor acotr)
+                {
+                    resp.CharacterList.Add(acotr.Info);
+                }
+                else if (ent is ItemEntity item)
+                {
+                    resp.ItemEntityList.Add(item.NetItemEntity);
+                }
+            }
+            character.session.Send(resp);
+
+            //4.通知附近玩家
+            var resp2 = new SpaceCharactersEnterResponse();
+            resp2.SpaceId = this.SpaceId;
+            resp2.CharacterList.Add(character.Info);
+            foreach (var cc in views.OfType<Character>())
+            {
+                cc.session.Send(resp2);
+            }
+
+
+
+            /*
             var loc = character.AoiPos;//获取aoi坐标
             var all = AOIManager.GetEntities(loc.x, loc.y);
             foreach ( var ent in all)
@@ -95,69 +117,145 @@ namespace GameServer.Model
                     resp.ItemEntityList.Add(item.NetItemEntity);
                 }
             }
-            character.session.Send(resp);
-
-
             //3.广播给场景中的其他玩家,有新玩家进入
-            AOIManager.Enter(character);
+            //AOIManager.Enter(character);
+            */
         }
-
-        /// <summary>
-        /// 怪物进入地图,广播给场景内的client
-        /// </summary>
-        /// <param name="monster"></param>
         public void MonsterJoin(Monster monster)
         {
             monster.OnEnterSpace(this);
-            AOIManager.Enter(monster);
-        }
+            aoiZone.Enter(monster);
+            //通知附近的玩家
+            var resp = new SpaceCharactersEnterResponse();
+            resp.SpaceId = SpaceId; //场景ID
+            resp.CharacterList.Add(monster.Info);
+            var views = aoiZone.FindViewEntity(monster.EntityId);
+            foreach (var cc in views.OfType<Character>())
+            {
+                cc.session.Send(resp);
+            }
 
-        /// <summary>
-        /// 物品进入场景，广播给场景内的client
-        /// </summary>
-        /// <param name="ie"></param>
+        }
         public void ItemJoin(ItemEntity ie)
         {
-            AOIManager.Enter(ie);
+            aoiZone.Enter(ie);
+            //通知附近的玩家
+            var resp = new SpaceItemEnterResponse();
+            resp.NetItemEntity = ie.NetItemEntity;
+            var views = aoiZone.FindViewEntity(ie.EntityId);
+            foreach (var cc in views.OfType<Character>())
+            {
+                cc.session.Send(resp);
+            }
         }
 
-
         /// <summary>
-        /// 角色离开地图(客户端离线、切换地图)
+        ///  entity离开space
         /// </summary>
-        /// <param name="conn"></param>
-        /// <param name="character"></param>
         public void CharacterLeave(Character character)
         {
+            //space清理
             characterDict.Remove(character.EntityId);
-            AOIManager.Leave(character);
-        }
 
-        /// <summary>
-        /// 物品离开场景，广播给场景内的client
-        /// </summary>
-        /// <param name="ie"></param>
+            //告诉其他人
+            var views = aoiZone.FindViewEntity(character.EntityId);
+            SpaceEntityLeaveResponse resp = new SpaceEntityLeaveResponse();
+            resp.EntityId = character.EntityId;
+            foreach (var cc in views.OfType<Character>())
+            {
+                cc.session.Send(resp);
+            }
+
+            //退出aoi空间
+            aoiZone.Exit(character.EntityId);
+
+        }
         public void ItemLeave(ItemEntity ie)
         {
+            //space清理
             if (!itemManager.RemoveItem(ie.EntityId))
             {
                 return;
             }
-            AOIManager.Leave(ie);
-            /*
-            //广播
+
+            //告诉其他人
+            var views = aoiZone.FindViewEntity(ie.EntityId);
             SpaceEntityLeaveResponse resp = new SpaceEntityLeaveResponse();
             resp.EntityId = ie.EntityId;
-            Broadcast(resp);
-            */
+            foreach (var cc in views.OfType<Character>())
+            {
+                cc.session.Send(resp);
+            }
+
+            //退出aoi空间
+            aoiZone.Exit(ie.EntityId);
         }
 
         /// <summary>
-        /// 更新服务器目标entity的信息，并且给其他玩家进行转发
+        /// 更新的信息给其他玩家进行转发
         /// </summary>
         /// <param name="entitySync">位置+状态信息</param>
         public void SyncActor(NEntitySync entitySync,Actor actor)
         {
+            var loc = actor.AoiPos;
+            var handle = aoiZone.Refresh(actor.EntityId, loc.x, loc.y, viewArea);   //更新aoi空间里面我们的坐标
+
+            //广播给附近的玩家
+            var units = EntityManager.Instance.GetEntitiesByIds(handle.All); 
+            SpaceEntitySyncResponse resp = new SpaceEntitySyncResponse();
+            resp.EntitySync = entitySync;
+            foreach (var chr in units.OfType<Character>())
+            {
+                chr.session.Send(resp);
+            }
+            
+            //新进入视野的单位，双向通知
+            var resp2 = new SpaceCharactersEnterResponse();
+            resp2.SpaceId = this.SpaceId; 
+            foreach (var key in handle.Newly)
+            {
+                Actor target = (Actor)EntityManager.Instance.GetEntityById((int)key);
+
+                //如果对方是玩家，自己进入对方视野
+                if (target is Character chr2)
+                {   
+                    resp2.CharacterList.Clear();
+                    resp2.CharacterList.Add(target.Info);
+                    chr2.session.Send(resp2);
+                }
+
+                //告诉自己
+                if(actor is Character chr3)
+                {
+                    resp2.CharacterList.Clear();
+                    resp2.CharacterList.Add(target.Info);
+                    chr3.session.Send(resp2);
+                }
+
+            }
+
+            //远离的角色
+            var resp3 = new SpaceEntityLeaveResponse();
+            foreach (var key in handle.Leave)
+            {
+                Actor target = (Actor)EntityManager.Instance.GetEntityById((int)key);
+
+                //如果对方是玩家，自己离开对方视野
+                if (actor != null && actor is Character chr2)
+                {
+                    resp3.EntityId = actor.EntityId;
+                    chr2.session.Send(resp3);
+                }
+                //如果自己是玩家，对方离开自己视野
+                if (actor is Character chr3)
+                {
+                    resp3.EntityId = (int)key;
+                    chr3.session.Send(resp3);
+                }
+            }
+
+
+            /*
             //aoi区域广播
             var loc = actor.AoiPos;//获取aoi坐标
             var all = AOIManager.GetEntities(loc.x, loc.y);
@@ -172,10 +270,8 @@ namespace GameServer.Model
                     chr.session.Send(resp);
                 }
             }
-
+            */
         }
-
-
 
         /// <summary>
         /// 更新itementity的信息，向其他玩家进行转发
@@ -185,12 +281,7 @@ namespace GameServer.Model
         {
             NetItemEntitySync resp = new NetItemEntitySync();
             resp.NetItemEntity = itemEntity.NetItemEntity;
-            AOIBroadcast(itemEntity, resp);
-            /*
-            NetItemEntitySync resp = new NetItemEntitySync();
-            resp.NetItemEntity = itemEntity.NetItemEntity;
-            Broadcast(resp);
-            */
+            AOIBroadcast(itemEntity, resp,true);
         }
 
         /// <summary>
@@ -198,10 +289,9 @@ namespace GameServer.Model
         /// </summary>
         /// <param name="entity"></param>
         /// <param name="msg"></param>
-        public void AOIBroadcast(Entity entity,IMessage msg)
+        public void AOIBroadcast(Entity entity,IMessage msg, bool includeSelf = false)
         {
-            var loc = entity.AoiPos;//获取aoi坐标
-            var all = AOIManager.GetEntities(loc.x, loc.y);
+            var all = aoiZone.FindViewEntity(entity.EntityId, includeSelf);
             foreach (var chr in all.OfType<Character>())
             {
                 chr.session.Send(msg);
@@ -236,7 +326,7 @@ namespace GameServer.Model
             resp.EntitySync.Entity = actor.EntityData;
             resp.EntitySync.State = EntityState.Idle;
             resp.EntitySync.Force = true;
-            AOIBroadcast(actor,resp);
+            AOIBroadcast(actor,resp,true);
 
         }
 

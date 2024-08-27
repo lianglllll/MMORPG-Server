@@ -241,7 +241,7 @@ namespace GameServer.Model
             resp.EntitySync.Entity = EntityData;
             resp.EntitySync.Force = true;
             resp.EntitySync.State = state;
-            currentSpace.AOIBroadcast(this,resp);
+            currentSpace.AOIBroadcast(this,resp,true);
         }
         protected void SetMacroState(UnitState unitState)
         {

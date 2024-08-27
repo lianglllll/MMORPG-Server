@@ -1,8 +1,11 @@
-﻿using GameServer.Buffs;
+﻿using AOI;
+using GameServer.Buffs;
 using GameServer.Buffs.BuffImplement;
 using GameServer.core;
 using GameServer.Core;
+using GameServer.Manager;
 using GameServer.Model;
+using GameServer.Utils;
 using Google.Protobuf.WellKnownTypes;
 using Proto;
 using Serilog;
@@ -307,11 +310,12 @@ namespace GameServer.Combat.Skill
                 if (targetSco is SCEntity target)
                 {
                     var acotr = targetSco.RealObj as Actor;
-                    entityList = Owner.currentSpace.AOIManager.GetEntities(acotr.AoiPos).OfType<Actor>().ToList<Actor>();
+                    entityList = Owner.currentSpace.aoiZone.FindViewEntity(acotr.EntityId,true).OfType<Actor>().ToList<Actor>();
                 }
                 else if (targetSco is SCPosition scPos)
                 {
-                    entityList = (List<Actor>)Owner.currentSpace.AOIManager.GetEntities(scPos.Position.x / 1000, scPos.Position.z / 1000).OfType<Actor>();
+                    //entityList = (List<Actor>)Owner.currentSpace.AOIManager.GetEntities(scPos.Position.x / 1000, scPos.Position.z / 1000).OfType<Actor>();
+                    entityList = EntityManager.Instance.GetEntitiesAroundPoint<Actor>(Owner.CurSpaceId, scPos.Position, Config.Server.AoiViewArea);
                 }
                 else
                 {
@@ -452,11 +456,13 @@ namespace GameServer.Combat.Skill
             if (targetSco is SCEntity target)
             {
                 var acotr = targetSco.RealObj as Actor;
-                entityList = Owner.currentSpace.AOIManager.GetEntities(acotr.AoiPos).OfType<Actor>().ToList<Actor>();
+                entityList = Owner.currentSpace.aoiZone.FindViewEntity(acotr.EntityId,true).OfType<Actor>().ToList<Actor>();
             }
             else if(targetSco is SCPosition scPos)
             {
-                entityList = (List<Actor>)Owner.currentSpace.AOIManager.GetEntities(scPos.Position.x/1000,scPos.Position.z/1000).OfType<Actor>();
+                //entityList = (List<Actor>)Owner.currentSpace.AOIManager.GetEntities(scPos.Position.x/1000,scPos.Position.z/1000).OfType<Actor>();
+                entityList = EntityManager.Instance.GetEntitiesAroundPoint<Actor>(Owner.CurSpaceId, scPos.Position, Config.Server.AoiViewArea);
+
             }
             else
             {

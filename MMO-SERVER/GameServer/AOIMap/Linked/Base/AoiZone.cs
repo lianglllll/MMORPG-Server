@@ -2,11 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using GameServer.Core;
 using GameServer.Utils;
 using Serilog;
 using GameServer.Manager;
+using System.Numerics;
 
 namespace AOI
 {
@@ -37,7 +37,6 @@ namespace AOI
             _xLinks = new AoiLinkedList(maxLayer, xLinksLimit);
             _yLinks = new AoiLinkedList(maxLayer, yLinksLimit);
         }
-
 
         public AoiEntity this[long key] => !_entityList.TryGetValue(key, out var entity) ? null : entity;
 
@@ -81,33 +80,7 @@ namespace AOI
         }
 
 
-
-
-
-        public AoiEntity RefreshIncludingMyself(long key, Vector2 area, out HashSet<long> enter)
-        {
-            var entity = Refresh(key, area, out enter);
-            enter?.Add(key);
-            return entity;
-        }
-        public AoiEntity RefreshIncludingMyself(long key, float x, float y, Vector2 area, out HashSet<long> enter)
-        {
-            var entity = Refresh(key, x, y, area, out enter);
-            enter?.Add(key);
-            return entity;
-        }
-        public AoiEntity Refresh(long key, Vector2 area, out HashSet<long> enter)
-        {
-            var entity = Refresh(key, area);
-            enter = entity?.ViewEntity;
-            return entity;
-        }
-        public AoiEntity Refresh(long key, float x, float y, Vector2 area, out HashSet<long> enter)
-        {
-            var entity = Refresh(key, x, y, area);
-            enter = entity?.ViewEntity;
-            return entity;
-        }
+        //用于刷新我们的视野范围
         public AoiEntity Refresh(long key, Vector2 area)
         {
             if (!_entityList.TryGetValue(key, out var entity)) return null;
@@ -116,6 +89,7 @@ namespace AOI
 
             return entity;
         }
+        //用于更新坐标信息并且刷新我们的视野范围
         public AoiEntity Refresh(long key, float x, float y, Vector2 area)
         {
             if (!_entityList.TryGetValue(key, out var entity)) return null;
@@ -138,8 +112,50 @@ namespace AOI
             return entity;
         }
 
+        public AoiEntity RefreshIncludingMyself(long key, Vector2 area, out HashSet<long> enter)
+        {
+            var entity = Refresh(key, area, out enter);
+            enter?.Add(key);
+            return entity;
+        }
+        public AoiEntity RefreshIncludingMyself(long key, float x, float y, Vector2 area, out HashSet<long> enter)
+        {
+            var entity = Refresh(key, x, y, area, out enter);
+            enter?.Add(key);
+            return entity;
+        }
+
+        public AoiEntity Refresh(long key, Vector2 area, out HashSet<long> enter)
+        {
+            var entity = Refresh(key, area);
+            enter = entity?.ViewEntity;
+            return entity;
+        }
+        public AoiEntity Refresh(long key, float x, float y, Vector2 area, out HashSet<long> enter)
+        {
+            var entity = Refresh(key, x, y, area);
+            enter = entity?.ViewEntity;
+            return entity;
+        }
 
 
+
+        /// <summary>
+        /// 退出aoi空间
+        /// </summary>
+        /// <param name="key"></param>
+        public void Exit(long key)
+        {
+            if (!_entityList.TryGetValue(key, out var entity)) return;
+
+            Exit(entity);
+        }
+        public void Exit(AoiEntity node)
+        {
+            _xLinks.Remove(node.X);
+            _yLinks.Remove(node.Y);
+            _entityList.Remove(node.Key); ;
+        }
         /// <summary>
         /// Look for nodes in range
         /// </summary>
@@ -225,51 +241,12 @@ namespace AOI
 
             #endregion
         }
-
-        /// <summary>
-        /// Exit the AoiZone
-        /// </summary>
-        /// <param name="key"></param>
-        public void Exit(long key)
-        {
-            if (!_entityList.TryGetValue(key, out var entity)) return;
-
-            Exit(entity);
-        }
-
-        /// <summary>
-        /// Exit the AoiZone
-        /// </summary>
-        /// <param name="node"></param>
-        public void Exit(AoiEntity node)
-        {
-            _xLinks.Remove(node.X);
-            _yLinks.Remove(node.Y);
-            _entityList.Remove(node.Key); ;
-        }
-
-        /// <summary>
-        /// SwapViewEntity
-        /// </summary>
-        /// <param name="viewEntity"></param>
-        /// <param name="viewEntityBak"></param>
         private static void SwapViewEntity(ref HashSet<long> viewEntity,ref HashSet<long> viewEntityBak)
         {
             viewEntityBak.Clear();
             var t3 = viewEntity;
             viewEntity = viewEntityBak;
             viewEntityBak = t3;
-        }
-
-        /// <summary>
-        /// Distance
-        /// </summary>
-        /// <param name="a"></param>
-        /// <param name="b"></param>
-        /// <returns></returns>
-        private double Distance(Vector2 a, Vector2 b)
-        {
-            return Math.Pow((a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y), 0.5);
         }
 
         /// <summary>
@@ -290,6 +267,11 @@ namespace AOI
                 units.Add(EntityManager.Instance.GetEntityById(key));
             }
             return units;
+        }
+
+        private double Distance(Vector2 a, Vector2 b)
+        {
+            return Math.Pow((a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y), 0.5);
         }
 
     }

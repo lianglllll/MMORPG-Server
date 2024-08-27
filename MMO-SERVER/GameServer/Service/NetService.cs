@@ -153,7 +153,10 @@ namespace GameServer.Network
 
             //session
             var session = conn.Get<Session>();
-            session.Conn = null;
+            if(session != null)
+            {
+                session.Conn = null;
+            }
 
             //转交给下一层的connection去进行关闭
             conn.ActiveClose();
