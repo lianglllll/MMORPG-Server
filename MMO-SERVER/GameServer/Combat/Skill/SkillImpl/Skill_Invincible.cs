@@ -8,12 +8,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameServer.Combat.Skill.SkillImpl
+namespace GameServer.Combat.Skills.SkillImpl
 {
     /// <summary>
-    /// 风行术
+    /// 无敌
     /// </summary>
-    [Skill(2004)]
+    [SkillAttribute(2004)]
     public class Skill_Invincible : Skill
     {
         public Skill_Invincible(Actor owner, int skillId): base(owner, skillId)

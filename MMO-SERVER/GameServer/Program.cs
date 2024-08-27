@@ -30,14 +30,6 @@ namespace GameServer
             .CreateLogger();
             Log.Debug("[日志服务启动]");
 
-            //proto类型加载
-            Log.Debug("[proto类型加载]");
-            ProtoHelper.Init();
-
-            //加载自定义技能类
-            Log.Debug("[加载自定义技能类]");
-            SkillSanner.Start();
-
             //加载配置文件
             Log.Debug("[加载server配置信息]");
             Config.Init();
@@ -45,6 +37,14 @@ namespace GameServer
             //装载配置文件
             Log.Debug("[加载Json配置文件]");
             DataManager.Instance.init();
+
+            //proto类型加载
+            Log.Debug("[proto类型加载]");
+            ProtoHelper.Init();
+
+            //加载自定义技能类
+            Log.Debug("[加载自定义技能类]");
+            SkillSanner.Start();
 
             //数据库服务
             Log.Debug("[启动数据库服务]");

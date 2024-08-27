@@ -8,6 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GameServer.Combat.Skills;
+using Org.BouncyCastle.Asn1.X509;
+
 
 namespace GameServer.Combat
 {
@@ -18,19 +21,13 @@ namespace GameServer.Combat
     /// </summary>
     public class Spell
     {
-        /// <summary>
-        /// 技能施法器的归属者
-        /// </summary>
         public Actor Owner { get; private set; }               
 
-        /// <summary>
-        /// 构造函数
-        /// </summary>
-        /// <param name="Owner"></param>
         public Spell(Actor Owner)
         {
             this.Owner = Owner;
         }
+
 
         /// <summary>
         /// 同一施法，处理各种类型的施法请求
@@ -38,49 +35,38 @@ namespace GameServer.Combat
         /// <param name="castInfo"></param>
         public void RunCast(CastInfo castInfo)
         {
-            if (Owner.curentSkill != null) return;//actor处于技能后摇中，无法释放技能
-
-            var skill = Owner.skillManager.GetSkill(castInfo.SkillId);
-
-            if (skill.IsNoneTarget)
-            {
-                SpellNoTarget(castInfo.SkillId);
-            }
-            if (skill.IsUnitTarget)
-            {
-                SpellTarget(castInfo.SkillId, castInfo.TargetId);
-            }
-            if (skill.IsPointTarget)
-            {
-                SpellPosition(castInfo.SkillId, castInfo.Point);
-            }
-
-        }
-
-        /// <summary>
-        /// 释放无目标技能
-        /// </summary>
-        /// <param name="skill_id"></param>
-        private void SpellNoTarget(int skill_id)
-        {
-
+            //actor处于技能后摇中，无法释放技能
+            if (Owner.curentSkill != null) return;
             //判断owner是否拥有这个技能
-                var skill = Owner.skillManager.GetSkill(skill_id);
-            if (skill == null)
-            {
-                Log.Warning("Spell::SpellTarget():Owner[{0}]:Skill[{1}] not found", Owner.EntityId, skill_id);
+            var skill = Owner.skillManager.GetSkill(castInfo.SkillId);
+            if (skill == null) { 
+                Log.Warning("Spell::SpellTarget():Owner[{0}]:Skill[{1}] not found", Owner.EntityId, castInfo.SkillId);
                 return;
             }
 
-            //执行技能,目标选择自己得了
+            if (skill.IsNoTarget)                           //释放无目标技能
+            {
+                SpellNoTarget(skill);
+            }else if (skill.IsTarget)                       //释放单体目标技能
+            {
+                SpellTarget(skill, castInfo.TargetId);
+            }else if (skill.IsPointTarget)                  //释放点目标技能
+            {
+                SpellPosition(skill, castInfo.Point);
+            }
+
+        }
+        private void SpellNoTarget(Skill skill)
+        {
+
+            //执行技能,因为是无目标技能所有 选择自己 或者 不选
             SCObject sco = new SCEntity(Owner);
-            var res = skill.CanUse(sco);
+            var result = skill.CanUse(sco);
 
             //通知施法者,执行失败
-            if (res != CastResult.Success)
+            if (result != CastResult.Success)
             {
-                Log.Warning("Cast Fail Skill {0} {1}", skill.Define.ID, res);
-                OnSpellFailure(skill_id, res);
+                OnSpellFailure(skill.SkillId, result);
                 return;
             }
 
@@ -91,27 +77,12 @@ namespace GameServer.Combat
             CastInfo info = new CastInfo()
             {
                 CasterId = Owner.EntityId,
-                SkillId = skill_id
+                SkillId = skill.SkillId
             };
             Owner.currentSpace.fightManager.spellQueue.Enqueue(info);
         }
-
-        /// <summary>
-        /// 释放单体目标技能
-        /// </summary>
-        /// <param name="skill_id"></param>
-        /// <param name="target_id"></param>
-        private void SpellTarget(int skill_id,int target_id)
+        private void SpellTarget(Skill skill, int target_id)
         {
-            //Log.Information("Spell::SpellTarget():Caster[{0}]:Skill[{1}]：Targert[{2}]", Owner.EntityId, skill_id, target_id);
-
-            //判断owner是否拥有这个技能
-            var skill = Owner.skillManager.GetSkill(skill_id);
-            if(skill == null)
-            {
-                Log.Warning("Spell::SpellTarget():Owner[{0}]:Skill[{1}] not found", Owner.EntityId, skill_id);
-                return;
-            }
 
             //检测目标
             var target = EntityManager.Instance.GetEntityById(target_id) as Actor;
@@ -121,16 +92,17 @@ namespace GameServer.Combat
                 return;
             }
 
-            //执行技能
+            //检测是否能执行技能
             SCObject sco = new SCEntity(target);
             var res = skill.CanUse(sco);
+
             //通知施法者,执行失败
             if (res != CastResult.Success)
             {
-                Log.Warning("Cast Fail Skill {0} {1}", skill.Define.ID, res);
-                OnSpellFailure(skill_id, res);
+                OnSpellFailure(skill.SkillId, res);
                 return;
             }
+
             //执行技能
             skill.Use(sco);
 
@@ -139,32 +111,48 @@ namespace GameServer.Combat
             {
                 CasterId = Owner.EntityId,
                 TargetId = target_id,
-                SkillId = skill_id
+                SkillId = skill.SkillId
+            };
+            Owner.currentSpace.fightManager.spellQueue.Enqueue(info);
+        }
+        private void SpellPosition(Skill skill, Vector3 position)
+        {
+
+            //检测是否能执行技能
+            SCObject sco = new SCPosition(position);
+            var res = skill.CanUse(sco);
+
+            //通知施法者,执行失败
+            if (res != CastResult.Success)
+            {
+                OnSpellFailure(skill.SkillId, res);
+                return;
+            }
+
+            //执行技能
+            skill.Use(sco);
+
+            //广播，可能本帧有很多人施法节能，那就收集本帧的info，等到下一帧再发出去
+            CastInfo info = new CastInfo()
+            {
+                CasterId = Owner.EntityId,
+                SkillId = skill.SkillId,
+                Point = position
             };
             Owner.currentSpace.fightManager.spellQueue.Enqueue(info);
         }
 
-        /// <summary>
-        /// 释放点目标技能
-        /// </summary>
-        /// <param name="skill_id"></param>
-        /// <param name="position"></param>
-        private void SpellPosition(int skill_id,Vector3 position)
-        {
-           // Log.Information("Spell::SpellPosition():Caster[{0}]:Pos[{1}]", Owner.EntityId, position);
-            SCObject sco = new SCPosition(position);
-        }
-
-
 
         /// <summary>
-        /// 通知玩家技能施法失败 
+        /// 技能施法失败，通知玩家
         /// </summary>
         /// <param name="skill_id"></param>
         /// <param name="reason"></param>
         public void OnSpellFailure(int skill_id,CastResult reason)
         {
-            if(Owner is Character chr)
+            Log.Warning("Cast Fail Skill {0} {1}", skill_id, reason);
+
+            if (Owner is Character chr)
             {
                 SpellFailResponse resp = new SpellFailResponse()
                 {

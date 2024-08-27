@@ -1,7 +1,7 @@
 ﻿
 namespace GameServer.Skills
 {
-    using GameServer.Combat.Skill;
+    using GameServer.Combat;
     using GameServer.Model;
     using Serilog;
     using System;
@@ -9,6 +9,7 @@ namespace GameServer.Skills
     using System.Diagnostics;
     using System.Reflection;
 
+    //描述了一个只能应用在类上的特性
     [AttributeUsage(AttributeTargets.Class)]
     public class SkillAttribute : Attribute
     {
@@ -30,24 +31,24 @@ namespace GameServer.Skills
         /// </summary>
         public static void Start()
         {
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            Type[] types = assembly.GetTypes();
-
-            Type skillType = typeof(Skill);
-
             int count = 0;
+            Type[] types = Assembly.GetExecutingAssembly().GetTypes();
+            Type skillType = typeof(Skill);
             foreach (Type type in types)
             {
+                //判断这个type身上是否有SkillAttribute特性
                 if (Attribute.IsDefined(type, typeof(SkillAttribute)))
                 {
                     var attribute = (SkillAttribute)Attribute.GetCustomAttribute(type, typeof(SkillAttribute));
+                    //拿到我们在属性中存放的技能id
                     int skid = attribute.Code;
-                    
+
+                    //判断当前类型是否为skillType类或者派生类
                     if (skillType.IsAssignableFrom(type.BaseType))
                     {
                         count++;
-                        //Log.Information("加载技能类型:Code=[{0}],Name=[{1}]", skid, type.Name);
                         SkillTypeDict[skid] = type;
+                        //Log.Information("加载技能类型:Code=[{0}],Name=[{1}]", skid, type.Name);
                     }
                     else
                     {

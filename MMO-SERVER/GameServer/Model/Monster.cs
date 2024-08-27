@@ -9,7 +9,7 @@ using GameServer.Core;
 using GameServer.AI;
 using GameServer.Manager;
 using GameServer.core.FSM;
-using GameServer.Combat.Skill;
+using GameServer.Combat;
 using Serilog;
 using System.Threading;
 
@@ -101,7 +101,7 @@ namespace GameServer.Model
             }
 
             //拿一个普通攻击来放,目标技能
-            var skill = skillManager.Skills.FirstOrDefault(s => s.State == Stage.None && s.IsNormal);
+            var skill = skillManager.Skills.FirstOrDefault(s => s.curSkillState == SkillStage.None && s.IsNormalAttack);
             if (skill == null) return null;
 
             //看向敌人

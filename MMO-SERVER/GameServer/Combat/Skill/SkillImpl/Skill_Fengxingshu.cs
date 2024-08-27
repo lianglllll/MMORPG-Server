@@ -8,12 +8,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameServer.Combat.Skill.SkillImpl
+namespace GameServer.Combat.Skills.SkillImpl
 {
     /// <summary>
     /// 风行术
     /// </summary>
-    [Skill(2003)]
+    [SkillAttribute(2003)]
     public class Skill_Fengxingshu : Skill
     {
         public Skill_Fengxingshu(Actor owner, int skillId): base(owner, skillId)

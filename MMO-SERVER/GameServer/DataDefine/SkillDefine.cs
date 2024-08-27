@@ -18,11 +18,12 @@ public class SkillDefine
 	public int ReqLevel; // 等级要求
 	public string Type; // 技能的类别
 	public string TargetType; // 目标类型
+	public int SpellRangeRadius; // 施法距离
 	public bool IsGroupAttack; // 是否是群体体攻击
 	public string EffectAreaType; // 技能影响的有效范围类别
-	public int EffectAreaRadius; // 影响半径区域，也作施法距离
-	public int EffectAreaAngle; // 影响的扇形角度，以角色的forword为中心
+	public int EffectAreaAngle; // 扇形角度大小
 	public int[] EffectAreaLengthWidth; // 影响的矩形区域，以角色的forword为起始方向
+	public int EffectAreaRadius; // 影响范围的半径
 	public string Icon; // 技能图标
 	public string IntonateArt; // 蓄气自身的粒子效果
 	public string HitArt; // 击中效果，粒子特效

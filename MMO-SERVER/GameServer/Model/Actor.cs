@@ -11,7 +11,7 @@ using GameServer.Manager;
 using Serilog;
 using GameServer.Buffs;
 using GameServer.core;
-using GameServer.Combat.Skill;
+using GameServer.Combat.Skills;
 using Google.Protobuf.Collections;
 using AOIMap;
 

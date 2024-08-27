@@ -19,6 +19,7 @@ using System.Security.Policy;
 using GameServer.Utils;
 using MySqlX.XDevAPI;
 using System.Runtime.ConstrainedExecution;
+using System.Diagnostics;
 
 namespace GameServer.Model
 {
@@ -90,7 +91,7 @@ namespace GameServer.Model
                     resp.ItemEntityList.Add(item.NetItemEntity);
                 }
             }
-            character.session.Send(resp);
+            character.session.Send(resp);   //通知自己
 
             //4.通知附近玩家
             var resp2 = new SpaceCharactersEnterResponse();
@@ -101,25 +102,6 @@ namespace GameServer.Model
                 cc.session.Send(resp2);
             }
 
-
-
-            /*
-            var loc = character.AoiPos;//获取aoi坐标
-            var all = AOIManager.GetEntities(loc.x, loc.y);
-            foreach ( var ent in all)
-            {
-                if(ent is Actor acotr)
-                {
-                    resp.CharacterList.Add(acotr.Info);
-                }
-                else if(ent is ItemEntity item)
-                {
-                    resp.ItemEntityList.Add(item.NetItemEntity);
-                }
-            }
-            //3.广播给场景中的其他玩家,有新玩家进入
-            //AOIManager.Enter(character);
-            */
         }
         public void MonsterJoin(Monster monster)
         {
@@ -195,62 +177,65 @@ namespace GameServer.Model
         /// 更新的信息给其他玩家进行转发
         /// </summary>
         /// <param name="entitySync">位置+状态信息</param>
-        public void SyncActor(NEntitySync entitySync,Actor actor)
+        public void SyncActor(NEntitySync entitySync,Actor self)
         {
-            var loc = actor.AoiPos;
-            var handle = aoiZone.Refresh(actor.EntityId, loc.x, loc.y, viewArea);   //更新aoi空间里面我们的坐标
+            var loc = self.AoiPos;
+            var handle = aoiZone.Refresh(self.EntityId, loc.x, loc.y, viewArea);   //更新aoi空间里面我们的坐标
 
-            //广播给附近的玩家
-            var units = EntityManager.Instance.GetEntitiesByIds(handle.All); 
+            //广播给视野范围内的玩家
+            var units = EntityManager.Instance.GetEntitiesByIds(handle.ViewEntity); 
             SpaceEntitySyncResponse resp = new SpaceEntitySyncResponse();
             resp.EntitySync = entitySync;
             foreach (var chr in units.OfType<Character>())
             {
+
                 chr.session.Send(resp);
             }
-            
+
+
             //新进入视野的单位，双向通知
-            var resp2 = new SpaceCharactersEnterResponse();
-            resp2.SpaceId = this.SpaceId; 
+            var enterResp = new SpaceCharactersEnterResponse();
+            enterResp.SpaceId = this.SpaceId; 
             foreach (var key in handle.Newly)
             {
                 Actor target = (Actor)EntityManager.Instance.GetEntityById((int)key);
 
-                //如果对方是玩家，自己进入对方视野
-                if (target is Character chr2)
+                //如果对方是玩家，告诉对方自己已经进入对方视野
+                if (target is Character targetChr)
                 {   
-                    resp2.CharacterList.Clear();
-                    resp2.CharacterList.Add(target.Info);
-                    chr2.session.Send(resp2);
+                    enterResp.CharacterList.Clear();
+                    enterResp.CharacterList.Add(self.Info);
+                    targetChr.session.Send(enterResp);
                 }
 
-                //告诉自己
-                if(actor is Character chr3)
+                //如果自己是玩家，需要告诉自己目标加入了我们的视野
+                if(self is Character selfChr)
                 {
-                    resp2.CharacterList.Clear();
-                    resp2.CharacterList.Add(target.Info);
-                    chr3.session.Send(resp2);
+                    enterResp.CharacterList.Clear();
+                    enterResp.CharacterList.Add(target.Info);
+                    selfChr.session.Send(enterResp);
                 }
 
             }
 
-            //远离的角色
-            var resp3 = new SpaceEntityLeaveResponse();
+            //远离视野的单位，双向通知
+            var leaveResp = new SpaceEntityLeaveResponse();
             foreach (var key in handle.Leave)
             {
                 Actor target = (Actor)EntityManager.Instance.GetEntityById((int)key);
 
-                //如果对方是玩家，自己离开对方视野
-                if (actor != null && actor is Character chr2)
+                //如果对方是玩家，告诉他自己已经离开对方视野
+                if (target is Character targetChr)
                 {
-                    resp3.EntityId = actor.EntityId;
-                    chr2.session.Send(resp3);
+                    leaveResp.EntityId = self.EntityId;
+                    targetChr.session.Send(leaveResp);
                 }
-                //如果自己是玩家，对方离开自己视野
-                if (actor is Character chr3)
+
+                //如果自己是玩家，同时告诉自己对方离开自己视野
+                if (self is Character selfChr)
                 {
-                    resp3.EntityId = (int)key;
-                    chr3.session.Send(resp3);
+                    leaveResp.EntityId = (int)key;
+                    selfChr.session.Send(leaveResp);
                 }
             }
 

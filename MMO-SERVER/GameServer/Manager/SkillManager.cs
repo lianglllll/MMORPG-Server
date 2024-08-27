@@ -1,4 +1,4 @@
-﻿using GameServer.Combat.Skill;
+﻿using GameServer.Combat;
 using GameServer.Model;
 using GameServer.Skills;
 using Proto;

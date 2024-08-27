@@ -125,7 +125,7 @@ namespace GameServer.Model
         }
 
         /// <summary>
-        /// aoi体系的二维坐标
+        /// aoi体系的二维坐标(unity坐标)
         /// </summary>
         public Vector2 AoiPos => new Vector2(position.x, position.z)/1000;
 
