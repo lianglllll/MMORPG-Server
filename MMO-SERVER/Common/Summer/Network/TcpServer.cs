@@ -8,7 +8,7 @@ using System.Net.Sockets;
 using Serilog;
 using Google.Protobuf;
 
-namespace Summer.Network
+namespace GameServer.Network
 {
 
     /// <summary>

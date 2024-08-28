@@ -1,5 +1,5 @@
 ﻿using Proto;
-using Summer;
+using GameServer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +16,7 @@ namespace GameServer.Model
     /// 在MMO世界地图进行同步的实体
     /// 就是一切动态的对象
     /// </summary>
-    public class Entity : IAOIUnit
+    public class Entity
     {
         private Vector3Int position;                //位置
         private Vector3Int direction;               //方向 direction = transform.rotation.eulerAngles
@@ -101,6 +101,7 @@ namespace GameServer.Model
 
         }
 
+        /*
         /// <summary>
         /// aoi体系下的其他角色进入视野
         /// </summary>
@@ -123,6 +124,7 @@ namespace GameServer.Model
         {
             Log.Warning("AOI坐标错误：eid={0},pos={1}", EntityId, Position);
         }
+        */
 
         /// <summary>
         /// aoi体系的二维坐标(unity坐标)

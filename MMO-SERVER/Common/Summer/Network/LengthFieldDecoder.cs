@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-namespace Summer.Network
+namespace GameServer.Network
 {
     /// <summary>
     /// 这是Socket异步接收器，可以对接收的数据粘包与拆包

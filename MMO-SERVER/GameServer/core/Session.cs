@@ -3,8 +3,8 @@ using GameServer.Manager;
 using GameServer.Model;
 using Google.Protobuf;
 using Serilog;
-using Summer;
-using Summer.Network;
+using GameServer;
+using GameServer.Network;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -76,7 +76,7 @@ namespace GameServer.core
             //移除chr
             if(character != null)
             {
-                character.currentSpace?.CharacterLeave(character);
+                character.currentSpace?.EntityLeave(character);
                 CharacterManager.Instance.RemoveCharacter(character.EntityId);
             }
         }

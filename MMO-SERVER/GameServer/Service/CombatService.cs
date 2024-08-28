@@ -4,8 +4,8 @@ using GameServer.Manager;
 using GameServer.Model;
 using Proto;
 using Serilog;
-using Summer;
-using Summer.Network;
+using GameServer;
+using GameServer.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,20 +24,6 @@ namespace GameServer.Service
             MessageRouter.Instance.Subscribe<SpellCastRequest>(_SpellCastRequest);
             MessageRouter.Instance.Subscribe<ReviveRequest>(_ReviveRequest);
             MessageRouter.Instance.Subscribe<SpaceDeliverRequest>(_SpaceDeliverRequest);
-        }
-
-        /// <summary>
-        /// 复活请求
-        /// </summary>
-        /// <param name="conn"></param>
-        /// <param name="message"></param>
-        private void _ReviveRequest(Connection conn, ReviveRequest message)
-        {
-            var actor = EntityManager.Instance.GetEntityById(message.EntityId);
-            if(actor != null && actor is Character chr&& chr.IsDeath&& chr.session.Conn == conn)
-            {
-                chr.Revive();
-            }
         }
 
         /// <summary>
@@ -61,6 +47,24 @@ namespace GameServer.Service
         }
 
         /// <summary>
+        /// 复活请求
+        /// </summary>
+        /// <param name="conn"></param>
+        /// <param name="message"></param>
+        private void _ReviveRequest(Connection conn, ReviveRequest message)
+        {
+            var actor = EntityManager.Instance.GetEntityById(message.EntityId);
+
+            if (actor != null && actor is Character chr && chr.session.Conn == conn && chr.IsDeath)
+            {
+                chr.currentSpace.actionQueue.Enqueue(() =>
+                {
+                    chr.Revive();
+                });
+            }
+        }
+
+        /// <summary>
         /// 传送请求
         /// </summary>
         /// <param name="sender"></param>
@@ -72,8 +76,8 @@ namespace GameServer.Service
             var sp = SpaceManager.Instance.GetSpaceById(message.SpaceId);
             DataManager.Instance.revivalPointDefindeDict.TryGetValue(message.PointId, out var pointDef);
             if (sp == null || pointDef == null) return;
-
             chr.TransmitTo(sp, new Core.Vector3Int(pointDef.X, pointDef.Y, pointDef.Z));
+
         }
     }
 }

@@ -5,10 +5,10 @@ using System.Text;
 using System.Linq;
 using System.IO;
 using Google.Protobuf;
-using Summer.Network;
+using GameServer.Network;
 using System.Threading;
 using Serilog;
-using Summer;
+using GameServer;
 
 namespace Client
 {

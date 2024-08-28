@@ -1,6 +1,6 @@
 ﻿using Proto;
-using Summer;
-using Summer.Network;
+using GameServer;
+using GameServer.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,6 +70,7 @@ namespace GameServer.Model
             return new Character(dbCharacter);
         }
 
+        /*
         /// <summary>
         /// aoi区域内有新entity进入
         /// </summary>
@@ -139,6 +140,8 @@ namespace GameServer.Model
                 TransmitTo(sp, new Core.Vector3Int(pointDef.X, pointDef.Y, pointDef.Z));
             }
         }
+
+        */
 
         /// <summary>
         /// 使用物品

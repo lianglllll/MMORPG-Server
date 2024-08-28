@@ -18,6 +18,7 @@ namespace GameServer.Manager
         private Space space;
         public Dictionary<int, ItemEntity> itemEntityDict = new Dictionary<int, ItemEntity>();        //<entityid,ItemEntity>
 
+
         public void Init(Space space)
         {
             this.space = space;
@@ -34,27 +35,37 @@ namespace GameServer.Manager
         {
             var ie = new ItemEntity(item, space, pos, dir);
 
-            //添加到entity中管理
+            //添加到entityMananger中管理
             EntityManager.Instance.AddEntity(space.SpaceId, ie);
 
-            //添加到当前的mostermanager中管理
+            //添加到当前的mostermanager中管理，分配entityid
             itemEntityDict[ie.EntityId] = ie;
 
             //显示到当前场景
-            this.space.ItemJoin(ie);
+            this.space.EntityJoin(ie);
 
             return ie;
         }
-
-        public Boolean RemoveItem(int entityId)
+        /// <summary>
+        /// 在当前场景移除Item实例
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public Boolean RemoveItem(ItemEntity item)
         {
-            if (!itemEntityDict.ContainsKey(entityId)) return false;
-            itemEntityDict.Remove(entityId);
-            //entitymanager remove
-            EntityManager.Instance.RemoveEntity(space.SpaceId, entityId);
+            if (!itemEntityDict.ContainsKey(item.EntityId)) return false;
+            EntityManager.Instance.RemoveEntity(space.SpaceId, item.EntityId);
+            itemEntityDict.Remove(item.EntityId);
+
+            //场景中移除
+            space.EntityLeave(item);
+
             return true;
         }
-
+        public ItemEntity GetItemEntityByEntityId(int entityId)
+        {
+            return itemEntityDict.GetValueOrDefault(entityId);
+        }
 
     }
 }

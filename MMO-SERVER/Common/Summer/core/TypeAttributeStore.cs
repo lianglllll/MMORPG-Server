@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Summer.core
+namespace GameServer.core
 {
     /// <summary>
     /// 一个通用的属性存储（自定义的）

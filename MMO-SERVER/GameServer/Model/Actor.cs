@@ -1,4 +1,4 @@
-﻿using Summer;
+﻿using GameServer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -283,12 +283,11 @@ namespace GameServer.Model
             CurSpaceId = space.SpaceId;
         }
 
-        /// <summary>
-        /// 当前actor收到扣血通知
-        /// </summary>
-        /// <param name="damage"></param>
+
         public void RecvDamage(Damage damage)
         {
+            //由技能和buff发出，当前actor收到扣血通知，本过程由Scheduler单线程调用，没有并发问题。
+
             //无敌
             if (buffManager.HasBuffByBid(5))
             {
@@ -296,9 +295,7 @@ namespace GameServer.Model
                 damage.Amount = 0;
             }
 
-            //添加广播，一个伤害发生了
-            currentSpace.fightManager.damageQueue.Enqueue(damage);
-            //扣血
+            //扣血，属性更新
             if(Hp > damage.Amount)
             {
                 SetHp(Hp - damage.Amount);
@@ -308,19 +305,18 @@ namespace GameServer.Model
                 Die(damage.AttackerId);
             }
 
+            //添加广播，一个伤害发生了。
+            currentSpace.fightManager.damageQueue.Enqueue(damage);
+
             AfterRecvDamage(damage);
         }
         protected virtual void AfterRecvDamage(Damage damage)
         {
 
         }
-
-        /// <summary>
-        /// 当前actor死亡
-        /// </summary>
-        /// <param name="killerID"></param>
         public virtual void Die(int killerID)
         {
+
             if (IsDeath) return;
 
             SetHp(0);
@@ -332,6 +328,21 @@ namespace GameServer.Model
         protected virtual void OnAfterDie(int killerID)
         {
             buffManager.RemoveAllBuff();
+        }
+
+        // 自动回血调用，这里暂时只有monster调用，本过程由Scheduler单线程调用，没有并发问题。
+        public virtual bool Check_HpAndMp_Needs()
+        {
+            if(Hp < _info.HpMax || Mp < _info.MpMax)
+            {
+                return true;
+            }
+            return false;
+        }
+        public virtual void Restore_HpAndMp()
+        {
+            SetHp(Hp + _info.HpMax * 0.1f);
+            SetMP(Mp + _info.MpMax * 0.1f);
         }
 
         /// <summary>
@@ -356,7 +367,7 @@ namespace GameServer.Model
             if(currentSpace != targetSpace)
             {
                 //1.退出当前场景
-                currentSpace.CharacterLeave(chr);
+                currentSpace.EntityLeave(chr);
                 //设置坐标
                 var tempSpace = currentSpace;
                 currentSpace = null;
@@ -364,7 +375,7 @@ namespace GameServer.Model
                 chr.Direction = dir;
                 currentSpace = tempSpace;
                 //2.进入新场景
-                targetSpace.CharaterJoin(chr);
+                targetSpace.EntityJoin(chr);
 
             }
             //传送的是同一场景
@@ -372,24 +383,6 @@ namespace GameServer.Model
             {
                 currentSpace.Transmit(this, pos, dir);
             }
-        }
-
-        /// <summary>
-        /// 自动回血调用
-        /// </summary>
-        /// <returns></returns>
-        public virtual bool Check_HpAndMp_Needs()
-        {
-            if(Hp < _info.HpMax || Mp < _info.MpMax)
-            {
-                return true;
-            }
-            return false;
-        }
-        public virtual void Restore_HpAndMp()
-        {
-            SetHp(Hp + _info.HpMax * 0.1f);
-            SetMP(Mp + _info.MpMax * 0.1f);
         }
 
     }

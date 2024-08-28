@@ -14,29 +14,23 @@ namespace GameServer.Combat
 {
     /// <summary>
     /// 战斗管理器
-    /// 这里接收到的事件都会等到下一帧开始运行的时候再处理
     /// </summary>
     public class FightManager
     {
         private Space space;
+        public List<Missile> missiles = new List<Missile>();        //当前场景下的投射物列表
 
-        //等待处理的技能施法队列：收集来自各个客户端的施法请求
-        //这个队列维持了actor属性的同步，比如说hp的计算是单线程的。
+        //待处理的技能施法队列：收集来自各个客户端的施法请求,线性处理，避免多线程并发问题。
         public ConcurrentQueue<CastInfo> castInfoQueue = new ConcurrentQueue<CastInfo>();
 
-        //当前场景下的投射物列表
-        public List<Missile> missiles = new List<Missile>();
-
-        //等待广播的技能施法队列：通知各个客户端谁谁谁要施法技能
+        //等待广播队列存在的意义：收集某帧的全部数据一起发送，减少数据包的发送频率
+        //  等待广播：技能施法队列：通知各个客户端谁谁谁要施法技能
         public ConcurrentQueue<CastInfo> spellQueue = new ConcurrentQueue<CastInfo>();
-        //响应包
         private SpellCastResponse spellCastResponse = new SpellCastResponse();
-
-        //等待广播的伤害队列：告诉客户端谁谁谁收到伤害了，让其播放一些动画/特效或者ui之类的。这里不做属性更新
+        //  等待广播：伤害队列：告诉客户端谁谁谁收到伤害了，让其播放一些动画/特效或者ui之类的。这里不做属性更新
         public ConcurrentQueue<Damage> damageQueue = new ConcurrentQueue<Damage>();
         private DamageResponse damageResponse = new DamageResponse();
-        
-        //等待广播：人物属性更新的队列
+        //  等待广播：人物属性更新的队列
         public ConcurrentQueue<PropertyUpdate> propertyUpdateQueue = new ConcurrentQueue<PropertyUpdate>();
         private PropertyUpdateRsponse propertyUpdateRsponse = new PropertyUpdateRsponse();
         
@@ -44,7 +38,6 @@ namespace GameServer.Combat
         {
             this.space = space;
         }
-
         public void OnUpdate(float deltaTime)
         {
             //处理施法请求
@@ -66,11 +59,6 @@ namespace GameServer.Combat
             //广播actor属性更新信息
             BroadcastProperties();
         }
-
-        /// <summary>
-        /// 处理施法请求
-        /// </summary>
-        /// <param name="cast"></param>
         private void RunCast(CastInfo cast)
         {
             //1.判断施法者是否存在
@@ -83,10 +71,6 @@ namespace GameServer.Combat
             //2.施法技能
             caster.spell.RunCast(cast);
         }
-
-        /// <summary>
-        /// 向场景中的全部client广播施法信息
-        /// </summary>
         private void BroadcastSpellInfo()
         {
             while(spellQueue.TryDequeue(out var item))
@@ -97,7 +81,7 @@ namespace GameServer.Combat
             if(spellCastResponse.List.Count() > 0)
             {
                 //找出所有受影响的玩家们,这里使用set是保证唯一性
-                //谁需要看到这个施法的过程，当然是施法者九宫格范围内的玩家。
+                //谁需要看到这个施法的过程，当然是施法者aoi范围内的玩家。
                 var hashSet = new HashSet<Character>();
                 foreach (var item in spellCastResponse.List)
                 {
@@ -125,10 +109,6 @@ namespace GameServer.Combat
             }
 
         }
-
-        /// <summary>
-        /// 向场景中的全部client广播伤害信息
-        /// </summary>
         private void BroadcastDamage()
         {
             while(damageQueue.TryDequeue(out var item))
@@ -166,10 +146,6 @@ namespace GameServer.Combat
             }
 
         }
-
-        /// <summary>
-        /// 向场景中的全部client广播actor的属性更新信息
-        /// </summary>
         private void BroadcastProperties()
         {
             while (propertyUpdateQueue.TryDequeue(out var item))

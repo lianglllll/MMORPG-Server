@@ -8,7 +8,7 @@ using System.Linq;
 using Google.Protobuf.Reflection;
 using Serilog;
 
-namespace Summer
+namespace GameServer
 {
     /// <summary>
     /// Protobuf序列化与反序列化

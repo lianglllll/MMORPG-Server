@@ -9,12 +9,12 @@ using System.IO;
 using Google.Protobuf;
 using Google.Protobuf.Reflection;
 using Serilog;
-using Summer.core;
+using GameServer.core;
 using Proto;
 using System.Threading;
 using System.Collections;
 
-namespace Summer.Network
+namespace GameServer.Network
 {
 
 

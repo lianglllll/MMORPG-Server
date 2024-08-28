@@ -8469,6 +8469,18 @@ unity控制台中的error pause 遇到错误打印就停止。导致我以为是
 
 
 
+## 2024.8.28
+
+技能飞行物打到monster的时候会，服务器会给客户端发送moster离开场景的数据包
+
+```
+                targets = AreaEntitiesFinder.GetEntitiesInCircleAroundEntity(target, Define.MissileEffectRadius, true).ToList();
+```
+
+关键代码MissileEffectRadius的大小问题，我们将其*0.001f时，这会影响到十字链表查询范围entity的时间，初步猜测就是刚刚好这么点时间，发生了线程并发的问题。
+
+
+
 # 网络模块
 
 

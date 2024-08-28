@@ -11,7 +11,7 @@ using Google.Protobuf.WellKnownTypes;
 using MySqlX.XDevAPI.Common;
 using Proto;
 using Serilog;
-using Summer;
+using GameServer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -240,7 +240,7 @@ namespace GameServer.Combat
             }
             else
             {
-                targets = AreaEntitiesFinder.GetEntitiesInCircleAroundEntity(target, Define.MissileEffectRadius, true).ToList();
+                targets = AreaEntitiesFinder.GetEntitiesInCircleAroundEntity(target, Define.MissileEffectRadius*0.001f, true).ToList();
             }
 
             //对目标造成伤害
@@ -249,48 +249,6 @@ namespace GameServer.Combat
                 TakeDamage(item);
             }
 
-            /*
-            if (Define.MissileIsGroupAttack)
-            {
-                List<Actor> result = new List<Actor>();
-                List<Actor> entityList;
-                if (targetSco is SCEntity target)
-                {
-                    var acotr = targetSco.RealObj as Actor;
-                    entityList = Owner.currentSpace.aoiZone.FindViewEntity(acotr.EntityId,true).OfType<Actor>().ToList<Actor>();
-                }
-                else if (targetSco is SCPosition scPos)
-                {
-                    //entityList = (List<Actor>)Owner.currentSpace.AOIManager.GetEntities(scPos.Position.x / 1000, scPos.Position.z / 1000).OfType<Actor>();
-                    entityList = EntityManager.Instance.GetEntitiesAroundPoint<Actor>(Owner.CurSpaceId, scPos.Position, Config.Server.AoiViewArea);
-                }
-                else
-                {
-                    entityList = new List<Actor>();
-                }
-
-                foreach (var entity in entityList)
-                {
-                    if (entity == Owner) continue;
-                    if (CheckForLegalCircularArea(targetSco.Position, entity, Define.MissileEffectRadius))
-                    {
-                        result.Add(entity);
-                    }
-                }
-
-                foreach (var item in result)
-                {
-                    TakeDamage(item);
-                }
-
-            }
-            //单体技能
-            //target : actor
-            else
-            {
-                OnHitOne(targetSco.RealObj as Actor);
-            }
-            */
         }
 
         /// <summary>

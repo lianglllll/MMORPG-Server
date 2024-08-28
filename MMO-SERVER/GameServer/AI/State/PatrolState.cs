@@ -1,7 +1,8 @@
-﻿using GameServer.core.FSM;
+﻿using GameServer.Combat;
+using GameServer.core.FSM;
 using GameServer.Manager;
 using GameServer.Model;
-using Summer;
+using GameServer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,8 @@ namespace GameServer.AI.State
             var monster = param.owner;
 
             //查询viewRange内的玩家，如果有就切换追击状态
-            var chr = EntityManager.Instance.GetEntitiesAroundPoint<Character>(monster.CurSpaceId, monster.Position, param.viewRange).FirstOrDefault(a => !a.IsDeath);
+            var views = AreaEntitiesFinder.GetEntitiesInCircleAroundEntity(monster, param.viewRange*0.001f,false);
+            var chr = views.OfType<Character>().FirstOrDefault((a) => !a.IsDeath,null);
             if (chr != null)
             {
                 monster.target = chr;
@@ -72,6 +74,7 @@ namespace GameServer.AI.State
             }
 
         }
+
 
     }
 }

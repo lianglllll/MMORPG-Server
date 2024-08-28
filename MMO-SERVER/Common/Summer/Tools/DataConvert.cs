@@ -12,7 +12,7 @@ using GameServer.Core;
 using UnityEngine;
 #endif
 
-namespace Summer
+namespace GameServer
 {
 
 

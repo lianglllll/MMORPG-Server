@@ -1,11 +1,11 @@
-﻿using Summer.Network;
+﻿using GameServer.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Proto;
-using Summer;
+using GameServer;
 using GameServer.Model;
 using GameServer.Manager;
 using Serilog;
@@ -72,9 +72,8 @@ namespace GameServer.Service
 
             }
 
-            //更新信息并且转发
-            chr.EntityData = msg.EntitySync.Entity;
-            chr.State = msg.EntitySync.State;
+            //转发space处理
+
             chr.currentSpace.SyncActor(msg.EntitySync,chr);
         }
 

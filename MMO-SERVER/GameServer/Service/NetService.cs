@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using Summer;
-using Summer.Network;
+using GameServer;
+using GameServer.Network;
 using Serilog;
 using Proto;
 using System.Threading;

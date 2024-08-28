@@ -2,44 +2,24 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 
-namespace Summer
+namespace GameServer
 {
-
-
-    //时间单位
-    public enum TimeUnit
-    {
-        Milliseconds,
-        Seconds,
-        Minutes,
-        Hours,
-        Days
-    }
-
     //中心计时器
     public class Scheduler : Singleton<Scheduler>
     {
-
         private List<Task> tasks = new List<Task>();                                        // 任务队列
         private ConcurrentQueue<Task> _addQueue = new ConcurrentQueue<Task>();              // 新增任务队列
         private ConcurrentQueue<Action> _removeQueue = new ConcurrentQueue<Action>();       // 移除任务队列
         private Timer timer;                                                                // 计时器
         private int fps = 50;                                                               // 每秒帧数
         private object tasksLock = new object();                                            // 用于保护任务列表的锁对象
+        private long _next = 0;                                                             //下一帧执行的时间
 
-        /// <summary>
-        /// 构造方法
-        /// </summary>
-        public Scheduler()
-        {
+        public Scheduler() { }
 
-        }
-
-        /// <summary>
-        /// 启动中心计算调度器
-        /// </summary>
         public void Start()
         {
             if (timer != null) return;
@@ -47,10 +27,6 @@ namespace Summer
             timer = new Timer(Execute, null, 0, 1);//每隔一毫秒触发
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public void Stop()
         {
             if (timer == null) return;
@@ -59,9 +35,6 @@ namespace Summer
             timer = null;
             Console.WriteLine("Timer stopped.");
         }
-
-        //下一帧执行的时间
-        private long _next = 0;
 
         /// <summary>
         /// 计时器主循环
@@ -111,9 +84,9 @@ namespace Summer
 
 
         //给计时器添加一个任务，有一个委托，执行的时间间隔，重复次数（0的话就是不断重复），以秒为间隔
-        public void AddTask(Action taskMethod, float seconds, int repeatCount = 0)
+        public void AddTask(Action taskMethod, float intervalSeconds, int repeatCount = 0)
         {
-            this.AddTask(taskMethod, (int)(seconds * 1000), TimeUnit.Milliseconds, repeatCount);
+            this.AddTask(taskMethod, (int)(intervalSeconds * 1000), TimeUnit.Milliseconds, repeatCount);
         }
 
         //timeUnit时间单位
@@ -148,8 +121,6 @@ namespace Summer
             _addQueue.Enqueue(task);
         }
 
-
-
         public static long GetCurrentTime()
         {
             // 获取从1970年1月1日午夜（也称为UNIX纪元）到现在的毫秒数
@@ -175,6 +146,8 @@ namespace Summer
                     throw new ArgumentException("Invalid time unit.");
             }
         }
+
+
 
 
         private class Task
@@ -245,23 +218,26 @@ namespace Summer
         }
     }
 
+    //时间单位
+    public enum TimeUnit
+    {
+        Milliseconds,
+        Seconds,
+        Minutes,
+        Hours,
+        Days
+    }
 
+    //时间
     public class Time
     {
-
+        //游戏开始的时间戳
         private static long startTime = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
-        //游戏运行时间
-        public static float time { 
-            get {
-                return (DateTimeOffset.Now.ToUnixTimeMilliseconds() - startTime) * 0.001f;
-            }
-            private set { }
-        }
+        //游戏的运行时间（秒），帧开始的时间
+        public static float time { get; private set; }
 
-        /// <summary>
-        /// 获取上一帧运行所用的时间
-        /// </summary>
+        //上一帧运行所用的时间
         public static float deltaTime { get; private set; }
 
         // 记录最后一次tick的时间
@@ -269,11 +245,11 @@ namespace Summer
 
         /// <summary>
         /// 由Schedule调用，请不要自行调用，除非你知道自己在做什么！！！
-        /// 更新deltaTime
         /// </summary>
         public static void Tick()
         {
             long now = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+            time = (now - startTime) * 0.001f;
             if (lastTick == 0) lastTick = now;
             deltaTime = (now - lastTick) * 0.001f;//deltaTime是以秒作为单位的
             lastTick = now;

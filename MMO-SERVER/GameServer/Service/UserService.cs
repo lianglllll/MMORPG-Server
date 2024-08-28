@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Summer.Network;
+using GameServer.Network;
 using Proto;
 using Serilog;
 using GameServer.Model;
 using GameServer.Manager;
-using Summer;
+using GameServer;
 using GameServer.Database;
 using GameServer.core;
 using GameServer.Network;
@@ -339,7 +339,7 @@ namespace GameServer.Service
 
             //告知场景新加入了一个entity,进行广播
             Space space = SpaceService.Instance.GetSpaceById(dbCharacter.SpaceId);
-            space?.CharaterJoin(character);
+            space?.EntityJoin(character);
 
         }
 

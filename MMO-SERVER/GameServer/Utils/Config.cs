@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 using Serilog;
-using Summer;
+using GameServer;
 using System.IO;
 using YamlDotNet.Serialization;
 
@@ -36,7 +36,10 @@ namespace GameServer.Utils
         public int WorkerCount { get; set; }        
         
         [YamlMember(Alias = "aoiViewArea")]
-        public float AoiViewArea { get; set; }
+        public float AoiViewArea { get; set; }        
+        
+        [YamlMember(Alias = "updateHz")]
+        public float UpdateHz { get; set; }
     }
 
     public class AppConfig

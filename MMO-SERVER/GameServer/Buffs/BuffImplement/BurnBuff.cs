@@ -1,5 +1,5 @@
 ﻿using Proto;
-using Summer;
+using GameServer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +23,19 @@ namespace GameServer.Buffs.BuffImplement
 
         public override void OnGet()
         {
-            Scheduler.Instance.AddTask(OnHit, 1, (int)Def.MaxDuration);
+            Scheduler.Instance.AddTask(() =>
+            {
+                if (Owner.IsDeath) return;
+                var dmg = new Damage
+                {
+                    AttackerId = Provider.EntityId,
+                    TargetId = Owner.EntityId,
+                    SkillId = 0,
+                    Amount = 10,
+                };
+                Owner.RecvDamage(dmg);
+
+            }, 1, (int)Def.MaxDuration);
         }
 
         public override void OnLost()
@@ -32,19 +44,6 @@ namespace GameServer.Buffs.BuffImplement
 
         protected override void OnLevelChange(int change)
         {
-        }
-
-        public void OnHit()
-        {
-            if (Owner.IsDeath) return;
-            var dmg = new Damage
-            {
-                AttackerId = Provider.EntityId,
-                TargetId = Owner.EntityId,
-                SkillId = 0,
-                Amount = 10,
-            };
-            Owner.RecvDamage(dmg);
         }
 
     }

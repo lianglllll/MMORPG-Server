@@ -1,6 +1,6 @@
 ﻿using GameServer.Core;
 using GameServer.Model;
-using Summer;
+using GameServer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,7 +39,7 @@ namespace GameServer.Manager
             monsterDict[monster.AcotrId] = monster;
 
             //显示到当前场景
-            this.curSpace.MonsterJoin(monster);
+            this.curSpace.EntityJoin(monster);
 
             return monster;
         }
