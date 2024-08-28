@@ -8,10 +8,10 @@ using Proto;
 using GameServer.Core;
 using GameServer.AI;
 using GameServer.Manager;
-using GameServer.core.FSM;
 using GameServer.Combat;
 using Serilog;
 using System.Threading;
+using Common.Summer.GameServer;
 
 namespace GameServer.Model
 {
@@ -142,7 +142,7 @@ namespace GameServer.Model
                 //移动向量
                 var dir = (targetPos - curPos).normalized;
                 this.Direction = LookRotation(dir) * Y1000;
-                float dist = Speed * Time.deltaTime;
+                float dist = Speed * MyTime.deltaTime;
                 if (Vector3.Distance(targetPos, curPos) < dist)
                 {
                     StopMove();

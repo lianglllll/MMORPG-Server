@@ -10,7 +10,7 @@ server:
   port: 6666
   # 工作线程数
   workerCount: 2
-  #AOI视野距离
+  #AOI视野距离(米)
   aoiViewArea: 50
-  #逻辑处理频率
+  #逻辑处理频率(hz)
   updateHz: 50

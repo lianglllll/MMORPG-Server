@@ -1,5 +1,4 @@
 ﻿using GameServer.Combat;
-using GameServer.core.FSM;
 using GameServer.Manager;
 using GameServer.Model;
 using GameServer;
@@ -8,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Summer.GameServer;
+using GameServer.AI.FSM;
 
 namespace GameServer.AI.State
 {
@@ -18,10 +19,10 @@ namespace GameServer.AI.State
     /// </summary>
     public class PatrolState : IState<Param>
     {
-        float lastTime = Time.time;                 //ai上次开始巡逻的时间
+        float lastTime = MyTime.time;                 //ai上次开始巡逻的时间
         private static float waitTime = 10f;        //ai原地等待的时间
 
-        float lastRestoreHpMpTime = Time.time;      //用于重置回复状态的时间点
+        float lastRestoreHpMpTime = MyTime.time;      //用于重置回复状态的时间点
         private static float restoreWaitTime = 1f;
 
         public PatrolState(FSM<Param> fsm)
@@ -52,9 +53,9 @@ namespace GameServer.AI.State
             if (monster.State == Proto.EntityState.Idle)
             {
                 //到时间刷新了（每10秒刷新一次）
-                if (lastTime + waitTime < Time.time)
+                if (lastTime + waitTime < MyTime.time)
                 {
-                    lastTime = Time.time;
+                    lastTime = MyTime.time;
                     waitTime = (float)(param.rand.NextDouble() * 20f) + 10f;
                     //移动到随机位置
                     var target = monster.RandomPointWithBirth(param.walkRange);
@@ -65,9 +66,9 @@ namespace GameServer.AI.State
             //当actor状态不健康的时候回血回蓝
             if (!monster.IsDeath && monster.Check_HpAndMp_Needs())
             {
-                if (lastRestoreHpMpTime + restoreWaitTime < Time.time)
+                if (lastRestoreHpMpTime + restoreWaitTime < MyTime.time)
                 {
-                    lastRestoreHpMpTime = Time.time;
+                    lastRestoreHpMpTime = MyTime.time;
                     monster.Restore_HpAndMp();
                 }
 

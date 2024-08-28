@@ -1,26 +1,28 @@
-﻿using Serilog;
+﻿using Common.Summer.GameServer;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameServer.core.FSM
+namespace GameServer.AI.FSM
 {
     public class FSM<T>
     {
-
         public T param;//共享参数
-
         public IState<T> curState;
         public string curStateId;
         private Dictionary<string, IState<T>> stateDict = new Dictionary<string, IState<T>>();
+        private int fps = 5;    //每秒更新次数
+        private float _lastUpdateTime = MyTime.time;
 
         public FSM() { }
 
-        public FSM(T param)
+        public FSM(T param,int fps)
         {
             this.param = param;
+            this.fps = fps;
         }
 
         //添加状态
@@ -45,7 +47,6 @@ namespace GameServer.core.FSM
         {
             if (curStateId == stateId) return;
             if (!stateDict.ContainsKey(stateId)) return;
-            //Log.Information($"{curStateId}=>{stateId}");
 
             curState?.OnExit();
             curStateId = stateId;
@@ -53,9 +54,13 @@ namespace GameServer.core.FSM
             curState.OnEnter();
         }
 
-        public  void Update()
+        public void Update()
         {
-            curState?.OnUpdate();
+            if(MyTime.time - _lastUpdateTime > 1 / fps)
+            {
+                _lastUpdateTime = MyTime.time;
+                curState?.OnUpdate();
+            }
         }
 
     }

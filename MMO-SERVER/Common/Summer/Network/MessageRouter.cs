@@ -1,5 +1,7 @@
 ﻿using GameServer;
+using Serilog;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,7 +21,7 @@ namespace GameServer.Network
     }
 
     /// <summary>
-    /// 消息转发器
+    /// 消息分发器
     /// </summary>
     public class MessageRouter:Singleton<MessageRouter>
     {
@@ -27,20 +29,55 @@ namespace GameServer.Network
         private int WorkerCount = 0; //线程工作个数
         bool running = false;        //工作状态
         public bool Running { get { return running; } }
+
         //通过set每次可以唤醒一个线程
         AutoResetEvent threadEvent = new AutoResetEvent(false);  
 
         //消息队列，所有客户端发送过来的消息都暂存到这里
-        private Queue<Msg> messageQueue = new Queue<Msg>();
+        private ConcurrentQueue<Msg> messageQueue = new ConcurrentQueue<Msg>();
 
         //消息处理器(这里是一个委托)
         public delegate void MessageHandler<T>(Connection sender, T message);
 
         //消息频道（技能频道，战斗频道，物品频道）（订阅记录）
-        private Dictionary<string, Delegate> delegateMap = new Dictionary<string, Delegate>();
+        private ConcurrentDictionary<string, Delegate> delegateMap = new ConcurrentDictionary<string, Delegate>();
 
+        public void Start(int ThreadCount)
+        {
+            if (running) return;
+            running = true;
+            this.ThreadCount = Math.Min(Math.Max(1, ThreadCount),10);
 
-        //添加消息到消息队列
+            for(int i = 0; i < this.ThreadCount; i++)
+            {
+                //将委托任务交付给线程池
+                ThreadPool.QueueUserWorkItem(new WaitCallback(MessageWork));
+            }
+
+            //等待一会,让全部线程
+            while (WorkerCount < this.ThreadCount)
+            {
+                Thread.Sleep(100);
+            }
+        }
+
+        public void Stop()
+        {
+            running = false;
+            messageQueue.Clear();
+            //等待全部线程下线
+            while (WorkerCount > 0)
+            {
+                threadEvent.Set();//防止线程一直处于阻塞状态
+            }
+            Thread.Sleep(50);
+        }
+
+        /// <summary>
+        /// 添加消息到消息队列
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="message"></param>
         public void AddMessage(Connection sender, Google.Protobuf.IMessage message)
         {
             //加锁
@@ -52,9 +89,11 @@ namespace GameServer.Network
             threadEvent.Set();
         }
 
-        /*
-         订阅频道
-         */
+        /// <summary>
+        ///  订阅频道
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="handler"></param>
         public void Subscribe<T>(MessageHandler<T> handler) where T : Google.Protobuf.IMessage
         {
             string type = typeof(T).FullName;
@@ -63,13 +102,16 @@ namespace GameServer.Network
             {
                 delegateMap[type] = null;
             }
+
             //添加订阅者,因为这里它不知道是什么类型的委托，所以要转型（这里是委托链注意，可能会多次绑定）
             delegateMap[type] = (MessageHandler < T >)delegateMap[type]  + handler;
         }
 
-        /*
-         退订频道
-         */
+        /// <summary>
+        /// 退订频道
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="handler"></param>
         public void Off<T>(MessageHandler<T> handler) where T : Google.Protobuf.IMessage
         {
             string key = typeof(T).FullName;
@@ -81,9 +123,12 @@ namespace GameServer.Network
             delegateMap[key] = (MessageHandler<T>)delegateMap[key] - handler;
         }
 
-        /*
-         触发相对应订阅的事件
-         */
+        /// <summary>
+        /// 触发相对应订阅的事件
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sender"></param>
+        /// <param name="msg"></param>
         private void Fire<T>(Connection sender, T msg) {
 
             string type = typeof(T).FullName;
@@ -105,48 +150,10 @@ namespace GameServer.Network
 
         }
 
-
         /// <summary>
-        /// 开启任务分发器
+        /// 多线程消息处理
         /// </summary>
-        /// <param name="ThreadCount"></param>
-        public void Start(int ThreadCount)
-        {
-            if (running) return;
-            running = true;
-            this.ThreadCount = Math.Min(Math.Max(1, ThreadCount),10);
-
-            for(int i = 0; i < this.ThreadCount; i++)
-            {
-                //将委托任务交付给线程池
-                ThreadPool.QueueUserWorkItem(new WaitCallback(MessageWork));
-            }
-
-            //等待一会,让全部线程
-            while (WorkerCount < this.ThreadCount)
-            {
-                Thread.Sleep(100);
-            }
-        }
-
-        /*
-         任务关闭
-         */
-        public void Stop()
-        {
-            running = false;
-            messageQueue.Clear();
-            //等待全部线程下线
-            while (WorkerCount > 0)
-            {
-                threadEvent.Set();//防止线程一直处于阻塞状态
-            }
-            Thread.Sleep(50);
-        }
-
-        /*
-         多线程任务
-         */
+        /// <param name="state"></param>
         private void MessageWork(object state)
         {
            // Console.WriteLine("MessageWork thread start");
@@ -170,7 +177,7 @@ namespace GameServer.Network
                     lock (messageQueue)
                     {
                         if (messageQueue.Count == 0) continue;
-                         msg = messageQueue.Dequeue();
+                        messageQueue.TryDequeue(out msg);
                     }
                     Google.Protobuf.IMessage package = msg.message;
 
@@ -193,42 +200,21 @@ namespace GameServer.Network
             Console.WriteLine("MessageWork thread end");
             
         }
-
-
-        /// <summary>
-        /// 处理消息，但凡imassages有东西的都进行触发
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="message"></param>
         private void executeMessage(Connection sender, Google.Protobuf.IMessage message)
         {
-            //1.处理本层的触发
-            var fireMethod = this.GetType().GetMethod("Fire", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            //调用fire泛型方法
-            var met = fireMethod.MakeGenericMethod(message.GetType());
-            met.Invoke(this, new object[] { sender, message });
 
-/*          //2.使用反射机制。再去处理下一层的触发
-            var t = message.GetType();
-            foreach (var p in t.GetProperties())
+            var fullName = message.GetType().FullName;
+            if(delegateMap.TryGetValue(fullName,out var handler))
             {
-                //过滤,剩下的其实就是request和response
-                if ("Parser" == p.Name || "Descriptor" == p.Name) continue;
-
-                //value是request的值
-                var value = p.GetValue(message);
-                if (value != null)
+                try
                 {
-                    //继续触发下一层订阅
-                    //IsAssignableFrom 是一个 C# 的方法，用于判断一个类型是否可以从另一个类型分配。
-                    //这里是判断value是否从imessage中派生出来的
-                    if (typeof(Google.Protobuf.IMessage).IsAssignableFrom(value.GetType()))
-                    {
-                        //递归处理下一层
-                        executeMessage(sender, (Google.Protobuf.IMessage)value);
-                    }
+                    handler.DynamicInvoke(sender, message);
+                }catch(Exception e)
+                {
+                    Log.Error("[MessageRouter.executeMessage]" + e.StackTrace);
                 }
-            }*/
+            }
+        
         }
     }
 }

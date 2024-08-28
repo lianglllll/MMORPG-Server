@@ -22,6 +22,7 @@ using System.Runtime.ConstrainedExecution;
 using System.Diagnostics;
 using Org.BouncyCastle.Utilities.IO;
 using System.Collections.Concurrent;
+using Common.Summer.GameServer;
 
 namespace GameServer.Model
 {
@@ -67,7 +68,7 @@ namespace GameServer.Model
         public void Update()
         {
             spawnManager.Update();
-            fightManager.OnUpdate(Time.deltaTime);
+            fightManager.OnUpdate(MyTime.deltaTime);
 
             while(actionQueue.TryDequeue(out var action))
             {

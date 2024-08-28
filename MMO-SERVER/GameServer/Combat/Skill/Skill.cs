@@ -19,6 +19,7 @@ using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Formats.Asn1.AsnWriter;
+using Common.Summer.GameServer;
 
 namespace GameServer.Combat
 {
@@ -64,7 +65,7 @@ namespace GameServer.Combat
         public virtual void Update()
         {
             if (curSkillState == SkillStage.None) return;
-            RunTime += Time.deltaTime;
+            RunTime += MyTime.deltaTime;
 
             //蓄气=>激活
             if (curSkillState == SkillStage.Intonate && RunTime >= Define.IntonateTime)
@@ -84,7 +85,7 @@ namespace GameServer.Combat
             //冷却=>结束
             if (curSkillState == SkillStage.Colding)
             {
-                ColdDown -= Time.deltaTime;
+                ColdDown -= MyTime.deltaTime;
                 if(ColdDown <= 0)
                 {
                     ColdDown = 0;

@@ -39,7 +39,7 @@ namespace GameServer.Utils
         public float AoiViewArea { get; set; }        
         
         [YamlMember(Alias = "updateHz")]
-        public float UpdateHz { get; set; }
+        public int UpdateHz { get; set; }
     }
 
     public class AppConfig

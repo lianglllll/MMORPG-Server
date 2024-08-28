@@ -1,5 +1,4 @@
 ﻿using GameServer.AI.State;
-using GameServer.core.FSM;
 using GameServer.Core;
 using GameServer.Manager;
 using GameServer.Model;
@@ -10,10 +9,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GameServer.AI.FSM;
 
 namespace GameServer.AI
 {
-
     /// <summary>
     /// 行为间共享数据
     /// </summary>
@@ -24,10 +23,8 @@ namespace GameServer.AI
         public int walkRange = 20000;       //相对于出生点的活动范围
         public int chaseRange = 30000;      //追击范围
         public Random rand = new Random();
-
-        public float hitWaitTime = 1.5f;
-        public float remainHitWaitTime;
-
+        public float hitWaitTime = 1.5f;    //受击后摇时间
+        public float remainHitWaitTime;     
     }
 
     /// <summary>
@@ -42,7 +39,7 @@ namespace GameServer.AI
         {
             Param param = new Param();
             param.owner = owner;
-            fsm = new FSM<Param>(param);
+            fsm = new FSM<Param>(param,5);
 
             //添加行为
             fsm.AddState("patrol", new PatrolState(fsm));

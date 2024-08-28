@@ -1,4 +1,4 @@
-﻿using GameServer.core.FSM;
+﻿using GameServer.AI.FSM;
 using GameServer.Core;
 using Proto;
 using System;

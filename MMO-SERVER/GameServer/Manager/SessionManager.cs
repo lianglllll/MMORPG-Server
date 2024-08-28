@@ -6,6 +6,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Timers;
+using Common.Summer.GameServer;
 
 namespace GameServer.Manager
 {
@@ -73,7 +74,7 @@ namespace GameServer.Manager
         public void CheckSession()
         {
             sessions.Values.AsParallel()
-                .Where(s => (Time.time - s.LastHeartTime) > SESSIONTIMEOUT)
+                .Where(s => (MyTime.time - s.LastHeartTime) > SESSIONTIMEOUT)
                 .ForAll(s => s.Leave());
         }
 

@@ -14,6 +14,7 @@ using GameServer.core;
 using GameServer.Combat.Skills;
 using Google.Protobuf.Collections;
 using AOIMap;
+using Common.Summer.GameServer;
 
 namespace GameServer.Model
 {
@@ -121,7 +122,7 @@ namespace GameServer.Model
         public override void Update()
         {
             this.skillManager.Update();
-            this.buffManager.OnUpdate(Time.deltaTime);
+            this.buffManager.OnUpdate(MyTime.deltaTime);
         }
 
 

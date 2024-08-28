@@ -11,6 +11,7 @@ using GameServer.core;
 using Serilog;
 using GameServer.Manager;
 using GameServer.InventorySystem;
+using Common.Summer.GameServer;
 
 namespace GameServer.Service
 {
@@ -27,7 +28,7 @@ namespace GameServer.Service
             Character chr = conn.Get<Session>().character;
             message.Message.FromId = chr.AcotrId;
             message.Message.FromName = chr.Name;
-            message.Message.Time = Time.time;     
+            message.Message.Time = MyTime.time;     
             //Log.Information("_ChatRequest:: character:{0}-Channel:{1}-Message:{2}", chr.Id, message.Message.Channel, message.Message.Content);
 
             //私聊

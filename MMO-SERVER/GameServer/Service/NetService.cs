@@ -9,6 +9,7 @@ using System.Threading;
 using GameServer.Database;
 using GameServer.core;
 using GameServer.Utils;
+using Common.Summer.GameServer;
 
 namespace GameServer.Network
 {
@@ -109,7 +110,7 @@ namespace GameServer.Network
             var session = conn.Get<Session>();
             if (session != null)
             {
-                session.LastHeartTime = Time.time;
+                session.LastHeartTime = MyTime.time;
             }
 
             //响应

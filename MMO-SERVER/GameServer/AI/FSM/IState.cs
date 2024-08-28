@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameServer.core.FSM
+namespace GameServer.AI.FSM
 {
 
 

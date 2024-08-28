@@ -1,4 +1,4 @@
-﻿using GameServer.core.FSM;
+﻿using GameServer.AI.FSM;
 using System;
 using System.Collections.Generic;
 using System.Linq;

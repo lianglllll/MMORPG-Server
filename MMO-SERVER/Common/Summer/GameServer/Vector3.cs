@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Summer.GameServer;
 
 namespace GameServer.Core
 {
@@ -409,14 +410,14 @@ namespace GameServer.Core
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 SmoothDamp(Vector3 current, Vector3 target, ref Vector3 currentVelocity, float smoothTime, float maxSpeed)
         {
-            float deltaTime = Time.deltaTime;
+            float deltaTime = MyTime.deltaTime;
             return SmoothDamp(current, target, ref currentVelocity, smoothTime, maxSpeed, deltaTime);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector3 SmoothDamp(Vector3 current, Vector3 target, ref Vector3 currentVelocity, float smoothTime)
         {
-            float deltaTime = Time.deltaTime;
+            float deltaTime = MyTime.deltaTime;
             float maxSpeed = float.PositiveInfinity;
             return SmoothDamp(current, target, ref currentVelocity, smoothTime, maxSpeed, deltaTime);
         }

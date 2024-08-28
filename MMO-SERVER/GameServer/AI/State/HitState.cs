@@ -1,5 +1,4 @@
-﻿using GameServer.core.FSM;
-using GameServer.Model;
+﻿using GameServer.Model;
 using Proto;
 using Serilog;
 using GameServer;
@@ -8,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Summer.GameServer;
+using GameServer.AI.FSM;
 
 namespace GameServer.AI.State
 {
@@ -52,7 +53,7 @@ namespace GameServer.AI.State
                     }
                 }
             }
-            param.remainHitWaitTime -= Time.deltaTime;
+            param.remainHitWaitTime -= MyTime.deltaTime;
             //Log.Information("[受击后摇傻站]" + param.remainHitWaitTime.ToString());
 
         }

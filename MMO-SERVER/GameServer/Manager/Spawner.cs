@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Common.Summer.GameServer;
 
 namespace GameServer.Manager
 {
@@ -70,10 +71,10 @@ namespace GameServer.Manager
         {
             if(monster != null && monster.IsDeath && !reviving)
             {
-                this.reviveTime = Time.time + Define.Period;
+                this.reviveTime = MyTime.time + Define.Period;
                 reviving = true;
             }
-            if(reviving && reviveTime < Time.time)
+            if(reviving && reviveTime < MyTime.time)
             {
                 this.monster?.Revive();
                 reviving = false;

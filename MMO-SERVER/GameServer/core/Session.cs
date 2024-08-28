@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Summer.GameServer;
 
 namespace GameServer.core
 {
@@ -40,7 +41,7 @@ namespace GameServer.core
         public Session(string sessionId)
         {
             Id = sessionId;
-            LastHeartTime = Time.time;
+            LastHeartTime = MyTime.time;
         }
 
         /// <summary>
