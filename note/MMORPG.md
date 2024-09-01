@@ -11169,9 +11169,21 @@ Animancer.AnimancerPlayable:PrepareFrame(Playable, FrameData)
 
 
 
+### Button
+
+概述：
+
+![image-20240901210634724](MMORPG.assets/image-20240901210634724.png) 
 
 
 
+问题：
+
+**1.Unity Button按下后颜色从Pressed恢复到Normal的问题**
+
+Button在点选之后，其颜色会变为Pressed Color，鼠标从Button移开之后，Button的颜色并不能恢复到Normal Color状态的问题。
+
+**只需要将Button组件里面的Navigation设置为None**即可
 
 
 
