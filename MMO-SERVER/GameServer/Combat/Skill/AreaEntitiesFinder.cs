@@ -47,7 +47,7 @@ namespace GameServer.Combat
             var res = all.Where((e) => {
                 Vector3 targetPos = e.Position;
                 var dis = Vector3.Distance(pos, targetPos * 0.001f);
-                return !float.IsNaN(dis) && dis <= range;
+                return !float.IsNaN(dis) && dis <= range*0.001f;
             }).OfType<Actor>();
 
             return res;

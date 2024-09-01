@@ -1,4 +1,6 @@
-# 小南梁界
+
+
+![image-removebg](README.assets/image-removebg.png) 
 
 在此方世界中，灵气充沛，天眷者通过修仙不断强化自身，轻而易举获得移山填海、毁天灭地的能力，与此同时无数流派诞生更是丰富了这个世界的修炼体系，修士间互帮互助共同追寻那长生大道，修仙界呈现欣欣向荣的景象，貌似一切都往好的发展？
 
@@ -10,11 +12,7 @@
 
 本项目主要用于学习如今网游的开发流程，学习网游关键技术，最终能构建我心中的那个世界。
 
-
-
-**项目演示视频链接如下：**
-
-https://www.bilibili.com/video/BV1Rw4m1m7vS/?spm_id_from=333.999.0.0&vd_source=ff929fb8407b30d15d4d258e14043130
+[目前项目进度演示视频链接](https://www.bilibili.com/video/BV1Rw4m1m7vS/?spm_id_from=333.999.0.0&vd_source=ff929fb8407b30d15d4d258e14043130)
 
 
 

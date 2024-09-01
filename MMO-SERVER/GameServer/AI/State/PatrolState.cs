@@ -40,7 +40,7 @@ namespace GameServer.AI.State
             var monster = param.owner;
 
             //查询viewRange内的玩家，如果有就切换追击状态
-            var views = AreaEntitiesFinder.GetEntitiesInCircleAroundEntity(monster, param.viewRange*0.001f,false);
+            var views = AreaEntitiesFinder.GetEntitiesInCircleAroundEntity(monster, param.viewRange,false);
             var chr = views.OfType<Character>().FirstOrDefault((a) => !a.IsDeath,null);
             if (chr != null)
             {

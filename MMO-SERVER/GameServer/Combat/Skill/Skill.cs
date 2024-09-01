@@ -354,7 +354,7 @@ namespace GameServer.Combat
                 }
                 else if (Define.EffectAreaType == "矩形")
                 {
-                    result = AreaEntitiesFinder.GetEntitiesInRectangleAroundEntity(Owner, Define.EffectAreaLengthWidth[0], Define.EffectAreaLengthWidth[1]);
+                    result = AreaEntitiesFinder.GetEntitiesInRectangleAroundEntity(Owner, Define.EffectAreaLengthWidth[0] , Define.EffectAreaLengthWidth[1] );
                 }
                 else
                 {

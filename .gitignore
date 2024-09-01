@@ -22,3 +22,12 @@ HybridCLRData/
 /**/StreamingAssets/yoo/
 /**/StreamingAssets/*.dll.bytes
 /**/StreamingAssets/*.dll.bytes.meta
+/MMO-Client/MMOGame/Bundles/
+/MMO-Client/MMOGame/yoo/
+
+
+# 工具的tmp
+/Tools/**/out-csharp/
+/Tools/**/out-csharp/Message.cs
+/Tools/**/temp/
+/Tools/**/out/

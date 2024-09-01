@@ -5545,14 +5545,21 @@ int result = await asyncObject.SomeOperationAsync();
 
 下面我们先看**IEnumerable**和**IEnumerator**两个接口的语法定义。
 
+
+
 其实**IEnumerable**接口非常简单，只包含一个抽象的方法GetEnumerator()，它返回一个可用于循环访问集合的IEnumerator对象。
+
+
 
 那**IEnumerator**对象有什么呢？其实，它是一个真正的集合访问器，没有它，就不能使用foreach语句遍历数组或集合，因为只有IEnumerator对象才能访问集合中的项，假如连集合中的项都访问不了，那么进行集合的循环遍历是不可能的事情了。
 
 再让我们看看IEnumerator接口又定义了什么东西。看下图我们知道IEnumerator接口定义了一个Current属性，MoveNext和Reset两个方法，这是多么的简约。既然IEnumerator对象是一个访问器，那至少应该有一个Current属性，来获取当前集合中的项吧。
 
 MoveNext方法只是将游标的内部位置向前移动（就是移到一下个元素而已），要想进行循环遍历，不向前移动一下怎么行呢？
-![image-20240411123317604](MMORPG.assets/image-20240411123317604.png)
+
+
+
+![image-20240829222011417](MMORPG.assets/image-20240829222011417.png) 
 
 
 
@@ -5919,7 +5926,7 @@ Yield Return关键字的作用就是退出当前函数，并且会保存当前�
 
 
 
-例子1：
+**例子1：**
 
 ```
 List<int> MyFun1(){
@@ -5939,7 +5946,9 @@ main{
 }
 ```
 
-例子2：
+MyFun1是直接返回一个集合，然后在main函数中对集合进行遍历。
+
+**例子2：**
 
 ```
 IEnumerator MyFun2(){
@@ -5950,17 +5959,12 @@ IEnumerator MyFun2(){
 	}
 }
 
-
 main{
 	foreach(var item in MyFun2()){
 		print(item);
 	}
 }
 ```
-
-在我们这个两个伪代码例子中：
-
-MyFun1是直接返回一个集合，然后在main函数中对集合进行遍历。
 
 MyFun2是返回一个迭代器，main函数中对迭代器的每次遍历都会让MyFun2函数在上次yield退出处恢复运行，然后再次通过yield返回相应的元素并且跳出函数。
 
@@ -6910,19 +6914,576 @@ IL2CPP比较适合开发和发布项目 ，但是为了提高版本迭代速度�
 
 
 
-## ugui的合批规则？
+
+
+## unity工程文件夹里的目录结构
 
 
 
-## ugui的优化？
+### 1、特殊文件夹
 
 
 
-## 怎么做到视图逻辑分离？
+Unity工程[根目录](https://so.csdn.net/so/search?q=根目录&spm=1001.2101.3001.7020)下，有三个特殊文件夹：Assets、Library、ProjectSettings
+
+
+
+#### Assets
+
+Unity工程中所用到的所有Asset都放在该文件夹中，是资源文件的根目录，很多[API](https://so.csdn.net/so/search?q=API&spm=1001.2101.3001.7020)都是基于这个文件目录的，查找目录都需要带上Assets，比如AssetDatabase。
+
+
+
+#### Library
+
+Unity会把Asset下支持的资源导入成自身识别的格式，以及编译代码成为DLL文件，都放在Library文件夹中。
+
+
+
+#### ProjectSettings
+
+编辑器中设置的各种参数
+
+下面都是存在Assets目录下的文件的了。
+
+
+
+#### Editor
+
+为Unity编辑器扩展程序的目录，可以在根目录下，也可以在子目录下，只要名字叫“Editor”，而且数量不限。Editor下面放的所有资源文件和脚本文件都不会被打进包中，而且脚本只能在编辑器模式下使用。一般会把扩展的编辑器放在这里，或只是编辑器程序用到的dll库，比如任务编辑器、角色编辑器、技能编辑器、战斗编辑器……以及各种小工具。
+
+
+
+#### Editor Default Resources
+
+名字带空格，必须在Assets目录下，里面放编辑器程序用到的一些资源，比如图片，文本文件等。不会被打进包内，可以直接通过EditorGUIUtility.Load去读取该文件夹下的资源。
+
+
+
+#### Gizmos
+
+Gizmos.DrawIcon在场景中某个位置绘制一张图片，该图片必须是在Gizmos文件夹下。
+
+```
+void OnDrawGizmos() {
+    Gizmos.DrawIcon(transform.position, “0.png”, true);
+}
+```
+
+OnDrawGizmos是MonoBehaviour的生命周期函数，但是只在编辑器模式下每一帧都会执行。Gizmos类能完成多种在场景视图中绘制需求，做编辑器或调试的时候经常会用到，比如在场景视图中绘制一条辅助线。（用Debug.DrawLine，Debug.DrawRay也可以绘制简单的东西）
+
+
+
+#### Plugins
+
+该文件夹一般会放置几种文件，第三方包、工具代码、sdk。
+plugin分为两种：Managed plugins and Native plugins
+Managed plugins：就是.NET编写的工具，运行于.NET平台（包括mono）的代码库，可以是脚本文件，也可以本身是DLL。NGUI源码就放在该文件夹下面的。
+Native plugins：原生代码编写的库，比如第三方sdk，一般是dll、so、jar等等。
+该文件夹下的东西会在standard compiler时编译（最先编译），以保证在其它地方使用时能找到。
+
+
+
+#### Resources
+
+存放资源的特殊文件夹，可以在根目录下，也可以在子目录下，只要名字叫“Resources”就行，比如目录：/xxx/xxx/Resources 和 /Resources 是一样的，而且可有多个叫Resources的文件夹。Resources文件夹下的资源不管用还是不用都会被打包进.apk或者.ipa，因为Unity无法判断脚本有没有访问了其中的资源。需要注意的是项目中可以有多个Resources文件夹，所以如果不同目录的Resources存在同名资源，在打包的时候就会报错。
+Resources中全部资源会被打包成一个缺省的AssetBundle（resources.assets）。
+在该文件夹下的资源，可以通过Resources类进行加载使用。API地址
+
+
+
+#### Standard Assets
+
+存放导入的第三方资源包。
+
+
+
+#### StreamingAssets
+
+该文件夹也会在打包的时候全部打进包中，但它是“原封不动”的打包进去（直接拷贝到的包里）。**游戏运行时只能读不能写。**
+不同的平台最后的路径也不同，可以使用unity提供的Application.streamingAssetsPath，它会根据平台返回正确的路径，如下：
+
+```
+Mac OS or Windows：path = Application.dataPath + “/StreamingAssets”;
+IOS：path = Application.dataPath + “/Raw”;
+Android：path = “jar:file://” + Application.dataPath + “!/assets/”;
+```
+
+我们一般会把初始的AssetBundle资源放在该文件夹下，并且通过WWW或AssetBundle.LoadFromFile加载使用。
+
+
+
+#### Hide Assets
+
+隐藏文件夹和文件
+以".“开头
+以”~“结尾
+名字为"cvs”
+扩展名为".tmp"
+
+
+
+### 2.一些通常的Asset类型
+
+
+
+#### Image：
+
+支持绝大多数的image type，例如BMP、JPG、TIF、TGA、PSD
+
+#### Model：
+
+eg、.max、.blend、.mb、.ma，它们将通过FBX插件导入。或者直接在3D app导出FBX放到unity project中
+Mesh and Animations：unity支持绝大多数流行的3D app的model（Maya、Cinema 4D、3ds Max、Cheetah3D、Modo、Lightwave、Blender、SketchUp）
+
+#### Audio Files：
+
+如果是非压缩的audio，unity将会根据import setting压缩导入（更多）
+
+
+
+#### Other：
+
+##### Asset Store
+
+里面有很多免费和收费的插件，可以供开发者下载使用。
+下载的第三方工具是以package文件存在，导入package：
+package.png
+
+##### 导入
+
+unity会自动导入Asset目录下的资源，可以是unity支持的，也可以是不支持的，而在程序中用到的（比如二进制文件）。
+当在Asset下进行保存、移动、删除等修改文件的操作，unity都会自动导入。
+
+##### 自定义导入
+
+导入外界的unity可识别的Asset时，可以自定义导入设置，在工程中点击资源文件，然后Inspector视图中就会看到相应的设置：
+
+##### 导入结果
+
+导入资源之后，除了要生成.meta文件，unity并不是直接使用这些资源的，而是在导入的过程中，生成了unity内部特定的格式（unity可识别）文件在游戏中使用，储存在Library目录下，而原始资源不变，仍然放在原来位置。当然，每次修改原始文件，unity都会重新导入一次，才能在unity中看到改过之后的样子。
+正因为Library存放了导入资源的结果，所以每次删除Library或里面某个文件，都会让unity重新导入相应的资源（生成内部格式），但对工程没有影响。
+
+##### .meta文件
+
+Asset中的所有文件、文件夹，经过unity的导入过程后，会为每个都生成一个.meta文件，这个文件是unity内部管理文件的重要内容，里面记录着一些信息。
+你知道unity是怎么管理资源依赖关系的吗？可以试着更改一个挂在prefab上的脚本的目录或者名字，而这些prefab依然可以正常的调用那些脚本。
+unity在第一次导入新文件的时候，会生成一个Unique ID，用来标志这个asset，它就是unity内部用来区分asset的。Unique ID是全局唯一的，保存在.meta文件中。
+在unity中资源间的依赖关系引用都是用Unique ID来实现的，如果一个资源丢失了.meta文件，那依赖它的资源就找不到它了。
+.meta文件内容如下，包括Unique ID和Import Setting的内容
+meta.png
+
+
+
+### 3.脚本
+
+unity支持三种脚本语言，分别是C#、JavaScript、Boo，最常用的是前两种，当然还有后来扩展的支持Lua脚本的库（slua、ulua）。
+生成的对应的工程.png
+
+#### 1.编译顺序
+
+编译顺序的原则是在第一个引用之前编译它，参考官网文档可以知道，Unity中的可以将脚本代码放在Assets文件夹下任何位置，但是不同的位置会有不同的编译顺序。规则如下：
+(1) 首先编译**Standard Assets，Pro Standard Assets，Plugins文件夹**（除Editor，可以是一级子目录或是更深的目录）下的脚本；
+(2) 接着编译**Standard Assets，Pro Standard Assets，Plugins文件夹**下(可以是一级子目录或是更深的目录)的**Editor**目录下的脚本；
+(3) 然后编译Assets文件夹下，不在Editor目录的所有脚本；
+(4) 最后编译Editor下的脚本（不在Standard Assets，Pro Standard Assets，Plugins文件夹下的）；
+基于以上编译顺序，一般来说，我们直接在Assets下建立一个Scripts文件夹放置脚本文件，它处于编译的“第三位”。
+
+#### 2.编译结果：
+
+项目工程文件夹中会生成类似如下几个文件， 按顺序分别对应着上述四个编译顺序：（GameTool是项目名称）
+GameTool.CSharp.Plugins.csproj
+GameTool.CSharp.Editor.Plugins.csproj
+GameTool.CSharp.csproj
+GameTool.CSharp.Editor.csproj
+所有脚本被编译成几个DLL文件，位于工程根目录 / Library / ScriptAssemblies。
+生成如下三个dll：
+Assembly-CSharp-Editor.dll：包含所有Editor下的脚本
+Assembly-CSharp-firstpass.dll：包含Standard Assets、Pro Standard Assets、Plugins文件夹下的脚本
+Assembly-CSharp.dll：包含除以上两种，在Assets目录下的脚本。
+
+
+
+#### Plugins（doc）
+
+内容包括了Plugin导入设置、怎样创建使用两种Plugin、怎样利用底层渲染接口以及一些基础知识。
+在打包的时候，会把plugin里面的各种库，拷贝到包体中相应的位置（不同平台不一样，具体在可以把工程分别打成几个平台的包）
+win平台
+这是win32平台的包，Managed里面放置的托管库，Mono里面放的是mono的库，Plugins是平台库（native plugin）
+
+分平台打包，就需要对不同平台的plugin区分，方法是在Plugins目录下建立相应平台的文件夹，unity在为不同平台打包的时候，除了会将相应平台的plugin里的脚本编译成Assembly-CSharp-firstpass.dll，还会把已经是dll、so等库直接拷贝到包内相应位置。
+Plugins/x86：win32位平台plugin
+Plugins/x86_64：win64位平台plugin
+Plugins/Android：Android平台
+Plugins/iOS：iOS平台
+
+
+
+#### Object
+
+UnityEngine.Object是所有类的基类，它描述了Asset上使用的所有resource的序列化数据，它有几个重要的派生类：GameObject，Component，MonoBehaviour
+
+
+
+#### GameObject
+
+GameObject是组件的容器，所有Component都在可以挂在上面，Unity以组价化思想构建，所有功能拆分成各个组件，需要某个功能只需挂上相应的组件，组件之间相互独立，逻辑互补交叉。当然组件式开发也有最大的弊端就是组件之间的交互。
+
+
+
+#### Component
+
+Component作为组件的基类，unity中有大量的组件，Transform、Renderer、Collider、MeshFilter都是组件。
+
+
+
+#### MonoBehaviour
+
+开发时创建的脚本，需要挂在GameObject上的脚本都是继承自MonoBehaviour。
+
+
+
+#### ScriptableObject
+
+自定义可被Unity识别的资源类型，可打成AssetBundle，可通过Resources or AssetBundle加载。
+
+
+
+#### 序列化
+
+Asset和Object的关系
+Object作为Asset的序列化数据，比如以Texture导入一张图片，那么就用Texture对象记录描述了该图片。
+Asset可能有多个Object，比如prefab的GameObject上挂着多个组件，这样Asset和Object就是一对多的关系。那么问题来了，同一个Object怎么区分分别挂在不同GameObject上的对象的？等等，这里是一定要区分的，因为它们要包含序列化数据（在Inspector视图设置的），而不是在游戏运行中再new。
+
+
+
+#### Class ID 和 File ID（object id）
+
+先梳理一下关系，unity通过guid找到asset，其中asset上可能又挂了很多组件，每个组件又对应着一个class，而在序列化的时候是对象。Class ID是unity定义好的（传送），File ID是为对象生成的id，也就是说，我用guid + (class id 可有) + file id 就能确定某个资源上的组件对象。
+
+
+
+#### YMAL
+
+是一种标记语言，如果不了解语言格式可以看网站。
+
+
+
+#### Text-Based Scene Files
+
+和二进制文件一样，unity还提供了基于文本的场景文件，使用YAML标记语言，通过文本描述了asset和object组件之间的关系是怎么关联、保存数据等。
+通过设置Edit -> Project Setting -> Editor -> Asset Serialization -> Force Text，我们可以查看所有Object信息了。
 
 
 
 
+
+## unity pc打包后目录的结构
+
+当你使用 Unity 将项目打包为 PC 平台的可执行文件时，Unity 会生成一个包含多个文件和文件夹的目录结构。这些文件和文件夹对于游戏的运行至关重要。以下是常见的目录结构及其说明：
+
+1. **游戏名称.exe**：
+   - 这是你游戏的可执行文件。双击此文件即可运行你的游戏。
+
+2. **游戏名称_Data**
+
+   这是游戏的资源文件夹。它包含了所有的游戏资源，如场景、脚本、图像、音频、材质和其他所有 Unity 打包的内容。
+
+3. **游戏名称_Data**\Managed 文件夹：
+
+   - 包含游戏使用的所有 .NET 程序集 (DLL)，其中包括 Unity 的标准库和你的 C# 脚本编译后的程序集
+
+4. **游戏名称_Data\Plugins** 文件夹：
+
+   - 存放原生插件（通常是 .dll 或 .so 文件），这些插件提供了特定平台的功能或是用来调用一些原生的系统库。
+
+5. **游戏名称_Data\Resources** 文件夹：
+   - 如果你在项目中有使用 `Resources` 文件夹，这里会包含所有通过 `Resources.Load` 加载的资源。此文件夹下的资源在游戏启动时会被加载。
+
+6. **游戏名称_Data\StreamingAssets** 文件夹：
+   - 这里包含你在 Unity 项目中的 `StreamingAssets` 文件夹中的所有文件。这些文件不会被 Unity 处理成特定格式，而是会以原始形式包含在内，通常用于需要在运行时直接读取的文件。
+
+7. **MonoBleedingEdge** 文件夹：
+   - 如果项目使用了 Unity 的 Mono 运行时，你可能会看到这个文件夹。它包含 Mono 虚拟机和一些基础的 .NET 库。
+
+8. **UnityCrashHandler64.exe**：
+   - 这是 Unity 内置的崩溃处理程序，当游戏崩溃时它会运行并生成崩溃日志。
+
+9. **UnityPlayer.dll**：
+   - 这是 Unity 游戏引擎的核心运行库，它包含了 Unity 运行时的主要功能。每个使用 Unity 构建的游戏都会有这个文件。
+
+10. **配置文件**（可选）：
+
+   - 可能会有一个 `.cfg` 或 `.ini` 文件，用于存储与游戏启动相关的配置，如窗口大小、分辨率、音量等。
+
+
+
+**其他注意事项：**
+
+- 游戏打包出来的目录结构是 Unity 打包过程自动生成的，你通常不需要手动修改这些文件或文件夹，除非你对打包流程非常了解并且知道自己在做什么。
+- 游戏的资源通常会被 Unity 序列化和打包成专有格式，你不能简单地在这些文件夹中直接编辑游戏内容。
+
+通过理解这个目录结构，你可以更好地管理和发布你的 Unity 游戏，确保所有必要的文件都包含在内以保证游戏的正常运行。
+
+
+
+
+
+## unity中的协程和yield
+
+### 概要
+
+在 Unity 中，协程允许你编写在多帧之间暂停的代码，常用于等待某个条件达成（如等待几秒钟或等待异步操作完成）再继续执行。
+
+
+
+**示例：在协程中使用 `yield`**
+
+```
+using UnityEngine;
+using System.Collections;
+
+public class Example : MonoBehaviour
+{
+    void Start()
+    {
+        StartCoroutine(MyCoroutine());
+    }
+
+    IEnumerator MyCoroutine()
+    {
+        Debug.Log("协程开始");
+        
+        // 等待 2 秒钟
+        yield return new WaitForSeconds(2f);
+        
+        Debug.Log("2 秒钟后继续执行");
+        
+        // 等待下一帧
+        yield return null;
+        
+        Debug.Log("下一帧继续执行");
+    }
+}
+
+```
+
+
+
+### **常见的 `yield return` 表达式**
+
+- `yield return new WaitForSeconds(seconds);`
+  暂停协程一段时间（`seconds` 秒）。
+- `yield return null;`
+  暂停协程直到下一帧。
+- `yield return new WaitForEndOfFrame();`
+  暂停协程，直到当前帧结束。
+- `yield return new WaitForFixedUpdate();`
+  暂停协程，直到下一次物理帧（FixedUpdate）。
+- `yield return StartCoroutine(AnotherCoroutine());`
+  等待另一个协程完成。
+
+
+
+### **yield break**
+
+在迭代器或协程中，可以使用 `yield break` 来提前终止迭代或协程。
+
+**示例：使用 `yield break`**
+
+```
+IEnumerator MyCoroutine()
+{
+    Debug.Log("协程开始");
+    
+    if (someCondition)
+    {
+        yield break; // 提前终止协程
+    }
+
+    yield return new WaitForSeconds(2f);
+    
+    Debug.Log("这行代码不会执行，如果之前调用了 yield break");
+}
+
+```
+
+
+
+###  **`yield return` 异步方法**
+
+
+
+在 Unity 的协程中，如果你使用 `yield return` 来等待一个异步方法（例如返回 `Task` 的方法），实际情况取决于你如何实现和处理这个异步方法。Unity 的协程系统不原生支持 `Task` 类型，因此直接使用 `yield return` 来等待 `Task` 不会如预期那样正常工作。
+
+**具体行为**
+
+如果你直接 `yield return` 一个异步方法返回的 `Task`，Unity 的协程系统不会自动等待它完成。这是因为 Unity 的协程系统预期 `yield return` 的类型是 Unity 能理解的类型，如 `WaitForSeconds`、`WaitForEndOfFrame`、`IEnumerator`，而不是 `Task`。
+
+
+
+**示例：**
+
+假设你有以下异步方法：
+
+```csharp
+async Task LoadDataAsync()
+{
+    await Task.Delay(2000); // 模拟一个耗时操作
+    Debug.Log("数据加载完成！");
+}
+```
+
+如果你在协程中这样使用它：
+
+```csharp
+IEnumerator MyCoroutine()
+{
+    Debug.Log("协程开始");
+
+    yield return LoadDataAsync(); // 直接使用 Task 是无效的
+
+    Debug.Log("这行代码会立即执行，不会等待 LoadDataAsync 完成");
+}
+```
+
+
+
+**发生的事情：**
+
+- **立即继续执行**: 协程中的代码会在 `yield return LoadDataAsync();` 之后立即继续执行，而不会等待 `LoadDataAsync` 完成。
+- **无法等待**: 由于 `Task` 不是 Unity 协程系统支持的等待类型，因此协程不会自动等待异步操作完成。
+
+
+
+**正确处理方式**
+
+要在协程中等待 `Task` 完成，你需要使用一个包装器，将 `Task` 转换为 Unity 协程可以理解的格式。例如，你可以使用一个 `IEnumerator` 方法来轮询 `Task` 的状态：
+
+```csharp
+IEnumerator MyCoroutine()
+{
+    Debug.Log("协程开始");
+
+    // 使用帮助方法等待 Task 完成
+    yield return WaitForTask(LoadDataAsync());
+
+    Debug.Log("数据加载完成，继续执行协程");
+}
+
+IEnumerator WaitForTask(Task task)
+{
+    while (!task.IsCompleted)
+    {
+        yield return null; // 等待下一帧
+    }
+
+    if (task.IsFaulted)
+    {
+        throw task.Exception ?? new Exception("Task Faulted");
+    }
+}
+```
+
+在这个例子中，`WaitForTask` 是一个协程，它会不断检查 `Task` 是否完成。如果 `Task` 失败了，它会抛出异常。
+
+**总结**
+
+- **直接 `yield return` `Task`**: 在 Unity 协程中直接使用 `Task` 作为 `yield return` 的值不会如预期般等待 `Task` 完成。
+- **解决方案**: 使用一个 `IEnumerator` 包装器来等待 `Task` 完成，使协程能够有效地等待异步操作完成。
+
+
+
+### 协程调用的控制流
+
+对的，当一个协程调用另一个协程时，控制流会转移到被调用的协程。这个过程的工作方式如下：
+
+1. **调用另一个协程**:
+   - 当一个协程调用另一个协程时（通过 `yield return`），调用者协程的执行会暂停，直到被调用的协程完成。
+
+2. **控制流转移**:
+   - 调用者协程暂停后，控制流会转移到被调用的协程中。被调用的协程开始执行，并在其内部的 `yield return` 或其他等待条件满足之前，继续进行。
+
+3. **等待和恢复**:
+   - 如果被调用的协程中有 `yield return` 语句（例如 `yield return null`、`yield return new WaitForSeconds(seconds)`、`yield return someAsyncOperation`），它会让控制流在满足条件之前暂停，直到满足条件后，协程才会继续执行。
+
+4. **恢复调用者协程**:
+   - 一旦被调用的协程完成（即它的执行完毕或者 `yield return` 条件被满足），控制流会返回到调用者协程，并从 `yield return` 语句后的位置继续执行。
+
+**示例**
+
+```csharp
+IEnumerator CallerCoroutine()
+{
+    Debug.Log("调用者协程开始");
+
+    // 调用另一个协程并等待它完成
+    yield return CalledCoroutine();
+
+    Debug.Log("调用者协程继续执行，CalledCoroutine 已经完成");
+}
+
+IEnumerator CalledCoroutine()
+{
+    Debug.Log("被调用的协程开始");
+
+    // 等待 2 秒钟
+    yield return new WaitForSeconds(2f);
+
+    Debug.Log("被调用的协程完成");
+}
+```
+
+在这个例子中：
+
+1. **`CallerCoroutine`** 启动并调用 **`CalledCoroutine`**。
+2. **`CallerCoroutine`** 的执行会暂停在 `yield return CalledCoroutine();`，等待 **`CalledCoroutine`** 完成。
+3. **`CalledCoroutine`** 开始执行，并在 `yield return new WaitForSeconds(2f);` 处暂停 2 秒钟。
+4. 2 秒钟后，**`CalledCoroutine`** 继续执行并完成。
+5. 控制流返回到 **`CallerCoroutine`**，从 `yield return CalledCoroutine();` 之后的位置继续执行。
+
+**总结**
+
+- **调用者协程** 在调用另一个协程时会暂停，直到被调用的协程完成。
+- **被调用的协程** 在内部的 `yield return` 语句处会控制暂停，直到满足条件或完成。
+- 一旦被调用的协程完成，控制流会返回到调用者协程，并继续执行后续代码。
+
+这种协程嵌套的机制使得 Unity 的协程系统能够处理复杂的异步操作和等待逻辑，同时保持代码的简洁性和可读性。
+
+
+
+## .meta文件
+
+`.meta` 文件通常是由 Unity 引擎创建的，用于存储项目中文件的元数据。每个资产（如脚本、材质、场景、预制件等）都会有一个对应的 `.meta` 文件。
+
+### `.meta` 文件的作用
+
+1. **唯一标识符 (GUID)**：每个 `.meta` 文件中都包含一个唯一的 GUID (Globally Unique Identifier)，Unity 使用这个 GUID 来跟踪项目中的资源，即使资源被重命名或移动，Unity 依然能够通过 GUID 识别该资源。
+
+2. **Import 设置**：对于一些特定类型的文件（如图片、模型等），`.meta` 文件中会存储一些导入设置（import settings），如压缩选项、分辨率等。
+
+3. **文件依赖关系**：`.meta` 文件还可以存储文件之间的依赖关系，比如一个预制件依赖的材质文件，Unity 会在 `.meta` 文件中跟踪这些依赖关系。
+
+4. **版本控制**：如果你使用版本控制系统（如 Git）管理 Unity 项目，`.meta` 文件是需要一并提交到版本库中的，以确保在不同开发环境中资源不会丢失或错乱。
+
+### 示例
+一个简单的 `.meta` 文件可能看起来如下：
+
+```plaintext
+fileFormatVersion: 2
+guid: d73a8efc6c6e431eab0b4f23f111c776
+TextureImporter:
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsPerUnit: 100
+  mipmaps:
+    enableMipMap: 0
+```
+
+在这个例子中，`.meta` 文件中包含了资源的 `guid` 和一些与纹理导入相关的设置。
+
+### 注意事项
+- 请勿手动编辑 `.meta` 文件，除非你完全了解它的结构和作用。
+- 如果不小心删除了 `.meta` 文件，Unity 会重新生成，但这可能会导致引用错误或丢失资源关联。
 
 # 项目杂谈
 
@@ -7700,9 +8261,46 @@ git push origin main
 
 
 
+## 移除已追踪的文件
 
+如果你已经在 `.gitignore` 文件中添加了对 `Bundles` 目录的忽略规则，但 Git 仍然在处理这个目录下的文件，可能是因为这些文件已经被 Git 追踪过。Git 的 `.gitignore` 文件只对未追踪的文件有效，如果文件已经被添加到版本控制中，`.gitignore` 就不会忽略它们。
 
+### 解决方法
+你需要从 Git 的索引中移除这些已经被追踪的文件，而不删除它们在本地的实际文件。
 
+#### 1. 从 Git 中移除已追踪的 `Bundles` 文件
+使用以下命令从 Git 索引中移除 `Bundles` 目录，但保留本地文件：
+
+```bash
+git rm -r --cached Bundles/
+```
+
+这个命令会从 Git 的索引中移除 `Bundles` 目录及其所有内容，但文件仍然会保留在你的工作目录中。
+
+#### 2. 提交更改
+然后，你需要提交这些更改，以便将这些文件的移除记录到版本控制中：
+
+```bash
+git commit -m "Remove Bundles directory from version control"
+```
+
+#### 3. 确保 `.gitignore` 正常工作
+确认 `.gitignore` 文件中包含了以下规则：
+
+```plaintext
+/Bundles/
+```
+
+提交之后，Git 将不再追踪 `Bundles` 目录中的文件，并且它们将不会出现在未来的提交中。
+
+### 验证
+你可以通过以下命令验证 `.gitignore` 是否工作：
+
+```bash
+git status
+```
+
+如果 `Bundles` 目录中的文件不再显示在未追踪文件列表中，说明 `.gitignore` 配置已经生效。
 
 
 
@@ -10208,7 +10806,11 @@ https://www.yooasset.com/
 
 3.我们从资源服务器下载的热更文件放到了yoo文件夹下，yoo存放是联网下载的缓冲包。
 
-若在游戏打包出来到MMO-Client-Release，该目录在E:\MyProject\MMORPG\MMO-Client-Release\MMOGame_Data\StreamingAssets\yoo
+若在游戏打包出来到MMO-Client-Release，该目录在MMO-Client-Release/MMOGame_Data/yoo
+
+![image-20240901151730730](MMORPG.assets/image-20240901151730730.png)
+
+
 
 
 
@@ -10549,6 +11151,14 @@ Animancer.AnimancerPlayable:PrepareFrame(Playable, FrameData)
 
 
 
+
+
+
+
+
+
+
+
 # 通用UI
 
 
@@ -10631,7 +11241,9 @@ Animancer.AnimancerPlayable:PrepareFrame(Playable, FrameData)
 
 ## 过程进度条/海报
 
-找个好看的进度条才行
+找个好看的进度条才行.
+
+需要有渐变消失的过程。
 
 
 
@@ -10853,6 +11465,57 @@ Animancer.AnimancerPlayable:PrepareFrame(Playable, FrameData)
 游戏界面控制台，方便我们调试
 
 https://assetstore.unity.com/packages/tools/gui/in-game-debug-console-68068
+
+
+
+## BetterStreamingAssets 
+
+在Unity游戏开发中，对Streaming Assets目录的高效管理是提升应用程序性能的关键之一。Better Streaming Assets是一个轻量级插件，它提供了统一且线程安全的方式来访问Streaming Assets，几乎无额外开销。这个插件特别适用于Android平台，能够避免使用效率低下的WWW函数或嵌入到Asset Bundles中的数据。它的API设计灵感来源于System.IO.File和System.IO.Directory类，使得操作更加直观易用。
+
+**应用场景**
+资源加载：无论是游戏内文本、配置文件、音频文件或是大型模型，都能通过Better Streaming Assets快速、安全地加载。
+热更新机制：当需要在不更新应用的情况下添加新内容时，可以将新资源存储在Streaming Assets中并动态加载。
+跨平台兼容：虽然目前不支持WebGL，但在其他平台，包括Android，它可以作为高效的数据加载工具。
+
+**项目特点**
+简洁API：基于System.IO.File和Directory设计，易于理解和使用。
+线程安全：所有操作都可以在非主线程中进行，提高程序执行效率。
+高效读取：在Android上避免了传统方法的低效，实现了更快速的文件读取。
+错误处理：有针对Android App Bundle和非ASCII文件名的异常处理机制，确保稳定运行。
+自定义扩展：允许开发者通过扩展点来覆盖特定路径的压缩文件检测逻辑。基本使用
+
+**基本使用**
+
+以下是一个简单的示例，展示如何使用 BetterStreamingAssets 读取一个 XML 文件：
+
+```
+using BetterStreamingAssets;
+ 
+public class Example : MonoBehaviour
+{
+    void Start()
+    {
+        string path = "config.xml";
+        if (BetterStreamingAssets.FileExists(path))
+        {
+            using (var stream = BetterStreamingAssets.OpenRead(path))
+            {
+                var serializer = new System.Xml.Serialization.XmlSerializer(typeof(Config));
+                Config config = (Config)serializer.Deserialize(stream);
+                // 处理配置文件
+            }
+        }
+        else
+        {
+            Debug.LogError("文件未找到: " + path);
+        }
+    }
+}
+```
+
+
+
+
 
 
 
