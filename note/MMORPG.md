@@ -7210,9 +7210,28 @@ Asset可能有多个Object，比如prefab的GameObject上挂着多个组件，�
    - 这是 Unity 内置的崩溃处理程序，当游戏崩溃时它会运行并生成崩溃日志。
 
 9. **UnityPlayer.dll**：
+
    - 这是 Unity 游戏引擎的核心运行库，它包含了 Unity 运行时的主要功能。每个使用 Unity 构建的游戏都会有这个文件。
 
-10. **配置文件**（可选）：
+10. **baselib.dll**
+
+   `baselib.dll` 是 Unity 引擎中的一个基础库动态链接库（DLL）文件，提供了许多底层的功能和服务，供 Unity 以及你的游戏在运行时使用。
+
+   `baselib.dll` 的作用：
+
+   - **底层服务**：`baselib.dll` 提供了一些底层的系统服务和抽象，帮助 Unity 引擎与操作系统进行交互。这可能包括内存管理、线程处理、文件操作、网络通信等基本功能。
+   - **跨平台支持**：`baselib.dll` 是 Unity 为了简化跨平台开发而引入的一个库，它封装了不同平台的系统调用，使得开发者不必处理各个平台的差异性。
+
+   不能删除 `baselib.dll` 的原因：
+
+   - **游戏依赖性**：尽管 `baselib.dll` 的功能相对底层且不直接暴露给开发者使用，但它是 Unity 引擎正常运行不可缺少的一部分。删除它会导致游戏在运行时缺少关键的基础功能，从而无法正常工作。
+   - **引擎集成**：Unity 引擎依赖于 `baselib.dll` 来执行许多低级别的操作，这些操作对游戏的稳定性和性能至关重要。
+
+   总结
+
+   `baselib.dll` 是 Unity 项目中必不可少的文件，在游戏发布时不能删除。它提供了关键的底层功能，确保游戏在目标平台上正常运行。与其他重要的 DLL 文件一样，`baselib.dll` 应该包含在你发布的游戏版本中。
+
+11. **配置文件**（可选）：
 
    - 可能会有一个 `.cfg` 或 `.ini` 文件，用于存储与游戏启动相关的配置，如窗口大小、分辨率、音量等。
 
@@ -7223,7 +7242,69 @@ Asset可能有多个Object，比如prefab的GameObject上挂着多个组件，�
 - 游戏打包出来的目录结构是 Unity 打包过程自动生成的，你通常不需要手动修改这些文件或文件夹，除非你对打包流程非常了解并且知道自己在做什么。
 - 游戏的资源通常会被 Unity 序列化和打包成专有格式，你不能简单地在这些文件夹中直接编辑游戏内容。
 
-通过理解这个目录结构，你可以更好地管理和发布你的 Unity 游戏，确保所有必要的文件都包含在内以保证游戏的正常运行。
+**通过理解这个目录结构，你可以更好地管理和发布你的 Unity 游戏，确保所有必要的文件都包含在内以保证游戏的正常运行。**
+
+
+
+**MMOGame_BackUpThisFolder_ButDontShipItWithYourGame**
+
+`MMOGame_BackUpThisFolder_ButDontShipItWithYourGame` 文件夹是在 Unity 项目打包时自动生成的，它的作用是备份一些与项目打包和运行无关的文件。这些文件通常是用于调试或开发时的工具、缓存、日志等内容，因此在最终的游戏发布版本中不需要包含这些文件。
+
+这个文件夹中的内容可能包括以下几类文件：
+
+1. **调试信息**：如编译时的临时文件、日志文件、符号文件等，帮助开发者在开发和调试过程中追踪问题。
+  
+2. **缓存数据**：编译或打包过程中生成的一些临时数据，可能加快后续的编译过程。
+
+3. **开发工具**：如编辑器扩展或调试工具生成的文件，这些文件不属于最终的游戏内容。
+
+这个文件夹通常只在本地开发环境中有用，在将项目发布或分享给其他人时，可以忽略或删除它。正如文件夹的名字所提示的那样，它不应该包含在游戏的最终发布版本中。
+
+
+
+**MMOGame_BurstDebugInformation_DoNotShip**
+
+`MMOGame_BurstDebugInformation_DoNotShip` 文件夹是在使用 Unity 的 Burst 编译器时生成的，里面包含了 Burst 编译器用于调试的相关信息。
+
+Burst 编译器是 Unity 提供的一个高性能编译器，专门用来优化性能关键的 C# 代码，特别是与 Unity 的 Jobs 系统结合使用时。`BurstDebugInformation` 文件夹中的内容主要包括以下内容：
+
+1. **调试信息文件**：这些文件帮助开发者在使用 Burst 编译器时进行调试，例如查看在特定平台上如何优化代码的细节。
+
+2. **符号文件**：这些文件包含与 Burst 编译的代码相关的符号信息，通常用于调试优化后的代码。
+
+与 `BackUpThisFolder_ButDontShipItWithYourGame` 文件夹类似，`BurstDebugInformation_DoNotShip` 文件夹中的内容不应包含在最终发布的游戏版本中。它们仅供开发和调试时使用，因此可以在发布游戏时安全地忽略或删除。
+
+
+
+**`.pdb` 文件**
+
+在发布游戏的最终版本时，通常可以删除 `.pdb` 文件，因为它们主要用于调试，不是游戏运行所必需的。然而，是否应该删除所有 `.pdb` 文件，取决于你的具体需求：
+
+**可以删除 `.pdb` 文件的情况：**
+
+- **发布最终版本**：发布给用户的游戏版本通常不需要包含 `.pdb` 文件，因为这些文件包含调试符号，用于在开发和调试过程中帮助开发者理解崩溃报告或调试代码。
+- **减少文件大小**：删除 `.pdb` 文件可以显著减小游戏安装包的大小。
+- **保护代码隐私**：`.pdb` 文件中包含详细的代码信息，删除它们可以防止反向工程和代码泄露。
+
+**不建议删除 `.pdb` 文件的情况：**
+
+- **内部测试和调试**：如果你或你的测试团队仍在对游戏进行调试，那么保留 `.pdb` 文件可以帮助你快速定位问题。
+- **崩溃报告分析**：有时在分析用户的崩溃报告时，`.pdb` 文件可以提供有用的信息。如果你打算在发布后继续支持游戏并修复错误，保留 `.pdb` 文件（至少是备份）可能是一个好主意。
+
+**建议**
+
+- **发布版本中删除**：在最终发布的游戏版本中，删除 `.pdb` 文件是一个常见的做法，以减少文件大小并保护代码。
+- **备份 `.pdb` 文件**：即使从发布版本中删除，建议你在本地或版本控制系统中备份这些文件，以便将来需要时使用。
+
+总结来说，除非你有特定的调试需求，通常可以在发布版本中删除所有 `.pdb` 文件。
+
+
+
+
+
+
+
+
 
 
 
@@ -9109,7 +9190,7 @@ unity控制台中的error pause 遇到错误打印就停止。导致我以为是
 
 2.将其上传到我们的资源服务器上面
 
-![image-20240804230426385](MMORPG.assets/image-20240804230426385.png)
+![image-20240804230426385](MMORPG.assets/image-20240804230426385.png) 
 
 3.通过web请求拉取json文件，然后进行解析即可。
 
@@ -11165,13 +11246,421 @@ Animancer.AnimancerPlayable:PrepareFrame(Playable, FrameData)
 
 ## 基础知识
 
+我们每一个ui控件它本质上还是一个游戏物体
+
+
+
+### Rect Transform
+
+![image-20231229094545449](MMORPG.assets/image-20231229094545449.png) 
+
+
+
+#### Anchors(锚点)
+
+关于Anchor锚点可能接触过UI的朋友都了解一些，但是Unity中Anchor应该称它为**锚框**更为合理，因为它是由两个锚点(Min，Max)组成的一个矩形，当然也可以组成一个点（两个点重合）
+
+实际锚点就是一个**可自行设置的固定点**，控件到这个锚点的距离是永恒不变的，不会因为分辨率变化而变化，比如，**一个按钮在右上角，设置好锚点，这个按钮就永远在右上角，无论什么分辨率的屏幕，这样，我们就实现了自适应屏幕分辨率的UI**。
+
+首先，我们要明白，一个UI物体的**锚点是相对于父物体来说的**，如果没有父物体，那就是相对于整个Canvas画布来说的, 此时Canvas就是父物体。
+
+RectTransform提供了我们足够的自由去更改UI的锚点位置和中心点的位置。但是万变不离其宗：**anchoredPosition3D核心概念：中心点相对锚点的位置**。
+
+
+
+锚框：而Unity为了方便我们调整锚框，在编辑视图给出了锚框的标示，如下图：
+
+![img](MMORPG.assets/c28c8b508b957ad3c292af66718c09d3.png) 
+
+​				锚框标示(重合情况)
+
+
+
+当然上图是两个锚点重合的情况，所以看上去是一个点，下面我们利用两个锚点不重合的情况来说明一下：
+
+![img](MMORPG.assets/ce733e051889edebf11c24e4a7c128e8.png) 
+
+
+
+
+
+我们用官网一组图片可以很形象的描述锚点的作用：
+
+ **锚点全在中间的情况:**
+
+<img src="MMORPG.assets/aHR0cDovL3VwbG9hZC1pbWFnZXMuamlhbnNodS5pby91cGxvYWRfaW1hZ2VzLzMwMTM0MS0yMjBlMTFlNzBhNWRlZjAyLmdpZg.gif" alt="img" style="zoom:150%;" /> 
+
+
+
+**锚点全在右下角的情况:**   
+
+<img src="MMORPG.assets/aHR0cDovL3VwbG9hZC1pbWFnZXMuamlhbnNodS5pby91cGxvYWRfaW1hZ2VzLzMwMTM0MS0wYzE1ZDM0NGRjMGRhZDFjLmdpZg.gif" alt="img" style="zoom:50%;" />  
+
+
+
+ **锚点在两个角的情况:**            
+
+<img src="MMORPG.assets/aHR0cDovL3VwbG9hZC1pbWFnZXMuamlhbnNodS5pby91cGxvYWRfaW1hZ2VzLzMwMTM0MS1jMmYyM2JjZDYyOGVmNDlkLmdpZg.gif" alt="img" style="zoom:67%;" />  
+
+
+
+**锚点分开的情况:**                                  
+
+<img src="MMORPG.assets/aHR0cDovL3VwbG9hZC1pbWFnZXMuamlhbnNodS5pby91cGxvYWRfaW1hZ2VzLzMwMTM0MS02NzEwOTRhMTgxZjI2ODQwLmdpZg.gif" alt="img" style="zoom:67%;" />  
+
+
+
+尽管锚点是附加在父类上的，但其并不是父类空间，父类空间指的是以其中心点为原点，而此处指的是以锚点为原点。
+
+
+
+锚点的四个点分别为：
+
+MinX: 相对于父物体左边框的比例：   		子物体的锚框距离父物体左锚边框的距离
+
+MaxX: 相对于父物体右边框的**比例**																						
+
+MinY: 相对于父物体下边框的**比例**               子物体的锚框距离父物体下点边框的距离
+
+MaxY: 相对于父物体上边框的**比例**
+
+这四个值决定了四个锚点的位置，而**四个锚点的位置决定了四个顶点的位置**。
+
+总结：由此可以看到，不管什么情况，button的四个顶点到相应锚点的相对位置是不变的，并且，当四个锚点在一起和不在一起时RectTransform可调整的属性会有变化，
+
+![img](MMORPG.assets/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAUGV0ZXJfR2FvXw==,size_20,color_FFFFFF,t_70,g_se,x_16.png) 
+
+ 当拖动缩放黑色父物体时，红色子物体仍保持与父体的相对边距（100，50）不变
+
+![img](MMORPG.assets/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAUGV0ZXJfR2FvXw==,size_20,color_FFFFFF,t_70,g_se,x_16-170381509982711.png) 
+
+当4个锚点都在一起的时候，RectTransform会显示Pos X，Pos Y，Width，Height四个属性可供修改，其中PosX，PosY就是子物体的中心点（轴点）相对于锚点的位置。
+
+例如：如果子物体的4个锚点都在父物体的中心，且子物体的中心点（轴点）就在其几何中心点，这时如果子物体在父物体的中间，那么PosX，PosY就都是0。
+
+![img](MMORPG.assets/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAUGV0ZXJfR2FvXw==,size_20,color_FFFFFF,t_70,g_se,x_16-170381515765414.png) 
+
+
+
+#### **Pivot**
+
+(UI的中心点，称为轴点)：
+
+UI元素的旋转和缩放是围绕pivot进行的。轴点是Rect的实际中心点，是属于Rect自身的，和Rect尺寸中心点不同。尺寸中心点是以宽，高取1/2得到，即几何中心点。而轴点是可以任意指定的，如果将Rect旋转，可以看到Rect是围绕轴点旋转，而不是几何中心点。Pivot的范围也是[0,1]的比例值。Pivot默认值为(0.5, 0.5)，即物体的几何中心。
+
+在黑框大小和位置变化的时候，Unity会保证红框的左下角到锚框的左下角距离不变，同时红框的右上角到锚框的右上角距离不变，来确定红框的相对位置和大小，看下图来感受一下变化：
+
+![img](MMORPG.assets/410d13ff39476d659f975638fe312e6b.png) 
+
+设置Pivot的坐标系如上图，(0.0)表示红框物体的左下角的点，(1.1)表示红框物体的右上角的点
+
+
+
+### Canvas
+
+画布其实就相当于我们的屏幕，在画布上添加东西的时候就相当于在我们屏幕上添加东西。
+
+当我们在场景中添加一个canvas的时候，它也会创建一共对应的**event system（事件系统）**
+
+事件系统是用来处理我们之后在画布上添加的各种空间的事件，比如说点击事件，鼠标滑动的事件。 
+
+![image-20230529090735819](MMORPG.assets/image-20230529090735819.png) 
+
+
+
+
+
+#### **1.Canvas**
+
+
+
+##### Render Mode:
+
+![image-20231002201538453](MMORPG.assets/image-20231002201538453.png) 
+
+<img src="MMORPG.assets/image-20231002201750567.png" alt="image-20231002201750567" style="zoom: 33%;" /> 
+
+<img src="MMORPG.assets/image-20231002201815177.png" alt="image-20231002201815177" style="zoom:33%;" /> 
+
+ui元素讲绘制在指定相机下，通常用于在3d场景中嵌入2d的ui元素
+
+<img src="MMORPG.assets/image-20231002201919704.png" alt="image-20231002201919704" style="zoom:33%;" /> 
+
+
+
+##### **Pixel Perfect：**
+
+勾选后可以让画布上的显示更加清晰，同时也会耗费更多的性能。
+
+##### SortOrder ：
+
+选择当前画布的优先级，数值越大优先级越高。应用于当前场景中有多个canvas
+
+
+
+#### **2.Canvas Scaler**
+
+Unity 中的 Canvas Scaler 组件是用于调整 Canvas（画布）上 UI 元素的缩放和适应性的工具。Canvas Scaler 主要用于确保 UI 元素在不同屏幕分辨率和设备上都能够正确显示，以保持用户界面的一致性和可用性。以下是 Canvas Scaler 组件的一些重要属性和介绍：
+
+1. **UI Scale Mode (UI 缩放模式)**:
+   - Canvas Scaler 提供了三种不同的 UI 缩放模式：
+     - **Constant Pixel Size**：UI 元素的大小以像素为单位保持不变。这意味着在不同分辨率下，UI 元素的实际物理大小可能会改变。
+     - **Scale with Screen Size**：UI 元素的大小根据屏幕的大小进行缩放。你可以指定一个参考分辨率，UI 元素将按比例缩放以适应不同的分辨率。
+     - **Constant Physical Size**：UI 元素的实际物理大小保持不变。这意味着在不同分辨率下，UI 元素的像素数量会发生变化。
+2. **Reference Resolution (参考分辨率)**:
+   - 仅在 UI Scale Mode 设置为 "Scale with Screen Size" 时才可用。你可以指定一个参考分辨率，Canvas Scaler 将根据这个分辨率来缩放 UI 元素。
+3. **Screen Match Mode (屏幕匹配模式)**:
+   - 仅在 UI Scale Mode 设置为 "Scale with Screen Size" 时才可用。这个选项允许你选择如何匹配不同分辨率的屏幕。有两个选项：
+     - **Match Width or Height**：根据屏幕的宽度或高度来调整 UI 缩放。这意味着 UI 元素将根据屏幕的宽度或高度中较小的那个维度来进行缩放。
+     - **Expand**：扩展 UI 元素以填充整个屏幕，但可能会导致 UI 元素在某些方向上被裁剪。
+4. **Screen Width (屏幕宽度) 和 Screen Height (屏幕高度)**:
+   - 仅在 Screen Match Mode 设置为 "Match Width or Height" 时才可用。你可以设置屏幕宽度和屏幕高度的比例，以确定 UI 元素缩放的依据。
+5. **Match (匹配)**:
+   - 用于设置屏幕匹配模式的参数，包括屏幕宽度和屏幕高度。
+
+Canvas Scaler 组件的主要目标是确保游戏的用户界面在不同屏幕分辨率和设备上都能够适应，并保持良好的可读性和可用性。通过使用 Canvas Scaler，你可以创建适应各种屏幕的响应式 UI，提供更好的用户体验。
+
+![image-20231002202006929](MMORPG.assets/image-20231002202006929.png)
+
+
+
+
+
+#### **3.Graphic Raycaster**
+
+用于检测ui元素是否被点击或者触摸。
+
+当鼠标触摸屏幕时，这个组件会向场景中的ui元素发射一条射线，来确定被点击或被触摸的元素是哪一个
+
+![image-20231002202112499](MMORPG.assets/image-20231002202112499.png)
+
+第一个参数：用于控制算法忽略逆向图形，就是摄像机在ui背面的时候不进行渲染
+
+第二个参数：如果摄像机和ui中间有物体挡住了，我们的射线就有可能被挡住，这个参数就是用来忽略某些物体拦截射线
+
+第三个参数：和第二个差不多
+
+
+
+
+
+#### 4.React Transform
+
+在我们ui所有的控件包括Canvas，它跟其他物体不同的点在于它拥有一个**React Transform**
+
+这个本质上也是一个transform，多了一些 自身的宽度和高度
+
+
+
+
+
+#### 5.Canvas Group
+
+<img src="MMORPG.assets/image-20231002202715836.png" alt="image-20231002202715836" style="zoom:80%;" />
+
+在Unity中，Canvas Group组件是用于控制UI元素的可见性和交互性的组件。
+
+Canvas Group组件的主要功能包括：
+
+- `Alpha`属性：控制UI元素的透明度，取值范围为0到1，0表示完全透明，1表示完全不透明。
+- `Interactable`属性：控制UI元素是否可交互，可设置为true或false。
+- `Blocks Raycasts`属性：控制UI元素是否会阻挡射线的碰撞检测，可设置为true或false。如果设置了，被我们挡住的ui将不会收到射线
+
+通过使用Canvas Group组件，您可以实现以下效果：
+
+- 控制UI元素的透明度，使其渐变显示或消失。
+- 禁用或启用UI元素的交互性，使其在某些情况下无法响应用户的交互。
+- 控制UI元素是否会阻挡射线的碰撞检测，以便在需要时将射线穿过UI元素。
+
+使用Canvas Group组件的步骤如下：
+
+1. 在Unity编辑器的场景中选择UI元素对象，例如一个UI面板。
+2. 在Inspector窗口中，点击"Add Component"按钮，搜索并选择"Canvas Group"组件。
+3. 在Inspector窗口中，您可以调整Alpha、Interactable和Blocks Raycasts属性，以实现您想要的效果。
+
+通过使用Canvas Group组件，您可以对UI元素进行更精细的控制，以满足游戏或应用程序的需求。
+
+
+
+
+
+#### Canvas Renderer
+
+#### 注意：
+
+如果场景中有多个画布的话，它的内容是叠加显示到我们的游戏场景当中
+
+
+
+### Text
+
+ 用于显示文本
+
+![image-20230529092041018](MMORPG.assets/image-20230529092041018.png) 
+
+
+
+**Character字体**
+
+- Font可以选择自己喜欢的字体，自己导入	
+- Font Style 字体风格
+- Line Spacing 行间距
+- Rich Text 富文本，选中后可以在文本中添加一些特殊的文本，可以使用类似html中标签，具体看官方文档
+
+**Paragraph段落**
+
+- Alignment 主要对文字的排列进行设置,居中对齐...
+- Vertical Overflow  当超出文本限制的时候，自动换下一行 
+
+**Color 颜色**
+
+
+
+
+
+### Image
+
+Image主要用于加载图片
+
+#### 导入的图片
+
+![image-20230529093707175](MMORPG.assets/image-20230529093707175.png) 
+
+
+
+将其类型选中为2dUI
+
+![image-20230529093818752](MMORPG.assets/image-20230529093818752.png) 
+
+#### 属性
+
+![image-20230529094402985](MMORPG.assets/image-20230529094402985.png) 
+
+宽高是以像素为单位的
+
+Source Image:用于选择图片
+
+Color：可以整体渲染图片 它的颜色
+
+Raycase Target:选择后可以去监听鼠标点击之类的事件
+
+
+
+#### Image Type
+
+
+
+##### 1.simple
+
+在做界面时常常是美工设计好UI元素，然后程序在Unity里把它们摆一摆。**比如做一个Image图标**，美工设计好的尺寸是100*100，那么我们在unity里创建一个image，设置它的长宽为100*100，然后放到合适位置。有没有省事的方法呢？
+
+看Image组件底下有一个按钮：
+
+![img](MMORPG.assets/Center.png) 
+
+**点击此按钮则 Image 组件的长宽自动与原图片长宽一致，这常常用于使用脚本创建Image并改贴图。**
+
+
+
+##### 2.sliced
+
+美工做了一张100*100的边框图给你，这张图有时以100*100显示，有时以200*100显示，有时……，放大会失真，难道要美工做 n 张图吗？
+
+![img](MMORPG.assets/Center-16816324423226.png) 
+
+
+
+下面是解决步骤:
+
+![img](MMORPG.assets/Center-16816324529879.png) 
+
+看那个绿框，把边界留出来
+
+![img](MMORPG.assets/Center-168163246724112.png) 
+
+![img](MMORPG.assets/Center-168163248881115.png) 
+
+效果如下：
+
+![img](MMORPG.assets/Center-168163250440818.png) 
+
+
+
+
+
+
+
+##### 3.平铺tiled
+
+![img](MMORPG.assets/Center-168163257127421.png) 
+
+![img](MMORPG.assets/Center-168163257767524.png) 
+
+##### 4.Filled
+
+技能冷却 & 血条
+
+![img](MMORPG.assets/Center-168163260308327.png) 
+
+
+
+
+
+### Sprite
+
+![image-20240320160547983](MMORPG.assets/image-20240320160547983.png) 
+
+
+
+#### **Filter Mode**
+
+在Unity中，Sprite的Inspector面板中的Filter Mode（过滤模式）是用于控制如何在渲染时对Sprite进行过滤的选项。过滤模式主要影响了Sprite在屏幕上的渲染质量以及性能。
+
+Filter Mode有三个选项：
+
+1. **Point**: 这种模式下，当Sprite被放大时，会出现像素化的现象，因为它们直接采用了最近的像素颜色。**这种模式下渲染速度快，但放大时的图像质量较低。**
+
+2. **Bilinear**: 在这种模式下，渲染时会对相邻像素的颜色进行插值计算，从而产生平滑的过渡效果。这种模式下，图像在放大时不会出现明显的像素化，但在放大的情况下仍可能显得有些模糊。
+
+3. **Trilinear**: Trilinear模式是对Bilinear模式的扩展，它还考虑了Sprite的Mipmap。Mipmap是为了优化渲染性能而创建的多个不同分辨率的图像。Trilinear模式会在Bilinear的基础上考虑到Mipmap，从而在渲染时更好地处理放大和缩小时的质量和性能平衡。
+
+选择过滤模式时需要根据实际需求和性能考虑来进行权衡，通常在需要保证渲染质量的情况下选择Bilinear或Trilinear，而在对性能要求较高的情况下可以选择Point模式。
+
+
+
+#### **Default**
+
+
+
+##### **Compression**
+
+在Unity中，Sprite的Inspector面板中的Compression（压缩）选项用于控制纹理的压缩方式。这个选项主要影响了Sprite在内存中占用的空间以及在设备上的加载速度和性能。
+
+Compression选项有几个预设的选项，包括：
+
+1. **Default**: 默认选项，Unity会根据目标平台和图像类型自动选择合适的压缩方式。这通常是一个平衡了质量和性能的选项，适合大多数情况下使用。
+
+2. **None**: 不使用任何压缩。这将导致Sprite在内存中占用更多的空间，但**加载速度会更快**，因为不需要解压缩。
+
+3. **Low Quality**: 低质量压缩。这会导致图像在内存中占用的空间较小，但图像质量也会受到一定程度的影响。
+
+4. **Normal Quality**: 普通质量压缩。这是一种平衡了空间占用和图像质量的选项。
+
+5. **High Quality**: 高质量压缩。这会导致图像在内存中占用的空间最小，但加载速度可能会较慢，特别是在较慢的设备上。
+
+选择压缩方式时需要根据实际需求和目标平台进行权衡。通常情况下，可以使用默认选项，根据需要调整为其他选项来达到最佳的性能和质量平衡。
+
+
+
+
+
 
 
 
 
 ### Button
 
-概述：
+#### 概述：
 
 ![image-20240901210634724](MMORPG.assets/image-20240901210634724.png) 
 
@@ -11184,6 +11673,285 @@ Animancer.AnimancerPlayable:PrepareFrame(Playable, FrameData)
 Button在点选之后，其颜色会变为Pressed Color，鼠标从Button移开之后，Button的颜色并不能恢复到Normal Color状态的问题。
 
 **只需要将Button组件里面的Navigation设置为None**即可
+
+
+
+
+
+#### 按钮的事件添加
+
+
+
+##### 1.手动添加
+
+![image-20230407161014522](MMORPG.assets/image-20230407161014522.png)
+
+拖入你要触发事件的对象，然后选择里面的方法
+
+
+
+##### 2.代码添加
+
+```
+loginButton.onClick.AddListener(OnLoginButton);
+```
+
+OnLoginButton()事件触发后执行的函数
+
+
+
+
+
+### Grid Layout Group
+
+GridLayout Group 是Unity中的一个组件，它可以帮助你在UI界面中实现自动布局。通过GridLayout Group，你可以快速地创建网格布局，将子物体按照指定的行数和列数进行排列，并且可以自动调整子物体的大小和间距，以适应不同的屏幕尺寸。
+
+例如，你可以使用GridLayout Group来创建一个包含若干个按钮的面板，让它们以网格形式排列。当屏幕尺寸发生变化时，GridLayout Group会自动调整按钮的大小和间距，以保证它们始终以整齐的网格形式排列。
+
+GridLayout Group 还可以与其他组件结合使用，比如Content Size Fitter 和 Scroll Rect，以实现更丰富的UI布局效果。总之，GridLayout Group 是Unity中非常实用的一个组件，可以帮助你快速地实现各种UI布局。
+
+**要使用 GridLayout Group，你可以按照以下步骤进行操作：**
+
+1. 在Unity编辑器中，选中你想要添加 GridLayout Group 的父物体。
+2. 在Inspector窗口中，点击 Add Component 按钮，在搜索框中输入“GridLayout Group”，然后选择它并添加到父物体上。
+3. 在 GridLayout Group 组件的 Inspector 窗口中，你可以设置网格布局的行数和列数，以及子物体之间的间距、对齐方式等参数。
+4. 将你想要排列的子物体作为 GridLayout Group 的子物体添加到父物体中。
+5. 根据需要，你可以调整子物体的大小、位置和布局顺序，以便它们能够以合适的方式排列在网格中。
+6. 如果你想要更进一步地控制布局效果，你可以使用 Content Size Fitter 和 Scroll Rect 等组件来实现更高级的布局效果。
+
+![image-20230411091706252](MMORPG.assets/image-20230411091706252-16827531754333.png) 
+
+
+
+然后将物体拖入挂载这个组件的物体下即可
+
+<img src="MMORPG.assets/image-20230411091845107-16827531754321.png" alt="image-20230411091845107" style="zoom:50%;" /> 
+
+<img src="MMORPG.assets/image-20230411091818291-16827531754332.png" alt="image-20230411091818291" style="zoom:50%;" /> 
+
+
+
+**它会自动调整位置对齐**
+
+<img src="MMORPG.assets/image-20230411091923311-16827531754334.png" alt="image-20230411091923311" style="zoom:50%;" /> 
+
+因为里面的单元格大小是固定的，所以当单元多的时候就会超出这个范围
+
+
+
+
+
+
+
+
+
+### Slider
+
+
+
+
+
+### Scrollbar滚动条
+
+#### 1.概要
+
+![image-20231214222500867](MMORPG.assets/image-20231214222500867.png) 
+
+![image-20231214222754130](MMORPG.assets/image-20231214222754130.png) 
+
+![image-20231214223255303](MMORPG.assets/image-20231214223255303.png) 
+
+
+
+
+
+### Scroll View 滚动视图
+
+#### 1.概要
+
+![image-20231214223647253](MMORPG.assets/image-20231214223647253.png)
+
+![image-20231214223835194](MMORPG.assets/image-20231214223835194.png) 
+
+![image-20231214223931188](MMORPG.assets/image-20231214223931188.png) 
+
+
+
+
+
+#### 2.Scroll View --Mask
+
+![image-20231214224048644](MMORPG.assets/image-20231214224048644.png)
+
+​	
+
+比如说现在
+
+![image-20231214224256842](MMORPG.assets/image-20231214224256842.png) 
+
+![image-20231214224303115](MMORPG.assets/image-20231214224303115.png) 
+
+子物体Image上面显示一张图片，并且子物体显示的范围比父物体大
+
+现在我们给父物体添加Mask组件
+
+![image-20231214224349018](MMORPG.assets/image-20231214224349018.png) 
+
+现在，子物体显示的范围就变成了父物体范围的大小了
+
+
+
+#### 3.Scroll Rect
+
+这玩意用来控制滚动条的
+
+![image-20231214224522555](MMORPG.assets/image-20231214224522555.png)
+
+
+
+
+
+#### 4.Grid Layout Group
+
+![image-20231215090341593](MMORPG.assets/image-20231215090341593.png)
+
+
+
+
+
+
+
+### Dropdown
+
+下拉列表
+
+![image-20230514111227500](MMORPG.assets/image-20230514111227500.png) 
+
+
+
+Options可以添加选项，每个选项都有索引，0，1，2，3用于下面OnValueChanged事件的触发
+
+OnValueChanged可以根据选项改变而触发事件
+
+
+
+### Content Size Fitter
+
+在Unity中，ContentSizeFitter是一个UI组件，通常用于自动调整UI元素的大小以适应其子元素的内容。这个组件主要用于处理UI布局，确保UI元素可以根据其子元素的大小进行调整，以确保内容适合。
+
+具体来说，ContentSizeFitter组件有两种常见的模式：
+
+1. **Unconstrained**（不受限制）：在这种模式下，UI元素的大小不受ContentSizeFitter组件的影响，它将保持不变。
+2. **PreferredSize**（首选大小）：在这种模式下，UI元素的大小将根据其子元素的首选大小进行调整，以确保子元素的内容适合。
+
+**ContentSizeFitter通常与其他布局组件（如Layout Group）一起使用，以便在构建复杂的UI布局时实现自适应的效果。**
+
+以下是ContentSizeFitter组件的一些常见用途：
+
+- **自适应文本框大小**：当文本内容变化时，可以使用ContentSizeFitter确保文本框自动调整大小，以适应文本内容的变化。
+- **自适应按钮大小**：按钮可能包含不同长度的文本，ContentSizeFitter可以确保按钮的大小适应文本的长度。
+- **列表项大小调整**：用于调整列表项的大小，以适应其子元素或内容。
+- **网格布局中的单元格大小调整**：确保网格中的单元格大小根据其内容进行调整。
+
+要使用ContentSizeFitter组件，你需要将其添加到你的UI元素上，然后选择适当的模式（Unconstrained或PreferredSize）以及其他参数，以满足你的UI设计需求。
+
+比如说：将content的vertical方向受子元素的影响，这个滚动容器就可以实现自动扩张content的高度。
+
+//之前我在做文本框还傻愣愣自己来调整content的高度呢。。。
+
+![image-20231227134747184](MMORPG.assets/image-20231227134747184.png)
+
+
+
+
+
+
+
+
+
+## [BUG]
+
+### **1.UI中无法触发事件系统**
+
+看看你的ui是否被其他ui给覆盖掉了
+
+![image-20230412123007049](MMORPG.assets/image-20230412123007049.png)
+
+比如说我们我们的触发事件的物体**在DeckGrid中**，有顺序要求。比如说现在DeckGrid是会覆盖Edge的，也就是说放在下面的优先级高一点
+
+也就是说如果你把DeckGrid放在上面的话就可能触发不了一些eventSystem事件
+
+这里可以看出来这样设置的鼠标点击事件发出的射线只会触发第一个ui层
+
+
+
+
+
+看看你的EventSystem
+
+![image-20230703203044267](MMORPG.assets/image-20230703203044267.png) 
+
+是不是不小心被删掉了
+
+
+
+
+
+### 2.Canvas的边框不见了
+
+![image-20230413072549351](MMORPG.assets/image-20230413072549351.png)
+
+点击这个Gizmos按钮
+
+
+
+### 3.按钮事件绑定重复
+
+按钮重复添加点击事件会导致一次调用执行两次
+
+
+
+## [小技巧]
+
+**1.在进行ui开发的时候，我们可以把scene视图改为2d视图**
+
+
+
+**2.onGUI** 
+
+平时测试时候用起来很方便
+
+简单使用
+
+![image-20230514225704563](MMORPG.assets/image-20230514225704563.png) 
+
+rect(屏幕坐标x,屏幕坐标y，label宽，label高)  
+
+![image-20230514225722364](MMORPG.assets/image-20230514225722364.png) 
+
+
+
+**3.ui显示的优先级**
+
+不同的canvas，调整sort order值，值越大优先级越高
+
+![image-20240315163633888](MMORPG.assets/image-20240315163633888.png) 
+
+
+
+同一个canvas下
+
+顺序越往下，显示优先级越高
+
+![image-20240315163704802](MMORPG.assets/image-20240315163704802.png) 
+
+如果需要在游戏中调整，可通过C#脚本更改某UI成为第几个子物体：
+
+transform.SetAsFirstSibling();//将该物体作为父物体的第一个子物体。
+
+transform.SetAsLastSibling();//将该物体作为父物体的最后一个子物体。
+
+transform.SetSiblingIndex(n);//将该物体作为父物体的第n个子物体(第一个为0)。
 
 
 
@@ -11265,7 +12033,7 @@ Button在点选之后，其颜色会变为Pressed Color，鼠标从Button移开�
 
 
 
-## 设置
+## 设置界面
 
 <img src="MMORPG.assets/image-20240816113949775.png" alt="image-20240816113949775" style="zoom:50%;" /> 
 
@@ -11325,6 +12093,77 @@ Button在点选之后，其颜色会变为Pressed Color，鼠标从Button移开�
 
 
 
+## 召唤指示箭头
+
+![image-20230416154548244](MMORPG.assets/image-20230416154548244.png)
+
+
+
+**可以通过修改Sprite精灵资源让箭头的头部三角形不参与缩放**
+
+![image-20230416155831517](MMORPG.assets/image-20230416155831517.png)
+
+**上面四个绿点就是，缩放的时候会拉伸的部分**
+
+![image-20230416155945900](MMORPG.assets/image-20230416155945900.png)
+
+**并且将image type 改为sliced即可**
+
+效果如下
+
+![image-20230416161113629](MMORPG.assets/image-20230416161113629.png)
+
+![image-20230416161122913](MMORPG.assets/image-20230416161122913.png)
+
+
+
+**最后我们只需要去修改这个image的宽度即可调整箭头的长度**
+
+```
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Arrow : MonoBehaviour
+{
+    public Vector2 StartPoint;
+    private Vector2 EndPoint;
+    private RectTransform arrow;
+
+    private float ArrowLength;
+    private float ArrowAngle;
+    private Vector2 ArrowMidPosition;
+
+    private void Start()
+    {
+        arrow = transform.GetComponent<RectTransform>();
+    }
+
+
+    private void Update()
+    {
+        //计算相关信息
+        EndPoint = Input.mousePosition - new Vector3(960.0f,540.0f,0.0f);//获取鼠标在屏幕上的坐标
+        ArrowMidPosition = new Vector2((EndPoint.x + StartPoint.x) / 2, (EndPoint.y + StartPoint.y) / 2);
+        ArrowLength = Mathf.Sqrt((EndPoint.x - StartPoint.x) * (EndPoint.x - StartPoint.x) + (EndPoint.y - StartPoint.y) * (EndPoint.y - StartPoint.y));
+        ArrowAngle = Mathf.Atan2(EndPoint.y - StartPoint.y, EndPoint.x - StartPoint.x);
+
+        arrow.localPosition = ArrowMidPosition;
+        arrow.sizeDelta = new Vector2(ArrowLength, arrow.sizeDelta.y);
+        arrow.localEulerAngles = new Vector3(0.0f, 0.0f, ArrowAngle * 180 / Mathf.PI);
+    }
+
+    public void SetStartPoint(Vector2 _startPoint)
+    {
+        StartPoint = _startPoint - new Vector2(960.0f, 540.0f);
+    }
+}
+```
+
+
+
+
+
 
 
 ### 参考
@@ -11334,6 +12173,142 @@ Button在点选之后，其颜色会变为Pressed Color，鼠标从Button移开�
 永劫无间
 
 
+
+## ui的点击拖拽...
+
+
+
+### 简介IPointerClickHandler..
+
+在Unity的UI系统中，IPointerClickHandler、IPointerEnterHandler和IPointerExitHandler是实现了不同的事件接口的接口之一，它们都继承自IEventSystemHandler接口。**这些接口用于处理指针输入事件（例如鼠标或触摸屏）。**
+
+- IPointerClickHandler：处理指针点击事件，当玩家点击或轻触UI元素时被调用。
+- IPointerEnterHandler：处理指针进入事件，当玩家将指针移动到UI元素上方时被调用。
+- IPointerExitHandler：处理指针离开事件，当玩家将指针从UI元素上移走时被调用。
+
+
+
+​	**这些接口通常用于实现与UI元素的交互。**
+
+
+
+
+
+### 例如
+
+当玩家点击按钮时，可以使用IPointerClickHandler接口来处理这个事件并执行相应的操作。当玩家将鼠标悬停在UI元素上方时，可以使用IPointerEnterHandler接口来显示提示或执行其他交互。当玩家将鼠标从UI元素上移开时，可以使用IPointerExitHandler接口来执行其他操作。
+
+
+
+以下是一个示例，演示如何在代码中使用IPointerEnterHandler和IPointerExitHandler来检测鼠标悬停在UI元素上方的事件：
+
+```
+using UnityEngine;
+using UnityEngine.EventSystems;
+
+public class HoverExample : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+{
+    // This function will be called when the pointer enters the UI element
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        Debug.Log("Pointer entered!");
+    }
+
+    // This function will be called when the pointer exits the UI element
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        Debug.Log("Pointer exited!");
+    }
+}
+
+```
+
+在这个示例中，HoverExample是一个脚本，可以附加到任何UI元素上，例如Button或Text。它实现了IPointerEnterHandler和IPointerExitHandler接口，**并实现了OnPointerEnter和OnPointerExit方法**，这些方法将在玩家将鼠标悬停在UI元素上方或从UI元素上移走时被调用。在这些方法中，我们使用Debug.Log输出一条消息，以便可以在Unity的控制台中查看它。
+
+
+
+### PointerEventData
+
+PointerEventData是Unity引擎中的一个类，用于表示指针（如鼠标、触摸屏幕等）在UI系统中的事件数据。它包含了指针的位置、点击状态、按下和释放时的时间、是否拖动等信息。通过处理PointerEventData，可以在UI中实现按钮点击、拖拽、滑动等用户交互行为。PointerEventData是在Unity 4.6版本中引入的，并在之后的版本中得到了不断的扩展和改进。
+
+**在使用PointerEventData时，通常需要结合Unity中的事件系统使用，以下是一些PointerEventData的常见用法：**
+
+
+
+### 1.实现UI按钮点击事件
+
+在UI按钮上添加Button组件，然后在Button组件的OnClick()事件上绑定一个处理函数。在处理函数中，可以通过PointerEventData参数获取到点击的位置和状态信息，从而实现不同的响应。
+
+```
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+
+public class ButtonClick : MonoBehaviour, IPointerClickHandler
+{
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        Debug.Log("Button clicked at position: " + eventData.position);
+    }
+}
+```
+
+
+
+### 2.实现拖拽事件
+
+在UI组件上添加**Draggable**组件，然后在**Draggable组件的OnDrag()事件上绑定一个处理函数**。在处理函数中，可以通过PointerEventData参数获取到拖拽的位置和状态信息，从而实现拖拽效果。
+
+```
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+
+public class Draggable : MonoBehaviour, IDragHandler
+{
+    public void OnDrag(PointerEventData eventData)
+    {
+        transform.position = eventData.position;
+    }
+}
+```
+
+
+
+### 3.获取当前鼠标位置
+
+
+
+#### EventSystem
+
+在需要获取鼠标位置的代码中，可以使用EventSystem.current.currentInputModule.input.mousePosition获取当前鼠标的位置。（屏幕坐标）
+
+```
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
+
+public class MousePosition : MonoBehaviour
+{
+    private void Update()
+    {
+        Vector3 mousePos = EventSystem.current.currentInputModule.input.mousePosition;
+        Debug.Log("Mouse position: " + mousePos);
+    }
+}
+```
+
+## 技能框
+
+
+
+冷却实现
+
+添加一个image纯黑的，然后设置透明度。imageteyp配置如下，拖动fill amount就能实现效果
+
+<img src="MMORPG.assets/image-20231016210327504.png" alt="image-20231016210327504" style="zoom: 80%;" /> 
+
+![image-20231016210443260](MMORPG.assets/image-20231016210443260.png) 
 
 
 
@@ -11528,6 +12503,42 @@ public class Example : MonoBehaviour
 
 
 
+
+## DOTween
+
+
+
+### UGUI基本操作
+
+
+
+
+
+### 功能
+
+
+
+
+
+### Bug
+
+**1.dotween中某些方法没办法使用**
+
+Got the same error, in our case was due to using Assembly Definitions in our project and not referencing DOTween's Assemblies as dependencies. The discussion on this issue gave me the answer: [#264](https://github.com/Demigiant/dotween/issues/264)
+
+We missed them because they are not generated by default; to generate DOTween's Assembly Definitions, open the DOTween Control Panel (*Tools/Demigiant/DOTween Utility Panel*) and in the *Setup* tab, press the *Create ASMDEF* button.
+
+![image](MMORPG.assets/115539427-42402f80-a29d-11eb-8e0b-c1b4da7a91b1.png) 
+
+Now you can reference both *DOTweenPro.Scripts.asmdef* and *DOTween.Modules.asmdef* to your Assembly Definitions :)
+
+![image](MMORPG.assets/115539461-4b310100-a29d-11eb-9e96-20a91bbaea93.png) 
+
+
+
+来源：
+
+https://github.com/Demigiant/dotween/issues/154
 
 
 
