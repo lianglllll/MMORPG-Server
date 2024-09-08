@@ -6376,243 +6376,7 @@ Action是Delegate的简写，c#为我们封装好的，当然它也会有像委�
 
 
 
-## unity 协程(Coroutine)
-
-### 前言
-
-[协程](https://so.csdn.net/so/search?q=协程&spm=1001.2101.3001.7020)在`Unity`中是一个很重要的概念，我们知道，在使用`Unity`进行游戏开发时，一般（注意是一般）不考虑[多线程](https://so.csdn.net/so/search?q=多线程&spm=1001.2101.3001.7020)，那么如何处理一些在主任务之外的需求呢，`Unity`给我们提供了协程这种方式
-
-
-
-**为啥在Unity中一般不考虑多线程**
-
-- 因为在`Unity`中，只能在主线程中获取物体的组件、方法、对象，如果脱离这些，`Unity`的很多功能无法实现，那么多线程的存在与否意义就不大了
-
-
-
-**既然这样，线程与协程有什么区别呢：**
-
-- 对于协程而言，同一时间只能执行一个协程，而线程则是并发的，可以同时有多个线程在运行
-- 两者在内存的使用上是相同的，共享堆，不共享栈
-
-其实对于两者最关键，最简单的区别是微观上线程是并行（对于多核CPU）的，而协程是串行的，如果你不理解没有关系，通过下面的解释你就明白了
-
-
-
-### 关于协程
-
-### 1，什么是协程
-
-协程，从字面意义上理解就是协助程序的意思，我们在主任务进行的同时，需要一些分支任务配合工作来达到最终的效果
-
-稍微形象的解释一下，想象一下，在进行主任务的过程中我们需要一个对资源消耗极大的操作时候，如果在一帧中实现这样的操作，游戏就会变得十分卡顿，这个时候，我们就可以通过协程，在一定帧内完成该工作的处理，同时不影响主任务的进行
-
-### 2，协程的原理
-
-首先需要了解协程不是线程，协程依旧是在主线程中进行
-
-**然后要知道协程是通过迭代器来实现功能的**，通过关键字`IEnumerator`来定义一个迭代方法，
-
-注意使用的是`IEnumerator`，而不是`IEnumerable`：
-
-两者之间的区别：
-
-- `IEnumerator`：是一个实现迭代器功能的接口
-- `IEnumerable`：是在`IEnumerator`基础上的一个封装接口，有一个`GetEnumerator()`方法返回`IEnumerator`
-
-在迭代器中呢，最关键的是`yield` 的使用，这是实现我们协程功能的主要途径，通过该关键方法，可以使得协程的运行暂停、记录下一次启动的时间与位置等等：
-
-由于`yield` 在协程中的特殊性，与关键性，我们到后面在单独解释，先介绍一下协程如何通过代码实现
-
-### 3、协程的使用
-
-首先通过一个迭代器定义一个返回值为`IEnumerator`的方法，然后再程序中通过`StartCoroutine`来开启一个协程即可：
-
-在正式开始代码之前，需要了解StartCoroutine的两种重载方式：
-
-- StartCoroutine（string methodName）：这种是没有参数的情况，直接通过方法名（字符串形式）来开启协程
-
-- StartCoroutine（IEnumerator routine）：通过方法形式调用
-- StartCoroutine（string methodName，object values):带参数的通过方法名进行调用
-
-协程开启的方式主要是上面的三种形式
-
-```
- 	//通过迭代器定义一个方法
- 	IEnumerator Demo(int i)
-    {
-        //代码块
-
-        yield return 0; 
-		//代码块
-       
-    }
-
-    //在程序种调用协程
-    public void Test()
-    {
-        //第一种与第二种调用方式,通过方法名与参数调用
-        StartCoroutine("Demo", 1);
-
-        //第三种调用方式， 通过调用方法直接调用
-        StartCoroutine(Demo(1));
-    }
-
-```
-
-在一个协程开始后，同样会对应一个结束协程的方法`StopCoroutine`与`StopAllCoroutines`两种方式，但是需要注意的是，两者的使用需要遵循一定的规则，在介绍规则之前，同样介绍一下关于`StopCoroutine`重载：
-
-- `StopCoroutine（string methodName）`：通过方法名（字符串）来进行
-- `StopCoroutine（IEnumerator routine）`:通过方法形式来调用
-- `StopCoroutine(Coroutine routine)`：通过指定的协程来关闭
-
-刚刚我们说到他们的使用是有一定的规则的，那么规则是什么呢，答案是前两种结束协程方法的使用上，如果我们是使用StartCoroutine（string methodName）来开启一个协程的，那么结束协程就只能使用StopCoroutine（string methodName）和StopCoroutine(Coroutine routine)来结束协程，可以在文档中找到这句话：
-![img](MMORPG.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWxpbmdlcg==,size_16,color_FFFFFF,t_70.png)
-
-### 4、关于yield
-
-在上面，我们已经知道`yield` 的关键性，要想理解协程，就要理解`yield`
-
-如果你了解`Unity`的脚本的生命周期，你一定对`yield`这几个关键词很熟悉，没错，`yield` 也是脚本生命周期的一些执行方法，不同的`yield` 的方法处于生命周期的不同位置，可以通过下图查看：
-
-![在这里插入图片描述](MMORPG.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWxpbmdlcg==,size_16,color_FFFFFF,t_70-171275895535052.png)
-
-通过这张图可以看出大部分`yield`位置`Update`与`LateUpdate`之间，而一些特殊的则分布在其他位置，这些`yield` 代表什么意思呢，又为啥位于这个位置呢
-
-首先解释一下位于Update与LateUpdate之间这些yield 的含义：
-
-yield return null; 暂停协程等待下一帧继续执行
-
-yield return 0或其他数字; 暂停协程等待下一帧继续执行
-
-yield return new WairForSeconds(时间); 等待规定时间后继续执行
-
-yield return StartCoroutine("协程方法名");开启一个协程（嵌套协程)
-
-
-在了解这些yield的方法后，可以通过下面的代码来理解其执行顺序：
-
-```
- void Update()
-    {
-        Debug.Log("001");
-        StartCoroutine("Demo");
-        Debug.Log("003");
-
-    }
-    private void LateUpdate()
-    {
-        Debug.Log("005");
-    }
-
-    IEnumerator Demo()
-    {
-        Debug.Log("002");
-
-        yield return 0;
-        Debug.Log("004");
-    }
-
-```
-
-![在这里插入图片描述](MMORPG.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWxpbmdlcg==,size_16,color_FFFFFF,t_70-171275914328555.png)
-
-
-
-可以很清晰的看出，协程虽然是在`Update`中开启，但是关于`yield return null`后面的代码会在下一帧运行，并且是在Update执行完之后才开始执行，但是会在`LateUpdate`之前执行
-
-接下来看几个特殊的yield，他们是用在一些特殊的区域，一般不会有机会去使用，但是对于某些特殊情况的应对会很方便
-
-yield return GameObject; 当游戏对象被获取到之后执行
-yield return new WaitForFixedUpdate()：等到下一个固定帧数更新
-yield return new WaitForEndOfFrame():等到所有相机画面被渲染完毕后更新
-yield break; 跳出协程对应方法，其后面的代码不会被执行
-
-通过上面的一些`yield`一些用法以及其在脚本生命周期中的位置，我们也可以看到关于协程不是线程的概念的具体的解释，所有的这些方法都是在主线程中进行的，只是有别于我们正常使用的`Update`与`LateUpdate`这些可视的方法
-
-### 5、协程几个小用法
-
-#### **5.1、将一个复杂程序分帧执行：**
-
-如果一个复杂的函数对于一帧的性能需求很大，我们就可以通过`yield return null`将步骤拆除，从而将性能压力分摊开来，最终获取一个流畅的过程，这就是一个简单的应用
-
-举一个案例，如果某一时刻需要使用`Update`读取一个列表，这样一般需要一个循环去遍历列表，这样每帧的代码执行量就比较大，就可以将这样的执行放置到协程中来处理：
-
-```
-public class Test : MonoBehaviour
-{
-    public List<int> nums = new List<int> { 1, 2, 3, 4, 5, 6 };
-
-
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            StartCoroutine(PrintNum(nums));
-        }
-    }
-	//通过协程分帧处理
-    IEnumerator PrintNum(List<int> nums)
-    {
-        foreach(int i in nums)
-        {
-            Debug.Log(i);
-            yield return null;
-                 
-        }
-
-    }
-}
-
-```
-
-上面只是列举了一个小小的案例，在实际工作中会有一些很消耗性能的操作的时候，就可以通过这样的方式来进行性能消耗的分消
-
-#### **5.2、进行计时器工作**
-
-当然这种应用场景很少，如果我们需要计时器有很多其他更好用的方式，但是你可以了解是存在这样的操作的，要实现这样的效果，需要通过`yield return new WaitForSeconds()`的延时执行的功能：
-
-```
-	IEnumerator Test()
-    {
-        Debug.Log("开始");
-        yield return new WaitForSeconds(3);
-        Debug.Log("输出开始后三秒后执行我");
-    }
-```
-
-
-
-#### **5.3、异步加载等功能**
-
-只要一说到异步，就必定离不开协程，因为在异步加载过程中可能会影响到其他任务的进程，这个时候就需要通过协程将这些可能被影响的任务剥离出来
-
-常见的异步操作有：
-
-- `AB`包资源的异步加载
-- `Reaources`资源的异步加载
-- 场景的异步加载
-- `WWW`模块的异步请求
-
-这些异步操作的实现都需要协程的支持
-
-
-
-这里以场景加载为例子：
-
-
-
-
-
-
-
-### 参考文献
-
-[Unity 协程(Coroutine)原理与用法详解_unity coroutine-CSDN博客](https://blog.csdn.net/xinzhilinger/article/details/116240688)
-
-[迭代器 - C# | Microsoft Learn](https://learn.microsoft.com/zh-cn/dotnet/csharp/iterators)
-
-[Unity 场景异步加载（加载界面的实现）_unity异步加载场景-CSDN博客](https://blog.csdn.net/xinzhilinger/article/details/110836837?ops_request_misc=%7B%22request%5Fid%22%3A%22161968340716780255223084%22%2C%22scm%22%3A%2220140713.130102334.pc%5Fblog.%22%7D&request_id=161968340716780255223084&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~blog~first_rank_v2~rank_v29-1-110836837.pc_v2_rank_blog_default&utm_term=加载&spm=1018.2226.3001.4450)
+https://blog.csdn.net/xinzhilinger/article/details/110836837?ops_request_misc=%7B%22request%5Fid%22%3A%22161968340716780255223084%22%2C%22scm%22%3A%2220140713.130102334.pc%5Fblog.%22%7D&request_id=161968340716780255223084&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~blog~first_rank_v2~rank_v29-1-110836837.pc_v2_rank_blog_default&utm_term=加载&spm=1018.2226.3001.4450)
 
 
 
@@ -6906,15 +6670,492 @@ IL2CPP比较适合开发和发布项目 ，但是为了提高版本迭代速度�
 
 
 
-## gc优化？
-
-
-
-## 状态机和行为树的区别？
 
 
 
 
+
+
+- 
+
+
+
+## unity 协程(Coroutine)
+
+### 前言
+
+[协程](https://so.csdn.net/so/search?q=协程&spm=1001.2101.3001.7020)在`Unity`中是一个很重要的概念，我们知道，在使用`Unity`进行游戏开发时，一般（注意是一般）不考虑[多线程](https://so.csdn.net/so/search?q=多线程&spm=1001.2101.3001.7020)，那么如何处理一些在主任务之外的需求呢，`Unity`给我们提供了协程这种方式
+
+
+
+**为啥在Unity中一般不考虑多线程**
+
+- 因为在`Unity`中，只能在主线程中获取物体的组件、方法、对象，如果脱离这些，`Unity`的很多功能无法实现，那么多线程的存在与否意义就不大了
+
+
+
+**既然这样，线程与协程有什么区别呢：**
+
+- 对于协程而言，同一时间只能执行一个协程，而线程则是并发的，可以同时有多个线程在运行
+- 两者在内存的使用上是相同的，共享堆，不共享栈
+
+其实对于两者最关键，最简单的区别是微观上线程是并行（对于多核CPU）的，而协程是串行的，如果你不理解没有关系，通过下面的解释你就明白了
+
+
+
+### 关于协程
+
+### 1，什么是协程
+
+协程，从字面意义上理解就是协助程序的意思，我们在主任务进行的同时，需要一些分支任务配合工作来达到最终的效果
+
+稍微形象的解释一下，想象一下，在进行主任务的过程中我们需要一个对资源消耗极大的操作时候，如果在一帧中实现这样的操作，游戏就会变得十分卡顿，这个时候，我们就可以通过协程，在一定帧内完成该工作的处理，同时不影响主任务的进行
+
+### 2，协程的原理
+
+首先需要了解协程不是线程，协程依旧是在主线程中进行
+
+**然后要知道协程是通过迭代器来实现功能的**，通过关键字`IEnumerator`来定义一个迭代方法，
+
+注意使用的是`IEnumerator`，而不是`IEnumerable`：
+
+两者之间的区别：
+
+- `IEnumerator`：是一个实现迭代器功能的接口
+- `IEnumerable`：是在`IEnumerator`基础上的一个封装接口，有一个`GetEnumerator()`方法返回`IEnumerator`
+
+在迭代器中呢，最关键的是`yield` 的使用，这是实现我们协程功能的主要途径，通过该关键方法，可以使得协程的运行暂停、记录下一次启动的时间与位置等等：
+
+由于`yield` 在协程中的特殊性，与关键性，我们到后面在单独解释，先介绍一下协程如何通过代码实现
+
+### 3、协程的使用
+
+首先通过一个迭代器定义一个返回值为`IEnumerator`的方法，然后再程序中通过`StartCoroutine`来开启一个协程即可：
+
+在正式开始代码之前，需要了解StartCoroutine的两种重载方式：
+
+- StartCoroutine（string methodName）：这种是没有参数的情况，直接通过方法名（字符串形式）来开启协程
+
+- StartCoroutine（IEnumerator routine）：通过方法形式调用
+- StartCoroutine（string methodName，object values):带参数的通过方法名进行调用
+
+协程开启的方式主要是上面的三种形式
+
+```
+ 	//通过迭代器定义一个方法
+ 	IEnumerator Demo(int i)
+    {
+        //代码块
+
+        yield return 0; 
+		//代码块
+       
+    }
+
+    //在程序种调用协程
+    public void Test()
+    {
+        //第一种与第二种调用方式,通过方法名与参数调用
+        StartCoroutine("Demo", 1);
+
+        //第三种调用方式， 通过调用方法直接调用
+        StartCoroutine(Demo(1));
+    }
+
+```
+
+在一个协程开始后，同样会对应一个结束协程的方法`StopCoroutine`与`StopAllCoroutines`两种方式，但是需要注意的是，两者的使用需要遵循一定的规则，在介绍规则之前，同样介绍一下关于`StopCoroutine`重载：
+
+- `StopCoroutine（string methodName）`：通过方法名（字符串）来进行
+- `StopCoroutine（IEnumerator routine）`:通过方法形式来调用
+- `StopCoroutine(Coroutine routine)`：通过指定的协程来关闭
+
+刚刚我们说到他们的使用是有一定的规则的，那么规则是什么呢，答案是前两种结束协程方法的使用上，如果我们是使用StartCoroutine（string methodName）来开启一个协程的，那么结束协程就只能使用StopCoroutine（string methodName）和StopCoroutine(Coroutine routine)来结束协程，可以在文档中找到这句话：
+![img](MMORPG.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWxpbmdlcg==,size_16,color_FFFFFF,t_70.png)
+
+### 4、关于yield
+
+在上面，我们已经知道`yield` 的关键性，要想理解协程，就要理解`yield`
+
+如果你了解`Unity`的脚本的生命周期，你一定对`yield`这几个关键词很熟悉，没错，`yield` 也是脚本生命周期的一些执行方法，不同的`yield` 的方法处于生命周期的不同位置，可以通过下图查看：
+
+![在这里插入图片描述](MMORPG.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWxpbmdlcg==,size_16,color_FFFFFF,t_70-171275895535052.png)
+
+通过这张图可以看出大部分`yield`位置`Update`与`LateUpdate`之间，而一些特殊的则分布在其他位置，这些`yield` 代表什么意思呢，又为啥位于这个位置呢
+
+首先解释一下位于Update与LateUpdate之间这些yield 的含义：
+
+yield return null; 暂停协程等待下一帧继续执行
+
+yield return 0或其他数字; 暂停协程等待下一帧继续执行
+
+yield return new WairForSeconds(时间); 等待规定时间后继续执行
+
+yield return StartCoroutine("协程方法名");开启一个协程（嵌套协程)
+
+
+在了解这些yield的方法后，可以通过下面的代码来理解其执行顺序：
+
+```
+ void Update()
+    {
+        Debug.Log("001");
+        StartCoroutine("Demo");
+        Debug.Log("003");
+
+    }
+    private void LateUpdate()
+    {
+        Debug.Log("005");
+    }
+
+    IEnumerator Demo()
+    {
+        Debug.Log("002");
+
+        yield return 0;
+        Debug.Log("004");
+    }
+
+```
+
+![在这里插入图片描述](MMORPG.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWxpbmdlcg==,size_16,color_FFFFFF,t_70-171275914328555.png)
+
+
+
+可以很清晰的看出，协程虽然是在`Update`中开启，但是关于`yield return null`后面的代码会在下一帧运行，并且是在Update执行完之后才开始执行，但是会在`LateUpdate`之前执行
+
+接下来看几个特殊的yield，他们是用在一些特殊的区域，一般不会有机会去使用，但是对于某些特殊情况的应对会很方便
+
+yield return GameObject; 当游戏对象被获取到之后执行
+yield return new WaitForFixedUpdate()：等到下一个固定帧数更新
+yield return new WaitForEndOfFrame():等到所有相机画面被渲染完毕后更新
+yield break; 跳出协程对应方法，其后面的代码不会被执行
+
+通过上面的一些`yield`一些用法以及其在脚本生命周期中的位置，我们也可以看到关于协程不是线程的概念的具体的解释，所有的这些方法都是在主线程中进行的，只是有别于我们正常使用的`Update`与`LateUpdate`这些可视的方法
+
+### 5、协程几个小用法
+
+#### **5.1、将一个复杂程序分帧执行：**
+
+如果一个复杂的函数对于一帧的性能需求很大，我们就可以通过`yield return null`将步骤拆除，从而将性能压力分摊开来，最终获取一个流畅的过程，这就是一个简单的应用
+
+举一个案例，如果某一时刻需要使用`Update`读取一个列表，这样一般需要一个循环去遍历列表，这样每帧的代码执行量就比较大，就可以将这样的执行放置到协程中来处理：
+
+```
+public class Test : MonoBehaviour
+{
+    public List<int> nums = new List<int> { 1, 2, 3, 4, 5, 6 };
+
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            StartCoroutine(PrintNum(nums));
+        }
+    }
+	//通过协程分帧处理
+    IEnumerator PrintNum(List<int> nums)
+    {
+        foreach(int i in nums)
+        {
+            Debug.Log(i);
+            yield return null;
+                 
+        }
+
+    }
+}
+
+```
+
+上面只是列举了一个小小的案例，在实际工作中会有一些很消耗性能的操作的时候，就可以通过这样的方式来进行性能消耗的分消
+
+#### **5.2、进行计时器工作**
+
+当然这种应用场景很少，如果我们需要计时器有很多其他更好用的方式，但是你可以了解是存在这样的操作的，要实现这样的效果，需要通过`yield return new WaitForSeconds()`的延时执行的功能：
+
+```
+	IEnumerator Test()
+    {
+        Debug.Log("开始");
+        yield return new WaitForSeconds(3);
+        Debug.Log("输出开始后三秒后执行我");
+    }
+```
+
+
+
+#### **5.3、异步加载等功能**
+
+只要一说到异步，就必定离不开协程，因为在异步加载过程中可能会影响到其他任务的进程，这个时候就需要通过协程将这些可能被影响的任务剥离出来
+
+常见的异步操作有：
+
+- `AB`包资源的异步加载
+- `Reaources`资源的异步加载
+- 场景的异步加载
+- `WWW`模块的异步请求
+
+这些异步操作的实现都需要协程的支持
+
+
+
+这里以场景加载为例子：
+
+
+
+
+
+
+
+### 参考文献
+
+[Unity 协程(Coroutine)原理与用法详解_unity coroutine-CSDN博客](https://blog.csdn.net/xinzhilinger/article/details/116240688)
+
+[迭代器 - C# | Microsoft Learn](https://learn.microsoft.com/zh-cn/dotnet/csharp/iterators)
+
+[Unity 场景异步加载（加载界面的实现）_unity异步加载场景-CSDN博客](
+
+
+
+## unity中的协程和yield
+
+### 概要
+
+在 Unity 中，协程允许你编写在多帧之间暂停的代码，常用于等待某个条件达成（如等待几秒钟或等待异步操作完成）再继续执行。
+
+
+
+**示例：在协程中使用 `yield`**
+
+```
+using UnityEngine;
+using System.Collections;
+
+public class Example : MonoBehaviour
+{
+    void Start()
+    {
+        StartCoroutine(MyCoroutine());
+    }
+
+    IEnumerator MyCoroutine()
+    {
+        Debug.Log("协程开始");
+        
+        // 等待 2 秒钟
+        yield return new WaitForSeconds(2f);
+        
+        Debug.Log("2 秒钟后继续执行");
+        
+        // 等待下一帧
+        yield return null;
+        
+        Debug.Log("下一帧继续执行");
+    }
+}
+
+```
+
+
+
+### **常见的 `yield return` 表达式**
+
+- `yield return new WaitForSeconds(seconds);`
+  暂停协程一段时间（`seconds` 秒）。
+- `yield return null;`
+  暂停协程直到下一帧。
+- `yield return new WaitForEndOfFrame();`
+  暂停协程，直到当前帧结束。
+- `yield return new WaitForFixedUpdate();`
+  暂停协程，直到下一次物理帧（FixedUpdate）。
+- `yield return StartCoroutine(AnotherCoroutine());`
+  等待另一个协程完成。
+
+
+
+### **yield break**
+
+在迭代器或协程中，可以使用 `yield break` 来提前终止迭代或协程。
+
+**示例：使用 `yield break`**
+
+```
+IEnumerator MyCoroutine()
+{
+    Debug.Log("协程开始");
+    
+    if (someCondition)
+    {
+        yield break; // 提前终止协程
+    }
+
+    yield return new WaitForSeconds(2f);
+    
+    Debug.Log("这行代码不会执行，如果之前调用了 yield break");
+}
+
+```
+
+
+
+###  **`yield return` 异步方法**
+
+
+
+在 Unity 的协程中，如果你使用 `yield return` 来等待一个异步方法（例如返回 `Task` 的方法），实际情况取决于你如何实现和处理这个异步方法。Unity 的协程系统不原生支持 `Task` 类型，因此直接使用 `yield return` 来等待 `Task` 不会如预期那样正常工作。
+
+**具体行为**
+
+如果你直接 `yield return` 一个异步方法返回的 `Task`，Unity 的协程系统不会自动等待它完成。这是因为 Unity 的协程系统预期 `yield return` 的类型是 Unity 能理解的类型，如 `WaitForSeconds`、`WaitForEndOfFrame`、`IEnumerator`，而不是 `Task`。
+
+
+
+**示例：**
+
+假设你有以下异步方法：
+
+```csharp
+async Task LoadDataAsync()
+{
+    await Task.Delay(2000); // 模拟一个耗时操作
+    Debug.Log("数据加载完成！");
+}
+```
+
+如果你在协程中这样使用它：
+
+```csharp
+IEnumerator MyCoroutine()
+{
+    Debug.Log("协程开始");
+
+    yield return LoadDataAsync(); // 直接使用 Task 是无效的
+
+    Debug.Log("这行代码会立即执行，不会等待 LoadDataAsync 完成");
+}
+```
+
+
+
+**发生的事情：**
+
+- **立即继续执行**: 协程中的代码会在 `yield return LoadDataAsync();` 之后立即继续执行，而不会等待 `LoadDataAsync` 完成。
+- **无法等待**: 由于 `Task` 不是 Unity 协程系统支持的等待类型，因此协程不会自动等待异步操作完成。
+
+
+
+**正确处理方式**
+
+要在协程中等待 `Task` 完成，你需要使用一个包装器，将 `Task` 转换为 Unity 协程可以理解的格式。例如，你可以使用一个 `IEnumerator` 方法来轮询 `Task` 的状态：
+
+```csharp
+IEnumerator MyCoroutine()
+{
+    Debug.Log("协程开始");
+
+    // 使用帮助方法等待 Task 完成
+    yield return WaitForTask(LoadDataAsync());
+
+    Debug.Log("数据加载完成，继续执行协程");
+}
+
+IEnumerator WaitForTask(Task task)
+{
+    while (!task.IsCompleted)
+    {
+        yield return null; // 等待下一帧
+    }
+
+    if (task.IsFaulted)
+    {
+        throw task.Exception ?? new Exception("Task Faulted");
+    }
+}
+```
+
+在这个例子中，`WaitForTask` 是一个协程，它会不断检查 `Task` 是否完成。如果 `Task` 失败了，它会抛出异常。
+
+**总结**
+
+- **直接 `yield return` `Task`**: 在 Unity 协程中直接使用 `Task` 作为 `yield return` 的值不会如预期般等待 `Task` 完成。
+- **解决方案**: 使用一个 `IEnumerator` 包装器来等待 `Task` 完成，使协程能够有效地等待异步操作完成。
+
+
+
+### 协程调用的控制流
+
+对的，当一个协程调用另一个协程时，控制流会转移到被调用的协程。这个过程的工作方式如下：
+
+1. **调用另一个协程**:
+   - 当一个协程调用另一个协程时（通过 `yield return`），调用者协程的执行会暂停，直到被调用的协程完成。
+
+2. **控制流转移**:
+   - 调用者协程暂停后，控制流会转移到被调用的协程中。被调用的协程开始执行，并在其内部的 `yield return` 或其他等待条件满足之前，继续进行。
+
+3. **等待和恢复**:
+   - 如果被调用的协程中有 `yield return` 语句（例如 `yield return null`、`yield return new WaitForSeconds(seconds)`、`yield return someAsyncOperation`），它会让控制流在满足条件之前暂停，直到满足条件后，协程才会继续执行。
+
+4. **恢复调用者协程**:
+   - 一旦被调用的协程完成（即它的执行完毕或者 `yield return` 条件被满足），控制流会返回到调用者协程，并从 `yield return` 语句后的位置继续执行。
+
+**示例**
+
+```csharp
+IEnumerator CallerCoroutine()
+{
+    Debug.Log("调用者协程开始");
+
+    // 调用另一个协程并等待它完成
+    yield return CalledCoroutine();
+
+    Debug.Log("调用者协程继续执行，CalledCoroutine 已经完成");
+}
+
+IEnumerator CalledCoroutine()
+{
+    Debug.Log("被调用的协程开始");
+
+    // 等待 2 秒钟
+    yield return new WaitForSeconds(2f);
+
+    Debug.Log("被调用的协程完成");
+}
+```
+
+在这个例子中：
+
+1. **`CallerCoroutine`** 启动并调用 **`CalledCoroutine`**。
+2. **`CallerCoroutine`** 的执行会暂停在 `yield return CalledCoroutine();`，等待 **`CalledCoroutine`** 完成。
+3. **`CalledCoroutine`** 开始执行，并在 `yield return new WaitForSeconds(2f);` 处暂停 2 秒钟。
+4. 2 秒钟后，**`CalledCoroutine`** 继续执行并完成。
+5. 控制流返回到 **`CallerCoroutine`**，从 `yield return CalledCoroutine();` 之后的位置继续执行。
+
+**总结**
+
+- **调用者协程** 在调用另一个协程时会暂停，直到被调用的协程完成。
+- **被调用的协程** 在内部的 `yield return` 语句处会控制暂停，直到满足条件或完成。
+- 一旦被调用的协程完成，控制流会返回到调用者协程，并继续执行后续代码。
+
+这种协程嵌套的机制使得 Unity 的协程系统能够处理复杂的异步操作和等待逻辑，同时保持代码的简洁性和可读性。
+
+
+
+## 异步操作
+
+
+
+
+
+
+
+
+
+
+
+# unity中的目录结果和特殊文件
 
 ## unity工程文件夹里的目录结构
 
@@ -7183,6 +7424,7 @@ Asset可能有多个Object，比如prefab的GameObject上挂着多个组件，�
 当你使用 Unity 将项目打包为 PC 平台的可执行文件时，Unity 会生成一个包含多个文件和文件夹的目录结构。这些文件和文件夹对于游戏的运行至关重要。以下是常见的目录结构及其说明：
 
 1. **游戏名称.exe**：
+
    - 这是你游戏的可执行文件。双击此文件即可运行你的游戏。
 
 2. **游戏名称_Data**
@@ -7198,15 +7440,19 @@ Asset可能有多个Object，比如prefab的GameObject上挂着多个组件，�
    - 存放原生插件（通常是 .dll 或 .so 文件），这些插件提供了特定平台的功能或是用来调用一些原生的系统库。
 
 5. **游戏名称_Data\Resources** 文件夹：
+
    - 如果你在项目中有使用 `Resources` 文件夹，这里会包含所有通过 `Resources.Load` 加载的资源。此文件夹下的资源在游戏启动时会被加载。
 
 6. **游戏名称_Data\StreamingAssets** 文件夹：
+
    - 这里包含你在 Unity 项目中的 `StreamingAssets` 文件夹中的所有文件。这些文件不会被 Unity 处理成特定格式，而是会以原始形式包含在内，通常用于需要在运行时直接读取的文件。
 
 7. **MonoBleedingEdge** 文件夹：
+
    - 如果项目使用了 Unity 的 Mono 运行时，你可能会看到这个文件夹。它包含 Mono 虚拟机和一些基础的 .NET 库。
 
 8. **UnityCrashHandler64.exe**：
+
    - 这是 Unity 内置的崩溃处理程序，当游戏崩溃时它会运行并生成崩溃日志。
 
 9. **UnityPlayer.dll**：
@@ -7253,7 +7499,7 @@ Asset可能有多个Object，比如prefab的GameObject上挂着多个组件，�
 这个文件夹中的内容可能包括以下几类文件：
 
 1. **调试信息**：如编译时的临时文件、日志文件、符号文件等，帮助开发者在开发和调试过程中追踪问题。
-  
+
 2. **缓存数据**：编译或打包过程中生成的一些临时数据，可能加快后续的编译过程。
 
 3. **开发工具**：如编辑器扩展或调试工具生成的文件，这些文件不属于最终的游戏内容。
@@ -7302,237 +7548,6 @@ Burst 编译器是 Unity 提供的一个高性能编译器，专门用来优化�
 
 
 
-
-
-
-
-
-
-
-
-## unity中的协程和yield
-
-### 概要
-
-在 Unity 中，协程允许你编写在多帧之间暂停的代码，常用于等待某个条件达成（如等待几秒钟或等待异步操作完成）再继续执行。
-
-
-
-**示例：在协程中使用 `yield`**
-
-```
-using UnityEngine;
-using System.Collections;
-
-public class Example : MonoBehaviour
-{
-    void Start()
-    {
-        StartCoroutine(MyCoroutine());
-    }
-
-    IEnumerator MyCoroutine()
-    {
-        Debug.Log("协程开始");
-        
-        // 等待 2 秒钟
-        yield return new WaitForSeconds(2f);
-        
-        Debug.Log("2 秒钟后继续执行");
-        
-        // 等待下一帧
-        yield return null;
-        
-        Debug.Log("下一帧继续执行");
-    }
-}
-
-```
-
-
-
-### **常见的 `yield return` 表达式**
-
-- `yield return new WaitForSeconds(seconds);`
-  暂停协程一段时间（`seconds` 秒）。
-- `yield return null;`
-  暂停协程直到下一帧。
-- `yield return new WaitForEndOfFrame();`
-  暂停协程，直到当前帧结束。
-- `yield return new WaitForFixedUpdate();`
-  暂停协程，直到下一次物理帧（FixedUpdate）。
-- `yield return StartCoroutine(AnotherCoroutine());`
-  等待另一个协程完成。
-
-
-
-### **yield break**
-
-在迭代器或协程中，可以使用 `yield break` 来提前终止迭代或协程。
-
-**示例：使用 `yield break`**
-
-```
-IEnumerator MyCoroutine()
-{
-    Debug.Log("协程开始");
-    
-    if (someCondition)
-    {
-        yield break; // 提前终止协程
-    }
-
-    yield return new WaitForSeconds(2f);
-    
-    Debug.Log("这行代码不会执行，如果之前调用了 yield break");
-}
-
-```
-
-
-
-###  **`yield return` 异步方法**
-
-
-
-在 Unity 的协程中，如果你使用 `yield return` 来等待一个异步方法（例如返回 `Task` 的方法），实际情况取决于你如何实现和处理这个异步方法。Unity 的协程系统不原生支持 `Task` 类型，因此直接使用 `yield return` 来等待 `Task` 不会如预期那样正常工作。
-
-**具体行为**
-
-如果你直接 `yield return` 一个异步方法返回的 `Task`，Unity 的协程系统不会自动等待它完成。这是因为 Unity 的协程系统预期 `yield return` 的类型是 Unity 能理解的类型，如 `WaitForSeconds`、`WaitForEndOfFrame`、`IEnumerator`，而不是 `Task`。
-
-
-
-**示例：**
-
-假设你有以下异步方法：
-
-```csharp
-async Task LoadDataAsync()
-{
-    await Task.Delay(2000); // 模拟一个耗时操作
-    Debug.Log("数据加载完成！");
-}
-```
-
-如果你在协程中这样使用它：
-
-```csharp
-IEnumerator MyCoroutine()
-{
-    Debug.Log("协程开始");
-
-    yield return LoadDataAsync(); // 直接使用 Task 是无效的
-
-    Debug.Log("这行代码会立即执行，不会等待 LoadDataAsync 完成");
-}
-```
-
-
-
-**发生的事情：**
-
-- **立即继续执行**: 协程中的代码会在 `yield return LoadDataAsync();` 之后立即继续执行，而不会等待 `LoadDataAsync` 完成。
-- **无法等待**: 由于 `Task` 不是 Unity 协程系统支持的等待类型，因此协程不会自动等待异步操作完成。
-
-
-
-**正确处理方式**
-
-要在协程中等待 `Task` 完成，你需要使用一个包装器，将 `Task` 转换为 Unity 协程可以理解的格式。例如，你可以使用一个 `IEnumerator` 方法来轮询 `Task` 的状态：
-
-```csharp
-IEnumerator MyCoroutine()
-{
-    Debug.Log("协程开始");
-
-    // 使用帮助方法等待 Task 完成
-    yield return WaitForTask(LoadDataAsync());
-
-    Debug.Log("数据加载完成，继续执行协程");
-}
-
-IEnumerator WaitForTask(Task task)
-{
-    while (!task.IsCompleted)
-    {
-        yield return null; // 等待下一帧
-    }
-
-    if (task.IsFaulted)
-    {
-        throw task.Exception ?? new Exception("Task Faulted");
-    }
-}
-```
-
-在这个例子中，`WaitForTask` 是一个协程，它会不断检查 `Task` 是否完成。如果 `Task` 失败了，它会抛出异常。
-
-**总结**
-
-- **直接 `yield return` `Task`**: 在 Unity 协程中直接使用 `Task` 作为 `yield return` 的值不会如预期般等待 `Task` 完成。
-- **解决方案**: 使用一个 `IEnumerator` 包装器来等待 `Task` 完成，使协程能够有效地等待异步操作完成。
-
-
-
-### 协程调用的控制流
-
-对的，当一个协程调用另一个协程时，控制流会转移到被调用的协程。这个过程的工作方式如下：
-
-1. **调用另一个协程**:
-   - 当一个协程调用另一个协程时（通过 `yield return`），调用者协程的执行会暂停，直到被调用的协程完成。
-
-2. **控制流转移**:
-   - 调用者协程暂停后，控制流会转移到被调用的协程中。被调用的协程开始执行，并在其内部的 `yield return` 或其他等待条件满足之前，继续进行。
-
-3. **等待和恢复**:
-   - 如果被调用的协程中有 `yield return` 语句（例如 `yield return null`、`yield return new WaitForSeconds(seconds)`、`yield return someAsyncOperation`），它会让控制流在满足条件之前暂停，直到满足条件后，协程才会继续执行。
-
-4. **恢复调用者协程**:
-   - 一旦被调用的协程完成（即它的执行完毕或者 `yield return` 条件被满足），控制流会返回到调用者协程，并从 `yield return` 语句后的位置继续执行。
-
-**示例**
-
-```csharp
-IEnumerator CallerCoroutine()
-{
-    Debug.Log("调用者协程开始");
-
-    // 调用另一个协程并等待它完成
-    yield return CalledCoroutine();
-
-    Debug.Log("调用者协程继续执行，CalledCoroutine 已经完成");
-}
-
-IEnumerator CalledCoroutine()
-{
-    Debug.Log("被调用的协程开始");
-
-    // 等待 2 秒钟
-    yield return new WaitForSeconds(2f);
-
-    Debug.Log("被调用的协程完成");
-}
-```
-
-在这个例子中：
-
-1. **`CallerCoroutine`** 启动并调用 **`CalledCoroutine`**。
-2. **`CallerCoroutine`** 的执行会暂停在 `yield return CalledCoroutine();`，等待 **`CalledCoroutine`** 完成。
-3. **`CalledCoroutine`** 开始执行，并在 `yield return new WaitForSeconds(2f);` 处暂停 2 秒钟。
-4. 2 秒钟后，**`CalledCoroutine`** 继续执行并完成。
-5. 控制流返回到 **`CallerCoroutine`**，从 `yield return CalledCoroutine();` 之后的位置继续执行。
-
-**总结**
-
-- **调用者协程** 在调用另一个协程时会暂停，直到被调用的协程完成。
-- **被调用的协程** 在内部的 `yield return` 语句处会控制暂停，直到满足条件或完成。
-- 一旦被调用的协程完成，控制流会返回到调用者协程，并继续执行后续代码。
-
-这种协程嵌套的机制使得 Unity 的协程系统能够处理复杂的异步操作和等待逻辑，同时保持代码的简洁性和可读性。
-
-
-
 ## .meta文件
 
 `.meta` 文件通常是由 Unity 引擎创建的，用于存储项目中文件的元数据。每个资产（如脚本、材质、场景、预制件等）都会有一个对应的 `.meta` 文件。
@@ -7548,6 +7563,7 @@ IEnumerator CalledCoroutine()
 4. **版本控制**：如果你使用版本控制系统（如 Git）管理 Unity 项目，`.meta` 文件是需要一并提交到版本库中的，以确保在不同开发环境中资源不会丢失或错乱。
 
 ### 示例
+
 一个简单的 `.meta` 文件可能看起来如下：
 
 ```plaintext
@@ -7563,8 +7579,75 @@ TextureImporter:
 在这个例子中，`.meta` 文件中包含了资源的 `guid` 和一些与纹理导入相关的设置。
 
 ### 注意事项
+
 - 请勿手动编辑 `.meta` 文件，除非你完全了解它的结构和作用。
 - 如果不小心删除了 `.meta` 文件，Unity 会重新生成，但这可能会导致引用错误或丢失资源关联。
+
+
+
+## PlayerPrefs 
+
+`PlayerPrefs` 在游戏打包后会根据平台不同，将数据存储在不同的位置。以下是常见平台的存储位置：
+
+### 1. **Windows**
+存储位置为注册表（Registry）：
+- 路径: `HKEY_CURRENT_USER\Software\[CompanyName]\[ProductName]`
+  
+
+可以通过 Unity 的 `PlayerSettings` 来设置 `CompanyName` 和 `ProductName`，这两个字段会决定实际的存储路径。
+
+### 2. **macOS**
+存储位置为 `plist` 文件：
+- 路径: `~/Library/Preferences/unity.[CompanyName].[ProductName].plist`
+
+### 3. **Linux**
+存储在 `prefs` 文件中：
+- 路径: `~/.config/unity3d/[CompanyName]/[ProductName]/prefs`
+
+### 4. **Android**
+在 Android 平台上，`PlayerPrefs` 数据会存储在应用的内部存储中，通常在沙盒文件系统内：
+- 路径: `/data/data/[package name]/shared_prefs/[package name].xml`
+
+需要 `root` 权限才能访问该文件。
+
+### 5. **iOS**
+在 iOS 平台上，`PlayerPrefs` 数据会存储在 `NSUserDefaults` 中：
+- 路径: `~/Library/Preferences/[bundle identifier].plist`
+
+### 6. **WebGL**
+对于 WebGL 构建，`PlayerPrefs` 使用浏览器的 `localStorage` 进行存储。
+
+
+
+比如
+
+在 Windows 平台上，`PlayerPrefs` 数据存储在注册表中。要查找它，可以按照以下步骤进行操作：
+
+### 步骤 1: 打开注册表编辑器
+
+1. 按下 `Win + R` 键，打开“运行”对话框。
+2. 输入 `regedit`，然后按下 `Enter` 键。
+
+### 步骤 2: 导航到 `PlayerPrefs` 存储位置
+
+在注册表编辑器中，导航到以下路径：
+
+```
+plaintext
+
+
+复制代码
+HKEY_CURRENT_USER\Software\[CompanyName]\[ProductName]
+```
+
+- **`[CompanyName]`**: 这是你在 Unity 项目中设置的公司名称，对应于 `PlayerSettings` 中的 **Company Name**。
+- **`[ProductName]`**: 这是你在 Unity 项目中设置的产品名称，对应于 `PlayerSettings` 中的 **Product Name**。
+
+![image-20240907230048575](MMORPG.assets/image-20240907230048575.png) 
+
+
+
+
 
 # 项目杂谈
 
@@ -9210,7 +9293,7 @@ unity控制台中的error pause 遇到错误打印就停止。导致我以为是
 
 
 
-# 游戏系统
+# 游戏业务系统
 
 
 
@@ -9802,13 +9885,23 @@ list-x根据其x坐标里原点的远近来进行链接
 
 
 
+## 安全模块
+
+比如说一些敏感信息，需要加密传输；
+
+登录密码，保险箱密码等
+
+
+
+持久化是密码这些敏感信息也需要加密存储。
 
 
 
 
 
 
-# GameFramework
+
+# 游戏基础框架
 
 
 
@@ -12033,6 +12126,12 @@ transform.SetSiblingIndex(n);//将该物体作为父物体的第n个子物体(�
 
 
 
+
+
+
+
+
+
 ## 设置界面
 
 <img src="MMORPG.assets/image-20240816113949775.png" alt="image-20240816113949775" style="zoom:50%;" /> 
@@ -12070,6 +12169,12 @@ transform.SetSiblingIndex(n);//将该物体作为父物体的第n个子物体(�
 ## 游戏初始进入页面
 
 ![image-20240816113226237](MMORPG.assets/image-20240816113226237.png)
+
+![image-20240907103730063](MMORPG.assets/image-20240907103730063.png)
+
+
+
+
 
 
 
@@ -12421,15 +12526,6 @@ public class MousePosition : MonoBehaviour
 
 
 
-# 安全模块
-
-比如说一些敏感信息，需要加密传输；
-
-登录密码，保险箱密码等
-
-
-
-持久化是密码这些敏感信息也需要加密存储。
 
 
 
@@ -12438,12 +12534,7 @@ public class MousePosition : MonoBehaviour
 
 
 
-
-
-
-
-
-# 小工具
+# 插件
 
 
 
@@ -12843,6 +12934,14 @@ mode 模式，普通模式 武器模式 御剑飞行模式。。。似乎没我�
 
 
 
+直入直出的淡化
+
+![image-20240908093605701](MMORPG.assets/image-20240908093605701.png)
+
+
+
+
+
 ## 任务提示框
 
 任务提示不错、或者等级提升也不错
@@ -12889,6 +12988,10 @@ https://www.bilibili.com/video/BV1FN4y1G7n1/?spm_id_from=333.788&vd_source=ff929
 
 
 
+
+
+## Camera组件
+
 ![image-20240824160458735](MMORPG.assets/image-20240824160458735.png) 
 
 **Culling Mask**：选择渲染哪些层级
@@ -12899,3 +13002,34 @@ https://www.bilibili.com/video/BV1FN4y1G7n1/?spm_id_from=333.788&vd_source=ff929
 
 
 
+
+
+
+
+# 模型
+
+![image-20240907203404053](MMORPG.assets/image-20240907203404053.png) 
+
+**Scene**
+
+
+
+**Meshes**
+
+
+
+**Gemoetry**
+
+
+
+**假设找到一个好看的模型，我们要给他配动画**
+
+找到好模型可以放入mixamo帮我们搞定骨骼和动画
+
+在mixamo中需要选择collada格式的，其他的导入不知道为什么不行。
+
+
+
+**模型材质丢失**
+
+关于模型导入unity材质丢失，并且材质白的时候，可以将贴图放到材质上。
