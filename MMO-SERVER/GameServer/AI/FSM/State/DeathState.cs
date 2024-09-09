@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameServer.AI.State
+namespace GameServer.AI.FSM.State
 {
     /// <summary>
     /// 死亡状态
@@ -19,7 +19,7 @@ namespace GameServer.AI.State
 
         public override void OnEnter()
         {
-            
+
         }
 
         public override void OnUpdate()

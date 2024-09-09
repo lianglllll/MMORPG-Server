@@ -1,7 +1,6 @@
 ﻿using GameServer.Model;
 using Proto;
 using Serilog;
-using GameServer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +9,7 @@ using System.Threading.Tasks;
 using Common.Summer.GameServer;
 using GameServer.AI.FSM;
 
-namespace GameServer.AI.State
+namespace GameServer.AI.FSM.State
 {
     public class HitState : IState<Param>
     {
@@ -40,7 +39,7 @@ namespace GameServer.AI.State
                 param.remainHitWaitTime = 0;
                 var monster = param.owner;
                 //如果当前怪物没有死亡，就应该去追击伤害来源的玩家
-                if(!monster.IsDeath)
+                if (!monster.IsDeath)
                 {
                     if (monster.target != null && !monster.target.IsDeath)
                     {

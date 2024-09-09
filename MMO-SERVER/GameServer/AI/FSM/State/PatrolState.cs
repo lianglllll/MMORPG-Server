@@ -1,7 +1,6 @@
 ﻿using GameServer.Combat;
 using GameServer.Manager;
 using GameServer.Model;
-using GameServer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +9,7 @@ using System.Threading.Tasks;
 using Common.Summer.GameServer;
 using GameServer.AI.FSM;
 
-namespace GameServer.AI.State
+namespace GameServer.AI.FSM.State
 {
     /// <summary>
     /// monster的巡逻行为
@@ -40,8 +39,8 @@ namespace GameServer.AI.State
             var monster = param.owner;
 
             //查询viewRange内的玩家，如果有就切换追击状态
-            var views = AreaEntitiesFinder.GetEntitiesInCircleAroundEntity(monster, param.viewRange,false);
-            var chr = views.OfType<Character>().FirstOrDefault((a) => !a.IsDeath,null);
+            var views = AreaEntitiesFinder.GetEntitiesInCircleAroundEntity(monster, param.viewRange, false);
+            var chr = views.OfType<Character>().FirstOrDefault((a) => !a.IsDeath, null);
             if (chr != null)
             {
                 monster.target = chr;

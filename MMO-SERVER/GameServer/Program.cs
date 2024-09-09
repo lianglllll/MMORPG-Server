@@ -14,6 +14,7 @@ using GameServer.InventorySystem;
 using GameServer.Core;
 using GameServer.Utils;
 using GameServer.Skills;
+using GameServer.AI.BehaviorTree;
 
 namespace GameServer
 {
@@ -21,6 +22,7 @@ namespace GameServer
     {
         static void Main(string[] args)
         {
+
             //初始化日志环境
             Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Debug()
@@ -84,7 +86,6 @@ namespace GameServer
 
             Console.ReadKey();//防止进程结束
         }
-
     }
 }
  

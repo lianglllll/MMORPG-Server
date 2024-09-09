@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameServer.AI.State
+namespace GameServer.AI.FSM.State
 {
     /// <summary>
     /// 返回状态
@@ -32,7 +32,7 @@ namespace GameServer.AI.State
             if (monster.State == EntityState.Dizzy) return;
 
             //有问题，我们切换为巡逻状态
-            if(monster.State != EntityState.Motion)
+            if (monster.State != EntityState.Motion)
             {
                 fsm.ChangeState("patrol");
                 return;

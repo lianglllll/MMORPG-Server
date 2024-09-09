@@ -1,4 +1,4 @@
-﻿using GameServer.AI.State;
+﻿using GameServer.AI.FSM.State;
 using GameServer.Core;
 using GameServer.Manager;
 using GameServer.Model;

@@ -2,7 +2,6 @@
 using GameServer.Model;
 using Proto;
 using Serilog;
-using GameServer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +10,13 @@ using System.Threading;
 using Common.Summer.GameServer;
 using GameServer.AI.FSM;
 
-namespace GameServer.AI.State
+namespace GameServer.AI.FSM.State
 {
 
-    public class AttackState: IState<Param>
+    public class AttackState : IState<Param>
     {
         private Skill curUsedSkill;
-        private float afterWaitTime;         
+        private float afterWaitTime;
 
 
         public AttackState(FSM<Param> fsm)
@@ -29,12 +28,13 @@ namespace GameServer.AI.State
         {
             //先停下来
             var monster = param.owner;
-            if (monster.State == EntityState.Motion) {
+            if (monster.State == EntityState.Motion)
+            {
                 monster.StopMove();
             }
 
             //目标是否有效，无效就返回了
-            if(monster.target == null || monster.target.IsDeath)
+            if (monster.target == null || monster.target.IsDeath)
             {
                 monster.target = null;
                 fsm.ChangeState("return");

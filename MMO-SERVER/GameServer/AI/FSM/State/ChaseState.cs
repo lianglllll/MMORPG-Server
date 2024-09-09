@@ -1,7 +1,6 @@
 ﻿using GameServer.Core;
 using GameServer.Manager;
 using Serilog;
-using GameServer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GameServer.AI.FSM;
 
-namespace GameServer.AI.State
+namespace GameServer.AI.FSM.State
 {
     /// <summary>
     /// 追击状态
