@@ -46,7 +46,7 @@
 
 
 
-# ================================
+# =============================
 
 
 
@@ -108,7 +108,80 @@ public void SomeMethod()
 
 
 
+### where
 
+在 C# 中，`where` 关键字用于为泛型类型参数指定约束。通过使用 `where` 关键字，可以限定泛型类型参数必须满足某些条件。这在定义泛型类、泛型接口、泛型方法时非常有用。
+
+#### 语法
+
+```csharp
+class 类名<类型参数> where 类型参数 : 约束
+```
+或者
+```csharp
+方法名<类型参数>(参数) where 类型参数 : 约束
+```
+
+#### 常见约束
+
+1. **`where T : class`**
+   - 限制 `T` 必须是引用类型，如类、接口、委托或数组。无法使用值类型（如 `int`、`struct`）。
+
+2. **`where T : struct`**
+   - 限制 `T` 必须是值类型。这通常用于限制类型参数为结构体类型或原始值类型。
+
+3. **`where T : new()`**
+   - 限制 `T` 必须有一个公共的无参构造函数。确保可以通过 `new T()` 创建实例。
+
+4. **`where T : SomeBaseClass`**
+   - 限制 `T` 必须是 `SomeBaseClass` 或其派生类。这可以确保类型参数继承自特定的基类。
+
+5. **`where T : SomeInterface`**
+   - 限制 `T` 必须实现接口 `SomeInterface`。确保类型参数实现指定的接口。
+
+6. **多个约束**
+   - 可以对同一个类型参数指定多个约束：
+     ```csharp
+     where T : class, new()
+     ```
+
+7. **多个泛型参数**
+   - 对多个泛型参数可以分别使用 `where` 关键字进行约束：
+     ```csharp
+     class MyClass<T1, T2>
+         where T1 : class
+         where T2 : struct
+     {
+         // 类的实现
+     }
+     ```
+
+#### 示例
+
+
+
+##### 泛型类
+
+```csharp
+public class MyClass<T> where T : class, new()
+{
+    public T CreateInstance()
+    {
+        return new T();  // 因为有 new() 约束，所以可以直接实例化 T
+    }
+}
+```
+
+##### 泛型方法
+
+```csharp
+public void MyMethod<T>(T param) where T : IDisposable
+{
+    param.Dispose();  // 因为 T 实现了 IDisposable，所以可以调用 Dispose 方法
+}
+```
+
+通过 `where` 关键字，C# 提供了一种灵活的机制来确保泛型类型符合某些规则，使代码更安全、易于维护。
 
 # c#多线程编程
 
@@ -6362,6 +6435,107 @@ Action是Delegate的简写，c#为我们封装好的，当然它也会有像委�
 
 ![image-20240805163737236](MMORPG.assets/image-20240805163737236.png)
 
+## IDisposable
+
+### 什么是 `Dispose`？
+
+`Dispose` 是一种 **显式资源管理** 的方法，通常用来释放占用的资源（如文件、数据库连接等）。当你使用完某个对象后，你可以手动调用它的 `Dispose()` 方法来释放它占用的资源。
+
+```csharp
+using (var obj = new MyClass())
+{
+    // 使用 obj
+} // 离开作用域时会自动调用 obj.Dispose()
+```
+
+如果你忘了调用 `Dispose()`，那么资源可能不会及时释放。为了解决这种情况，C# 提供了一个 **终结器（析构函数）** 来作为一种后备机制。
+
+###  什么是终结器（析构函数）？
+
+终结器（`~MyChildClass()`）是 C# 中的一种特殊方法，它会在对象**被垃圾回收**时自动调用。你不需要显式地调用终结器，垃圾回收器会在清理对象时调用它。
+
+- **什么时候调用终结器？**
+  当对象没有被显式地销毁（没有手动调用 `Dispose()` 方法）时，垃圾回收器会自动调用终结器以清理资源。
+
+###  为什么要调用 `Dispose(false)`？
+
+在 `Dispose()` 方法中，我们通常会分为两种情况：
+1. **`Dispose(true)`**：表示由 **用户手动调用**，这时需要释放所有资源（包括托管资源和非托管资源）。
+2. **`Dispose(false)`**：表示由 **终结器调用**，只释放非托管资源（因为托管资源会自动由垃圾回收器处理）。
+
+
+
+**托管资源 vs. 非托管理资源**
+
+- **托管资源**：由 .NET 运行时自动管理的资源（如内存、普通对象），你不用担心这些资源会被泄漏，垃圾回收器会自动处理。
+- **非托管资源**：由操作系统管理的资源（如文件句柄、数据库连接、网络连接），需要手动释放。如果不释放它们，可能会导致资源泄漏。
+
+###  终结器的作用
+
+当用户忘记调用 `Dispose()` 时，终结器提供了一个保险机制。通过调用 `Dispose(false)`，终结器可以清理非托管资源，防止泄漏。
+
+###  为什么要用 `GC.SuppressFinalize(this)`？
+
+如果你手动调用了 `Dispose()` 方法，那么不再需要垃圾回收器去调用终结器。所以我们使用 `GC.SuppressFinalize(this)` 来告诉垃圾回收器：“已经处理好了，不用再调用终结器了”，这样可以提高性能。
+
+### 例子解释
+
+假设你有一个 `MyChildClass` 类，它需要清理资源。
+
+```csharp
+public class MyChildClass : SingletonNonMono<MyChildClass>
+{
+    private SomeResource _resource; // 非托管资源
+
+    public MyChildClass()
+    {
+        _resource = new SomeResource(); // 分配资源
+    }
+
+    // 子类的 Dispose 实现
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            // 如果是显式调用 Dispose，清理托管和非托管资源
+            if (_resource != null)
+            {
+                _resource.Dispose();  // 清理子类特有的资源
+                _resource = null;
+            }
+        }
+
+        // 非托管资源的清理（无论是 Dispose 还是终结器，都要清理）
+        base.Dispose(disposing);
+    }
+
+    // 终结器
+    ~MyChildClass()
+    {
+        Dispose(false);  // 在终结器中仅清理非托管资源
+    }
+}
+```
+
+### 工作流程：
+1. **手动调用 `Dispose()`**：
+   - 用户调用 `Dispose()`，传递 `true`，会清理 **托管资源** 和 **非托管资源**。
+   - 调用 `GC.SuppressFinalize(this)`，防止垃圾回收器再调用终结器。
+   
+2. **垃圾回收器调用终结器**：
+   - 如果用户忘记调用 `Dispose()`，垃圾回收器最终会调用终结器 `~MyChildClass()`。
+   - 终结器调用 `Dispose(false)`，只清理 **非托管资源**。
+
+这样，即使用户忘了调用 `Dispose()`，非托管资源也能通过终结器清理掉，避免资源泄漏。
+
+### 总结
+
+- **`Dispose(true)`**：当用户手动调用 `Dispose()` 时，清理托管和非托管资源。
+- **`Dispose(false)`**：当垃圾回收器调用终结器时，只清理非托管资源。
+- **终结器 `~MyChildClass()`**：是垃圾回收器的后备机制，防止忘记调用 `Dispose()` 时资源泄漏。
+
+通过终结器，你可以确保即使用户忘了调用 `Dispose()`，对象的非托管资源也能得到清理。
+
 
 
 
@@ -6376,7 +6550,7 @@ Action是Delegate的简写，c#为我们封装好的，当然它也会有像委�
 
 
 
-https://blog.csdn.net/xinzhilinger/article/details/110836837?ops_request_misc=%7B%22request%5Fid%22%3A%22161968340716780255223084%22%2C%22scm%22%3A%2220140713.130102334.pc%5Fblog.%22%7D&request_id=161968340716780255223084&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~blog~first_rank_v2~rank_v29-1-110836837.pc_v2_rank_blog_default&utm_term=加载&spm=1018.2226.3001.4450)
+
 
 
 
@@ -9289,7 +9463,7 @@ UDP(User Datagram Protocol)，即用户数据包协议，是一个简单的面�
 
 
 
-# ================================
+# ============================
 
 
 
@@ -9858,6 +10032,18 @@ bt
 
 
 # [Client项目结构说明]
+
+Resources
+
+​	这个文件里面的东西，在打包的时候都会打进exe中.
+
+Scenes
+
+Scripts
+
+- projectBase
+
+ArtRes
 
 
 
@@ -10724,29 +10910,438 @@ list-x根据其x坐标里原点的远近来进行链接
 
 
 
-## 1.UI管理器
+## UI管理器
 
 
 
-## 2.事件系统
+## 事件系统
 
 
 
-## 3.资源加载系统
-
-
-
-
+## 资源加载系统
 
 
 
 
 
-## 4.定时器系统
 
 
 
-## 5.特效管理器
+
+## 定时器系统
+
+### 正文
+
+本来这个框架的第五篇内容是对象池模块的，但是在处理对象池模块时发现自动回收类的资源需要在未来某个时间点触发回收事件，未来某个时间点触发事件是一个很通用的操作，因此这里插入一章来阐述这个延时任务调度模块。
+
+在游戏开发过程中我们经常会碰到延时任务，比如敌人还有3秒到达战场，红蓝Buff还有25刷新，大龙还有1分钟刷新，任务还有3分钟更新等等。如果在每个处理延时任务的地方都自己编写一段计时的代码，那将是会非常痛苦的，不仅加大了业务的复杂度，并且**在规模较大时可能会导致出现性能问题**，此外，在一些**时间点挨得很近且强调调用先后顺序**的地方甚至会出现调用顺序不一致的情况。因此，我们需要有一个东西来将这些延时任务统一管理调配，确保执行顺序没有问题，并简化系统逻辑，提升程序性能。
+
+### 设计思路
+
+不难看出，前面说的这些种种，抽象来看都是在某个时间点到了后做某件事，因此我们可以将这里的计时逻辑与触发逻辑抽离出来，业务这边只负责注册任务与任务执行的时间，注册时调度器为这些任务**做好排序**，并在时间更新的时候轮询判断是否要执行任务。由于在调度器这边做了排序，因此可以确保任务执行顺序是没毛病的。
+
+再深入思考一下，如果时间`T1`的任务没有执行，那任意大于`T1`的时间`T`对应任务也不应该被执行，且不用去判断。我们前面已经得到了一个有序的列表，那我们时间更新时**仅需判断有序列表的第一个位置上任务是否要执行**，如果当前时间比第一个位置任务执行时间小，那后续的时间都不需要判断了。如果第一个位置任务需要执行，则继续此判断，直到没有任务或者当前时间比第一个位置任务执行时间小。
+
+由于我们加入了一个排序操作，这使得我们在添加新任务以及移除现有任务时开销变得比之前大，并且在执行任务时需要将后续任务移动到列表前面来，如果使用链表，移动操作消耗减少了，但随之而来的是节点前后指针的内存占用问题。**为了平衡新增任务、移除任务和执行任务的代价，可以加入优先队列**(其实就是最小堆或者最大堆)，这样三个操作的代价都降低了。同时，我们可以加入**区间划分**，将同一个时间区间内的任务放到一起，这样在排序时，可以对时间区间做排序，然后区间内自行排序，借此来降低排序对象的数量。在本文完成之际，从New Bing这边得知了一种更高效的**时间轮算法**，这种算法思路和区间划分有点类似，不过更为巧妙，不仅内存占用更少，并且三种操作执行代价也更小，感兴趣的童鞋可以自行查阅学习。
+
+### 实现方案简述
+
+下面就不多BB了，直接上本文的实现方案：
+
+本文使用了优先队列+区间划分的思路来实现任务存储，优先队列是为了快速取到最接近当前时间的一个任务，在插入新任务时，调整的代价是O(logN)，每次判断时代价是O(1)，移除任务时找到移除的元素代价是O(N)，实际移除后调整的代价是O(LogN)，执行任务时调整的代价是Log(N)。本文区间划分单位是1，因此只是把同一个时间点的任务划分在了一起，借此来减少队列的元素规模。下图是一个简单的例子，当没有做区间划分时，队列中元素个数为8，做完区间划分后队列中元素个数为3。通过简单的区间划分，有效减少了队列的长度。（队列中的元素顺序可能不满足优先队列的标准，由于时间关系没有仔细构造数据了，希望没有对大家理解思路造成困扰）
+
+![图片](MMORPG.assets/640.webp)
+
+当然，在很多时候，我们的任务时间并不会这么密集，所以可以根据实际情况来修改区间划分长度与要划分的区间层数。如下图，可以增加了初始队列的区间划分长度，将[20-29]内的任务都放在了第一个元素中。在每个元素中，我们又对齐做了长度为1的区间划分，将AA放在一个元素，BBB放在一个元素。这样在每次插入和移除时，我们初始队列以及实际内部的队列调整代价规模都比较小。PS.多区间划分本文暂时没有处理，仅给出思路抛砖引玉。
+
+![图片](MMORPG.assets/640-1726193262887-1.webp)
+
+### Show Code
+
+该模块核心部分是调度类`DelayedTaskModule`、延时任务列表类`DelayedTaskList`和延时任务数据类`DelayedTaskData`。`TimerUtil`类提供两个获取时间的接口，`Heap`类用来实现优先队列提高检测的效率，避开了消息轮询判断。
+
+调度类`DelayedTaskModule`负责对外提供相关的操作接口，比如注册延时任务的方法，回收延时任务的方法。并在内部提供一个更新当前时间的方法，在更新时间时去判断是否需要触发对应任务。
+
+延时任务列表类`DelayedTaskList`存储了某个确定时间点注册的延时任务数据。
+
+延时任务数据类`DelayedTaskData`存储了一个时间，一个到点触发的任务和一个被提前移除的任务。
+
+**具体设计**
+
+堆的代码比较长，这里就不贴了，感兴趣可以去这里
+
+`https://github.com/tang-xiaolong/MapGridInUnity/blob/main/Assets/LMapModule/LDataStruct/Heap.cs`看。堆内部根据外界传入的最小最大枚举值来确定比较方法，比较方法会调用堆内元素的`CompareTo`方法来比较，因此这也是`DelayedTaskList`需要实现`IComparable`的原因。
+
+数据类比较简单，内部只有几个变量负责存储必要的数据。
+
+```
+DelayedTaskData.CS
+public class DelayedTaskData
+{
+    public long Time;
+    public Action Action;
+    public Action EarlyRemoveCallback;
+}
+```
+
+列表类也比较简单，里面存了一个列表，存储时间点注册的所有任务数据。类实现了`IComparable`是为了后续可以放入优先队列中对所有时间点对应的列表进行排序，避免每次更新时间都遍历所有列表。
+
+```
+DelayedTaskList.CS
+public class DelayedTaskList : IComparable, IEnumerable<DelayedTaskData>, IDisposable
+{
+    private bool _disposed = false;
+    public long Time;
+    public List<DelayedTaskData> DelayedTaskDataList;
+
+    public int CompareTo(object obj)
+    {
+        if (obj == null)
+            return 1;
+        return CompareTo((DelayedTaskList)obj);
+    }
+
+    public int CompareTo(DelayedTaskList obj)
+    {
+        return Time.CompareTo(obj.Time);
+    }
+
+    IEnumerator<DelayedTaskData> IEnumerable<DelayedTaskData>.GetEnumerator()
+    {
+        return DelayedTaskDataList.GetEnumerator();
+    }
+
+    public IEnumerator GetEnumerator()
+    {
+        return DelayedTaskDataList.GetEnumerator();
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    private void Dispose(bool disposing)
+    {
+        if (_disposed)
+            return;
+        if (disposing)
+        {
+            DelayedTaskDataList.Clear();
+            DelayedTaskDataList = null;
+        }
+        _disposed = true;
+    }
+
+    ~DelayedTaskList()
+    {
+        Dispose(false);
+    }
+}
+```
+
+调度类内部有一个字典`_delayedTaskDict`，Key是注册过的时间点，Value是这个时间点对应的任务列表。`_delayedTaskQueue`是一个使用最小堆实现的优先队列，**队列中存储了每个任务点注册的任务列表**，即每个元素都是一个列表对象。
+
+`UpdateTime`方法更新时间：
+
+先更新当前的时间，并判断当前时间是否大于等于队列最前面的元素的时间，如果大于等于了，说明需要触发这个时间点对应列表里的所有任务了，先将这个元素从队列中移除并遍历任务列表依次触发注册的任务，处理完任务后继续判断，**直到队列为空或者是队列头元素的时间大于当前时间**。
+
+`AddDelayedTask`方法注册任务：
+
+外界传入一个毫秒级别的时间戳，如果是一个过时的时间，直接结束。如果没注册过这个时间戳，则创建一个任务列表，并将任务列表加入到字典里。最后将新任务保存到一个新的任务对象中并加入到这个时间戳对应的任务列表，并返回新创建的这个任务对象给调用方，使得调用方可以持有任务对象做移除操作。
+
+`RemoveDelayedTask`方法移除任务：
+
+传入一个任务对象，如果判断存在这个任务，则将其从列表中移除。如果列表移除对象后数量为0，则将列表也从字典中移除。
+
+PS. 需要注意的是，在不同的项目中，计算时间和更新时间的方法不尽相同，**需要根据自己项目来修改**。本项目是直接获取的UTC毫秒级别的时间戳，并在Update方法中调用更新时间的方法。
+
+```
+DelayedTaskScheduler.CS
+/// <summary>
+/// 延时任务调度器
+/// </summary>
+[DefaultExecutionOrder(1)]
+public class DelayedTaskScheduler : MonoBehaviour, IDisposable
+{
+    private Dictionary<long, DelayedTaskList> _delayedTaskDict = new Dictionary<long, DelayedTaskList>();
+    private Heap<DelayedTaskList> _delayedTaskQueue = new Heap<DelayedTaskList>(10, HeapType.MinHeap);
+    private bool _disposed = false;
+    [SerializeField] private long CurrentTime;
+    public static DelayedTaskScheduler Instance { get; private set; }
+
+    #region 时间事件管理
+
+    /// <summary>
+    /// 增加一个时间事件对象
+    /// </summary>
+    /// <param name="time">毫秒数</param>
+    /// <param name="action"></param>
+    public DelayedTaskData AddDelayedTask(long time, Action action, Action earlyRemoveCallback = null)
+    {
+        if (time < CurrentTime)
+        {
+            Debug.LogError($"The time is pass. Time is {time} CurrentTime is {CurrentTime}");
+            return null;
+        }
+
+        if (!_delayedTaskDict.TryGetValue(time, out var delayedTaskList))
+        {
+            delayedTaskList = ObjectPoolFactory.Instance.GetItem<DelayedTaskList>();
+            delayedTaskList.Time = time;
+            delayedTaskList.DelayedTaskDataList = ObjectPoolFactory.Instance.GetItem<List<DelayedTaskData>>();
+            delayedTaskList.DelayedTaskDataList.Clear();
+            _delayedTaskQueue.Insert(delayedTaskList);
+            _delayedTaskDict.Add(time, delayedTaskList);
+        }
+
+        var newEventData = ObjectPoolFactory.Instance.GetItem<DelayedTaskData>();
+        newEventData.Time = time;
+        newEventData.Action = action;
+        newEventData.EarlyRemoveCallback = earlyRemoveCallback;
+        delayedTaskList.DelayedTaskDataList.Add(newEventData);
+        return newEventData;
+    }
+
+    /// <summary>
+    /// 移除一个时间事件对象
+    /// </summary>
+    /// <param name="delayedTaskData"></param>
+    /// <exception cref="Exception"></exception>
+    public void RemoveDelayedTask(DelayedTaskData delayedTaskData)
+    {
+        if (delayedTaskData == null)
+            return;
+        if (_delayedTaskDict.TryGetValue(delayedTaskData.Time, out var delayedTaskList))
+        {
+            bool removeSuccess = delayedTaskList.DelayedTaskDataList.Remove(delayedTaskData);
+            if (removeSuccess)
+                delayedTaskData.EarlyRemoveCallback?.Invoke();
+            if (delayedTaskList.DelayedTaskDataList.Count == 0)
+            {
+                _delayedTaskDict.Remove(delayedTaskData.Time);
+                if (_delayedTaskQueue.Delete(delayedTaskList))
+                {
+                    ObjectPoolFactory.Instance.RecycleItem(delayedTaskList.DelayedTaskDataList);
+                    ObjectPoolFactory.Instance.RecycleItem(delayedTaskList);
+                    ObjectPoolFactory.Instance.RecycleItem(delayedTaskData);
+                }
+                else
+                {
+                    ObjectPoolFactory.Instance.RecycleItem(delayedTaskData);
+                    throw new Exception("DelayedTaskScheduler RemoveDelayedTask Error");
+                }
+            }
+        }
+        else
+        {
+            ObjectPoolFactory.Instance.RecycleItem(delayedTaskData);
+        }
+    }
+
+    /// <summary>
+    /// TODO:根据自己游戏的逻辑调整调用时机
+    /// </summary>
+    /// <param name="time"></param>
+    public void UpdateTime(long time)
+    {
+        CurrentTime = time;
+        while (_delayedTaskQueue.Count > 0 && _delayedTaskQueue.GetHead().Time <= time)
+        {
+            long targetTime = _delayedTaskQueue.GetHead().Time;
+            _delayedTaskDict.Remove(targetTime);
+            var delayedTaskList = _delayedTaskQueue.DeleteHead();
+            foreach (DelayedTaskData delayedTaskData in delayedTaskList)
+            {
+                delayedTaskData.Action?.Invoke();
+                ObjectPoolFactory.Instance.RecycleItem(delayedTaskData);
+            }
+
+            //回收时记得把列表清空，防止下次使用时出现问题！！！！！不要问我为什么这么多感叹号 
+            delayedTaskList.DelayedTaskDataList.Clear();
+            ObjectPoolFactory.Instance.RecycleItem(delayedTaskList.DelayedTaskDataList);
+            ObjectPoolFactory.Instance.RecycleItem(delayedTaskList);
+        }
+    }
+
+    #endregion
+
+    #region Mono方法与测试的设置时间代码
+
+    private void Awake()
+    {
+        Instance = this;
+        UpdateTime(TimerUtil.GetTimeStamp(true));
+    }
+
+    public void Update()
+    {
+        UpdateTime(TimerUtil.GetTimeStamp(true));
+    }
+
+    private void OnDestroy()
+    {
+        Dispose();
+    }
+
+    #endregion
+
+    #region Dispose
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    private void Dispose(bool disposing)
+    {
+        if (!_disposed)
+        {
+            if (disposing)
+            {
+                _delayedTaskQueue?.Dispose();
+                Instance = null;
+            }
+
+            _disposed = true;
+        }
+    }
+
+    ~DelayedTaskScheduler()
+    {
+        Dispose(false);
+    }
+
+    #endregion
+}
+```
+
+### 使用范例
+
+在下面的例子中，我们在Start方法中注册了两个任务，让其在1.5秒后和4.5秒后执行打印的方法。并在Update中设置了通过按键来创建一个随机时间注册任务，以及通过按键移除随机创建的任务。
+
+打开测试场景后，执行了Start方法里注册的任务，按下`C`键也执行了一个随机时间任务，再次按下`C`键并提前按下`R`键，将这个任务提前移除了，并且打印执行的方法没有再执行。
+
+![图片](MMORPG.assets/640-1726193262887-2.webp)
+
+```
+TestDelayTask.CS
+public class TestDelayTask : MonoBehaviour
+{
+    private void Start()
+    {
+        AddLaterExecuteFunc(1.5f);
+        AddLaterExecuteFunc(1.5f);
+        AddLaterExecuteFunc(1.5f);
+        AddLaterExecuteFunc(4.5f);
+        AddLaterExecuteFunc(4.5f);
+        AddLaterExecuteFunc(4.5f);
+    }
+    
+    public int forceTestCount = 100000;
+    List<DelayedTaskData> futureEventDataList = new List<DelayedTaskData>(100000);
+    List<long> testTimes = new List<long>(100000);
+    
+    [ContextMenu("暴力测试")]
+    public void ForceTest()
+    {
+        testTimes.Clear();
+        for (int i = 0; i < forceTestCount; i++)
+        {
+            testTimes.Add(TimerUtil.GetLaterMilliSecondsBySecond(UnityEngine.Random.Range(1, 15.0f)));
+        }
+        futureEventDataList.Clear();
+
+        Stopwatch stopwatch = new Stopwatch();
+        stopwatch.Start();
+        for (int i = 0; i < forceTestCount; i++)
+        {
+            futureEventDataList.Add(DelayedTaskScheduler.Instance.AddDelayedTask(testTimes[i], TestFunc));
+        }
+
+        for (int i = 0; i < forceTestCount; i++)
+        {
+            DelayedTaskScheduler.Instance.RemoveDelayedTask(futureEventDataList[i]);
+        }
+        
+        stopwatch.Stop();
+        Debug.Log($"暴力测试完成，共耗时{stopwatch.ElapsedMilliseconds / 1000.0f}秒");
+    }
+
+    void TestFunc()
+    {
+        Debug.Log("测试方法执行了");
+    }
+
+    private DelayedTaskData AddLaterExecuteFunc(float time, Action completeAction = null, Action earlyRemoveAction = null)
+    {
+        var pressTime = Time.time;
+        Stopwatch stopwatch = ObjectPoolFactory.Instance.GetItem<Stopwatch>();
+        stopwatch.Restart();
+        return DelayedTaskScheduler.Instance.AddDelayedTask(TimerUtil.GetLaterMilliSecondsBySecond(time),
+            () =>
+            {
+                stopwatch.Stop();
+                ObjectPoolFactory.Instance.RecycleItem(stopwatch);
+                // Debug.Log($"{time}秒后了,执行了对应方法。实际过去了{Time.time - pressTime}秒");
+                Debug.Log($"{time}秒后了,执行了对应方法。实际过去了{stopwatch.ElapsedMilliseconds / 1000.0f}秒");
+                completeAction?.Invoke();
+            }, () =>
+            {
+                earlyRemoveAction?.Invoke();
+                stopwatch.Stop();
+                Debug.Log($"提前移除了，已经过去了{stopwatch.ElapsedMilliseconds / 1000.0f}秒");
+                ObjectPoolFactory.Instance.RecycleItem(stopwatch);
+            });
+    }
+
+    DelayedTaskData _delayedTaskData;
+
+    void RecycleDelayedTask()
+    {
+        if (_delayedTaskData != null)
+        {
+            DelayedTaskScheduler.Instance.RemoveDelayedTask(_delayedTaskData);
+            _delayedTaskData = null;
+        }
+    }
+
+    private void Update()
+    {
+        //持续按下时不断创建和回收
+        if (Input.GetKey(KeyCode.C))
+        {
+            RecycleDelayedTask();
+            _delayedTaskData = AddLaterExecuteFunc(UnityEngine.Random.Range(1, 5.0f), () => _delayedTaskData = null);
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            RecycleDelayedTask();
+        }
+    }
+}
+```
+
+### 总结
+
+在本文中，我们使用C#语言实现了一个毫秒级别的延时任务调度器，为游戏中通用的延时行为提供管理调度，**加入排序思想，来保证任务按顺序执行；使用优先队列快速索引对象，以及减少各个操作带来的消耗；使用区间划分来减少优先队列中元素数量**。这个调度器在客户端已经基本够用了，但是如果想拓展到服务器那边使用，我们还需要继续优化算法来减少各个操作的时间以及内存占用，感兴趣的童鞋可以继续深入研究，后续有时间我也会将多轮区间划分和时间轮算法整合进这个延时任务调度模块中，欢迎大家与我交流
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 特效管理器
 
 - 指定坐标的特效
 - 跟随角色的特效
@@ -10754,7 +11349,7 @@ list-x根据其x坐标里原点的远近来进行链接
 
 
 
-## 6.音频管理器
+## 音频管理器
 
 音频管理也是个比较复杂的东西，现在市场上也有一些比较有名的音频管理插件，比如Wwise、FMod等等，不过对于我们轻量开发而言，没有必要使用这些东西，使用自带的音频组件已经可以实现一些比较好的效果了。
 
@@ -10786,7 +11381,7 @@ list-x根据其x坐标里原点的远近来进行链接
 
 播放声音这个行为在游戏中会很频繁，我们如果每个地方都像下面这样手写音频名字，那很容易出问题。因此我采取的措施是**定义一个音频的枚举类**。播放声音时，通过类名来获取具体的字段，以减少出错的概率。
 
- ![image-20240824094604721](MMORPG.assets/image-20240824094604721.png)
+ ![image-20240824094604721](MMORPG.assets/image-20240824094604721.png)  
 
 除此之外，游戏中经常会需要进行资源迭代，这个过程往往是手动的。例如，音频组的同学可能会误删某个音频文件，而我们的QA同学只有在某一天需要播放这个音频，并恰好留意到其播放情况时，才能察觉出问题。这导致问题被发现的时间被推迟到很晚。同时，我们自行维护这个枚举类，也容易导致出现问题。例如，在修改资源名称时，需要同步修改这个文件，找到对应的字段并修改内容，这增加了出错的可能性。因此，我们需要在资源变更时，自动维护这个枚举类。我采取的做法是**通过遍历编辑器中对应的文件夹中的所有音频文件，来自动生成这个枚举类**。这样，如果某个音频被误删，生成枚举类后，以前使用这个音频的地方就会直接报错，从而及时暴露问题并修复。
 
@@ -10818,7 +11413,7 @@ list-x根据其x坐标里原点的远近来进行链接
 
 
 
-## 7.对象池
+## 对象池
 
 
 
@@ -10997,27 +11592,123 @@ list-x根据其x坐标里原点的远近来进行链接
 
 
 
-## 8.单例模块
+## 单例模块
+
+使某个对象唯一存在、减少重复代码的编写、
 
 ### client
 
-带mono
+#### 不带mono
 
-不带mono
+```c#
+public abstract class SingletonNonMono<T> where T : class,new()
+{
+    private static T _instance;
+    private static object _lock = new object();
+
+    public static T Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                lock (_lock)
+                {
+                    _instance ??= new T();
+                }
+            }
+            return _instance;
+        }
+    }
+}
+```
+
+#### 带mono
+
+```
+public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
+{
+    private static T _instance;
+    private static object _lock = new object();
+
+    public static T Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                lock (_lock)
+                {
+                    _instance = FindObjectOfType<T>() as T; //先去场景中找有没有这个类
+					//如果没有，那么我们自己创建一个Gameobject然后给他加一个T这个类型的脚本，并赋值给instance;
+                    if (_instance == null)
+                    {
+                        GameObject go = new GameObject(typeof(T).Name);
+                        _instance = go.AddComponent<T>();
+                    }
+                }
+            }
+            return _instance;
+        }
+    }
+
+
+    protected  virtual void Awake()
+    {
+        if (_instance == null)
+        {
+            _instance = (T)this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+        	//销毁这个新来的
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnApplicationQuit()//程序退出时，将instance清空
+    {
+        _instance = null;
+    }
+    
+}
+```
 
 
 
 ### Server
 
+```
+	public class Singleton<T> where T : new()
+	{
+		private static T instance;
+		private static object lockObj = new object();
+		public static T Instance
+		{
+			get
+			{
+				if (instance != null) return instance;
+                lock (lockObj)
+                {
+					if(instance == null)		//防止极端情况
+                    {
+						instance = new T();
+                    }
+                }
+				return instance;
+			}
+		}
+	}
+```
+
+泛型弄出了很多个不同的Singleton类，所以多个子类来继承这个Singleton的时候并不会发生使用同一个static属性的问题
 
 
 
 
 
-
-
-
-## 9.可设置键位的输入系统
+## 可设置键位的输入系统
 
 
 
