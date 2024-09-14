@@ -329,6 +329,12 @@ namespace GameServer.Model
         protected virtual void OnAfterDie(int killerID)
         {
             buffManager.RemoveAllBuff();
+            var act = GameTools.GetActorByEntityId(killerID);
+            if(act is Character chr)
+            {
+                chr.AddKillCount();
+            }
+
         }
 
         // 自动回血调用，这里暂时只有monster调用，本过程由Scheduler单线程调用，没有并发问题。

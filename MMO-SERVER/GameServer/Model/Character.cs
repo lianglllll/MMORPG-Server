@@ -278,6 +278,11 @@ namespace GameServer.Model
 
         }
 
+        public void AddKillCount()
+        {
+            Data.KillCount++;
+        }
+
     }
 
 

@@ -17,6 +17,8 @@ namespace GameServer.Manager
         //session字典<sessionid,session>
         private ConcurrentDictionary<string, Session> sessions = new ConcurrentDictionary<string, Session>();
 
+        public int OnlineUserCount => sessions.Count;
+
         public SessionManager()
         {
             //创建一个计时器,1秒触发

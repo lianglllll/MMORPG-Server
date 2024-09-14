@@ -39,6 +39,8 @@ namespace GameServer.Service
             MessageRouter.Instance.Subscribe<Proto.CharacterDeleteRequest>(_CharacterDeleteRequest);
             MessageRouter.Instance.Subscribe<Proto.UserRegisterRequest>(_UserRegisterRequest);
             MessageRouter.Instance.Subscribe<Proto.ReconnectRequest>(_ReconnectRequest);
+
+            MessageRouter.Instance.Subscribe<Proto.ServerInfoRequest>(_ServerInfoRequest);
         }
 
         /// <summary>
@@ -377,6 +379,29 @@ namespace GameServer.Service
                 res.EntityId = 0;
             }
             session.Send(res);
+        }
+
+        /// <summary>
+        /// 获取服务器信息
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="message"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        private void _ServerInfoRequest(Connection sender, ServerInfoRequest message)
+        {
+            ServerInfoResponse response = new ServerInfoResponse();
+            response.OnlinePlayerCount = SessionManager.Instance.OnlineUserCount;
+            response.UserCount = (int)DbManager.fsql.Select<DbUser>().Count();
+            var list = DbManager.fsql.Select<DbCharacter>().OrderByDescending(a => a.KillCount).Limit(8).ToList(a => new { a.Name,a.KillCount});
+            foreach(var character in list)
+            {
+                var item = new KillRankingListItem();
+                item.ChrName = character.Name;
+                item.KillCount = character.KillCount;
+                response.KillRankingList.Add(item);
+            }
+            sender.Send(response);
+
         }
 
     }
