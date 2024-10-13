@@ -54,7 +54,7 @@
 
 
 
-## 关键字
+## 关键字&&语法糖
 
 
 
@@ -105,6 +105,88 @@ public void SomeMethod()
 ```
 
 在这个例子中，`out var` 语法使得我们不需要提前声明 `action` 和 `bindingIndex` 变量。相反，它们在方法调用时被声明和初始化。这种方式使代码更加紧凑和易读。
+
+
+
+
+
+### ref
+
+`ref` 关键字在C#中用于传递参数时，表示参数按引用传递，而不是按值传递。这意味着在方法内部对该参数的修改会反映到调用者的上下文中。`ref` 关键字的用法通常有以下几种情况：
+
+1.**传递变量的引用**
+
+使用 `ref` 关键字将参数按引用传递，这样在方法内部对参数的修改会影响到外部变量的值。以下是一个简单的例子：
+
+```csharp
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        int number = 10;
+        ModifyValue(ref number);
+        Console.WriteLine(number); // 输出：20
+    }
+
+    static void ModifyValue(ref int value)
+    {
+        value = 20;
+    }
+}
+```
+
+在这个例子中，`number` 变量在调用 `ModifyValue` 方法时通过 `ref` 关键字传递，因此方法内部对 `value` 的修改会直接影响到 `number` 的值。
+
+2. **要求变量必须被初始化**
+
+使用 `ref` 关键字的参数在传入方法之前必须被初始化，否则会编译错误。这是因为方法内部会直接使用这个引用变量，它必须有一个已知的值。例如：
+
+```csharp
+int number; 
+ModifyValue(ref number); // 错误：number 未初始化
+```
+
+必须确保 `number` 在调用之前已经被赋值：
+
+```csharp
+int number = 0;
+ModifyValue(ref number); // 现在没有错误
+```
+
+3. **在返回值中使用 `ref`**
+
+`ref` 也可以用于方法的返回值，允许方法返回一个引用类型。返回值可以直接被用来修改引用的变量的值。例如：
+
+```csharp
+static ref int FindElement(int[] array, int index)
+{
+    return ref array[index];
+}
+
+int[] numbers = { 1, 2, 3, 4 };
+ref int element = ref FindElement(numbers, 2);
+element = 10; // 直接修改数组中的值
+Console.WriteLine(numbers[2]); // 输出：10
+```
+
+在这个例子中，`FindElement` 方法返回一个对数组元素的引用，因此在外部修改 `element` 也会修改数组中的实际值。
+
+4. **与 `out` 的区别**
+
+`ref` 和 `out` 都是用于按引用传递参数，但它们有以下区别：
+
+   - 使用 `ref` 的参数在传入方法之前必须已经初始化。
+   - 使用 `out` 的参数不要求在传入方法之前初始化，但在方法内部必须对其进行赋值。
+
+**`ref` 关键字的总结**：
+
+- 允许方法修改传入参数的值，并且这些修改会反映到调用者的上下文中。
+- 传递前必须确保变量已被初始化。
+- 适用于需要在方法内部改变外部变量值的场景。
+
+
 
 
 
@@ -182,6 +264,420 @@ public void MyMethod<T>(T param) where T : IDisposable
 ```
 
 通过 `where` 关键字，C# 提供了一种灵活的机制来确保泛型类型符合某些规则，使代码更安全、易于维护。
+
+
+
+
+
+### using
+
+`using` 关键字在C#中有几种不同的用法，包括引入命名空间、定义资源的作用域和简化类型别名等。以下是 `using` 关键字的主要用法和它们的详细解释：
+
+#### **引入命名空间**
+
+最常见的用法是在文件顶部使用 `using` 语句来引入命名空间，这样就可以在代码中直接使用命名空间中的类和其他类型，而无需写全限定名。例如：
+
+```csharp
+using System;
+using System.Collections.Generic;
+
+class Program
+{
+    static void Main()
+    {
+        List<int> numbers = new List<int> { 1, 2, 3 };
+        Console.WriteLine("Count: " + numbers.Count);
+    }
+}
+```
+
+在这个例子中，`using System;` 和 `using System.Collections.Generic;` 允许我们直接使用 `Console` 和 `List<T>` 类，而无需写成 `System.Console` 或 `System.Collections.Generic.List<T>`。
+
+#### 定义资源的作用域
+
+（`using` 声明和 `using` 语句）
+
+`using` 关键字可以用于管理资源的生命周期，通常用于自动处理实现了 `IDisposable` 接口的对象。这些对象在使用完后需要释放资源，例如文件流、数据库连接等。
+
+有两种主要的方式使用 `using` 来管理资源：`using` 声明（C# 8.0+）和 `using` 语句。
+
+##### **`using` 语句**
+`using` 语句用于定义一个作用域，超出该作用域时自动释放资源。这是 C# 8.0 之前常用的写法：
+
+```csharp
+using (StreamReader reader = new StreamReader("file.txt"))
+{
+    string content = reader.ReadToEnd();
+    Console.WriteLine(content);
+}
+// 这里 `reader` 会在作用域结束时自动调用 Dispose 方法
+```
+
+在这个例子中，`StreamReader` 对象在作用域结束时自动释放资源，这避免了手动调用 `Dispose` 方法。
+
+##### **`using` 声明（C# 8.0+）**
+C# 8.0 引入了 `using` 声明，它简化了资源的管理。在这种情况下，你可以直接在代码块中声明一个 `using` 变量：
+
+```csharp
+using StreamReader reader = new StreamReader("file.txt");
+string content = reader.ReadToEnd();
+Console.WriteLine(content);
+// 这里 `reader` 会在方法结束时自动调用 Dispose 方法
+```
+
+使用 `using` 声明时，不需要再用大括号定义一个单独的作用域，当方法或代码块结束时，资源会自动释放。
+
+#### 3. **简化类型别名**
+`using` 还可以用于定义类型的别名，以简化代码的书写，尤其是在处理长类型名或复杂的泛型类型时。例如：
+
+```csharp
+using ProjectDictionary = System.Collections.Generic.Dictionary<string, Project>;
+
+class Program
+{
+    static void Main()
+    {
+        ProjectDictionary projects = new ProjectDictionary();
+        // 现在可以使用 `projects` 而不是长的泛型名称
+    }
+}
+```
+
+在这个例子中，我们为 `Dictionary<string, Project>` 定义了一个别名 `ProjectDictionary`，这样后续代码可以更简洁。
+
+#### 4. **静态导入（C# 6.0+）**
+`using` 也可以用于静态导入类的成员，这样可以直接使用类的静态成员而不必每次都引用类名。这在访问常用的静态方法或常量时很有用，例如：
+
+```csharp
+using static System.Console;
+
+class Program
+{
+    static void Main()
+    {
+        WriteLine("Hello, World!"); // 直接使用 Console 的静态方法
+    }
+}
+```
+
+这里，我们静态导入了 `System.Console`，因此可以直接调用 `WriteLine` 方法，而不需要每次写 `Console.WriteLine`。
+
+#### 总结
+`using` 关键字在C#中主要有以下几种用法：
+- 引入命名空间，使代码更简洁。
+- 管理资源的生命周期，确保实现了 `IDisposable` 的对象在使用后被正确释放（`using` 语句和 `using` 声明）。
+- 定义类型别名，简化长类型名的使用。
+- 静态导入类的成员，使代码更简洁。
+
+这些用法大大提升了代码的可读性和资源管理的安全性。
+
+
+
+
+
+## 流
+
+### MemoryStream
+
+**使用流的速度通常比直接操作文件或网络资源要快，因为流可以在内存中缓冲数据，从而避免了频繁的磁盘或网络操作。**
+
+
+
+MemoryStream 是 .NET Framework 和 .NET Core 中的一种流（stream）类型，它使用一个内存缓冲区来读写数据。它是一种特殊的流，可以将数据读写到内存缓冲区中，而不是一个实际的文件或网络资源。
+
+MemoryStream 继承自抽象类 Stream，这意味着它继承了 Stream 类的所有特性。
+
+
+
+**使用方法**
+
+1.创建一个 MemoryStream 对象，可以使用无参构造函数创建一个空的 MemoryStream 对象，也可以使用带有 byte 数组参数的构造函数来创建一个已经包含数据的 MemoryStream 对象。
+
+```
+// 创建一个空的 MemoryStream 对象
+MemoryStream stream = new MemoryStream();
+
+// 创建一个包含数据的 MemoryStream 对象
+byte[] data = new byte[] { 1, 2, 3, 4, 5 };
+MemoryStream streamWithData = new MemoryStream(data);
+
+```
+
+
+
+2.通过 Write 方法写入数据到 MemoryStream 对象中。
+
+```
+// 写入一个字节到 MemoryStream 对象中
+stream.WriteByte(1);
+
+// 写入一个字节数组到 MemoryStream 对象中
+byte[] data = new byte[] { 2, 3, 4 };
+stream.Write(data, 0, data.Length);
+
+```
+
+
+
+3.通过 Seek 方法调整流的位置，可以读取或写入 MemoryStream 对象中的数据。
+
+```
+// 调整流的位置到开头
+stream.Seek(0, SeekOrigin.Begin);
+
+// 从流中读取一个字节
+int b = stream.ReadByte();
+
+// 从流中读取多个字节到字节数组中
+byte[] buffer = new byte[stream.Length];
+int bytesRead = stream.Read(buffer, 0, buffer.Length);
+
+```
+
+4.当不再需要 MemoryStream 对象时，应该调用 Dispose 方法释放资源。
+
+```
+// 释放资源
+stream.Dispose();
+```
+
+
+
+5.可以将 MemoryStream 中的数据转换为 byte 数组。可以使用 MemoryStream 类的 ToArray 方法来实现。
+
+```
+// 创建一个 MemoryStream 对象并写入数据
+MemoryStream stream = new MemoryStream();
+byte[] data = new byte[] { 1, 2, 3 };
+stream.Write(data, 0, data.Length);
+
+// 将 MemoryStream 对象中的数据转换为 byte 数组
+byte[] bytes = stream.ToArray();
+
+// 输出 byte 数组的内容
+foreach (byte b in bytes)
+{
+    Console.Write(b + " ");
+}
+// 输出结果：1 2 3
+```
+
+
+
+## 反射
+
+### 概要
+
+C# 中的反射（Reflection）是一种在运行时检查对象的类型、成员（如方法、属性、字段）以及动态调用方法的技术。反射可以在程序运行时获取类型信息、创建对象、调用方法或访问字段和属性，这使得它非常适合编写动态和灵活的代码。
+
+反射主要由 `System.Reflection` 命名空间中的类和接口提供支持。
+
+**反射可以用来：**
+
+- 获取类型信息：可以在运行时获取类、接口、枚举、委托等的元数据。
+- 动态创建对象：通过反射，可以在不知道类型的情况下动态实例化对象。
+- 动态调用方法：可以在运行时调用对象的方法，即使方法名或参数在编译时未知。
+- 访问和修改属性和字段的值。
+
+
+
+### **获取类型信息**
+
+反射的核心是 `Type` 类，它代表了对象的类型。可以通过以下几种方式获取一个类型的 `Type` 对象：
+
+- 使用 `typeof` 关键字（编译时）。
+- 使用 `GetType()` 方法（运行时）。
+- 使用 `Assembly.GetType()` 从程序集加载类型。
+
+**示例：**
+
+```
+using System;
+using System.Reflection;
+
+class Program
+{
+    static void Main()
+    {
+        // 通过 typeof 获取类型
+        Type type1 = typeof(string);
+
+        // 通过 GetType() 获取类型
+        string str = "Hello, World!";
+        Type type2 = str.GetType();
+
+        // 输出类型信息
+        Console.WriteLine(type1); // System.String
+        Console.WriteLine(type2); // System.String
+    }
+}
+```
+
+### **获取类型的成员信息**
+
+使用 `Type` 对象可以获取类型的各种成员信息，例如属性、方法、字段和构造函数。以下是一些常用方法：
+
+- `GetProperties()`：获取所有属性。
+- `GetMethods()`：获取所有方法。
+- `GetFields()`：获取所有字段。
+- `GetConstructors()`：获取所有构造函数。
+
+**示例：**
+
+```
+Type type = typeof(Person);
+
+// 获取所有方法
+MethodInfo[] methods = type.GetMethods();
+foreach (var method in methods)
+{
+    Console.WriteLine(method.Name);
+}
+
+// 获取所有属性
+PropertyInfo[] properties = type.GetProperties();
+foreach (var property in properties)
+{
+    Console.WriteLine(property.Name);
+}
+```
+
+### **动态创建对象**
+
+可以使用 `Activator.CreateInstance()` 方法通过反射动态创建对象。这在我们事先不知道对象类型的情况下非常有用。
+
+**示例：**
+
+```
+Type personType = typeof(Person);
+object personInstance = Activator.CreateInstance(personType);
+
+// 如果有参数的构造函数
+object personWithParams = Activator.CreateInstance(personType, new object[] { "John", 30 });
+```
+
+### **动态调用方法**
+
+通过 `MethodInfo` 对象，可以在运行时调用方法。通常先使用 `GetMethod()` 方法获取方法信息，然后使用 `Invoke()` 方法调用它。
+
+**示例：**
+
+```
+csharp复制代码using System;
+using System.Reflection;
+
+class Program
+{
+    static void Main()
+    {
+        // 创建对象
+        Person person = new Person { Name = "Alice", Age = 25 };
+        
+        // 获取类型和方法信息
+        Type type = person.GetType();
+        MethodInfo method = type.GetMethod("SayHello");
+        
+        // 调用方法
+        method.Invoke(person, null); // 输出：Hello, my name is Alice
+    }
+}
+
+public class Person
+{
+    public string Name { get; set; }
+    public int Age { get; set; }
+
+    public void SayHello()
+    {
+        Console.WriteLine($"Hello, my name is {Name}");
+    }
+}
+```
+
+### **访问和修改字段、属性**
+
+可以通过反射访问对象的私有或公共字段和属性，并修改它们的值。
+
+**示例：**
+
+```
+csharp复制代码Person person = new Person();
+Type type = person.GetType();
+
+// 获取属性并设置值
+PropertyInfo property = type.GetProperty("Name");
+property.SetValue(person, "Bob");
+
+// 获取字段并设置值
+FieldInfo field = type.GetField("_age", BindingFlags.NonPublic | BindingFlags.Instance);
+field.SetValue(person, 35);
+
+Console.WriteLine($"{person.Name}, Age: {person.Age}");
+```
+
+### **加载程序集和动态类型**
+
+可以使用 `Assembly` 类动态加载程序集，获取其中的类型，并使用反射来创建对象和调用方法。这在需要插件系统或动态扩展时特别有用。
+
+**示例：**
+
+```
+// 加载程序集
+Assembly assembly = Assembly.Load("MyAssembly");
+
+// 获取类型
+Type myType = assembly.GetType("MyNamespace.MyClass");
+
+// 创建实例
+object instance = Activator.CreateInstance(myType);
+```
+
+### **自定义属性（Attributes）**
+
+通过反射，还可以读取自定义属性（Attributes）。例如，如果一个类或方法上标记了自定义属性，可以在运行时读取这些属性并做出相应的响应。
+
+**示例：**
+
+```
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
+public class MyCustomAttribute : Attribute
+{
+    public string Description { get; }
+    public MyCustomAttribute(string description)
+    {
+        Description = description;
+    }
+}
+
+[MyCustomAttribute("This is a sample class")]
+public class SampleClass
+{
+    [MyCustomAttribute("This is a sample method")]
+    public void SampleMethod() { }
+}
+
+Type type = typeof(SampleClass);
+var attributes = type.GetCustomAttributes(typeof(MyCustomAttribute), false);
+foreach (MyCustomAttribute attr in attributes)
+{
+    Console.WriteLine(attr.Description);
+}
+```
+
+### 总结
+
+C# 中的反射强大而灵活，可以在以下场景中大显身手：
+
+- 插件和扩展系统：加载外部程序集和动态调用方法。
+- 动态序列化和反序列化：遍历对象的属性和字段。
+- 实现 ORM（对象关系映射）等框架：通过反射映射数据库字段与对象属性。
+- 测试框架：动态发现和执行测试方法。
+
+尽管反射非常强大，但它也有性能成本。因为反射是在运行时解析类型和成员的元数据，因此通常比直接访问慢。在性能敏感的代码中，应谨慎使用反射。
+
+
+
+
 
 # c#多线程编程
 
@@ -6687,7 +7183,7 @@ C# 在除 Windows 外的平台下，是通过 Mono 的编译器，生成了 IL �
 
 ### IL2CPP， IL2CPP VM
 
-本 文的主角终于出来了：IL2CPP。有了上面的知识，大家很容易就理解其意义了：**把IL中间语言转换成CPP文件。**
+本文的主角终于出来了：IL2CPP。有了上面的知识，大家很容易就理解其意义了：**把IL中间语言转换成CPP文件。**
 
 
 
@@ -9811,6 +10307,10 @@ dotnet --info
 
 **客户端连接服务器的ip使用云服务器的ip**
 
+云服务器中只有一个内网网卡，外网地址不是直接配置在服务器中的，而是配置在服务器外层的网关上，做了一层映射转发。程序是无法绑定公网ip地址的
+
+
+
 
 
 
@@ -10027,7 +10527,41 @@ bt
 
 
 
+## 监测网络流量
 
+1M的游戏服务器能带多少玩家，多人在线需要多大的带宽，如何测试带宽占用情况
+
+可以使用火绒自带的流量监控软件
+
+![image-20230703095756682](MMORPG.assets/image-20230703095756682.png)
+
+
+
+假设现在每个服务端1秒发送的数据包有300byte
+
+![image-20230703095945664](MMORPG.assets/image-20230703095945664.png)
+
+那么，3个客户端就一共发送900个byte
+
+服务器需要对接收的每一个数据包向每一个客户端进行转发，这里有3个也就是3*300=900byte
+
+一共转发3个数据包也就是3*900=2700byte
+
+服务器的压力就是900+2700byte
+
+
+
+如果我们在添加一个客户端
+
+![image-20230703100327523](MMORPG.assets/image-20230703100327523.png)
+
+可以看到，每多一个人服务器的压力提高地很快。
+
+我们可以得出结论：
+
+![image-20230703100652970](MMORPG.assets/image-20230703100652970.png)
+
+如果不在同一个场景里面可以同时在线的人数更多，因为不同的场景中不涉及到广播
 
 
 
@@ -10055,7 +10589,68 @@ ArtRes
 
 
 
-## 2024.2.21 
+
+
+## 客户端已断开服务器却收不到
+
+**异常情况：丢包、系统蓝屏、客户端崩溃、unity后台异步任务没结束 ，这些情况服务器是无法知道的**
+
+
+
+基于控制台的客户端，关闭时会触发系统关闭消息，会执行socket.Close();
+
+在unity中停止调试的时候，主线程已经关闭了，但是负责网络连接的子线程异步任务没有关闭，	
+
+处理方法：
+
+**在客户端退出调试的时候关闭socket即可，OnApplicationQuit是unity内置的函数，重写即可。**
+
+```
+    private void OnApplicationQuit()
+    {
+        NetClient.Close();
+    }
+    
+     public static void Close()
+    {
+        try
+        {
+            conn?.Close();
+        }
+        catch
+        {
+
+        }
+    }
+```
+
+
+
+## 服务器控制台点击时会卡住
+
+在c#的控制台应用程序中，当用户选中控制台中的文本时，标准输出流就会被暂停，这会影响程序的输出
+
+解决方法：
+
+1.摁F5刷新或者敲回车就可以正常运行了
+
+2.使用异步的输出，程序就不会因为打印日志而阻塞正常运行
+
+![image-20230512082144725](MMORPG.assets/image-20230512082144725.png)
+
+![image-20230512082736994](MMORPG.assets/image-20230512082736994.png)
+
+
+
+
+
+## 注意客户端的场景切换问题
+
+可能会导致某些信息在场景切换后丢失了
+
+
+
+## 技能被吞问题和ai表现抽搐问题
 
 **1.skill系统问题**，ai追逐玩家释放技能，短时间内释放了多次技能，当施法消息传送到客户端的时候，由于客户端的技能表现是由状态机推动的且在技能active状态下不可打断，所以会有技能被吞的问题，释放了两个技能但是只打出1个技能。
 
@@ -10164,7 +10759,7 @@ attack->move/attack
 
 
 
-## 2024.2.21
+## 2024.脚本生命周期问题
 
 关于awake和start的问题
 
@@ -10178,7 +10773,7 @@ attack->move/attack
 
 
 
-## 2024.3.5
+## 背包逻辑错误问题
 
 **关于背包打开没有数据。**
 
@@ -10220,7 +10815,7 @@ attack->move/attack
 
 
 
-## 2024.4.9
+## unity控制台error停止问题
 
 unity控制台中的error pause 遇到错误打印就停止。导致我以为是我的热更代码有问题。浪费我一下午。
 
@@ -10248,7 +10843,1162 @@ unity控制台中的error pause 遇到错误打印就停止。导致我以为是
 
 
 
+# 服务器架构
+
+## 参考
+
+![image-20230326110108610](MMORPG.assets/image-20230326110108610.png)
+
+Switch Fabric:交换机结构，用于区分不同的请求，送入到不同的服务器当中进行处理
+
+Loginapp:登录服务器，会有几台服务器来处理用户的登录请求 ，等你登录成功后就会进入Baseapp
+
+Baseapp:基础服务器，想一些不需要空间坐标，像一些工会、拍卖行这些都可以用baseapp进行处理
+
+如果涉及到空间坐标的,就会用到Cellapp:地图服务器
+
+
+
+![image-20230326110739562](MMORPG.assets/image-20230326110739562.png)
+
+**网关服务器**：用于与外界进行沟通，比如说我们游戏登录以后要选择后一个服，例如广东一区连接进去 ，它实际上连接的就是网关服务器，它有一个固定的ip地址，让客户端能直接找到它连接。
+
+连接网关服务器以后，他会跟你你要干的事情进行转发，比如说你要登录的话，他就会给你转发到**登录服务器**，在这里处理你的登录服务和认证服务（qq这种第三方认证）
+
+等你登录成功了，就可以通过**游戏服务器**去加载一些没有三维坐标的，没有空间坐标的东西，包括你的个人信息，游戏角色角色列表，工会，拍卖行，世界频道。
+
+如果你涉及到了空间坐标的，你要做不同的场景，一个主城城镇，这时候就可以使用**地图服务器**，连接地图服务器，使用里面的地图服务。
+
+**战斗服务器**：提供战斗服务，比如说你的生命值，你扣多少血，你身上有多少技能，技能冷却。
+
+**存储服务器**：数据库，存放数据
+
+**缓存服务器**：将常用的数据放到这 
+
+
+
+以上其实称为：**分布式远程调用**
+
+
+
+
+
+
+
+
+
+## MMO系统设计
+
+mmo:Massively Multiplayer Online大型多人在线游戏
+
+![image-20230915100258924](MMORPG.assets/image-20230915100258924.png)
+
+
+
+![image-20230326115024462](MMORPG.assets/image-20230326115024462.png)
+
+网络：服务器如何进行通信，要开发客户端服务端 
+
+存储：用户的信息啊，...
+
+日志：记录异常信息，特殊信息，方便出问题时查找定位
+
+
+
+AOI：Area Of Interest 一个很大的地图当中，你不能把所有的信息都同步给玩家，它只需要得到他视野附近的人就可以了，不需要将全部人都加载进来 
+
+同步：同步基本信息，位置，方向角度，动画
+
+地图：每个玩家都是共享的
+
+副本：
+
+聊天：私聊，世界频道
+
+战斗：角色属性，角色状态：死亡
+
+
+
+**上面这些都是都是网游都有的功能**
+
+
+
+
+
+## 项目模块
+
+将代码封装好我们就可以事半功倍
+
+
+
+
+
+### 1.通用模块
+
+例如：封装一个json数据，数据转换，一些经常用到的，写什么功能都能够直接去调用它，直接拿来用
+
+
+
+### 2.网络模块
+
+数据通信的东西将其封装好，我们只关注数据发过去和接收回来，不考虑底层实现
+
+
+
+### 3.数据加载
+
+就比如说是一些技能数据，常用的一些表格加载到游戏当中
+
+
+
+### 4.配置解析
+
+比如说一些屏幕分辨率，音量，一些常见的属性，我们都可以放到配置里面
+
+配置如何解析呢？我们也可以封装成一个模块可以拿过来直接用。
+
+
+
+### 5.DB模块
+
+服务端可以快速地连接到数据库，对数据库进行增删改查。
+
+
+
 # 网络模块
+
+## 概要
+
+NetService：网络服务，启动端口监听，接收Socket连入，建立连接，启动路由，
+
+NetConnection：网络连接，代表客户端，负责消息接收与发送
+
+MessageRouter：消息路由，负责订阅与消息转发
+
+LengthFieldDecoder：消息解码器
+
+后续主要用到： NetConnection 发送消息，MessageRouter订阅消息
+
+
+
+## 服务端工作原理
+
+
+
+![image-20230326120133457](MMORPG.assets/image-20230326120133457.png)
+
+并且连接不能断掉，如果连接断了，就说明这个人掉线了。
+
+
+
+ **监听器**：它要绑定在一个端口上，客户端连接的时候就是通过ip和端口号直接连接过来，连接到监听器之后，监听器是不给你处理数据的，它只是在这里监听等着你连接进来而已，然后监听器会将连接交个线程进行处理。
+
+**线程池**：监听器将接收的连接交给某个线程（哪一个空闲就给哪个，如果都在忙就稍后再处理 ），所以说是由线程池和客户端保持联系，进行数据通信。 如果你cup有8个线程，那么同一时间就只能有8个线程运行。
+
+
+
+## 异步连接
+
+### 同步和异步
+
+
+
+当我们使用Socket进行网络通信时，我们需要发送和接收数据，这些操作可以使用同步方式和异步方式进行。
+
+在**同步模式**下，发送和接收数据的操作是阻塞的，也就是说程序会一直等待操作完成之后才会执行下一条语句。例如，当我们使用 `Socket.Send` 方法发送数据时，程序会一直等待数据发送完毕之后才会执行下一条语句。同样地，在接收数据时，程序会一直等待数据接收完毕之后才会执行下一条语句。这种方式下，程序会被阻塞，直到操作完成。
+
+在**异步模式**下，发送和接收数据的操作是非阻塞的，也就是说程序不会等待操作完成就会继续执行后续代码。例如，在使用 `Socket.BeginSend` 方法发送数据时，程序会立即返回，而不会等待数据发送完毕。同时，程序会通过回调函数或事件来通知操作的完成情况。这种方式下，程序不会被阻塞，可以继续执行其他操作。
+
+需要注意的是，使用异步方式进行网络通信需要编写异步回调函数或者使用异步事件，相对于同步方式来说，它更加复杂。但是，异步方式在高并发和网络延迟较高的情况下，可以提高程序的性能和响应速度。
+
+综上所述，同步和异步方式是指数据的传输方式，而不是代码的执行方式。在Socket编程中，通常使用异步方式进行网络通信。
+
+
+
+### 两种异步方式
+
+C#异步接收有两套API，分别是：
+
+1、 AcceptAsync
+
+无论循环接收多少次，都是重复利用同一个对象（SocketAsyncEventArgs）
+
+2、Begin+End模式 
+
+每次循环都会创建新的异步结果对象(IAsyncResult)
+
+
+
+
+
+## 自定义报文
+
+双方通信需要遵循协议，按照规定的方式发送和接收才可以完成数据通信。
+
+![img](MMORPG.assets/tJFOaXN-cq-PdDs9X0dXYA.png)
+
+
+
+魔数：魔法值（检验值） ，规定一个值比如说是1314（两个字节），如果这个检验值不是1314就证明这个包不是我们发的，可能是有人试图攻击我们的服务器，直接返回即可。
+
+
+
+
+
+### 大小端问题
+
+#### 什么是大小端
+
+**Little-Endian** 数据的低位字节位存放在内存的低地址端，高位字节存放在内存的高地址端。
+
+**Big-Endian** 数据的高位字节位存放在内存的低地址端，低位字节存放在内存的高地址端。
+
+举个栗子：
+
+比如十六进制数字0x12345678，它占4个字节，每个字节（0x00~0xFF）。
+
+这个数据的内存布局为：
+
+**大端模式**
+
+低地址---------------高地址
+
+0x12 | 0x34 | 0x56 | 0x78
+
+**小端模式（intel模式）**
+
+低地址---------------高地址
+
+0x78 | 0x56 | 0x34 | 0x12
+
+
+
+#### 常见的大小端
+
+Intel的x86系列芯片是小端芯片，ARM架构默认采用小端，也可以切换为大端。另外，对于大小端的处理也和编译器的实现有关，在C语言中，默认是小端（但也有例外，C51单片机就是大端实现），Java是平台无关的，默认是大端。
+
+**在网络上传输数据普遍采用的都是大端模式。**
+
+
+
+#### 判断大小端
+
+```
+bool IsLittleEndian() {
+    int a = 0x1234;
+    char c = *(char *)&a;
+    if (c == 0x34) {
+        return true;
+    }
+    return false;
+}
+```
+
+#### 网络相关的
+
+![image-20241013111026245](MMORPG.assets/image-20241013111026245.png)
+
+所以你需要判断你的系统平台是一个大端模式还是小端模式。
+
+![image-20241013111041692](MMORPG.assets/image-20241013111041692.png)
+
+读取大端模式的int32值
+
+```
+//获取大端模式int值
+private int GetInt32BE(byte[] data, int index)
+{
+    return (data[index] << 0x18) | (data[index + 1] << 0x10) | (data[index + 2] << 8) | (data[index + 3]);
+}
+//获取小端模式int值
+private int GetInt32LE(byte[] data, int index)
+{
+    return (data[index] | (data[index + 1] << 8) | (data[index + 2] << 0x10) | (data[index + 3] << 0x18);
+}
+```
+
+
+
+```
+ //如果系统是小端模式就反转为大端模式
+  if (BitConverter.IsLittleEndian) Array.Reverse(lenBytes);
+```
+
+
+
+
+
+### 粘包和分包
+
+Sticky  unpacking 
+
+是利用socket在tcp协议下内部的优化机制(等缓冲区满了在打包发送)
+
+粘包：可能会将几条消息打包成一条消息，但是客户端只会接收一条消息
+
+分包：当数据量很大的时候就可能会将一条消息分为几条消息发送
+
+最终会产生以下四种情况：
+
+ ![image-20230326113441109](MMORPG.assets/image-20230326113441109.png)
+
+
+
+#### 解决方法
+
+1.固定长度，比如100字节大小，如果不足100字节可以通过补0或空等，进行填充到指定长度。通常不用
+
+**2.末尾固定分隔符**，例如：\r\n。如果发生拆包需要等待多个包发生过来之后再找到其中的\r\n进行合并
+
+ **3.将消息分为头部和消息体**，头部中保存整个消息的长度，只是读取到足够长度的消息后才算是读到一个完整的消息。最常用
+
+![image-20230326114606056](MMORPG.assets/image-20230326114606056.png)
+
+其中头部占用的空间长度是固定的，例如说4个字节作为消息头。
+
+
+
+#### 用到的api
+
+**字节转换**
+
+1.字符串转换成字节数组：
+
+```
+System.Text.Encoding.UTF8.GetBytes; 
+```
+
+2.Int32转换成字节数组BitConverter.GetBytes（int）;//变为对应类型长度的byte[],这里变位4个字节长度的
+
+​										BitConverter.ToInt32//取字符数组中前4个字节
+
+3.从字符数组转换string
+
+```
+string s = Encoding.UTF8.GetString(dataBuffer, 12,count-8);
+```
+
+
+
+
+
+**byte[]合并**
+
+CopyTo
+
+```
+        public static byte[] addBytes(byte[] data1, byte[] data2)
+        {
+            byte[] data3 = new byte[data1.Length + data2.Length];
+            data1.CopyTo(data3, 0);
+            data2.CopyTo(data3, data1.Length);
+            return data3;
+        }
+```
+
+Array.Copy
+
+```
+byte[] byteAll = new byte[bytes1.Length + bytes2.Length];
+Array.Copy(bytes1, 0, byteAll, 0, bytes1.Length);
+Array.Copy(bytes2, 0, byteAll,bytes1.Length, bytes2.Length);
+```
+
+Concat
+
+```
+using System.Linq;
+
+byte[] data1 = new byte[8000];
+byte[] data2 = new byte[2000];
+data1 = data1.Concat(data2).ToArray();
+```
+
+
+
+**输出字符数组**
+
+```
+Console.WriteLine(BitConverter.ToString(head));
+```
+
+
+
+
+
+
+
+
+
+
+
+### **长度字段解码器**
+
+（异步接收的操作在这里完成）
+
+lengthFieldOffset	长度字段的位置下标
+
+lengthFieldLength	长度字段本身的长度，只推荐 1, 2, 4, 8
+
+lengthAdjustment	偏移位，长度字节和内容中间隔了几个字节，可为负数。
+
+initialBytesToStrip	表示获取完一个完整的数据包之后，舍弃前面的多少个字节
+
+
+
+**这个类的作用就是异步接收来自客户端的信息，然后将消息内容byte[]返回给我们**
+
+
+
+
+
+
+
+### 消息解析
+
+![image-20230430223930300](MMORPG.assets/image-20230430223930300.png)
+
+
+
+### Varints数值压缩编码
+
+varint是一种对正整数进行可变长字节编码的方法，大多数情况下可起到数据压缩的作用。通常，一个int型整数占4个字节，若该整数的数值小于256，显然一个字节的空间就能存储，浪费了3个字节的空间，而varint就起到了压缩数据的作用。整数数值越小，需要存储的字节数就越少。
+
+#### varint原理
+
+
+
+
+
+```
+uint32_t = 1;
+// 原码：0000 0000 0000 0000 0000 0000 0000 0001
+// 补码：0000 0000 0000 0000 0000 0000 0000 0001
+// varints编码：0|000 0001(0x01)
+//
+
+// 整数1的variant解码
+// 读取到0x01, msb位为0, 说明读取结束，该数就只占一个字节.
+// 读到7bits值为000 0001的补码，显然其原码是000 0001,也就是数值1
+// 如此，便将variant编码的整数1解码出来了。而0x01只用到了一个字节哦！
+```
+
+```
+uint32_t = 665;
+// 原码：0000 0000 0000 0000 0000 0010 1001 1001
+// 补码：0000 0000 0000 0000 0000 0010 1001 1001
+// 按照7bit一组，0000 ... 0000101 0011001
+// 从低位往高位依次取7bit,重新编码,注意是反转排序，全0的bit舍弃
+// 0011001 0000101
+// 再加上msb，每7bit组 组成一个字节
+// varints编码即为：
+// 1|0011001 0|0000101
+// 0x99       0x05
+// 如此，即将整数665编码成0x99 0x05,将原来的4个字节压缩成2个字节
+
+// 再来看看解码过程
+// 编码为 0x99 0x05, 第一个字节的msb位为1，表示继续读取下一个字节；第二个字节的msb为0，读取结束。
+// 读出两个字节的内容后，去掉msb，还原成2组 7bits组，即 0011001 0000101
+// 再将两组7bits反转，即 0000101 0011001 (补码)
+// 由于是整数，所以得到原码 0010 1001 1001，即665
+
+```
+
+
+
+我们知道variant是可变长的编码方式，但是，它总得知道要读取多少个字节结束啊，总不能一直读下去吧。通常我们需要指定length信息，而variant编码天然包含了length，也就是通过msb位来识别，如果某个数的variant编码的字节的msb位为1，就意味着还要继续读取，没有结束，直到后面的某个字节的msb为0。正是msb的存在可以让数值小的数占用更少的空间，提高了空间利用率。由于每个字节都拿出一个bit做为msb，那么，4个字节最大额能表示的数为2^28而不是2^32。在实际情况下，大于2^28的数很少出现，所以在实际工程中并不会影响高效性。
+
+
+
+#### 缺点
+
+```
+int32_t val = -1 // 4字节
+// 原码：1000 0000 0000 0000 0000 0000 0000 0001
+// 补码：1111 1111 1111 1111 1111 1111 1111 1111
+// 按照variant的编码规则，7bit一组，低位在前
+// 补码的4个字节，共32bit，按7bit分组，可分为4组，这4组的msb均为1；余下的4bit在第5组，msb为0，其余位补0
+// 1111111 1111111 1111111 1111111 1111
+// 1|1111111 1|1111111 1|1111111 1|1111111 0|0001111
+//   0xFF      0xFF      0xFF     0xFF       0x0F
+// 所以，-1的varint编码为 0xff 0xff 0xff 0xff 0xf 共5字节
+```
+
+
+
+从上例来看，原本占4字节的-1，经variant编码后，占了5个字节。并没有压缩呀！这就是variant编码的缺陷：**variant编码对负数编码效率低**。通常可使用zigzag编码将负数转为正数，然后再用variant编码
+
+从上例来看，原本占4字节的-1，经variant编码后，占了5个字节。并没有压缩呀！这就是variant编码的缺陷：**variant编码对负数编码效率低**。通常可使用zigzag编码将负数转为正数，然后再用variant编码
+
+
+
+#### 编码规则
+
+1. 将整数的二进制补码按7bit分组，然后按照小端排序
+2. 除最后一组的msb位置0，其他组的msb置1；
+
+已知编码规则，解码就是反向的过程，一是要去掉msb重新组合7bit组，二是7bit组要反序存储。
+
+
+
+
+
+#### 代码
+
+
+
+##### 1.压缩
+
+```
+public static byte[] VarintEncode(ulong value)
+{
+    var list = new List<byte>();
+    while (value > 0)
+    {
+        byte b = (byte)(value & 0x7f); // 获取 value 的最低 7 位
+        value >>= 7; // 将 value 右移 7 位，相当于除以 128
+        if (value > 0)
+        {
+            b |= 0x80; // 如果还有剩余的位需要编码，将 b 的最高位设置为 1
+        }
+        list.Add(b); // 将 b 添加到列表中
+    }
+    return list.ToArray(); // 将列表转换为字节数组并返回
+}
+```
+
+函数使用一个 while 循环，每次从 value 中获取最低的 7 位，将其存储到一个字节中，并将 value 右移 7 位。如果 value 的值还不为 0，则说明还有需要编码的位，需要继续循环。如果最后一个字节不足 7 位，则最高位为 0，否则最高位为 1，表示后面还有更多字节需要编码。
+
+例如，如果 value 的值为 300，它的二进制表示为 100101100，编码过程如下：
+
+- 第一次循环：b = 1001011，value = 4
+- 第二次循环：b = 0000100，value = 0
+
+最终得到的字节数组为 { 0x8C, 0x02 }。其中第一个字节的二进制表示为 10001100，表示最高位为 1，后面还有一个字节需要编码，低 7 位表示整数的一部分。第二个字节的二进制表示为 00000010，表示最高位为 0，这是最后一个字节，低 7 位表示整数的最高部分。
+
+**注意：**
+
+```
+返回的数组：低位在前，高位在后处理
+```
+
+
+
+##### 2.解压
+
+```
+public static ulong VarintDecode(byte[] buffer)
+{
+    ulong value = 0; // 初始化 value 的值为 0
+    int shift = 0; // 初始化 shift 的值为 0
+    int len = buffer.Length; // 获取 buffer 的长度
+    for (int i = 0; i < len; i++)
+    {
+        byte b = buffer[i]; // 获取 buffer 中的一个字节
+        value |= (ulong)(b & 0x7F) << shift; // 将字节中的低 7 位左移 shift 位，并与 value 进行按位或运算
+        if ((b & 0x80) == 0) // 判断字节中的最高位是否为 0
+        {
+            break; // 如果最高位为 0，则表示该字节是最后一个字节，跳出循环
+        }
+        shift += 7; // 如果最高位为 1，则表示后面还有字节需要解码，将 shift 增加 7
+    }
+    return value; // 返回解码后的整数值
+}
+```
+
+函数使用一个 for 循环，每次从 buffer 中获取一个字节，将字节中的低 7 位左移 shift 位，并与 value 进行按位或运算。如果字节的最高位为 0，则表示该字节是最后一个字节，跳出循环并返回解码后的整数值。如果字节的最高位为 1，则表示后面还有字节需要解码，将 shift 增加 7，继续循环解码。
+
+例如，如果要解码的字节数组为 { 0x8C, 0x02 }，解码过程如下：
+
+- 第一次循环：b = 10001100，低 7 位为 1001011，shift = 0，value = 1001011
+- 第二次循环：b = 00000010，低 7 位为 0000010，shift = 7，value = 100101100
+
+最终得到的无符号整数的值为 300，与编码时的值相同。
+
+
+
+**注意：**
+
+```
+先处理的低位，放在ulong的最低位（也就是最右边），然后下一个字节是左移7位的，也就是高位（左边的）。这就是为什么左移的原因
+```
+
+
+
+
+
+## Protobuf
+
+
+
+### 1.简介
+
+protobuf是Google公司的一种轻便高效的数据存储格式，常用于处理结构化数据，具有语言无关、平台无关、可扩展性特性，常用于通讯协议、服务端数据交换场景。
+
+**性能高效**：与XML相比，protobuf更小（3 ~ 10倍）、更快（20 ~ 100倍）、更为简单。
+
+**语言无关、平台无关**：支持Java、C++、Python、C#、Go等多种语言，不与系统直接交互。
+
+**扩展性强、兼容性强**：描述简单，更新消息结构时过程简单，且不会破坏原有的程序。
+
+缺点：不够xml和json直观
+
+
+
+**序列化：把程序对象转化为字节或文字。**
+
+**反序列化：把存储的字节或者文字转化为程序对象。**
+
+
+
+### 2.proto3语法
+
+
+
+#### 定义一个 Message
+
+首先我们来定义一个 Search 请求，在这个请求里面，我们需要给服务端发送三个信息：
+
+- query：查询条件
+- page_number：你想要哪一页数据
+- result_per_page：每一页有多少条数据
+
+于是我们可以这样定义：
+
+```
+// 指定使用proto3，如果不指定的话，编译器会使用proto2去编译
+syntax = "proto3";
+ 
+message SearchRequests {
+    // 定义SearchRequests的成员变量，需要指定：变量类型、变量名、变量Tag
+    string query = 1;
+    int32 page_number = 2;
+    int32 result_per_page = 3;
+}
+```
+
+#### 定义多个message 类型
+
+一个 proto 文件可以定义多个 message ，比如我们可以在刚才那个 proto 文件中把服务端返回的消息结构也一起定义：
+
+```
+message SearchRequest {
+    string query = 1;
+    int32 page_number = 2;
+    int32 result_per_page = 3;
+}
+ 
+message SearchResponse {
+    repeated string result = 1;
+}
+```
+
+message 可以嵌套定义，比如 message 可以定义在另一个 message 内部
+
+```
+message SearchResponse {
+    message Result {
+        string url = 1;
+        string title = 2;
+        repeated string snippets = 3;
+    }
+    repeated Result results = 1;
+}
+```
+
+定义在 message 内部的 message 可以这样使用：
+
+```
+message SomeOtherMessage {
+    SearchResponse.Result result = 1;
+}
+```
+
+
+
+#### 定义变量类型
+
+在刚才的例子之中，我们使用了2个`标准值类型`： string 和 int32，除了这些标准类型之外，变量的类型还可以是复杂类型，比如自定义的`枚举`和自定义的 `message`
+
+这里我们把标准类型列举一下[protobuf](https://so.csdn.net/so/search?q=protobuf&spm=1001.2101.3001.7020)内置的标准类型以及跟各平台对应的关系：
+
+![image-20230402163553662](MMORPG.assets/image-20230402163553662.png)
+
+
+
+#### 分配Tag
+
+每一个变量在message内都需要自定义一个**唯一的数字Tag**，protobuf会根据Tag从数据中查找变量对应的位置，具体原理跟protobuf的二进制数据格式有关。Tag一旦指定，以后更新协议的时候也不能修改，否则无法对旧版本兼容。
+
+Tag的取值范围最小是1，最大是-1，但 19000~19999 是 protobuf 预留的，用户不能使用。
+
+虽然 Tag 的定义范围比较大，但不同 Tag 也会对 protobuf 编码带来一些影响：
+
+1 ~ 15：单字节编码
+16 ~ 2047：双字节编码
+使用频率高的变量最好设置为1 ~ 15，这样可以减少编码后的数据大小，但由于Tag一旦指定不能修改，所以为了以后扩展，也记得为未来保留一些 1 ~ 15 的 Tag
+
+```
+message SearchRequest {
+    string query = 1;
+    int32 page_number = 2;
+    int32 result_per_page = 3;
+}
+
+上面的1、2、3不是赋值，而是一个属性的标记
+```
+
+
+
+#### 指定变量规则
+
+在 proto3 中，可以给变量指定以下两个规则：
+
+- singular：0或者1个，但不能多于1个
+
+- repeated：任意数量（包括0）
+
+当构建 message 的时候，build 数据的时候，会检测设置的数据跟规则是否匹配
+
+在proto2中，规则为：
+
+- required：必须有一个
+- optional：0或者1个
+- repeated：任意数量（包括0）
+
+```
+message SearchRequest {
+    singular string query = 1;
+    singular int32 page_number = 2;
+    singular int32 result_per_page = 3;
+}
+不过正常情况下用不上
+```
+
+
+
+#### 注释
+
+用`//`表示注释开头，如
+
+```
+message SearchRequest {
+    string query = 1;
+    int32 page_number = 2; // Which page number do we want
+    int32 result_per_page = 3; // Number of results to return per page
+}
+```
+
+
+
+#### 保留变量不被使用
+
+上面我们说到，一旦 Tag 指定后就不能变更，这就会带来一个问题，假如在版本1的协议中，我们有个变量：
+
+```
+int32 number = 1；
+```
+
+在版本2中，我们决定废弃对它的使用，那我们应该如何修改协议呢？注释掉它？删除掉它？如果把它删除了，后来者很可能在定义新变量的时候，使新的变量 Tag = 1 ，这样会导致协议不兼容。那有没有办法规避这个问题呢？我们可以用 reserved 关键字，当一个变量不再使用的时候，我们可以把它的变量名或 Tag 用 reserved 标注，这样，当这个 Tag 或者变量名字被重新使用的时候，编译器会报错
+
+```
+message Foo {
+    // 注意，同一个 reserved 语句不能同时包含变量名和 Tag 
+    reserved 2, 15, 9 to 11;
+    reserved "foo", "bar";
+}
+```
+
+
+
+#### 默认值
+
+当解析 message 时，如果被编码的 message 里没有包含某些变量，那么根据类型不同，他们会有不同的默认值：
+
+- string：默认是空的字符串
+- byte：默认是空的bytes
+- bool：默认为false
+- numeric：默认为0
+- enums：定义在第一位的枚举值，也就是0
+- messages：根据生成的不同语言有不同的表现，参考generated code guide
+
+注意，收到数据后反序列化后，对于标准值类型的数据，比如bool，如果它的值是 false，那么我们无法判断这个值是对方设置的，还是对方压根就没给这个变量设置值。
+
+
+
+#### 定义枚举Enumerations
+
+在 protobuf 中，我们也可以定义枚举，并且使用该枚举类型，比如：
+
+```
+message SearchRequest {
+    string query = 1;
+    int32 page_number = 2; // Which page number do we want
+    int32 result_per_page = 3; // Number of results to return per page
+    enum Corpus {
+        UNIVERSAL = 0;
+        WEB = 1;
+        IMAGES = 2;
+        LOCAL = 3;
+    }
+    Corpus corpus = 4;
+}
+```
+
+枚举定义在一个消息内部或消息外部都是可以的，如果枚举是 定义在 message 内部，而其他 message 又想使用，那么可以通过 MessageType.EnumType 的方式引用。定义枚举的时候，我们要保证第一个枚举值必须是0，枚举值不能重复，除非使用 option allow_alias = true 选项来开启别名。如：
+
+```
+enum EnumAllowingAlias {
+    option allow_alias = true;
+    UNKNOWN = 0;
+    STARTED = 1;
+    RUNNING = 1;
+}
+```
+
+枚举值的范围是32-bit integer，但因为枚举值使用变长编码，所以不推荐使用负数作为枚举值，因为这会带来效率问题。
+
+
+
+### 3.使用
+
+
+
+**引入protobuf库**
+
+通过vs中 工具-NuGet管理器-管理解决方案的NuGet程序包  安装 Google.Protobuf 3.21.12 程序包
+
+![image-20230402170433787](MMORPG.assets/image-20230402170433787.png)
+
+**安装完成后就可以看见**
+
+![image-20230402170604189](MMORPG.assets/image-20230402170604189.png)
+
+
+
+编辑你的protos文件，然后生成cs文件，在output中可以找到。
+
+然后将这个cs文件放入项目当中使用。
+
+
+
+
+
+**proto文件参考**
+
+```
+syntax = "proto3";//指定版本信息，不指定会报错
+
+message Person //message为关键字，作用为定义一种消息类型
+{
+    int32 id = 2;       //id
+    string name = 1;    //姓名
+    string email = 3;   //邮件
+}
+
+message AddressBook
+{
+    repeated Person people = 1;
+}
+```
+
+
+
+**protoc命令参考**
+
+用于生成proto对应的cs类
+
+```
+::查看版本
+protoc --version
+::生成代码
+protoc --csharp_out=. demo.proto
+protoc --java_out=. demo.proto
+protoc --go_out=. test.proto
+protoc --cpp_out=. test.proto
+protoc --python_out=. test.proto
+protoc --php_out=. test.proto
+```
+
+
+
+**还可以把protoc配置到环境变量，达到全局可调用的效果**
+
+1.把protoc复制到纯英文目录，例如 D:\programs\protoc-21.12-win64
+
+2.创建环境变量 PROTOC_HOME=D:\programs\protoc-21.12-win64
+
+3.在系统任何位置都可以调用 
+
+%PROTOC_HOME%/bin/protoc --csharp_out=. message.proto
+
+
+
+### **ProtobufTool**
+
+#### 序列化与反序列化工具类
+
+```
+using System.Collections;
+using System.Collections.Generic;
+using Google.Protobuf;
+using System.IO;
+using System;
+
+namespace Summer
+{
+    /// <summary>
+    /// Protobuf序列化与反序列化
+    /// </summary>
+    public class ProtobufTool
+    {
+        /// <summary>
+        /// 序列化protobuf
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        public static byte[] Serialize(IMessage msg)
+        {
+            using (MemoryStream rawOutput = new MemoryStream())
+            {
+                msg.WriteTo(rawOutput);
+                byte[] result = rawOutput.ToArray();
+                return result;
+            }
+        }
+        /// <summary>
+        /// 解析
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="dataBytes"></param>
+        /// <returns></returns>
+        public static T Parse<T>(byte[] dataBytes) where T : IMessage, new()
+        {
+            T msg = new T();
+            msg = (T)msg.Descriptor.Parser.ParseFrom(dataBytes);
+            return msg;
+        }
+    }
+}
+```
+
+
+
+1.**使用 Protobuf 消息类型的 WriteTo() 方法将消息对象序列化到 MemoryStream 中，然后通过 MemoryStream 的 ToArray() 方法获取序列化后的字节数组。这种方法可以避免创建中间缓冲区，适用于对内存占用有要求的场景。**
+
+```
+using Google.Protobuf;
+using System.IO;
+
+MyMessage message = new MyMessage();
+// 填充 message 对象的字段
+
+// 创建一个 MemoryStream 对象
+MemoryStream stream = new MemoryStream();
+
+// 将 MyMessage 对象序列化到 MemoryStream 中
+message.WriteTo(stream);
+
+// 获取 MemoryStream 中的字节数组
+byte[] bytes = stream.ToArray();
+
+```
+
+**2.使用 Protobuf 消息类型的 ToByteArray() 方法将消息对象序列化为字节数组。这种方法会创建一个中间缓冲区来存储序列化后的字节数组，适用于对性能要求更高的场景。例如，下面是一个将 Protobuf 消息对象序列化为字节数组的示例：**
+
+```
+using Google.Protobuf;
+
+MyMessage message = new MyMessage();
+// 填充 message 对象的字段
+
+// 将 MyMessage 对象序列化为字节数组
+byte[] bytes = message.ToByteArray();
+
+```
+
+
+
+
+
+
+
+
+
+
+
+#### **获取全部IMessage类型**
+
+```
+var q = from t in Assembly.GetExecutingAssembly().GetTypes() select t;
+q.ToList().ForEach(t =>
+{
+    if (typeof(Google.Protobuf.IMessage).IsAssignableFrom(t))
+    {
+        protoTypeList.Add(t);
+    }
+});
+```
+
+具体来说，它首先执行之前提到的LINQ查询语句，获取程序集中所有的类型，并将它们存储在`q`变量中。然后，它使用`ToList()`方法将查询结果转换为`List<Type>`，并对列表中的每个类型执行一个操作。该操作使用`typeof(Google.Protobuf.IMessage).IsAssignableFrom(t)`判断当前类型是否实现了`Google.Protobuf.IMessage`接口，如果是，则将该类型添加到`protoTypeList`列表中。
+
+这段代码通常用于在运行时动态查找并加载实现了`Google.Protobuf.IMessage`接口的类型，以便进行序列化和反序列化等操作。
+
+
+
+### tostring
+
+imessage类型的tostring会将类的信息转化为json格式
+
+
+
+
+
+
+
+
+
+## 消息队列
+
+### 概要
+
+服务器不能一次性去处理全部同时发过来的数据，我们需要将这些消息保存起来，并且不影响客户端和服务端的网络通信。
+
+收到之后保存起来，然后一条一条处理。注意：需要考虑多线程并发的问题
+
+![image-20241013103537570](MMORPG.assets/image-20241013103537570.png)
+
+### MessageRouter
+
+设置一个队列,消息来的时候入队,使用多线程分发(线程池)
+
+订阅（将某个消息发给某个模块），
+
+退订
+
+触发订阅（找到一个消息并且转发了出去）
+
+消息频道,用户模块，角色模块，物品模块，地图模块，战斗模块
+
+![img](MMORPG.assets/AgAABTP1rR3YzUET7xlIE4lGeEBKXDm1.png)
+
+
+
+### 注意
+
+#### Interlocked
+
+Interlocked.Increment
+
+Interlocked.Decrement
+
+在C#中，`Interlocked` 类提供了一组原子操作方法，这些方法可以以线程安全的方式对内存中的变量进行操作。在多线程编程中，当多个线程同时访问同一个变量时，可能会出现一些问题，例如竞争条件（race condition）、死锁（deadlock）等等。`Interlocked` 类提供了一些方法来解决这些问题，使得多个线程可以安全地对同一个变量进行读写操作。
+
+`Interlocked` 类的方法包括：
+
+- `Increment`：原子地将指定的变量加 1，并返回新的值。
+- `Decrement`：原子地将指定的变量减 1，并返回新的值。
+- `Exchange`：原子地交换指定变量的值，并返回原始值。
+- `CompareExchange`：比较指定变量的值与给定值，如果相等则替换，并返回原始值。
+
+这些方法使用了底层硬件级别的同步机制来确保操作的原子性和线程安全性。使用`Interlocked` 类可以避免一些常见的多线程编程错误，使得多个线程之间可以安全地共享数据。
+
+
+
+#### AutoResetEvent
+
+在C#中，`AutoResetEvent` 是一个同步原语，用于协调线程之间的执行顺序。`AutoResetEvent` 可以使一个或多个线程等待另一个线程发出信号后再继续执行，从而实现线程之间的同步。
+
+#### MemoryStream
+
+**使用流的速度通常比直接操作文件或网络资源要快，因为流可以在内存中缓冲数据，从而避免了频繁的磁盘或网络操作。**
+
+
+
+可以使用 MemoryStream 将 Protobuf 对象序列化为字节数组。在 C# 中，可以通过 Google.Protobuf 框架提供的 extension 方法 ToByteArray() 来实现。
+
+例如，假设我们有一个名为 MyMessage 的 Protobuf 消息类型，并已经创建了一个 MyMessage 对象 message。可以使用以下代码将 MyMessage 对象序列化为字节数组：
+
+```
+using Google.Protobuf;
+using System.IO;
+
+MyMessage message = new MyMessage();
+// 填充 message 对象的字段
+
+// 创建一个 MemoryStream 对象
+MemoryStream stream = new MemoryStream();
+
+// 将 MyMessage 对象序列化到 MemoryStream 中
+message.WriteTo(stream);
+
+// 获取 MemoryStream 中的字节数组
+byte[] bytes = stream.ToArray();
+
+```
+
+在上面的代码中，首先创建了一个 MemoryStream 对象 stream。然后，将 MyMessage 对象 message 序列化到 MemoryStream 中，最后通过 stream.ToArray() 方法获取 MemoryStream 中的字节数组。
+
+需要注意的是，上述代码中的 MyMessage 类型需要事先通过 Protobuf 的代码生成工具生成。生成的代码中包含了 MyMessage 类型的序列化和反序列化方法，以及一些辅助方法。在使用之前需要引用 Protobuf 的命名空间，并在代码中实例化 MyMessage 对象并设置其字段。
+
+
+
+#### using
+
+在大多数情况下，建议使用 using 语句块来管理 MemoryStream 对象，这样可以确保在使用完毕后自动释放资源，避免出现内存泄漏的问题。例如：
+
+```
+byte[] data;
+using (MemoryStream stream = new MemoryStream())
+{
+    // 写入数据到 stream 中
+    data = stream.ToArray();
+}
+// 在 using 语句块结束后，stream 对象会被自动释放
+
+```
+
+如果你不想使用 using 语句块，也可以显式地调用 Close() 或 Dispose() 方法来释放 MemoryStream 对象。这两个方法的作用是相同的，都可以用于释放资源。不过需要注意的是，调用 Close() 或 Dispose() 方法后，就不能再对 MemoryStream 对象进行操作了。如果你需要再次使用该对象，需要重新创建一个新的 MemoryStream 对象。
+
+总的来说，使用 using 语句块来管理 MemoryStream 对象是最安全和方便的方法，它能够确保在使用完毕后自动释放资源，而不需要显式地调用 Close() 或 Dispose() 方法。
+
+
+
+需要注意的是，由于 C# 的垃圾回收机制，一般情况下不需要显式地调用 Close() 或 Dispose() 方法来释放 MemoryStream 对象，系统会自动回收这些对象并释放它们所占用的资源。但是在一些特殊情况下，比如在处理大量数据时，显式地调用 Close() 或 Dispose() 方法可以帮助及时释放资源，避免出现内存泄漏的问题。
+
+
+
+
+
+## 心跳包
+
+1.让通信双方都知道对方还活着。
+
+客户端每隔xx时间给服务端发送消息，服务端收到之后记录最后心跳包的时间，然后给客户端响应。
+
+2.还有一个好处：根据心跳包的往返，我们可以记录到客户端和服务器之间的网络延迟。
+
+```
+message HeartBeatRequest{
+	//心跳请求
+}
+
+message HeartBeatResponse{
+	//心跳响应
+}
+```
+
+
+
+## session
+
+通过连接connection来获取的就是一个session
+
+然后把相关联的属性我们都放到session里面
+
+
+
+
 
 
 
@@ -10284,6 +12034,152 @@ unity控制台中的error pause 遇到错误打印就停止。导致我以为是
 
 
 
+# 核心
+
+## 角色设计
+
+1.一个玩家可以选择不同的角色，所以创建一个角色类
+
+2.管理一个场景，将里面的资源发放给全部玩家，所以需要一个场景类来管理
+
+3.基础的角色类
+
+![image-20230501092705983](MMORPG.assets/image-20230501092705983.png)
+
+
+
+属性
+
+![image-20241013113709801](MMORPG.assets/image-20241013113709801.png)
+
+ 
+
+战斗属性：
+
+![image-20230926173253628](MMORPG.assets/image-20230926173253628.png)
+
+
+
+
+
+
+
+## 同步逻辑
+
+### 进入游戏协议
+
+![image-20230502092806315](MMORPG.assets/image-20230502092806315.png)
+
+a.发一个enter请求给服务器，这个请求可以携带一定量的参数（哪个角色），服务端根据其情况给他的角色分配初始的场景信息（senceid position rotation）;
+
+收到这个请求并且响应成功的话，我们同时需要给场景中的其他玩家发送一个新玩家加入的响应，通知客户端有新玩家加入。
+
+b.客户端收到响应再进行自己操作的角色进行实例化到场景中。信息entity（位置，方向，entityid，spaceid）;
+
+### 列表协议
+
+![image-20230502094943985](MMORPG.assets/image-20230502094943985.png)
+
+a.list请求请求当前场景中其他玩家的信息，服务器给客户端返回场景中全部entity的信息
+
+b.客户端收到全部enetity信息响应的时候，用一个字典来保存并且在场景中实例化全部entityGamgobject对象，方便‘后面的更新操作。
+
+
+
+### 同步entity信息协议
+
+a.客户端需要开启一个协程定时的给服务器发送entity的同步信息
+
+b.服务端收到这些entity同步信息就将其保存到服务器的容器当中，然后定时地給全部服务端广播这些同步信息。
+
+c.客户端收到这些同步信息，通过之前保存的字典中的gameobject进行对这些对象的更新
+
+![image-20230502101011784](MMORPG.assets/image-20230502101011784.png)
+
+注意：
+
+e.本机控制的角色---->位置更新是由我们自己来控制的，通过协程不断往服务器发送本机角色的位置信息。
+
+本机其他玩家的角色，由服务器下发位置信息进行更新
+
+f.注意的是需要控制同步的频率，频率过高会占用过高的带宽，这样会导致同步的人数会降低。
+
+过低也会导致延迟卡顿，所以要找到这个平衡的点。
+
+这里我们使用每一秒同步10次。
+
+
+
+### 位置同步
+
+#### 思路
+
+
+
+1.当前使用的是客户端发送同步请求，然后服务端进行给当前场景全部客户端转发同步请求（发pos和dir即可）
+
+2.客户端发送同步请求，服务端更新保存的角色位置信息，服务端定时给全部客户端进行转发同步信息
+
+
+
+当任务没有动作的时候，第二种方法服务端还是不断地进行位置同步的转发。
+
+没有经过测试，个人觉得第一种方法性能较好吧。
+
+想法：可以在每一个场景种设置一个单线程专门用于位置的同步转发，这样会不会性能比较好一点呢？
+
+
+
+
+
+#### **使用插值算法让移动更平滑**
+
+在多人网络游戏中，同步玩家位置是一个比较重要的问题。如果同步频率过低，可能会导致玩家位置的不同步和卡顿；如果同步频率过高，可能会导致网络负载过大。因此，需要在合适的同步频率下，使用合适的同步算法来实现玩家位置的同步。
+
+
+
+
+
+#### **优化位置上传的协程**
+
+```
+IEnumerator SyncRequest()
+{
+    while (true)
+    {
+        //只有主角位置发生变化才执行
+        if(isMine && transform.hasChanged)
+        {
+            //上传位置消息给服务器
+            NetClient.Send(req);
+            transform.hasChanged = false;
+        }
+        yield return new WaitForSeconds(0.2f);
+    }
+}
+```
+
+
+
+## 游戏场景切换设计
+
+![image-20230711211202112](MMORPG.assets/image-20230711211202112.png)
+
+注意初始的模块、网络模块、通用模块都是唯一的不会被销毁，所以要设置位don‘t destory
+
+
+
+
+
+## 刷怪管理
+
+![image-20230914230332832](MMORPG.assets/image-20230914230332832.png)
+
+将每一个怪物的信息存放到json文件中，由datamanager进行读取，转换为dict；
+
+每个space中有个spawnmanager，spawnmanager通过datamanager读取相对应的space中的刷怪信息，然后生成对应的spawner
+
+spawner是刷怪对象，负责怪物的刷新。
 
 
 
@@ -10293,8 +12189,145 @@ unity控制台中的error pause 遇到错误打印就停止。导致我以为是
 
 
 
+## 中心计时器
+
+参考代码 Schedule.cs 
+
+需要先启动中心计时器
+
+```
+Schedule.Instance.Start();
+```
+
+```
+//每隔2秒保存一次Data到数据库
+var repo = Db.fsql.GetRepository<DbCharacter>();
+Schedule.Instance.AddTask(() => repo.UpdateAsync(Data) , 2);
+```
 
 
+
+模拟unity的调度系统
+
+**这个计时器存在的目的就是为了定时执行一些任务**
+
+比如说：我们需要定时存放角色的位置信息，下次角色上线能找到位置，我们可以定时2秒保存一次
+
+
+
+
+
+
+
+
+
+# 持久化
+
+## 概要
+
+![image-20241013112555388](MMORPG.assets/image-20241013112555388.png)
+
+
+
+**安全性**
+
+![image-20230620164802852](MMORPG.assets/image-20230620164802852.png)
+
+为了保证数据安全性，数据库通常不允许通过互联网访问，只能通过服务器内网访问，并且设置黑名单和白名单。严禁客户端直接访问数据库服务器。
+
+
+
+
+
+
+
+## ORM框架FreeSql
+
+
+
+什么是框架?
+
+可复用的程序集，软件包，程序集，工具，组件，引擎
+
+
+
+
+
+官网地址：
+
+前置技能：至少会一种关系型数据库SQLServer，MySQL，SQLite，会基本的SQL也算会。
+
+ORM框架，可以用面向对象的代码去直接操作数据库。
+
+![img](MMORPG.assets/AgAABTP1rR1OUFpogIxPu54xfEccIHCq.png)
+
+
+
+### **快速上手**
+
+[入门 | FreeSql 官方文档](https://freesql.net/guide/getting-started.html)
+
+
+
+#### 安装驱动
+
+![image-20230621220241233](MMORPG.assets/image-20230621220241233.png)
+
+![image-20230704101903595](MMORPG.assets/image-20230704101903595.png)
+
+
+
+安装freesql和 freesql.provider.mysql的  还有repository
+
+
+
+#### 案例
+
+Program.cs
+
+```c#
+var connectionString = "Data Source=127.0.0.1;Port=3306;User ID=root;Password=root;" +
+    "Initial Catalog=game;Charset=utf8;SslMode=none;Max pool size=10";
+
+IFreeSql fsql = new FreeSql.FreeSqlBuilder()
+    .UseConnectionString(FreeSql.DataType.MySql, connectionString)
+    .UseAutoSyncStructure(true) //自动同步实体结构到数据库
+    .Build(); //请务必定义成 Singleton 单例模式
+
+Topic topic = new Topic() { Title="震惊，1分钟竟然等于60秒",Clicks=100};
+fsql.Insert(topic).ExecuteIdentity();
+
+
+```
+
+Entity.cs
+
+```
+using FreeSql.DataAnnotations;
+/// <summary>
+/// 模型类
+/// </summary>
+class Topic
+{
+    [Column(IsIdentity = true, IsPrimary = true)]
+    public int Id { get; set; }
+    public int Clicks { get; set; }
+    public string Title { get; set; }
+    public DateTime CreateTime { get; set; }
+}
+```
+
+
+
+
+
+
+
+
+
+## 数据定时存放进数据库
+
+如果你存放都在服务器内存中的话，到最后才保存到数据库中，万一服务器宕机了，数据也就没有了。
 
 
 
@@ -10892,11 +12925,11 @@ list-x根据其x坐标里原点的远近来进行链接
 
 ## 安全模块
 
+### 密码传输
+
 比如说一些敏感信息，需要加密传输；
 
 登录密码，保险箱密码等
-
-
 
 持久化是密码这些敏感信息也需要加密存储。
 
@@ -10904,9 +12937,75 @@ list-x根据其x坐标里原点的远近来进行链接
 
 
 
+### 限制角色的移动，防止作弊
+
+判断依据是： 记录到客户端的位置和上次更新位置的时间，通过计算预测它再时间间隔内内能走多远，如果你超出这个范围，你大概率是作弊了 。
 
 
-# 游戏基础框架
+
+
+
+
+
+
+
+
+
+## 日志模块
+
+**一个自制的输出到控制台。**
+
+Common.Log
+
+
+
+**一个用别人写好的日志框架输出到文件中**
+
+![image-20230410093605976](MMORPG.assets/image-20230410093605976.png)
+
+
+
+![img](MMORPG.assets/AgAABTP1rR1r2K88qGVPbrba49e0DA8D.png)
+
+将这三个包安装加入依赖，后面的两个分别是对第一个的扩展
+
+
+
+### 使用
+
+```
+//初始化日志环境，这里可以设置你的日志输出到哪里，怎么输出，是按天输出还是月输出
+Log.Logger = new LoggerConfiguration()
+.MinimumLevel.Debug()										//最小日志级别
+.WriteTo.Console()											//结果输出到控制台
+.WriteTo.File("logs\\log.txt", rollingInterval: RollingInterval.Day)//结果输出到文件，以天为单位
+.CreateLogger();					
+
+//输出日志
+Log.Debug("服务器启动完成");
+Log.Information("用户登录：{0} , {1}", name, pwd);
+Log.Warning("警告信息");
+Log.Error("错误信息");
+
+```
+
+**注意需要先初始化，不然没有显示**
+
+
+
+### 生成的日志
+
+**生成的日志文件在debug目录下**
+
+![image-20230410095259138](MMORPG.assets/image-20230410095259138.png)
+
+
+
+
+
+
+
+# HSFramework
 
 
 
@@ -10915,6 +13014,23 @@ list-x根据其x坐标里原点的远近来进行链接
 
 
 ## 事件系统
+
+其实这玩意也就是相当于观察者模式
+
+事件系统可以提高代码的灵活性、可维护性和可扩展性，降低模块之间的耦合度。
+
+需要在主线程Update里调用 Tick方法
+
+```
+//主线程调用
+void Update()
+{
+    Kaiyun.Event.Tick();
+}
+
+//注册，触发
+//方向：in，out（主线程）
+```
 
 
 
@@ -11848,6 +13964,269 @@ public abstract class Singleton<T> : MonoBehaviour where T : Singleton<T>
 
 
 
+
+
+## **技能系统**
+
+### **技能的设计理念**
+
+开发一个 MMORPG 游戏的技能系统是一个复杂而又重要的任务。下面是一些你可以考虑的技能系统设计和实现方案：
+
+
+
+\1. 技能分类：将技能分为不同的类别，如攻击技能、辅助技能等，可以让玩家更加容易理解和学习技能；技能施放目标（单位、点、无目标）
+
+\2. 技能效果：每个技能应有独特的效果，其中包括直接伤害、控制效果、增益效果等；
+
+\3. 技能等级：每个技能应该有对应的等级，随着技能等级的提升，技能的效果和威力也应该相应增强；
+
+\4. 技能升级：玩家可以通过使用技能来提升技能等级，或者通过消耗游戏内资源来升级技能；
+
+\5. 技能冷却时间：每个技能都应有冷却时间，这样可以防止玩家过于频繁地使用技能，从而保持游戏的平衡性；
+
+\6. 技能组合：不同的技能可以组合使用，产生更加强大的效果和能力，玩家需要根据实际情况进行组合使用以获得最佳效果；
+
+\7. 技能书或技能符：玩家可以通过购买或者掉落的方式获取技能书或技能符，学习新的技能或提升已有技能的等级。
+
+需要注意的是，在设计一个 MMORPG 的技能系统时，应该考虑到游戏整体的平衡性，防止某些技能过于强大或者过于弱小。同时，技能系统应该有足够的深度和复杂度，以满足不同类型玩家的需求。最后，为了保证游戏平衡性，技能系统的实现也需要不断地进行调整和平衡，以确保游戏体验的公正性和爽快感。
+
+
+
+### **技能参数**
+
+根据提供的技能属性信息，以下是对应功能和作用的解释：
+
+\1. 编号：技能在系统中的唯一标识符。
+
+\2. 单位类型：适用该技能的单位类型，例如角色、怪物等。
+
+\3. 技能码：用于区分不同的技能，同一个技能的不同等级他们的技能码相同。
+
+\4. 技能名称：技能的名称，用于显示和玩家交互。
+
+\5. 技能描述：对技能功能和效果的文字描述，用于向玩家解释技能的作用。
+
+\6. 技能等级：技能的当前等级。
+
+\7. 技能上限：技能可以达到的最高等级。
+
+\8. 类别：技能所属的分类，如攻击型、防御型、辅助型等。
+
+\9. 技能图标：技能在界面上显示的图标。
+
+\10. 目标类型：技能可作用的目标类型，如单体、群体、敌方、友方等。
+
+\11. 冷却时间：技能使用后需要等待的冷却时间，单位为秒。
+
+\12. 施法距离：施法者与目标之间的最大距离。
+
+\13. 施法前摇：技能使用前的准备时间，通常以秒为单位。
+
+\14. 魔法消耗：使用技能所需的魔法值消耗。
+
+\15. 施法动作：技能使用时的特定动作或动画。
+
+\16. 等级要求：使用该技能所需的最低等级限制。
+
+\17. 投射物：技能释放后是否有物体或者投射物飞出。
+
+\18. 投射速度：投射物飞行的速度。
+
+\19. 击中效果：技能击中目标后产生的效果，如伤害、状态移除等。
+
+\20. 影响区域：技能的作用范围或影响区域，如圆形范围、扇形范围等。
+
+\21. 命中时间：技能命中目标的时间点。
+
+\22. 附加效果：技能额外带有的其他效果，如减速、治疗、提升属性等。
+
+\23. 物理攻击：技能造成的物理伤害值。
+
+\24. 法术攻击：技能造成的法术伤害值。
+
+\25. 物攻加成：技能使用时对物理攻击的加成效果。
+
+\26. 法攻加成：技能使用时对法术攻击的加成效果。
+
+这些属性提供了对技能的详细描述，可以根据这些属性设计和调整技能的效果和功能，以满足游戏的需求和平衡性。请注意在设计时要考虑技能之间的相互作用和整体平衡，以确保游戏的公平性和可玩性。
+
+
+
+### **开发思路**
+
+客户端和服务器都有Define数据，所以我们并不需要将技能信息完整的传输，只需要通过网络同步技能的id即可，其他属性都可以通过Define计算得出。
+
+技能阶段：开始-前摇-激活-结束
+
+技能状态：
+
+```
+public enum SkillState
+{
+    None, Casting, Active
+}
+```
+
+
+
+角色和技能的关系：
+
+<img src="MMORPG.assets/image-20231116170500496.png" alt="image-20231116170500496" style="zoom:50%;" /> 
+
+
+
+
+
+### 技能释放请求与结果
+
+<img src="MMORPG.assets/image-20231117213758003.png" alt="image-20231117213758003" style="zoom:50%;" /> 
+
+
+
+<img src="MMORPG.assets/image-20231117213807720.png" alt="image-20231117213807720" style="zoom:67%;" /> 
+
+
+
+
+
+### 技能释放的流程
+
+![image-20231204210859758](MMORPG.assets/image-20231204210859758.png)
+
+1.网络模块：接收释放请求，然后转交给场景
+
+2.场景就会就会转交给施法者
+
+3.施法者调用自己的Spell技能释放器来释放技能
+
+4.Spell ：分别处理 单位类型，点类型，无类型 三种技能，技能前的必要条件处理
+
+5.SCObject : Server-Client-Object,用于代理（单位与点）
+
+6.CanUse: 技能是否能够执行，例如冷却 距离 道具 buff之类的。将结果通知施法者
+
+7.Use:真正运行技能
+
+8.广播给场景中的其他玩家：让其他玩家知道某个单位施法了技能
+
+
+
+![image-20231205123820873](MMORPG.assets/image-20231205123820873.png)
+
+我们的冷却从激活的时候（因为激活这个状态时间很短，所以就把它并在一起了）才开始进行，所以说蓄气的时候不进入冷却
+
+
+
+
+
+### **技能伤害**
+
+设计伤害消息
+
+在设计`Damage`消息结构时，是否需要加入其他属性取决于您的游戏逻辑和设计需求。以下是一些可能考虑加入的额外属性：
+
+
+
+\1. **伤害类型**：可以通过枚举（enum）来定义不同的伤害类型，如物理、魔法、真实伤害等，以便在游戏逻辑中进行区分处理。
+
+\2. **伤害来源**：除了技能，伤害可能来自多种来源，如陷阱、道具、环境效果等。添加一个字段来标识伤害来源可能有助于处理复杂的游戏逻辑。
+
+\3. **时间戳**：记录伤害发生的具体时间点，对于解决网络延迟引起的同步问题或者回放系统中的事件重现可能非常有用。
+
+\4. **位置信息**：如果游戏中位置信息很重要，可能需要记录伤害发生时攻击者和目标的位置。
+
+\5. **连击信息**：如果游戏中有连击机制，记录连击数或者连击的特殊效果也许是必要的。
+
+\6. **状态效果**：某些技能可能会附带状态效果，如减速、眩晕等，可以加入相关信息来描述这些效果。
+
+\7. **护盾穿透**：如果游戏中有护盾机制，可能需要记录伤害是否穿透护盾以及穿透的量。
+
+\8. **伤害减免**：记录目标因装备或技能效果而减免的伤害量，对于后续的游戏数据分析可能很有帮助。
+
+\9. **伤害反射**：如有伤害反射机制，记录反射的伤害量和反射给谁也许是必要的。
+
+\10. **溢出伤害**：如果目标的生命值低于伤害量，记录溢出的伤害量可能对于某些游戏机制来说很重要。
+
+\11. **攻击者和目标的状态**：在造成伤害时，攻击者和目标的状态（如增益/减益效果）可能会影响最终的伤害计算，这些信息可能需要被记录下来。
+
+\12. **技能等级**：如果技能伤害随着技能等级提升而增加，那么技能等级可能是一个重要的属性。
+
+\13. **随机元素**：如果伤害计算中包含随机性，可能需要记录用于计算伤害的随机种子，以保证结果的可复现性。
+
+请根据您的具体需求和游戏设计来决定是否需要加入这些额外的属性。记得在添加新的属性时，也要考虑到消息的大小、性能影响以及向后兼容性。
+
+
+
+
+
+### **计算伤害数值**
+
+**减法公式**
+
+**伤害 = 攻击[攻] - 防御[守]**
+
+**好处**：直观
+
+**缺陷**：假设你的攻击力低于对方的防御，此时你打对方伤害为0
+
+那你不断提升攻击力，但是还是达不到对方的防御力，那么你的提升就是0；因为打不出伤害.
+
+差距过大的情况下，提升看不出效果
+
+
+
+**英雄联盟（乘法公式）**
+
+**伤害 = 攻击[攻] × ( 1 - 护甲[守] / ( 护甲[守] + 100 ) )**
+
+**100 这个值是防御修正，你可以改变这个值，使得多少的护甲是百分之50的减伤，在低于这个防御修正之前，提升是非常快的**
+
+10护甲=伤害减免9%
+
+100护甲=伤害减免50%
+
+200护甲=伤害减免66.66%
+
+300护甲=伤害减免75%
+
+400护甲=伤害减免80%
+
+1000护甲=减免90%
+
+好处：改善了减法公式的缺点
+
+缺陷：一开始我们有100护甲的时候，伤害减免已经50%了
+
+​			随着我们的护甲堆到1000，伤害减免也才90%。越往后堆护甲的收益越来越低
+
+对于英雄联盟这种装备有限的游戏来说可以这样用。
+
+但是对于mmo这种游戏来说就不行了，随着等级的不同，装备属性也会提升。因为我们出来300护甲的装备就已经减伤50%后面根本就没必要换装备了。
+
+这时候游戏动力就没有了。
+
+
+
+**魔兽世界（乘法公式）**
+
+**伤害 = 攻击[攻] × ( 1 - 护甲[守] / ( 护甲[守] + 400 + 85 × 等级[敌人] ) )**
+
+防御修正这个值不再是固定的值了，它会随着等级变化
+
+你面对的敌人等级越高，你就需要堆更多的护甲才能达到百分之50的减伤
+
+
+
+
+
+
+
+
+
+
+
+
+
 # 热更新
 
 
@@ -12083,6 +14462,10 @@ AssetBundle 提供了三种压缩格式：
 
 
 #### AB包具体使用方式
+
+
+
+
 
 #### AssetBundle Browser
 
@@ -13971,11 +16354,87 @@ public class MousePosition : MonoBehaviour
 
 # 游戏AI行为决策
 
+## 概要
+
+![image-20230904200801021](MMORPG.assets/image-20230904200801021.png)
+
+**感知**：可以检测附近玩家或者环境的变化，比如说：有没有玩家进入它的视野，有没有玩家对它进行攻击，感知到这些情况，就可以根据这些情况去做决策
+
+**决策**：根据环境的变化来思考该做出什么反馈。实现的方式有：**状态机，行为树，硬编码**
+
+​	如果只有4、5种状态的话就十分适合使用状态机。如果更多更复杂的就得使用行为树。
+
+**行动**：ai所做出的具体反馈，比如说释放技能，移动到指定位置，寻路.....
+
+
+
+AI包括的能力：寻路能力、移动、视野、技能
+
+比如：
+
+1.走地鸡：只能跑来跑去，被打就死
+
+2.旋风狼：进入它的视野内就攻击你
+
+3.豪猪：只有你打它，它才会撞你
+
+4.飞僵：有技能
+
+
+
+旋风狼：
+
+1.生命值为0 死亡倒地
+
+2.附近无人自动巡逻（出生点附近随机位置）
+
+3.视野内出现敌人就回去追击
+
+4.如果超出自己的可移动范围则返回
+
+5.血量低于15%开始逃跑
+
+6.血量低于10%狂化
+
+
+
+
+
+
+
 ## 有限状态机FSM
 
+### 理论
 
 
 
+### 举个栗子
+
+![image-20241013113308179](MMORPG.assets/image-20241013113308179.png)
+
+比如：Monster调用它的ai，然后通过ai来调用状态机。这里ai就相当于charactercontroller
+
+
+
+**巡逻**
+
+每隔一段时间，就给ai一个特定范围内的随机位置，让其移动即可。
+
+我们给客户端也只需要发一个坐标就行了。
+
+**追击**
+
+在巡逻的时候来检测玩家是不是在检测范围内。
+
+怎么检测呢？
+
+其实就是判断两个actor坐标之间的距离,如果在怪物ai的追击范围内就进行追击，到达特定的范围就会进行攻击。
+
+需要注意的就是，如果ai跑出了活动范围获取敌人超出了追击范围，ai就会进入return状态，返回出生点
+
+**返回**
+
+返回出生点
 
 
 
@@ -14833,6 +17292,14 @@ public partial class BehaviorTreeBuilder
 
 
 
+## Goap
+
+目标导向行为策略
+
+
+
+
+
 
 
 
@@ -14940,6 +17407,20 @@ https://github.com/Demigiant/dotween/issues/154
 
 
 
+## 解决客户端中实例化操作不能在主线程中使用
+
+**这里用一个插件UnityMainThreadDispatcher**
+
+原理：本身就是一个MonoBehaviour，然后加了一个线程消息队列，实际上这个脚本就是一个中介（因为它运行在主线程中），我们可以把我们要干的事情交给他，然后主线程就会调用这个脚本，如果消息队列里面有消息就执行这些操作，就可以达到一个间接使用主线程的目的。
+
+**使用方法：**
+
+```
+UnityMainThreadDispatcher.Instance().Enqueue(()=>{
+	//你的代码......
+});
+```
+
 
 
 # 摄像机
@@ -14968,9 +17449,9 @@ https://www.bilibili.com/video/BV1FN4y1G7n1/?spm_id_from=333.788&vd_source=ff929
 
 
 
+# 关于美术资源
 
-
-# 模型
+## 模型
 
 ![image-20240907203404053](MMORPG.assets/image-20240907203404053.png) 
 
@@ -15345,7 +17826,7 @@ mode 模式，普通模式 武器模式 御剑飞行模式。。。似乎没我�
 
 
 
-直入直出的淡化
+这个提示框好看，中间生成自动往上压。
 
 ![image-20240908093605701](MMORPG.assets/image-20240908093605701.png)
 
@@ -15378,8 +17859,6 @@ z锁定，可以锁定也可以不锁定，但是锁定可以让你更容易看�
 
 
 普通攻击和技能施法时候是否去自动锁定这个问题：模仿黑猴需要自己锁定目标，普攻和技能才会自动转向。
-
-
 
 
 
