@@ -4634,7 +4634,7 @@ static void StartAccept(SocketAsyncEventArgs e)
 //收到连接后触发的事件
 static void OnAccept(object sender, SocketAsyncEventArgs e)
 {
-    Socket handler = e.AcceptSocket;
+    Socket handler = e.AcceptSocket;	
     e.AcceptSocket = null;//为重复利用e，必须使用此句代码
     Console.WriteLine($"侦听到来自{handler.RemoteEndPoint.ToString()}的连接请求");
     StartAccept(e);//进入下一个侦听周期，注意，参数e是上一个StartAccept传递过来的
@@ -5052,7 +5052,7 @@ static void StartSend(SocketAsyncEventArgs e)
 
 
 
-## Socket异步编程之Async模式2
+## Socket异步编程之Async模式优化
 
 上篇文章我们讲了 Socket 异步编程 SAEA 模式的使用方法，那篇文章仅仅是帮助你理解 SAEA 侦听、数据接收和发送的流程，并非正确使用方法。本文深入讨论如何使用 SAEA
 
@@ -9379,7 +9379,7 @@ struct Input
 
 ![image-20240909104242750](MMORPG.assets/image-20240909104242750.png)
 
-在二十年前，相比于使用帧同步（为了方便描述，后续的文章中以帧同步代替Lockstep） 还是状态同步，开发者们更关心的是网络架构的实现方式（P2P/CS)。换句话讲，在当时业 内看来，P2P架构的同步模型虽然减少了延迟，但由于作弊、跨平台、难以维护大型网络游 戏等问题，人们更希望用CS架构来取代P2P。同时，开发者们虽然可以继续在CS架构下使 用逻辑比较简洁的帧同步，但有不少开发者都认为刚刚诞生的状态同步貌似更符合CS架构 的同步理念。
+在二十年前，相比于使用帧同步（为了方便描述，后续的文章中以帧同步代替Lockstep） 还是状态同步，开发者们更关心的是网络架构的实现方式（P2P/CS)。换句话讲，在当时业 内看来，P2P架构的同步模型虽然减少了延迟，但由于作弊、跨平台、难以维护大型网络游戏等问题，人们更希望用CS架构来取代P2P。同时，开发者们虽然可以继续在CS架构下使 用逻辑比较简洁的帧同步，但有不少开发者都认为刚刚诞生的状态同步貌似更符合CS架构 的同步理念。
 
 ![image-20240909104323386](MMORPG.assets/image-20240909104323386.png)
 
@@ -9395,9 +9395,9 @@ struct Input
 
 ![image-20240909104610853](MMORPG.assets/image-20240909104610853.png) 
 
-​	上述的这个过程就是我们所说的快照同步，即服务器每帧接受客户端的输入来计算整个世界 的状态，然后将结果快照发送给所有客户端。Quake这里所谓的快照，就是把整个游戏世 界里面所有对象的状态做一次临时保存（他更强调的是对象的可视化状态，比如位置和旋转 等）。通过这个快照，我们可以还原出这一刻世界的状态应该是什么样子的。
+​	上述的这个过程就是我们所说的快照同步，即服务器每帧接受客户端的输入来计算整个世界的状态，然后将结果快照发送给所有客户端。Quake这里所谓的快照，就是把整个游戏世 界里面所有对象的状态做一次临时保存（他更强调的是对象的可视化状态，比如位置和旋转 等）。通过这个快照，我们可以还原出这一刻世界的状态应该是什么样子的。
 
-​	Quake运行时，逻辑帧率与渲染帧率是保持一致的。由于所有的核心逻辑都是在服务器进 行，所以也不需要通过锁步来避免客户端不同步的问题，只要在收到服务器消息后执行渲染 就好了。当然，对于性能以及网络环境较差的玩家来说，游戏体验仍然很糟糕。因为你按下 一个按钮后，可能很长时间都没有反应，当收到服务器的快照消息后，你可能已经被网络好 的玩家击杀了。
+​	Quake运行时，逻辑帧率与渲染帧率是保持一致的。由于所有的核心逻辑都是在服务器进行，所以也不需要通过锁步来避免客户端不同步的问题，只要在收到服务器消息后执行渲染 就好了。当然，对于性能以及网络环境较差的玩家来说，游戏体验仍然很糟糕。因为你按下 一个按钮后，可能很长时间都没有反应，当收到服务器的快照消息后，你可能已经被网络好 的玩家击杀了。
 
 ![image-20240909104727934](MMORPG.assets/image-20240909104727934.png)
 
@@ -9411,7 +9411,7 @@ IdSoftware自2012年以来已经陆续把Quake以及Doom相关的源码上传到
 
 
 
-​	但Quake里面由于客户端只是一个简单的渲染器，同步过程中会出现很多明显的问题，比 如延迟过大，客户端性能浪费，服务器压力大等。而其中最明显的问题就是对带宽的浪费， 对于一个物体和角色比较少的游戏，可以使用快照将整个世界的状态都存储并发送，但是一 旦物体数量多了起来，带宽占用就会直线上升。所以，我们希望不要每帧都把整个世界的数 据都发过去，而是只发送那些产生变化的对象数据（可以称为增量快照同步）。更进一步 的，我们还希望将数据拆分的更细一些，并根据客户端的特点来定制发送不同的数据。基于 这种思想，《星际部落：围攻》团队的开发者们开始对网络架构进行抽象和分层，构造出来 一套比较完善的"状态同步"系统并以此开发出了Tribe游戏系列。 The TRIBES Engine可以认为是第一个实现状态同步的游戏引擎，《星际部落：围攻》也可 以认为是第一个比较完美的实现了状态同步的游戏。
+​	但Quake里面由于客户端只是一个简单的渲染器，同步过程中会出现很多明显的问题，比 如延迟过大，客户端性能浪费，服务器压力大等。而其中最明显的问题就是对带宽的浪费， 对于一个物体和角色比较少的游戏，可以使用快照将整个世界的状态都存储并发送，但是一旦物体数量多了起来，带宽占用就会直线上升。所以，我们希望不要每帧都把整个世界的数 据都发过去，而是只发送那些产生变化的对象数据（可以称为增量快照同步）。更进一步 的，我们还希望将数据拆分的更细一些，并根据客户端的特点来定制发送不同的数据。基于 这种思想，《星际部落：围攻》团队的开发者们开始对网络架构进行抽象和分层，构造出来 一套比较完善的"状态同步"系统并以此开发出了Tribe游戏系列。 The TRIBES Engine可以认为是第一个实现状态同步的游戏引擎，《星际部落：围攻》也可 以认为是第一个比较完美的实现了状态同步的游戏。
 
 ```
 //client
@@ -11001,8 +11001,6 @@ LengthFieldDecoder：消息解码器
 
 ### 同步和异步
 
-
-
 当我们使用Socket进行网络通信时，我们需要发送和接收数据，这些操作可以使用同步方式和异步方式进行。
 
 在**同步模式**下，发送和接收数据的操作是阻塞的，也就是说程序会一直等待操作完成之后才会执行下一条语句。例如，当我们使用 `Socket.Send` 方法发送数据时，程序会一直等待数据发送完毕之后才会执行下一条语句。同样地，在接收数据时，程序会一直等待数据接收完毕之后才会执行下一条语句。这种方式下，程序会被阻塞，直到操作完成。
@@ -11026,6 +11024,80 @@ C#异步接收有两套API，分别是：
 2、Begin+End模式 
 
 每次循环都会创建新的异步结果对象(IAsyncResult)
+
+
+
+### 相关api
+
+#### SocketAsyncEventArgs
+
+`SocketAsyncEventArgs` 是 C# 中用于异步套接字操作的类，属于 `System.Net.Sockets` 命名空间。它是一个高效的异步套接字编程工具，通常用于处理大量并发连接的高性能网络应用程序。
+
+##### 主要功能
+`SocketAsyncEventArgs` 提供了一个事件驱动的模型来处理异步网络操作，如连接、发送、接收数据等。它的设计目的是避免在每个异步操作中创建新的对象，减少内存分配和回收的开销，从而提高性能。
+
+##### 常用属性和方法
+- **SocketAsyncEventArgs.SocketError**：获取或设置与异步操作相关的错误信息。
+- **SocketAsyncEventArgs.Buffer**：获取或设置数据缓冲区，用于存储接收到的数据或将要发送的数据。
+- **SocketAsyncEventArgs.RemoteEndPoint**：获取或设置远程终结点，用于表示连接的目标。
+- **SocketAsyncEventArgs.Completed**：用于订阅操作完成时的事件处理程序。
+  
+##### 常用异步操作
+以下是几种常见的异步操作及其对应的使用方法：
+
+1. **连接（ConnectAsync）**
+   
+   ```csharp
+   SocketAsyncEventArgs connectEventArgs = new SocketAsyncEventArgs();
+   connectEventArgs.RemoteEndPoint = new IPEndPoint(IPAddress.Loopback, 8080);
+   connectEventArgs.Completed += (sender, e) => {
+       if (e.SocketError == SocketError.Success) {
+           Console.WriteLine("Connected successfully.");
+       } else {
+           Console.WriteLine($"Error: {e.SocketError}");
+       }
+   };
+   socket.ConnectAsync(connectEventArgs);
+   ```
+   
+2. **发送数据（SendAsync）**
+   ```csharp
+   SocketAsyncEventArgs sendEventArgs = new SocketAsyncEventArgs();
+   sendEventArgs.SetBuffer(buffer, 0, buffer.Length);
+   sendEventArgs.Completed += (sender, e) => {
+       if (e.SocketError == SocketError.Success) {
+           Console.WriteLine("Data sent successfully.");
+       } else {
+           Console.WriteLine($"Error: {e.SocketError}");
+       }
+   };
+   socket.SendAsync(sendEventArgs);
+   ```
+
+3. **接收数据（ReceiveAsync）**
+   ```csharp
+   SocketAsyncEventArgs receiveEventArgs = new SocketAsyncEventArgs();
+   receiveEventArgs.SetBuffer(new byte[1024], 0, 1024);
+   receiveEventArgs.Completed += (sender, e) => {
+       if (e.SocketError == SocketError.Success) {
+           Console.WriteLine($"Received {e.BytesTransferred} bytes.");
+       } else {
+           Console.WriteLine($"Error: {e.SocketError}");
+       }
+   };
+   socket.ReceiveAsync(receiveEventArgs);
+   ```
+
+##### 优点
+- **高性能**：通过减少对象分配和垃圾回收，提高网络程序的性能。
+- **事件驱动模型**：`SocketAsyncEventArgs` 提供了事件驱动的异步操作处理方式，便于管理操作完成后的逻辑。
+- **可重用**：同一个 `SocketAsyncEventArgs` 实例可以被多个异步操作重复使用，降低了内存开销。
+
+##### 适用场景
+- 高并发的服务器端应用程序，如游戏服务器、Web 服务器或实时数据处理服务器。
+- 需要高效处理网络通信的场合。
+
+`SocketAsyncEventArgs` 适合开发那些对性能要求很高，并且需要处理大量并发连接的网络应用。
 
 
 
@@ -15068,7 +15140,11 @@ https://gitee.com/HellGame/BetterStreamingAssets.git
 
 Assembly-CSharp.dll （项目默认程序集）
 
-基础包（Main程序集）
+**基础包（Main程序集）**,我们打包场景的时候只需要打Main包即可
+
+![image-20241014215014580](MMORPG.assets/image-20241014215014580.png) 
+
+
 
 
 
@@ -17407,7 +17483,11 @@ https://github.com/Demigiant/dotween/issues/154
 
 
 
-## 解决客户端中实例化操作不能在主线程中使用
+
+
+## **UnityMainThreadDispatcher**
+
+解决客户端中实例化操作不能在主线程中使用
 
 **这里用一个插件UnityMainThreadDispatcher**
 

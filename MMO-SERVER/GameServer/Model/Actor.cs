@@ -370,26 +370,7 @@ namespace GameServer.Model
         public virtual void TransmitTo(Space targetSpace,Vector3Int pos,Vector3Int dir = new Vector3Int())
         {
             if (this is not Character chr) return;
-            //传送的不是同一场景
-            if(currentSpace != targetSpace)
-            {
-                //1.退出当前场景
-                currentSpace.EntityLeave(chr);
-                //设置坐标
-                var tempSpace = currentSpace;
-                currentSpace = null;
-                chr.Position = pos;
-                chr.Direction = dir;
-                currentSpace = tempSpace;
-                //2.进入新场景
-                targetSpace.EntityJoin(chr);
-
-            }
-            //传送的是同一场景
-            else
-            {
-                currentSpace.Transmit(this, pos, dir);
-            }
+            currentSpace.TransmitTo(targetSpace,this,pos,dir);
         }
 
     }

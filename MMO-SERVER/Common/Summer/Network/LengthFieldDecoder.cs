@@ -6,6 +6,7 @@ using System.Text;
 
 namespace GameServer.Network
 {
+    //todo 这里的异步模型还是begin/end 我们改成async
     /// <summary>
     /// 这是Socket异步接收器，可以对接收的数据粘包与拆包
     /// 事件委托：
@@ -29,12 +30,11 @@ namespace GameServer.Network
         private int mOffect = 0;                //缓冲区目前的长度
         private int mSize = 64 * 1024;          //一次性接收数据的最大字节，默认64kMb
 
-        //成功收到消息的委托事件
+        //委托事件
         public delegate void ReceivedHandler(byte[] data);
-        public event ReceivedHandler Received;
-        //连接断开的委托事件
         public delegate void DisconnectedHandler();
-        public event DisconnectedHandler disconnected;
+        public event ReceivedHandler Received;
+        public event DisconnectedHandler Disconnected;
 
         /// <summary>
         /// 构造方法
@@ -63,7 +63,7 @@ namespace GameServer.Network
         {
             if (mSocket != null && !isStart)
             {
-                mSocket.BeginReceive(mBuffer, mOffect, mSize - mOffect, SocketFlags.None, new AsyncCallback(Receive), null);
+                mSocket.BeginReceive(mBuffer, mOffect, mSize - mOffect, SocketFlags.None, new AsyncCallback(OnReceive), null);
                 isStart = true;
             }
         }
@@ -72,17 +72,20 @@ namespace GameServer.Network
         /// 异步接收的回调
         /// </summary>
         /// <param name="result"></param>
-        public void Receive(IAsyncResult result)
+        public void OnReceive(IAsyncResult result)
         {
             try
             {
-
-                int len = mSocket.EndReceive(result);
+                int len = 0;
+                if(mSocket != null)
+                {
+                    len = mSocket.EndReceive(result);
+                }
 
                 // 消息长度为0，代表连接已经断开
                 if (len == 0)
                 {
-                    _disconnected();
+                    PassiveDisconnection();
                     return;
                 }
 
@@ -90,60 +93,29 @@ namespace GameServer.Network
                 ReadMessage(len);
 
                 //继续接收数据
-                mSocket.BeginReceive(mBuffer, mOffect, mSize - mOffect, SocketFlags.None, new AsyncCallback(Receive), null);
+                mSocket.BeginReceive(mBuffer, mOffect, mSize - mOffect, SocketFlags.None, new AsyncCallback(OnReceive), null);
 
             }
             catch (ObjectDisposedException e)
             {
-                Console.WriteLine(e);
-                _disconnected();
+                // Socket 已经被释放
+                Log.Information("[Socket 已释放，接收操作中止。]");
+                Log.Information(e.ToString());
+                PassiveDisconnection();
             }
             catch (SocketException e)
             {
                 //打印一下异常，并且断开与客户端的连接
-                Console.WriteLine(e);
-                _disconnected();
+                Log.Information("[SocketException]");
+                Log.Information(e.ToString());
+                PassiveDisconnection();
             } catch (Exception e)
             {
                 //打印一下异常，并且断开与客户端的连接
-                Console.WriteLine(e);
-                _disconnected();
+                Log.Information(e.ToString());
+                PassiveDisconnection();
             }
 
-        }
-
-        /// <summary>
-        /// 被动关闭连接
-        /// </summary>
-        private void _disconnected()
-        {
-            try
-            {
-                mSocket?.Shutdown(SocketShutdown.Both);
-                mSocket?.Close();
-            }
-            catch { } 
-            mSocket = null;
-            //并且向上传递消息断开信息
-            if (isStart)
-            {
-                disconnected?.Invoke();
-            }
-        }
-
-        /// <summary>
-        /// 主动关闭连接
-        /// </summary>
-        public void ActiveClose()
-        {
-            isStart = false;
-            try
-            {
-                mSocket?.Shutdown(SocketShutdown.Both);
-                mSocket?.Close();//其实就是四次挥手的开始，发送fin信号
-            }
-            catch { }
-            mSocket = null;
         }
 
         /// <summary>
@@ -209,7 +181,6 @@ namespace GameServer.Network
             }
 
         }
-
         /// <summary>
         /// 获取大端模式int值
         /// </summary>
@@ -219,6 +190,39 @@ namespace GameServer.Network
         private int GetInt32BE(byte[] data, int index)
         {
             return (data[index] << 0x18) | (data[index + 1] << 0x10) | (data[index + 2] << 8) | (data[index + 3]);
+        }
+
+        /// <summary>
+        /// 被动关闭连接
+        /// </summary>
+        private void PassiveDisconnection()
+        {
+
+            try
+            {
+                mSocket?.Shutdown(SocketShutdown.Both);
+                mSocket?.Close();
+                mSocket?.Dispose();
+            }
+            catch { 
+                
+            } 
+            mSocket = null;
+
+            //并且向上传递消息断开信息
+            if (isStart)
+            {
+                Disconnected?.Invoke();
+            }
+        }
+
+        /// <summary>
+        /// 主动关闭连接
+        /// </summary>
+        public void ActiveClose()
+        {
+            isStart = false;
+            PassiveDisconnection();
         }
 
     }

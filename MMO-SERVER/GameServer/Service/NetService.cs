@@ -67,7 +67,6 @@ namespace GameServer.Network
             //给conn添加心跳时间
             heartBeatPairs[conn] = DateTime.Now;
         }
-
         /// <summary>
         /// 客户端断开连接回调
         /// </summary>
@@ -117,7 +116,6 @@ namespace GameServer.Network
             HeartBeatResponse resp = new HeartBeatResponse();
             conn.Send(resp);
         }
-
         /// <summary>
         /// 检查心跳包的回调,这里是自己启动了一个timer。可以考虑交给中心计时器
         /// </summary>

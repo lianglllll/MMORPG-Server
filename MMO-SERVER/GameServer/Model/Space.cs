@@ -84,6 +84,7 @@ namespace GameServer.Model
         public void EntityJoin(Entity entity)
         {
             actionQueue.Enqueue(() => {
+
                 //加入aoi空间
                 aoiZone.Enter(entity);
 
@@ -201,6 +202,10 @@ namespace GameServer.Model
                 self.State = entitySync.State;
                 var loc = self.AoiPos;
                 var handle = aoiZone.Refresh(self.EntityId, loc.x, loc.y, viewArea);   //更新aoi空间里面我们的坐标
+                if(handle == null)
+                {
+                    int a = 2;
+                }
 
                 //广播给视野范围内的玩家
                 var units = EntityManager.Instance.GetEntitiesByIds(handle.ViewEntity);
@@ -210,6 +215,8 @@ namespace GameServer.Model
                 {
                     chr.session.Send(resp);
                 }
+
+
                 //需要让自己的客户端强制位移
                 if (isIncludeSelf)
                 {
@@ -318,17 +325,35 @@ namespace GameServer.Model
 
         }
 
-        /// <summary>
-        /// 场景内传送
-        /// </summary>
-        public void Transmit(Actor actor,Vector3Int pos, Vector3Int dir = new Vector3Int())
+        public virtual void TransmitTo(Space targetSpace, Actor actor,Vector3Int pos, Vector3Int dir = new Vector3Int())
         {
-            var  entitySync = new NEntitySync();
-            entitySync.State = EntityState.Idle;
-            entitySync.Entity.Position = pos;
-            entitySync.Entity.Direction = dir;
+            actionQueue.Enqueue(() =>
+            {
+                //传送的不是同一场景
+                if (this != targetSpace)
+                {
+                    //1.退出当前场景
+                    this.EntityLeave(actor);
 
-            SyncActor(entitySync, actor,true);
+                    //设置坐标
+                    actor.Position = pos;
+                    actor.Direction = dir;
+                    actor.currentSpace = targetSpace;
+
+                    //2.进入新场景
+                    targetSpace.EntityJoin(actor);
+
+                }
+                //传送的是同一场景
+                else
+                {
+                    var entitySync = new NEntitySync();
+                    entitySync.State = EntityState.Idle;
+                    entitySync.Entity.Position = pos;
+                    entitySync.Entity.Direction = dir;
+                    SyncActor(entitySync, actor, true);
+                }
+            });
         }
 
         /// <summary>

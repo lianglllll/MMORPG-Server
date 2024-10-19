@@ -12,7 +12,7 @@ namespace GameServer.Network
 {
 
     /// <summary>
-    /// 负责监听TCP网络端口，异步接收Socket连接
+    /// 负责监听TCP网络端口，基于Async编程模型，其中SocketAsyncEventArg实现了iocp模型
     /// 三个委托
     /// ----Connected       有新的连接
     /// ----DataReceived    有新的消息
@@ -25,14 +25,13 @@ namespace GameServer.Network
     {
         //网络连接的属性
         private IPEndPoint endPoint;    //网络终结点
-        private Socket serverSocket;    //服务端监听对象
+        private Socket listenerSocket;  //服务端监听对象
         private int backlog = 100;      //可以排队接收的传入连接数
 
         //委托
         public delegate void ConnectedCallback(Connection conn);                
         public delegate void DataReceivedCallback(Connection conn,IMessage data);
         public delegate void DisconnectedCallback(Connection conn);             
-        //事件
         public event ConnectedCallback Connected;       //接收到连接的事件
         public event DataReceivedCallback DataReceived; //接收到消息的事件          
         public event DisconnectedCallback Disconnected; //接收到连接断开的事件
@@ -50,29 +49,15 @@ namespace GameServer.Network
         }
 
         /// <summary>
-        /// 当前服务是否正在运行
+        /// 是否正在运行
         /// </summary>
         public bool IsRunning
         {
             get
             {
-                return serverSocket != null;
+                return listenerSocket != null;
             }
         }
-
-        /// <summary>
-        /// 关闭服务，停止监听连接
-        /// </summary>
-        public void Stop()
-        {
-            if (serverSocket == null)
-            {
-                return;
-            }
-            serverSocket.Close();
-            serverSocket = null;
-        }
-
         /// <summary>
         /// 启动服务，开始监听连接
         /// </summary>
@@ -80,18 +65,31 @@ namespace GameServer.Network
         {
             if (!IsRunning)
             {
-                serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                serverSocket.Bind(endPoint);                                        //绑定一个IPEndPoint
-                serverSocket.Listen(backlog);                                       //开始监听，并设置等待队列长度 
+                listenerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                listenerSocket.Bind(endPoint);                                        //绑定一个IPEndPoint
+                listenerSocket.Listen(backlog);                                       //开始监听，并设置等待队列长度 
 
-                SocketAsyncEventArgs args = new SocketAsyncEventArgs();             //这玩意可以复用,当前监听连接socket复用
+                SocketAsyncEventArgs args = new SocketAsyncEventArgs();             //可以复用,当前监听连接socket复用
                 args.Completed += OnAccept;                                         //当有用户的连接时触发回调函数
-                serverSocket.AcceptAsync(args);                                     //异步接收
+
+                listenerSocket.AcceptAsync(args);                                   //异步接收
             }
             else
             {
                 Log.Information("TcpServer already running");
             }
+        }
+        /// <summary>
+        /// 主动关闭服务，停止监听连接
+        /// </summary>
+        public void Stop()
+        {
+            if (listenerSocket == null)
+            {
+                return;
+            }
+            listenerSocket.Close();
+            listenerSocket = null;
         }
 
         /// <summary>
@@ -102,22 +100,23 @@ namespace GameServer.Network
         private void OnAccept(object sender, SocketAsyncEventArgs e)
         {
             //连入的客户端
-            Socket client = e.AcceptSocket;
+            Socket clientSocket = e.AcceptSocket;
             SocketError flag = e.SocketError;
 
             //继续接收下一位(异步操作)
             e.AcceptSocket = null;
-            serverSocket.AcceptAsync(e);
+            listenerSocket.AcceptAsync(e);
             
             //有人连接进来
             if (flag == SocketError.Success)
             {
-                if (client != null)
+                if (clientSocket != null)
                 {
                     //为连接成功的client构造一个connection对象
-                    Connection conn = new Connection(client);
+                    Connection conn = new Connection(clientSocket);
                     conn.OnDataReceived += OnDataReceived;
                     conn.OnDisconnected += OnDisconnected;
+
                     //通过委托将连接成功向上传递给NetService
                     Connected?.Invoke(conn);
                 }    
@@ -125,7 +124,6 @@ namespace GameServer.Network
             }
            
         }
-
         /// <summary>
         /// 接收到数据的回调
         /// </summary>
@@ -135,7 +133,6 @@ namespace GameServer.Network
         {
             DataReceived?.Invoke(conn, data);
         }
-
         /// <summary>
         /// 接收到连接断开的回调
         /// </summary>

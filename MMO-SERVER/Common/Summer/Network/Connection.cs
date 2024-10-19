@@ -36,8 +36,11 @@ namespace GameServer.Network
                 return _socket;
             }
         }
-        public LengthFieldDecoder lfd;
 
+        //消息接受器
+        private LengthFieldDecoder lfd;
+
+        //委托
         public delegate void DataReceivedHandler(Connection sender,IMessage data);
         public delegate void DisconnectedHandler(Connection sender);
         public DataReceivedHandler OnDataReceived;//消息接收的委托  todo这玩意貌似没有用上，因为消息我们直接交给消息路由了
@@ -54,7 +57,7 @@ namespace GameServer.Network
             //给这个客户端连接创建一个解码器
             lfd = new LengthFieldDecoder(socket, 64 * 1024, 0, 4, 0, 4);
             lfd.Received += OnDataRecived;
-            lfd.disconnected += _OnDisconnected;
+            lfd.Disconnected += _OnDisconnected;
             lfd.Start();//启动解码器，开始接收消息
 
         }
@@ -89,15 +92,12 @@ namespace GameServer.Network
             ushort code = GetUShort(data, 0);
             var msg = ProtoHelper.ParseFrom((int)code, data, 2, data.Length-2);
 
-            //Console.WriteLine(" 正在运行， 线程id：{0}，是否线程池线程: {1}", Thread.CurrentThread.ManagedThreadId, Thread.CurrentThread.IsThreadPoolThread);
-
             //交给消息路由，让其帮忙转发
             if (MessageRouter.Instance.Running)
             {
                 MessageRouter.Instance.AddMessage(this,msg);
             }
         }
-
         /// <summary>
         /// 获取data数据，偏移offset。获取两个字节
         /// 前提：data必须是大端字节序
