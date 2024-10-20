@@ -192,7 +192,7 @@
     "CD": 5,
     "IsMissile": 1,
     "MissileIsGroupAttack": 1,
-    "MissileEffectRadius": 4000,
+    "MissileEffectRadius": 5000,
     "Missile": "Effects/Fly/FireBall.prefab",
     "MissileSpeed": 15000,
     "Interval": 0,

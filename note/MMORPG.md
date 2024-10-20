@@ -7590,7 +7590,7 @@ public class Test : MonoBehaviour
 
 
 
-## unity中的协程和yield
+## yield
 
 ### 概要
 
@@ -7811,9 +7811,19 @@ IEnumerator CalledCoroutine()
 
 这种协程嵌套的机制使得 Unity 的协程系统能够处理复杂的异步操作和等待逻辑，同时保持代码的简洁性和可读性。
 
+## UniTask
+
+[Cysharp/UniTask: Provides an efficient allocation free async/await integration for Unity.](https://github.com/Cysharp/UniTask)
+
+用于解决异步操作
+
+![image-20241020003915569](MMORPG.assets/image-20241020003915569.png) 
+
+async/await也是运行在主线程中的
 
 
-## 异步操作
+
+
 
 
 

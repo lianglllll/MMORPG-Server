@@ -241,7 +241,7 @@ namespace GameServer.Combat
             }
             else
             {
-                targets = AreaEntitiesFinder.GetEntitiesInCircleAroundEntity(target, Define.MissileEffectRadius*0.001f, true).ToList();
+                targets = AreaEntitiesFinder.GetEntitiesInCircleAroundEntity(target, Define.MissileEffectRadius, true).ToList();
             }
 
             //对目标造成伤害

@@ -6,7 +6,7 @@ using GameServer.Core;
 using GameServer.Utils;
 using Serilog;
 using GameServer.Manager;
-using System.Numerics;
+using GameServer;
 
 namespace AOI
 {
@@ -174,16 +174,16 @@ namespace AOI
 
                 while (cur != null)
                 {
-                    if (Math.Abs(Math.Abs(cur.Value) - Math.Abs(node.X.Value)) > area.X)
+                    if (Math.Abs(Math.Abs(cur.Value) - Math.Abs(node.X.Value)) > area.x)
                     {
                         break;
                     }
 
-                    if (Math.Abs(Math.Abs(cur.Entity.Y.Value) - Math.Abs(node.Y.Value)) <= area.Y)
+                    if (Math.Abs(Math.Abs(cur.Entity.Y.Value) - Math.Abs(node.Y.Value)) <= area.y)
                     {
                         if (Distance(
                             new Vector2(node.X.Value, node.Y.Value),
-                            new Vector2(cur.Entity.X.Value, cur.Entity.Y.Value)) <= area.X)
+                            new Vector2(cur.Entity.X.Value, cur.Entity.Y.Value)) <= area.x)
                         {
                             try
                             {
@@ -211,16 +211,16 @@ namespace AOI
 
                 while (cur != null)
                 {
-                    if (Math.Abs(Math.Abs(cur.Value) - Math.Abs(node.Y.Value)) > area.Y)
+                    if (Math.Abs(Math.Abs(cur.Value) - Math.Abs(node.Y.Value)) > area.y)
                     {
                         break;
                     }
 
-                    if (Math.Abs(Math.Abs(cur.Entity.X.Value) - Math.Abs(node.X.Value)) <= area.X)
+                    if (Math.Abs(Math.Abs(cur.Entity.X.Value) - Math.Abs(node.X.Value)) <= area.x)
                     {
                         if (Distance(
                             new Vector2(node.X.Value, node.Y.Value),
-                            new Vector2(cur.Entity.X.Value, cur.Entity.Y.Value)) <= area.X)
+                            new Vector2(cur.Entity.X.Value, cur.Entity.Y.Value)) <= area.x)
                         {
                             
                             try
@@ -271,7 +271,7 @@ namespace AOI
 
         private double Distance(Vector2 a, Vector2 b)
         {
-            return Math.Pow((a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y), 0.5);
+            return Math.Pow((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y), 0.5);
         }
 
     }

@@ -31,22 +31,20 @@ namespace GameServer.Model
     /// 本场景的操作需要线性化
     /// </summary>
     public class Space
-    { 
-        public int SpaceId { get; set; }
-        public string Name { get; set; }
-        public SpaceDefine def { get; set; }
+    {
+        public int SpaceId => def.SID;
+        public string Name => def.Name;
+        private SpaceDefine def { get; set; }
+        public ConcurrentQueue<Action> actionQueue => _actionQueue;
 
         private Dictionary<int, Character> characterDict = new Dictionary<int, Character>();        //当前地图中所有的Character<entityId，角色引用>
         public MonsterManager monsterManager = new MonsterManager();                                //怪物管理器，负责当前场景的怪物创建和销毁
         public SpawnManager spawnManager = new SpawnManager();                                      //怪物孵化器，负责怪物的孵化
         public FightManager fightManager = new FightManager();                                      //战斗管理器，负责技能、投射物、伤害、actor信息的更新
         public ItemEntityManager itemManager = new ItemEntityManager();                             //物品管理器，管理场景中出现的物品
-
-        public AoiZone aoiZone = new AoiZone(0.001f,0.001f);                    //十字链表空间(unity坐标系)
-        private System.Numerics.Vector2 viewArea = new(Config.Server.AoiViewArea, Config.Server.AoiViewArea);
-
+        public AoiZone aoiZone = new AoiZone(0.001f,0.001f);                    //AOI管理器：十字链表空间(unity坐标系)
+        private Vector2 viewArea = new(Config.Server.AoiViewArea, Config.Server.AoiViewArea);
         private ConcurrentQueue<Action> _actionQueue = new ConcurrentQueue<Action>();                //任务队列,将space中的操作全部线性化
-        public ConcurrentQueue<Action> actionQueue => _actionQueue;
 
         /// <summary>
         /// 构造函数
@@ -55,14 +53,10 @@ namespace GameServer.Model
         public Space(SpaceDefine spaceDefine)
         {
             def = spaceDefine;
-            SpaceId = spaceDefine.SID;
-            Name = spaceDefine.Name;
             monsterManager.Init(this);
             spawnManager.Init(this);
             fightManager.Init(this);
             itemManager.Init(this);
-            //AOIManager = new AOIManager<Entity>(spaceDefine.Area[0], spaceDefine.Area[1], spaceDefine.Area[2], spaceDefine.Area[3]);
-
         }
 
         public void Update()
@@ -185,8 +179,6 @@ namespace GameServer.Model
                 //退出aoi空间
                 aoiZone.Exit(entity.EntityId);
             });
-
-
         }
 
         /// <summary>

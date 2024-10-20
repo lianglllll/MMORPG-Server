@@ -32,7 +32,7 @@ namespace GameServer.Combat
 
             //通过aoi查找矩形范围内的角色
             var space = entity.currentSpace;
-            var hanle = space.aoiZone.Refresh(entity.EntityId, new System.Numerics.Vector2(range, range));
+            var hanle = space.aoiZone.Refresh(entity.EntityId, new Vector2(range, range));
             if (hanle.ViewEntity == null)
             {
                 return new List<Actor>();
