@@ -144,31 +144,33 @@ namespace GameServer.Service
             chr.currentSpace.actionQueue.Enqueue(() => {
 
                 //获取符合条件的item，如果没有就忽略这次请求
-                ItemEntity itemEntity = chr.currentSpace.itemManager.GetItemEntityByEntityId(message.EntityId);
-                if (itemEntity == null) return;
+                EItem eItem = chr.currentSpace.itemManager.GetEItemByEntityId(message.EntityId);
+                if (eItem == null) return;
 
                 //添加物品到背包
                 int alreadyAddedAmount = 0;
-                if (itemEntity.Item.GetItemType() == ItemType.Equipment)
+                if (eItem.Item.GetItemType() == ItemType.Equipment)
                 {
-                    alreadyAddedAmount = chr.knapsack.AddItem(itemEntity.Item);
+                    alreadyAddedAmount = chr.knapsack.AddItem(eItem.Item);
                 }
                 else
                 {
-                    alreadyAddedAmount = chr.knapsack.AddItem(itemEntity.Item.ItemId, itemEntity.Item.Amount);
+                    alreadyAddedAmount = chr.knapsack.AddItem(eItem.Item.ItemId, eItem.Item.Amount);
                 }
 
                 //判别是否装得下
-                if (alreadyAddedAmount == itemEntity.Item.Amount)
+                if (alreadyAddedAmount == eItem.Item.Amount)
                 {
                     //如果背包能装下全部，则通知场景中这个物品已经消失
-                    chr.currentSpace.itemManager.RemoveItem(itemEntity);
+                    chr.currentSpace.itemManager.RemoveItem(eItem);
                 }
-                else if (alreadyAddedAmount < itemEntity.Item.Amount && alreadyAddedAmount != 0)
+                else if (alreadyAddedAmount < eItem.Item.Amount && alreadyAddedAmount != 0)
                 {
                     //更新场景中的itementity数据,amount
-                    itemEntity.Item.Amount -= alreadyAddedAmount;
-                    chr.currentSpace.SyncItemEntity(itemEntity);
+                    eItem.Item.Amount -= alreadyAddedAmount;
+                    NetItemEntitySync resp = new NetItemEntitySync();
+                    resp.NetItemEntity = eItem.NetItemEntity;
+                    chr.currentSpace.AOIBroadcast(eItem,resp);
                 }
                 else
                 {
@@ -181,7 +183,7 @@ namespace GameServer.Service
                 if (alreadyAddedAmount > 0)
                 {
                     res.Result = Result.Success;
-                    res.ItemId = itemEntity.Item.ItemId;
+                    res.ItemId = eItem.Item.ItemId;
                     res.Amout = alreadyAddedAmount;
                     //更新ui
                     _KnapsacUpdateResponse(chr);

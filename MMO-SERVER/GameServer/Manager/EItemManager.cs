@@ -11,12 +11,12 @@ namespace GameServer.Manager
 {
 
     /// <summary>
-    /// 每个space中都有一个ItemEntityManager，用于管理场景中的item实例
+    /// 每个space中都有一个EItemManager，用于管理场景中的item实例
     /// </summary>
-    public class ItemEntityManager
+    public class EItemManager
     {
         private Space space;
-        public Dictionary<int, ItemEntity> itemEntityDict = new Dictionary<int, ItemEntity>();        //<entityid,ItemEntity>
+        public Dictionary<int, EItem> itemEntityDict = new Dictionary<int, EItem>();        //<entityid,ItemEntity>
 
 
         public void Init(Space space)
@@ -31,27 +31,27 @@ namespace GameServer.Manager
         /// <param name="pos"></param>
         /// <param name="dir"></param>
         /// <returns></returns>
-        public ItemEntity Create(Item item, Vector3Int pos, Vector3Int dir)
+        public EItem Create(Item item, Vector3Int pos, Vector3Int dir)
         {
-            var ie = new ItemEntity(item, space, pos, dir);
+            var eItem = new EItem(item, space, pos, dir);
 
             //添加到entityMananger中管理
-            EntityManager.Instance.AddEntity(space.SpaceId, ie);
+            EntityManager.Instance.AddEntity(space.SpaceId, eItem);
 
             //添加到当前的mostermanager中管理，分配entityid
-            itemEntityDict[ie.EntityId] = ie;
+            itemEntityDict[eItem.EntityId] = eItem;
 
             //显示到当前场景
-            this.space.EntityJoin(ie);
+            this.space.EntityJoin(eItem);
 
-            return ie;
+            return eItem;
         }
         /// <summary>
         /// 在当前场景移除Item实例
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public Boolean RemoveItem(ItemEntity item)
+        public Boolean RemoveItem(EItem item)
         {
             if (!itemEntityDict.ContainsKey(item.EntityId)) return false;
             EntityManager.Instance.RemoveEntity(space.SpaceId, item.EntityId);
@@ -62,7 +62,7 @@ namespace GameServer.Manager
 
             return true;
         }
-        public ItemEntity GetItemEntityByEntityId(int entityId)
+        public EItem GetEItemByEntityId(int entityId)
         {
             return itemEntityDict.GetValueOrDefault(entityId);
         }

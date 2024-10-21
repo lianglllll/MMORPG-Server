@@ -2,7 +2,6 @@
 using System.Net;
 using System.Net.Sockets;
 using GameServer;
-using GameServer.Network;
 using Proto;
 using Serilog;
 using GameServer.Service;
@@ -15,6 +14,7 @@ using GameServer.Core;
 using GameServer.Utils;
 using GameServer.Skills;
 using GameServer.AI.BehaviorTree;
+using GameServer.Network;
 
 namespace GameServer
 {

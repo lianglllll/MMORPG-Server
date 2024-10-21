@@ -33,18 +33,16 @@ namespace GameServer.Model
     public class Space
     {
         public int SpaceId => def.SID;
-        public string Name => def.Name;
         private SpaceDefine def { get; set; }
-        public ConcurrentQueue<Action> actionQueue => _actionQueue;
 
+        public ConcurrentQueue<Action> actionQueue = new ConcurrentQueue<Action>();                 //任务队列,将space中的操作全部线性化，避免了并发问题
         private Dictionary<int, Character> characterDict = new Dictionary<int, Character>();        //当前地图中所有的Character<entityId，角色引用>
         public MonsterManager monsterManager = new MonsterManager();                                //怪物管理器，负责当前场景的怪物创建和销毁
         public SpawnManager spawnManager = new SpawnManager();                                      //怪物孵化器，负责怪物的孵化
         public FightManager fightManager = new FightManager();                                      //战斗管理器，负责技能、投射物、伤害、actor信息的更新
-        public ItemEntityManager itemManager = new ItemEntityManager();                             //物品管理器，管理场景中出现的物品
+        public EItemManager itemManager = new EItemManager();                                       //物品管理器，管理场景中出现的物品
         public AoiZone aoiZone = new AoiZone(0.001f,0.001f);                    //AOI管理器：十字链表空间(unity坐标系)
         private Vector2 viewArea = new(Config.Server.AoiViewArea, Config.Server.AoiViewArea);
-        private ConcurrentQueue<Action> _actionQueue = new ConcurrentQueue<Action>();                //任务队列,将space中的操作全部线性化
 
         /// <summary>
         /// 构造函数
@@ -63,12 +61,10 @@ namespace GameServer.Model
         {
             spawnManager.Update();
             fightManager.OnUpdate(MyTime.deltaTime);
-
             while(actionQueue.TryDequeue(out var action))
             {
                 action?.Invoke();
             }
-
         }
 
         /// <summary>
@@ -85,6 +81,8 @@ namespace GameServer.Model
                 //处理中心信息
                 IMessage message = null;
                 List<Entity> views = null;
+
+                //1.角色
                 if (entity is Character character)
                 {
                     //1.将新加入的character交给当前场景来管理
@@ -101,7 +99,7 @@ namespace GameServer.Model
                         {
                             resp.CharacterList.Add(acotr.Info);
                         }
-                        else if (ent is ItemEntity item)
+                        else if (ent is EItem item)
                         {
                             resp.ItemEntityList.Add(item.NetItemEntity);
                         }
@@ -116,6 +114,7 @@ namespace GameServer.Model
                     views = nearbyEntity.ToList();
                     message = resp2;
                 }
+                //2.怪物
                 else if (entity is Monster mon)
                 {
                     mon.OnEnterSpace(this);
@@ -127,7 +126,8 @@ namespace GameServer.Model
                     message = resp;
                     views = aoiZone.FindViewEntity(mon.EntityId).ToList();
                 }
-                else if (entity is ItemEntity ie)
+                //3.物品
+                else if (entity is EItem ie)
                 {
                     var resp = new SpaceItemEnterResponse();
                     resp.NetItemEntity = ie.NetItemEntity;
@@ -144,7 +144,6 @@ namespace GameServer.Model
 
             });
         }
-
         /// <summary>
         ///  entity离开space
         /// </summary>
@@ -162,7 +161,7 @@ namespace GameServer.Model
                 {
 
                 }
-                else if (entity is ItemEntity ie)
+                else if (entity is EItem ie)
                 {
 
                 }
@@ -182,34 +181,30 @@ namespace GameServer.Model
         }
 
         /// <summary>
-        /// 更新的信息给其他玩家进行转发
+        /// Actor更新的信息给其他玩家进行转发
         /// </summary>
         /// <param name="entitySync">位置+状态信息</param>
         public void SyncActor(NEntitySync entitySync,Actor self,bool isIncludeSelf = false)
         {
             actionQueue.Enqueue(() => {
 
-                //更新Entity信息
+                //1.更新Entity信息
                 self.EntityData = entitySync.Entity;
                 self.State = entitySync.State;
-                var loc = self.AoiPos;
-                var handle = aoiZone.Refresh(self.EntityId, loc.x, loc.y, viewArea);   //更新aoi空间里面我们的坐标
-                if(handle == null)
-                {
-                    int a = 2;
-                }
+                
+                //2.更新aoi空间里面我们的坐标
+                var handle = aoiZone.Refresh(self.EntityId, self.AoiPos.x, self.AoiPos.y, viewArea);
 
-                //广播给视野范围内的玩家
-                var units = EntityManager.Instance.GetEntitiesByIds(handle.ViewEntity);
+                //3.广播同步self信息给视野范围内的玩家(排除自己)
                 SpaceEntitySyncResponse resp = new SpaceEntitySyncResponse();
                 resp.EntitySync = entitySync;
+                var units = EntityManager.Instance.GetEntitiesByIds(handle.ViewEntity);
                 foreach (var chr in units.OfType<Character>())
                 {
                     chr.session.Send(resp);
                 }
 
-
-                //需要让自己的客户端强制位移
+                //4.需要让自己的客户端强制位移
                 if (isIncludeSelf)
                 {
                     resp.EntitySync.Force = true;
@@ -217,12 +212,119 @@ namespace GameServer.Model
                     cc.session.Send(resp);
                 }
 
-                //新进入视野的单位，双向通知
+
+                //6.这部分双向通知稍微麻烦
+                //自己是chr
+                if (self is Character selfChr)
+                {
+                    //新进入视野的单位，双向通知
+                    var enterResp = new SpaceCharactersEnterResponse();
+                    enterResp.SpaceId = this.SpaceId;
+                    foreach (var key in handle.Newly)
+                    {
+                        Entity entity = EntityManager.Instance.GetEntityById((int)key);
+
+                        //如果对方是Character
+                        if (entity is Character targetChr)
+                        {
+                            //告诉对方自己已经进入对方视野
+                            enterResp.CharacterList.Clear();
+                            enterResp.CharacterList.Add(selfChr.Info);
+                            targetChr.session.Send(enterResp);
+
+                            //需要告诉自己,目标加入了我们的视野
+                            enterResp.CharacterList.Clear();
+                            enterResp.CharacterList.Add(targetChr.Info);
+                            selfChr.session.Send(enterResp);
+                        }
+                        //如果对方是monster
+                        else if(entity is Monster targetMon)
+                        {
+                            //需要告诉自己,目标加入了我们的视野
+                            enterResp.CharacterList.Clear();
+                            enterResp.CharacterList.Add(targetMon.Info);
+                            selfChr.session.Send(enterResp);
+                        }
+                        //如果对方是物品
+                        else if (entity is EItem ie)
+                        {
+                            var ieResp = new SpaceItemEnterResponse();
+                            ieResp.NetItemEntity = ie.NetItemEntity;
+                            selfChr.session.Send(ieResp);
+                        }
+                    }
+
+                    //远离视野的单位，双向通知
+                    var leaveResp = new SpaceEntityLeaveResponse();
+                    foreach (var key in handle.Leave)
+                    {
+                        Entity entity = EntityManager.Instance.GetEntityById((int)key);
+
+                        //如果对方是玩家
+                        if (entity is Character targetChr)
+                        {
+                            //告诉他,自己已经离开他的视野
+                            leaveResp.EntityId = self.EntityId;
+                            targetChr.session.Send(leaveResp);
+
+                            //同时告诉自己对方离开自己视野
+                            leaveResp.EntityId = (int)key;
+                            selfChr.session.Send(leaveResp);
+                        }
+                        else 
+                        {
+                            //同时告诉自己对方离开自己视野
+                            leaveResp.EntityId = (int)key;
+                            selfChr.session.Send(leaveResp);
+                        }
+                    }
+
+                }
+                else if(self is Monster selfMon)
+                {
+                    //新进入视野的单位，双向通知
+                    var enterResp = new SpaceCharactersEnterResponse();
+                    enterResp.SpaceId = this.SpaceId;
+                    foreach (var key in handle.Newly)
+                    {
+                        Entity entity = EntityManager.Instance.GetEntityById((int)key);
+
+                        //如果对方是Character
+                        if (entity is Character targetChr)
+                        {
+                            //告诉对方自己已经进入对方视野
+                            enterResp.CharacterList.Clear();
+                            enterResp.CharacterList.Add(selfMon.Info);
+                            targetChr.session.Send(enterResp);
+                        }
+                    }
+
+                    //远离视野的单位，双向通知
+                    var leaveResp = new SpaceEntityLeaveResponse();
+                    foreach (var key in handle.Leave)
+                    {
+                        Entity entity = EntityManager.Instance.GetEntityById((int)key);
+
+                        //如果对方是玩家
+                        if (entity is Character targetChr)
+                        {
+                            //告诉他,自己已经离开他的视野
+                            leaveResp.EntityId = self.EntityId;
+                            targetChr.session.Send(leaveResp);
+                        }
+
+                    }
+                }
+
+
+                /*
+                //5.新进入视野的单位，双向通知
                 var enterResp = new SpaceCharactersEnterResponse();
                 enterResp.SpaceId = this.SpaceId;
                 foreach (var key in handle.Newly)
                 {
                     Entity entity = EntityManager.Instance.GetEntityById((int)key);
+
                     if (entity is Actor target)
                     {
                         //如果对方是玩家，告诉对方自己已经进入对方视野
@@ -249,8 +351,10 @@ namespace GameServer.Model
                     }
 
                 }
+                */
 
-                //远离视野的单位，双向通知
+                /*
+                //6.远离视野的单位，双向通知
                 var leaveResp = new SpaceEntityLeaveResponse();
                 foreach (var key in handle.Leave)
                 {
@@ -275,24 +379,17 @@ namespace GameServer.Model
                     }
 
                 }
+                */
 
             });
         }
 
         /// <summary>
-        /// 更新itementity的信息，向其他玩家进行转发
+        /// AOI广播
         /// </summary>
-        /// <param name="sycn"></param>
-        public void SyncItemEntity(ItemEntity itemEntity)
-        {
-            actionQueue.Enqueue(() =>
-            {
-                NetItemEntitySync resp = new NetItemEntitySync();
-                resp.NetItemEntity = itemEntity.NetItemEntity;
-                AOIBroadcast(itemEntity, resp, true);
-            });
-        }
-
+        /// <param name="entity"></param>
+        /// <param name="msg"></param>
+        /// <param name="includeSelf"></param>
         public void AOIBroadcast(Entity entity,IMessage msg, bool includeSelf = false)
         {
             //往aoi视野内进行广播(all Character)一个proto消息
@@ -305,6 +402,10 @@ namespace GameServer.Model
             });
 
         }
+        /// <summary>
+        /// 全体广播
+        /// </summary>
+        /// <param name="msg"></param>
         public void Broadcast(IMessage msg)
         {
             //广播一个proto消息给场景的全体玩家
@@ -317,6 +418,13 @@ namespace GameServer.Model
 
         }
 
+        /// <summary>
+        /// 传送
+        /// </summary>
+        /// <param name="targetSpace"></param>
+        /// <param name="actor"></param>
+        /// <param name="pos"></param>
+        /// <param name="dir"></param>
         public virtual void TransmitTo(Space targetSpace, Actor actor,Vector3Int pos, Vector3Int dir = new Vector3Int())
         {
             actionQueue.Enqueue(() =>

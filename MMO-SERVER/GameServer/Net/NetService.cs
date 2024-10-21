@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using GameServer;
 using GameServer.Network;
 using Serilog;
 using Proto;
@@ -13,11 +12,10 @@ using Common.Summer.GameServer;
 
 namespace GameServer.Network
 {
-
     /// <summary>
     /// 网络服务
     /// </summary>
-    public class NetService: Singleton<NetService>
+    public class NetService : Singleton<NetService>
     {
         //负责监听TCP连接
         TcpServer tcpServer;
@@ -32,7 +30,7 @@ namespace GameServer.Network
         {
             tcpServer = new TcpServer(Config.Server.ip, Config.Server.port);
             tcpServer.Connected += OnConnected;
-            tcpServer.Disconnected += OnDisconnected;            
+            tcpServer.Disconnected += OnDisconnected;
         }
 
         /// <summary>
@@ -61,8 +59,8 @@ namespace GameServer.Network
         private void OnConnected(Connection conn)
         {
             //接收到客户端的socket
-           var ipe = conn.Socket.RemoteEndPoint as IPEndPoint;//向下转型
-           Log.Information("[连接成功]" + ipe.Address + ":" + ipe.Port);
+            var ipe = conn.Socket.RemoteEndPoint;
+            Log.Information("[连接成功]" + IPAddress.Parse(((IPEndPoint)ipe).Address.ToString()) + " : " + ((IPEndPoint)ipe).Port.ToString());
 
             //给conn添加心跳时间
             heartBeatPairs[conn] = DateTime.Now;
@@ -152,7 +150,7 @@ namespace GameServer.Network
 
             //session
             var session = conn.Get<Session>();
-            if(session != null)
+            if (session != null)
             {
                 session.Conn = null;
             }
