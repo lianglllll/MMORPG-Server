@@ -35,7 +35,7 @@ namespace GameServer.Model
         /// 构造函数
         /// </summary>
         /// <param name="dbCharacter"></param>
-        public Character(DbCharacter dbCharacter) : base(EntityType.Character,dbCharacter.JobId,dbCharacter.Level,new Vector3Int(dbCharacter.X, dbCharacter.Y, dbCharacter.Z), Vector3Int.zero)
+        public Character(DbCharacter dbCharacter) : base(ActorType.Character,dbCharacter.JobId,dbCharacter.Level,new Vector3Int(dbCharacter.X, dbCharacter.Y, dbCharacter.Z), Vector3Int.zero)
         {
 
             this.Data = dbCharacter;

@@ -77,7 +77,7 @@ namespace GameServer.Network
             try
             {
                 int len = 0;
-                if(mSocket != null)
+                if(mSocket != null && mSocket.Connected)
                 {
                     len = mSocket.EndReceive(result);
                 }
@@ -92,26 +92,35 @@ namespace GameServer.Network
                 //处理信息
                 ReadMessage(len);
 
-                //继续接收数据
-                mSocket.BeginReceive(mBuffer, mOffect, mSize - mOffect, SocketFlags.None, new AsyncCallback(OnReceive), null);
+                // 继续接收数据
+                if (mSocket != null && mSocket.Connected)
+                {
+                    mSocket.BeginReceive(mBuffer, mOffect, mSize - mOffect, SocketFlags.None, new AsyncCallback(OnReceive), null);
+                }
+                else
+                {
+                    Log.Information("[LengthFieldDecoder]Socket 已断开连接，无法继续接收数据。");
+                    PassiveDisconnection();
+                }
 
             }
             catch (ObjectDisposedException e)
             {
                 // Socket 已经被释放
-                Log.Information("[Socket 已释放，接收操作中止。]");
+                Log.Information("[LengthFieldDecoder:ObjectDisposedException]");
                 Log.Information(e.ToString());
                 PassiveDisconnection();
             }
             catch (SocketException e)
             {
                 //打印一下异常，并且断开与客户端的连接
-                Log.Information("[SocketException]");
+                Log.Information("[[LengthFieldDecoder:SocketException]");
                 Log.Information(e.ToString());
                 PassiveDisconnection();
             } catch (Exception e)
             {
                 //打印一下异常，并且断开与客户端的连接
+                Log.Information("[LengthFieldDecoder:Exception]");
                 Log.Information(e.ToString());
                 PassiveDisconnection();
             }
@@ -200,9 +209,9 @@ namespace GameServer.Network
 
             try
             {
-                mSocket?.Shutdown(SocketShutdown.Both);
-                mSocket?.Close();
-                mSocket?.Dispose();
+                mSocket?.Shutdown(SocketShutdown.Both); //停止数据发送和接收，确保正常关闭连接。
+                mSocket?.Close();                       //关闭 Socket 并释放其资源
+                //mSocket?.Dispose();                     //释放 Socket 占用的所有资源，特别是非托管资源。（Close已经隐式调用了）
             }
             catch { 
                 

@@ -58,12 +58,27 @@ namespace GameServer.Network
         /// <param name="conn"></param>
         private void OnConnected(Connection conn)
         {
-            //接收到客户端的socket
-            var ipe = conn.Socket.RemoteEndPoint;
-            Log.Information("[连接成功]" + IPAddress.Parse(((IPEndPoint)ipe).Address.ToString()) + " : " + ((IPEndPoint)ipe).Port.ToString());
+            try
+            {
+                if (conn.Socket != null && conn.Socket.Connected)
+                {
+                    var ipe = conn.Socket.RemoteEndPoint;
+                    Log.Information("[连接成功]" + IPAddress.Parse(((IPEndPoint)ipe).Address.ToString()) + " : " + ((IPEndPoint)ipe).Port.ToString());
 
-            //给conn添加心跳时间
-            heartBeatPairs[conn] = DateTime.Now;
+                    // 给conn添加心跳时间
+                    heartBeatPairs[conn] = DateTime.Now;
+                }
+                else
+                {
+                    Log.Warning("[NetService]尝试访问已关闭的 Socket 对象");
+                }
+            }
+            catch (ObjectDisposedException ex)
+            {
+                Log.Error("[NetService]Socket 已被释放: " + ex.Message);
+            }
+
+
         }
         /// <summary>
         /// 客户端断开连接回调

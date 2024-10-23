@@ -35,7 +35,7 @@ namespace GameServer.Model
         /// <param name="level"></param>
         /// <param name="position"></param>
         /// <param name="direction"></param>
-        public Monster(int Tid,int level,Vector3Int position, Vector3Int direction) : base(EntityType.Monster, Tid,level, position, direction)
+        public Monster(int Tid,int level,Vector3Int position, Vector3Int direction) : base(ActorType.Monster, Tid,level, position, direction)
         {
 
             //初始化

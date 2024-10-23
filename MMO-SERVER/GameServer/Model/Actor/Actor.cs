@@ -58,9 +58,9 @@ namespace GameServer.Model
         /// <summary>
         /// actor的类型：角色、怪物、npc
         /// </summary>
-        public EntityType Type { 
-            get { return _info.EntityType; } 
-            set { _info.EntityType = value; }
+        public ActorType Type { 
+            get { return _info.ActorType; } 
+            set { _info.ActorType = value; }
         }                                                 
         
         public int CurSpaceId
@@ -90,14 +90,14 @@ namespace GameServer.Model
         /// <param name="level"></param>
         /// <param name="position"></param>
         /// <param name="direction"></param>
-        public Actor( EntityType type,int TID,int level,Vector3Int position, Vector3Int direction) : base(position, direction)
+        public Actor(ActorType type,int TID,int level,Vector3Int position, Vector3Int direction) : base(position, direction)
         {
             //加载define的默认数据
             this.Define = DataManager.Instance.unitDefineDict[TID];     //todo 可能会空，可能会有人篡改json配置文件
             
             //更新NetActor网络对象的信息
             this._info.Tid = TID;                                        //TID:区分相同实体类型，不同身份。可以通过tid去找define
-            this._info.EntityType = type;                                //unit类型
+            this._info.ActorType = type;                                //unit类型
             this._info.Entity = this.EntityData;                         //entity的基本数据：pos dir speed entityId
             this._info.Name = Define.Name;                               //defind中的角色默认名字，可以给子类进行覆盖
             this._info.Hp = (int)this.Define.HPMax;                      //hp

@@ -106,23 +106,30 @@ namespace GameServer.Network
             //继续接收下一位(异步操作)
             e.AcceptSocket = null;
             listenerSocket.AcceptAsync(e);
-            
+
             //有人连接进来
-            if (flag == SocketError.Success)
+            try
             {
-                if (clientSocket != null)
+                if (flag == SocketError.Success && clientSocket != null && clientSocket.Connected)
                 {
-                    //为连接成功的client构造一个connection对象
+                    // 为连接成功的 client 构造一个 connection 对象
                     Connection conn = new Connection(clientSocket);
                     conn.OnDataReceived += OnDataReceived;
                     conn.OnDisconnected += OnDisconnected;
 
-                    //通过委托将连接成功向上传递给NetService
+                    // 通过委托将连接成功向上传递给 NetService
                     Connected?.Invoke(conn);
-                }    
-
+                }
+                else
+                {
+                    Log.Warning("[TcpServer]Socket 状态异常或连接失败。");
+                }
             }
-           
+            catch (ObjectDisposedException ex)
+            {
+                Log.Error("[TcpServer]Socket 已被释放: " + ex.Message);
+            }
+
         }
 
         /// <summary>
