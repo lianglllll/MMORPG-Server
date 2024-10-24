@@ -48,6 +48,2405 @@
 
 # =============================
 
+# 动画系统
+
+## bug
+
+1.点击动画片段的时候没有预览画面
+
+<img src="MMORPG.assets/image-20230512173901944.png" alt="image-20230512173901944" style="zoom:67%;" /> 
+
+
+
+动画预览窗口只是被隐藏了，向上拖拉右下角的双横线，即可打开动画预览窗口。
+
+<img src="MMORPG.assets/image-20230512173852508.png" alt="image-20230512173852508" style="zoom:67%;" /> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+## Animator Component
+
+**动画组件**
+
+组件里面可以配置的东西叫属性property
+
+玩家希望物体拥有播放动画的功能时就需要添加动画组件，我们会把游戏对象需要的动画状态机放入该组件
+
+如果游戏对象使用了替身系统，我们也需要把它对应的替身放进去。
+
+然后我们就可以在游戏脚本中访问这个动画组件了，从而自由得控制游戏对象的动画
+
+![image-20230511150925558](MMORPG.assets/image-20230511150925558.png) 
+
+
+
+### 1.Controller
+
+这里是需要挂载一个Animator controller动画状态机，它是我们组织并且管理动画片段的工具
+
+### 2.Avatar
+
+如果我们要播放的是使用了avatar系统的人形动画，就要放上对应的avatar
+
+如果我们没有使用avatar的话，那么animator就会严格按照动画片段记录的path去寻找相应的游戏对象并播放动画。
+
+如果我们使用了avatar系统，那么只要avatar对应的角色模型在该对象的下面，不需要下一级子对象，无论他隔了多少级，animator都能通过avatar准确找对对象模型，并播放动画。
+
+avatar还兼具传令兵的职责，animator只需要将动画片段传递给avatar，他就会去当前的游戏对象及其子对象下面层层寻找孵化要求的模型，并且将动画片段播放在该模型上面
+
+
+
+### 3.Apply Root Motion
+
+有一些动画片段本身是带有位移的，如果我们希望把这些动画里的位移应用到游戏对象上那么就勾选这里
+
+如果我们希望通过自己编写脚本来控制角色的位移和选择那么这里就不用勾选
+
+![image-20230511153904051](MMORPG.assets/image-20230511153904051.png)
+
+//魂穿，有点意思
+
+
+
+### 4.Update Mode
+
+动画的刷新模式，这里的刷新并不是指重新将动画绘制到屏幕上的刷新，而是重新计算每一个骨骼节点的位置、旋转、缩放的数值
+
+**normal**表示与帧率同步，与就是和UPdate()进行同步刷新，即没在屏幕上绘制一张画面，我们就重新计算一些每个骨骼的相关数值
+
+**animate physice** 表示与物理引擎同步，也就是和fixupdate进行同步刷新，即unity每做一次物理检测，比如说碰撞检测，那么我们就重新计算一些这里每个骨骼节点的相关数值，一般用在和物体有交互的情况下
+
+**unscale time** 和normal一样和UPdate()进行同步刷新，但是这个模式下会忽略当前的时间标尺time scale
+
+**时间标尺**：整个游戏的运行速度比例，默认情况下是1，如果我们设置为0.5，那么整个游戏的运行就会比正常情况下慢百分之50，设置为0.2就会慢百分之80以此类推。
+
+animate physice也会受时间标尺的影响
+
+
+
+### 5.Culling Mode
+
+剔除模式：
+
+剔除原本是图形学上第一个概念，也就是指当某个物体并没有被摄像机看到时，我们就不需要去渲染它。
+
+同理在动画里就是指当这个游戏对象没有被摄像机看到时，那么我们应该做如何的处理
+
+<img src="MMORPG.assets/image-20231230174022716.png" alt="image-20231230174022716" style="zoom:50%;" /> 
+
+**Always Animate** 表示即使摄像机看不见也要进行动画播放的更新
+
+**cull update transform**    表示摄像机看不见时停止动画播放但是位置会继续更新，但是选择这个选项会剔除诸如IK之类的操作
+
+**cull completely**表示摄像机看不见时停止动画的所有更新
+
+
+
+## Animation Clip
+
+动画片段
+
+是对物体变换情况的一种展示，它可以是游戏角色的闪转腾挪，也可以是一扇门的开闭，甚至可以是ui界面的淡入淡出 。
+
+动画片段可以由外部导入也可以在unity中制作
+
+**动画文件用编辑器打开后是一个标记语言yaml写的文件，动画文件其实一个描述物体变化的文本文件**
+
+<img src="MMORPG.assets/image-20230512183709290.png" alt="image-20230512183709290" style="zoom:67%;" /> 
+
+
+
+### 外部导入
+
+请看上面mixamo网站使用
+
+
+
+### 在unity中制作简单的动画片段
+
+接下来我们以一个门旋转作为例子：
+
+1.先创建一个像门的玩意
+
+![image-20230512182656492](MMORPG.assets/image-20230512182656492.png) 
+
+注意：要选pivot模式，不然door拖到pivot的时候，pivot又在门的中心位置
+
+![image-20230512182714958](MMORPG.assets/image-20230512182714958.png) 
+
+2.开始制作动画，打开animation窗口
+
+<img src="MMORPG.assets/image-20230512182909045.png" alt="image-20230512182909045" style="zoom: 67%;" /> 
+
+然后选中要制作动画的物体，也就是pivot，然后点击animation窗口中的创建
+
+![image-20230512183200757](MMORPG.assets/image-20230512183200757.png)
+
+此时unity会帮我创建一个动画状态机和动画，并且会为pivot挂载上一个animator组件
+
+![image-20230512183235365](MMORPG.assets/image-20230512183235365.png) 
+
+![image-20230512183327430](MMORPG.assets/image-20230512183327430.png) 
+
+
+
+**也就是说当我们按下create的时候我们就拥有了动画系统的全部三个组成部分**（动画片段，动画状态机，动画组件）
+
+用一个文本编辑器打开刚刚创建的动画文件，我们可以看到其实动画片段文件是使用标记语言YAML编写的一个文件。
+
+**我们可以知道，动画片段文件是一个描述物体变化状态的文本文件**
+
+**还有就是：我们在unity中创建的资源文件其实大多数都是有yaml语言编写的文本文件（比如说场景文件，动画状态机，prefab）**
+
+下图我们可以看到一些信息：文件类型，对应的物体名称，**旋转，位置，缩放，这是使用curves曲线来描述的，后面会讲到为什么用曲线来进行描述**
+
+<img src="MMORPG.assets/image-20230804140544903.png" alt="image-20230804140544903" style="zoom:67%;" /> 
+
+
+
+在unity的检视视图下，我们可以看到刚刚那几个curves的信息都是为空的，所以这里显示为0
+
+![image-20230804141411106](MMORPG.assets/image-20230804141411106.png) 
+
+
+
+
+
+3.切换到animation视图，选中场景中的pivot，
+
+通过add property我们可以选择在动画中对游戏对象的哪些属性进行变化
+
+![image-20230512183815602](MMORPG.assets/image-20230512183815602.png)
+
+
+
+因为我们需要门轴选择，所以选择transform中的rotation
+
+![image-20230512183932533](MMORPG.assets/image-20230512183932533.png)
+
+在左边我们可以修改xyz的值
+
+![image-20230512183956197](MMORPG.assets/image-20230512183956197.png)
+
+**右边这里是时间标尺，**我们可以选择在哪一个时间点上把这里的选择角度设置为什么值，这里的时间标尺默认为1秒
+
+![image-20230512184039934](MMORPG.assets/image-20230512184039934.png)
+
+可以通过鼠标缩放来将时间刻度尺拉长
+
+![image-20230804141748594](MMORPG.assets/image-20230804141748594.png)
+
+
+
+
+
+4.现在我们希望动画在播放一秒后把门开到120度
+
+那么我们就在刻度尺为1这里点击鼠标左键，这里出现了白色的提示线
+
+![image-20230512184428355](MMORPG.assets/image-20230512184428355.png)
+
+在这里我们可以看到60，就说明我们正在处理动画的第60帧，这也说明了我们动画的默认帧率为60
+
+![image-20230512184507188](MMORPG.assets/image-20230512184507188.png)
+
+我们将y值改为120，可以观察到门的变换。
+
+
+
+注意：**unity通过插值算法帮我们在每一帧中都即使了合适的角度值，我们这个动画实际上只做了2帧，而unity帮我们把其他的帧补全了。**
+
+
+
+![image-20230512184807394](MMORPG.assets/image-20230512184807394.png)
+
+
+
+
+
+点击下面的**curves**，我们就能以曲线的形式观察并修改当前的动画片段，**这与就是为什么在动画文件中要使用curve来指代物体的变化**
+
+![image-20230512184849074](MMORPG.assets/image-20230512184849074.png)
+
+
+
+5.点击播放我们可以看到开门动画已经完成了
+
+![image-20230512185159402](MMORPG.assets/image-20230512185159402.png)
+
+**观察到提示信息euler中的值变为1，说明动画文件中包含了一个绕欧拉角旋转的运动**，也就是记录了我们刚刚沿着y轴旋转。
+
+
+
+
+
+打开动画片段文件，我们可以看到刚刚为空的eulerCurve出现了信息
+
+![image-20230804142714799](MMORPG.assets/image-20230804142714799.png)
+
+
+
+
+
+
+
+### Q：我们是否可以用这个动画文件来旋转任意一个游戏对象呢？
+
+
+
+### 动画复用
+
+点击动画片段，在检视窗口下面，将我们opendoor模型拖进去，就能查看动画的效果了。
+
+![image-20230804143111473](MMORPG.assets/image-20230804143111473.png)
+
+
+
+那其他的物体能使用这个动画片段吗？我们创建一个新的物体拖进去查看。
+
+实验结果：这是可行的。这个动画可以正确在另外一个游戏对象上播放。换一个更加复杂的人物模型也是可行的。
+
+这种复用看起来是理所当然的，因为这个动画文件描述的是物体的旋转，所以它当然可以用来旋转任何一个游戏对象，同理，这个动画文件里描述了物体的位移缩放，那它也一定可以用来位移和缩放任何一个游戏物体。
+
+![image-20230804143254351](MMORPG.assets/image-20230804143254351.png)
+
+
+
+
+
+### **Q:那么当动画文件要处理的物体不止一个的时候会发生什么呢？**
+
+我们可以设计一个双开门动画
+
+![image-20230804173324052](MMORPG.assets/image-20230804173324052.png)
+
+选中gate给gate创建一个新的动画，给leftpivot和rightpivot添加旋转动画
+
+![image-20230804173506968](MMORPG.assets/image-20230804173506968.png) 
+
+设置旋转值
+
+<img src="MMORPG.assets/image-20230804174006249.png" alt="image-20230804174006249" style="zoom: 50%;" /> 
+
+创建好之后我们就可以在检视视图里面看到包含了两个旋转
+
+![image-20230804174041811](MMORPG.assets/image-20230804174041811.png) 
+
+我们用文本编辑器打开这个动画文件就可以看见这两个旋转，在这两个旋转下面我们可以找到一个关键词path,它后面写着我们两个被旋转对象的游戏对象名称，
+
+**那么我们就可以知道当动画文件要处理多个游戏物体的时候会在文件中写上该物体的名称，unity会通过文件中的这个名称找到正确的游戏对象然后再通过动画文件中的描述去移动它。**
+
+<img src="MMORPG.assets/image-20230804174213920.png" alt="image-20230804174213920" style="zoom: 67%;" /> 
+
+
+
+我们尝试将门轴的名字修改之后，unity就不能在动画文件中找到这个门轴名字，动画就不能正常播放，**也就是说游戏对象的名字如果和动画文件里不一致就无法正常播放**。
+
+![image-20230804175040443](MMORPG.assets/image-20230804175040443.png) 
+
+
+
+
+
+### **Q：那么是不是另一组游戏对象的名字和动画文件里描述一致是不是就可以复用动画了？**
+
+显然，这是可行的
+
+
+
+### **Q：如果我们让动画再复杂一些，让它同时处理的物体更多一些，比如说人物动画，那我们该怎么做呢？**
+
+其实就是像上面制作双开门动画一样，我们把人体的每一个关节都制作成一个pivot，然后用一个动画片段文件来描述这些pivot的旋转，就可以得到一个人物的动画，这些pivot的组织结构就是人物动画的骨骼。
+
+人体动画的骨骼和动画片段，我们一般通过专门的软件制作：3dmax，maya，blender
+
+
+
+**也就是说只要骨骼结构一致，命门一致，那么人物动画文件也是可以复用的**
+
+如果我从别的地方找到一个人物模型，它的骨骼命名方式和这里的不一致，那么我们可不可以通过给骨骼改名的方式进行复用动画呢？
+
+当然可以，不过一个一个去手动修改太过麻烦了，所以unity给我们提供了一个简便的解决方式--替身系统Avatar
+
+<img src="MMORPG.assets/image-20230804180203122.png" alt="image-20230804180203122" style="zoom:50%;" /> 
+
+
+
+## Avatar替身
+
+**(人形动画)**
+
+有时候我们希望对复制的动画资源进行复用，尤其是人形动画，为了解决这一问题，unity引入了替身的概念
+
+这是一种人形动画骨骼的标准，所有按照统一标准配置好的人形角色都可以播放同一套动画
+
+
+
+### 理论基础
+
+**想要在不同的模型身上复用动画的话我们需要执行如下步骤：**
+
+
+
+1.我们通过替身系统把人体模型骨骼A的骨骼，用一套标准的unity肌肉结构对应起来，这种对应关系被保存到A的Avatar文件当中
+
+此时骨骼信息也被保存到了avatar文件当中，所以我们不在需要模型A上的骨骼了
+
+![image-20231230155531185](MMORPG.assets/image-20231230155531185.png)
+
+
+
+2.我们用相同的方法把人体模型B的骨骼与unity肌肉结构对应起来，并把这种对应关系保存到B的Avatar文件当中
+
+![image-20231230155721135](MMORPG.assets/image-20231230155721135.png)
+
+
+
+3.接下来我们再通过A的Avatar文件把**动画片段**从**描述A的骨骼变化情况的文本**转换为**描述unity肌肉拉伸程度的文本**
+
+当我们在B模型上使用这个动画时，就要通过B的Avatar文件把**动画文件中对肌肉拉伸的描述**，再翻译为**对B模型变化的描述**
+
+这样动画文件就可以再b模型上播放了
+
+
+
+例子：
+
+![image-20231230160202268](MMORPG.assets/image-20231230160202268.png)
+
+美方没有日语翻译、日方没有英语翻译，但是它们都有荷兰语翻译
+
+
+
+
+
+### 实际操作
+
+#### 打开模型进行配置
+
+
+
+**animationType**:
+
+表示该骨骼播放那种动画，这里我们选人形
+
+如果是锅碗瓢盆这些一般是不用播放动画的，选中None即可
+
+如果是飞禽走兽的话，选中通用即可
+
+Legacy是老版本遗留的没什么用不选
+
+
+
+**Avatar Definition:**
+
+createFromThisModel:根据这个模型的骨骼简历一个与unity肌肉对应的关系 
+
+CopyFromOtherAvatar:选择另外一个已经配置好的Avatar
+
+这里我们选择第一个
+
+
+
+**Skin Weights:**
+
+表示每一个模型的蒙皮或者说mesh上的节点可以被几个骨骼所影响，这里我们暂时不用管，这里让他保留默认值
+
+
+
+**optimize Game Objects**
+
+优化游戏对象，当我们使用了avactar之后播放动画就与模型问卷上的骨骼无关了，动画组件会从Avatar文件中读取骨骼信息
+
+选中这里的话，模型文件上的骨骼就会被删除，这样可以节省一些游戏空间
+
+但是我们先不勾选
+
+
+
+![image-20231230165315868](MMORPG.assets/image-20231230165315868.png) 
+
+最后apply应用即可，然后你会发现你的模型文件下面生成了一个Avactar文件，我们进入Avactar文件进行配置
+
+![image-20231230165536367](MMORPG.assets/image-20231230165536367.png)
+
+这里的人形图片直观得展示了在unity中一个标准的人形骨骼布局应当是怎么样的
+
+在检视视图下的绿色圆圈，代表了一个对应的骨骼
+
+外圈虚线表示这个骨骼可选，也就是说角色模型并非必须包含这块骨骼
+
+外圈如果是实线，则表示该模型必须包含这个位置的骨骼，否则无法使用Avatar系统
+
+当unity使用Avatar系统对骨骼和肌肉做对应关系时，它至少需要人体模型上有15块孵化排列规则的骨骼 
+
+![image-20231230170001681](MMORPG.assets/image-20231230170001681.png) 
+
+在左下角我们可以擦看并配置人物模型的哪个部分：比如躯干、头、手、
+
+在下面我们可以找到模型中具体骨骼的对应关系：
+
+![image-20231230170110823](MMORPG.assets/image-20231230170110823.png) 
+
+我们可以很轻松的通过拖拽的方式配置这些骨骼，当然，在大多数情况下，unity会自动的帮我们把这些骨骼安排好
+
+![image-20231230170304654](MMORPG.assets/image-20231230170304654.png)
+
+
+
+继续往下看，左边有两个下拉菜单
+
+![image-20231230170408831](MMORPG.assets/image-20231230170408831.png) 
+
+
+
+接下来我们点击muscles进入肌肉配置界面
+
+![image-20231230170620603](MMORPG.assets/image-20231230170620603.png) 
+
+
+
+
+
+但是绝大多数情况下都是不需要我们进行配置的。。。。
+
+
+
+#### 接下来我们为模型b也制作一个Avatar
+
+直接根据自身创建一个就行了
+
+
+
+我们可以看到动画片段的描述，从原来mixamo的描述转换为unity对肌肉的描述了
+
+![image-20231230171757718](MMORPG.assets/image-20231230171757718.png) 
+
+给两个模型添加相对应的avatar和动画状态机
+
+![image-20231230171704429](MMORPG.assets/image-20231230171704429.png) 
+
+动画复用成功！！
+
+
+
+
+
+## Animator Controller
+
+
+
+**动画状态机**
+
+动画状态机会帮助我们跟踪当前动画的播放状态 ，并且根据我们的设置来决定何时以及如何切换动画片段。
+
+这个是打开之后的视图，你可以在里面添加动作片段animation，然后通过连线控制动画的切换
+
+<img src="MMORPG.assets/image-20230511151143807.png" alt="image-20230511151143807" style="zoom: 67%;" /> 
+
+
+
+ 
+
+
+
+### **Layers**
+
+![image-20231230174632690](MMORPG.assets/image-20231230174632690.png) 
+
+一般用于组合动画，比如你需要角色身体的不同部分播放不同的动画片段时，会使用到这个功能
+
+比如说我们有两个动画：人物持枪，人物空手移动
+
+![image-20231230174804428](MMORPG.assets/image-20231230174804428.png) 
+
+
+
+那么我们只需要让双手播放持枪动画， 其他部分播放行走动画，就可以组合出一个持枪行走动画
+
+![image-20231230174919049](MMORPG.assets/image-20231230174919049.png) 
+
+
+
+### Parameters
+
+是用来控制动画状态的参数，
+
+
+
+
+
+### 动画状态
+
+在unity中动画状态分为3种：
+
+![image-20231230175141764](MMORPG.assets/image-20231230175141764.png) 
+
+
+
+#### 1.单独的动画片段
+
+![image-20231230175149140](MMORPG.assets/image-20231230175149140.png) 
+
+![image-20231230213947487](MMORPG.assets/image-20231230213947487.png) 
+
+**Tag:标签**，通过打标签我们可以给动画状态进行分类，以便于我们的管理。
+
+比如说：我们可以给所有的前摇和后摇动画都打上标签【不能动】，然后我们在脚本中判断判断玩家是不是播放打着【不能动】标签的动画，如果是此时玩家的输入就是无效的。
+
+
+
+**Motion**：对应的动画片段，如果是混合树的话就是对应的混合树
+
+<img src="MMORPG.assets/image-20231230214704374.png" alt="image-20231230214704374" style="zoom:67%;" /> 
+
+
+
+**speed**：动画的播放速度，1是正常速度，大于1就是加速，小于1大于0就是减速，小于0就是倒放
+
+speed属性是不可以根据脚本更改的，如果我们需要更改游戏中动画播放的速度 就要激活下面这个属性
+
+![image-20240101120712386](MMORPG.assets/image-20240101120712386.png) 
+
+激活这个属性我们要关联一个浮点类型的Parameter，我们在脚本中更改这个Parameter，就可以更改动画播放速度了
+
+
+
+**Motion Time**:播放动画片段的一个特定时间点，motiontime的大小为[0,1],0和1分别代表动画片段的开始和结束
+
+它也需要关联一个浮点型变量
+
+
+
+**mirror**：镜像动画，它需要绑定一个布尔类型的变量
+
+
+
+**Cycle Offset**:刚开始播放动画时做的偏移，这个值为0时不偏移从第1帧开始播放，如果是0.5的话就是偏移一半，从这个动画中间的那帧开始播放。它并没有把动画进行切割，它只是把这个循环动画的起始点修改了而已。
+
+
+
+**Foot IK**:他其实是一种使用了IK的动画校正机制.
+
+unity使用了avatar技术来为人形动画提供复用功能，这种技术很好用但是也有一些不足，比如当我们把骨骼系统转换为肌肉系统之后 ，人形角色的双手和双脚的位置会出现一定的偏移，unity为了解决这个问题，提前为我们保存了骨骼系统下手和脚的正常位置，并把这些位置放置在了四个**IK Goal**上
+
+![image-20240101123059445](MMORPG.assets/image-20240101123059445.png) 
+
+手部和脚部的红球就是unity提供的IK Goal,
+
+膝盖和手肘处的红球就是IK Hint,我们可以通过它来防止中间的肘部关节出现奇怪的扭曲。
+
+我们现在可以看到手臂已经出现明显的偏移了。
+
+
+
+**Foot IK的作用就是把我们脚部的实际位置向这里的IK Goal的位置拉近一点**
+
+注意：FootIK只是略微的调整脚部的位置，它可以在一定程度上改善脚部动画的不自然，但是不一定能满足高质量的动画需求。
+
+其次我们调整IKGoal的位置并不会更改FootIK的效果，FootIK所参照的其实并不是这个IKGoal的本体，  而是这个IKGoad当前的或者是初始的位置，我们通过代码调整了IKGoal的位置之后，FootIk还是回按照原本的位置来修正自己，而不是参照修改后的ikgoal来修正自己
+
+
+
+**Write Defaults,**,写入默认值
+
+![image-20240101124725978](MMORPG.assets/image-20240101124725978.png) 
+
+
+
+
+
+
+
+
+
+#### 2.Blend Tree
+
+多个动画片段组成的混合树
+
+![image-20231230175157943](MMORPG.assets/image-20231230175157943.png) 
+
+
+
+
+
+
+
+#### 3.另外一个动画状态机
+
+![image-20231230175223452](MMORPG.assets/image-20231230175223452.png) 
+
+
+
+
+
+### 动画状态转换
+
+![image-20240101130414910](MMORPG.assets/image-20240101130414910.png) 
+
+#### **Transitions:**
+
+勾选了solo的转换优先执行。
+
+在勾选了solo的转换中，哪个转换条件先满足就先执行哪个转换
+
+勾选了mute的转换永远不会被执行
+
+
+
+#### **Has Exit Time**
+
+默认勾选，如果勾选的话那么当前动画状态播放到某个时间点的时候就执行这个转换
+
+如果不勾选，那么久必须在后面的conditions这里手动为这个转换添加其他的执行条件，否则的话这个转换久永远也不会被执行了
+
+![image-20240101131528032](MMORPG.assets/image-20240101131528032.png) 
+
+重叠的部分：unity会为我们两个动画转换之间做混合
+
+
+
+#### Settings
+
+**Exit Time**:大小[0,1],为0.5的时候就说明冲待机动画的中间那帧开始转换
+
+**fixed duration**:指的时转换的持续时间是按秒计算还是按百分比来计算的，勾选就是按秒
+
+**Transition Duration:**转换的持续时间
+
+**Transition Offset**:进入下一个动画时的偏移量，为0时就说明下一个动画是从第1帧开始播放的
+
+**Interruption source**；表示又那些转换可以打断当前的转换
+
+![image-20240101132152658](MMORPG.assets/image-20240101132152658.png) 默认是None，也就是不可以被打断
+
+**Current State**：A->B    也就是说A是这个CurrentState的其他转换可以打断当前A->B的转换
+
+但是如果勾选了Ordered Interruption要注意优先级问题,只有优先级比当前转换的优先级高的转换才能打断当前转换
+
+![image-20240101133623314](MMORPG.assets/image-20240101133623314.png) 
+
+![image-20240101133609025](MMORPG.assets/image-20240101133609025.png) 
+
+
+
+**Next State**:A->B   ,B的全部转换可以打断当前A->B的转换
+
+**Current state then next state**
+
+**next state then Current state**  同理
+
+
+
+#### **Conditions**
+
+动画冲一个状态转换到另外一个状态需要检查两个部分：
+
+1.has exit time
+
+2.Conditions
+
+如果勾选了Has exit time 即使condition满足了，也必须等到当前的动画执行到exit time时才会发生转换
+
+所有当你在项目里发现动画转换并不是立刻发生的，可以检查一下这里的has exit time是不是被勾选了
+
+Conditions使用Parameter的参数作为判断的条件进行转换
+
+![image-20240101132631528](MMORPG.assets/image-20240101132631528.png) 
+
+![image-20240101132759405](MMORPG.assets/image-20240101132759405.png) 
+
+条件之间是逻辑与的关系
+
+
+
+
+
+
+
+### Animator在脚本中常用方法
+
+
+
+#### Play()
+
+可以直接播放动画片段
+
+```
+Animator.Play("动画片段名");
+```
+
+
+
+#### GetCurrentAnimatiorStateInfo()
+
+获取当前状态机播放的动画状态，返回值是AnimatorStateInfo
+
+```
+animator.GetCurrentAnimatiorStateInfo(animaotr.GetLayerIndex("Base Layer"))
+```
+
+**AnimatorStateInfo.IsTag()**可以判断当前的动画片段是不是带有某个标签
+
+
+
+
+
+#### Animator.StringToHash
+
+```
+public static int StringToHash(string name);
+```
+
+Parameters 参数 ： name The string to convert to Id.   **该字符串转换到ID**
+
+Description 描述：Generates an parameter id from a string.  **从字符串生成一个参数ID。**
+
+Ids are used for optimized setters and getters on parameters.**ID是用于参数的存取器优化**（setters 和 getters）。
+
+
+
+当使用Animator时，如果要引用某个状态或者参数，有两种方法。
+1：通过字符串名称
+2：通过整数“Hash ID”
+通过“Hash ID”更有优势，因为不容易出错，且更加高效。
+两种的使用方式不同。animation状态或者parameters的字符串(Tag)需要通过对象使用；但是“Hash ID”不需要，他是Animator的静态方法。
+
+由于这些参数会经常使用，将它们放在同一个脚本中，统一得到，统一管理，方便使用。
+例如：官方案例–Stealth中
+
+```
+public class DoneHashIDs : MonoBehaviour
+{
+    // Here we store the hash tags for various strings used in our animators.
+    public int dyingState;
+    public int locomotionState;
+    public int shoutState;
+    public int deadBool;
+    public int speedFloat;
+    public int sneakingBool;
+    public int shoutingBool;
+    public int playerInSightBool;
+    public int shotFloat;
+    public int aimWeightFloat;
+    public int angularSpeedFloat;
+    public int openBool;
+
+
+    void Awake ()
+    {
+        dyingState = Animator.StringToHash("Base Layer.Dying");
+        locomotionState = Animator.StringToHash("Base Layer.Locomotion");
+        shoutState = Animator.StringToHash("Shouting.Shout");
+        deadBool = Animator.StringToHash("Dead");
+        speedFloat = Animator.StringToHash("Speed");
+        sneakingBool = Animator.StringToHash("Sneaking");
+        shoutingBool = Animator.StringToHash("Shouting");
+        playerInSightBool = Animator.StringToHash("PlayerInSight");
+        shotFloat = Animator.StringToHash("Shot");
+        aimWeightFloat = Animator.StringToHash("AimWeight");
+        angularSpeedFloat = Animator.StringToHash("AngularSpeed");
+        openBool = Animator.StringToHash("Open");
+    }
+}
+```
+
+
+
+#### animator.SetXX
+
+比如说：
+
+在Unity中，animator.SetFloat是一个用于控制动画状态机中浮点参数的函数。它可以被用来改变动画状态机中定义的浮点参数的值。这个函数通常用于控制动画的速度、混合权重或其他浮点参数。
+
+该函数的原型为：
+
+```csharp
+public void SetFloat(string name, float value);
+```
+
+其中，name是要设置的浮点参数的名称，value是要设置的值。
+
+使用animator.SetFloat函数，你可以在脚本中动态地改变动画状态机中的浮点参数，从而控制动画的行为和状态。这使得你能够实现动态的动画逻辑，以响应游戏中的各种事件和条件变化。
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 混合树
+
+![image-20240105225059733](MMORPG.assets/image-20240105225059733.png)
+
+![image-20240105225334814](MMORPG.assets/image-20240105225334814.png) 
+
+
+
+**BlendType**
+
+![image-20240105225354728](MMORPG.assets/image-20240105225354728.png) 
+
+1D:这种类型的blendtree只由一个参数控制
+
+
+
+**Parameter**
+
+![image-20240105225600533](MMORPG.assets/image-20240105225600533.png) 
+
+示意图中横轴是参数speed的值，纵轴是动画片段在blendtree中的权重
+
+
+
+**Motion**
+
+![image-20240105225810184](MMORPG.assets/image-20240105225810184.png) 
+
+Threshold是阈值，也就是speed的值为对应的Threshold的值时，该动画的权重为1
+
+右边时钟的符号是动画的播放速度
+
+最右边哪个是选择镜像动画的，仅限avatar的人形动画使用
+
+
+
+## RootMotion
+
+**拒绝脚底抹油--滑步**
+
+在游戏开发中，我们常见的动画文件一般分为两种：一种是in place动画也就是不带位移的动画；一种是root motion动画也就是带根位移的动画
+
+这种自带根位移的动画能带来的好处是显而易见的，它有效地避免了角色动画和实际位移不同步的现象。
+
+ 
+
+rootmotion 是通过动画文件计算出与游戏对象上一帧的位移，那么我们可以通过OnAnimatorMove中的animatior.DeltaPosition来获取这个位移量
+
+![image-20240105231635613](MMORPG.assets/image-20240105231635613.png)
+
+绝对坐标和旋转为相对坐标和旋转
+
+
+
+**当然，把角色的移动全部交给root motion 总是让人不放心的，实际应用时，搭建还是通过OnAnimatorMove方法，用脚本来控制角色的移动。**
+
+
+
+**Generic动画中的Root Motion机制**
+
+![image-20240106224538473](MMORPG.assets/image-20240106224538473.png)
+
+
+
+**Humanoid动画中的Root  Motion机制**
+
+![image-20240106233410864](MMORPG.assets/image-20240106233410864.png)
+
+avatar把互不兼容的骨骼结构下的根位移，转换成了统一的unity重心位移，这样一来，同一套带有root motion的动画就可以在不同骨骼结构的人形角色上表达位移
+
+
+
+### **相关的设置**
+
+![image-20240106224705653](MMORPG.assets/image-20240106224705653.png) 
+
+#### **Root Transform Rotation**
+
+旋转，rootmotion中的旋转特指y轴的旋转
+
+**Bake Into Pose**：把旋转当作动画的一部分，而不是游戏对象移动的一部分，
+
+简而言之：勾选了这个选项表示不要**骨骼节点**的旋转当作root motion的一部分来处理，而是把它当作普通的骨骼动画处理 
+
+
+
+root motion 是根据动画片段里面发生的位移,旋转等属性来计算控制物体运动时的属性
+但是有些时候,比如我们做前进动画的时候,由于左右肩膀是会跟着晃动的(正常),所以在动画片段里面会产生旋转.而我们只把它当做是前进移动的动画,所以作为控制的时候只需要它的z轴上的位移来计算速度,以符合脚步的频率.
+所以,由走路引起的旋转,只是作为走路姿态(bake into pose 其中pose 的意思就是姿态)的一部分,而不应该作为root motion控制移动的计算条件(因为root motion自己是不能判断你拿这个动画是作为前进动画还是旋转动画,所以就只能由你来指定).
+
+
+
+**我们什么时候要勾选这个选项呢?**
+
+当我们不希望动画带动游戏对象旋转时我们就要考虑勾选这个选项，毫无疑问，比如说左转的动画是不需要勾选这个选项的，因为我们就指望着它带着我们的角色旋转了
+
+而对于一下在我们看来不会旋转的动画来说，比如说前进、后退、待机那么我们就可以勾选这个选项，以避免因动画文件本身的瑕疵而给我们带来旋转。
+
+右边的标记就代表这个动画在角度上的吻合度，如果这个动画在播放中的转角过大，这里就会提示红色，告诉我们这个动画勾选了bake into pose 则会带来不好的效果。
+
+总结：要不要勾选这个选项取决于我们需不需要动画来驱动游戏对象的旋转，而至于能不能勾选则要参照右边的红色或者绿色标记
+
+
+
+**Based upon(start)**:游戏对象在动画开始时对准的方向是哪里
+
+![image-20240106230726038](MMORPG.assets/image-20240106230726038.png) 
+
+**root node rotation**:让游戏对象在动画开始时对准根骨骼节点的指向方向，然而实际上这个root node rotation 是unity根据这个动画片段中root node的姿态算出来的。**一般情况下不准**
+
+想要修正这个方向可以在下面修改offset
+
+![image-20240106231015598](MMORPG.assets/image-20240106231015598.png) 
+
+
+
+**original**：表示这个动画原本的朝向，这个朝向是3d美术在制作动画时就已经设置好的了，一般可以相信这个方向
+
+
+
+#### **Root Transform Position(Y)**
+
+沿Y轴的位移
+
+**Bake Into Pose**：比如说跳跃动画，不勾选的情况下播放跳跃动画，游戏对象是跟着向上一起跳动的，
+
+勾选之后只有模型外观移动了。
+
+垂直方向没有位移的动画就可以勾选这个选项，跑，走，待机，转身。有位移的话就在这里调整对齐方式和偏移量，比如说跳跃，爬上爬下。
+
+**Based upon(start）**：是垂直方向上把模型的哪一个位置对齐到游戏对象的原点上，默认是original也就是3d美术设置的动画原点
+
+![image-20240106232120952](MMORPG.assets/image-20240106232120952.png) 
+
+如果有特殊需要可以旋转root node position   ,可以看到角色下沉了，这是因为角色的根骨骼被对齐到游戏对象的原点位置
+
+<img src="MMORPG.assets/image-20240106232020535.png" alt="image-20240106232020535" style="zoom:50%;" /> 
+
+
+
+Humanoid上还多了一个Feet
+
+![image-20240106233951966](MMORPG.assets/image-20240106233951966.png) 
+
+就是模型的脚，或者是是avatar系统下的脚
+
+<img src="MMORPG.assets/image-20240106234049363.png" alt="image-20240106234049363" style="zoom: 33%;" /> 
+
+
+
+original和feet的区别好像不是很大，我们该选择哪一个呢？
+
+可以相信original的也就是动画美术给我提供的原点，但是仅适用于generic动画，而在humanoid动画中，因为动画的复用会使得动画发生一系列的变形。简单来说动画原本是针对A模型制作的，那么这个original或者说原点就是A模型播放动画时的原点，当我们使用B模型复用这个动画的时候，我们没有办法保证avater转移后的原点还能保证其原来的准确性
+
+
+
+
+
+
+
+#### **RootTransform Position(XZ)**
+
+沿XZ轴的位移，也就是沿水平平面上的位移
+
+如果我们不希望这个动画控制角色在水平方向上的位移，就勾选这里。比如说待机，原地转身动画，原地起跳动画等
+
+
+
+#### 总结
+
+unity把root motion分为了三个部分，旋转，垂直方向上的位移，水平平面上的位移，我们可以通过这里的bake into pose 来选择哪些部分会被当作root motion来控制游戏对象，哪些部分仅被当作动画的一部分，不控制游戏对象。
+
+
+
+
+
+
+
+### rootmotion+混合树
+
+![image-20240112114422918](MMORPG.assets/image-20240112114422918.png) 
+
+假设我们使用一个一维变量Speed来控制Blandtree
+
+我们需要设置合适的speedThreshold（阈值）来控制动画的过度，那么我们应该怎么确定这个阈值呢？
+
+
+
+**ComputeThresholds**可用通过这个选项来帮我们计算阈值：
+
+- **Velocity X Y Z** 就是三个方向上的位移速度
+
+因为我们使用的动画是待机、前进、后退，所以我们现在只关心Z方向上的位移，所以我们可以选择Velocity Z
+
+![image-20240112114900956](MMORPG.assets/image-20240112114900956.png) 
+
+可以看到这里已经帮我们计算出阈值了，我们已经知道这个阈值其实就是这个动画在z方向上的速度，
+
+也就是说这个前进动画root motion的速度大概是1.565，后退动画就是-1.29，待机就是近似为0
+
+这样一来在代码里只需要将移动速度设置到为上面那几个阈值，那么**理论上**rootmotion就会以相应的速度带着我们的角色前进或者后退
+
+- **speed** 是root motion 的移动速度或者说它的速度绝对值，也就相当于下面这给三维向量velocity的长度
+- 下面两个Angular speed是rootmiton的旋转速度，如果你的角色需要用到rootmotion转身的话会用到它们
+- Angular Speed(rad)   弧度每秒
+- Angular Speed(Deg)  角度每秒
+
+
+
+**Adjust Time Scale**:自动帮我们计算动画的速度，使得各个位移动画的产生的位移速度一致
+
+避免手动计算
+
+
+
+**现在你发现了一个问题：就是角色现在的移动速度不是我们决定的，而是root motion决定的**
+
+如果我希望前进速度是2，后退速度是1，那我该怎么做呢？
+
+聪明的你可能会想到改变动画的播放速度来实现。
+
+但是问题原因不止如此，当你的speed设置为1.5时，真正的移动速度也极有可能不受1.5
+
+因为humanoid动画是不同的任务骨骼上复用动画的一种机制，同样的行走动画在小一点的角色身上自然是要走的慢一点，在大一点的角色身上就会走得快一点
+
+
+
+下图它们挂载相同的脚本和动画控制器，可以看到它们的行走速度不一致
+
+![image-20240112121014783](MMORPG.assets/image-20240112121014783.png)  
+
+通过animator.velocity可以访问到rootmoiton移动速度向量，然后再取模就可以得到它的移动速度绝对值：**animator.velocity.z.magnitude**
+
+![image-20240112121337339](MMORPG.assets/image-20240112121337339.png) 
+
+可以看到可莉的速度明显小于明日香，而且明日香的速度也不是1.5，原因是1.5的这个速度是针对这个行走动画原本的骨骼的
+
+而可莉和明日香都是通过avatar系统复用了这个动画，所以移动速度自然会改变。
+
+
+
+**这样一来问题就严重了，不能控制角色的移动速度就算了，不同模型的移动速度还不一样，那我们应该怎么解决这个问题呢？**
+
+
+
+**1.我们先来解决不同人物移动速度不同的情况。**
+
+最稳妥的方式就是为不同的人物制作属于自己的状态机，然后针对性的设置动画的状态。
+
+但是我们就算要使用同一个状态机，那怎么办呢？
+
+root motion会考虑物体的缩放值scale，scale越小，rootmotion的位移就会越小。从理论上来说，可莉和明日香的速度不同 也是由于两者的大小不同或者是缩放值不同而导致的，但是从transform上看它们都是1，那么它们之间的缩放值差异或者说大小差异到底在哪里呢？
+
+**animator下有一个humanscale属性**，这里记录了Avatar在制作骨骼映射时，对人体或者说对骨骼的缩放。我们输出一下这个值
+
+![image-20240112122308380](MMORPG.assets/image-20240112122308380.png) 
+
+可以看到，可莉的身体大小实际上是unity标准模型的0.62倍，明日香就算1.001倍，就算这样的差异导致了两者rootmotion速度的不同。
+
+也就是说在可莉身上root motion的速度只有原来的62%，而在明日香身上这个数值则是100.1%
+
+为了解决这个问题，我们只需要把它们的动画播放速度，除以相应的值就可以了
+
+在start中：animator.speed/=animator.humanScale
+
+![image-20240112122731194](MMORPG.assets/image-20240112122731194.png) 
+
+可以看到在修正动画的播放速度之后，两人的移动速度已经一致了。
+
+
+
+但是我们不希望整个animator的播放速度都受到影响，那么我们可以在动画只进入这个blendtree之后才改变speed
+
+怎么做呢?
+
+我们只需要将这个值传给Muliplier，因为Speed在游戏过程中是不能直接修改的.
+
+给他关联一个ScaleFactor变量，
+
+在start中animator.SetFloat("ScaleFactor",1/animator.humanScale);就可以了
+
+![image-20240112123111421](MMORPG.assets/image-20240112123111421.png) 
+
+这样只有这个blend tree播放的速度受到影响，其他的则正常播放。
+
+
+
+**2.现在我们来解决不能控制角色的移动速度的问题**
+
+直接最简单暴力的方法就算来修改这里的动画播放速度
+
+![image-20240112123632726](MMORPG.assets/image-20240112123632726.png) 
+
+此时上面的阈值其实是unity帮我们计算出来动画的移动速度，那么现在动画为1.2我们想要它变为1.5，现在就要调整动画播放速度，怎么调整呢？
+
+用 比例来算：1.2/1 = 1.5/x      x=1.5/1.2
+
+1.5/1.2 = 1.25 也就是动画播放速度调整到1.25倍即可。此时阈值就可以改为1.5了。
+
+我们希望前进速度为1.5，就将动画的播放速度设置为1.5/1.565，阈值就可以设置为1.5了
+
+后退的速度也为1.5的话，就将动画的播放速度设置为1.5/1.29，阈值就可以设置为1.5了
+
+![image-20240112123924484](MMORPG.assets/image-20240112123924484.png) 
+
+rootmotion的移动速度并不稳定，我们在上面看到的移动速度阈值其实是平均值 
+
+
+
+此时我们也应该回过头来看当初自己为什么要引入rootmotion，
+
+![image-20240116195032589](MMORPG.assets/image-20240116195032589.png)
+
+答案是：避免实际位移和动画表现的位移不同步，也就是说这个rootmotion原本要解决的问题就是同步而不是位移
+
+
+
+```
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayeMoveTest : MonoBehaviour
+{
+    private Animator _animator;
+    public float forwardSpeed = 1.5f;
+    public float backSpeed = 1.5f;
+    public float targetSpeed;
+    public float currentSpeed;
+    private Rigidbody rig;
+
+    private void Start()
+    {
+        _animator = GetComponent<Animator>();
+        rig = GetComponent<Rigidbody>();
+    }
+    private void Update()
+    {
+        playmove();
+    }
+
+    private void playmove()
+    {
+        Vector2 movement = InputManager.Instance.Movement;
+        targetSpeed = movement.y > 0 ? forwardSpeed * movement.y : backSpeed * movement.y;
+    }
+
+    private void OnAnimatorMove()
+    {
+        Move();
+    }
+
+    private void Move()
+    {
+        currentSpeed = Mathf.Lerp(targetSpeed, currentSpeed, 0.5f);
+        _animator.SetFloat("Speed", currentSpeed);
+        rig.velocity = _animator.velocity;
+    }
+}
+```
+
+主要看这个脚本，当我们在脚本中声明了OnAnimatorMove()函数的时候，unity就不再直接用rootmotion来驱动游戏对象。
+
+![image-20240116201856484](MMORPG.assets/image-20240116201856484.png) 
+
+上面的脚本是使用animator从rootmotion动画中提取值，然后把值赋给受物理引擎影响的rigidbody，所以要在animator这里把
+
+既然要操作rigidbody为什么不把move方法放在于物理引擎同步的fixed update里面呢？
+
+因为我们update mode从normal 转换成animate physice之后 OnAnimatorMove方法也已经与物理引擎同步了，它的具体调用时机在fixed update和动画系统的各回调方法之后，在物理引擎之前
+
+![image-20240116203141590](MMORPG.assets/image-20240116203141590.png)
+
+
+
+### Root Motion与Rigid Body的冲突
+
+注意要animationclip动画在Y方向上的位移bake in pose
+
+```
+    private void Move()
+    {
+        currentSpeed = Mathf.Lerp(targetSpeed, currentSpeed, 0.5f);
+        _animator.SetFloat("Speed", currentSpeed);
+        rig.velocity = _animator.velocity;
+    }
+```
+
+我们在OnAnimationMove方法里设置了rigid body的速度，接下来unity的物理引擎开始工作，根据默认的加速度9.8给rigid body施加了一个速度  
+
+在默认情况下，物理引擎的刷新率是每秒50次也就是每0.02秒刷新一次，0.02秒在加速度为9.8的情况下rigid body在这里会获得一个大约每秒0.196米的向下的速度。然后rigidbody也会根据当前的速度对游戏对象 也就是我们的角色进行位移，然后物理引擎刷新我们回到OnAnimatorMove方法，我们在次回到了rigidbody的速度，我们在此时就把垂直方向向下的0.196的速度给归零了，在来到物理引擎工作的位置，根据加速度获得了一个方向向下的0.196米每秒的速度。
+
+如果我们没有在OnAnimator把它归零的话，那么此时rigidbody的速度应该已经是0.392米每秒了。
+
+![image-20240116204421208](MMORPG.assets/image-20240116204421208.png)
+
+下降速度较慢的原因是我们在OnAnimatorMove中打断了重力加速度的过程，所以游戏对象的下落速度永远的被限制在0.196米每秒
+
+
+
+如果我们的rigidbody会受到来自水平方向的力的时候，类似的问题会再次发生。
+
+如果我希望用rootmotion影响游戏对象的垂直运动的话，那么又该怎么办。
+
+到这里就应该由我们自己权衡利弊了。
+
+你对物理模拟的要求有多高，如果要求不高，或者仅仅需要一个重力，那么我是否可以自己编写脚本来模拟重力，而不是直接使用rigdbody
+
+你对移动的精度要求又有多高？如果要求不高我们是否可以不适用rootmotion，或者说在某些情况下不适用rootmotion
+
+如果你对两者都有较高的要求的话，你是否有能力解决各种复杂的情况。
+
+当你要把rootmotion和rigidbody配合在一起工作时，记得该bake into pose的地方一定要bake，其次最好把刷新方式调整到animate physice
+
+最后不要再update方法力控制rigidbody，要放到fixupdate里面或者onanimatormvoe（animate physice）里面
+
+
+
+## AnimationLayer和AvatarMask
+
+在游戏制作中，有一种需求十分常见就是将两个或者多个动画组合在一起。
+
+比如说玩家角色持枪移动动画
+
+<img src="MMORPG.assets/image-20240117202630528.png" alt="image-20240117202630528" style="zoom:33%;" /> 
+
+但是我们只有玩家持枪站立动画以及空手行走动画，那么我们必须要将两个动画缝合使用
+
+<img src="MMORPG.assets/image-20240117202739969.png" alt="image-20240117202739969" style="zoom:33%;" /> 
+
+针对这种动画缝合的需求，在unity中最方便的解决方案就是使用动画层级animationlayer和替身蒙板avatarmask
+
+<img src="MMORPG.assets/image-20240117202846726.png" alt="image-20240117202846726" style="zoom:50%;" /> 
+
+<img src="MMORPG.assets/image-20240117202904679.png" alt="image-20240117202904679" style="zoom:50%;" /> 
+
+
+
+
+
+动画状态机里面可以看到，我们新建了一个layer专门来处理角色双臂的动画
+
+![image-20240117203200545](MMORPG.assets/image-20240117203200545.png) 
+
+点击这个齿轮，我们可以看到设置界面
+
+![image-20240117203250338](MMORPG.assets/image-20240117203250338.png) 
+
+**weight**：权重，表示当前这个layer中的动画会在多大程度影响整个动画的最终表现，0就是完全不起作用，1为完全播放。
+
+
+
+**mask**：替身蒙板，这个蒙版表示了角色身体的哪些部分会播放我们选择的动画，放在这里就是指当前层级播放的动画会影响身体的哪些部分
+
+我们在项目资源里可以创建一个avatar mask资源文件
+
+<img src="MMORPG.assets/image-20240117203539687.png" alt="image-20240117203539687" style="zoom:67%;" /> 
+
+![image-20240117203743891](MMORPG.assets/image-20240117203743891.png) 
+
+因为我们使用了humanoid动画那么我们就配置这里的Humanoid，点击这些身体部位，绿色代表会播放动画，红色代表不会播放动画
+
+我们要播放的手部动画，所以选择两个胳膊和手，以及两个ik
+
+这两个ik指的是unity提供的两个avatar IK Goal
+
+如果我们当前播放的不受humanoid动画则可以展开下面的transform来选择哪些骨骼节点受影响
+
+我们将新创建的avatarmask应用到我们的arms层级
+
+![image-20240117204313106](MMORPG.assets/image-20240117204313106.png) 
+
+可以看到这里有一个M标记，它表示动画层级使用了avatar mask，从力量上来说该层动画只会影响我们角色身体的一部分
+
+
+
+**Blending**
+
+![image-20240117204437357](MMORPG.assets/image-20240117204437357.png) 
+
+Blending 项的两个值，Overide 和 Additive 决定了这一层的动画如何与上层动画进行混合
+
+**Overide** 表示完全覆盖上层的动画，仅播放本层的动画，如果 Avatar Mask 设置了全身骨骼，所有的骨骼动画都会覆盖上层动画，如果只有部分的骨骼，则仅覆盖设置的骨骼进行动画。并且，在列表中的动画层越往下的优先级越高，如果有多个动画层并且权重都是1，仅会播放最下层的动画。
+
+**additive**:表示加在上层动画，两层动画会进行混合运算并播放，也就是说这一层的动画并不会取代现有的动画。
+
+根据我们的需求:双手持枪我们应该选择第一项override
+
+
+
+**Sync**：同步，勾选之后可以选择当前层级要和哪个层级保持一致
+
+![image-20240117204713105](MMORPG.assets/image-20240117204713105.png) 
+
+**Timing**:跟sync一块的，下面再解释
+
+
+
+**IK Pass**:如果我们要在当前层级使用ik的话，就需要勾选。
+
+
+
+我们当前的设置
+
+![image-20240117211949336](MMORPG.assets/image-20240117211949336.png) 
+
+
+
+然后我们使用一个持枪动画
+
+![image-20240117212702255](MMORPG.assets/image-20240117212702255.png)
+
+设置动画转换条件
+
+![image-20240117212719145](MMORPG.assets/image-20240117212719145.png) 
+
+![image-20240117212728048](MMORPG.assets/image-20240117212728048.png) 
+
+在脚本中设置相关的拿枪bool值rifle
+
+![image-20240117212757230](MMORPG.assets/image-20240117212757230.png) 
+
+​	![image-20240117212810560](MMORPG.assets/image-20240117212810560.png)![image-20240117212822512](MMORPG.assets/image-20240117212822512.png)
+
+idle下可以看到持枪的动画
+
+<img src="D:/Development Learning/GameDeveloper/unity学习/unity基础/unity基本学习.assets/image-20240117212928807.png" alt="image-20240117212928807" style="zoom: 67%;" /> ![image-20240117212956965](MMORPG.assets/image-20240117212956965.png)
+
+
+
+可以看到walk状态下的手部动画已经是我们的持枪动画
+
+  
+
+
+
+拿枪，拿刀，拿手枪都再Arms这一层级做转换，也是相同的操作
+
+<img src="MMORPG.assets/image-20240117212559915.png" alt="image-20240117212559915" style="zoom:50%;" /> 
+
+
+
+
+
+### **Blending-additive**
+
+我们再看回到Blending
+
+![image-20240117212233710](MMORPG.assets/image-20240117212233710.png) 
+
+additvie：就是把当前层级的动画和上面层级的动画混合起来，也就是说这一层的动画并不会取代现有的动画。
+
+当我们要为当前的角色动画添加某种特色的时候，而又不希望取代现有动画的时候，可以考虑使用additive
+
+**最常见的例子就是为角色添加“疲劳感”**
+
+![image-20240119102424926](MMORPG.assets/image-20240119102424926.png)
+
+我们可以调整Fatigue层级的Weight来实现这个功能，直接使用weight来播放喘气动画还有一个好处，那就是weight值可以直接反映处喘气的幅度，也就表达了角色疲劳的程度。
+
+我们新建一个avatarmask，我们希望只影响躯干部分
+
+![image-20240119102554720](MMORPG.assets/image-20240119102554720.png) 
+
+![image-20240119102616083](MMORPG.assets/image-20240119102616083.png) 
+
+
+
+```
+animator.SetLayerWeight(layerIndex,百分比0-1);
+```
+
+```
+int layerIndex = animator.GetLayerIndex("LayerName");
+```
+
+```c#
+    void CaculateFatigue()
+    {
+        if(currentSpeed < 1f && currentFatigue > 0)
+        {
+            currentFatigue -= Time.deltaTime;
+        }
+        else if(currentSpeed > 2f && currentFatigue < 10f)
+        {
+            currentFatigue += Time.deltaTime;
+        }
+        else
+        {
+            return;
+        }
+        currentFatigue = Mathf.Clamp(currentFatigue, minFatigue, maxFatigue);
+        _animator.SetLayerWeight(fatigueLayerIndex, currentFatigue / maxFatigue);
+
+    }
+```
+
+
+
+可以参考：
+
+[游戏角色的疲劳感是如何制作的？利用Animation Layers中的additive模式把多个动画混合在一起【Unity动画系统详解 二十四】_手机游戏热门视频 (bilibili.com)](https://www.bilibili.com/video/BV1J44y137JC/?p=36&spm_id_from=pageDriver)
+
+
+
+
+
+### **Sync和Timing**
+
+玩家角色在游戏过程中总是会受到各种各样的伤害，那么很多游戏就会用角色外观来直接表达玩家当前受到伤害的程度
+
+ 其中最广为玩家接收的表现方式就是爆乳，就是用一整套不同的受伤动画代替原有的动画
+
+<img src="MMORPG.assets/image-20240118210832725.png" alt="image-20240118210832725" style="zoom: 33%;" /> 
+
+既然要代替一整套动画，那么在一个新的layer里复制一整套原有层级的状态机就是一个非常好的解决方案
+
+![image-20240118211101652](MMORPG.assets/image-20240118211101652.png) 
+
+但是这样有一个问题，就是随着开发的进行，原本的层级可能会发送变化，那么此时就需要修改对应injured layer中的内容
+
+如果变化过于频繁的话，及有可能给开发者带来混乱。
+
+所以unity在这里给我们提供了一个同步功能，在这里我只需要选择Injured和哪一个层级同步就可以了
+
+![image-20240118211315564](MMORPG.assets/image-20240118211315564.png) 
+
+那么在开发的过程中，无论被指定的这一层级结构如何改变 injuredlayer都始终会和他保持一致
+
+![image-20240118211729181](MMORPG.assets/image-20240118211729181.png)
+
+<img src="MMORPG.assets/image-20240118211720123.png" alt="image-20240118211720123" style="zoom:200%;" />
+
+上面就是injured和Base层级保存同步的效果。
+
+**注意：层级的同步仅仅是同步动画状态和动画状态间的转换关系，并不会转换blendtree的内容，所以在injured里的Locomotion状态是空的，我们需要新建里面的blendtree**
+
+在injureLayer中的blendtree 这里我们使用三个受伤动画，然后调整速度
+
+![image-20240118215245368](MMORPG.assets/image-20240118215245368.png) 
+
+![image-20240118215233679](MMORPG.assets/image-20240118215233679.png) 
+
+
+
+
+
+有一个问题：
+
+使用了同步的不同层级，在同一个动画状态中所使用的动画片段长度可能不一样，
+
+比如说，我们在base层级有一个3秒长度的动画片段，播放完后转换
+
+在else层级有一个1.6秒的动画片段播放完后转换，那么1.6秒之后会发送动画切换吗？如果发生了转换不就和base层级不同步了嘛？
+
+**在默认情况下synclayer中的动画状态的时长会被缩放至它所需要同步的层级中对应动画状态的时长，也就是在这个例子里面else层级中的动画片段会被拉长到3秒**
+
+如果我希望由else层级来决定动画状态的时长呢？
+
+**timing**来解决这个问题
+
+注意：只有blending状态为overrid的时候timing才能选择
+
+一旦勾选了timing，动画状态的播放时长就由它和它同步的层级共同决定了，那么哪个层级的决定权更大一些呢？
+
+else当权重为1时听else这一层的，当权重为0时听被同步那层的，当else的权重为0.5的时候，两个动画片段的长度就会被缩放为（else动画+base动画）*0.5
+
+**同步层级的动画状态长度必须一致，具体长度由谁决定则看这里的timing和weight的设置**
+
+
+
+### 动画层级的次序问题
+
+在动画层级中位于下面的层级拥有更高的优先级
+
+![image-20240119110418660](MMORPG.assets/image-20240119110418660.png) 
+
+我们来翻译一些Injured这一层：injured这一层有第三的播放优先级，他会代替比它更低优先级的其他所有动画，如果权重为1那么代替的程度就是百分百，代替的部位就是全身（因为mask为空）
+
+![image-20240119110820369](MMORPG.assets/image-20240119110820369.png) 
+
+arms层级：持枪层级比base和injured的优先级都要高，混合模式是override,持枪动画会代替掉base layer和injured layer，权重为1时，代替程度为百分百，代替部位是双臂。
+
+![image-20240119111148283](MMORPG.assets/image-20240119111148283.png) 
+
+fatigue拥有最高的优先级，但是它的混合模式是additive，这个优先级不代表他会代替哪些层级，因为他是additive。
+
+additive的具体行为是把当前层级所播放的动画加到之前层级的结果上去，当前的avatarmask表示它只影响躯干的部位。
+
+weight表示它会把本身动画以多少比例添加到之前的结果上去，0表示完全不添加，1表示完全添加。
+
+比如喘气的时候弯腰的最大幅度是60度，那么权重为1时，在原有的动画基础伤再弯腰60°，0.5表示添加一半。
+
+
+
+**在后面的开发中，如果你的动画状态机无法正确的播放动画，你不妨检查一下层级的排序以及混合模式的使用方式。**
+
+![image-20240119112124113](MMORPG.assets/image-20240119112124113.png) 
+
+只要你的动画层级设置合理，那么久可以使用一系列简单的动画制作处精彩的动画系统。
+
+
+
+## IK
+
+
+
+### 概要
+
+
+
+**Forward Kinematics**
+
+我们常见的，由美术制作或者由动作捕捉出来的固定动画，一般由骨骼的根节点，对于人形角色来说就是屁股，到末梢骨骼节点依次计算其旋转位移和缩放来决定每一块骨骼的最终位置，这种就称为正向动力学。
+
+<img src="MMORPG.assets/image-20240119122929030.png" alt="image-20240119122929030" style="zoom:50%;" /> 
+
+打开动画文件我们就可以看到，各个骨骼选择的顺序是从根骨骼hips开始的，以末梢骨骼为结尾。这也就接收了为什么在使用了Huamanoid动画之后，四肢末梢位置的动作偏移量较大，那是因为动画从generic变成humanoid时，在每个骨骼位置都有可能产生误差，在正向动力学中上一节骨骼选择误差会累积到下一层。这就导致了末梢位置的误差是最大的。
+
+
+
+
+
+
+
+**Inverse kinematics**
+
+反向动力学，他要解决的问题是如何根据现有的机械关节，把机械臂的末端放到制定的位置上去。
+
+我们在游戏中使用的ik大多比较简单，也就是转转脑袋伸伸胳膊，所以一般采用所谓的CCD（cyclic coordinate descent）来计算各个骨骼节点的转角。它的做法是从参与ik计算的最后一根骨骼开始，到参与ik计算的根骨骼为止，依次进行旋转，每次旋转的任务是让末端尽量靠近ik目标。
+
+<img src="MMORPG.assets/image-20240503121708833.png" alt="image-20240503121708833" style="zoom:50%;" /> 
+
+因为各个骨骼的旋转方式由末端的位置并从后往前决定，所以被成为反向动力学。
+
+参考：[Unite Berlin 2018 - An Introduction to CCD IK and How to use it (youtube.com)](https://www.youtube.com/watch?v=MA1nT9RAF3k)
+
+
+
+比如：
+
+但是在很多时候，我们需要反过来计算，比如我们希望手和脚放在一个特定的位置下。
+
+举个例子就是在爬山的时候，我们需要手和脚接触在岩壁上，此时我们没有现成的动画片段来调用，我们只能先确定手和脚的位置，在通过手和脚的这个位置反向计算它们的各个父节点的旋转位移和缩放了这种就叫反向动力学
+
+<img src="MMORPG.assets/image-20240101122509137.png" alt="image-20240101122509137" style="zoom:67%;" /> 
+
+为了使用IK，我们必须在使用IK的层级这里激活IK pass
+
+![image-20240101124326375](MMORPG.assets/image-20240101124326375.png) 
+
+这样我们就可以在脚本力调用相关的IK方法了
+
+**与IK相关的回调方法OnAnimatorIK()**
+
+
+
+
+
+
+
+### 使用IK Goal给角色加把枪
+
+![image-20240119115046808](MMORPG.assets/image-20240119115046808.png) 
+
+给模型新建一个握把的空物体，将其放到枪支的握把靠近扳机的位置上
+
+<img src="MMORPG.assets/image-20240119114639262.png" alt="image-20240119114639262" style="zoom:50%;" /> 
+
+注意：把scene视图下方那个center改成pivot就行了，这样才可以看到父物体的坐标和子物体的坐标，否则就是看到它们的中间坐标
+
+这样我们只需要正确的把这个handle放到玩家的的右手上，这样就等于枪被正确的放置到右手的位置上。
+
+接下来就是在人物模型下寻找右手骨骼，但是一个一个找十分地麻烦，后面我们会使用untiy给我提供的animation rigging来快速定位骨骼位置
+
+<img src="MMORPG.assets/image-20240119122138526.png" alt="image-20240119122138526" style="zoom:50%;" /> 
+
+
+
+如果我们要为手和脚进行ik操作的话，直接使用unity为我们提供的ik goal就可以了
+
+只要在脚本中设置好相关的权重，untiy就会尽量把手和脚放到对应的ik goal上。
+
+我们在脚本中使用**OnAnimatorIK**方法，**把双手的两个ik goal位置和角度权重都设置为1**
+
+```
+    private void OnAnimatorIK(int layerIndex)
+    {
+        _animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1f);
+        _animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
+        _animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1f);
+        _animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
+    }
+```
+
+**注意：在状态机中至少要有一个层级打开ik pass，否则这个OnAnimatorIK方法是不会被系统调用的**
+
+如果确定哪一个层级打开了ikpass可以使用这里的layerIndex参数
+
+
+
+效果不是很好，做手的位置和右手的位置都不受很好
+
+​	<img src="MMORPG.assets/image-20240119122830828.png" alt="image-20240119122830828" style="zoom:50%;" />
+
+
+
+右手的最终的位置最好以胸口为参照物，我们在胸部骨骼位置放一个RightHandposition空物体
+
+<img src="MMORPG.assets/image-20240119123753744.png" alt="image-20240119123753744" style="zoom:50%;" /> 
+
+我们让右手的ik goal的位置和这个RightHandPosition保存一致
+
+同样的在ak护木上也添加一个lefthandposition
+
+![image-20240119131058594](MMORPG.assets/image-20240119131058594.png) 
+
+然后在脚本中，让左右手靠近这两个我们自定义的ik位置
+
+    private void OnAnimatorIK(int layerIndex)
+    {
+        _animator.SetIKPosition(AvatarIKGoal.RightHand, RightHandPosition.position);
+        _animator.SetIKRotation(AvatarIKGoal.RightHand, RightHandPosition.rotation);
+        _animator.SetIKPosition(AvatarIKGoal.LeftHand, LeftHandGrip.position);
+        _animator.SetIKRotation(AvatarIKGoal.LeftHand, LeftHandGrip.rotation);
+        
+        _animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1f);
+        _animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
+        _animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1f);
+        _animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1f);
+    }
+
+![image-20240119131216314](MMORPG.assets/image-20240119131216314.png) 
+
+需要调整RightHandposition和lefthandposition，调整到我们满意为止
+
+![image-20240119131357251](MMORPG.assets/image-20240119131357251.png) 
+
+**这里只是为了学习ik的用法，而不是调整枪支动画，在真实的开发环境下，对于动画的最好调整方式永远是回到3d建模软件中去调整动画文件本身。**
+
+
+
+如果你对ik操作仅仅是限于双手和双脚的话，unity提供ik goal既可以满足你绝大部分需求了，但是你想让角色表现更加生动一些，那就需要它的各个部位都可以根据实际需求做ik运动，比如头部要跟随目标旋转，躯干要根据运动状态进行倾斜，再比如更进一步的程序化动画等等。这些功能用ik goal就没办法办到了。而且自己编写相关算法的话，不但难度高而且工作量大，所以**便于开发，unity为我们提供了animation rigging**
+
+
+
+
+
+
+
+## animation Rigging
+
+unity推出animationrigging的目标是简化整个优先动画的制作流程
+
+**作用是可以帮助我们快速定位骨骼**
+
+
+
+
+
+### rig和骨骼是一回事吗？
+
+<img src="MMORPG.assets/image-20240120143604335.png" alt="image-20240120143604335" style="zoom:67%;" /> 
+
+比如说这个提线木偶的表演，人偶是骨骼，提线工具的rig
+
+那么在角色动画这里，rig就是我们控制骨骼的工具
+
+**需要导入Animation Rigging这个插件**
+
+<img src="MMORPG.assets/image-20240120143930595.png" alt="image-20240120143930595" style="zoom:67%;" /> 
+
+我们先使用它的骨骼绘制功能
+
+![image-20240120144048964](MMORPG.assets/image-20240120144048964.png) 
+
+选择我们的人物模型，然后选择bone renderer setup,或者也可以di点击animatior组件进行选择
+
+![image-20240120144225465](MMORPG.assets/image-20240120144225465.png) 
+
+现在可以看到角色的骨骼被绘制出来了，而且我们也可以在场景中通过点击直接选择骨骼了
+
+![image-20240120144243820](MMORPG.assets/image-20240120144243820.png) 
+
+通过这里的bone renderer脚本你可以控制绘制骨骼的方法
+
+![image-20240120144411097](MMORPG.assets/image-20240120144411097.png) 
+
+
+
+### animation rigging的系统结构
+
+现在我们通过木偶为参照来了解animationrigging的系统结构
+
+控制目标的工具有很多种类：
+
+提线
+
+<img src="MMORPG.assets/image-20240120144541922.png" alt="image-20240120144541922" style="zoom:50%;" /> 
+
+铁枝
+
+<img src="MMORPG.assets/image-20240120144607642.png" alt="image-20240120144607642" style="zoom:50%;" /> 
+
+
+
+体现还分为4根的2根的，不同的控制工具就是对木偶关键的不同约束，表演之利用这些约束来表现木偶的不同动作。
+
+所以animation rigging也为我们提供了很多种约束，我们通过这些约束来控制骨骼的行为。
+
+ 比如说我们接下来要制作的持枪ik动画，在这里就要使用Two Bone IK约束。
+
+这个two bone ik 约束对应到木偶的控制工具的话，那就相当于中国传统木偶戏种的“铁枝”
+
+我们和木偶戏表演者一样，通过自己手中的rig来让骨骼的末梢节点抵达指定位置。其次一个木偶先要活灵活现的表达各种肢体动作，只有一个rig是不够的。
+
+比如木偶的头部行为和双手行为很明显是不一样的，不可能使用同一组铁枝或者说提线来控制头部和双手 。
+
+对应的animationrigging允许我们在一个角色上添加多个rig，这样我们就可以为双手设置一个rig，在为头部设置一个rig。
+
+最后，木头有了一堆的控制工具之后，就需要有一个管理者来管理它们，在animation rigging这里我们使用rig builder 来管理同一个模型下的所有rig。
+
+
+
+### 实际操纵
+
+#### **1.rig builder**
+
+**给我们的模型添加一个rig builder组件，它会和animator组件一起来管理这个角色上所有rig**
+
+![image-20240120145536875](MMORPG.assets/image-20240120145536875.png) 
+
+![image-20240120145608350](MMORPG.assets/image-20240120145608350.png) 
+
+
+
+#### **2.添加rig**
+
+unity自作主张帮我们添加了一个。
+
+![image-20240120145716580](MMORPG.assets/image-20240120145716580.png) 
+
+
+
+下面我们删除，自己来添加：
+
+首先添加一个空物体，取名Tow Hand Rig 用于控制我们的双手动作
+
+![image-20240120145829588](MMORPG.assets/image-20240120145829588.png) 
+
+然后给他添加一个rig组件
+
+![image-20240120145935891](MMORPG.assets/image-20240120145935891.png) 
+
+然后将其拖进rig builder的rig layers中，这样这个rig就被rigbuilder管理起来了。
+
+![image-20240120150016024](MMORPG.assets/image-20240120150016024.png) 
+
+
+
+
+
+#### **3.给rig指定约束**
+
+也就是指定行为模式，在Rig物体下添加俩个空物体明天给他们添加Two Bone IK Constraint组件
+
+![image-20240120150224668](MMORPG.assets/image-20240120150224668.png) 
+
+通过自己手上的rig来让骨骼的末梢节点到制定的位置
+
+
+
+
+
+#### **4.接下来我们用animation rigging来重新制作一下上面持枪ik动画**
+
+首先删除脚本中和ik有关的代码，去掉animation layer中所有的ik pass，在animation rigging中我们用不上它们
+
+删掉上一个视频里面我设置的ik target 
+
+然后配置一下者两个constraint
+
+![image-20240120150932232](MMORPG.assets/image-20240120150932232.png) 
+
+weight：权重
+
+Two Bone ik 的意思就是通过旋转“root”和“mid”这俩根骨骼，把“tip”这根骨骼尽量放到"Target"的位置上
+
+Hint:
+
+Settings：
+
+
+
+我们实际来配置一下右手的constraint，我们希望转动上臂的**arm**和小臂的**elbow**把手**wrist**放到目标位置上
+
+那么我们就把arm放进root，elbow放进mid，wrist放进tip
+
+![image-20240120151909672](MMORPG.assets/image-20240120151909672.png) 
+
+然后再人物胸部添加一个target空物体
+
+![image-20240120153408128](MMORPG.assets/image-20240120153408128.png) 
+
+选中我们的手和目标物体，利用align transform将目标点调整至到我们持枪动画时，手的位置处。然后记录信息
+
+![image-20240120153443478](MMORPG.assets/image-20240120153443478.png) 
+
+![image-20240120153549978](MMORPG.assets/image-20240120153549978.png)
+
+
+
+然后我再来配置一下左手的约束
+
+![image-20240120155224195](MMORPG.assets/image-20240120155224195.png) 
+
+在步枪的body下面新建一个left hand target
+
+![image-20240120155404934](MMORPG.assets/image-20240120155404934.png)
+
+调整好两个约束后我们再来调整两个target的位置
+
+![image-20240120160811068](MMORPG.assets/image-20240120160811068.png) 
+
+感觉还是差点意思
+
+
+
+**Hint**:如果我们在hint这里放置一个对象，那么root的角度就会偏向hint，在这个例子里大概就相当于指定了一个肘部关节的位置，它的作用是确定肘关键的位置 以免ik出现奇怪的扭曲。
+
+
+
+**setting**：
+
+![image-20240120161201275](MMORPG.assets/image-20240120161201275.png) 
+
+![image-20240120161214438](MMORPG.assets/image-20240120161214438.png) 
+
+这里的targetoffset表示tip和target算法需要保持原有的差异
+
+比如我们在这里选中了position，那么右手tip和左手target之间在位置上的差异就会在游戏中被保留下来
+
+而rotation就是角度被保留
+
+
+
+
+
+
+
+## 动画Event
+
+有时候可能需要某些动画片段播放完成之后去触发一些事件 。
+
+注意：下载下来的模型大多数携带的动画片段都是只读的，所以我们需要复制一份动画片段出来，再添加动画事件
+
+
+
+### 1.通过动画控制器添加事件
+
+1. 在animator绑定的物体上添加一个新脚本，并写入触发事件后要调用的方法。要注意这个脚本不能放在其他物体上，否则控制器可能会找不到。
+2. 在animation 控制器中的时间线上添加事件帧。
+   2.1 找到你的.anim动画文件并打开它的控制器窗口
+
+![在这里插入图片描述](MMORPG.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xlbmd5b3Vtbw==,size_16,color_FFFFFF,t_70.png)
+
+2.2 点击时间线上需要触发事件的位置，然后点击添加事件帧按钮即可生成。
+
+3.事件帧绑定方法
+点击时间线上刚刚创建的事件帧，Inspector窗口中就出现了相应的设置选项。function这里填写我们在脚本中创建的方法名：PrintEvent，下面的float、int、object、string是要传递的参数。可以不填。
+
+![在这里插入图片描述](MMORPG.assets/20201210181051511.png)
+
+到这一步就已经实现了关键帧添加。当动画进行到事件关键帧就会触发绑定好的相关事件。
+
+
+
+**注意：**如果出现找不到事件函数的错误的话，很可能你在其他的动画中添加了多余事件
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 2.通过代码方式添加事件
+
+1.这个脚本创建在哪里都行，只要绑定好animator即可。脚本无法访问到通过控制器创建的事件关键帧，只能自己创建事件关键帧，并设置相关的事件。
+
+```
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class RbotArmController : MonoBehaviour
+{
+	// 指定animation 动画控制器，在脚本所在的物体上直接拖拽即可
+    public Animator armAnimator;
+    private void Start()
+    {
+    	// 创建一个事件
+        AnimationEvent evt = new AnimationEvent();
+        // 绑定触发事件后要执行的方法名
+        evt.functionName = "PrintEvent";
+        // 执行方法后要传入的参数
+        evt.intParameter = 12345;
+        // 设置事件关键帧的位置，当事件过了1.3秒后执行
+        evt.time = 1.3f;
+        // 设置目标动画剪辑，以下标为索引？
+        AnimationClip clip = armAnimator.runtimeAnimatorController.animationClips[0];
+        // 绑定事件
+        clip.AddEvent(evt);
+    }
+    // 触发事件后，要执行的方法
+    public void PrintEvent(int i)
+    {
+        print("PrintEvent: " + i + " called at: " + Time.time);
+    }
+}
+```
+
+`armAnimator.runtimeAnimatorController.animationClips[0]` 这段代码的含义如下：
+
+- `armAnimator` 是一个 Animator 组件的实例，它控制着一个角色或对象的动画播放。
+- `runtimeAnimatorController` 是 Animator 组件的一个属性，它返回当前的运行时动画控制器（RuntimeAnimatorController）。
+- `runtimeAnimatorController.animationClips` 是 RuntimeAnimatorController 的一个属性，它返回一个 AnimationClip 数组，包含了当前动画控制器中的所有动画剪辑（AnimationClip）。
+- `[0]` 表示我们正在访问数组中的第一个元素，也就是索引为 0 的动画剪辑。
+
+综合起来，`armAnimator.runtimeAnimatorController.animationClips[0]` 的意思是获取 `armAnimator` 所使用的运行时动画控制器中的第一个动画剪辑（AnimationClip）。这样我们就可以对该动画剪辑进行操作，如添加事件、修改播放速度等。
+
+```
+AnimationClip[] clips = armAnimator.runtimeAnimatorController.animationClips;
+if (clips.Length > 0)
+{
+    AnimationClip firstClip = clips[0];
+    Debug.Log("第一个动画片段的名称：" + firstClip.name);
+    // 在这里可以进行进一步的操作
+}
+else
+{
+    Debug.Log("动画控制器中没有任何动画片段！");
+}
+
+```
+
+通过上述代码，你可以在Unity编辑器的控制台中查看第一个动画片段的名称。如果动画控制器中没有任何动画片段，将打印一条相应的消息。
+
+
+
+2.绑定相关的animator
+将脚本放到某个物体上，然后拖拽动画所在的animator到armAnimator上，即可完成绑定
+这时，当动画播放到1.3秒所在的时间线位置时，绑定的相关方法就会触发。
+
+
+
+### **3.注意：**
+
+**Animation Event无法触发的解决办法**
+
+- 如果是通过animation控制器添加的事件，要注意脚本是否和animator所在的对象所处同一对象。
+- 如果是代码的添加方法，注意不能放在基类当中。就是说如果你的 脚本继承了某个基类，而事件的响应方法在基类中，那么这样可能会无法成功触发方法。
+- 同时使用代码和动画控制器的方式添加，要注意是否有冲突。
+- **在动画控制器上添加关键帧时，要注意是否多点了导致同一时间位置添加了你没注意到的多个事件帧，这样会导致不易定位且不会影响主进程的报错**
+
+
+
+## TimeLine(导演)
+
+在Unity中，Timeline是一种用于创建和编辑时间轴动画的工具。它允许您创建基于关键帧的动画，控制对象的位置、旋转、缩放、颜色和其他属性，以及在不需要编写代码的情况下组合和编辑这些动画。
+
+Timeline还可以用于创建交互式序列，例如游戏中的场景、剧情、动画序列或UI动画。它支持各种功能，例如剪辑、分层、层蒙版、音频混合和过渡效果。
+
+使用Timeline可以大大简化动画制作过程，因为您可以可视化地编辑动画序列，而无需手动编写脚本或通过代码控制动画。这使得它成为游戏开发者、动画师和设计师之间的桥梁，可以更好地协作和管理游戏的视觉效果。
+
+![image-20230418071536378](MMORPG.assets/image-20230418071536378.png)
+
+**这玩意和剪辑软件差不多，将相应的动画轨道和音频轨道放进去自己慢慢调整就行了。**
+
+
+
+需要有物体挂载这个组件，然后将timeline挂载上去
+
+![image-20230418073034128](MMORPG.assets/image-20230418073034128.png)
+
+
+
+
+
+### 1.动画轨道
+
+搞动画的
+
+
+
+### 2.音频轨道
+
+搞音乐的
+
+
+
+### 3.可见轨道
+
+可以让物体某段时间内激活或者非激活
+
+
+
+### 4.代码衔接播放流程
+
+```
+using UnityEngine,Playables
+```
+
+![image-20230418073705735](MMORPG.assets/image-20230418073705735.png)
+
+
+
+![image-20230418073633952](MMORPG.assets/image-20230418073633952.png)
+
+
+
+```
+director.Play()//开始播放
+director.duration//整个动画持续时间
+```
+
+
+
+
+
+
+
+
+
+## mixamo网站使用
+
+
+
+### 1.下载人物模型
+
+
+
+![image-20230507180611206](MMORPG.assets/image-20230507180611206.png) 
+
+
+
+Collada(.dae)格式：下载蒙皮和模型
+
+FBX for Unity(.fbx)格式：只下载动作
+
+
+
+**1.按照collada的格式下载，解压之后得到**
+
+![image-20230507181314205](MMORPG.assets/image-20230507181314205.png) 
+
+textures是这个模型的素材
+
+下面那个是模型+动画
+
+
+
+**2.将这两个文件放入assets中，然后之间把模型拖进场景就能使用了**
+
+![image-20230507184151331](MMORPG.assets/image-20230507184151331.png) 
+
+**三角形那个是动画片段animation**  
+
+**3.给这个模型创建一个Animator Controller，然后将动画拖入Animator Controller动画状态机即可**
+
+![image-20230507183640867](MMORPG.assets/image-20230507183640867.png) 
+
+![image-20230507182859584](MMORPG.assets/image-20230507182859584.png)
+
+
+
+
+
+**4.给模型添加Animator组件，然后将上面的AnimatorController拖到这个组件上**
+
+![image-20230507183626379](MMORPG.assets/image-20230507183626379.png) 
+
+
+
+
+
+### 2.给自己的模型使用mixamo的动作
+
+**1.导入自己的模型**
+
+这里主要有格式的限制
+
+
+
+![image-20230511152259491](MMORPG.assets/image-20230511152259491.png)
+
+
+
+
+
+
+
+2.挑选喜欢的动作，然后导出，使用下面这个格式
+
+![image-20230511152413547](MMORPG.assets/image-20230511152413547.png)
+
+
+
+
+
+3.添加到unity项目当中，此时我们只需要他那个动作，将其复制一份出来拿去用即可
+
+![image-20230511152841708](MMORPG.assets/image-20230511152841708.png)
+
+
+
+4.解决一些小问题
+
+导出的动画是不循环播放的，所以我们需要去父级去设置
+
+![image-20230511152914553](MMORPG.assets/image-20230511152914553.png)
+
+
+
+![image-20230511153032041](MMORPG.assets/image-20230511153032041.png)
+
+
+
+
+
+还需要将根据这个模型的类型去设置，如果是人形，就像以下即可
+
+![image-20230511153224981](MMORPG.assets/image-20230511153224981.png)
+
+### 3.通过脚本控制动画
+
+#### 1.在Animator Controller添加一些用于控制动画的变量
+
+![image-20230512090029814](MMORPG.assets/image-20230512090029814.png) 
+
+#### 2.给你的动画之间添加关系，连线make Transition
+
+![image-20230512090144586](MMORPG.assets/image-20230512090144586.png) 
+
+![image-20230512090135161](MMORPG.assets/image-20230512090135161.png)
+
+
+
+
+
+#### 3注意事项：点击你的那些连线，连线的inspector窗口如下
+
+![image-20230512090759911](MMORPG.assets/image-20230512090759911.png) 
+
+1.transitions，//todo这里我们先都不选
+
+![image-20230512091003794](MMORPG.assets/image-20230512091003794.png)
+
+
+
+2.has exit time
+
+这里取消勾选，这样让它没有等待时间，这样可以让他的状态从idel立刻切换到walk。
+
+这里两条连线都需要取消
+
+
+
+3.设置conditions中的变量，利用我们上面设置的变量
+
+比如说idel-->walk
+
+![image-20230512091415317](MMORPG.assets/image-20230512091415317.png)
+
+walk-->idel
+
+![image-20230512091439886](MMORPG.assets/image-20230512091439886.png)
+
+**这样我们就可以通过设置这个Walking这个bool值来控制动画的切换**
+
+
+
+#### 4.脚本控制
+
+![image-20230512092737536](MMORPG.assets/image-20230512092737536.png) 
+
+可以通过animator中的方法来设置条件变量的值，因为我们都是用的bool类型所以是setbool这个方法
+
+其他还有setInteger setFloat setTrigger........
+
+可以通过变量命来选中哪一个条件变量
+
+```
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class AnimationController : MonoBehaviour
+{
+    private Animator ani;
+    int theWalkId;
+    int theRunId;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        ani= GetComponent<Animator>();
+        theWalkId = Animator.StringToHash("walking");
+        theRunId = Animator.StringToHash("running");
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        bool isWalking = ani.GetBool("walking");
+        bool isRunning = ani.GetBool("running");
+        bool pressedw = Input.GetKey("w");
+        bool pressedr = Input.GetKey(KeyCode.LeftShift);
+
+        if (!isWalking && pressedw)
+        {
+            ani.SetBool(theWalkId, true);
+        }
+        if(isWalking&&!pressedw)
+        {
+            ani.SetBool(theWalkId, false);
+        }
+
+
+        if (!isRunning && pressedw && pressedr)
+        {
+            ani.SetBool(theRunId, true);
+        }
+        if (isRunning &&(!pressedw || !pressedr))
+        {
+            ani.SetBool(theRunId, false);
+        }
+    }
+}
+```
+
+
+
+
+
+
+
+### bug
+
+如果动作不对的话，自己调调骨骼就行了
+
+[从Mixamo导入的动画用起来会变形怎么办？三分钟告诉你怎么解决。_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1fg411w7HT/?spm_id_from=333.788&vd_source=ff929fb8407b30d15d4d258e14043130)
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 模型导入
+
+### bug
+
+1.模型紫色，修改材质球的sharder
+
+![image-20240101152054138](MMORPG.assets/image-20240101152054138.png) 
+
+或是用Strandard也可以
+
+
+
+
+
+
+
+### 1.PMX模型直接导入Unity
+
+我们用到的插件是 MMD4Mecanim，这是一个Unity的插件，可以直接在Unity中使用。
+
+我们导入MMD4Mecanim.unitypackage到项目中。
+
+![img](MMORPG.assets/35754d7f82ed68bfd6b32ca1beff1b1d22c6bfca.png@!web-article-pic.webp) 
+
+然后找到PMX的模型
+
+导入后会有一个MMD4Mecanim的ScriptableObject的文件。
+
+点击后在Inspector中会有使用规则。
+
+<img src="MMORPG.assets/7adf07546dfd69de1a76cac47e77c49bc9f7c672.png@!web-article-pic.webp" alt="img" style="zoom:80%;" /> 
+
+同意上述条款，这里不做翻译了。
+
+点击agree后。Inspector窗口发生了变化，点击Process，就开始转换了。
+
+![img](MMORPG.assets/ca83b9f9ec0b697ec71a151dd3c217463ad0dff8.png@!web-article-pic.webp) 
+
+完成后会将模型转化，同时将材质提取出来。
+
+
+
+注意：
+
+好像只支持标准3d模板的管线，如果项目是URP的，一导入，材质会全是洋红的，可以尝试这样解决：
+1.全选洋红材质球
+2.右边，将Shader换成Standard
+3.Edit->Rendering->Materials->Convert Selected Built-in Materials to URP
+
+
+
+2.使用blender+cats插件
+
+[pmx转fbx的具体步骤-CSDN博客](https://blog.csdn.net/thy0000/article/details/123800040)
+
+导入unity时效果不佳
+
+[使用Blender的CATS插件把MMD模型转为FBX，导入Unity_blender cats-CSDN博客](https://blog.csdn.net/qq_42915442/article/details/130375098)
+
+
+
 # 插件
 
 
@@ -10871,7 +13270,69 @@ ArtRes
 
 
 
+## **哎，有没有可能你复制代码的时候有些东西忘记改了啊？哈哈哈**
 
+
+
+## start和awake问题
+
+一些事件的绑定最好放到awake中去绑定
+
+调用就放到start中调用，这样可以保证事件在被调用的时候已经绑定了。
+
+
+
+## unity中乱码问题
+
+将这个文件放到unity项目的根目录
+
+.editorconfig
+
+```
+[*]
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+indent_style = space
+indent_size = 4
+```
+
+![image-20230501204700366](MMORPG.assets/image-20230501204700366.png)
+
+
+
+## 缓存问题
+
+Unity的缓存问题可能表现为以下一些情况：
+
+- 资源更新后仍然显示旧的内容
+- 游戏运行过程中出现卡顿或卡死
+- 卸载应用后再次安装仍然存在旧的缓存数据
+
+以下是解决Unity缓存问题的几种方法：
+
+1. 清理Unity缓存 在Unity编辑器中，可以通过选择菜单Edit -> Preferences -> Cache Server -> Purge Cache，清理掉Unity的缓存。这可以清除Unity编辑器的缓存，包括Assets的元数据、脚本编译输出等等。
+2. 删除旧缓存文件 有时候旧的缓存文件仍然被保留在计算机中，可以在Unity项目的目录下手动删除缓存文件。通常，可以在Unity项目的Library文件夹中找到缓存文件，删除该文件夹中的所有文件并重新启动Unity编辑器。
+3. 禁用缓存 可以在Unity编辑器中禁用缓存，可以通过选择菜单Edit -> Preferences -> Cache Server，然后将“Enable Cache Server”选项取消勾选来禁用缓存。
+4. 使用其他的缓存管理工具 也可以使用其他的缓存管理工具来管理Unity的缓存，例如CCleaner等。这些工具可以扫描计算机中的缓存文件并删除过期的文件，以便释放磁盘空间。
+5. 使用版本控制工具 可以使用版本控制工具来管理Unity项目的缓存文件。版本控制工具可以记录每次更改并跟踪每个文件的状态，从而避免出现缓存问题。
+
+以上是解决Unity缓存问题的几种方法，**没有尝试过解决问题，有用程度待定**
+
+
+
+## 场景切换问题
+
+背景是服务端发送数据给本地的角色进行创建本地的实体和远程的实体
+
+当场景中有其他远程实体，我们再进入游戏。
+
+流程：进入游戏时候接收服务端响应会创建本地实体和进行场景切换，然后是接收服务端响应创建远程实体
+
+这两个响应的顺序不能乱，否则会导致场景切换会导致实体被销毁。
+
+解决方法：可以选择使用DontDestroyOnLoad，让实体切换场景时不销毁
 
 ## 客户端已断开服务器却收不到
 
@@ -12440,7 +14901,7 @@ b.客户端收到全部enetity信息响应的时候，用一个字典来保存�
 
 
 
-### 同步entity信息协议
+### 位置同步entity信息协议
 
 a.客户端需要开启一个协程定时的给服务器发送entity的同步信息
 
@@ -12463,8 +14924,6 @@ f.注意的是需要控制同步的频率，频率过高会占用过高的带宽
 这里我们使用每一秒同步10次。
 
 
-
-### 位置同步
 
 #### 思路
 
@@ -12512,6 +14971,40 @@ IEnumerator SyncRequest()
     }
 }
 ```
+
+
+
+#### 动画上的同步问题
+
+在网络游戏开发中，**一般推荐使用 In-Place 动画**而不是根动画（Root Motion），尤其是在涉及到网络同步的情况下。以下是两者的优缺点分析：
+
+##### **In-Place 动画**
+
+**优点：**
+1. **更好的同步控制**：所有角色的移动和旋转都是由代码控制的，这样可以确保不同客户端上角色的移动一致性。
+2. **节省带宽**：不用频繁地同步根运动的速度和方向变化，可以只同步角色的输入和目标位置/方向，减少网络传输数据量。
+3. **更简单的预测与修正**：可以根据玩家输入和服务器逻辑来预测角色位置，一旦有偏差可以更容易修正。
+
+**缺点：**
+1. 需要更复杂的运动逻辑代码来处理角色的位移和物理模拟。
+2. 动画效果可能需要更多调整，因为需要手动匹配动画与移动速度。
+
+##### **根动画（Root Motion）**
+**优点：**
+
+1. **动画驱动的运动**：可以更自然地表现复杂的动作，比如跑步、跳跃等，因为动画控制着角色的位移。
+2. 可以减少动画与物理逻辑不同步的情况，因为位移是动画直接产生的。
+
+**缺点：**
+1. **同步复杂度高**：根运动需要频繁地同步角色的位置和方向，这对带宽的消耗较高，而且客户端之间的动画帧可能会有差异。
+2. **预测和修正难度大**：如果使用根动画，当网络延迟较高或丢包时，预测角色位置变得更加复杂。
+
+##### **总结**
+通常，**In-Place 动画更适合网络游戏**，因为它能够减少同步的复杂性和带宽消耗，并且更容易处理网络延迟和丢包等问题。而根动画则更适合单机游戏或者局域网游戏，这样可以更好地利用动画来驱动角色的行为。
+
+在需要表现复杂动作的场合，可以考虑结合两者。例如：角色的主要移动使用 In-Place 动画，而特殊动作（如某些技能动画）可以使用根动画。
+
+
 
 
 
@@ -16762,7 +19255,388 @@ AI包括的能力：寻路能力、移动、视野、技能
 
 ## 有限状态机FSM
 
-### 理论
+
+
+在Unity中，有限状态机（Finite State Machine，FSM）是**一种用于管理游戏对象的状态和行为的工具**。它基于状态转换图，将游戏对象的所有可能状态和它们之间的过渡转换表示为节点和边。
+
+每个状态都定义了对象的行为和响应，以及转换到其他状态所需的条件。例如，一个游戏中的角色可能具有“站立”、“行走”、“奔跑”等多种状态，它们之间的转换可能取决于用户输入、游戏事件或其他条件。
+
+Unity中的FSM可以使用Unity内置的Animator Controller或通过编写脚本来实现。使用Animator Controller，您可以为每个状态指定动画或动画过渡，以及与每个状态相关的其他属性和行为。编写脚本可以让您更精细地控制状态机，并为状态转换指定更复杂的条件和响应。
+
+使用有限状态机可以让您更好地管理复杂的游戏对象和游戏系统，并使其更加可读和易于维护。它也可以帮助您实现复杂的行为和动画效果，并控制游戏中的角色和对象。
+
+
+
+1.拥有多种状态（enum StateType）
+
+2.处于其中一种状态(currentState)
+
+3.状态互相切换(Updata Switch)
+
+
+
+### 最简版本
+
+![image-20230418074748777](MMORPG.assets/image-20230418074748777.png)
+
+
+
+优点：简单
+
+缺点：代码耦合性较高，不利于团队协作开发，单个状态只能使用一个状态来处理
+
+
+
+**AI.cs**
+
+```
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using MY_FSM;
+
+/// <summary>
+/// 最简单的状态机
+/// </summary>
+
+// 闲逛、索敌、攻击、死亡、胜利
+// public enum StateType
+// {
+//     Idle,
+//     Find_Enemy,
+//     Attack,
+//     Die,
+//     Success,
+// }
+
+public class AI : MonoBehaviour
+{
+    // 当前所处的状态
+    private StateType curState;
+    void Start()
+    {
+        curState = StateType.Idle;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        switch (curState)
+        {
+            case StateType.Idle:
+                {
+                    OnIdle();
+                    break;
+                }
+            case StateType.Find_Enemy:
+                {
+                    OnFindEnemy();
+                    break;
+                }
+            case StateType.Attack:
+                {
+                    OnAttack();
+                    break;
+                }
+            case StateType.Die:
+                {
+                    OnDie();
+                    break;
+                }
+            case StateType.Success:
+                {
+                    OnSuccess();
+                    break;
+                }
+            default:
+                break;
+        }
+    }
+
+    // 不同状态时的响应函数
+    void OnIdle() { }
+    void OnFindEnemy() { }
+    void OnAttack() { }
+    void OnDie() { }
+    void OnSuccess() { }
+
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 优化版本
+
+![image-20230418074938135](MMORPG.assets/image-20230418074938135.png)
+
+
+
+通过FSM这个代理来去处理状态切换的问题
+
+![image-20230418075644563](MMORPG.assets/image-20230418075644563.png)
+
+状态之间的通信问题：在会议室中内容展示到黑板上。所有我们可以在FSM创建一个类用于共享数据
+
+
+
+**FSM**.CS
+
+```
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System;
+
+namespace MY_FSM
+{
+
+    public enum StateType//状态
+    {
+        Idle,
+        MOVE,
+        Find_Enemy,
+        Attack,
+        Die,
+        Success,
+    }
+    public interface IState//响应
+    {
+        void OnEnter();
+        void OnExit();
+        void OnUpdate();
+        // void OnCheck();
+        // void OnFixUpdate();
+    }
+    [Serializable]
+    public class Blackboard
+    {
+        // 此处存储共享数据，或者向外展示的数据，可配置的数据
+    }
+
+
+    public class FSM
+    {
+        public IState curState;
+        public Dictionary<StateType, IState> states;//状态和响应之间的映射关系
+        public Blackboard blackboard;
+
+        public FSM(Blackboard blackboard)
+        {
+            this.states = new Dictionary<StateType, IState>();
+            this.blackboard = blackboard;
+        }
+
+        public void AddState(StateType stateType, IState state)
+        {
+            if (states.ContainsKey(stateType))
+            {
+                Debug.Log("[AddState] >>>>>>>>>>>>> map has contain key: " + stateType);
+                return;
+            }
+            states.Add(stateType, state);
+        }
+
+
+        //状态转换
+        public void SwitchState(StateType stateType)
+        {
+            if (!states.ContainsKey(stateType))
+            {
+                Debug.Log("[SwitchState] >>>>>>>>>>>>>>>>> not contain key: " + stateType);
+                return;
+            }
+            if (curState != null)
+            {
+                curState.OnExit();
+            }
+            curState = states[stateType];
+            curState.OnEnter();
+        }
+
+        public void OnUpdate()
+        {
+            curState.OnUpdate();
+        }
+
+        public void OnFixUpdate()
+        {
+            // curState.OnFixUpdate();
+        }
+
+        public void OnCheck()
+        {
+            // curState.OnCheck();
+        }
+    }
+}
+```
+
+
+
+**AINew.cs**
+
+```
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using MY_FSM;
+using System;
+using Random = UnityEngine.Random;
+
+/// <summary>
+/// 配合fsm的例子
+/// </summary>
+
+
+[Serializable]
+public class ZombieBlackboard : Blackboard
+{
+    public float idleTime;
+    public float moveSpeed;
+    public Transform transform;
+    public Vector2 targetPos;
+
+}
+
+public class AI_IdleState : IState
+{
+    private float idleTimer;
+    private FSM fsm;
+    private ZombieBlackboard blackboard;
+    public AI_IdleState(FSM fsm)
+    {
+        this.fsm = fsm;
+        this.blackboard = fsm.blackboard as ZombieBlackboard;
+    }
+    public void OnEnter()
+    {
+        idleTimer = 0;
+    }
+
+    public void OnExit()
+    {
+    }
+
+    public void OnUpdate()
+    {
+        idleTimer += Time.deltaTime;
+        if (idleTimer > blackboard.idleTime)
+        {
+            this.fsm.SwitchState(StateType.MOVE);
+        }
+    }
+}
+
+public class AI_MoveState : IState
+{
+    private FSM fsm;
+    private ZombieBlackboard blackboard;
+    public AI_MoveState(FSM fsm)
+    {
+        this.fsm = fsm;
+        this.blackboard = fsm.blackboard as ZombieBlackboard;
+    }
+    public void OnEnter()
+    {
+        //这里只是随机移动而已，
+        float randomX = Random.Range(-10, 10);
+        float randomY = Random.Range(-10, 10);
+        // 当前位置从黑板里拿
+        blackboard.targetPos = new Vector2(blackboard.transform.position.x + randomX, blackboard.transform.position.y);
+    }
+
+    public void OnExit()
+    {
+    }
+
+    public void OnUpdate()
+    {
+        if (Vector2.Distance(blackboard.transform.position, blackboard.targetPos) < 0.1f)
+        {
+            fsm.SwitchState(StateType.Idle);
+        }
+        else
+        {
+            //继续向目标移动
+            blackboard.transform.position = Vector2.MoveTowards(blackboard.transform.position, blackboard.targetPos, blackboard.moveSpeed * Time.deltaTime);
+        }
+    }
+}
+
+
+public class AINew : MonoBehaviour
+{
+    // Start is called before the first frame update
+    private FSM fsm;
+    public ZombieBlackboard blackboard;
+    void Start()
+    {
+        fsm = new FSM(blackboard);
+        fsm.AddState(StateType.Idle, new AI_IdleState(fsm));
+        fsm.AddState(StateType.MOVE, new AI_MoveState(fsm));
+        fsm.SwitchState(StateType.Idle);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        fsm.OnCheck();
+        fsm.OnUpdate();
+        Flip();
+    }
+
+    void Flip()
+    {
+        if (blackboard.targetPos != Vector2.zero)
+        {
+            if (blackboard.targetPos.x > transform.position.x)
+            {
+                transform.localScale = new Vector2(-1, 1);//利用缩放实现了翻转的效果
+            }
+            else
+            {
+                transform.localScale = new Vector2(1, 1);
+            }
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        fsm.OnFixUpdate();
+    }
+}
+
+```
+
+
+
+
+
+### 代码实例，敌人多样性
+
+idel  chase attack
+
+Enemy
+
+​	-->basse  角色的基类
+
+​	-->Enemy Type  角色的类型
+
+​	--> Interface  定义人物的一些行为接口给人物继承
+
+​	-->StateMachine  人物的状态  和 状态机
+
+​	-->TriggerChecks  
 
 
 

@@ -101,7 +101,7 @@ namespace GameServer.Model
                         }
                         else if (ent is EItem item)
                         {
-                            resp.ItemEntityList.Add(item.NetItemEntity);
+                            resp.EItemList.Add(item.NetEItem);
                         }
                     }
                     character.session.Send(resp);   //通知自己
@@ -130,7 +130,7 @@ namespace GameServer.Model
                 else if (entity is EItem ie)
                 {
                     var resp = new SpaceItemEnterResponse();
-                    resp.NetItemEntity = ie.NetItemEntity;
+                    resp.NetEItem = ie.NetEItem;
 
                     message = resp;
                     views = aoiZone.FindViewEntity(ie.EntityId).ToList();
@@ -249,7 +249,7 @@ namespace GameServer.Model
                         else if (entity is EItem ie)
                         {
                             var ieResp = new SpaceItemEnterResponse();
-                            ieResp.NetItemEntity = ie.NetItemEntity;
+                            ieResp.NetEItem = ie.NetEItem;
                             selfChr.session.Send(ieResp);
                         }
                     }

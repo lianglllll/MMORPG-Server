@@ -168,8 +168,8 @@ namespace GameServer.Service
                 {
                     //更新场景中的itementity数据,amount
                     eItem.Item.Amount -= alreadyAddedAmount;
-                    NetItemEntitySync resp = new NetItemEntitySync();
-                    resp.NetItemEntity = eItem.NetItemEntity;
+                    NetEItemSync resp = new NetEItemSync();
+                    resp.NetEItem = eItem.NetEItem;
                     chr.currentSpace.AOIBroadcast(eItem,resp);
                 }
                 else

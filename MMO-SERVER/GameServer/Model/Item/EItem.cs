@@ -16,11 +16,11 @@ namespace GameServer.Model
     public class EItem:Entity
     {
         private Item item;          //item信息
-        private NetItemEntity info; //网络对象
+        private NetEItem info;      //网络对象
         private Space space;
 
         public Item Item { get { return item; }}
-        public NetItemEntity NetItemEntity { get { return info; } }
+        public NetEItem NetEItem { get { return info; } }
 
         /// <summary>
         /// 构造方法
@@ -33,7 +33,7 @@ namespace GameServer.Model
             this.item = item;
             this.space = space;
 
-            info = new NetItemEntity();
+            info = new NetEItem();
             info.ItemInfo = item.ItemInfo;
             info.SpaceId = space.SpaceId;
             info.Entity = EntityData;
