@@ -259,32 +259,6 @@ namespace GameServer.Model
             currentSpace.fightManager.propertyUpdateQueue.Enqueue(po);
         }
 
-        /// <summary>
-        /// 属性更新回调
-        /// </summary>
-        public void UpdateAttributes()
-        {
-            //问就是netinfo中暂时只有这几个
-            SetSpeed(Attr.final.Speed);
-            SetHpMax(Attr.final.HPMax);
-            SetMpMax(Attr.final.MPMax);
-        }
-
-        /// <summary>
-        /// actor进入某个场景，更新自己记录的space信息
-        /// </summary>
-        /// <param name="space"></param>
-        public void OnEnterSpace(Space space)
-        {
-            if(currentSpace!= null && space != null)
-            {
-                EntityManager.Instance.EntityChangeSpace(this, currentSpace.SpaceId, space.SpaceId);
-            }
-            this.currentSpace = space;
-            CurSpaceId = space.SpaceId;
-        }
-
-
         public void RecvDamage(Damage damage)
         {
             //由技能和buff发出，当前actor收到扣血通知，本过程由Scheduler单线程调用，没有并发问题。
@@ -303,7 +277,7 @@ namespace GameServer.Model
             }
             else
             {
-                Die(damage.AttackerId);
+                OnDeath(damage.AttackerId);
             }
 
             //添加广播，一个伤害发生了。
@@ -315,18 +289,16 @@ namespace GameServer.Model
         {
 
         }
-        public virtual void Die(int killerID)
+        public virtual void OnDeath(int killerID)
         {
-
             if (IsDeath) return;
-
             SetHp(0);
             SetMacroState(UnitState.Dead);
             SetEntityState(EntityState.Death);
 
-            OnAfterDie(killerID);
+            OnAfterDeath(killerID);
         }
-        protected virtual void OnAfterDie(int killerID)
+        protected virtual void OnAfterDeath(int killerID)
         {
             buffManager.RemoveAllBuff();
             var act = GameTools.GetActorByEntityId(killerID);
@@ -334,7 +306,43 @@ namespace GameServer.Model
             {
                 chr.AddKillCount();
             }
+        }
+        /// <summary>
+        /// actor复活
+        /// </summary>
+        public virtual void Revive()
+        {
 
+        }
+        protected virtual void OnAfterRevive()
+        {
+
+        }
+
+
+
+        /// <summary>
+        /// 属性更新回调
+        /// </summary>
+        public void UpdateAttributes()
+        {
+            //问就是netinfo中暂时只有这几个
+            SetSpeed(Attr.final.Speed);
+            SetHpMax(Attr.final.HPMax);
+            SetMpMax(Attr.final.MPMax);
+        }
+        /// <summary>
+        /// actor进入某个场景，更新自己记录的space信息
+        /// </summary>
+        /// <param name="space"></param>
+        public void OnEnterSpace(Space space)
+        {
+            if(currentSpace!= null && space != null)
+            {
+                EntityManager.Instance.EntityChangeSpace(this, currentSpace.SpaceId, space.SpaceId);
+            }
+            this.currentSpace = space;
+            CurSpaceId = space.SpaceId;
         }
 
         // 自动回血调用，这里暂时只有monster调用，本过程由Scheduler单线程调用，没有并发问题。
@@ -353,21 +361,9 @@ namespace GameServer.Model
         }
 
         /// <summary>
-        /// actor复活
-        /// </summary>
-        public virtual void Revive()
-        {
-
-        }
-        protected virtual void OnAfterRevive()
-        {
-
-        }
-
-        /// <summary>
         /// 传送
         /// </summary>
-        public virtual void TransmitTo(Space targetSpace,Vector3Int pos,Vector3Int dir = new Vector3Int())
+        public  void TransmitTo(Space targetSpace,Vector3Int pos,Vector3Int dir = new Vector3Int())
         {
             if (this is not Character chr) return;
             currentSpace.TransmitTo(targetSpace,this,pos,dir);

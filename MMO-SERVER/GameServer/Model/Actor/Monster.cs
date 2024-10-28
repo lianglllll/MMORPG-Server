@@ -215,9 +215,9 @@ namespace GameServer.Model
         /// 死亡后处理
         /// </summary>
         /// <param name="killerID"></param>
-        protected override void OnAfterDie(int killerID)
+        protected override void OnAfterDeath(int killerID)
         {
-            base.OnAfterDie(killerID);
+            base.OnAfterDeath(killerID);
             //状态机切换
             AI.fsm.ChangeState("death");
 

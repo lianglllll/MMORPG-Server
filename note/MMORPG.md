@@ -14849,7 +14849,7 @@ message HeartBeatResponse{
 
 
 
-# 核心
+# 同步核心
 
 ## 角色设计
 
@@ -15059,6 +15059,16 @@ Schedule.Instance.AddTask(() => repo.UpdateAsync(Data) , 2);
 **这个计时器存在的目的就是为了定时执行一些任务**
 
 比如说：我们需要定时存放角色的位置信息，下次角色上线能找到位置，我们可以定时2秒保存一次
+
+
+
+## 死亡的同步
+
+1.server中计算到actor死亡
+
+2.将本actor的状态设置为死亡，并且同步给aoi区域内的全部chr（如果actor是chr的话也要包括它自己）
+
+3.client接受到信息后，就会调用状态机转换死亡状态。
 
 
 
