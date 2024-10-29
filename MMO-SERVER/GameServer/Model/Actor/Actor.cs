@@ -15,6 +15,7 @@ using GameServer.Combat.Skills;
 using Google.Protobuf.Collections;
 using AOIMap;
 using Common.Summer.GameServer;
+using GameServer.AI.FSM.State;
 
 namespace GameServer.Model
 {
@@ -24,14 +25,15 @@ namespace GameServer.Model
         public UnitDefine Define;                                                                   //actor的define数据    (静态数据)
         private NetActor _info  = new NetActor();                                                   //actor的NetActor数据  (动态数据)
         public Attributes Attr = new Attributes();                                                  //actor属性
-        public EntityState State;                                                                   //actor微状态：用于描述角色在特定时刻所执行的具体动作或行为。通常包括：Idle、Run、Walk、Jump、Attack 等。
-        public UnitState macroState;                                                                 //actor宏状态：用于描述角色在某一段时间内的大范围行为模式。通常包括：空闲、战斗
+        public ActorMode actorMode;                                                                 //actor模式：用于描述角色在某一段时间内的大范围，通常包括：空闲、战斗
+        public ActorCombatMode actorCombatMode;                                                     //actor战斗模式:空手、武器、御剑飞行
+        public ActorState State;                                                                    //actor动作状态：用于描述角色在特定时刻所执行的具体动作或行为。通常包括：Idle、Run、Walk、Jump、Attack 等。
         public SkillManager skillManager;                                                           //actor技能管理器
         public Spell spell;                                                                         //actor技能释放器
         public Skill curentSkill;                                                                   //actor当前正在使用的技能
         public BuffManager buffManager;                                                             //actor的buff管理器
 
-        public bool IsDeath => macroState == UnitState.Dead;            
+        public bool IsDeath => actorMode == ActorMode.Dead;            
         
         public NetActor Info
         {
@@ -234,7 +236,35 @@ namespace GameServer.Model
             //属性刷新
             Attr.Reload();
         }
-        public virtual void SetEntityState(EntityState state)
+        protected void SetActorMode(ActorMode actorMode)
+        {
+            if (this.actorMode == actorMode) return;
+            ActorMode oldValue = this.actorMode;
+            this.actorMode = actorMode;
+            PropertyUpdate po = new PropertyUpdate()
+            {
+                EntityId = EntityId,
+                Property = PropertyUpdate.Types.Prop.Mode,
+                OldValue = new() { ModeValue = oldValue },
+                NewValue = new() { ModeValue = actorMode } 
+            };
+            currentSpace.fightManager.propertyUpdateQueue.Enqueue(po);
+        }
+        protected void SetActorCombatMode(ActorCombatMode actorCombatMode)
+        {
+            if (this.actorCombatMode == actorCombatMode) return;
+            ActorCombatMode oldValue = this.actorCombatMode;
+            this.actorCombatMode = actorCombatMode;
+            PropertyUpdate po = new PropertyUpdate()
+            {
+                EntityId = EntityId,
+                Property = PropertyUpdate.Types.Prop.CombatMode,
+                OldValue = new() { CombatModeValue = oldValue },
+                NewValue = new() { CombatModeValue = actorCombatMode }
+            };
+            currentSpace.fightManager.propertyUpdateQueue.Enqueue(po);
+        }
+        public virtual void SetActorState(ActorState state)
         {
             this.State = state;
             var resp = new SpaceEntitySyncResponse();
@@ -243,20 +273,6 @@ namespace GameServer.Model
             resp.EntitySync.Force = true;
             resp.EntitySync.State = state;
             currentSpace.AOIBroadcast(this,resp,true);
-        }
-        protected void SetMacroState(UnitState unitState)
-        {
-            if (this.macroState == unitState) return;
-            UnitState oldValue = this.macroState;
-            this.macroState = unitState;
-            PropertyUpdate po = new PropertyUpdate()
-            {
-                EntityId = EntityId,
-                Property = PropertyUpdate.Types.Prop.State,
-                OldValue = new() { StateValue = oldValue },
-                NewValue = new() { StateValue = unitState } 
-            };
-            currentSpace.fightManager.propertyUpdateQueue.Enqueue(po);
         }
 
         public void RecvDamage(Damage damage)
@@ -293,8 +309,8 @@ namespace GameServer.Model
         {
             if (IsDeath) return;
             SetHp(0);
-            SetMacroState(UnitState.Dead);
-            SetEntityState(EntityState.Death);
+            SetActorMode(ActorMode.Dead);
+            SetActorState(ActorState.Death);
 
             OnAfterDeath(killerID);
         }
@@ -318,8 +334,6 @@ namespace GameServer.Model
         {
 
         }
-
-
 
         /// <summary>
         /// 属性更新回调

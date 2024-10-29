@@ -100,7 +100,7 @@ namespace GameServer.Combat
         public CastResult CanUse(SCObject sco)
         {
             //持有者状态不正常
-            if (Owner.IsDeath || Owner.State == EntityState.Dizzy) return CastResult.TargetError;
+            if (Owner.IsDeath || Owner.State == ActorState.Dizzy) return CastResult.TargetError;
 
             //被动技能
             if (IsPassive)

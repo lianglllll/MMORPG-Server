@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Common.Summer.GameServer;
 using GameServer.AI.FSM;
+using Proto;
 
 namespace GameServer.AI.FSM.State
 {
@@ -49,7 +50,7 @@ namespace GameServer.AI.FSM.State
             }
 
             //到了需要移动位置的时间
-            if (monster.State == Proto.EntityState.Idle)
+            if (monster.State == ActorState.Idle)
             {
                 //到时间刷新了（每10秒刷新一次）
                 if (lastTime + waitTime < MyTime.time)

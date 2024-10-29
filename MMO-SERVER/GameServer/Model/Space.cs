@@ -448,7 +448,7 @@ namespace GameServer.Model
                 else
                 {
                     var entitySync = new NEntitySync();
-                    entitySync.State = EntityState.Idle;
+                    entitySync.State = ActorState.Idle;
                     entitySync.Entity.Position = pos;
                     entitySync.Entity.Direction = dir;
                     SyncActor(entitySync, actor, true);

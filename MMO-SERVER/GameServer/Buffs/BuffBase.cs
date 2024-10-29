@@ -17,7 +17,7 @@ namespace GameServer.Buffs
         private float m_MaxDuration = 3;
         private float m_TimeScale = 1;
         private int m_MaxLevel = 1;
-        private BuffType m_BuffType = BuffType.None;
+        private BuffType m_BuffType;
         private BuffConflict m_BuffConflict = BuffConflict.Cover;
         private bool m_Dispellable = true;
         private string m_Name = "默认名称";
@@ -216,7 +216,7 @@ namespace GameServer.Buffs
                 {
                     "正增益" => BuffType.Buff,
                     "负增益" => BuffType.Debuff,
-                    _ => BuffType.None,
+                    _ => BuffType.Buff,
                 };
                 this.BuffConflict = def.BuffConflict switch
                 {

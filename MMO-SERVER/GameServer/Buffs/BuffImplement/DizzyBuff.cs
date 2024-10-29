@@ -16,17 +16,17 @@ namespace GameServer.Buffs.BuffImplement
 
         public override void OnUpdate(float delta)
         {
-            Owner.State = EntityState.Dizzy;
+            Owner.State = ActorState.Dizzy;
         }
 
         public override void OnGet()
         {
-            Owner.SetEntityState(EntityState.Dizzy);
+            Owner.SetActorState(ActorState.Dizzy);
         }
 
         public override void OnLost()
         {
-            Owner.SetEntityState(EntityState.Idle);
+            Owner.SetActorState(ActorState.Idle);
         }
 
         protected override void OnLevelChange(int change)

@@ -50,6 +50,9 @@ namespace GameServer.Service
             //获取当前连接的场景对象
             Character chr = conn.Get<Session>().character;
 
+            //不接受死亡角色的同步
+            if (chr.IsDeath) return;
+
             //判断合理性
             NetEntity nEntity = msg.EntitySync.Entity;//请求位置信息
             //将要移动的距离
@@ -58,7 +61,7 @@ namespace GameServer.Service
             float timeDistance = Math.Min(chr.PositionUpdateTimeDistance, 1.0f);
             //计算距离限额
             float limit = chr.Speed * timeDistance * 1.5f;
-
+            //裁决
             if (float.IsNaN(distance)||distance > limit)
             {
                 //方案1：拉回原位置
@@ -73,7 +76,6 @@ namespace GameServer.Service
             }
 
             //转发space处理
-
             chr.currentSpace.SyncActor(msg.EntitySync,chr);
         }
 

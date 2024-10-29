@@ -28,7 +28,7 @@ namespace GameServer.AI.FSM.State
         {
             //先停下来
             var monster = param.owner;
-            if (monster.State == EntityState.Motion)
+            if (monster.State == ActorState.Move)
             {
                 monster.StopMove();
             }

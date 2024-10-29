@@ -29,10 +29,10 @@ namespace GameServer.AI.FSM.State
             var monster = param.owner;
 
             //返回时被眩晕
-            if (monster.State == EntityState.Dizzy) return;
+            if (monster.State == ActorState.Dizzy) return;
 
             //有问题，我们切换为巡逻状态
-            if (monster.State != EntityState.Motion)
+            if (monster.State != ActorState.Move)
             {
                 fsm.ChangeState("patrol");
                 return;

@@ -40,7 +40,7 @@ namespace GameServer.Model
 
             //初始化
             initPosition = position;    //出生点设置
-            State = EntityState.Idle;   //monster状态设置
+            State = ActorState.Idle;   //monster状态设置
 
 /*            //添加怪物同步定时任务
             Scheduler.Instance.AddTask(() =>
@@ -78,7 +78,7 @@ namespace GameServer.Model
             //特殊状态就不需要推动状态机了，因为我们限制没有处理死亡和眩晕的状态
             //如果后面添加了这两个状态就可以去掉这两个校验了
             if (IsDeath) return;
-            if (State == EntityState.Dizzy) return;
+            if (State == ActorState.Dizzy) return;
 
             //推动AI状态跃迁
             AI?.Update();
@@ -127,7 +127,7 @@ namespace GameServer.Model
             //广播消息，主要是广播了monster这个旋转
             NEntitySync nEntitySync = new NEntitySync();
             nEntitySync.Entity = EntityData;
-            nEntitySync.State = EntityState.NoneState;
+            nEntitySync.State = ActorState.Constant;
             this.currentSpace.SyncActor(nEntitySync,this);
         }
 
@@ -137,7 +137,7 @@ namespace GameServer.Model
         /// </summary>
         private void Move()
         {
-            if (State == EntityState.Motion)
+            if (State == ActorState.Move)
             {
                 //移动向量
                 var dir = (targetPos - curPos).normalized;
@@ -168,15 +168,15 @@ namespace GameServer.Model
         public void StartMoveTo(Vector3 targetPos)
         {
             //如果处于monster处于特殊状态则不允许移动
-            if (State == EntityState.Dizzy || State == EntityState.Death)
+            if (State == ActorState.Dizzy || State == ActorState.Death)
             {
                 return;
             }
 
             //设置monster的状态
-            if(State != EntityState.Motion)
+            if(State != ActorState.Move)
             {
-                State = EntityState.Motion;
+                State = ActorState.Move;
             }
 
             //设置monster的目标坐标和当前坐标
@@ -201,7 +201,7 @@ namespace GameServer.Model
         /// </summary>
         public void StopMove()
         {
-            State = EntityState.Idle;
+            State = ActorState.Idle;
             curPos = targetPos;
 
             //广播消息,广播移动结束时的坐标和monster状态
@@ -241,10 +241,10 @@ namespace GameServer.Model
             if (!IsDeath) return;
             SetHp(Attr.final.HPMax);
             SetMP(Attr.final.MPMax);
-            SetMacroState(UnitState.Free);
+            SetActorMode(ActorMode.Free);
             //设置当前怪物的位置
             Position = initPosition;
-            SetEntityState(EntityState.Idle);
+            SetActorState(ActorState.Idle);
             OnAfterRevive();
         }
 

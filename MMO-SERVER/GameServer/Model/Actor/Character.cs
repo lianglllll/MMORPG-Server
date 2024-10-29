@@ -251,10 +251,10 @@ namespace GameServer.Model
             if (!IsDeath) return;
             SetHp(Attr.final.HPMax);
             SetMP(Attr.final.MPMax);
-            SetMacroState(UnitState.Free);
+            SetActorMode(ActorMode.Free);
             //设置当前角色的位置：找到场景中最近的复活点
             Position = currentSpace.SearchNearestRevivalPoint(this);
-            SetEntityState(EntityState.Idle);
+            SetActorState(ActorState.Idle);
             OnAfterRevive();
         }
 
@@ -262,7 +262,7 @@ namespace GameServer.Model
         /// 设置角色的状态
         /// </summary>
         /// <param name="state"></param>
-        public override void SetEntityState(EntityState state)
+        public override void SetActorState(ActorState state)
         {
             //这里我们同步给别人和同步给自己的客户端不使用同一个协议
             this.State = state;
