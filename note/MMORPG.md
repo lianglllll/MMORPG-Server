@@ -12670,13 +12670,23 @@ UDP(User Datagram Protocol)，即用户数据包协议，是一个简单的面�
 
 # [在linux环境下部署环境]
 
+## Unity编辑器热更新环境
+
+可以参考hybridclr文档[快速上手 | HybridCLR](https://hybridclr.doc.code-philosophy.com/docs/beginner/quickstart)
 
 
-## 1.ubuntu下安装mysql服务
 
 
 
-### **1.1安装 MySQL-Server**
+
+
+
+
+## ubuntu下安装mysql服务
+
+
+
+### **安装 MySQL-Server**
 
 通过 apt 包管理器安装 MySQL
 
@@ -12687,7 +12697,7 @@ sudo apt install mysql-server
 
 
 
-### **1.2启动mysql服务,并确定active**
+### **启动mysql服务,并确定active**
 
 ```
 systemctl start mysql
@@ -12697,7 +12707,7 @@ systemctl start mysql
 
 
 
-### **1.3验证 MySQL-Server**
+### **验证 MySQL-Server**
 
 你可以通过运行以下命令来验证安装结果，该命令将输出系统中所安装的 MySQL 版本和发行版。
 
@@ -12709,7 +12719,7 @@ mysql --version
 
 
 
-### **1.4保护加固 MySQL**
+### **保护加固 MySQL**
 
 MySQL 安装文件附带了一个名为`mysql_secure_installation`的脚本，它允许你很容易地提高[数据库服务](https://cloud.tencent.com/product/dbexpert?from_column=20065&from=20065)器的安全性。
 
@@ -12727,7 +12737,7 @@ sudo mysql_secure_installation
 
 
 
-### **1.5以root身份登录并调整用户身份验证**
+### **以root身份登录并调整用户身份验证**
 
 MySQL Server 带有一个客户端实用程序，可以从 Linux 终端访问数据库并与之交互。
 
@@ -12781,7 +12791,7 @@ mysql -u root -p
 
 
 
-### **1.6创建新用户**
+### **创建新用户**
 
 一切都设置好后，你可以创建一个新用户，并授予该用户适当的权限。我们将创建一个用户 'PyDataStudio' 并分配对所有数据库表的权限以及更改、删除和添加用户权限的权限。逐行执行下面的命令。
 
@@ -12803,7 +12813,7 @@ mysql -u PyDataStudio -p
 
 
 
-### **1.7服务器上的配置**
+### **服务器上的配置**
 
 在 Ubuntu 服务器上安装 MySQL-server 与上述步骤没有太大区别。但是，由于服务器是远程访问的，我们还需要为服务器启用远程访问。
 
@@ -12882,25 +12892,25 @@ validate_password_special_char_count：密码至少要包含的特殊字符数�
 
 
 
-#### 1.查看 **MySQL** 依赖
+#### 查看 **MySQL** 依赖
 
 ```
 dpkg --list|grep mysql
 ```
 
-#### 2.卸载 mysql-common
+#### 卸载 mysql-common
 
 ```
 sudo apt remove mysql-common
 ```
 
-#### 3.卸载 mysql-server
+#### 卸载 mysql-server
 
 ```
 sudo apt autoremove --purge mysql-server
 ```
 
-#### 4.清除残留数据
+#### 清除残留数据
 
 ```
 dpkg -l|grep ^rc|awk '{print $2}'|sudo xargs dpkg -P
@@ -12930,7 +12940,7 @@ source /path/file.sql
 
 
 
-## 2.部署c#运行环境
+## 部署c#运行环境
 
 
 
@@ -13000,7 +13010,7 @@ dotnet --info
 
 
 
-## 3.启动服务器程序
+## 启动服务器程序
 
 **服务器的ip使用内网ip或者 0.0.0.0**
 
@@ -13116,7 +13126,7 @@ screen -r test
 
 
 
-### 1.服务器的配置文件
+### 服务器的配置文件
 
 
 
@@ -13206,7 +13216,7 @@ GameServer.csproj里面要有这段配置，配置文件回自动复制到运行
 
 
 
-### 2.来自客户端的数据
+### 来自客户端的数据
 
 不要相信来自客户端的数据，如果要使用请做好检测
 
