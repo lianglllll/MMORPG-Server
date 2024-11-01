@@ -14,10 +14,16 @@
 
 [目前项目进度演示视频链接](https://www.bilibili.com/video/BV1Rw4m1m7vS/?spm_id_from=333.999.0.0&vd_source=ff929fb8407b30d15d4d258e14043130)
 
-目前已经有了一个发布试玩的版本V1.0.0，我已经开启了云服务器，欢迎大家试玩。(如果服务器挂掉可以提交issue通知我，谢谢你的帮忙)
 
-【注意】当前最新的提交是跑不动的因为还没修改完毕，如果需要能正常运行的请回滚到这个版本：
-[[优化\]entity体系优化](https://github.com/lianglllll/MMORPG/commit/f6ffd16b4dfb8d5f54ca9adc12fae552add90e5e)
+
+# 注意事项
+
+- 目前已经有了一个发布试玩的版本V1.0.0，我已经开启了云服务器，欢迎大家试玩。(如果服务器挂掉可以提交issue通知我，谢谢你的帮忙)
+
+
+- 当前最新的提交是跑不动的因为还没修改完毕,如果需要能正常运行的请回滚到这个版本：[[优化\]entity体系优化](https://github.com/lianglllll/MMORPG/commit/f6ffd16b4dfb8d5f54ca9adc12fae552add90e5e)
+
+- 这两天在别的电脑尝试搭建本项目的环境，发现有些问题，如果有需要可以等我完善部署的流程。
 
 # 项目已完成功能
 
