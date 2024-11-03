@@ -22,9 +22,9 @@ namespace GameServer.Network
         //记录conn最后一次心跳包的时间
         private Dictionary<Connection, DateTime> heartBeatPairs = new Dictionary<Connection, DateTime>();
         //心跳超时时间
-        private static int HEARTBEATTIMEOUT = 5;
+        private static int HEARTBEATTIMEOUT = 100;
         //服务器查询心跳字典的间隔时间
-        private static int HEARTBEATQUERYTIME = 5;
+        private static int HEARTBEATQUERYTIME = 100;
 
         public NetService()
         {

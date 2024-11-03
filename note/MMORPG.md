@@ -8,12 +8,6 @@
 
 
 
-
-
-
-
-
-
 ## 技术框架易沉迷，请勿上瘾
 
 
@@ -46,7 +40,7 @@
 
 
 
-# =============================
+# ======
 
 # 动画系统
 
@@ -2715,7 +2709,7 @@ https://www.bilibili.com/video/BV1FN4y1G7n1/?spm_id_from=333.788&vd_source=ff929
 
 
 
-# =============================
+# ======
 
 # c#基础
 
@@ -12658,7 +12652,7 @@ UDP(User Datagram Protocol)，即用户数据包协议，是一个简单的面�
 
 
 
-# ============================
+# ======
 
 
 
@@ -12666,23 +12660,202 @@ UDP(User Datagram Protocol)，即用户数据包协议，是一个简单的面�
 
 
 
+# [开发环境部署]
 
-
-# [在linux环境下部署环境]
-
-## Unity编辑器热更新环境
-
-可以参考hybridclr文档[快速上手 | HybridCLR](https://hybridclr.doc.code-philosophy.com/docs/beginner/quickstart)
+## Unity 编辑器插件
 
 
 
+![image-20241031210804398](C:\Users\KSG\AppData\Roaming\Typora\typora-user-images\image-20241031210804398.png)
 
 
 
 
 
+### hybridClr
 
-## ubuntu下安装mysql服务
+https://hybridclr.doc.code-philosophy.com/docs/beginner/quickstart
+
+
+
+vs 安装组件
+
+
+
+![image-20241031211158387](C:\Users\KSG\AppData\Roaming\Typora\typora-user-images\image-20241031211158387.png)
+
+### Yooasset 2.1.1
+
+切记使用 2.1.1 版本，因为后面的版本改了一些接口，我们的项目还没升级
+
+https://www.yooasset.com/docs/guide-editor/QuickStart
+
+
+
+ 
+
+### BetterStreamingAssets
+
+[BetterStreamingAssets](https://github.com/gwiazdorrr/BetterStreamingAssets)
+
+通过 github 的 url 导入即可
+
+
+
+### inputsystem
+
+直接在管理器导入即可
+
+
+
+### Post Processing
+
+直接在管理器导入即可
+
+
+
+
+
+## windows 下安装 mysql 环境
+
+
+
+这里以windows10举例子
+
+### 安装 mysql
+
+我们这里使用的版本是 mysql 8.4.3LTS
+
+https://dev.mysql.com/downloads/mysql/
+
+![image-20241102120751826](C:\Users\KSG\AppData\Roaming\Typora\typora-user-images\image-20241102120751826.png)
+
+一路傻瓜式安装即可。
+
+可参考：https://www.runoob.com/w3cnote/windows10-mysql-installer.html
+
+
+
+
+
+### 导入 sql 文件
+
+这里我们使用数据库工具来完成这个工作
+
+1.安装工具，这里我们使用 JookDB（网上随便找的）
+
+https://jookdb.com/download.html
+
+2.创建我们项目的数据库 mmorpg
+
+![image-20241102183824895](C:\Users\KSG\AppData\Roaming\Typora\typora-user-images\image-20241102183824895.png) 3.执行 sql 文件
+
+
+
+![image-20241102183944857](C:\Users\KSG\AppData\Roaming\Typora\typora-user-images\image-20241102183944857.png) ![image-20241102184013053](C:\Users\KSG\AppData\Roaming\Typora\typora-user-images\image-20241102184013053.png)
+
+
+
+
+
+### 更改 server 配置信息
+
+在 server 中 config.yaml 修改数据库的 username 和 password
+
+注意yaml的格式，:号后面要有一个空格
+
+![image-20241102184302056](C:\Users\KSG\AppData\Roaming\Typora\typora-user-images\image-20241102184302056.png) 
+
+
+
+## windows下面启动server程序
+
+启动后这样就没出现什么问题了。
+
+![image-20241102184624018](C:\Users\KSG\AppData\Roaming\Typora\typora-user-images\image-20241102184624018.png) 
+
+
+
+## 资源服务器部署
+
+
+
+**1.搞一个服务器**
+
+可以使用本机来做服务器，但是我们这里以云服务器来举例子
+
+这边使用一台阿里云的云服务器。
+
+**2.安装宝塔面板**
+
+https://www.bt.cn/new/download.html
+
+记得在安全组中将宝塔的端口在云服务器上放行
+
+然后就进入面板的网页，下载web服务器相关的资源(这里用默认的方案)
+
+**3.网站搭建**
+
+自己创建一个网站
+
+然后在网站根目录创建mmo文件夹
+
+![image-20241102192526343](C:\Users\KSG\AppData\Roaming\Typora\typora-user-images\image-20241102192526343.png)
+
+mmo文件夹里面是这样的
+
+![image-20241102192553433](C:\Users\KSG\AppData\Roaming\Typora\typora-user-images\image-20241102192553433.png)
+
+其中game-config.json就是选择服务器时需要用到的信息
+
+```
+{
+    "ServerList":[
+        {
+            "name":"本地服务器",
+            "host":"127.0.0.1",
+            "port":55555,
+            "state":0
+        },
+        {
+            "name":"云服务器",
+            "host":"x.x.x.x",
+            "port":55555,
+            "state":0
+        }
+    ]
+}
+```
+
+
+
+
+
+PC文件夹就存放我们PC平台下的热更资源包、Android同理
+
+**注意将网站的端口在云服务器安全组中放行**
+
+注意，需要在untiy中将Main脚本的AssetServer字段改为云服务器的mmo目录处
+
+
+
+![image-20241102195034307](C:\Users\KSG\AppData\Roaming\Typora\typora-user-images\image-20241102195034307.png) 
+
+
+
+
+
+
+
+## ====分割线====
+
+如果只在windows环境下开发，下面就不需要看了。
+
+
+
+
+
+## ubuntu 下安装 mysql 服务
 
 
 
@@ -12697,13 +12870,13 @@ sudo apt install mysql-server
 
 
 
-### **启动mysql服务,并确定active**
+### **启动 mysql 服务, 并确定 active**
 
 ```
 systemctl start mysql
 ```
 
-![image-20231222170326277](MMORPG.assets/image-20231222170326277.png)
+![image-20231222170326277](D:/MyProject/MMORPG/note/MMORPG.assets/image-20231222170326277.png)
 
 
 
@@ -12715,13 +12888,11 @@ systemctl start mysql
 mysql --version
 ```
 
-![image-20231222170435939](MMORPG.assets/image-20231222170435939.png) 
-
-
+![image-20231222170435939](D:/MyProject/MMORPG/note/MMORPG.assets/image-20231222170435939.png) 
 
 ### **保护加固 MySQL**
 
-MySQL 安装文件附带了一个名为`mysql_secure_installation`的脚本，它允许你很容易地提高[数据库服务](https://cloud.tencent.com/product/dbexpert?from_column=20065&from=20065)器的安全性。
+MySQL 安装文件附带了一个名为 `mysql_secure_installation` 的脚本，它允许你很容易地提高 [数据库服务](https://cloud.tencent.com/product/dbexpert?from_column=20065&from=20065) 器的安全性。
 
 不带参数运行这个脚本：
 
@@ -12729,15 +12900,15 @@ MySQL 安装文件附带了一个名为`mysql_secure_installation`的脚本，�
 sudo mysql_secure_installation
 ```
 
-你将会被要求配置`VALIDATE PASSWORD PLUGIN`，它被用来测试 MySQL 用户密码的强度，并且提高安全性：
+你将会被要求配置 `VALIDATE PASSWORD PLUGIN`，它被用来测试 MySQL 用户密码的强度，并且提高安全性：
 
-![image-20231222172421839](MMORPG.assets/image-20231222172421839.png) 
+![image-20231222172421839](D:/MyProject/MMORPG/note/MMORPG.assets/image-20231222172421839.png) 
 
 看着按吧。
 
 
 
-### **以root身份登录并调整用户身份验证**
+### **以 root 身份登录并调整用户身份验证**
 
 MySQL Server 带有一个客户端实用程序，可以从 Linux 终端访问数据库并与之交互。
 
@@ -12757,7 +12928,7 @@ mysql
 SELECT user,authentication_string,plugin,host FROM mysql.user;
 ```
 
-![image-20231222174909028](MMORPG.assets/image-20231222174909028.png) 
+![image-20231222174909028](D:/MyProject/MMORPG/note/MMORPG.assets/image-20231222174909028.png) 
 
 从上图中，我们可以确认 root 用户确实使用 auth_socket 进行了身份验证。我们需要使用下面的“ALTER USER”命令切换到密码验证的使用。另外需要注意的是，确保使用较强的安全密码（应超过 8 个字符，结合数字、字符串和特殊符号等），因为它将替换你在执行上述命令“sudo mysql_secure_installation” 时设置的密码。运行以下命令。
 
@@ -12777,7 +12948,7 @@ FLUSH PRIVILEGES;
 SELECT user,authentication_string,plugin,host FROM mysql.user;
 ```
 
-![image-20231222175044710](MMORPG.assets/image-20231222175044710.png)
+![image-20231222175044710](D:/MyProject/MMORPG/note/MMORPG.assets/image-20231222175044710.png)
 
 从上图中，我们看到 root 身份验证方法已从“auth_socket”更改为“mysql_native_password”。
 
@@ -12809,7 +12980,7 @@ GRANT ALL PRIVILEGES ON *.* TO 'PyDataStudio'@'localhost' WITH GRANT OPTION;
 mysql -u PyDataStudio -p
 ```
 
-![image-20231222180040915](MMORPG.assets/image-20231222180040915.png) 
+![image-20231222180040915](D:/MyProject/MMORPG/note/MMORPG.assets/image-20231222180040915.png) 
 
 
 
@@ -12836,7 +13007,7 @@ sudo systemctl enable mysql
 sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
 ```
 
-![图片](MMORPG.assets/f3f74bc525f3167aeef2581ecedf97cf3134c7.png)
+![图片](D:/MyProject/MMORPG/note/MMORPG.assets/f3f74bc525f3167aeef2581ecedf97cf3134c7.png)
 
 默认情况下，绑定地址为“127.0.0.1”。为公网接口添加绑定地址，为服务网络接口添加另一个绑定地址。你可以将所有 IP 地址的绑定地址配置为“0.0.0.0”。
 
@@ -12846,17 +13017,17 @@ sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
 
 ### **bug**
 
-如果你在选择密码规则的时候不小心选择了2，也就是数字、大小写字母、特殊符号和字典文件的组合。这时候设置密码会出现如下提示：
+如果你在选择密码规则的时候不小心选择了 2，也就是数字、大小写字母、特殊符号和字典文件的组合。这时候设置密码会出现如下提示：
 
 ```
 Your password does not satisfy the current policy requirements.
 ```
 
-这时候重新运行`mysql_secure_installation`也不会再给你机会重新设置了。手动微笑，mmp。
+这时候重新运行 `mysql_secure_installation` 也不会再给你机会重新设置了。手动微笑，mmp。
 
 **解决方案如下：**
 
-使用命令`mysql -uroot`登陆，执行：
+使用命令 `mysql -uroot` 登陆，执行：
 
 ```
 set global validate_password.policy = 0;
@@ -12868,7 +13039,7 @@ set global validate_password_length=4;
 #最低位数为4位
 ```
 
-这个时候重新运行`mysql_secure_installation`就可以安心设置了。
+这个时候重新运行 `mysql_secure_installation` 就可以安心设置了。
 
 **相关参数**
 
@@ -12927,7 +13098,7 @@ sudo apt autoremove --purge mysql-apt-config
 
 
 
-### 导入sql文件
+### 导入 sql 文件
 
 ```
 进入mysql某个数据库中
@@ -12940,13 +13111,13 @@ source /path/file.sql
 
 
 
-## 部署c#运行环境
+## ubuntu 部署 c#运行环境
 
 
 
-**云服务器需要dotnet环境**
+**云服务器需要 dotnet 环境**
 
-![image-20230702103526574](MMORPG.assets/image-20230702103526574.png)
+![image-20230702103526574](D:/MyProject/MMORPG/note/MMORPG.assets/image-20230702103526574.png)
 
 ```
 # 导入镜像源
@@ -12963,11 +13134,11 @@ dotnet --info
 
 **云服务器端口放行**
 
-![image-20240301003814057](MMORPG.assets/image-20240301003814057.png)
+![image-20240301003814057](D:/MyProject/MMORPG/note/MMORPG.assets/image-20240301003814057.png)
 
 
 
-**linux主机防火墙端口放行**
+**linux 主机防火墙端口放行**
 
 
 在 Ubuntu 中，你可以使用 `ufw`（Uncomplicated Firewall）工具来管理防火墙规则。以下是一些基本的步骤，可以帮助你放行端口：
@@ -13010,49 +13181,49 @@ dotnet --info
 
 
 
-## 启动服务器程序
+## ubuntu 启动服务器程序
 
-**服务器的ip使用内网ip或者 0.0.0.0**
+**服务器的 ip 使用内网 ip 或者 0.0.0.0**
 
-**客户端连接服务器的ip使用云服务器的ip**
+**客户端连接服务器的 ip 使用云服务器的 ip**
 
-云服务器中只有一个内网网卡，外网地址不是直接配置在服务器中的，而是配置在服务器外层的网关上，做了一层映射转发。程序是无法绑定公网ip地址的
-
-
+云服务器中只有一个内网网卡，外网地址不是直接配置在服务器中的，而是配置在服务器外层的网关上，做了一层映射转发。程序是无法绑定公网 ip 地址的
 
 
 
 
 
-选择release  Any Cpu
 
-![image-20230702103137449](MMORPG.assets/image-20230702103137449.png) 
+
+选择 release  Any Cpu
+
+![image-20230702103137449](D:/MyProject/MMORPG/note/MMORPG.assets/image-20230702103137449.png) 
 
 选择你要发布的项目，右键重写生成
 
-![image-20230702103233229](MMORPG.assets/image-20230702103233229.png) 
+![image-20230702103233229](D:/MyProject/MMORPG/note/MMORPG.assets/image-20230702103233229.png) 
 
-![image-20230702103252840](MMORPG.assets/image-20230702103252840.png)
+![image-20230702103252840](D:/MyProject/MMORPG/note/MMORPG.assets/image-20230702103252840.png)
 
 可以看到重写生成的文件在这个目录下
 
-![image-20230702103329928](MMORPG.assets/image-20230702103329928.png)
+![image-20230702103329928](D:/MyProject/MMORPG/note/MMORPG.assets/image-20230702103329928.png)
 
 
 
- .exe就是在windows下面运行的，  .dll就是在linux下面运行的
+ .exe 就是在 windows 下面运行的，  .dll 就是在 linux 下面运行的
 
-然后我们可以通过xshell进行传输
+然后我们可以通过 xshell 进行传输
 
 
 
-下面这样启动当前shell关闭的时候，服务器进程也会一起关闭的，因为它在shell下启动，所以我们需要将进程设置为守护进程
+下面这样启动当前 shell 关闭的时候，服务器进程也会一起关闭的，因为它在 shell 下启动，所以我们需要将进程设置为守护进程
 
 ```
 dotnet GameServer.dll  就能运行了
 ```
 
-**1、安装screen**
+**1、安装 screen**
 
 ```
 # 在Ubuntu上安装并使用screen
@@ -13089,7 +13260,7 @@ screen -X -S sessionID quit		关闭某个窗口，包括它允许的进程
 
 **5、查看程序输出文件（output.log）**
 
-![img](MMORPG.assets/a544b4f253594f29ae2318d2c69c6cef.png) 
+![img](D:/MyProject/MMORPG/note/MMORPG.assets/a544b4f253594f29ae2318d2c69c6cef.png) 
 
 **6、停止程序**
 
@@ -13104,7 +13275,7 @@ screen -r test
 # 2、按 Ctrl + C 停止程序运行
 ```
 
-![img](MMORPG.assets/00b7cc807c4d44829e8c7102079ae8a1.png) 
+![img](D:/MyProject/MMORPG/note/MMORPG.assets/00b7cc807c4d44829e8c7102079ae8a1.png) 
 
 > **实在不行，就查看程序的运行状态，也可以通过 `ps` 命令来查看程序是否在运行**
 
@@ -13122,7 +13293,7 @@ screen -r test
 
 
 
-## server相关的一些注意事项
+## server 相关的一些注意事项
 
 
 
@@ -13136,7 +13307,7 @@ screen -r test
 
 比如说：
 
-- server端的ip和port
+- server 端的 ip 和 port
 - 数据库信息。
 - 工作线程数
 
@@ -13144,14 +13315,14 @@ screen -r test
 
 **常用的配置文件：**
 
-- txt,配置解析麻烦
+- txt, 配置解析麻烦
 - json，不能写注释
 - xml，结构啰嗦
 - yml
 
 
 
-**我们使用yaml文件来做配置文件**
+**我们使用 yaml 文件来做配置文件**
 
 **config.yaml**
 
@@ -13176,7 +13347,7 @@ server:
 
 **我们使用第三方扩展库 YamlDotNet，将配置文件进行解析**
 
-![image-20240212131142560](MMORPG.assets/image-20240212131142560.png) 
+![image-20240212131142560](D:/MyProject/MMORPG/note/MMORPG.assets/image-20240212131142560.png) 
 
 
 
@@ -13195,15 +13366,15 @@ public static void Init(string filePath = "config.yaml")
 }
 ```
 
-注意：File.ReadAllText(filePath)  使用相对路径时是以当前工作目标为根目录的，也就是说必须再debug目录或者release目标中有才能读取
+注意：File.ReadAllText(filePath)  使用相对路径时是以当前工作目标为根目录的，也就是说必须再 debug 目录或者 release 目标中有才能读取
 
-<img src="MMORPG.assets/image-20240212134552573.png" alt="image-20240212134552573" style="zoom:67%;" /> 
+<img src="D:/MyProject/MMORPG/note/MMORPG.assets/image-20240212134552573.png" alt="image-20240212134552573" style="zoom:67%;" /> 
 
-我们可以把Config配置文件从项目中复制一份过来，但是每次修改都有复制也太麻烦了。。
+我们可以把 Config 配置文件从项目中复制一份过来，但是每次修改都有复制也太麻烦了。。
 
 可以使用以下方法来解决这个问题：
 
-GameServer.csproj里面要有这段配置，配置文件回自动复制到运行目录
+GameServer.csproj 里面要有这段配置，配置文件回自动复制到运行目录
 
 ```
 	<!--将文件复制到输出目录中 -->
@@ -13226,51 +13397,45 @@ GameServer.csproj里面要有这段配置，配置文件回自动复制到运行
 
 
 
-## 宝塔面板
-
-```
-bt
-```
-
-
-
 
 
 ## 监测网络流量
 
-1M的游戏服务器能带多少玩家，多人在线需要多大的带宽，如何测试带宽占用情况
+1M 的游戏服务器能带多少玩家，多人在线需要多大的带宽，如何测试带宽占用情况
 
 可以使用火绒自带的流量监控软件
 
-![image-20230703095756682](MMORPG.assets/image-20230703095756682.png)
+![image-20230703095756682](D:/MyProject/MMORPG/note/MMORPG.assets/image-20230703095756682.png)
 
 
 
-假设现在每个服务端1秒发送的数据包有300byte
+假设现在每个服务端 1 秒发送的数据包有 300byte
 
-![image-20230703095945664](MMORPG.assets/image-20230703095945664.png)
+![image-20230703095945664](D:/MyProject/MMORPG/note/MMORPG.assets/image-20230703095945664.png)
 
-那么，3个客户端就一共发送900个byte
+那么，3 个客户端就一共发送 900 个 byte
 
-服务器需要对接收的每一个数据包向每一个客户端进行转发，这里有3个也就是3*300=900byte
+服务器需要对接收的每一个数据包向每一个客户端进行转发，这里有 3 个也就是 3*300 = 900byte
 
-一共转发3个数据包也就是3*900=2700byte
+一共转发 3 个数据包也就是 3*900 = 2700byte
 
-服务器的压力就是900+2700byte
+服务器的压力就是 900+2700byte
 
 
 
 如果我们在添加一个客户端
 
-![image-20230703100327523](MMORPG.assets/image-20230703100327523.png)
+![image-20230703100327523](D:/MyProject/MMORPG/note/MMORPG.assets/image-20230703100327523.png)
 
 可以看到，每多一个人服务器的压力提高地很快。
 
 我们可以得出结论：
 
-![image-20230703100652970](MMORPG.assets/image-20230703100652970.png)
+![image-20230703100652970](D:/MyProject/MMORPG/note/MMORPG.assets/image-20230703100652970.png)
 
 如果不在同一个场景里面可以同时在线的人数更多，因为不同的场景中不涉及到广播
+
+
 
 
 
@@ -13611,6 +13776,39 @@ unity控制台中的error pause 遇到错误打印就停止。导致我以为是
 ```
 
 关键代码MissileEffectRadius的大小问题，我们将其*0.001f时，这会影响到十字链表查询范围entity的时间，初步猜测就是刚刚好这么点时间，发生了线程并发的问题。
+
+
+
+
+
+## 2024.11.3 messageRouter在执行订阅的消息时会报错。
+
+
+
+```
+        private void executeMessage(Connection sender, IMessage message)
+        {
+            var fullName = message.GetType().FullName;
+            if(delegateMap.TryGetValue(fullName,out var handler))
+            {
+                try
+                {
+                    handler.DynamicInvoke(sender, message);
+                }catch(Exception e)
+                {
+                    Log.Error("[MessageRouter.executeMessage]" + e.StackTrace);
+                }
+            }
+        }
+```
+
+
+
+这个问题是由于非主线程调用unity组件造成的。下次注意。
+
+
+
+
 
 
 

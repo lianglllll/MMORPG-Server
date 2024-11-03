@@ -22,7 +22,6 @@ namespace GameServer
     {
         static void Main(string[] args)
         {
-
             //初始化日志环境
             Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Debug()

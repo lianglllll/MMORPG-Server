@@ -1,12 +1,9 @@
-﻿using GameServer;
+﻿using Google.Protobuf;
 using Serilog;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace GameServer.Network
 {
@@ -200,9 +197,9 @@ namespace GameServer.Network
             Console.WriteLine("MessageWork thread end");
             
         }
-        private void executeMessage(Connection sender, Google.Protobuf.IMessage message)
-        {
 
+        private void executeMessage(Connection sender, IMessage message)
+        {
             var fullName = message.GetType().FullName;
             if(delegateMap.TryGetValue(fullName,out var handler))
             {
@@ -214,7 +211,6 @@ namespace GameServer.Network
                     Log.Error("[MessageRouter.executeMessage]" + e.StackTrace);
                 }
             }
-        
         }
     }
 }

@@ -1,13 +1,13 @@
 database:
   host: 127.0.0.1
   port: 3306
-  username: root
-  password: root
+  username: nanfengjun
+  password: nanfengjun
   dbName: mmorpg
 
 server:
   ip: 127.0.0.1
-  port: 6666
+  port: 55555
   # 工作线程数
   workerCount: 2
   #AOI视野距离(米)
