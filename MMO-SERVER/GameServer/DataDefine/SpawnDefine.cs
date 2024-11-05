@@ -15,6 +15,7 @@ public class SpawnDefine
 	public int TID; // 单位类型
 	public int Level; // 单位等级
 	public int Period; // 刷怪周期(秒)
+	public int SpawnNum; // 刷怪数量
 }
 
 

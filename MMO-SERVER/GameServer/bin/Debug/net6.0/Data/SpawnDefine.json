@@ -6,7 +6,8 @@
     "Dir": "[0,0,0]",
     "TID": 1001,
     "Level": 1,
-    "Period": 20
+    "Period": 20,
+    "SpawnNum": 0
   },
   "1": {
     "ID": 1,
@@ -15,7 +16,8 @@
     "Dir": "[0,0,0]",
     "TID": 1001,
     "Level": 1,
-    "Period": 20
+    "Period": 20,
+    "SpawnNum": 0
   },
   "2": {
     "ID": 2,
@@ -24,7 +26,8 @@
     "Dir": "[0,0,0]",
     "TID": 1002,
     "Level": 2,
-    "Period": 20
+    "Period": 20,
+    "SpawnNum": 0
   },
   "3": {
     "ID": 3,
@@ -33,6 +36,7 @@
     "Dir": "[0,0,0]",
     "TID": 1003,
     "Level": 5,
-    "Period": 60
+    "Period": 60,
+    "SpawnNum": 1
   }
 }

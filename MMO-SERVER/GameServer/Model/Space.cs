@@ -52,14 +52,14 @@ namespace GameServer.Model
         {
             def = spaceDefine;
             monsterManager.Init(this);
-            //spawnManager.Init(this);
+            spawnManager.Init(this);
             fightManager.Init(this);
             itemManager.Init(this);
         }
 
         public void Update()
         {
-            //spawnManager.Update();
+            spawnManager.Update();
             fightManager.OnUpdate(MyTime.deltaTime);
             while(actionQueue.TryDequeue(out var action))
             {

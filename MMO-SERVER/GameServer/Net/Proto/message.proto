@@ -71,7 +71,7 @@ enum ActorState{
 //同步entity:位置+状态
 message NEntitySync{
 	NetEntity entity = 1;
-	bool force = 2;
+	bool force = 2;			//是否强制同步位置和旋转
 	ActorState state = 3;
 	int32 flag1 = 4;
 }

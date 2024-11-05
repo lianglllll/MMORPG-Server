@@ -23,10 +23,13 @@ namespace GameServer.Manager
             this.Space = space;
             //根据当前场景加载对应的规则
             var rules = DataManager.Instance.spawnDefineDict.Values
-                .Where(r => r.SpaceId == space.SpaceId);
+                .Where(r => r.SpaceId == space.SpaceId && r.SpawnNum > 0);
             foreach(var r in rules)
             {
-                ruleList.Add(new Spawner(r, space));
+                for(int i = 0; i < r.SpawnNum; i++)
+                {
+                    ruleList.Add(new Spawner(r, space));
+                }
             }
         }
 
