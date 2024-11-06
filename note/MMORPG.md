@@ -14867,8 +14867,6 @@ unity控制台中的error pause 遇到错误打印就停止。导致我以为是
 
 
 
-
-
 ## 2024.11.6 关于syncActor skill状态没做限制被中断的问题
 
 
@@ -14884,6 +14882,40 @@ unity控制台中的error pause 遇到错误打印就停止。导致我以为是
 ```
 MySqlException: Retrieval of the RSA public key is not enabled for insecure connections.
 ```
+
+
+**1)首先确认mysql_native_password插件是否已经安装**
+安装mysql_native_password插件
+INSTALL PLUGIN mysql_native_password SONAME 'mysql_native_password';
+如果已经安装，会显示该插件已经存在
+
+**2)查看插件状态**
+show plugins;
+看看mysql_native_password插件的状态是不是ACTIVE,如果状态值为DISABLED则说明插件没有激活
+
+**3)修改my.cnf或my.ini配置文件**
+[mysqld]
+mysql_native_password=ON #添加此行
+不要添加default_authentication_plugin=mysql_native_password，否则mysql会无法启动。
+
+**4)重启mysql服务**
+
+**5)mysql命令行查看用户使用的插件**
+select user,host,plugin from mysql.user;
+
+**6)修改密码认证方式**
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'your password';
+FLUSH PRIVILEGES; #刷新权限
+
+![image-20241106203358419](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106203358419.png) 
+
+## 2024.11.7 关于init isStart 和 start初始化 isStart
+
+使用isStart这种控制脚本真正开始的机制，我们就不要在start中将isStart = false;
+
+很有可能update阶段 我们添加脚本之后然后进行init，然后在下一帧调用到了脚本的start，此时isStart就置为false了
+
+
 
 
 
