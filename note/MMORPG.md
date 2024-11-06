@@ -2701,6 +2701,32 @@ https://www.bilibili.com/video/BV1FN4y1G7n1/?spm_id_from=333.788&vd_source=ff929
 
 
 
+# Sharder
+
+## 概述
+
+
+
+### 渲染管线概述
+
+
+
+#### 什么是渲染管线？
+
+![image-20241106151646600](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106151646600.png) 
+
+
+
+#### 渲染管线中的数据
+
+![image-20241106151742163](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106151742163.png)
+
+
+
+#### 渲染管线中的分阶段是？
+
+
+
 
 
 
@@ -12652,6 +12678,1027 @@ UDP(User Datagram Protocol)，即用户数据包协议，是一个简单的面�
 
 
 
+
+
+
+
+# lua
+
+
+
+
+
+## 关于lua
+
+Lua 是一种轻量级的多范式编程语言，设计初衷是为了嵌入到应用程序中。以下是 Lua 的一些关键特点：
+
+1. **轻量且高效**：Lua 以其小型代码库和高效的解释器闻名，非常适合在资源有限的环境中使用，如游戏开发中的脚本语言。
+2. **可嵌入性**：Lua 被设计成易于嵌入其他软件，提供简单的 C API 来集成与宿主程序进行交互。
+3. **动态类型化**：Lua 是动态类型化语言，不需要在编写代码时指定变量类型，这使得代码更简洁灵活。
+4. **强大的表结构**：Lua 使用单一的数据结构——表（table），来实现数组、记录、集合等数据类型。表支持动态增长，并能通过元表（metatable）扩展功能。
+5. **垃圾回收**：Lua 自动管理内存，通过垃圾回收来释放不再使用的对象所占用的内存。
+6. **简单语法**：Lua 的语法设计直观简单，容易学习，可以快速上手。
+7. **跨平台支持**：Lua 具有良好的跨平台能力，能运行在几乎所有操作系统上。
+
+由于这些特性，Lua 常用于游戏开发、嵌入式设备、Web 应用服务器等领域。此外，像 Adobe Lightroom 和 Nginx 等软件也利用 Lua 作为脚本扩展语言。
+
+
+
+
+
+## 虚拟机
+
+
+
+### 什么是虚拟机
+
+虚拟机是借助于操作系统对物理机器的一种模拟。但是我们今天所讲述的虚拟机概念比较狭义，与vmware或者virtual-box不同，而是针对具体语言所实现的虚拟机。例如在JVM或者CPython中，JAVA或者python源码会被编译成相关字节码，然后在对应虚拟机上运行，JVM或CPython会对这些字节码进行取指令，译码，执行，结果回写等操作，这些步骤和真实物理机器上的概念都很相似。相对应的二进制指令是在物理机器上运行，物理机器从内存中取指令，通过总线传输到CPU，然后译码、执行、结果存储。
+
+
+虚拟机为了能够执行字节码，需要模拟出物理CPU能够执行的相关操作，与虚拟机实现相关的概念如下：
+
+（1）将源码编译成VM所能执行的具体字节码。
+（2）字节码格式（指令格式），例如三元式，树还是前缀波兰式。
+（3）函数调用相关的栈结构，函数的入口，出口，返回以及如何传参。还有为了能够顺利返回所需的相关栈帧信息如何布置。
+（4）一个“指令指针”，指向下一条待执行的指令（内存中），对应物理机器的EIP。
+（5）一个虚拟“CPU”-指令调度器，
+
+- 获取下一条指令
+- 对操作数进行解码
+- 执行这条指令
+
+这三点是解释器执行字节码最重要的开销。
+
+
+
+### 虚拟机的实现方式
+
+如今虚拟机的实现方式有两种，基于栈的和基于寄存器的，这两种实现方式各有优劣，也都有标志性的产品。基于栈的虚拟机，有JVM，CPython以及.Net CLR。基于寄存器的，有Dalvik以及Lua5.0，另外Perl听说也要改为基于寄存器方式。无论这两种方式实现机制如何，都要实现以下几点：
+
+- 取指令，其中指令来源于内存
+
+- 译码，决定指令类型（执行何种操作）。另外译码的过程要包括从内存中取操作数
+- 执行。指令译码后，被虚拟机执行（其实最终都会借助于物理机资源）
+- 存储计算结果
+
+其实这和物理机CPU的执行是很相似的，都包括取值，译码，执行，回写等步骤。但是不同的一点是虚拟机应该模仿不出流水线，例如在当前指令译码完成之后，CPU中的译码部件处于空闲状态，可以用来对下一条指令进行译码，所以流水线有多少级就相当于可以并行执行多少指令。当然中间还有些指令相关和乱序的概念，这里就不详说了。
+
+下图中一个典型的指令流水线结构，由于虚拟机在操作系统上通过程序模拟，遵循冯诺依曼结构顺序执行的，应该很难实现出流水线结构。
+![这里写图片描述](https://i-blog.csdnimg.cn/blog_migrate/bbc80176d48fbcd6e49667e8e0e44e93.png)
+
+
+
+
+
+### 基于栈的虚拟机
+
+​	基于栈的虚拟机有一个操作数栈的概念，虚拟机在进行真正的运算时都是直接与操作数栈（operand stack）进行交互，不能直接操作内存中数据（其实这句话不严谨的，虚拟机的操作数栈也是布局在内存上的），也就是说不管进行何种操作都要通过操作数栈来进行，即使是数据传递这种简单的操作。这样做的直接好处就是虚拟机可以无视具体的物理架构，特别是寄存器。但缺点也显而易见，就是速度慢，因为无论什么操作都要通过操作数栈这一结构。
+
+​	由于执行时默认都是从操作数栈上取数据，那么就无需指定操作数。例如，x86汇编"ADD EAX, EBX"，就需要指定这次运算需要从什么地方取操作数，执行完结果存放在何处。但是基于栈的虚拟机的指令就无需指定，例如加法操作就一个简单的"Add"就可以了，因为默认操作数存放在操作数栈上，直接从操作数栈上pop出两条数据直接执行加法运算，运算后的结果默认存放在栈顶。其中操作数栈（operand stack）的深度由编译器静态确定，方便给栈帧预分配空间。这个和不能再栈上定义变长数组相似（其实这句话不严谨的，栈上分配变长数组，需要编译器的支持，分配在栈顶），由于局部变量的地址只能在编译期（compile time）确定针对当前栈帧的offset，如果中间有一个变量是一个变长数组的话，那么后面变量的offset就无法确定了（vector的数据是分配在堆上的，自己控制）。例如执行"a = b + c"，在基于栈的虚拟机上字节码指令如下所示：
+
+```
+I1: LOAD C
+I2: LOAD B
+I3: ADD 
+I4: STORE A
+```
+
+由于操作数都是隐式地，所以指令可以做的很短，一般都是一个或者两个字节。但是显而易见就是指令条数会显著增加。而基于寄存器虚拟机执行该操作只有一条指令，
+
+```
+I1: add a, b, c
+```
+
+其中a，b，c都是虚拟寄存器。操作数栈上的变化如下图所示：
+
+首先从符号表上读取数据压入操作数栈，
+
+![这里写图片描述](https://i-blog.csdnimg.cn/blog_migrate/cb08829e56b4a56bfdda8e70491be8f0.jpeg)
+
+然后从栈中弹出操作数执行加法运算，这步操作有物理机器执行，如下图所示：
+
+![这里写图片描述](https://i-blog.csdnimg.cn/blog_migrate/9b28bdcae94381ac6f54ba8d6a714066.jpeg)
+
+
+
+从图示中可以看出，数据从局部变量表中还要经过一次操作数栈的操作，注意操作数栈和局部变量表都是存放在内存上，内存到内存的数据传输在x86的机器上都是要经过一次数据总线传输的。可以得出一次简单的加法基本上需要9次数据传输，想想都很慢。
+
+但是基于栈的虚拟机优点就是可移植，寄存器由硬件直接提供。使用栈架构的指令集，用户程序（编译后的字节码）不会直接使用硬件中的寄存器，同时为了提高运行时的速度，可以将一些访问比较频繁的数据存放到寄存器中以获取尽量好的性能。另外，基于栈的虚拟机中指令更加紧凑，一个字节或者两个字节即可存储，同时编译器实现也比较简单，不用进行寄存器分配。寄存器分配是一门大学问。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 基于寄存器的虚拟机
+
+前面提到过基于栈的虚拟机，这里我们简要介绍一下基于寄存器的虚拟机运行机制。
+
+基于寄存器的虚拟机中没有操作数栈的概念，但是有很多虚拟寄存器，一般情况下这些寄存器（操作数）都是别名，需要执行引擎对这些寄存器（操作数）的解析，找出操作数的具体位置，然后取出操作数进行运算。
+
+既然是虚拟寄存器，那么肯定不在CPU中（想想也不应该在CPU中，虚拟机的根本目的就是跨平台和兼容性），其实和操作数栈相同，这些寄存器也存放在运行时栈中，本质上就是一个数组。
+
+
+新的虚拟机也用栈分配活动记录，寄存器就在该活动记录中。当进入Lua程序的函数体时，函数从栈中分配一个足以容纳该函数所有寄存器的活动记录。**函数的所有局部变量都各占据一个寄存器。因此，存取局部变量是相当高效的。**
+
+上面就是Lua虚拟机对寄存器的相关描述
+
+ 从上图中我们可以看到，其实“寄存器”的概念只是当前栈帧中一块连续的内存区域。这些数据在运算的时候，直接送入物理CPU进行计算，无需再传送到operand stack上然后再进行运算。例如"ADD R3, R2, R1"的示意图就如下所示：
+
+![这里写图片描述](https://i-blog.csdnimg.cn/blog_migrate/2fa62b6e66c4cfa98f7820930074483e.jpeg)
+
+
+
+其实"ADD R3, R2, R1"还要经过译码的一个过程，当然当前这条指令的种类和操作数由虚拟机进行解释。后面我们会看到，在有些实现中，有一个很大的switch-case来进行指令的分派及真正的运算过程。
+
+下图是Lua虚拟机的一些指令，该图片来自[这篇文章](https://docs.google.com/viewer?url=http://www.lua.org/doc/jucs05.pdf)，中译文[这里](https://docs.google.com/viewer?url=http://www.codingnow.com/2000/download/The%20Implementation%20of%20Lua5.0.pdf)。
+
+![这里写图片描述](https://i-blog.csdnimg.cn/blog_migrate/0c2329d989fd46b6238b14818b1a67f3.png) 使用寄存器式虚拟机没有基于栈的虚拟机在拷贝数据而使用的大量的出入栈（push/pop)指令。同时指令更紧凑更简洁。但是由于显示指定了操作数，所以基于寄存器的代码会比基于栈的代码要大，但是由于指令数量的减少，其实没有大多少。
+
+
+
+
+
+### **栈式虚拟机 VS 寄存器式虚拟机**
+
+（1）**指令条数：栈式虚拟机多**
+（2）**代码尺寸：栈式虚拟机小**
+（3）**移植性：栈式虚拟机移植性更好**
+（4）**指令优化：寄存器式虚拟机更能优化**
+
+![image-20241106105739660](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106105739660.png) 解释器最重要的开销在于指令调度(instruction dispatch)，指令调度主要操作包括从内存中取出指令，然后跳转到解释器相对应的代码段，然后执行这条指令。其中一个简易实现就是使用switch-based的方式来进行，这种方式简单易实现，另外任何语言都有相应的switch语句。switch-based的指令调度，通过一个死循环不断的从内存取出指令来执行，针对不同的指令选择不同的执行方式。
+
+
+
+一种JVM基于SBD实现方式如下图所示：
+
+![这里写图片描述](https://i-blog.csdnimg.cn/blog_migrate/05667132a208a11eca2004a8149aeb0d.jpeg) 
+
+这种方式实现简单，代码移植性好，但是有一个缺点就是分支预测失效的概率比较高。
+
+现在的CPU都是基于流水线结构的，间接跳转指令的跳转结果需要等到执行级才能知晓，如果预测失败需要排空流水线，流水线级数越多分支预测失败导致流水线排空的时间越长。
+
+由于编译后的指令是随机的，不太可能提取出预测模式
+
+
+
+
+
+### 参考文献
+
+https://zhuanlan.zhihu.com/p/61888678
+
+https://blog.csdn.net/dashuniuniu/article/details/50347149
+
+
+
+
+
+## lua的虚拟机
+
+
+
+为了达到较高的执行效率，lua代码并不是直接被Lua解释器解释执行，而是会先编译为字节码，然后再交给lua虚拟机去执行
+
+lua代码称为chunk，编译成的字节码则称为二进制chunk（Binary chunk）
+
+lua.exe、wlua.exe解释器可直接执行lua代码（解释器内部会先将其编译成字节码），也可执行使用luac.exe将lua代码预编译（Precompiled）为字节码
+
+使用预编译的字节码并不会加快脚本执行的速度，但可以加快脚本加载的速度，并在一定程度上保护源代码
+
+luac.exe可作为编译器，把lua代码编译成字节码，同时可作为反编译器，分析字节码的内容
+
+```
+luac.exe -v  									// 显示luac的版本号
+
+luac.exe Hello.lua  							// 在当前目录下，编译得到Hello.lua的二进制chunk文件luac.out（默认含调试符号）
+
+luac.exe -o Hello.out Hello1.lua Hello2.lua 	// 在当前目录下，编译得到Hello1.lua和Hello2.lua的二进制chunk文件Hello.out（默认含调试符号）
+
+luac.exe -s -o d:\Hello.out Hello.lua  			// 编译得到Hello.lua的二进制chunk文件d:\Hello.out（去掉调试符号）
+
+luac.exe -p Hello1.lua Hello2.lua  				// 对Hello1.lua和Hello2.lua只进行语法检测（注：只会检查语法规则，不会检查变量、函数等是否定义												  //和实现，函数参数返回值是否合法）
+```
+
+
+
+
+
+### Prototype
+
+lua编译器以函数为单位对源代码进行编译，每个函数会被编译成一个称之为原型（Prototype）的结构
+
+原型主要包含6部分内容：
+
+- 函数基本信息（basic info：含参数数量、局部变量数量等信息）、
+- 字节码（bytecodes）、
+- 常量（constants）表、
+- upvalue（闭包捕获的非局部变量）表、
+- 调试信息（debug info）、
+- 子函数原型列表（sub functions）
+
+原型结构使用这种嵌套递归结构，来描述函数中定义的子函数
+
+![img](https://img2018.cnblogs.com/blog/78946/201910/78946-20191013210920844-2106047153.png) 
+
+注：lua允许开发者可将语句写到文件的全局范围中，这是因为lua在编译时会将整个文件放到一个称之为main函数中，并以它为起点进行编译
+
+
+
+### 二进制chunk
+
+Hello.lua源代码如下：
+
+```
+print ("hello")
+
+function add(a, b)
+ return a+b
+end
+```
+
+编译得到的Hello.out的二进制为：
+
+![img](https://img2018.cnblogs.com/blog/78946/201910/78946-20191013232149911-1605916547.png) 
+
+二进制chunk（Binary chunk）的格式并没有标准化，也没有任何官方文档对其进行说明，一切以lua官方实现的源代码为准。
+
+其设计并没有考虑跨平台，对于需要超过一个字节表示的数据，必须要考虑大小端（Endianness）问题。
+
+lua官方实现的做法比较简单：编译lua脚本时，直接按照本机的大小端方式生成二进制chunk文件，当加载二进制chunk文件时，会探测被加载文件的大小端方式，如果和本机不匹配，就拒绝加载.
+
+二进制chunk格式设计也没有考虑不同lua版本之间的兼容问题，当加载二进制chunk文件时，会检测其版本号，如果和当前lua版本不匹配，就拒绝加载
+
+另外，二进制chunk格式设计也没有被刻意设计得很紧凑。在某些情况下，一段lua代码编译成二进制chunk后，甚至会被文本形式的源代码还要大。
+
+预编译成二进制chunk主要是为了提升加载速度，因此这也不是很大的问题.
+
+
+
+![image-20241106135224595](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106135224595.png)
+
+![image-20241106135623627](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106135623627.png)
+
+![image-20241106135644885](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106135644885.png)
+
+![image-20241106135657880](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106135657880.png)
+
+
+
+注1：二进制chunk中的字符串分为三种情况：
+
+①NULL字符串用0x00表示 
+
+②长度小于等于253（0xFD）的字符串，先用1个byte存储字符串长度+1的数值，然后是字节数组 
+
+③长度大于等于254（0xFE）的字符串，第一个字节是0xFF，后面跟一个8字节size_t类型存储字符串长度+1的数值，然后是字节数组 
+
+![image-20241106140108038](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106140108038.png) 
+
+
+
+查看二进制chunk中的所有函数（精简模式）： 
+
+```
+luac.exe -l Hello.lua
+
+luac.exe -l Hello.out
+```
+
+![img](https://img2018.cnblogs.com/blog/78946/201910/78946-20191012143924264-1726509288.png) 
+
+注1：每个函数信息包括两个部分：前面两行是函数的基本信息，后面是函数的指令列表
+
+注2：函数的基本信息包括：函数名称、函数的起始行列号、函数包含的指令数量、函数地址
+
+​    函数的参数params个数（0+表示函数为不固定参数）、寄存器slots数量、upvalue数量、局部变量locals数量、常量constants数量、子函数functions数量
+
+注3：指令列表里的每一条指令包含指令序号、对应代码行号、操作码和操作数。分号后为luac生成的注释，以便于我们理解指令
+
+注4：整个文件内容被放置到了main函数中，并以它作为嵌套起点
+
+
+
+
+
+查看二进制chunk中的所有函数（详细模式）： 
+
+```
+luac.exe -l -l Hello.lua  注：参数为2个-l
+
+luac.exe -l -l Hello.out  注：详细模式下，luac会把常量表、局部变量表和upvalue表的信息也打印出来 
+```
+
+![image-20241106140409090](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106140409090.png)
+
+
+
+### **lua指令集**
+
+Lua虚拟机的指令集为定长（Fixed-width）指令集，每条指令占4个字节（32bits），其中操作码（OpCode）占6bits，操作数（Operand）使用剩余的26bits
+
+Lua5.3版本共有47条指令，按功能可分为6大类：常量加载指令、运算符相关指令、循环和跳转指令、函数调用相关指令、表操作指令和Upvalue操作指令
+
+按编码模式分为4类：iABC（39）、iABx（3）、iAsBx（4）、iAx（1）
+
+![image-20241106140739533](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106140739533.png) 4种模式中，只有iAsBx下的sBx操作数会被解释成有符号整数，其他情况下操作数均被解释为无符号整数
+
+操作数A主要用来表示目标寄存器索引，其他操作数按表示信息可分为4种类型：OpArgN、OpArgU、OpArgR、OpArgK
+
+![image-20241106140859666](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106140859666.png) 
+
+### **Lua栈索引**
+
+![image-20241106141009694](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106141009694.png) 
+
+### **Lua State**
+
+![image-20241106141036435](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106141036435.png)
+
+
+
+### 指令表
+
+https://www.cnblogs.com/kekec/p/11768935.html
+
+
+
+
+
+
+
+
+
+
+
+### 关键函数和结构分析
+
+**luaL_dofile**：包含了luaL_loadfile和lua_pcall两个步骤，分别对应了函数的解析和执行阶段。
+
+**luaL_loadfile**：会调用具体的parser，对lua文件进行进行词法和语法分析，把source转化成opcode，并创建Proto结构保存该opcode和该函数的元信息。 Proto结构如下：
+
+![img](https://pic1.zhimg.com/v2-12e92dcaed56fb89b5a40fa006fad83e_1440w.jpg) 
+
+该结构基本涵盖了parse阶段该函数的所有分析信息。主要包括以下几部分：
+
+- 常量表。比如在函数里写了a = 1 + 2，那这里的1和2就会放在常量表里。
+- 局部变量信息。包含了局部变量的名字和它在函数中的生存周期区间(用pc来衡量)。
+- Upvalue信息。包含了该upvalue的名字和它是否归属于本函数栈还是外层函数栈的标记。
+- opcode列表。包含了该函数实际调用的所有指令。其实就是一个int32类型的列表，因为lua虚拟机里每个指令对应一个int32.
+
+
+
+**lua_pcall**：这个函数最终会调到luaD_call，也就是lua虚拟机里函数执行的主要函数。
+
+![img](https://pica.zhimg.com/v2-7088aed9f24b28deff6962541bc1fd86_1440w.jpg) 
+
+从代码里可以看出，luaD_call的调用分为两步：
+
+- luaD_precall：
+
+- - 如果是C函数或者C闭包，会直接创建单个函数调用的运行时结构**CallInfo**，来完成函数的进栈和出栈。
+  - 如果是lua闭包，在precall中只会做函数调用前的准备工作，实际执行会在后一步luaV_execute中进行。这里的准备工作主要包括：(1)处理lua的不定长参数、参数数量不够时的nil填充等。(2)分配CallInfo结构，并填充该函数运行时所需的base、top、opcode等信息，注意CallInfo结构里还有个很关键的func字段，它指向栈里对应的LClosure结构，这个结构为虚拟机后续执行提供upvalue表和常量表的查询，毕竟后续对常量和upvalue的read操作，都是需要把它们从这两个表中加载到寄存器里的。
+
+- luaV_execute：这一步就是我们前面提到的lua虚拟机的CPU了，因为所有指令的实际执行都是在这个函数里完成的。它做的主要工作，就是在一个大循环里，不断的fetch和dispatch指令。每次的fetch就是把pc加1，而dispatch就是一个大的swtich-case，每个不同类型的opcode对应不同的执行逻辑。举一个创建table的例子：
+
+![img](https://pic3.zhimg.com/v2-9035e1835430f61e193931e76e293ee4_1440w.jpg)
+
+在该指令中，会首先对32位指令进行位操作，得到该table的初始数组和hash表部分的大小b和c，然后调用luaH_new来创建table，最后根据b和c的值，对table进行resize操作。
+
+另外，前面提到的**CallInfo**结构，包含了单个函数调用，lua虚拟机所需要的辅助数据结构，它的结构如下：
+
+![img](https://pic3.zhimg.com/v2-dc76992f74f9741ec621035e6d5b2028_1440w.jpg) 
+
+下图是lua虚拟机在执行第二个函数时的一个栈示意图：
+
+![img](https://picx.zhimg.com/v2-4971a3734020cd93625a30fd872c0227_1440w.jpg)
+
+
+
+我们来看下lua_State里与之相关的几个字段：
+
+- stack。TValue*类型，记录了"内存"起始地址。
+- base。TValue*类型，记录当前函数的第一个参数位置。
+- top。TValue*类型，记录当前函数的栈顶。
+- base_ci。当前栈里所有的函数调用CallInfo数组。
+- ci。当前函数的CallInfo。
+
+
+
+可以发现，通过这样的组织结构，luavm可以方便的获取到任意函数的位置以及其中的所有参数位置。而每个CallInfo里又记录了函数的执行pc，因此vm对函数的执行可以说是了如指掌了。
+
+
+
+### 指令格式
+
+
+
+前文已经提到，lua虚拟机的单条指令长度为32位。其位分布如下图所示：
+
+![img](https://pic2.zhimg.com/v2-ecbca5a1ef4b6dbec76776a9c533a4a1_1440w.jpg)
+
+这里的OpCode，就是指令的类型，由于其只有6位，所有lua最多支持63种指令类型。而对于A、B、C、Bx、sBx等，都是该指令的参数，参数的值通常指的是一个相对偏移，例如相对于当前函数base的偏移，相对于常量表头的偏移等。另外，根据指令的不同，参数个数和类型也可能不同。来看几个常用的例子：
+
+- 从变量赋值：
+
+![img](https://pic2.zhimg.com/v2-ddf5e947dc8d27f8240fb1899df39ca3_1440w.jpg) 其实就是简单的把寄存器RB(i)的值赋值到寄存器RA(i)中去，这里的寄存器指的就是我们栈里头的某个坑位。 所以这里的RA和RB宏，都是一个栈地址获取操作，全部的定义如下：
+
+![img](https://pic2.zhimg.com/v2-6262636d6dec3f1b3ffe5b79285d8cc7_1440w.jpg)
+
+这些宏的内部实现主要分为2步：
+
+- - 通过GETARG_XXX(i)从当前指令中获取参数XXX的值
+  - 用函数base或者常量表base去加这个参数值得到最终的栈(寄存器)地址。
+
+
+
+- 从常量赋值：
+
+![img](https://pic1.zhimg.com/v2-7274298ed396ec97d44cc40de2e71dc0_1440w.jpg) 
+
+与变量赋值唯一的不同，就是RB是基于常量表的偏移。
+
+
+
+- 设置table字段：
+
+![img](https://picx.zhimg.com/v2-df392d48339683071d4ed939ecb75d55_1440w.png) 
+
+这里不上代码了，这里RK是一个条件宏，因为我有可能是t[a] = b, 也可能是t[1](https://link.zhihu.com/?target=https%3A//blog.csdn.net/dashuniuniu/article/details/50347149) = b，key如果是变量a，说明a肯定是在函数栈里头的变量，对应的寻址就用RB，而如果key是1，说明它不存在函数栈里头，而是在函数常量表里头，寻址就用KB。
+
+
+
+
+
+### 简单例子
+
+我们结合一个简单的lua chunk，decompile一下它生成的byte code(这里decode使用的也是书中介绍的ChunkSpy工具，目前已支持了5.3)，从而加深理解：
+
+![img](https://pic4.zhimg.com/v2-5093ea98fbf955224a10c4e9a6888395_1440w.jpg) 我们先来看下该chunk对应的函数，在生成的字节码里，称之为level 1 function：
+
+![img](https://pic2.zhimg.com/v2-74e78a50d9c30c610a460d559b5e7d27_1440w.jpg)
+
+
+
+一个函数最终的字节码，基本就包含三块：
+
+- 常量表
+- upvalue表
+- code。所有的字节指令，都是在玩常量表、upvalue表和寄存器栈。可以结合具体的指令来理解。
+
+我们再来看下定义在chunk里的testFunc函数，它被称为level 2函数，如果我在testFunc里还嵌套了子函数，称为level 3函数，以此类推。该函数的字节码与level 1的格式基本一致，这里就直接上图，不逐行解释了：
+
+![img](https://pic1.zhimg.com/v2-0a99fbec7e3c10d4334bbc19b418f142_1440w.jpg) 
+
+
+
+### 虚拟机执行流程图
+
+在梳理完整个lua虚拟机的源码分析，opcode的生成和执行逻辑以后，我们可以上书中的一个总流程图来回顾一下：
+
+![img](https://pic3.zhimg.com/v2-5aba6c214bf203c7a439b453fa922b92_1440w.jpg) 
+
+这个图中最核心的两块，一个是Proto结构，它是分析阶段和执行阶段的桥梁；另一个是OpCode的执行，这一块可以结合前面虚拟机概念，以及Stack-based和Register-based VM的区别一起理解，包括但不限于：从CallInfo里fetch指令，指令执行时的switch case跳转和操作数的寻址，运行时的栈帧布局，lua_State中的关键字段等等。 本文的总结就到这里，后面有时间可能会啃一啃书中第六章“指令的解析与执行”，因为这两章其实联系比较紧密，到时候如果有新的收获也会同步到这边来。
+
+
+
+
+
+
+
+
+
+
+
+### 参考文献
+
+https://zhuanlan.zhihu.com/p/61888678
+
+https://www.cnblogs.com/kekec/p/11768935.html
+
+
+
+
+
+## 嵌入lua虚拟机
+
+
+
+
+
+
+
+
+
+# 高性能server模型
+
+
+
+## 引言
+
+
+
+### **无处不在的C/S架构**
+
+在这个充斥着云的时代，我们使用的软件可以说99%都是C/S架构的
+
+你发邮件用的Outlook，Foxmail等
+
+你看视频用的优酷，土豆等
+
+你写文档用的Office365，googleDoc，Evernote等
+
+你浏览网页用的IE，Chrome等(B/S是特殊的C/S)
+
+......
+
+C/S架构的软件带来的一个明显的好处就是：只要有网络，你可以在任何地方干同一件事。
+
+例如：你在家里使用Office365编写了文档。到了公司，只要打开编辑地址就可以看到在家里编写的文档，进行展示或者继续编辑。甚至在手机上进行阅读与编辑。不再需要U盘拷来拷去了。
+
+C/S架构可以抽象为如下模型：
+
+![image-20241106164954756](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106164954756.png)
+
+
+
+－ C就是Client(客户端)，上面的B是Browser(浏览器)
+
+－ S就是Server(服务器)：服务器管理某种资源，并且通过操作这种资源来为它的客户端提供某种服务
+
+C/S架构之所以能够流行的一个主要原因就是网速的提高以及费用的降低，特别是无线网络速度的提高。试想在2G时代，大家最多就是看看文字网页，小说什么的。看图片，那简直就是奢侈！更别说看视频了！
+
+网速的提高，使得越来越多的人使用网络，例如：优酷，微信都是上亿用户量，更别说天猫双11的瞬间访问量了！这就对服务器有很高的要求！能够快速处理海量的用户请求！那服务器如何能快速的处理用户的请求呢？
+
+
+
+### **高性能服务器**
+
+高性能服务器至少要满足如下几个需求：
+
+－ 效率高：既然是高性能，那处理客户端请求的效率当然要很高了
+
+－ 高可用：不能随便就挂掉了
+
+－ 编程简单：基于此服务器进行业务开发需要足够简单
+
+－ 可扩展：可方便的扩展功能
+
+－ 可伸缩：可简单的通过部署的方式进行容量的伸缩，也就是服务需要无状态
+
+而满足如上需求的一个基础就是高性能的IO
+
+
+
+
+
+### **Socket**
+
+无论你是发邮件，浏览网页，还是看视频～实际底层都是使用的TCP/IP，而TCP/IP的编程抽象就是Socket!
+
+我一直对Socket的中文翻译很困惑，个人觉得是我所接触的技术名词翻译里最莫名其妙的，没有之一！
+
+Socket中文翻译为"套接字"！什么鬼？在很长的时间里我都无法将其和网络编程关联上！后来专门找了一些资料，最后在知乎上找到了一个还算满意的答案！
+
+Socket的原意是插口，想表达的意思是插口与插槽的关系！"send socket"插到"receive socket"里，建立了链接，然后就可以通信了！
+
+套接字的翻译，应该是参考了套接管(如下图)！从这个层面上来看，是有那么点意思！
+
+![image-20241106165115515](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106165115515.png) 
+
+
+
+套接字这个翻译已经是标准了，不纠结这个了！
+
+我们看一下Socket之间建立链接及通信的过程！实际上就是对TCP/IP连接与通信过程的抽象:
+
+![image-20241106165128450](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106165128450.png) 
+
+－ 服务端Socket会bind到指定的端口上，Listen客户端的"插入"
+
+－ 客户端Socket会Connect到服务端
+
+－ 当服务端Accept到客户端连接后
+
+－ 就可以进行发送与接收消息了
+
+－ 通信完成后即可Close
+
+对于IO来说，我们听得比较多的是：
+
+－ BIO：阻塞IO
+
+－ NIO：非阻塞IO
+
+－ 同步IO
+
+－ 异步IO
+
+以及其组合：
+
+－ 同步阻塞IO
+
+－ 同步非阻塞IO
+
+－ 异步阻塞IO
+
+－ 异步非阻塞IO
+
+
+
+
+
+### **那么什么是阻塞IO、非阻塞IO、同步IO、异步IO呢？**
+
+#### 概念
+
+－ 一个IO操作其实分成了两个步骤：**发起IO请求**和**实际的IO操作**
+
+－ **阻塞IO和非阻塞IO的区别在于第一步**：发起IO请求是否会被阻塞，如果阻塞直到完成那么就是传统的阻塞IO；如果不阻塞，那么就是非阻塞IO
+
+－ **同步IO和异步IO的区别就在于第二个步骤是否阻塞**，如果实际的IO读写阻塞请求进程，那么就是同步IO，因此阻塞IO、非阻塞IO、IO复用、信号驱动IO都是同步IO；如果不阻塞，而是操作系统帮你做完IO操作再将结果返回给你，那么就是异步IO
+
+举个不太恰当的例子 ：比如你家网络断了，你打电话去中国电信报修！
+
+－ 你拨号 —— 客户端连接服务器
+
+－ 电话通了 —— 连接建立
+
+－ 你说：“我家网断了,帮我修下” —— 发送消息
+
+－ 说完你就在那里等，那么就是阻塞IO
+
+－ 如果正好你有事，你放下带电话，然后处理其他事情了，过一会你来问下，修好了没 —— 那就是非阻塞IO
+
+－ 如果客服说：“马上帮你处理，你稍等” —— 同步IO
+
+－ 如果客服说：“马上帮你处理，好了通知你”，然后挂了电话 —— 异步IO
+
+
+
+**下面从代码层面看看BIO与NIO的流程!**
+
+#### **BIO**
+
+客户端代码
+
+```
+//Bind,Connect
+Socket client = new Socket("127.0.0.1",7777);    
+//读写
+PrintWriter pw = new PrintWriter(client.getOutputStream());
+BufferedReader br=
+        new BufferedReader(new InputStreamReader(System.in));  
+pw.write(br.readLine());  
+//Close
+pw.close();  
+br.close();
+```
+
+服务端代码
+
+```
+Socket socket;  
+//Bind,Listen
+ServerSocket ss = new ServerSocket(7777);  
+while (true) {  
+    //Accept
+    socket = ss.accept();  
+    //一般新建一个线程执行读写
+    BufferedReader br = new BufferedReader(
+            new InputStreamReader(socket  .getInputStream()));  
+    System.out.println("you input is : " + br.readLine());  
+}
+```
+
+模型图如下所示：
+
+![image-20241106165613633](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106165613633.png)
+
+**BIO优缺点**
+
+优点：
+
+－ 模型简单
+
+－ 编码简单
+
+缺点：
+
+－ 性能瓶颈低
+
+优缺点很明显。这里主要说下缺点：主要瓶颈在线程上。每个连接都会建立一个线程。虽然线程消耗比进程小，但是一台机器实际上能建立的有效线程有限，以Java来说，1.5以后，一个线程大致消耗1M内存！且随着线程数量的增加，CPU切换线程上下文的消耗也随之增加，在高过某个阀值后，继续增加线程，性能不增反降！而同样因为一个连接就新建一个线程，所以编码模型很简单！
+
+就性能瓶颈这一点，就确定了BIO并不适合进行高性能服务器的开发！像Tomcat这样的Web服务器，从7开始就从BIO改成了NIO，来提高服务器性能！
+
+
+
+#### **NIO**
+
+NIO客户端代码(连接)
+
+```
+//获取socket通道
+SocketChannel channel = SocketChannel.open();        
+channel.configureBlocking(false);
+//获得通道管理器
+selector=Selector.open();        
+channel.connect(new InetSocketAddress(serverIp, port));
+//为该通道注册SelectionKey.OP_CONNECT事件
+channel.register(selector, SelectionKey.OP_CONNECT);
+```
+
+NIO客户端代码(监听)
+
+```
+while(true){
+    //选择注册过的io操作的事件(第一次为SelectionKey.OP_CONNECT)
+   selector.select();
+   while(SelectionKey key : selector.selectedKeys()){
+       if(key.isConnectable()){
+           SocketChannel channel=(SocketChannel)key.channel();
+           if(channel.isConnectionPending()){
+               channel.finishConnect();//如果正在连接，则完成连接
+           }
+           channel.register(selector, SelectionKey.OP_READ);
+       }else if(key.isReadable()){ //有可读数据事件。
+           SocketChannel channel = (SocketChannel)key.channel();
+           ByteBuffer buffer = ByteBuffer.allocate(10);
+           channel.read(buffer);
+           byte[] data = buffer.array();
+           String message = new String(data);
+           System.out.println("recevie message from server:, size:"
+               + buffer.position() + " msg: " + message);
+       }
+   }
+}
+```
+
+NIO服务端代码(连接)
+
+```
+//获取一个ServerSocket通道
+ServerSocketChannel serverChannel = ServerSocketChannel.open();
+serverChannel.configureBlocking(false);
+serverChannel.socket().bind(new InetSocketAddress(port));
+//获取通道管理器
+selector = Selector.open();
+//将通道管理器与通道绑定，并为该通道注册SelectionKey.OP_ACCEPT事件，
+serverChannel.register(selector, SelectionKey.OP_ACCEPT);
+```
+
+NIO服务端代码(监听)
+
+```
+while(true){
+    //当有注册的事件到达时，方法返回，否则阻塞。
+   selector.select();
+   for(SelectionKey key : selector.selectedKeys()){
+       if(key.isAcceptable()){
+           ServerSocketChannel server =
+                (ServerSocketChannel)key.channel();
+           SocketChannel channel = server.accept();
+           channel.write(ByteBuffer.wrap(
+            new String("send message to client").getBytes()));
+           //在与客户端连接成功后，为客户端通道注册SelectionKey.OP_READ事件。
+           channel.register(selector, SelectionKey.OP_READ);
+       }else if(key.isReadable()){//有可读数据事件
+           SocketChannel channel = (SocketChannel)key.channel();
+           ByteBuffer buffer = ByteBuffer.allocate(10);
+           int read = channel.read(buffer);
+           byte[] data = buffer.array();
+           String message = new String(data);
+           System.out.println("receive message from client, size:"
+               + buffer.position() + " msg: " + message);
+       }
+   }
+}5
+```
+
+
+
+NIO模型示例如下：
+
+![image-20241106170236812](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106170236812.png)
+
+－ Acceptor注册Selector，监听accept事件
+
+－ 当客户端连接后，触发accept事件
+
+－ 服务器构建对应的Channel，并在其上注册Selector，监听读写事件
+
+－ 当发生读写事件后，进行相应的读写处理
+
+**NIO优缺点**
+
+优点：
+
+－ 性能瓶颈高
+
+缺点：
+
+－ 模型复杂
+
+－ 编码复杂
+
+－ 需处理半包问题
+
+NIO的优缺点和BIO就完全相反了！性能高，不用一个连接就建一个线程，可以一个线程处理所有的连接！相应的，编码就复杂很多，从上面的代码就可以明显体会到了。还有一个问题，由于是非阻塞的，应用无法知道什么时候消息读完了，就存在了半包问题！
+
+**半包问题**
+
+简单看一下下面的图就能理解半包问题了！
+
+![image-20241106170509300](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106170509300.png) 我们知道TCP/IP在发送消息的时候，可能会拆包(如上图1)！这就导致接收端无法知道什么时候收到的数据是一个完整的数据。例如：发送端分别发送了ABC,DEF,GHI三条信息，发送时被拆成了AB,CDRFG,H,I这四个包进行发送，接受端如何将其进行还原呢？在BIO模型中，当读不到数据后会阻塞，而NIO中不会!所以需要自行进行处理!例如，以换行符作为判断依据，或者定长消息发生，或者自定义协议！
+
+NIO虽然性能高，但是编码复杂，且需要处理半包问题！为了方便的进行NIO开发，就有了Reactor模型！
+
+
+
+## Reactor
+
+### Reactor中的组件：
+
+－ Reactor：Reactor是IO事件的派发者。
+
+－ Acceptor：Acceptor接受client连接，建立对应client的Handler，并向Reactor注册此Handler。
+
+－ Handler：和一个client通讯的实体，按这样的过程实现业务的处理。一般在基本的Handler基础上还会有更进一步的层次划分， 用来抽象诸如decode，process和encoder这些过程。比如对Web Server而言，decode通常是HTTP请求的解析， process的过程会进一步涉及到Listener和Servlet的调用。业务逻辑的处理在Reactor模式里被分散的IO事件所打破， 所以Handler需要有适当的机制在所需的信息还不全（读到一半）的时候保存上下文，并在下一次IO事件到来的时候（另一半可读了）能继续中断的处理。为了简化设计，Handler通常被设计成状态机，按GoF的state pattern来实现。
+
+对应上面的NIO代码来看：
+
+－ Reactor：相当于有分发功能的Selector
+
+－ Acceptor：NIO中建立连接的那个判断分支
+
+－ Handler：消息读写处理等操作类
+
+Reactor从线程池和Reactor的选择上可以细分为如下几种：
+
+### **Reactor单线程模型**
+
+![image-20241106170930499](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106170930499.png)
+
+这个模型和上面的NIO流程很类似，只是将消息相关处理独立到了Handler中去了！
+
+虽然上面说到NIO一个线程就可以支持所有的IO处理。但是瓶颈也是显而易见的！我们看一个客户端的情况，如果这个客户端多次进行请求，如果在Handler中的处理速度较慢，那么后续的客户端请求都会被积压，导致响应变慢！所以引入了Reactor多线程模型!
+
+
+
+### **Reactor多线程模型**
+
+![image-20241106171038211](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106171038211.png)
+
+Reactor多线程模型就是将Handler中的IO操作和非IO操作分开，操作IO的线程称为IO线程，非IO操作的线程称为工作线程!这样的话，客户端的请求会直接被丢到线程池中，客户端发送请求就不会堵塞！
+
+但是当用户进一步增加的时候，Reactor会出现瓶颈！因为Reactor既要处理IO操作请求，又要响应连接请求！为了分担Reactor的负担，所以引入了主从Reactor模型!
+
+![image-20241106171127176](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106171127176.png)
+
+主Reactor用于响应连接请求，从Reactor用于处理IO操作请求！
+
+
+
+
+
+### Netty
+
+Netty是一个高性能NIO框架，其是对Reactor模型的一个实现！
+
+Netty客户端代码
+
+```
+EventLoopGroup workerGroup = new NioEventLoopGroup();
+try {
+    Bootstrap b = new Bootstrap();
+    b.group(workerGroup);
+    b.channel(NioSocketChannel.class);
+    b.option(ChannelOption.SO_KEEPALIVE, true);
+    b.handler(new ChannelInitializer<SocketChannel>() {
+        @Override
+        public void initChannel(SocketChannel ch) throws Exception {
+            ch.pipeline().addLast(new TimeClientHandler());
+        }
+    });
+    ChannelFuture f = b.connect(host, port).sync();
+    f.channel().closeFuture().sync();
+} finally {
+    workerGroup.shutdownGracefully();
+}
+```
+
+Netty Client Handler
+
+```
+public class TimeClientHandler extends ChannelInboundHandlerAdapter {
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        ByteBuf m = (ByteBuf) msg;
+        try {
+            long currentTimeMillis =
+                (m.readUnsignedInt() - 2208988800L) * 1000L;
+            System.out.println(new Date(currentTimeMillis));
+            ctx.close();
+        } finally {
+            m.release();
+        }
+    }
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx,
+                Throwable cause) {
+        cause.printStackTrace();
+        ctx.close();
+    }
+}
+```
+
+
+
+Netty服务端代码
+
+```
+EventLoopGroup bossGroup = new NioEventLoopGroup();
+EventLoopGroup workerGroup = new NioEventLoopGroup();
+try {
+    ServerBootstrap b = new ServerBootstrap();
+    b.group(bossGroup, workerGroup)
+     .channel(NioServerSocketChannel.class)
+     .childHandler(new ChannelInitializer<SocketChannel>() {
+         @Override
+         public void initChannel(SocketChannel ch) throws Exception {
+             ch.pipeline().addLast(new TimeServerHandler());
+         }
+     })
+     .option(ChannelOption.SO_BACKLOG, 128)  
+     .childOption(ChannelOption.SO_KEEPALIVE, true);
+    // Bind and start to accept incoming connections.
+    ChannelFuture f = b.bind(port).sync();
+    f.channel().closeFuture().sync();
+} finally {
+    workerGroup.shutdownGracefully();
+    bossGroup.shutdownGracefully();
+}
+```
+
+Netty Server Handler
+
+```
+public class TimeServerHandler extends ChannelInboundHandlerAdapter {
+    @Override
+    public void channelActive(final ChannelHandlerContext ctx) {
+        final ByteBuf time = ctx.alloc().buffer(4);
+        time.writeInt((int)
+            (System.currentTimeMillis() / 1000L + 2208988800L));
+        final ChannelFuture f = ctx.writeAndFlush(time);
+        f.addListener(new ChannelFutureListener() {
+            @Override
+            public void operationComplete(ChannelFuture future) {
+                assert f == future;
+                ctx.close();
+            }
+        });
+    }
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx,
+        Throwable cause) {
+        cause.printStackTrace();
+        ctx.close();
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+## 参考文献
+
+http://www.linkedkeeper.com/132.html
+
+
+
+
+
+
+
+
+
+
+
+
+
 # ======
 
 
@@ -12666,7 +13713,7 @@ UDP(User Datagram Protocol)，即用户数据包协议，是一个简单的面�
 
 
 
-![image-20241031210804398](C:\Users\KSG\AppData\Roaming\Typora\typora-user-images\image-20241031210804398.png)
+![image-20241031210804398](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241031210804398.png)
 
 
 
@@ -12682,7 +13729,7 @@ vs 安装组件
 
 
 
-![image-20241031211158387](C:\Users\KSG\AppData\Roaming\Typora\typora-user-images\image-20241031211158387.png)
+![image-20241031211158387](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241031211158387.png)
 
 ### Yooasset 2.1.1
 
@@ -12728,7 +13775,7 @@ https://www.yooasset.com/docs/guide-editor/QuickStart
 
 https://dev.mysql.com/downloads/mysql/
 
-![image-20241102120751826](C:\Users\KSG\AppData\Roaming\Typora\typora-user-images\image-20241102120751826.png)
+![image-20241102120751826](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241102120751826.png)
 
 一路傻瓜式安装即可。
 
@@ -12748,11 +13795,11 @@ https://jookdb.com/download.html
 
 2.创建我们项目的数据库 mmorpg
 
-![image-20241102183824895](C:\Users\KSG\AppData\Roaming\Typora\typora-user-images\image-20241102183824895.png) 3.执行 sql 文件
+![image-20241102183824895](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241102183824895.png) 3.执行 sql 文件
 
 
 
-![image-20241102183944857](C:\Users\KSG\AppData\Roaming\Typora\typora-user-images\image-20241102183944857.png) ![image-20241102184013053](C:\Users\KSG\AppData\Roaming\Typora\typora-user-images\image-20241102184013053.png)
+![image-20241102183944857](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241102183944857.png) ![image-20241102184013053](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241102184013053.png)
 
 
 
@@ -12764,7 +13811,7 @@ https://jookdb.com/download.html
 
 注意yaml的格式，:号后面要有一个空格
 
-![image-20241102184302056](C:\Users\KSG\AppData\Roaming\Typora\typora-user-images\image-20241102184302056.png) 
+![image-20241102184302056](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241102184302056.png) 
 
 
 
@@ -12772,7 +13819,7 @@ https://jookdb.com/download.html
 
 启动后这样就没出现什么问题了。
 
-![image-20241102184624018](C:\Users\KSG\AppData\Roaming\Typora\typora-user-images\image-20241102184624018.png) 
+![image-20241102184624018](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241102184624018.png) 
 
 
 
@@ -12800,11 +13847,11 @@ https://www.bt.cn/new/download.html
 
 然后在网站根目录创建mmo文件夹
 
-![image-20241102192526343](C:\Users\KSG\AppData\Roaming\Typora\typora-user-images\image-20241102192526343.png)
+![image-20241102192526343](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241102192526343.png)
 
 mmo文件夹里面是这样的
 
-![image-20241102192553433](C:\Users\KSG\AppData\Roaming\Typora\typora-user-images\image-20241102192553433.png)
+![image-20241102192553433](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241102192553433.png)
 
 其中game-config.json就是选择服务器时需要用到的信息
 
@@ -12839,7 +13886,7 @@ PC文件夹就存放我们PC平台下的热更资源包、Android同理
 
 
 
-![image-20241102195034307](C:\Users\KSG\AppData\Roaming\Typora\typora-user-images\image-20241102195034307.png) 
+![image-20241102195034307](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241102195034307.png) 
 
 
 
@@ -13810,7 +14857,33 @@ unity控制台中的error pause 遇到错误打印就停止。导致我以为是
 
 
 
-## 2024.11.5 同步actor出现抽搐问题
+## 2024.11.5 syncactory移动时出现抽搐问题
+
+初步认为是syncentity这个脚本的逐渐靠近坐标点的问题，因为server传过来的坐标可能离这个syncer比较近，所以导致idle和move频繁切换导致抖动。
+
+现在将位置和旋转抽出来了，在syncentity里面进行移动。
+
+状态机的move更多的可能是进行动画的工作。
+
+
+
+
+
+## 2024.11.6 关于syncActor skill状态没做限制被中断的问题
+
+
+
+## 2024.11.6 关于打包出来运行时报错不能加载基础程序集的错误
+
+原因是因为我们hybridclr生成相对应的dll没有复制到res中进行打包上传资源服务器。
+
+
+
+## 2024.11.6 mysql连接出错
+
+```
+MySqlException: Retrieval of the RSA public key is not enabled for insecure connections.
+```
 
 
 
