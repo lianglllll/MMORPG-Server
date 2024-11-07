@@ -4,6 +4,7 @@ Library/
 Logs/
 obj/
 Packages/
+LocalPackages/
 Temp/
 UserSettings/
 .vscode/

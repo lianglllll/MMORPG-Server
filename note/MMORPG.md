@@ -2445,6 +2445,34 @@ public class AnimationController : MonoBehaviour
 
 
 
+## 小技巧
+
+unity无法通过包管理器通过url来直接下载，我们可以这样做
+
+1.新建一个文件夹来存放第三方插件
+
+![image-20241106224653435](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106224653435.png)
+
+2.修改manifest.json,使用文件加载的方式
+
+![image-20241106225046834](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106225046834.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## **Debug Console**
 
 游戏界面控制台，方便我们调试
@@ -2557,6 +2585,30 @@ UnityMainThreadDispatcher.Instance().Enqueue(()=>{
 	//你的代码......
 });
 ```
+
+
+
+
+
+
+
+
+
+## UniTask
+
+github仓库
+
+[Cysharp/UniTask: Provides an efficient allocation free async/await integration for Unity.](https://github.com/Cysharp/UniTask)
+
+用于解决异步操作
+
+![image-20241020003915569](MMORPG.assets/image-20241020003915569.png) 
+
+async/await也是运行在主线程中的
+
+
+
+
 
 
 
@@ -2731,7 +2783,1288 @@ https://www.bilibili.com/video/BV1FN4y1G7n1/?spm_id_from=333.788&vd_source=ff929
 
 
 
+# unity杂谈
 
+
+
+
+
+
+
+
+
+## unity 怎么编译c#？
+
+
+
+### 1.简要
+
+- 编译器的工作流水线：源代码-词法分析-语法分析-语义分析-目标代码-链接-可执行文件 （现代编译器会更复杂，比如优化）
+- 虚拟机执行中间代码的方式分为 2 种：**解释执行(Interpreted Execution)**和 **即时编译(Just-In-Time Compilation)**。解释执行即逐条执行每条指令，JIT 则是先将中间代码在开始运行的时候编译成机器码，然后执行机器码。
+- C# 编译 **CIL语言**，放到**CLR虚拟机**内执行 （CIL，Common Intermediate Language，也叫 MSIL）（CLR Common Language Runtime）
+- **.Net Framework定义**：通常我们把 C#、CIL、CLR，再加上微软提供的一套基础类库称为 .Net Framework
+- **Mono 是跨平台的 .Net Framework 的实现**。Mono 做了一件很了不起的事情，将 CLR 在所有支持的平台上重新实现了一遍，将 .Net Framework 提供的基础类库也重新实现了一遍。
+- 理论上，你创造了一门语言，并且实现了所有平台下的编译器，就能跨语言了。
+
+
+
+**为什么 Unity3D 可以运行 C#，C# 和 Mono 是什么关系，Mono 和 .Net Framework 又是什么关系？我们深入的来聊一聊这个话题！**
+
+
+
+### 2.从编译原理说起
+
+一句话介绍编译器：编译器是将用某种程式语言写成的源代码（源语言），转换成另一种程式语言（目标语言）等价形式的程序。通常我们是将某种高级语言（如C、C++、C# 、Java）转换成低级语言（汇编语言、机器语言）。
+编译器以流水线的形式进行工作，分为几个阶段：源代码 → 词法分析 → 语法分析 → 语义分析 → 目标代码 → 链接 → 可执行文件。
+**链接（linking）解释：**上一步骤的结果可能会引用外部的函数，把外部函数的代码（通常是后缀名为.lib和.a的文件），添加到可执行文件中，这就叫做链接。——两种，静态链接（编译时）和动态链接（runtime）。
+
+现代编译器还会更复杂，中间会增加更多的处理过程，比如预处理器，中间代码生成，代码优化等。
+
+![img](MMORPG.assets/1565924-20200701114702874-781504239.png) 
+
+### 3.虚拟机是什么
+
+虚拟机（VM），简单理解，就是可以执行特定指令的一种程序。为了执行指令，还需要一些配套的设施，如寄存器、栈等。虚拟机可以很复杂，复杂到模拟真正的计算机硬件，也可以很简单，简单到只能做加减乘除。
+在编译器领域，虚拟机通常执行一种叫中间代码的语言，中间代码由高级语言转换而成，以 Java 为例，Java 编译后产生的并不是一个可执行的文件，而是一个 ByteCode （字节码）文件，里面包含了从 Java 源代码转换成等价的字节码形式的代码。Java 虚拟机（JVM）负责执行这个文件。
+**虚拟机执行中间代码的方式分为 2 种：解释执行和 JIT（即时编译）。**
+
+- 解释执行即逐条执行每条指令。
+- JIT 则是先将中间代码在开始运行的时候编译成机器码，然后执行机器码。
+
+**由于执行的是中间代码，所以，在不同的平台实现不同的虚拟机，都可以执行同样的中间代码，也就实现了跨平台。**
+
+```
+int run(context* ctx, code* c) {
+    for (cmd in c->cmds) {
+        switch (cmd.type) {
+            case ADD:
+            // todo add            break;
+            case SUB:
+            // todo subtract            break;
+            // ...        }
+    }
+    return 0;
+}
+```
+
+总结一下，虚拟机本身并不跨平台，而是语言是跨平台的，对于开发人员来说，只需要关心开发语言即可，不需要关心虚拟机是怎么实现的，这也是 Java 可以跨平台的原因，C# 也是同样的。推而广之，理论上任何语言都可以跨平台，只要在相应平台实现了编译器或者虚拟机等配套设施。
+
+
+
+
+
+### 4.C# 是什么，IL 又是什么
+
+C# 是微软推出的一种基于 .NET 框架的、面向对象的高级编程语言。微软在 2000 年发布了这种语言，希望借助这种语言来取代Java。
+
+C# 是一个语言，微软给它定制了一份语言规范，提供了从开发、编译、部署、执行的完整的一条龙的服务，每隔一段时间会发布一份最新的规范，添加一些新的语言特性。从语法层面来说，C# 是一个很完善，写起来非常舒服的语言。
+
+C# 和 Java 类似，C# 会编译成一个中间语言（CIL，Common Intermediate Language，也叫 MSIL），CIL 也是一个高级语言，而运行 CIL 的虚拟机叫 CLR（Common Language Runtime）。通常我们把 C#、CIL、CLR，再加上微软提供的一套基础类库称为 .Net Framework。
+
+![img](MMORPG.assets/1565924-20200701114739327-1650561553.png) 
+
+C# 天生就是为征服宇宙设计的，不过非常遗憾，由于微软的封闭，这个目标并没有实现。当然 C# 现在还过得很好，因为游戏而焕发了新的活力，因为 Unity3D，因为 Mono。
+
+
+
+**IL科普**
+IL的全称是 Intermediate Language，很多时候还会看到**CIL**（特指在.Net平台下的IL标准）。翻译过来就是中间语言。
+它是一种属于通用语言架构和.NET框架的低阶的人类可读的编程语言。
+CIL类似一个面向对象的汇编语言，并且它是完全基于堆栈的，它运行在虚拟机上（.Net Framework, Mono VM）的语言。
+
+
+
+
+
+
+
+### 4.Mono
+
+Mono 是跨平台的 .Net Framework 的实现。Mono 做了一件很了不起的事情，将 CLR 在所有支持的平台上重新实现了一遍，将 .Net Framework 提供的基础类库也重新实现了一遍。
+![img](MMORPG.assets/1565924-20200701114759725-520977280.png)
+
+以上，Compile Time 的工作实际上可以直接用微软已有的成果，只要将 Runtime 的 CLR 在其他平台实现，这个工作量不仅大，而且需要保证兼容，非常浩大的一个工程，Mono 做到了，致敬！
+
+Unity3D 中的 C#
+**Unity3D 内嵌了一个 Mono 虚拟机**，从上文可以知道，当实现了某个平台的虚拟机，那语言就可以在该平台运行，所以，严格的讲，**Unity3D 是通过 Mono 虚拟机，运行 C# 编译器编译后生成的 IL 代码。**
+
+Unity3D 默认使用 C# 作为开发语言，除此之外，还支持 JS 和 BOO，因为 Unity3D 开发了相应的编译器，将 JS 和 BOO 编译成了 IL。
+
+C# 在 Windows 下，是通过微软的 C# 编译器，生成了 IL 代码，运行在 CLR 中。
+C# 在除 Windows 外的平台下，是通过 Mono 的编译器，生成了 IL 代码，运行在 Mono 虚拟机中，也可以直接运行将已经编译好的 IL 代码（通过任意平台编译）。
+理论上，你创造了一门语言，并且实现了某一平台下的编译器，然后实现了所有平台下符合语言规范的虚拟机，你的语言就可以运行在任意平台啦。
+
+
+
+![img](MMORPG.assets/v2-822e8c5f5036ab4c5ac7650bf546ccaf_r.jpg)
+
+<img src="MMORPG.assets/v2-670b054e66530097db8806463ffc3240_720w.webp" alt="img" style="zoom:67%;" /> 
+
+
+
+**优点**
+
+1. 构建应用非常快
+2. 由于Mono的JIT(Just In Time compilation ) 机制, 所以支持更多托管类库
+3. 支持运行时代码执行
+4. 必须将代码发布成托管程序集(.dll 文件 , 由mono或者.net 生成 )
+5. Mono VM在各个平台移植异常麻烦，有几个平台就得移植几个VM（WebGL和UWP这两个平台只支持 IL2CPP）
+6. Mono版本授权受限，C#很多新特性无法使用
+7. iOS仍然支持Mono , 但是不再允许Mono(32位)应用提交到Apple Store
+
+**Unity 2018 mono版本仍然是mono2.0、unity2020的版本更新到了mono 5.11。**
+
+
+
+
+
+
+
+
+
+### IL2CPP， IL2CPP VM
+
+本文的主角终于出来了：IL2CPP。有了上面的知识，大家很容易就理解其意义了：**把IL中间语言转换成CPP文件。**
+
+
+
+#### **IL2CPP【AOT编译】**
+
+> IL2CPP分为两个独立的部分：
+>
+> 1. AOT（静态编译）编译器：把IL中间语言转换成CPP文件
+> 2. 运行时库：例如**垃圾回收、线程/文件获取（独立于平台，与平台无关）、内部调用直接修改托管数据结构的原生代码**的服务与抽象
+
+
+
+#### **AOT编译器**
+
+> IL2CPP AOT编译器名为il2cpp.exe。
+> 在Windows上，您可以在`Editor \ Data \ il2cpp`目录中找到它。
+> 在OSX上，它位于Unity安装的`Contents / Frameworks / il2cpp / build`目录中
+> il2cpp.exe 是由C#编写的受托管的可执行程序，它接受我们在Unity中通过Mono编译器生成的托管程序集，并生成指定平台下的C++代码。
+
+
+
+#### **IL2CPP工具链：**
+
+![img](MMORPG.assets/v2-f2e9975835f3d2cc8e41b38dc94f6545_720w.webp) 
+
+
+
+#### **运行时库，IL2CPP VM**
+
+> IL2CPP技术的另一部分是运行时库（libil2cpp），用于支持IL2CPP虚拟机的运行。
+> 这个简单且可移植的运行时库是IL2CPP技术的主要优势之一！
+> 通过查看我们随Unity一起提供的libil2cpp的头文件，您可以找到有关libil2cpp代码组织方式的一些线索
+> 您可以在Windows的`Editor \ Data \ PlaybackEngines \ webglsupport \ BuildTools \ Libraries \ libil2cpp \ include`目录中找到它们
+> 或OSX上的`Contents / Frameworks / il2cpp / libil2cpp`目录。
+
+说是虚拟机，还不如说是一个库，用于提供服务。
+
+服务：gc、Thread
+
+运行时：unity = IL2CPP 技术编译出来的二进制指令 + IL2CPP runtime的环境(GC,Thread等)
+
+
+
+#### 转换cpp的原因
+
+大家如果看明白了上面动态语言的 CLI(Common Language Infrastructure)， IL以及VM，再看到IL2CPP一定心中充满了疑惑。现在的大趋势都是把语言加上动态特性，哪怕是c++这样的静态语言，也出现了适合IL的c++编译器，为啥Unity要反其道而行之，把IL再弄回静态的CPP呢？这不是吃饱了撑着嘛。
+
+根据本文最前面给出的Unity官方博客所解释的，原因有以下几 个：
+
+1. 运行效率快
+
+> 根据官方的实验数据，换成IL2CPP以后，程序的运行效率有了1.5-2.0倍的提升。
+
+2. Mono VM在各个平台移植，维护非常耗时，有时甚至不可能完成
+
+> Mono的跨平台是通过Mono VM实现的，有几个平台，就要实现几个VM，像Unity这样支持多平台的引擎，Mono官方的VM肯定是不能满足需求的。所以针对不同的新平台，Unity的项目组就要把VM给移植一遍，同时解决VM里面发现的bug。这非常耗时耗力。这些能移植的平台还好说，还有比如WebGL这样基于浏览器的平台。要让WebGL支持Mono的VM几乎是不可能的。
+
+3. 可以利用**现成的在各个平台的C++编译器**对代码执行**编译期优化**，这样可以进一步**减小最终游戏的尺寸并提高游戏运行速度**。
+
+4. 由于动态语言的特性，他们多半无需程序员太多关心内存管理，所有的内存分配和回收都由一个叫做GC（Garbage Collector）的组件完成。虽然通过IL2CPP以后代码变成了静态的C++，但是内存管理这块还是遵循C#的方式，这也是为什么最后还要有一个 **IL2CPP VM**的原因：**它负责提供诸如GC管理，线程创建这类的服务性工作。**但是由于去除了**IL加载和动态解析**的工作，**使得IL2CPP VM可以做的很小**，**并且使得游戏载入时间缩短**。
+
+5. Mono版本授权受限
+
+   大家有没有意识到Mono的版本已经更新到3.X了，但是在Unity中，C#的运行时版本一直停留在2.8，这也是Unity社区开发者抱怨的最多一 条：很多C#的新特性无法使用。这是因为Mono 授权受限，导致Unity无法升级Mono。如果换做是IL2CPP，IL2CPP VM这套完全自己开发的组件，就解决了这个问题。
+
+
+
+![img](MMORPG.assets/v2-dd8ec43772f9025f42762bf9aa98d287_720w.webp) 
+
+
+
+
+
+
+
+
+
+### Mono与IL2CPP的区别
+
+IL2CPP比较适合开发和发布项目 ，但是为了提高版本迭代速度，可以在开发期间切换到Mono模式（构建应用快）。
+
+
+
+**mono和IL2CPP**编译区别
+
+使用Mono的时候，脚本的编译运行如下图所示：
+
+![img](MMORPG.assets/v2-659e796f814f9d0ac258b370ae289584_720w.webp) 
+
+3大脚本被编译成IL，在游戏运行的时候，IL和项目里其他第三方兼容的DLL一起，放入Mono VM虚拟机，由虚拟机解析成机器码。
+
+并且执行IL2CPP做的改变由下图红色部分标明：
+
+![img](MMORPG.assets/v2-dd8ec43772f9025f42762bf9aa98d287_720w-17216417879349.webp) 
+
+在得到中间语言IL后，使用IL2CPP将他们重新变回C++代码，然后**再由各个平台的C++编译器直接编译成能执行的原生汇编代码。**
+
+
+
+**优点**
+
+1. 相比Mono, 代码生成有很大的提高
+2. 可以调试生成的C++代码
+3. 可以启用引擎代码剥离(Engine code stripping)来减少代码的大小
+4. 程序的运行效率比Mono高，运行速度快
+5. 多平台移植非常方便
+6. 相比Mono构建应用慢
+7. 只支持AOT(Ahead of Time)编译
+
+
+
+
+
+
+
+
+
+
+
+### 参考文献
+
+[Unity - 深度理解C# 的执行原理及Unity跨平台 - 笔记 - 天山鸟 - 博客园 (cnblogs.com)](https://www.cnblogs.com/Jaysonhome/p/13218403.html)
+
+[【Unity游戏开发】Mono和IL2CPP的区别 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/352463394)
+
+
+
+
+
+
+
+
+
+## struct和class区别？
+
+在许多编程语言中，包括C#，`struct` 和 `class` 都是用于定义自定义数据类型的关键字，但它们有一些重要的区别：
+
+1. **内存分配**：
+   - `class` 是引用类型，它的实例在堆上分配内存。当你创建一个类的实例时，实际上创建的是一个引用（或者说指向实例的引用），而这个实例存储在堆上的一个内存块中。多个引用可以指向同一个实例。
+   - `struct` 是值类型，它的实例在栈上分配内存。当你创建一个结构体的实例时，实际上创建的是该结构体的一个完整副本，它直接存储在栈上。因此，每个结构体实例是独立的，修改一个实例不会影响其他实例。
+
+2. **继承**：
+   - `class` 支持继承，一个类可以派生自另一个类，从而可以通过继承实现代码重用和抽象。
+   - `struct` 不支持继承，它们不能作为其他结构体或类的基类。它们通常用于定义简单的数据类型，而不是用于建模具有复杂行为和层次结构的对象。
+
+3. **默认访问修饰符**：
+   - 类中的字段和方法默认为私有访问修饰符（`private`），而结构体中的字段和方法默认为公共访问修饰符（`public`）。这是因为结构体通常用于存储数据，而类则用于封装数据和行为。
+
+4. **性能**：
+   - 由于结构体是值类型，它们通常比类更高效。因为结构体存储在栈上，而且在内存布局上更加紧凑，因此在某些情况下，使用结构体可以减少内存占用和提高性能。
+   - 但在某些情况下，如果结构体较大，频繁地进行复制和传递结构体的副本可能会导致性能下降。在这种情况下，使用类可能更合适。
+
+结构体和类都有各自的适用场景，通常情况下，你应该根据具体情况来选择使用哪种类型。如果你需要表示一个复杂的对象，并且需要继承、多态等面向对象的特性，那么使用类会更合适。如果你只是需要存储一些简单的数据，并且不需要进行继承，那么使用结构体可能更合适。
+
+
+
+
+
+
+
+
+
+- 
+
+
+
+## unity 协程(Coroutine)
+
+### 前言
+
+[协程](https://so.csdn.net/so/search?q=协程&spm=1001.2101.3001.7020)在`Unity`中是一个很重要的概念，我们知道，在使用`Unity`进行游戏开发时，一般（注意是一般）不考虑[多线程](https://so.csdn.net/so/search?q=多线程&spm=1001.2101.3001.7020)，那么如何处理一些在主任务之外的需求呢，`Unity`给我们提供了协程这种方式
+
+
+
+**为啥在Unity中一般不考虑多线程**
+
+- 因为在`Unity`中，只能在主线程中获取物体的组件、方法、对象，如果脱离这些，`Unity`的很多功能无法实现，那么多线程的存在与否意义就不大了
+
+
+
+**既然这样，线程与协程有什么区别呢：**
+
+- 对于协程而言，同一时间只能执行一个协程，而线程则是并发的，可以同时有多个线程在运行
+- 两者在内存的使用上是相同的，共享堆，不共享栈
+
+其实对于两者最关键，最简单的区别是微观上线程是并行（对于多核CPU）的，而协程是串行的，如果你不理解没有关系，通过下面的解释你就明白了
+
+
+
+### 关于协程
+
+### 1，什么是协程
+
+协程，从字面意义上理解就是协助程序的意思，我们在主任务进行的同时，需要一些分支任务配合工作来达到最终的效果
+
+稍微形象的解释一下，想象一下，在进行主任务的过程中我们需要一个对资源消耗极大的操作时候，如果在一帧中实现这样的操作，游戏就会变得十分卡顿，这个时候，我们就可以通过协程，在一定帧内完成该工作的处理，同时不影响主任务的进行
+
+### 2，协程的原理
+
+首先需要了解协程不是线程，协程依旧是在主线程中进行
+
+**然后要知道协程是通过迭代器来实现功能的**，通过关键字`IEnumerator`来定义一个迭代方法，
+
+注意使用的是`IEnumerator`，而不是`IEnumerable`：
+
+两者之间的区别：
+
+- `IEnumerator`：是一个实现迭代器功能的接口
+- `IEnumerable`：是在`IEnumerator`基础上的一个封装接口，有一个`GetEnumerator()`方法返回`IEnumerator`
+
+在迭代器中呢，最关键的是`yield` 的使用，这是实现我们协程功能的主要途径，通过该关键方法，可以使得协程的运行暂停、记录下一次启动的时间与位置等等：
+
+由于`yield` 在协程中的特殊性，与关键性，我们到后面在单独解释，先介绍一下协程如何通过代码实现
+
+### 3、协程的使用
+
+首先通过一个迭代器定义一个返回值为`IEnumerator`的方法，然后再程序中通过`StartCoroutine`来开启一个协程即可：
+
+在正式开始代码之前，需要了解StartCoroutine的两种重载方式：
+
+- StartCoroutine（string methodName）：这种是没有参数的情况，直接通过方法名（字符串形式）来开启协程
+
+- StartCoroutine（IEnumerator routine）：通过方法形式调用
+- StartCoroutine（string methodName，object values):带参数的通过方法名进行调用
+
+协程开启的方式主要是上面的三种形式
+
+```
+ 	//通过迭代器定义一个方法
+ 	IEnumerator Demo(int i)
+    {
+        //代码块
+
+        yield return 0; 
+		//代码块
+       
+    }
+
+    //在程序种调用协程
+    public void Test()
+    {
+        //第一种与第二种调用方式,通过方法名与参数调用
+        StartCoroutine("Demo", 1);
+
+        //第三种调用方式， 通过调用方法直接调用
+        StartCoroutine(Demo(1));
+    }
+
+```
+
+在一个协程开始后，同样会对应一个结束协程的方法`StopCoroutine`与`StopAllCoroutines`两种方式，但是需要注意的是，两者的使用需要遵循一定的规则，在介绍规则之前，同样介绍一下关于`StopCoroutine`重载：
+
+- `StopCoroutine（string methodName）`：通过方法名（字符串）来进行
+- `StopCoroutine（IEnumerator routine）`:通过方法形式来调用
+- `StopCoroutine(Coroutine routine)`：通过指定的协程来关闭
+
+刚刚我们说到他们的使用是有一定的规则的，那么规则是什么呢，答案是前两种结束协程方法的使用上，如果我们是使用StartCoroutine（string methodName）来开启一个协程的，那么结束协程就只能使用StopCoroutine（string methodName）和StopCoroutine(Coroutine routine)来结束协程，可以在文档中找到这句话：
+![img](MMORPG.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWxpbmdlcg==,size_16,color_FFFFFF,t_70.png)
+
+### 4、关于yield
+
+在上面，我们已经知道`yield` 的关键性，要想理解协程，就要理解`yield`
+
+如果你了解`Unity`的脚本的生命周期，你一定对`yield`这几个关键词很熟悉，没错，`yield` 也是脚本生命周期的一些执行方法，不同的`yield` 的方法处于生命周期的不同位置，可以通过下图查看：
+
+![在这里插入图片描述](MMORPG.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWxpbmdlcg==,size_16,color_FFFFFF,t_70-171275895535052.png)
+
+通过这张图可以看出大部分`yield`位置`Update`与`LateUpdate`之间，而一些特殊的则分布在其他位置，这些`yield` 代表什么意思呢，又为啥位于这个位置呢
+
+首先解释一下位于Update与LateUpdate之间这些yield 的含义：
+
+yield return null; 暂停协程等待下一帧继续执行
+
+yield return 0或其他数字; 暂停协程等待下一帧继续执行
+
+yield return new WairForSeconds(时间); 等待规定时间后继续执行
+
+yield return StartCoroutine("协程方法名");开启一个协程（嵌套协程)
+
+
+在了解这些yield的方法后，可以通过下面的代码来理解其执行顺序：
+
+```
+ void Update()
+    {
+        Debug.Log("001");
+        StartCoroutine("Demo");
+        Debug.Log("003");
+
+    }
+    private void LateUpdate()
+    {
+        Debug.Log("005");
+    }
+
+    IEnumerator Demo()
+    {
+        Debug.Log("002");
+
+        yield return 0;
+        Debug.Log("004");
+    }
+
+```
+
+![在这里插入图片描述](MMORPG.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWxpbmdlcg==,size_16,color_FFFFFF,t_70-171275914328555.png)
+
+
+
+可以很清晰的看出，协程虽然是在`Update`中开启，但是关于`yield return null`后面的代码会在下一帧运行，并且是在Update执行完之后才开始执行，但是会在`LateUpdate`之前执行
+
+接下来看几个特殊的yield，他们是用在一些特殊的区域，一般不会有机会去使用，但是对于某些特殊情况的应对会很方便
+
+yield return GameObject; 当游戏对象被获取到之后执行
+yield return new WaitForFixedUpdate()：等到下一个固定帧数更新
+yield return new WaitForEndOfFrame():等到所有相机画面被渲染完毕后更新
+yield break; 跳出协程对应方法，其后面的代码不会被执行
+
+通过上面的一些`yield`一些用法以及其在脚本生命周期中的位置，我们也可以看到关于协程不是线程的概念的具体的解释，所有的这些方法都是在主线程中进行的，只是有别于我们正常使用的`Update`与`LateUpdate`这些可视的方法
+
+### 5、协程几个小用法
+
+#### **5.1、将一个复杂程序分帧执行：**
+
+如果一个复杂的函数对于一帧的性能需求很大，我们就可以通过`yield return null`将步骤拆除，从而将性能压力分摊开来，最终获取一个流畅的过程，这就是一个简单的应用
+
+举一个案例，如果某一时刻需要使用`Update`读取一个列表，这样一般需要一个循环去遍历列表，这样每帧的代码执行量就比较大，就可以将这样的执行放置到协程中来处理：
+
+```
+public class Test : MonoBehaviour
+{
+    public List<int> nums = new List<int> { 1, 2, 3, 4, 5, 6 };
+
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            StartCoroutine(PrintNum(nums));
+        }
+    }
+	//通过协程分帧处理
+    IEnumerator PrintNum(List<int> nums)
+    {
+        foreach(int i in nums)
+        {
+            Debug.Log(i);
+            yield return null;
+                 
+        }
+
+    }
+}
+
+```
+
+上面只是列举了一个小小的案例，在实际工作中会有一些很消耗性能的操作的时候，就可以通过这样的方式来进行性能消耗的分消
+
+#### **5.2、进行计时器工作**
+
+当然这种应用场景很少，如果我们需要计时器有很多其他更好用的方式，但是你可以了解是存在这样的操作的，要实现这样的效果，需要通过`yield return new WaitForSeconds()`的延时执行的功能：
+
+```
+	IEnumerator Test()
+    {
+        Debug.Log("开始");
+        yield return new WaitForSeconds(3);
+        Debug.Log("输出开始后三秒后执行我");
+    }
+```
+
+
+
+#### **5.3、异步加载等功能**
+
+只要一说到异步，就必定离不开协程，因为在异步加载过程中可能会影响到其他任务的进程，这个时候就需要通过协程将这些可能被影响的任务剥离出来
+
+常见的异步操作有：
+
+- `AB`包资源的异步加载
+- `Reaources`资源的异步加载
+- 场景的异步加载
+- `WWW`模块的异步请求
+
+这些异步操作的实现都需要协程的支持
+
+
+
+这里以场景加载为例子：
+
+
+
+
+
+
+
+### 参考文献
+
+[Unity 协程(Coroutine)原理与用法详解_unity coroutine-CSDN博客](https://blog.csdn.net/xinzhilinger/article/details/116240688)
+
+[迭代器 - C# | Microsoft Learn](https://learn.microsoft.com/zh-cn/dotnet/csharp/iterators)
+
+[Unity 场景异步加载（加载界面的实现）_unity异步加载场景-CSDN博客](
+
+
+
+## yield
+
+### 概要
+
+在 Unity 中，协程允许你编写在多帧之间暂停的代码，常用于等待某个条件达成（如等待几秒钟或等待异步操作完成）再继续执行。
+
+
+
+**示例：在协程中使用 `yield`**
+
+```
+using UnityEngine;
+using System.Collections;
+
+public class Example : MonoBehaviour
+{
+    void Start()
+    {
+        StartCoroutine(MyCoroutine());
+    }
+
+    IEnumerator MyCoroutine()
+    {
+        Debug.Log("协程开始");
+        
+        // 等待 2 秒钟
+        yield return new WaitForSeconds(2f);
+        
+        Debug.Log("2 秒钟后继续执行");
+        
+        // 等待下一帧
+        yield return null;
+        
+        Debug.Log("下一帧继续执行");
+    }
+}
+
+```
+
+
+
+### **常见的 `yield return` 表达式**
+
+- `yield return new WaitForSeconds(seconds);`
+  暂停协程一段时间（`seconds` 秒）。
+- `yield return null;`
+  暂停协程直到下一帧。
+- `yield return new WaitForEndOfFrame();`
+  暂停协程，直到当前帧结束。
+- `yield return new WaitForFixedUpdate();`
+  暂停协程，直到下一次物理帧（FixedUpdate）。
+- `yield return StartCoroutine(AnotherCoroutine());`
+  等待另一个协程完成。
+
+
+
+### **yield break**
+
+在迭代器或协程中，可以使用 `yield break` 来提前终止迭代或协程。
+
+**示例：使用 `yield break`**
+
+```
+IEnumerator MyCoroutine()
+{
+    Debug.Log("协程开始");
+    
+    if (someCondition)
+    {
+        yield break; // 提前终止协程
+    }
+
+    yield return new WaitForSeconds(2f);
+    
+    Debug.Log("这行代码不会执行，如果之前调用了 yield break");
+}
+
+```
+
+
+
+###  **`yield return` 异步方法**
+
+
+
+在 Unity 的协程中，如果你使用 `yield return` 来等待一个异步方法（例如返回 `Task` 的方法），实际情况取决于你如何实现和处理这个异步方法。Unity 的协程系统不原生支持 `Task` 类型，因此直接使用 `yield return` 来等待 `Task` 不会如预期那样正常工作。
+
+**具体行为**
+
+如果你直接 `yield return` 一个异步方法返回的 `Task`，Unity 的协程系统不会自动等待它完成。这是因为 Unity 的协程系统预期 `yield return` 的类型是 Unity 能理解的类型，如 `WaitForSeconds`、`WaitForEndOfFrame`、`IEnumerator`，而不是 `Task`。
+
+
+
+**示例：**
+
+假设你有以下异步方法：
+
+```csharp
+async Task LoadDataAsync()
+{
+    await Task.Delay(2000); // 模拟一个耗时操作
+    Debug.Log("数据加载完成！");
+}
+```
+
+如果你在协程中这样使用它：
+
+```csharp
+IEnumerator MyCoroutine()
+{
+    Debug.Log("协程开始");
+
+    yield return LoadDataAsync(); // 直接使用 Task 是无效的
+
+    Debug.Log("这行代码会立即执行，不会等待 LoadDataAsync 完成");
+}
+```
+
+
+
+**发生的事情：**
+
+- **立即继续执行**: 协程中的代码会在 `yield return LoadDataAsync();` 之后立即继续执行，而不会等待 `LoadDataAsync` 完成。
+- **无法等待**: 由于 `Task` 不是 Unity 协程系统支持的等待类型，因此协程不会自动等待异步操作完成。
+
+
+
+**正确处理方式**
+
+要在协程中等待 `Task` 完成，你需要使用一个包装器，将 `Task` 转换为 Unity 协程可以理解的格式。例如，你可以使用一个 `IEnumerator` 方法来轮询 `Task` 的状态：
+
+```csharp
+IEnumerator MyCoroutine()
+{
+    Debug.Log("协程开始");
+
+    // 使用帮助方法等待 Task 完成
+    yield return WaitForTask(LoadDataAsync());
+
+    Debug.Log("数据加载完成，继续执行协程");
+}
+
+IEnumerator WaitForTask(Task task)
+{
+    while (!task.IsCompleted)
+    {
+        yield return null; // 等待下一帧
+    }
+
+    if (task.IsFaulted)
+    {
+        throw task.Exception ?? new Exception("Task Faulted");
+    }
+}
+```
+
+在这个例子中，`WaitForTask` 是一个协程，它会不断检查 `Task` 是否完成。如果 `Task` 失败了，它会抛出异常。
+
+**总结**
+
+- **直接 `yield return` `Task`**: 在 Unity 协程中直接使用 `Task` 作为 `yield return` 的值不会如预期般等待 `Task` 完成。
+- **解决方案**: 使用一个 `IEnumerator` 包装器来等待 `Task` 完成，使协程能够有效地等待异步操作完成。
+
+
+
+### 协程调用的控制流
+
+对的，当一个协程调用另一个协程时，控制流会转移到被调用的协程。这个过程的工作方式如下：
+
+1. **调用另一个协程**:
+   - 当一个协程调用另一个协程时（通过 `yield return`），调用者协程的执行会暂停，直到被调用的协程完成。
+
+2. **控制流转移**:
+   - 调用者协程暂停后，控制流会转移到被调用的协程中。被调用的协程开始执行，并在其内部的 `yield return` 或其他等待条件满足之前，继续进行。
+
+3. **等待和恢复**:
+   - 如果被调用的协程中有 `yield return` 语句（例如 `yield return null`、`yield return new WaitForSeconds(seconds)`、`yield return someAsyncOperation`），它会让控制流在满足条件之前暂停，直到满足条件后，协程才会继续执行。
+
+4. **恢复调用者协程**:
+   - 一旦被调用的协程完成（即它的执行完毕或者 `yield return` 条件被满足），控制流会返回到调用者协程，并从 `yield return` 语句后的位置继续执行。
+
+**示例**
+
+```csharp
+IEnumerator CallerCoroutine()
+{
+    Debug.Log("调用者协程开始");
+
+    // 调用另一个协程并等待它完成
+    yield return CalledCoroutine();
+
+    Debug.Log("调用者协程继续执行，CalledCoroutine 已经完成");
+}
+
+IEnumerator CalledCoroutine()
+{
+    Debug.Log("被调用的协程开始");
+
+    // 等待 2 秒钟
+    yield return new WaitForSeconds(2f);
+
+    Debug.Log("被调用的协程完成");
+}
+```
+
+在这个例子中：
+
+1. **`CallerCoroutine`** 启动并调用 **`CalledCoroutine`**。
+2. **`CallerCoroutine`** 的执行会暂停在 `yield return CalledCoroutine();`，等待 **`CalledCoroutine`** 完成。
+3. **`CalledCoroutine`** 开始执行，并在 `yield return new WaitForSeconds(2f);` 处暂停 2 秒钟。
+4. 2 秒钟后，**`CalledCoroutine`** 继续执行并完成。
+5. 控制流返回到 **`CallerCoroutine`**，从 `yield return CalledCoroutine();` 之后的位置继续执行。
+
+**总结**
+
+- **调用者协程** 在调用另一个协程时会暂停，直到被调用的协程完成。
+- **被调用的协程** 在内部的 `yield return` 语句处会控制暂停，直到满足条件或完成。
+- 一旦被调用的协程完成，控制流会返回到调用者协程，并继续执行后续代码。
+
+这种协程嵌套的机制使得 Unity 的协程系统能够处理复杂的异步操作和等待逻辑，同时保持代码的简洁性和可读性。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# unity中的目录结果和特殊文件
+
+## unity工程文件夹里的目录结构
+
+
+
+### 1、特殊文件夹
+
+
+
+Unity工程[根目录](https://so.csdn.net/so/search?q=根目录&spm=1001.2101.3001.7020)下，有三个特殊文件夹：Assets、Library、ProjectSettings
+
+
+
+#### Assets
+
+Unity工程中所用到的所有Asset都放在该文件夹中，是资源文件的根目录，很多[API](https://so.csdn.net/so/search?q=API&spm=1001.2101.3001.7020)都是基于这个文件目录的，查找目录都需要带上Assets，比如AssetDatabase。
+
+
+
+#### Library
+
+Unity会把Asset下支持的资源导入成自身识别的格式，以及编译代码成为DLL文件，都放在Library文件夹中。
+
+
+
+#### ProjectSettings
+
+编辑器中设置的各种参数
+
+下面都是存在Assets目录下的文件的了。
+
+
+
+#### Editor
+
+为Unity编辑器扩展程序的目录，可以在根目录下，也可以在子目录下，只要名字叫“Editor”，而且数量不限。Editor下面放的所有资源文件和脚本文件都不会被打进包中，而且脚本只能在编辑器模式下使用。一般会把扩展的编辑器放在这里，或只是编辑器程序用到的dll库，比如任务编辑器、角色编辑器、技能编辑器、战斗编辑器……以及各种小工具。
+
+
+
+#### Editor Default Resources
+
+名字带空格，必须在Assets目录下，里面放编辑器程序用到的一些资源，比如图片，文本文件等。不会被打进包内，可以直接通过EditorGUIUtility.Load去读取该文件夹下的资源。
+
+
+
+#### Gizmos
+
+Gizmos.DrawIcon在场景中某个位置绘制一张图片，该图片必须是在Gizmos文件夹下。
+
+```
+void OnDrawGizmos() {
+    Gizmos.DrawIcon(transform.position, “0.png”, true);
+}
+```
+
+OnDrawGizmos是MonoBehaviour的生命周期函数，但是只在编辑器模式下每一帧都会执行。Gizmos类能完成多种在场景视图中绘制需求，做编辑器或调试的时候经常会用到，比如在场景视图中绘制一条辅助线。（用Debug.DrawLine，Debug.DrawRay也可以绘制简单的东西）
+
+
+
+#### Plugins
+
+该文件夹一般会放置几种文件，第三方包、工具代码、sdk。
+plugin分为两种：Managed plugins and Native plugins
+Managed plugins：就是.NET编写的工具，运行于.NET平台（包括mono）的代码库，可以是脚本文件，也可以本身是DLL。NGUI源码就放在该文件夹下面的。
+Native plugins：原生代码编写的库，比如第三方sdk，一般是dll、so、jar等等。
+该文件夹下的东西会在standard compiler时编译（最先编译），以保证在其它地方使用时能找到。
+
+
+
+#### Resources
+
+存放资源的特殊文件夹，可以在根目录下，也可以在子目录下，只要名字叫“Resources”就行，比如目录：/xxx/xxx/Resources 和 /Resources 是一样的，而且可有多个叫Resources的文件夹。Resources文件夹下的资源不管用还是不用都会被打包进.apk或者.ipa，因为Unity无法判断脚本有没有访问了其中的资源。需要注意的是项目中可以有多个Resources文件夹，所以如果不同目录的Resources存在同名资源，在打包的时候就会报错。
+Resources中全部资源会被打包成一个缺省的AssetBundle（resources.assets）。
+在该文件夹下的资源，可以通过Resources类进行加载使用。API地址
+
+
+
+#### Standard Assets
+
+存放导入的第三方资源包。
+
+
+
+#### StreamingAssets
+
+该文件夹也会在打包的时候全部打进包中，但它是“原封不动”的打包进去（直接拷贝到的包里）。**游戏运行时只能读不能写。**
+不同的平台最后的路径也不同，可以使用unity提供的Application.streamingAssetsPath，它会根据平台返回正确的路径，如下：
+
+```
+Mac OS or Windows：path = Application.dataPath + “/StreamingAssets”;
+IOS：path = Application.dataPath + “/Raw”;
+Android：path = “jar:file://” + Application.dataPath + “!/assets/”;
+```
+
+我们一般会把初始的AssetBundle资源放在该文件夹下，并且通过WWW或AssetBundle.LoadFromFile加载使用。
+
+
+
+#### Hide Assets
+
+隐藏文件夹和文件
+以".“开头
+以”~“结尾
+名字为"cvs”
+扩展名为".tmp"
+
+
+
+### 2.一些通常的Asset类型
+
+
+
+#### Image：
+
+支持绝大多数的image type，例如BMP、JPG、TIF、TGA、PSD
+
+#### Model：
+
+eg、.max、.blend、.mb、.ma，它们将通过FBX插件导入。或者直接在3D app导出FBX放到unity project中
+Mesh and Animations：unity支持绝大多数流行的3D app的model（Maya、Cinema 4D、3ds Max、Cheetah3D、Modo、Lightwave、Blender、SketchUp）
+
+#### Audio Files：
+
+如果是非压缩的audio，unity将会根据import setting压缩导入（更多）
+
+
+
+#### Other：
+
+##### Asset Store
+
+里面有很多免费和收费的插件，可以供开发者下载使用。
+下载的第三方工具是以package文件存在，导入package：
+package.png
+
+##### 导入
+
+unity会自动导入Asset目录下的资源，可以是unity支持的，也可以是不支持的，而在程序中用到的（比如二进制文件）。
+当在Asset下进行保存、移动、删除等修改文件的操作，unity都会自动导入。
+
+##### 自定义导入
+
+导入外界的unity可识别的Asset时，可以自定义导入设置，在工程中点击资源文件，然后Inspector视图中就会看到相应的设置：
+
+##### 导入结果
+
+导入资源之后，除了要生成.meta文件，unity并不是直接使用这些资源的，而是在导入的过程中，生成了unity内部特定的格式（unity可识别）文件在游戏中使用，储存在Library目录下，而原始资源不变，仍然放在原来位置。当然，每次修改原始文件，unity都会重新导入一次，才能在unity中看到改过之后的样子。
+正因为Library存放了导入资源的结果，所以每次删除Library或里面某个文件，都会让unity重新导入相应的资源（生成内部格式），但对工程没有影响。
+
+##### .meta文件
+
+Asset中的所有文件、文件夹，经过unity的导入过程后，会为每个都生成一个.meta文件，这个文件是unity内部管理文件的重要内容，里面记录着一些信息。
+你知道unity是怎么管理资源依赖关系的吗？可以试着更改一个挂在prefab上的脚本的目录或者名字，而这些prefab依然可以正常的调用那些脚本。
+unity在第一次导入新文件的时候，会生成一个Unique ID，用来标志这个asset，它就是unity内部用来区分asset的。Unique ID是全局唯一的，保存在.meta文件中。
+在unity中资源间的依赖关系引用都是用Unique ID来实现的，如果一个资源丢失了.meta文件，那依赖它的资源就找不到它了。
+.meta文件内容如下，包括Unique ID和Import Setting的内容
+meta.png
+
+
+
+### 3.脚本
+
+unity支持三种脚本语言，分别是C#、JavaScript、Boo，最常用的是前两种，当然还有后来扩展的支持Lua脚本的库（slua、ulua）。
+生成的对应的工程.png
+
+#### 1.编译顺序
+
+编译顺序的原则是在第一个引用之前编译它，参考官网文档可以知道，Unity中的可以将脚本代码放在Assets文件夹下任何位置，但是不同的位置会有不同的编译顺序。规则如下：
+(1) 首先编译**Standard Assets，Pro Standard Assets，Plugins文件夹**（除Editor，可以是一级子目录或是更深的目录）下的脚本；
+(2) 接着编译**Standard Assets，Pro Standard Assets，Plugins文件夹**下(可以是一级子目录或是更深的目录)的**Editor**目录下的脚本；
+(3) 然后编译Assets文件夹下，不在Editor目录的所有脚本；
+(4) 最后编译Editor下的脚本（不在Standard Assets，Pro Standard Assets，Plugins文件夹下的）；
+基于以上编译顺序，一般来说，我们直接在Assets下建立一个Scripts文件夹放置脚本文件，它处于编译的“第三位”。
+
+#### 2.编译结果：
+
+项目工程文件夹中会生成类似如下几个文件， 按顺序分别对应着上述四个编译顺序：（GameTool是项目名称）
+GameTool.CSharp.Plugins.csproj
+GameTool.CSharp.Editor.Plugins.csproj
+GameTool.CSharp.csproj
+GameTool.CSharp.Editor.csproj
+所有脚本被编译成几个DLL文件，位于工程根目录 / Library / ScriptAssemblies。
+生成如下三个dll：
+Assembly-CSharp-Editor.dll：包含所有Editor下的脚本
+Assembly-CSharp-firstpass.dll：包含Standard Assets、Pro Standard Assets、Plugins文件夹下的脚本
+Assembly-CSharp.dll：包含除以上两种，在Assets目录下的脚本。
+
+
+
+#### Plugins（doc）
+
+内容包括了Plugin导入设置、怎样创建使用两种Plugin、怎样利用底层渲染接口以及一些基础知识。
+在打包的时候，会把plugin里面的各种库，拷贝到包体中相应的位置（不同平台不一样，具体在可以把工程分别打成几个平台的包）
+win平台
+这是win32平台的包，Managed里面放置的托管库，Mono里面放的是mono的库，Plugins是平台库（native plugin）
+
+分平台打包，就需要对不同平台的plugin区分，方法是在Plugins目录下建立相应平台的文件夹，unity在为不同平台打包的时候，除了会将相应平台的plugin里的脚本编译成Assembly-CSharp-firstpass.dll，还会把已经是dll、so等库直接拷贝到包内相应位置。
+Plugins/x86：win32位平台plugin
+Plugins/x86_64：win64位平台plugin
+Plugins/Android：Android平台
+Plugins/iOS：iOS平台
+
+
+
+#### Object
+
+UnityEngine.Object是所有类的基类，它描述了Asset上使用的所有resource的序列化数据，它有几个重要的派生类：GameObject，Component，MonoBehaviour
+
+
+
+#### GameObject
+
+GameObject是组件的容器，所有Component都在可以挂在上面，Unity以组价化思想构建，所有功能拆分成各个组件，需要某个功能只需挂上相应的组件，组件之间相互独立，逻辑互补交叉。当然组件式开发也有最大的弊端就是组件之间的交互。
+
+
+
+#### Component
+
+Component作为组件的基类，unity中有大量的组件，Transform、Renderer、Collider、MeshFilter都是组件。
+
+
+
+#### MonoBehaviour
+
+开发时创建的脚本，需要挂在GameObject上的脚本都是继承自MonoBehaviour。
+
+
+
+#### ScriptableObject
+
+自定义可被Unity识别的资源类型，可打成AssetBundle，可通过Resources or AssetBundle加载。
+
+
+
+#### 序列化
+
+Asset和Object的关系
+Object作为Asset的序列化数据，比如以Texture导入一张图片，那么就用Texture对象记录描述了该图片。
+Asset可能有多个Object，比如prefab的GameObject上挂着多个组件，这样Asset和Object就是一对多的关系。那么问题来了，同一个Object怎么区分分别挂在不同GameObject上的对象的？等等，这里是一定要区分的，因为它们要包含序列化数据（在Inspector视图设置的），而不是在游戏运行中再new。
+
+
+
+#### Class ID 和 File ID（object id）
+
+先梳理一下关系，unity通过guid找到asset，其中asset上可能又挂了很多组件，每个组件又对应着一个class，而在序列化的时候是对象。Class ID是unity定义好的（传送），File ID是为对象生成的id，也就是说，我用guid + (class id 可有) + file id 就能确定某个资源上的组件对象。
+
+
+
+#### YMAL
+
+是一种标记语言，如果不了解语言格式可以看网站。
+
+
+
+#### Text-Based Scene Files
+
+和二进制文件一样，unity还提供了基于文本的场景文件，使用YAML标记语言，通过文本描述了asset和object组件之间的关系是怎么关联、保存数据等。
+通过设置Edit -> Project Setting -> Editor -> Asset Serialization -> Force Text，我们可以查看所有Object信息了。
+
+
+
+
+
+## unity pc打包后目录的结构
+
+当你使用 Unity 将项目打包为 PC 平台的可执行文件时，Unity 会生成一个包含多个文件和文件夹的目录结构。这些文件和文件夹对于游戏的运行至关重要。以下是常见的目录结构及其说明：
+
+1. **游戏名称.exe**：
+
+   - 这是你游戏的可执行文件。双击此文件即可运行你的游戏。
+
+2. **游戏名称_Data**
+
+   这是游戏的资源文件夹。它包含了所有的游戏资源，如场景、脚本、图像、音频、材质和其他所有 Unity 打包的内容。
+
+3. **游戏名称_Data**\Managed 文件夹：
+
+   - 包含游戏使用的所有 .NET 程序集 (DLL)，其中包括 Unity 的标准库和你的 C# 脚本编译后的程序集
+
+4. **游戏名称_Data\Plugins** 文件夹：
+
+   - 存放原生插件（通常是 .dll 或 .so 文件），这些插件提供了特定平台的功能或是用来调用一些原生的系统库。
+
+5. **游戏名称_Data\Resources** 文件夹：
+
+   - 如果你在项目中有使用 `Resources` 文件夹，这里会包含所有通过 `Resources.Load` 加载的资源。此文件夹下的资源在游戏启动时会被加载。
+
+6. **游戏名称_Data\StreamingAssets** 文件夹：
+
+   - 这里包含你在 Unity 项目中的 `StreamingAssets` 文件夹中的所有文件。这些文件不会被 Unity 处理成特定格式，而是会以原始形式包含在内，通常用于需要在运行时直接读取的文件。
+
+7. **MonoBleedingEdge** 文件夹：
+
+   - 如果项目使用了 Unity 的 Mono 运行时，你可能会看到这个文件夹。它包含 Mono 虚拟机和一些基础的 .NET 库。
+
+8. **UnityCrashHandler64.exe**：
+
+   - 这是 Unity 内置的崩溃处理程序，当游戏崩溃时它会运行并生成崩溃日志。
+
+9. **UnityPlayer.dll**：
+
+   - 这是 Unity 游戏引擎的核心运行库，它包含了 Unity 运行时的主要功能。每个使用 Unity 构建的游戏都会有这个文件。
+
+10. **baselib.dll**
+
+   `baselib.dll` 是 Unity 引擎中的一个基础库动态链接库（DLL）文件，提供了许多底层的功能和服务，供 Unity 以及你的游戏在运行时使用。
+
+   `baselib.dll` 的作用：
+
+   - **底层服务**：`baselib.dll` 提供了一些底层的系统服务和抽象，帮助 Unity 引擎与操作系统进行交互。这可能包括内存管理、线程处理、文件操作、网络通信等基本功能。
+   - **跨平台支持**：`baselib.dll` 是 Unity 为了简化跨平台开发而引入的一个库，它封装了不同平台的系统调用，使得开发者不必处理各个平台的差异性。
+
+   不能删除 `baselib.dll` 的原因：
+
+   - **游戏依赖性**：尽管 `baselib.dll` 的功能相对底层且不直接暴露给开发者使用，但它是 Unity 引擎正常运行不可缺少的一部分。删除它会导致游戏在运行时缺少关键的基础功能，从而无法正常工作。
+   - **引擎集成**：Unity 引擎依赖于 `baselib.dll` 来执行许多低级别的操作，这些操作对游戏的稳定性和性能至关重要。
+
+   总结
+
+   `baselib.dll` 是 Unity 项目中必不可少的文件，在游戏发布时不能删除。它提供了关键的底层功能，确保游戏在目标平台上正常运行。与其他重要的 DLL 文件一样，`baselib.dll` 应该包含在你发布的游戏版本中。
+
+11. **配置文件**（可选）：
+
+   - 可能会有一个 `.cfg` 或 `.ini` 文件，用于存储与游戏启动相关的配置，如窗口大小、分辨率、音量等。
+
+
+
+**其他注意事项：**
+
+- 游戏打包出来的目录结构是 Unity 打包过程自动生成的，你通常不需要手动修改这些文件或文件夹，除非你对打包流程非常了解并且知道自己在做什么。
+- 游戏的资源通常会被 Unity 序列化和打包成专有格式，你不能简单地在这些文件夹中直接编辑游戏内容。
+
+**通过理解这个目录结构，你可以更好地管理和发布你的 Unity 游戏，确保所有必要的文件都包含在内以保证游戏的正常运行。**
+
+
+
+**MMOGame_BackUpThisFolder_ButDontShipItWithYourGame**
+
+`MMOGame_BackUpThisFolder_ButDontShipItWithYourGame` 文件夹是在 Unity 项目打包时自动生成的，它的作用是备份一些与项目打包和运行无关的文件。这些文件通常是用于调试或开发时的工具、缓存、日志等内容，因此在最终的游戏发布版本中不需要包含这些文件。
+
+这个文件夹中的内容可能包括以下几类文件：
+
+1. **调试信息**：如编译时的临时文件、日志文件、符号文件等，帮助开发者在开发和调试过程中追踪问题。
+
+2. **缓存数据**：编译或打包过程中生成的一些临时数据，可能加快后续的编译过程。
+
+3. **开发工具**：如编辑器扩展或调试工具生成的文件，这些文件不属于最终的游戏内容。
+
+这个文件夹通常只在本地开发环境中有用，在将项目发布或分享给其他人时，可以忽略或删除它。正如文件夹的名字所提示的那样，它不应该包含在游戏的最终发布版本中。
+
+
+
+**MMOGame_BurstDebugInformation_DoNotShip**
+
+`MMOGame_BurstDebugInformation_DoNotShip` 文件夹是在使用 Unity 的 Burst 编译器时生成的，里面包含了 Burst 编译器用于调试的相关信息。
+
+Burst 编译器是 Unity 提供的一个高性能编译器，专门用来优化性能关键的 C# 代码，特别是与 Unity 的 Jobs 系统结合使用时。`BurstDebugInformation` 文件夹中的内容主要包括以下内容：
+
+1. **调试信息文件**：这些文件帮助开发者在使用 Burst 编译器时进行调试，例如查看在特定平台上如何优化代码的细节。
+
+2. **符号文件**：这些文件包含与 Burst 编译的代码相关的符号信息，通常用于调试优化后的代码。
+
+与 `BackUpThisFolder_ButDontShipItWithYourGame` 文件夹类似，`BurstDebugInformation_DoNotShip` 文件夹中的内容不应包含在最终发布的游戏版本中。它们仅供开发和调试时使用，因此可以在发布游戏时安全地忽略或删除。
+
+
+
+**`.pdb` 文件**
+
+在发布游戏的最终版本时，通常可以删除 `.pdb` 文件，因为它们主要用于调试，不是游戏运行所必需的。然而，是否应该删除所有 `.pdb` 文件，取决于你的具体需求：
+
+**可以删除 `.pdb` 文件的情况：**
+
+- **发布最终版本**：发布给用户的游戏版本通常不需要包含 `.pdb` 文件，因为这些文件包含调试符号，用于在开发和调试过程中帮助开发者理解崩溃报告或调试代码。
+- **减少文件大小**：删除 `.pdb` 文件可以显著减小游戏安装包的大小。
+- **保护代码隐私**：`.pdb` 文件中包含详细的代码信息，删除它们可以防止反向工程和代码泄露。
+
+**不建议删除 `.pdb` 文件的情况：**
+
+- **内部测试和调试**：如果你或你的测试团队仍在对游戏进行调试，那么保留 `.pdb` 文件可以帮助你快速定位问题。
+- **崩溃报告分析**：有时在分析用户的崩溃报告时，`.pdb` 文件可以提供有用的信息。如果你打算在发布后继续支持游戏并修复错误，保留 `.pdb` 文件（至少是备份）可能是一个好主意。
+
+**建议**
+
+- **发布版本中删除**：在最终发布的游戏版本中，删除 `.pdb` 文件是一个常见的做法，以减少文件大小并保护代码。
+- **备份 `.pdb` 文件**：即使从发布版本中删除，建议你在本地或版本控制系统中备份这些文件，以便将来需要时使用。
+
+总结来说，除非你有特定的调试需求，通常可以在发布版本中删除所有 `.pdb` 文件。
+
+
+
+
+
+## .meta文件
+
+`.meta` 文件通常是由 Unity 引擎创建的，用于存储项目中文件的元数据。每个资产（如脚本、材质、场景、预制件等）都会有一个对应的 `.meta` 文件。
+
+### `.meta` 文件的作用
+
+1. **唯一标识符 (GUID)**：每个 `.meta` 文件中都包含一个唯一的 GUID (Globally Unique Identifier)，Unity 使用这个 GUID 来跟踪项目中的资源，即使资源被重命名或移动，Unity 依然能够通过 GUID 识别该资源。
+
+2. **Import 设置**：对于一些特定类型的文件（如图片、模型等），`.meta` 文件中会存储一些导入设置（import settings），如压缩选项、分辨率等。
+
+3. **文件依赖关系**：`.meta` 文件还可以存储文件之间的依赖关系，比如一个预制件依赖的材质文件，Unity 会在 `.meta` 文件中跟踪这些依赖关系。
+
+4. **版本控制**：如果你使用版本控制系统（如 Git）管理 Unity 项目，`.meta` 文件是需要一并提交到版本库中的，以确保在不同开发环境中资源不会丢失或错乱。
+
+### 示例
+
+一个简单的 `.meta` 文件可能看起来如下：
+
+```plaintext
+fileFormatVersion: 2
+guid: d73a8efc6c6e431eab0b4f23f111c776
+TextureImporter:
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsPerUnit: 100
+  mipmaps:
+    enableMipMap: 0
+```
+
+在这个例子中，`.meta` 文件中包含了资源的 `guid` 和一些与纹理导入相关的设置。
+
+### 注意事项
+
+- 请勿手动编辑 `.meta` 文件，除非你完全了解它的结构和作用。
+- 如果不小心删除了 `.meta` 文件，Unity 会重新生成，但这可能会导致引用错误或丢失资源关联。
+
+
+
+## PlayerPrefs 
+
+`PlayerPrefs` 在游戏打包后会根据平台不同，将数据存储在不同的位置。以下是常见平台的存储位置：
+
+### 1. **Windows**
+
+存储位置为注册表（Registry）：
+
+- 路径: `HKEY_CURRENT_USER\Software\[CompanyName]\[ProductName]`
+
+可以通过 Unity 的 `PlayerSettings` 来设置 `CompanyName` 和 `ProductName`，这两个字段会决定实际的存储路径。
+
+### 2. **macOS**
+
+存储位置为 `plist` 文件：
+
+- 路径: `~/Library/Preferences/unity.[CompanyName].[ProductName].plist`
+
+### 3. **Linux**
+
+存储在 `prefs` 文件中：
+
+- 路径: `~/.config/unity3d/[CompanyName]/[ProductName]/prefs`
+
+### 4. **Android**
+
+在 Android 平台上，`PlayerPrefs` 数据会存储在应用的内部存储中，通常在沙盒文件系统内：
+
+- 路径: `/data/data/[package name]/shared_prefs/[package name].xml`
+
+需要 `root` 权限才能访问该文件。
+
+### 5. **iOS**
+
+在 iOS 平台上，`PlayerPrefs` 数据会存储在 `NSUserDefaults` 中：
+
+- 路径: `~/Library/Preferences/[bundle identifier].plist`
+
+### 6. **WebGL**
+
+对于 WebGL 构建，`PlayerPrefs` 使用浏览器的 `localStorage` 进行存储。
+
+
+
+比如
+
+在 Windows 平台上，`PlayerPrefs` 数据存储在注册表中。要查找它，可以按照以下步骤进行操作：
+
+### 步骤 1: 打开注册表编辑器
+
+1. 按下 `Win + R` 键，打开“运行”对话框。
+2. 输入 `regedit`，然后按下 `Enter` 键。
+
+### 步骤 2: 导航到 `PlayerPrefs` 存储位置
+
+在注册表编辑器中，导航到以下路径：
+
+```
+plaintext
+
+
+复制代码
+HKEY_CURRENT_USER\Software\[CompanyName]\[ProductName]
+```
+
+- **`[CompanyName]`**: 这是你在 Unity 项目中设置的公司名称，对应于 `PlayerSettings` 中的 **Company Name**。
+- **`[ProductName]`**: 这是你在 Unity 项目中设置的产品名称，对应于 `PlayerSettings` 中的 **Product Name**。
+
+![image-20240907230048575](MMORPG.assets/image-20240907230048575.png) 
 
 
 
@@ -9733,1288 +11066,7 @@ public class MyChildClass : SingletonNonMono<MyChildClass>
 
 
 
-# unity杂谈
 
-
-
-
-
-
-
-
-
-## unity 怎么编译c#？
-
-
-
-### 1.简要
-
-- 编译器的工作流水线：源代码-词法分析-语法分析-语义分析-目标代码-链接-可执行文件 （现代编译器会更复杂，比如优化）
-- 虚拟机执行中间代码的方式分为 2 种：**解释执行(Interpreted Execution)**和 **即时编译(Just-In-Time Compilation)**。解释执行即逐条执行每条指令，JIT 则是先将中间代码在开始运行的时候编译成机器码，然后执行机器码。
-- C# 编译 **CIL语言**，放到**CLR虚拟机**内执行 （CIL，Common Intermediate Language，也叫 MSIL）（CLR Common Language Runtime）
-- **.Net Framework定义**：通常我们把 C#、CIL、CLR，再加上微软提供的一套基础类库称为 .Net Framework
-- **Mono 是跨平台的 .Net Framework 的实现**。Mono 做了一件很了不起的事情，将 CLR 在所有支持的平台上重新实现了一遍，将 .Net Framework 提供的基础类库也重新实现了一遍。
-- 理论上，你创造了一门语言，并且实现了所有平台下的编译器，就能跨语言了。
-
-
-
-**为什么 Unity3D 可以运行 C#，C# 和 Mono 是什么关系，Mono 和 .Net Framework 又是什么关系？我们深入的来聊一聊这个话题！**
-
-
-
-### 2.从编译原理说起
-
-一句话介绍编译器：编译器是将用某种程式语言写成的源代码（源语言），转换成另一种程式语言（目标语言）等价形式的程序。通常我们是将某种高级语言（如C、C++、C# 、Java）转换成低级语言（汇编语言、机器语言）。
-编译器以流水线的形式进行工作，分为几个阶段：源代码 → 词法分析 → 语法分析 → 语义分析 → 目标代码 → 链接 → 可执行文件。
-**链接（linking）解释：**上一步骤的结果可能会引用外部的函数，把外部函数的代码（通常是后缀名为.lib和.a的文件），添加到可执行文件中，这就叫做链接。——两种，静态链接（编译时）和动态链接（runtime）。
-
-现代编译器还会更复杂，中间会增加更多的处理过程，比如预处理器，中间代码生成，代码优化等。
-
-![img](MMORPG.assets/1565924-20200701114702874-781504239.png) 
-
-### 3.虚拟机是什么
-
-虚拟机（VM），简单理解，就是可以执行特定指令的一种程序。为了执行指令，还需要一些配套的设施，如寄存器、栈等。虚拟机可以很复杂，复杂到模拟真正的计算机硬件，也可以很简单，简单到只能做加减乘除。
-在编译器领域，虚拟机通常执行一种叫中间代码的语言，中间代码由高级语言转换而成，以 Java 为例，Java 编译后产生的并不是一个可执行的文件，而是一个 ByteCode （字节码）文件，里面包含了从 Java 源代码转换成等价的字节码形式的代码。Java 虚拟机（JVM）负责执行这个文件。
-**虚拟机执行中间代码的方式分为 2 种：解释执行和 JIT（即时编译）。**
-
-- 解释执行即逐条执行每条指令。
-- JIT 则是先将中间代码在开始运行的时候编译成机器码，然后执行机器码。
-
-**由于执行的是中间代码，所以，在不同的平台实现不同的虚拟机，都可以执行同样的中间代码，也就实现了跨平台。**
-
-```
-int run(context* ctx, code* c) {
-    for (cmd in c->cmds) {
-        switch (cmd.type) {
-            case ADD:
-            // todo add            break;
-            case SUB:
-            // todo subtract            break;
-            // ...        }
-    }
-    return 0;
-}
-```
-
-总结一下，虚拟机本身并不跨平台，而是语言是跨平台的，对于开发人员来说，只需要关心开发语言即可，不需要关心虚拟机是怎么实现的，这也是 Java 可以跨平台的原因，C# 也是同样的。推而广之，理论上任何语言都可以跨平台，只要在相应平台实现了编译器或者虚拟机等配套设施。
-
-
-
-
-
-### 4.C# 是什么，IL 又是什么
-
-C# 是微软推出的一种基于 .NET 框架的、面向对象的高级编程语言。微软在 2000 年发布了这种语言，希望借助这种语言来取代Java。
-
-C# 是一个语言，微软给它定制了一份语言规范，提供了从开发、编译、部署、执行的完整的一条龙的服务，每隔一段时间会发布一份最新的规范，添加一些新的语言特性。从语法层面来说，C# 是一个很完善，写起来非常舒服的语言。
-
-C# 和 Java 类似，C# 会编译成一个中间语言（CIL，Common Intermediate Language，也叫 MSIL），CIL 也是一个高级语言，而运行 CIL 的虚拟机叫 CLR（Common Language Runtime）。通常我们把 C#、CIL、CLR，再加上微软提供的一套基础类库称为 .Net Framework。
-
-![img](MMORPG.assets/1565924-20200701114739327-1650561553.png) 
-
-C# 天生就是为征服宇宙设计的，不过非常遗憾，由于微软的封闭，这个目标并没有实现。当然 C# 现在还过得很好，因为游戏而焕发了新的活力，因为 Unity3D，因为 Mono。
-
-
-
-**IL科普**
-IL的全称是 Intermediate Language，很多时候还会看到**CIL**（特指在.Net平台下的IL标准）。翻译过来就是中间语言。
-它是一种属于通用语言架构和.NET框架的低阶的人类可读的编程语言。
-CIL类似一个面向对象的汇编语言，并且它是完全基于堆栈的，它运行在虚拟机上（.Net Framework, Mono VM）的语言。
-
-
-
-
-
-
-
-### 4.Mono
-
-Mono 是跨平台的 .Net Framework 的实现。Mono 做了一件很了不起的事情，将 CLR 在所有支持的平台上重新实现了一遍，将 .Net Framework 提供的基础类库也重新实现了一遍。
-![img](MMORPG.assets/1565924-20200701114759725-520977280.png)
-
-以上，Compile Time 的工作实际上可以直接用微软已有的成果，只要将 Runtime 的 CLR 在其他平台实现，这个工作量不仅大，而且需要保证兼容，非常浩大的一个工程，Mono 做到了，致敬！
-
-Unity3D 中的 C#
-**Unity3D 内嵌了一个 Mono 虚拟机**，从上文可以知道，当实现了某个平台的虚拟机，那语言就可以在该平台运行，所以，严格的讲，**Unity3D 是通过 Mono 虚拟机，运行 C# 编译器编译后生成的 IL 代码。**
-
-Unity3D 默认使用 C# 作为开发语言，除此之外，还支持 JS 和 BOO，因为 Unity3D 开发了相应的编译器，将 JS 和 BOO 编译成了 IL。
-
-C# 在 Windows 下，是通过微软的 C# 编译器，生成了 IL 代码，运行在 CLR 中。
-C# 在除 Windows 外的平台下，是通过 Mono 的编译器，生成了 IL 代码，运行在 Mono 虚拟机中，也可以直接运行将已经编译好的 IL 代码（通过任意平台编译）。
-理论上，你创造了一门语言，并且实现了某一平台下的编译器，然后实现了所有平台下符合语言规范的虚拟机，你的语言就可以运行在任意平台啦。
-
-
-
-![img](MMORPG.assets/v2-822e8c5f5036ab4c5ac7650bf546ccaf_r.jpg)
-
-<img src="MMORPG.assets/v2-670b054e66530097db8806463ffc3240_720w.webp" alt="img" style="zoom:67%;" /> 
-
-
-
-**优点**
-
-1. 构建应用非常快
-2. 由于Mono的JIT(Just In Time compilation ) 机制, 所以支持更多托管类库
-3. 支持运行时代码执行
-4. 必须将代码发布成托管程序集(.dll 文件 , 由mono或者.net 生成 )
-5. Mono VM在各个平台移植异常麻烦，有几个平台就得移植几个VM（WebGL和UWP这两个平台只支持 IL2CPP）
-6. Mono版本授权受限，C#很多新特性无法使用
-7. iOS仍然支持Mono , 但是不再允许Mono(32位)应用提交到Apple Store
-
-**Unity 2018 mono版本仍然是mono2.0、unity2020的版本更新到了mono 5.11。**
-
-
-
-
-
-
-
-
-
-### IL2CPP， IL2CPP VM
-
-本文的主角终于出来了：IL2CPP。有了上面的知识，大家很容易就理解其意义了：**把IL中间语言转换成CPP文件。**
-
-
-
-#### **IL2CPP【AOT编译】**
-
-> IL2CPP分为两个独立的部分：
->
-> 1. AOT（静态编译）编译器：把IL中间语言转换成CPP文件
-> 2. 运行时库：例如**垃圾回收、线程/文件获取（独立于平台，与平台无关）、内部调用直接修改托管数据结构的原生代码**的服务与抽象
-
-
-
-#### **AOT编译器**
-
-> IL2CPP AOT编译器名为il2cpp.exe。
-> 在Windows上，您可以在`Editor \ Data \ il2cpp`目录中找到它。
-> 在OSX上，它位于Unity安装的`Contents / Frameworks / il2cpp / build`目录中
-> il2cpp.exe 是由C#编写的受托管的可执行程序，它接受我们在Unity中通过Mono编译器生成的托管程序集，并生成指定平台下的C++代码。
-
-
-
-#### **IL2CPP工具链：**
-
-![img](MMORPG.assets/v2-f2e9975835f3d2cc8e41b38dc94f6545_720w.webp) 
-
-
-
-#### **运行时库，IL2CPP VM**
-
-> IL2CPP技术的另一部分是运行时库（libil2cpp），用于支持IL2CPP虚拟机的运行。
-> 这个简单且可移植的运行时库是IL2CPP技术的主要优势之一！
-> 通过查看我们随Unity一起提供的libil2cpp的头文件，您可以找到有关libil2cpp代码组织方式的一些线索
-> 您可以在Windows的`Editor \ Data \ PlaybackEngines \ webglsupport \ BuildTools \ Libraries \ libil2cpp \ include`目录中找到它们
-> 或OSX上的`Contents / Frameworks / il2cpp / libil2cpp`目录。
-
-说是虚拟机，还不如说是一个库，用于提供服务。
-
-服务：gc、Thread
-
-运行时：unity = IL2CPP 技术编译出来的二进制指令 + IL2CPP runtime的环境(GC,Thread等)
-
-
-
-#### 转换cpp的原因
-
-大家如果看明白了上面动态语言的 CLI(Common Language Infrastructure)， IL以及VM，再看到IL2CPP一定心中充满了疑惑。现在的大趋势都是把语言加上动态特性，哪怕是c++这样的静态语言，也出现了适合IL的c++编译器，为啥Unity要反其道而行之，把IL再弄回静态的CPP呢？这不是吃饱了撑着嘛。
-
-根据本文最前面给出的Unity官方博客所解释的，原因有以下几 个：
-
-1. 运行效率快
-
-> 根据官方的实验数据，换成IL2CPP以后，程序的运行效率有了1.5-2.0倍的提升。
-
-2. Mono VM在各个平台移植，维护非常耗时，有时甚至不可能完成
-
-> Mono的跨平台是通过Mono VM实现的，有几个平台，就要实现几个VM，像Unity这样支持多平台的引擎，Mono官方的VM肯定是不能满足需求的。所以针对不同的新平台，Unity的项目组就要把VM给移植一遍，同时解决VM里面发现的bug。这非常耗时耗力。这些能移植的平台还好说，还有比如WebGL这样基于浏览器的平台。要让WebGL支持Mono的VM几乎是不可能的。
-
-3. 可以利用**现成的在各个平台的C++编译器**对代码执行**编译期优化**，这样可以进一步**减小最终游戏的尺寸并提高游戏运行速度**。
-
-4. 由于动态语言的特性，他们多半无需程序员太多关心内存管理，所有的内存分配和回收都由一个叫做GC（Garbage Collector）的组件完成。虽然通过IL2CPP以后代码变成了静态的C++，但是内存管理这块还是遵循C#的方式，这也是为什么最后还要有一个 **IL2CPP VM**的原因：**它负责提供诸如GC管理，线程创建这类的服务性工作。**但是由于去除了**IL加载和动态解析**的工作，**使得IL2CPP VM可以做的很小**，**并且使得游戏载入时间缩短**。
-
-5. Mono版本授权受限
-
-   大家有没有意识到Mono的版本已经更新到3.X了，但是在Unity中，C#的运行时版本一直停留在2.8，这也是Unity社区开发者抱怨的最多一 条：很多C#的新特性无法使用。这是因为Mono 授权受限，导致Unity无法升级Mono。如果换做是IL2CPP，IL2CPP VM这套完全自己开发的组件，就解决了这个问题。
-
-
-
-![img](MMORPG.assets/v2-dd8ec43772f9025f42762bf9aa98d287_720w.webp) 
-
-
-
-
-
-
-
-
-
-### Mono与IL2CPP的区别
-
-IL2CPP比较适合开发和发布项目 ，但是为了提高版本迭代速度，可以在开发期间切换到Mono模式（构建应用快）。
-
-
-
-**mono和IL2CPP**编译区别
-
-使用Mono的时候，脚本的编译运行如下图所示：
-
-![img](MMORPG.assets/v2-659e796f814f9d0ac258b370ae289584_720w.webp) 
-
-3大脚本被编译成IL，在游戏运行的时候，IL和项目里其他第三方兼容的DLL一起，放入Mono VM虚拟机，由虚拟机解析成机器码。
-
-并且执行IL2CPP做的改变由下图红色部分标明：
-
-![img](MMORPG.assets/v2-dd8ec43772f9025f42762bf9aa98d287_720w-17216417879349.webp) 
-
-在得到中间语言IL后，使用IL2CPP将他们重新变回C++代码，然后**再由各个平台的C++编译器直接编译成能执行的原生汇编代码。**
-
-
-
-**优点**
-
-1. 相比Mono, 代码生成有很大的提高
-2. 可以调试生成的C++代码
-3. 可以启用引擎代码剥离(Engine code stripping)来减少代码的大小
-4. 程序的运行效率比Mono高，运行速度快
-5. 多平台移植非常方便
-6. 相比Mono构建应用慢
-7. 只支持AOT(Ahead of Time)编译
-
-
-
-
-
-
-
-
-
-
-
-### 参考文献
-
-[Unity - 深度理解C# 的执行原理及Unity跨平台 - 笔记 - 天山鸟 - 博客园 (cnblogs.com)](https://www.cnblogs.com/Jaysonhome/p/13218403.html)
-
-[【Unity游戏开发】Mono和IL2CPP的区别 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/352463394)
-
-
-
-
-
-
-
-
-
-## struct和class区别？
-
-在许多编程语言中，包括C#，`struct` 和 `class` 都是用于定义自定义数据类型的关键字，但它们有一些重要的区别：
-
-1. **内存分配**：
-   - `class` 是引用类型，它的实例在堆上分配内存。当你创建一个类的实例时，实际上创建的是一个引用（或者说指向实例的引用），而这个实例存储在堆上的一个内存块中。多个引用可以指向同一个实例。
-   - `struct` 是值类型，它的实例在栈上分配内存。当你创建一个结构体的实例时，实际上创建的是该结构体的一个完整副本，它直接存储在栈上。因此，每个结构体实例是独立的，修改一个实例不会影响其他实例。
-
-2. **继承**：
-   - `class` 支持继承，一个类可以派生自另一个类，从而可以通过继承实现代码重用和抽象。
-   - `struct` 不支持继承，它们不能作为其他结构体或类的基类。它们通常用于定义简单的数据类型，而不是用于建模具有复杂行为和层次结构的对象。
-
-3. **默认访问修饰符**：
-   - 类中的字段和方法默认为私有访问修饰符（`private`），而结构体中的字段和方法默认为公共访问修饰符（`public`）。这是因为结构体通常用于存储数据，而类则用于封装数据和行为。
-
-4. **性能**：
-   - 由于结构体是值类型，它们通常比类更高效。因为结构体存储在栈上，而且在内存布局上更加紧凑，因此在某些情况下，使用结构体可以减少内存占用和提高性能。
-   - 但在某些情况下，如果结构体较大，频繁地进行复制和传递结构体的副本可能会导致性能下降。在这种情况下，使用类可能更合适。
-
-结构体和类都有各自的适用场景，通常情况下，你应该根据具体情况来选择使用哪种类型。如果你需要表示一个复杂的对象，并且需要继承、多态等面向对象的特性，那么使用类会更合适。如果你只是需要存储一些简单的数据，并且不需要进行继承，那么使用结构体可能更合适。
-
-
-
-
-
-
-
-
-
-- 
-
-
-
-## unity 协程(Coroutine)
-
-### 前言
-
-[协程](https://so.csdn.net/so/search?q=协程&spm=1001.2101.3001.7020)在`Unity`中是一个很重要的概念，我们知道，在使用`Unity`进行游戏开发时，一般（注意是一般）不考虑[多线程](https://so.csdn.net/so/search?q=多线程&spm=1001.2101.3001.7020)，那么如何处理一些在主任务之外的需求呢，`Unity`给我们提供了协程这种方式
-
-
-
-**为啥在Unity中一般不考虑多线程**
-
-- 因为在`Unity`中，只能在主线程中获取物体的组件、方法、对象，如果脱离这些，`Unity`的很多功能无法实现，那么多线程的存在与否意义就不大了
-
-
-
-**既然这样，线程与协程有什么区别呢：**
-
-- 对于协程而言，同一时间只能执行一个协程，而线程则是并发的，可以同时有多个线程在运行
-- 两者在内存的使用上是相同的，共享堆，不共享栈
-
-其实对于两者最关键，最简单的区别是微观上线程是并行（对于多核CPU）的，而协程是串行的，如果你不理解没有关系，通过下面的解释你就明白了
-
-
-
-### 关于协程
-
-### 1，什么是协程
-
-协程，从字面意义上理解就是协助程序的意思，我们在主任务进行的同时，需要一些分支任务配合工作来达到最终的效果
-
-稍微形象的解释一下，想象一下，在进行主任务的过程中我们需要一个对资源消耗极大的操作时候，如果在一帧中实现这样的操作，游戏就会变得十分卡顿，这个时候，我们就可以通过协程，在一定帧内完成该工作的处理，同时不影响主任务的进行
-
-### 2，协程的原理
-
-首先需要了解协程不是线程，协程依旧是在主线程中进行
-
-**然后要知道协程是通过迭代器来实现功能的**，通过关键字`IEnumerator`来定义一个迭代方法，
-
-注意使用的是`IEnumerator`，而不是`IEnumerable`：
-
-两者之间的区别：
-
-- `IEnumerator`：是一个实现迭代器功能的接口
-- `IEnumerable`：是在`IEnumerator`基础上的一个封装接口，有一个`GetEnumerator()`方法返回`IEnumerator`
-
-在迭代器中呢，最关键的是`yield` 的使用，这是实现我们协程功能的主要途径，通过该关键方法，可以使得协程的运行暂停、记录下一次启动的时间与位置等等：
-
-由于`yield` 在协程中的特殊性，与关键性，我们到后面在单独解释，先介绍一下协程如何通过代码实现
-
-### 3、协程的使用
-
-首先通过一个迭代器定义一个返回值为`IEnumerator`的方法，然后再程序中通过`StartCoroutine`来开启一个协程即可：
-
-在正式开始代码之前，需要了解StartCoroutine的两种重载方式：
-
-- StartCoroutine（string methodName）：这种是没有参数的情况，直接通过方法名（字符串形式）来开启协程
-
-- StartCoroutine（IEnumerator routine）：通过方法形式调用
-- StartCoroutine（string methodName，object values):带参数的通过方法名进行调用
-
-协程开启的方式主要是上面的三种形式
-
-```
- 	//通过迭代器定义一个方法
- 	IEnumerator Demo(int i)
-    {
-        //代码块
-
-        yield return 0; 
-		//代码块
-       
-    }
-
-    //在程序种调用协程
-    public void Test()
-    {
-        //第一种与第二种调用方式,通过方法名与参数调用
-        StartCoroutine("Demo", 1);
-
-        //第三种调用方式， 通过调用方法直接调用
-        StartCoroutine(Demo(1));
-    }
-
-```
-
-在一个协程开始后，同样会对应一个结束协程的方法`StopCoroutine`与`StopAllCoroutines`两种方式，但是需要注意的是，两者的使用需要遵循一定的规则，在介绍规则之前，同样介绍一下关于`StopCoroutine`重载：
-
-- `StopCoroutine（string methodName）`：通过方法名（字符串）来进行
-- `StopCoroutine（IEnumerator routine）`:通过方法形式来调用
-- `StopCoroutine(Coroutine routine)`：通过指定的协程来关闭
-
-刚刚我们说到他们的使用是有一定的规则的，那么规则是什么呢，答案是前两种结束协程方法的使用上，如果我们是使用StartCoroutine（string methodName）来开启一个协程的，那么结束协程就只能使用StopCoroutine（string methodName）和StopCoroutine(Coroutine routine)来结束协程，可以在文档中找到这句话：
-![img](MMORPG.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWxpbmdlcg==,size_16,color_FFFFFF,t_70.png)
-
-### 4、关于yield
-
-在上面，我们已经知道`yield` 的关键性，要想理解协程，就要理解`yield`
-
-如果你了解`Unity`的脚本的生命周期，你一定对`yield`这几个关键词很熟悉，没错，`yield` 也是脚本生命周期的一些执行方法，不同的`yield` 的方法处于生命周期的不同位置，可以通过下图查看：
-
-![在这里插入图片描述](MMORPG.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWxpbmdlcg==,size_16,color_FFFFFF,t_70-171275895535052.png)
-
-通过这张图可以看出大部分`yield`位置`Update`与`LateUpdate`之间，而一些特殊的则分布在其他位置，这些`yield` 代表什么意思呢，又为啥位于这个位置呢
-
-首先解释一下位于Update与LateUpdate之间这些yield 的含义：
-
-yield return null; 暂停协程等待下一帧继续执行
-
-yield return 0或其他数字; 暂停协程等待下一帧继续执行
-
-yield return new WairForSeconds(时间); 等待规定时间后继续执行
-
-yield return StartCoroutine("协程方法名");开启一个协程（嵌套协程)
-
-
-在了解这些yield的方法后，可以通过下面的代码来理解其执行顺序：
-
-```
- void Update()
-    {
-        Debug.Log("001");
-        StartCoroutine("Demo");
-        Debug.Log("003");
-
-    }
-    private void LateUpdate()
-    {
-        Debug.Log("005");
-    }
-
-    IEnumerator Demo()
-    {
-        Debug.Log("002");
-
-        yield return 0;
-        Debug.Log("004");
-    }
-
-```
-
-![在这里插入图片描述](MMORPG.assets/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbnpoaWxpbmdlcg==,size_16,color_FFFFFF,t_70-171275914328555.png)
-
-
-
-可以很清晰的看出，协程虽然是在`Update`中开启，但是关于`yield return null`后面的代码会在下一帧运行，并且是在Update执行完之后才开始执行，但是会在`LateUpdate`之前执行
-
-接下来看几个特殊的yield，他们是用在一些特殊的区域，一般不会有机会去使用，但是对于某些特殊情况的应对会很方便
-
-yield return GameObject; 当游戏对象被获取到之后执行
-yield return new WaitForFixedUpdate()：等到下一个固定帧数更新
-yield return new WaitForEndOfFrame():等到所有相机画面被渲染完毕后更新
-yield break; 跳出协程对应方法，其后面的代码不会被执行
-
-通过上面的一些`yield`一些用法以及其在脚本生命周期中的位置，我们也可以看到关于协程不是线程的概念的具体的解释，所有的这些方法都是在主线程中进行的，只是有别于我们正常使用的`Update`与`LateUpdate`这些可视的方法
-
-### 5、协程几个小用法
-
-#### **5.1、将一个复杂程序分帧执行：**
-
-如果一个复杂的函数对于一帧的性能需求很大，我们就可以通过`yield return null`将步骤拆除，从而将性能压力分摊开来，最终获取一个流畅的过程，这就是一个简单的应用
-
-举一个案例，如果某一时刻需要使用`Update`读取一个列表，这样一般需要一个循环去遍历列表，这样每帧的代码执行量就比较大，就可以将这样的执行放置到协程中来处理：
-
-```
-public class Test : MonoBehaviour
-{
-    public List<int> nums = new List<int> { 1, 2, 3, 4, 5, 6 };
-
-
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            StartCoroutine(PrintNum(nums));
-        }
-    }
-	//通过协程分帧处理
-    IEnumerator PrintNum(List<int> nums)
-    {
-        foreach(int i in nums)
-        {
-            Debug.Log(i);
-            yield return null;
-                 
-        }
-
-    }
-}
-
-```
-
-上面只是列举了一个小小的案例，在实际工作中会有一些很消耗性能的操作的时候，就可以通过这样的方式来进行性能消耗的分消
-
-#### **5.2、进行计时器工作**
-
-当然这种应用场景很少，如果我们需要计时器有很多其他更好用的方式，但是你可以了解是存在这样的操作的，要实现这样的效果，需要通过`yield return new WaitForSeconds()`的延时执行的功能：
-
-```
-	IEnumerator Test()
-    {
-        Debug.Log("开始");
-        yield return new WaitForSeconds(3);
-        Debug.Log("输出开始后三秒后执行我");
-    }
-```
-
-
-
-#### **5.3、异步加载等功能**
-
-只要一说到异步，就必定离不开协程，因为在异步加载过程中可能会影响到其他任务的进程，这个时候就需要通过协程将这些可能被影响的任务剥离出来
-
-常见的异步操作有：
-
-- `AB`包资源的异步加载
-- `Reaources`资源的异步加载
-- 场景的异步加载
-- `WWW`模块的异步请求
-
-这些异步操作的实现都需要协程的支持
-
-
-
-这里以场景加载为例子：
-
-
-
-
-
-
-
-### 参考文献
-
-[Unity 协程(Coroutine)原理与用法详解_unity coroutine-CSDN博客](https://blog.csdn.net/xinzhilinger/article/details/116240688)
-
-[迭代器 - C# | Microsoft Learn](https://learn.microsoft.com/zh-cn/dotnet/csharp/iterators)
-
-[Unity 场景异步加载（加载界面的实现）_unity异步加载场景-CSDN博客](
-
-
-
-## yield
-
-### 概要
-
-在 Unity 中，协程允许你编写在多帧之间暂停的代码，常用于等待某个条件达成（如等待几秒钟或等待异步操作完成）再继续执行。
-
-
-
-**示例：在协程中使用 `yield`**
-
-```
-using UnityEngine;
-using System.Collections;
-
-public class Example : MonoBehaviour
-{
-    void Start()
-    {
-        StartCoroutine(MyCoroutine());
-    }
-
-    IEnumerator MyCoroutine()
-    {
-        Debug.Log("协程开始");
-        
-        // 等待 2 秒钟
-        yield return new WaitForSeconds(2f);
-        
-        Debug.Log("2 秒钟后继续执行");
-        
-        // 等待下一帧
-        yield return null;
-        
-        Debug.Log("下一帧继续执行");
-    }
-}
-
-```
-
-
-
-### **常见的 `yield return` 表达式**
-
-- `yield return new WaitForSeconds(seconds);`
-  暂停协程一段时间（`seconds` 秒）。
-- `yield return null;`
-  暂停协程直到下一帧。
-- `yield return new WaitForEndOfFrame();`
-  暂停协程，直到当前帧结束。
-- `yield return new WaitForFixedUpdate();`
-  暂停协程，直到下一次物理帧（FixedUpdate）。
-- `yield return StartCoroutine(AnotherCoroutine());`
-  等待另一个协程完成。
-
-
-
-### **yield break**
-
-在迭代器或协程中，可以使用 `yield break` 来提前终止迭代或协程。
-
-**示例：使用 `yield break`**
-
-```
-IEnumerator MyCoroutine()
-{
-    Debug.Log("协程开始");
-    
-    if (someCondition)
-    {
-        yield break; // 提前终止协程
-    }
-
-    yield return new WaitForSeconds(2f);
-    
-    Debug.Log("这行代码不会执行，如果之前调用了 yield break");
-}
-
-```
-
-
-
-###  **`yield return` 异步方法**
-
-
-
-在 Unity 的协程中，如果你使用 `yield return` 来等待一个异步方法（例如返回 `Task` 的方法），实际情况取决于你如何实现和处理这个异步方法。Unity 的协程系统不原生支持 `Task` 类型，因此直接使用 `yield return` 来等待 `Task` 不会如预期那样正常工作。
-
-**具体行为**
-
-如果你直接 `yield return` 一个异步方法返回的 `Task`，Unity 的协程系统不会自动等待它完成。这是因为 Unity 的协程系统预期 `yield return` 的类型是 Unity 能理解的类型，如 `WaitForSeconds`、`WaitForEndOfFrame`、`IEnumerator`，而不是 `Task`。
-
-
-
-**示例：**
-
-假设你有以下异步方法：
-
-```csharp
-async Task LoadDataAsync()
-{
-    await Task.Delay(2000); // 模拟一个耗时操作
-    Debug.Log("数据加载完成！");
-}
-```
-
-如果你在协程中这样使用它：
-
-```csharp
-IEnumerator MyCoroutine()
-{
-    Debug.Log("协程开始");
-
-    yield return LoadDataAsync(); // 直接使用 Task 是无效的
-
-    Debug.Log("这行代码会立即执行，不会等待 LoadDataAsync 完成");
-}
-```
-
-
-
-**发生的事情：**
-
-- **立即继续执行**: 协程中的代码会在 `yield return LoadDataAsync();` 之后立即继续执行，而不会等待 `LoadDataAsync` 完成。
-- **无法等待**: 由于 `Task` 不是 Unity 协程系统支持的等待类型，因此协程不会自动等待异步操作完成。
-
-
-
-**正确处理方式**
-
-要在协程中等待 `Task` 完成，你需要使用一个包装器，将 `Task` 转换为 Unity 协程可以理解的格式。例如，你可以使用一个 `IEnumerator` 方法来轮询 `Task` 的状态：
-
-```csharp
-IEnumerator MyCoroutine()
-{
-    Debug.Log("协程开始");
-
-    // 使用帮助方法等待 Task 完成
-    yield return WaitForTask(LoadDataAsync());
-
-    Debug.Log("数据加载完成，继续执行协程");
-}
-
-IEnumerator WaitForTask(Task task)
-{
-    while (!task.IsCompleted)
-    {
-        yield return null; // 等待下一帧
-    }
-
-    if (task.IsFaulted)
-    {
-        throw task.Exception ?? new Exception("Task Faulted");
-    }
-}
-```
-
-在这个例子中，`WaitForTask` 是一个协程，它会不断检查 `Task` 是否完成。如果 `Task` 失败了，它会抛出异常。
-
-**总结**
-
-- **直接 `yield return` `Task`**: 在 Unity 协程中直接使用 `Task` 作为 `yield return` 的值不会如预期般等待 `Task` 完成。
-- **解决方案**: 使用一个 `IEnumerator` 包装器来等待 `Task` 完成，使协程能够有效地等待异步操作完成。
-
-
-
-### 协程调用的控制流
-
-对的，当一个协程调用另一个协程时，控制流会转移到被调用的协程。这个过程的工作方式如下：
-
-1. **调用另一个协程**:
-   - 当一个协程调用另一个协程时（通过 `yield return`），调用者协程的执行会暂停，直到被调用的协程完成。
-
-2. **控制流转移**:
-   - 调用者协程暂停后，控制流会转移到被调用的协程中。被调用的协程开始执行，并在其内部的 `yield return` 或其他等待条件满足之前，继续进行。
-
-3. **等待和恢复**:
-   - 如果被调用的协程中有 `yield return` 语句（例如 `yield return null`、`yield return new WaitForSeconds(seconds)`、`yield return someAsyncOperation`），它会让控制流在满足条件之前暂停，直到满足条件后，协程才会继续执行。
-
-4. **恢复调用者协程**:
-   - 一旦被调用的协程完成（即它的执行完毕或者 `yield return` 条件被满足），控制流会返回到调用者协程，并从 `yield return` 语句后的位置继续执行。
-
-**示例**
-
-```csharp
-IEnumerator CallerCoroutine()
-{
-    Debug.Log("调用者协程开始");
-
-    // 调用另一个协程并等待它完成
-    yield return CalledCoroutine();
-
-    Debug.Log("调用者协程继续执行，CalledCoroutine 已经完成");
-}
-
-IEnumerator CalledCoroutine()
-{
-    Debug.Log("被调用的协程开始");
-
-    // 等待 2 秒钟
-    yield return new WaitForSeconds(2f);
-
-    Debug.Log("被调用的协程完成");
-}
-```
-
-在这个例子中：
-
-1. **`CallerCoroutine`** 启动并调用 **`CalledCoroutine`**。
-2. **`CallerCoroutine`** 的执行会暂停在 `yield return CalledCoroutine();`，等待 **`CalledCoroutine`** 完成。
-3. **`CalledCoroutine`** 开始执行，并在 `yield return new WaitForSeconds(2f);` 处暂停 2 秒钟。
-4. 2 秒钟后，**`CalledCoroutine`** 继续执行并完成。
-5. 控制流返回到 **`CallerCoroutine`**，从 `yield return CalledCoroutine();` 之后的位置继续执行。
-
-**总结**
-
-- **调用者协程** 在调用另一个协程时会暂停，直到被调用的协程完成。
-- **被调用的协程** 在内部的 `yield return` 语句处会控制暂停，直到满足条件或完成。
-- 一旦被调用的协程完成，控制流会返回到调用者协程，并继续执行后续代码。
-
-这种协程嵌套的机制使得 Unity 的协程系统能够处理复杂的异步操作和等待逻辑，同时保持代码的简洁性和可读性。
-
-## UniTask
-
-[Cysharp/UniTask: Provides an efficient allocation free async/await integration for Unity.](https://github.com/Cysharp/UniTask)
-
-用于解决异步操作
-
-![image-20241020003915569](MMORPG.assets/image-20241020003915569.png) 
-
-async/await也是运行在主线程中的
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# unity中的目录结果和特殊文件
-
-## unity工程文件夹里的目录结构
-
-
-
-### 1、特殊文件夹
-
-
-
-Unity工程[根目录](https://so.csdn.net/so/search?q=根目录&spm=1001.2101.3001.7020)下，有三个特殊文件夹：Assets、Library、ProjectSettings
-
-
-
-#### Assets
-
-Unity工程中所用到的所有Asset都放在该文件夹中，是资源文件的根目录，很多[API](https://so.csdn.net/so/search?q=API&spm=1001.2101.3001.7020)都是基于这个文件目录的，查找目录都需要带上Assets，比如AssetDatabase。
-
-
-
-#### Library
-
-Unity会把Asset下支持的资源导入成自身识别的格式，以及编译代码成为DLL文件，都放在Library文件夹中。
-
-
-
-#### ProjectSettings
-
-编辑器中设置的各种参数
-
-下面都是存在Assets目录下的文件的了。
-
-
-
-#### Editor
-
-为Unity编辑器扩展程序的目录，可以在根目录下，也可以在子目录下，只要名字叫“Editor”，而且数量不限。Editor下面放的所有资源文件和脚本文件都不会被打进包中，而且脚本只能在编辑器模式下使用。一般会把扩展的编辑器放在这里，或只是编辑器程序用到的dll库，比如任务编辑器、角色编辑器、技能编辑器、战斗编辑器……以及各种小工具。
-
-
-
-#### Editor Default Resources
-
-名字带空格，必须在Assets目录下，里面放编辑器程序用到的一些资源，比如图片，文本文件等。不会被打进包内，可以直接通过EditorGUIUtility.Load去读取该文件夹下的资源。
-
-
-
-#### Gizmos
-
-Gizmos.DrawIcon在场景中某个位置绘制一张图片，该图片必须是在Gizmos文件夹下。
-
-```
-void OnDrawGizmos() {
-    Gizmos.DrawIcon(transform.position, “0.png”, true);
-}
-```
-
-OnDrawGizmos是MonoBehaviour的生命周期函数，但是只在编辑器模式下每一帧都会执行。Gizmos类能完成多种在场景视图中绘制需求，做编辑器或调试的时候经常会用到，比如在场景视图中绘制一条辅助线。（用Debug.DrawLine，Debug.DrawRay也可以绘制简单的东西）
-
-
-
-#### Plugins
-
-该文件夹一般会放置几种文件，第三方包、工具代码、sdk。
-plugin分为两种：Managed plugins and Native plugins
-Managed plugins：就是.NET编写的工具，运行于.NET平台（包括mono）的代码库，可以是脚本文件，也可以本身是DLL。NGUI源码就放在该文件夹下面的。
-Native plugins：原生代码编写的库，比如第三方sdk，一般是dll、so、jar等等。
-该文件夹下的东西会在standard compiler时编译（最先编译），以保证在其它地方使用时能找到。
-
-
-
-#### Resources
-
-存放资源的特殊文件夹，可以在根目录下，也可以在子目录下，只要名字叫“Resources”就行，比如目录：/xxx/xxx/Resources 和 /Resources 是一样的，而且可有多个叫Resources的文件夹。Resources文件夹下的资源不管用还是不用都会被打包进.apk或者.ipa，因为Unity无法判断脚本有没有访问了其中的资源。需要注意的是项目中可以有多个Resources文件夹，所以如果不同目录的Resources存在同名资源，在打包的时候就会报错。
-Resources中全部资源会被打包成一个缺省的AssetBundle（resources.assets）。
-在该文件夹下的资源，可以通过Resources类进行加载使用。API地址
-
-
-
-#### Standard Assets
-
-存放导入的第三方资源包。
-
-
-
-#### StreamingAssets
-
-该文件夹也会在打包的时候全部打进包中，但它是“原封不动”的打包进去（直接拷贝到的包里）。**游戏运行时只能读不能写。**
-不同的平台最后的路径也不同，可以使用unity提供的Application.streamingAssetsPath，它会根据平台返回正确的路径，如下：
-
-```
-Mac OS or Windows：path = Application.dataPath + “/StreamingAssets”;
-IOS：path = Application.dataPath + “/Raw”;
-Android：path = “jar:file://” + Application.dataPath + “!/assets/”;
-```
-
-我们一般会把初始的AssetBundle资源放在该文件夹下，并且通过WWW或AssetBundle.LoadFromFile加载使用。
-
-
-
-#### Hide Assets
-
-隐藏文件夹和文件
-以".“开头
-以”~“结尾
-名字为"cvs”
-扩展名为".tmp"
-
-
-
-### 2.一些通常的Asset类型
-
-
-
-#### Image：
-
-支持绝大多数的image type，例如BMP、JPG、TIF、TGA、PSD
-
-#### Model：
-
-eg、.max、.blend、.mb、.ma，它们将通过FBX插件导入。或者直接在3D app导出FBX放到unity project中
-Mesh and Animations：unity支持绝大多数流行的3D app的model（Maya、Cinema 4D、3ds Max、Cheetah3D、Modo、Lightwave、Blender、SketchUp）
-
-#### Audio Files：
-
-如果是非压缩的audio，unity将会根据import setting压缩导入（更多）
-
-
-
-#### Other：
-
-##### Asset Store
-
-里面有很多免费和收费的插件，可以供开发者下载使用。
-下载的第三方工具是以package文件存在，导入package：
-package.png
-
-##### 导入
-
-unity会自动导入Asset目录下的资源，可以是unity支持的，也可以是不支持的，而在程序中用到的（比如二进制文件）。
-当在Asset下进行保存、移动、删除等修改文件的操作，unity都会自动导入。
-
-##### 自定义导入
-
-导入外界的unity可识别的Asset时，可以自定义导入设置，在工程中点击资源文件，然后Inspector视图中就会看到相应的设置：
-
-##### 导入结果
-
-导入资源之后，除了要生成.meta文件，unity并不是直接使用这些资源的，而是在导入的过程中，生成了unity内部特定的格式（unity可识别）文件在游戏中使用，储存在Library目录下，而原始资源不变，仍然放在原来位置。当然，每次修改原始文件，unity都会重新导入一次，才能在unity中看到改过之后的样子。
-正因为Library存放了导入资源的结果，所以每次删除Library或里面某个文件，都会让unity重新导入相应的资源（生成内部格式），但对工程没有影响。
-
-##### .meta文件
-
-Asset中的所有文件、文件夹，经过unity的导入过程后，会为每个都生成一个.meta文件，这个文件是unity内部管理文件的重要内容，里面记录着一些信息。
-你知道unity是怎么管理资源依赖关系的吗？可以试着更改一个挂在prefab上的脚本的目录或者名字，而这些prefab依然可以正常的调用那些脚本。
-unity在第一次导入新文件的时候，会生成一个Unique ID，用来标志这个asset，它就是unity内部用来区分asset的。Unique ID是全局唯一的，保存在.meta文件中。
-在unity中资源间的依赖关系引用都是用Unique ID来实现的，如果一个资源丢失了.meta文件，那依赖它的资源就找不到它了。
-.meta文件内容如下，包括Unique ID和Import Setting的内容
-meta.png
-
-
-
-### 3.脚本
-
-unity支持三种脚本语言，分别是C#、JavaScript、Boo，最常用的是前两种，当然还有后来扩展的支持Lua脚本的库（slua、ulua）。
-生成的对应的工程.png
-
-#### 1.编译顺序
-
-编译顺序的原则是在第一个引用之前编译它，参考官网文档可以知道，Unity中的可以将脚本代码放在Assets文件夹下任何位置，但是不同的位置会有不同的编译顺序。规则如下：
-(1) 首先编译**Standard Assets，Pro Standard Assets，Plugins文件夹**（除Editor，可以是一级子目录或是更深的目录）下的脚本；
-(2) 接着编译**Standard Assets，Pro Standard Assets，Plugins文件夹**下(可以是一级子目录或是更深的目录)的**Editor**目录下的脚本；
-(3) 然后编译Assets文件夹下，不在Editor目录的所有脚本；
-(4) 最后编译Editor下的脚本（不在Standard Assets，Pro Standard Assets，Plugins文件夹下的）；
-基于以上编译顺序，一般来说，我们直接在Assets下建立一个Scripts文件夹放置脚本文件，它处于编译的“第三位”。
-
-#### 2.编译结果：
-
-项目工程文件夹中会生成类似如下几个文件， 按顺序分别对应着上述四个编译顺序：（GameTool是项目名称）
-GameTool.CSharp.Plugins.csproj
-GameTool.CSharp.Editor.Plugins.csproj
-GameTool.CSharp.csproj
-GameTool.CSharp.Editor.csproj
-所有脚本被编译成几个DLL文件，位于工程根目录 / Library / ScriptAssemblies。
-生成如下三个dll：
-Assembly-CSharp-Editor.dll：包含所有Editor下的脚本
-Assembly-CSharp-firstpass.dll：包含Standard Assets、Pro Standard Assets、Plugins文件夹下的脚本
-Assembly-CSharp.dll：包含除以上两种，在Assets目录下的脚本。
-
-
-
-#### Plugins（doc）
-
-内容包括了Plugin导入设置、怎样创建使用两种Plugin、怎样利用底层渲染接口以及一些基础知识。
-在打包的时候，会把plugin里面的各种库，拷贝到包体中相应的位置（不同平台不一样，具体在可以把工程分别打成几个平台的包）
-win平台
-这是win32平台的包，Managed里面放置的托管库，Mono里面放的是mono的库，Plugins是平台库（native plugin）
-
-分平台打包，就需要对不同平台的plugin区分，方法是在Plugins目录下建立相应平台的文件夹，unity在为不同平台打包的时候，除了会将相应平台的plugin里的脚本编译成Assembly-CSharp-firstpass.dll，还会把已经是dll、so等库直接拷贝到包内相应位置。
-Plugins/x86：win32位平台plugin
-Plugins/x86_64：win64位平台plugin
-Plugins/Android：Android平台
-Plugins/iOS：iOS平台
-
-
-
-#### Object
-
-UnityEngine.Object是所有类的基类，它描述了Asset上使用的所有resource的序列化数据，它有几个重要的派生类：GameObject，Component，MonoBehaviour
-
-
-
-#### GameObject
-
-GameObject是组件的容器，所有Component都在可以挂在上面，Unity以组价化思想构建，所有功能拆分成各个组件，需要某个功能只需挂上相应的组件，组件之间相互独立，逻辑互补交叉。当然组件式开发也有最大的弊端就是组件之间的交互。
-
-
-
-#### Component
-
-Component作为组件的基类，unity中有大量的组件，Transform、Renderer、Collider、MeshFilter都是组件。
-
-
-
-#### MonoBehaviour
-
-开发时创建的脚本，需要挂在GameObject上的脚本都是继承自MonoBehaviour。
-
-
-
-#### ScriptableObject
-
-自定义可被Unity识别的资源类型，可打成AssetBundle，可通过Resources or AssetBundle加载。
-
-
-
-#### 序列化
-
-Asset和Object的关系
-Object作为Asset的序列化数据，比如以Texture导入一张图片，那么就用Texture对象记录描述了该图片。
-Asset可能有多个Object，比如prefab的GameObject上挂着多个组件，这样Asset和Object就是一对多的关系。那么问题来了，同一个Object怎么区分分别挂在不同GameObject上的对象的？等等，这里是一定要区分的，因为它们要包含序列化数据（在Inspector视图设置的），而不是在游戏运行中再new。
-
-
-
-#### Class ID 和 File ID（object id）
-
-先梳理一下关系，unity通过guid找到asset，其中asset上可能又挂了很多组件，每个组件又对应着一个class，而在序列化的时候是对象。Class ID是unity定义好的（传送），File ID是为对象生成的id，也就是说，我用guid + (class id 可有) + file id 就能确定某个资源上的组件对象。
-
-
-
-#### YMAL
-
-是一种标记语言，如果不了解语言格式可以看网站。
-
-
-
-#### Text-Based Scene Files
-
-和二进制文件一样，unity还提供了基于文本的场景文件，使用YAML标记语言，通过文本描述了asset和object组件之间的关系是怎么关联、保存数据等。
-通过设置Edit -> Project Setting -> Editor -> Asset Serialization -> Force Text，我们可以查看所有Object信息了。
-
-
-
-
-
-## unity pc打包后目录的结构
-
-当你使用 Unity 将项目打包为 PC 平台的可执行文件时，Unity 会生成一个包含多个文件和文件夹的目录结构。这些文件和文件夹对于游戏的运行至关重要。以下是常见的目录结构及其说明：
-
-1. **游戏名称.exe**：
-
-   - 这是你游戏的可执行文件。双击此文件即可运行你的游戏。
-
-2. **游戏名称_Data**
-
-   这是游戏的资源文件夹。它包含了所有的游戏资源，如场景、脚本、图像、音频、材质和其他所有 Unity 打包的内容。
-
-3. **游戏名称_Data**\Managed 文件夹：
-
-   - 包含游戏使用的所有 .NET 程序集 (DLL)，其中包括 Unity 的标准库和你的 C# 脚本编译后的程序集
-
-4. **游戏名称_Data\Plugins** 文件夹：
-
-   - 存放原生插件（通常是 .dll 或 .so 文件），这些插件提供了特定平台的功能或是用来调用一些原生的系统库。
-
-5. **游戏名称_Data\Resources** 文件夹：
-
-   - 如果你在项目中有使用 `Resources` 文件夹，这里会包含所有通过 `Resources.Load` 加载的资源。此文件夹下的资源在游戏启动时会被加载。
-
-6. **游戏名称_Data\StreamingAssets** 文件夹：
-
-   - 这里包含你在 Unity 项目中的 `StreamingAssets` 文件夹中的所有文件。这些文件不会被 Unity 处理成特定格式，而是会以原始形式包含在内，通常用于需要在运行时直接读取的文件。
-
-7. **MonoBleedingEdge** 文件夹：
-
-   - 如果项目使用了 Unity 的 Mono 运行时，你可能会看到这个文件夹。它包含 Mono 虚拟机和一些基础的 .NET 库。
-
-8. **UnityCrashHandler64.exe**：
-
-   - 这是 Unity 内置的崩溃处理程序，当游戏崩溃时它会运行并生成崩溃日志。
-
-9. **UnityPlayer.dll**：
-
-   - 这是 Unity 游戏引擎的核心运行库，它包含了 Unity 运行时的主要功能。每个使用 Unity 构建的游戏都会有这个文件。
-
-10. **baselib.dll**
-
-   `baselib.dll` 是 Unity 引擎中的一个基础库动态链接库（DLL）文件，提供了许多底层的功能和服务，供 Unity 以及你的游戏在运行时使用。
-
-   `baselib.dll` 的作用：
-
-   - **底层服务**：`baselib.dll` 提供了一些底层的系统服务和抽象，帮助 Unity 引擎与操作系统进行交互。这可能包括内存管理、线程处理、文件操作、网络通信等基本功能。
-   - **跨平台支持**：`baselib.dll` 是 Unity 为了简化跨平台开发而引入的一个库，它封装了不同平台的系统调用，使得开发者不必处理各个平台的差异性。
-
-   不能删除 `baselib.dll` 的原因：
-
-   - **游戏依赖性**：尽管 `baselib.dll` 的功能相对底层且不直接暴露给开发者使用，但它是 Unity 引擎正常运行不可缺少的一部分。删除它会导致游戏在运行时缺少关键的基础功能，从而无法正常工作。
-   - **引擎集成**：Unity 引擎依赖于 `baselib.dll` 来执行许多低级别的操作，这些操作对游戏的稳定性和性能至关重要。
-
-   总结
-
-   `baselib.dll` 是 Unity 项目中必不可少的文件，在游戏发布时不能删除。它提供了关键的底层功能，确保游戏在目标平台上正常运行。与其他重要的 DLL 文件一样，`baselib.dll` 应该包含在你发布的游戏版本中。
-
-11. **配置文件**（可选）：
-
-   - 可能会有一个 `.cfg` 或 `.ini` 文件，用于存储与游戏启动相关的配置，如窗口大小、分辨率、音量等。
-
-
-
-**其他注意事项：**
-
-- 游戏打包出来的目录结构是 Unity 打包过程自动生成的，你通常不需要手动修改这些文件或文件夹，除非你对打包流程非常了解并且知道自己在做什么。
-- 游戏的资源通常会被 Unity 序列化和打包成专有格式，你不能简单地在这些文件夹中直接编辑游戏内容。
-
-**通过理解这个目录结构，你可以更好地管理和发布你的 Unity 游戏，确保所有必要的文件都包含在内以保证游戏的正常运行。**
-
-
-
-**MMOGame_BackUpThisFolder_ButDontShipItWithYourGame**
-
-`MMOGame_BackUpThisFolder_ButDontShipItWithYourGame` 文件夹是在 Unity 项目打包时自动生成的，它的作用是备份一些与项目打包和运行无关的文件。这些文件通常是用于调试或开发时的工具、缓存、日志等内容，因此在最终的游戏发布版本中不需要包含这些文件。
-
-这个文件夹中的内容可能包括以下几类文件：
-
-1. **调试信息**：如编译时的临时文件、日志文件、符号文件等，帮助开发者在开发和调试过程中追踪问题。
-
-2. **缓存数据**：编译或打包过程中生成的一些临时数据，可能加快后续的编译过程。
-
-3. **开发工具**：如编辑器扩展或调试工具生成的文件，这些文件不属于最终的游戏内容。
-
-这个文件夹通常只在本地开发环境中有用，在将项目发布或分享给其他人时，可以忽略或删除它。正如文件夹的名字所提示的那样，它不应该包含在游戏的最终发布版本中。
-
-
-
-**MMOGame_BurstDebugInformation_DoNotShip**
-
-`MMOGame_BurstDebugInformation_DoNotShip` 文件夹是在使用 Unity 的 Burst 编译器时生成的，里面包含了 Burst 编译器用于调试的相关信息。
-
-Burst 编译器是 Unity 提供的一个高性能编译器，专门用来优化性能关键的 C# 代码，特别是与 Unity 的 Jobs 系统结合使用时。`BurstDebugInformation` 文件夹中的内容主要包括以下内容：
-
-1. **调试信息文件**：这些文件帮助开发者在使用 Burst 编译器时进行调试，例如查看在特定平台上如何优化代码的细节。
-
-2. **符号文件**：这些文件包含与 Burst 编译的代码相关的符号信息，通常用于调试优化后的代码。
-
-与 `BackUpThisFolder_ButDontShipItWithYourGame` 文件夹类似，`BurstDebugInformation_DoNotShip` 文件夹中的内容不应包含在最终发布的游戏版本中。它们仅供开发和调试时使用，因此可以在发布游戏时安全地忽略或删除。
-
-
-
-**`.pdb` 文件**
-
-在发布游戏的最终版本时，通常可以删除 `.pdb` 文件，因为它们主要用于调试，不是游戏运行所必需的。然而，是否应该删除所有 `.pdb` 文件，取决于你的具体需求：
-
-**可以删除 `.pdb` 文件的情况：**
-
-- **发布最终版本**：发布给用户的游戏版本通常不需要包含 `.pdb` 文件，因为这些文件包含调试符号，用于在开发和调试过程中帮助开发者理解崩溃报告或调试代码。
-- **减少文件大小**：删除 `.pdb` 文件可以显著减小游戏安装包的大小。
-- **保护代码隐私**：`.pdb` 文件中包含详细的代码信息，删除它们可以防止反向工程和代码泄露。
-
-**不建议删除 `.pdb` 文件的情况：**
-
-- **内部测试和调试**：如果你或你的测试团队仍在对游戏进行调试，那么保留 `.pdb` 文件可以帮助你快速定位问题。
-- **崩溃报告分析**：有时在分析用户的崩溃报告时，`.pdb` 文件可以提供有用的信息。如果你打算在发布后继续支持游戏并修复错误，保留 `.pdb` 文件（至少是备份）可能是一个好主意。
-
-**建议**
-
-- **发布版本中删除**：在最终发布的游戏版本中，删除 `.pdb` 文件是一个常见的做法，以减少文件大小并保护代码。
-- **备份 `.pdb` 文件**：即使从发布版本中删除，建议你在本地或版本控制系统中备份这些文件，以便将来需要时使用。
-
-总结来说，除非你有特定的调试需求，通常可以在发布版本中删除所有 `.pdb` 文件。
-
-
-
-
-
-## .meta文件
-
-`.meta` 文件通常是由 Unity 引擎创建的，用于存储项目中文件的元数据。每个资产（如脚本、材质、场景、预制件等）都会有一个对应的 `.meta` 文件。
-
-### `.meta` 文件的作用
-
-1. **唯一标识符 (GUID)**：每个 `.meta` 文件中都包含一个唯一的 GUID (Globally Unique Identifier)，Unity 使用这个 GUID 来跟踪项目中的资源，即使资源被重命名或移动，Unity 依然能够通过 GUID 识别该资源。
-
-2. **Import 设置**：对于一些特定类型的文件（如图片、模型等），`.meta` 文件中会存储一些导入设置（import settings），如压缩选项、分辨率等。
-
-3. **文件依赖关系**：`.meta` 文件还可以存储文件之间的依赖关系，比如一个预制件依赖的材质文件，Unity 会在 `.meta` 文件中跟踪这些依赖关系。
-
-4. **版本控制**：如果你使用版本控制系统（如 Git）管理 Unity 项目，`.meta` 文件是需要一并提交到版本库中的，以确保在不同开发环境中资源不会丢失或错乱。
-
-### 示例
-
-一个简单的 `.meta` 文件可能看起来如下：
-
-```plaintext
-fileFormatVersion: 2
-guid: d73a8efc6c6e431eab0b4f23f111c776
-TextureImporter:
-  spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsPerUnit: 100
-  mipmaps:
-    enableMipMap: 0
-```
-
-在这个例子中，`.meta` 文件中包含了资源的 `guid` 和一些与纹理导入相关的设置。
-
-### 注意事项
-
-- 请勿手动编辑 `.meta` 文件，除非你完全了解它的结构和作用。
-- 如果不小心删除了 `.meta` 文件，Unity 会重新生成，但这可能会导致引用错误或丢失资源关联。
-
-
-
-## PlayerPrefs 
-
-`PlayerPrefs` 在游戏打包后会根据平台不同，将数据存储在不同的位置。以下是常见平台的存储位置：
-
-### 1. **Windows**
-存储位置为注册表（Registry）：
-- 路径: `HKEY_CURRENT_USER\Software\[CompanyName]\[ProductName]`
-  
-
-可以通过 Unity 的 `PlayerSettings` 来设置 `CompanyName` 和 `ProductName`，这两个字段会决定实际的存储路径。
-
-### 2. **macOS**
-存储位置为 `plist` 文件：
-- 路径: `~/Library/Preferences/unity.[CompanyName].[ProductName].plist`
-
-### 3. **Linux**
-存储在 `prefs` 文件中：
-- 路径: `~/.config/unity3d/[CompanyName]/[ProductName]/prefs`
-
-### 4. **Android**
-在 Android 平台上，`PlayerPrefs` 数据会存储在应用的内部存储中，通常在沙盒文件系统内：
-- 路径: `/data/data/[package name]/shared_prefs/[package name].xml`
-
-需要 `root` 权限才能访问该文件。
-
-### 5. **iOS**
-在 iOS 平台上，`PlayerPrefs` 数据会存储在 `NSUserDefaults` 中：
-- 路径: `~/Library/Preferences/[bundle identifier].plist`
-
-### 6. **WebGL**
-对于 WebGL 构建，`PlayerPrefs` 使用浏览器的 `localStorage` 进行存储。
-
-
-
-比如
-
-在 Windows 平台上，`PlayerPrefs` 数据存储在注册表中。要查找它，可以按照以下步骤进行操作：
-
-### 步骤 1: 打开注册表编辑器
-
-1. 按下 `Win + R` 键，打开“运行”对话框。
-2. 输入 `regedit`，然后按下 `Enter` 键。
-
-### 步骤 2: 导航到 `PlayerPrefs` 存储位置
-
-在注册表编辑器中，导航到以下路径：
-
-```
-plaintext
-
-
-复制代码
-HKEY_CURRENT_USER\Software\[CompanyName]\[ProductName]
-```
-
-- **`[CompanyName]`**: 这是你在 Unity 项目中设置的公司名称，对应于 `PlayerSettings` 中的 **Company Name**。
-- **`[ProductName]`**: 这是你在 Unity 项目中设置的产品名称，对应于 `PlayerSettings` 中的 **Product Name**。
-
-![image-20240907230048575](MMORPG.assets/image-20240907230048575.png) 
 
 
 
@@ -12682,513 +12734,35 @@ UDP(User Datagram Protocol)，即用户数据包协议，是一个简单的面�
 
 
 
-# lua
 
 
 
 
 
-## 关于lua
 
-Lua 是一种轻量级的多范式编程语言，设计初衷是为了嵌入到应用程序中。以下是 Lua 的一些关键特点：
 
-1. **轻量且高效**：Lua 以其小型代码库和高效的解释器闻名，非常适合在资源有限的环境中使用，如游戏开发中的脚本语言。
-2. **可嵌入性**：Lua 被设计成易于嵌入其他软件，提供简单的 C API 来集成与宿主程序进行交互。
-3. **动态类型化**：Lua 是动态类型化语言，不需要在编写代码时指定变量类型，这使得代码更简洁灵活。
-4. **强大的表结构**：Lua 使用单一的数据结构——表（table），来实现数组、记录、集合等数据类型。表支持动态增长，并能通过元表（metatable）扩展功能。
-5. **垃圾回收**：Lua 自动管理内存，通过垃圾回收来释放不再使用的对象所占用的内存。
-6. **简单语法**：Lua 的语法设计直观简单，容易学习，可以快速上手。
-7. **跨平台支持**：Lua 具有良好的跨平台能力，能运行在几乎所有操作系统上。
 
-由于这些特性，Lua 常用于游戏开发、嵌入式设备、Web 应用服务器等领域。此外，像 Adobe Lightroom 和 Nginx 等软件也利用 Lua 作为脚本扩展语言。
 
 
 
 
 
-## 虚拟机
 
 
 
-### 什么是虚拟机
 
-虚拟机是借助于操作系统对物理机器的一种模拟。但是我们今天所讲述的虚拟机概念比较狭义，与vmware或者virtual-box不同，而是针对具体语言所实现的虚拟机。例如在JVM或者CPython中，JAVA或者python源码会被编译成相关字节码，然后在对应虚拟机上运行，JVM或CPython会对这些字节码进行取指令，译码，执行，结果回写等操作，这些步骤和真实物理机器上的概念都很相似。相对应的二进制指令是在物理机器上运行，物理机器从内存中取指令，通过总线传输到CPU，然后译码、执行、结果存储。
 
 
-虚拟机为了能够执行字节码，需要模拟出物理CPU能够执行的相关操作，与虚拟机实现相关的概念如下：
 
-（1）将源码编译成VM所能执行的具体字节码。
-（2）字节码格式（指令格式），例如三元式，树还是前缀波兰式。
-（3）函数调用相关的栈结构，函数的入口，出口，返回以及如何传参。还有为了能够顺利返回所需的相关栈帧信息如何布置。
-（4）一个“指令指针”，指向下一条待执行的指令（内存中），对应物理机器的EIP。
-（5）一个虚拟“CPU”-指令调度器，
 
-- 获取下一条指令
-- 对操作数进行解码
-- 执行这条指令
 
-这三点是解释器执行字节码最重要的开销。
 
 
 
-### 虚拟机的实现方式
 
-如今虚拟机的实现方式有两种，基于栈的和基于寄存器的，这两种实现方式各有优劣，也都有标志性的产品。基于栈的虚拟机，有JVM，CPython以及.Net CLR。基于寄存器的，有Dalvik以及Lua5.0，另外Perl听说也要改为基于寄存器方式。无论这两种方式实现机制如何，都要实现以下几点：
 
-- 取指令，其中指令来源于内存
 
-- 译码，决定指令类型（执行何种操作）。另外译码的过程要包括从内存中取操作数
-- 执行。指令译码后，被虚拟机执行（其实最终都会借助于物理机资源）
-- 存储计算结果
 
-其实这和物理机CPU的执行是很相似的，都包括取值，译码，执行，回写等步骤。但是不同的一点是虚拟机应该模仿不出流水线，例如在当前指令译码完成之后，CPU中的译码部件处于空闲状态，可以用来对下一条指令进行译码，所以流水线有多少级就相当于可以并行执行多少指令。当然中间还有些指令相关和乱序的概念，这里就不详说了。
-
-下图中一个典型的指令流水线结构，由于虚拟机在操作系统上通过程序模拟，遵循冯诺依曼结构顺序执行的，应该很难实现出流水线结构。
-![这里写图片描述](https://i-blog.csdnimg.cn/blog_migrate/bbc80176d48fbcd6e49667e8e0e44e93.png)
-
-
-
-
-
-### 基于栈的虚拟机
-
-​	基于栈的虚拟机有一个操作数栈的概念，虚拟机在进行真正的运算时都是直接与操作数栈（operand stack）进行交互，不能直接操作内存中数据（其实这句话不严谨的，虚拟机的操作数栈也是布局在内存上的），也就是说不管进行何种操作都要通过操作数栈来进行，即使是数据传递这种简单的操作。这样做的直接好处就是虚拟机可以无视具体的物理架构，特别是寄存器。但缺点也显而易见，就是速度慢，因为无论什么操作都要通过操作数栈这一结构。
-
-​	由于执行时默认都是从操作数栈上取数据，那么就无需指定操作数。例如，x86汇编"ADD EAX, EBX"，就需要指定这次运算需要从什么地方取操作数，执行完结果存放在何处。但是基于栈的虚拟机的指令就无需指定，例如加法操作就一个简单的"Add"就可以了，因为默认操作数存放在操作数栈上，直接从操作数栈上pop出两条数据直接执行加法运算，运算后的结果默认存放在栈顶。其中操作数栈（operand stack）的深度由编译器静态确定，方便给栈帧预分配空间。这个和不能再栈上定义变长数组相似（其实这句话不严谨的，栈上分配变长数组，需要编译器的支持，分配在栈顶），由于局部变量的地址只能在编译期（compile time）确定针对当前栈帧的offset，如果中间有一个变量是一个变长数组的话，那么后面变量的offset就无法确定了（vector的数据是分配在堆上的，自己控制）。例如执行"a = b + c"，在基于栈的虚拟机上字节码指令如下所示：
-
-```
-I1: LOAD C
-I2: LOAD B
-I3: ADD 
-I4: STORE A
-```
-
-由于操作数都是隐式地，所以指令可以做的很短，一般都是一个或者两个字节。但是显而易见就是指令条数会显著增加。而基于寄存器虚拟机执行该操作只有一条指令，
-
-```
-I1: add a, b, c
-```
-
-其中a，b，c都是虚拟寄存器。操作数栈上的变化如下图所示：
-
-首先从符号表上读取数据压入操作数栈，
-
-![这里写图片描述](https://i-blog.csdnimg.cn/blog_migrate/cb08829e56b4a56bfdda8e70491be8f0.jpeg)
-
-然后从栈中弹出操作数执行加法运算，这步操作有物理机器执行，如下图所示：
-
-![这里写图片描述](https://i-blog.csdnimg.cn/blog_migrate/9b28bdcae94381ac6f54ba8d6a714066.jpeg)
-
-
-
-从图示中可以看出，数据从局部变量表中还要经过一次操作数栈的操作，注意操作数栈和局部变量表都是存放在内存上，内存到内存的数据传输在x86的机器上都是要经过一次数据总线传输的。可以得出一次简单的加法基本上需要9次数据传输，想想都很慢。
-
-但是基于栈的虚拟机优点就是可移植，寄存器由硬件直接提供。使用栈架构的指令集，用户程序（编译后的字节码）不会直接使用硬件中的寄存器，同时为了提高运行时的速度，可以将一些访问比较频繁的数据存放到寄存器中以获取尽量好的性能。另外，基于栈的虚拟机中指令更加紧凑，一个字节或者两个字节即可存储，同时编译器实现也比较简单，不用进行寄存器分配。寄存器分配是一门大学问。
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-### 基于寄存器的虚拟机
-
-前面提到过基于栈的虚拟机，这里我们简要介绍一下基于寄存器的虚拟机运行机制。
-
-基于寄存器的虚拟机中没有操作数栈的概念，但是有很多虚拟寄存器，一般情况下这些寄存器（操作数）都是别名，需要执行引擎对这些寄存器（操作数）的解析，找出操作数的具体位置，然后取出操作数进行运算。
-
-既然是虚拟寄存器，那么肯定不在CPU中（想想也不应该在CPU中，虚拟机的根本目的就是跨平台和兼容性），其实和操作数栈相同，这些寄存器也存放在运行时栈中，本质上就是一个数组。
-
-
-新的虚拟机也用栈分配活动记录，寄存器就在该活动记录中。当进入Lua程序的函数体时，函数从栈中分配一个足以容纳该函数所有寄存器的活动记录。**函数的所有局部变量都各占据一个寄存器。因此，存取局部变量是相当高效的。**
-
-上面就是Lua虚拟机对寄存器的相关描述
-
- 从上图中我们可以看到，其实“寄存器”的概念只是当前栈帧中一块连续的内存区域。这些数据在运算的时候，直接送入物理CPU进行计算，无需再传送到operand stack上然后再进行运算。例如"ADD R3, R2, R1"的示意图就如下所示：
-
-![这里写图片描述](https://i-blog.csdnimg.cn/blog_migrate/2fa62b6e66c4cfa98f7820930074483e.jpeg)
-
-
-
-其实"ADD R3, R2, R1"还要经过译码的一个过程，当然当前这条指令的种类和操作数由虚拟机进行解释。后面我们会看到，在有些实现中，有一个很大的switch-case来进行指令的分派及真正的运算过程。
-
-下图是Lua虚拟机的一些指令，该图片来自[这篇文章](https://docs.google.com/viewer?url=http://www.lua.org/doc/jucs05.pdf)，中译文[这里](https://docs.google.com/viewer?url=http://www.codingnow.com/2000/download/The%20Implementation%20of%20Lua5.0.pdf)。
-
-![这里写图片描述](https://i-blog.csdnimg.cn/blog_migrate/0c2329d989fd46b6238b14818b1a67f3.png) 使用寄存器式虚拟机没有基于栈的虚拟机在拷贝数据而使用的大量的出入栈（push/pop)指令。同时指令更紧凑更简洁。但是由于显示指定了操作数，所以基于寄存器的代码会比基于栈的代码要大，但是由于指令数量的减少，其实没有大多少。
-
-
-
-
-
-### **栈式虚拟机 VS 寄存器式虚拟机**
-
-（1）**指令条数：栈式虚拟机多**
-（2）**代码尺寸：栈式虚拟机小**
-（3）**移植性：栈式虚拟机移植性更好**
-（4）**指令优化：寄存器式虚拟机更能优化**
-
-![image-20241106105739660](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106105739660.png) 解释器最重要的开销在于指令调度(instruction dispatch)，指令调度主要操作包括从内存中取出指令，然后跳转到解释器相对应的代码段，然后执行这条指令。其中一个简易实现就是使用switch-based的方式来进行，这种方式简单易实现，另外任何语言都有相应的switch语句。switch-based的指令调度，通过一个死循环不断的从内存取出指令来执行，针对不同的指令选择不同的执行方式。
-
-
-
-一种JVM基于SBD实现方式如下图所示：
-
-![这里写图片描述](https://i-blog.csdnimg.cn/blog_migrate/05667132a208a11eca2004a8149aeb0d.jpeg) 
-
-这种方式实现简单，代码移植性好，但是有一个缺点就是分支预测失效的概率比较高。
-
-现在的CPU都是基于流水线结构的，间接跳转指令的跳转结果需要等到执行级才能知晓，如果预测失败需要排空流水线，流水线级数越多分支预测失败导致流水线排空的时间越长。
-
-由于编译后的指令是随机的，不太可能提取出预测模式
-
-
-
-
-
-### 参考文献
-
-https://zhuanlan.zhihu.com/p/61888678
-
-https://blog.csdn.net/dashuniuniu/article/details/50347149
-
-
-
-
-
-## lua的虚拟机
-
-
-
-为了达到较高的执行效率，lua代码并不是直接被Lua解释器解释执行，而是会先编译为字节码，然后再交给lua虚拟机去执行
-
-lua代码称为chunk，编译成的字节码则称为二进制chunk（Binary chunk）
-
-lua.exe、wlua.exe解释器可直接执行lua代码（解释器内部会先将其编译成字节码），也可执行使用luac.exe将lua代码预编译（Precompiled）为字节码
-
-使用预编译的字节码并不会加快脚本执行的速度，但可以加快脚本加载的速度，并在一定程度上保护源代码
-
-luac.exe可作为编译器，把lua代码编译成字节码，同时可作为反编译器，分析字节码的内容
-
-```
-luac.exe -v  									// 显示luac的版本号
-
-luac.exe Hello.lua  							// 在当前目录下，编译得到Hello.lua的二进制chunk文件luac.out（默认含调试符号）
-
-luac.exe -o Hello.out Hello1.lua Hello2.lua 	// 在当前目录下，编译得到Hello1.lua和Hello2.lua的二进制chunk文件Hello.out（默认含调试符号）
-
-luac.exe -s -o d:\Hello.out Hello.lua  			// 编译得到Hello.lua的二进制chunk文件d:\Hello.out（去掉调试符号）
-
-luac.exe -p Hello1.lua Hello2.lua  				// 对Hello1.lua和Hello2.lua只进行语法检测（注：只会检查语法规则，不会检查变量、函数等是否定义												  //和实现，函数参数返回值是否合法）
-```
-
-
-
-
-
-### Prototype
-
-lua编译器以函数为单位对源代码进行编译，每个函数会被编译成一个称之为原型（Prototype）的结构
-
-原型主要包含6部分内容：
-
-- 函数基本信息（basic info：含参数数量、局部变量数量等信息）、
-- 字节码（bytecodes）、
-- 常量（constants）表、
-- upvalue（闭包捕获的非局部变量）表、
-- 调试信息（debug info）、
-- 子函数原型列表（sub functions）
-
-原型结构使用这种嵌套递归结构，来描述函数中定义的子函数
-
-![img](https://img2018.cnblogs.com/blog/78946/201910/78946-20191013210920844-2106047153.png) 
-
-注：lua允许开发者可将语句写到文件的全局范围中，这是因为lua在编译时会将整个文件放到一个称之为main函数中，并以它为起点进行编译
-
-
-
-### 二进制chunk
-
-Hello.lua源代码如下：
-
-```
-print ("hello")
-
-function add(a, b)
- return a+b
-end
-```
-
-编译得到的Hello.out的二进制为：
-
-![img](https://img2018.cnblogs.com/blog/78946/201910/78946-20191013232149911-1605916547.png) 
-
-二进制chunk（Binary chunk）的格式并没有标准化，也没有任何官方文档对其进行说明，一切以lua官方实现的源代码为准。
-
-其设计并没有考虑跨平台，对于需要超过一个字节表示的数据，必须要考虑大小端（Endianness）问题。
-
-lua官方实现的做法比较简单：编译lua脚本时，直接按照本机的大小端方式生成二进制chunk文件，当加载二进制chunk文件时，会探测被加载文件的大小端方式，如果和本机不匹配，就拒绝加载.
-
-二进制chunk格式设计也没有考虑不同lua版本之间的兼容问题，当加载二进制chunk文件时，会检测其版本号，如果和当前lua版本不匹配，就拒绝加载
-
-另外，二进制chunk格式设计也没有被刻意设计得很紧凑。在某些情况下，一段lua代码编译成二进制chunk后，甚至会被文本形式的源代码还要大。
-
-预编译成二进制chunk主要是为了提升加载速度，因此这也不是很大的问题.
-
-
-
-![image-20241106135224595](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106135224595.png)
-
-![image-20241106135623627](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106135623627.png)
-
-![image-20241106135644885](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106135644885.png)
-
-![image-20241106135657880](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106135657880.png)
-
-
-
-注1：二进制chunk中的字符串分为三种情况：
-
-①NULL字符串用0x00表示 
-
-②长度小于等于253（0xFD）的字符串，先用1个byte存储字符串长度+1的数值，然后是字节数组 
-
-③长度大于等于254（0xFE）的字符串，第一个字节是0xFF，后面跟一个8字节size_t类型存储字符串长度+1的数值，然后是字节数组 
-
-![image-20241106140108038](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106140108038.png) 
-
-
-
-查看二进制chunk中的所有函数（精简模式）： 
-
-```
-luac.exe -l Hello.lua
-
-luac.exe -l Hello.out
-```
-
-![img](https://img2018.cnblogs.com/blog/78946/201910/78946-20191012143924264-1726509288.png) 
-
-注1：每个函数信息包括两个部分：前面两行是函数的基本信息，后面是函数的指令列表
-
-注2：函数的基本信息包括：函数名称、函数的起始行列号、函数包含的指令数量、函数地址
-
-​    函数的参数params个数（0+表示函数为不固定参数）、寄存器slots数量、upvalue数量、局部变量locals数量、常量constants数量、子函数functions数量
-
-注3：指令列表里的每一条指令包含指令序号、对应代码行号、操作码和操作数。分号后为luac生成的注释，以便于我们理解指令
-
-注4：整个文件内容被放置到了main函数中，并以它作为嵌套起点
-
-
-
-
-
-查看二进制chunk中的所有函数（详细模式）： 
-
-```
-luac.exe -l -l Hello.lua  注：参数为2个-l
-
-luac.exe -l -l Hello.out  注：详细模式下，luac会把常量表、局部变量表和upvalue表的信息也打印出来 
-```
-
-![image-20241106140409090](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106140409090.png)
-
-
-
-### **lua指令集**
-
-Lua虚拟机的指令集为定长（Fixed-width）指令集，每条指令占4个字节（32bits），其中操作码（OpCode）占6bits，操作数（Operand）使用剩余的26bits
-
-Lua5.3版本共有47条指令，按功能可分为6大类：常量加载指令、运算符相关指令、循环和跳转指令、函数调用相关指令、表操作指令和Upvalue操作指令
-
-按编码模式分为4类：iABC（39）、iABx（3）、iAsBx（4）、iAx（1）
-
-![image-20241106140739533](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106140739533.png) 4种模式中，只有iAsBx下的sBx操作数会被解释成有符号整数，其他情况下操作数均被解释为无符号整数
-
-操作数A主要用来表示目标寄存器索引，其他操作数按表示信息可分为4种类型：OpArgN、OpArgU、OpArgR、OpArgK
-
-![image-20241106140859666](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106140859666.png) 
-
-### **Lua栈索引**
-
-![image-20241106141009694](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106141009694.png) 
-
-### **Lua State**
-
-![image-20241106141036435](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106141036435.png)
-
-
-
-### 指令表
-
-https://www.cnblogs.com/kekec/p/11768935.html
-
-
-
-
-
-
-
-
-
-
-
-### 关键函数和结构分析
-
-**luaL_dofile**：包含了luaL_loadfile和lua_pcall两个步骤，分别对应了函数的解析和执行阶段。
-
-**luaL_loadfile**：会调用具体的parser，对lua文件进行进行词法和语法分析，把source转化成opcode，并创建Proto结构保存该opcode和该函数的元信息。 Proto结构如下：
-
-![img](https://pic1.zhimg.com/v2-12e92dcaed56fb89b5a40fa006fad83e_1440w.jpg) 
-
-该结构基本涵盖了parse阶段该函数的所有分析信息。主要包括以下几部分：
-
-- 常量表。比如在函数里写了a = 1 + 2，那这里的1和2就会放在常量表里。
-- 局部变量信息。包含了局部变量的名字和它在函数中的生存周期区间(用pc来衡量)。
-- Upvalue信息。包含了该upvalue的名字和它是否归属于本函数栈还是外层函数栈的标记。
-- opcode列表。包含了该函数实际调用的所有指令。其实就是一个int32类型的列表，因为lua虚拟机里每个指令对应一个int32.
-
-
-
-**lua_pcall**：这个函数最终会调到luaD_call，也就是lua虚拟机里函数执行的主要函数。
-
-![img](https://pica.zhimg.com/v2-7088aed9f24b28deff6962541bc1fd86_1440w.jpg) 
-
-从代码里可以看出，luaD_call的调用分为两步：
-
-- luaD_precall：
-
-- - 如果是C函数或者C闭包，会直接创建单个函数调用的运行时结构**CallInfo**，来完成函数的进栈和出栈。
-  - 如果是lua闭包，在precall中只会做函数调用前的准备工作，实际执行会在后一步luaV_execute中进行。这里的准备工作主要包括：(1)处理lua的不定长参数、参数数量不够时的nil填充等。(2)分配CallInfo结构，并填充该函数运行时所需的base、top、opcode等信息，注意CallInfo结构里还有个很关键的func字段，它指向栈里对应的LClosure结构，这个结构为虚拟机后续执行提供upvalue表和常量表的查询，毕竟后续对常量和upvalue的read操作，都是需要把它们从这两个表中加载到寄存器里的。
-
-- luaV_execute：这一步就是我们前面提到的lua虚拟机的CPU了，因为所有指令的实际执行都是在这个函数里完成的。它做的主要工作，就是在一个大循环里，不断的fetch和dispatch指令。每次的fetch就是把pc加1，而dispatch就是一个大的swtich-case，每个不同类型的opcode对应不同的执行逻辑。举一个创建table的例子：
-
-![img](https://pic3.zhimg.com/v2-9035e1835430f61e193931e76e293ee4_1440w.jpg)
-
-在该指令中，会首先对32位指令进行位操作，得到该table的初始数组和hash表部分的大小b和c，然后调用luaH_new来创建table，最后根据b和c的值，对table进行resize操作。
-
-另外，前面提到的**CallInfo**结构，包含了单个函数调用，lua虚拟机所需要的辅助数据结构，它的结构如下：
-
-![img](https://pic3.zhimg.com/v2-dc76992f74f9741ec621035e6d5b2028_1440w.jpg) 
-
-下图是lua虚拟机在执行第二个函数时的一个栈示意图：
-
-![img](https://picx.zhimg.com/v2-4971a3734020cd93625a30fd872c0227_1440w.jpg)
-
-
-
-我们来看下lua_State里与之相关的几个字段：
-
-- stack。TValue*类型，记录了"内存"起始地址。
-- base。TValue*类型，记录当前函数的第一个参数位置。
-- top。TValue*类型，记录当前函数的栈顶。
-- base_ci。当前栈里所有的函数调用CallInfo数组。
-- ci。当前函数的CallInfo。
-
-
-
-可以发现，通过这样的组织结构，luavm可以方便的获取到任意函数的位置以及其中的所有参数位置。而每个CallInfo里又记录了函数的执行pc，因此vm对函数的执行可以说是了如指掌了。
-
-
-
-### 指令格式
-
-
-
-前文已经提到，lua虚拟机的单条指令长度为32位。其位分布如下图所示：
-
-![img](https://pic2.zhimg.com/v2-ecbca5a1ef4b6dbec76776a9c533a4a1_1440w.jpg)
-
-这里的OpCode，就是指令的类型，由于其只有6位，所有lua最多支持63种指令类型。而对于A、B、C、Bx、sBx等，都是该指令的参数，参数的值通常指的是一个相对偏移，例如相对于当前函数base的偏移，相对于常量表头的偏移等。另外，根据指令的不同，参数个数和类型也可能不同。来看几个常用的例子：
-
-- 从变量赋值：
-
-![img](https://pic2.zhimg.com/v2-ddf5e947dc8d27f8240fb1899df39ca3_1440w.jpg) 其实就是简单的把寄存器RB(i)的值赋值到寄存器RA(i)中去，这里的寄存器指的就是我们栈里头的某个坑位。 所以这里的RA和RB宏，都是一个栈地址获取操作，全部的定义如下：
-
-![img](https://pic2.zhimg.com/v2-6262636d6dec3f1b3ffe5b79285d8cc7_1440w.jpg)
-
-这些宏的内部实现主要分为2步：
-
-- - 通过GETARG_XXX(i)从当前指令中获取参数XXX的值
-  - 用函数base或者常量表base去加这个参数值得到最终的栈(寄存器)地址。
-
-
-
-- 从常量赋值：
-
-![img](https://pic1.zhimg.com/v2-7274298ed396ec97d44cc40de2e71dc0_1440w.jpg) 
-
-与变量赋值唯一的不同，就是RB是基于常量表的偏移。
-
-
-
-- 设置table字段：
-
-![img](https://picx.zhimg.com/v2-df392d48339683071d4ed939ecb75d55_1440w.png) 
-
-这里不上代码了，这里RK是一个条件宏，因为我有可能是t[a] = b, 也可能是t[1](https://link.zhihu.com/?target=https%3A//blog.csdn.net/dashuniuniu/article/details/50347149) = b，key如果是变量a，说明a肯定是在函数栈里头的变量，对应的寻址就用RB，而如果key是1，说明它不存在函数栈里头，而是在函数常量表里头，寻址就用KB。
-
-
-
-
-
-### 简单例子
-
-我们结合一个简单的lua chunk，decompile一下它生成的byte code(这里decode使用的也是书中介绍的ChunkSpy工具，目前已支持了5.3)，从而加深理解：
-
-![img](https://pic4.zhimg.com/v2-5093ea98fbf955224a10c4e9a6888395_1440w.jpg) 我们先来看下该chunk对应的函数，在生成的字节码里，称之为level 1 function：
-
-![img](https://pic2.zhimg.com/v2-74e78a50d9c30c610a460d559b5e7d27_1440w.jpg)
-
-
-
-一个函数最终的字节码，基本就包含三块：
-
-- 常量表
-- upvalue表
-- code。所有的字节指令，都是在玩常量表、upvalue表和寄存器栈。可以结合具体的指令来理解。
-
-我们再来看下定义在chunk里的testFunc函数，它被称为level 2函数，如果我在testFunc里还嵌套了子函数，称为level 3函数，以此类推。该函数的字节码与level 1的格式基本一致，这里就直接上图，不逐行解释了：
-
-![img](https://pic1.zhimg.com/v2-0a99fbec7e3c10d4334bbc19b418f142_1440w.jpg) 
-
-
-
-### 虚拟机执行流程图
-
-在梳理完整个lua虚拟机的源码分析，opcode的生成和执行逻辑以后，我们可以上书中的一个总流程图来回顾一下：
-
-![img](https://pic3.zhimg.com/v2-5aba6c214bf203c7a439b453fa922b92_1440w.jpg) 
-
-这个图中最核心的两块，一个是Proto结构，它是分析阶段和执行阶段的桥梁；另一个是OpCode的执行，这一块可以结合前面虚拟机概念，以及Stack-based和Register-based VM的区别一起理解，包括但不限于：从CallInfo里fetch指令，指令执行时的switch case跳转和操作数的寻址，运行时的栈帧布局，lua_State中的关键字段等等。 本文的总结就到这里，后面有时间可能会啃一啃书中第六章“指令的解析与执行”，因为这两章其实联系比较紧密，到时候如果有新的收获也会同步到这边来。
-
-
-
-
-
-
-
-
-
-
-
-### 参考文献
-
-https://zhuanlan.zhihu.com/p/61888678
-
-https://www.cnblogs.com/kekec/p/11768935.html
-
-
-
-
-
-## 嵌入lua虚拟机
 
 
 
@@ -13693,7 +13267,11 @@ http://www.linkedkeeper.com/132.html
 
 
 
+# 常用的架构
 
+## MVC
+
+## ESC
 
 
 
@@ -13897,6 +13475,20 @@ PC文件夹就存放我们PC平台下的热更资源包、Android同理
 ## ====分割线====
 
 如果只在windows环境下开发，下面就不需要看了。
+
+
+
+
+
+## vscode连接云服务器
+
+https://blog.csdn.net/qq812457115/article/details/135533373
+
+https://blog.csdn.net/qq_45956730/article/details/137601010
+
+https://blog.csdn.net/SweetTool/article/details/70963198
+
+
 
 
 
@@ -16536,6 +16128,156 @@ class Topic
 ## 数据定时存放进数据库
 
 如果你存放都在服务器内存中的话，到最后才保存到数据库中，万一服务器宕机了，数据也就没有了。
+
+
+
+
+
+## 模仿java访问数据库的方式
+
+bean层：user、character装载相对应的数据结构
+
+service层：userService、characterService对于数据库的原子操作，增删改查
+
+
+
+## ioc切换数据库
+
+用控制反转的思想
+
+
+
+## Mysql
+
+
+
+
+
+
+
+
+
+## MongoDB
+
+![image-20241107161218842](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241107161218842.png) 
+
+### 概要
+
+NoSQL数据库 Not Only Sql
+
+它的数据是以文档的形式来存储的
+
+![image-20241107153344493](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241107153344493.png)
+
+
+
+Mongodb与传统型的关系型数据库的对比
+
+![image-20241107153448033](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241107153448033.png)
+
+![image-20241107153531677](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241107153531677.png)
+
+
+
+### win安装
+
+傻瓜式安装
+
+![image-20241107161253029](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241107161253029.png) 
+
+
+
+### 常用命令
+
+#### 基本的
+
+ ![image-20241107161243995](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241107161243995.png)
+
+#### 插入
+
+![image-20241107161321879](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241107161321879.png) 
+
+
+
+#### 查找
+
+ ![image-20241107161351091](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241107161351091.png)
+
+![image-20241107161443480](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241107161443480.png) 
+
+
+
+
+
+#### 聚合
+
+![image-20241107161418063](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241107161418063.png) 
+
+#### 更新
+
+![image-20241107161502300](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241107161502300.png) 
+
+#### 删除
+
+![image-20241107161523832](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241107161523832.png) 
+
+#### 过滤条件
+
+![image-20241107161547259](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241107161547259.png) 
+
+
+
+### c++中使用mongodb
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### c#中使用mongodb
+
+
+
+
+
+
+
+### 参考文献
+
+概念：
+
+https://www.bilibili.com/video/BV16u4y1y7Fm/?spm_id_from=333.337.search-card.all.click&vd_source=ff929fb8407b30d15d4d258e14043130
+
+
+
+
+
+
+
+## Redis
+
+
+
+### 参考文献
+
+https://www.bilibili.com/video/BV1Jj411D7oG?spm_id_from=333.788.player.switch&vd_source=ff929fb8407b30d15d4d258e14043130&p=2
+
+
+
+
+
+
+
+
 
 
 
@@ -19456,6 +19198,1077 @@ Animancer.AnimancerPlayable:PrepareFrame(Playable, FrameData)
 
 
 
+# Lua
+
+
+
+
+
+## 关于lua
+
+Lua 是一种轻量级的多范式编程语言，设计初衷是为了嵌入到应用程序中。以下是 Lua 的一些关键特点：
+
+1. **轻量且高效**：Lua 以其小型代码库和高效的解释器闻名，非常适合在资源有限的环境中使用，如游戏开发中的脚本语言。
+2. **可嵌入性**：Lua 被设计成易于嵌入其他软件，提供简单的 C API 来集成与宿主程序进行交互。
+3. **动态类型化**：Lua 是动态类型化语言，不需要在编写代码时指定变量类型，这使得代码更简洁灵活。
+4. **强大的表结构**：Lua 使用单一的数据结构——表（table），来实现数组、记录、集合等数据类型。表支持动态增长，并能通过元表（metatable）扩展功能。
+5. **垃圾回收**：Lua 自动管理内存，通过垃圾回收来释放不再使用的对象所占用的内存。
+6. **简单语法**：Lua 的语法设计直观简单，容易学习，可以快速上手。
+7. **跨平台支持**：Lua 具有良好的跨平台能力，能运行在几乎所有操作系统上。
+
+由于这些特性，Lua 常用于游戏开发、嵌入式设备、Web 应用服务器等领域。此外，像 Adobe Lightroom 和 Nginx 等软件也利用 Lua 作为脚本扩展语言。
+
+
+
+## lua定位—C/C++嵌入式脚本语言
+
+lua本身就是C写的，所以Lua脚本可以很容易的被C/C++代码调用，也可以反过来调用C/C++的函数
+lua语法、解释器、执行原理都与python相似
+唯一差距就是lua没有强大的类库作为支撑，Lua只是具备了一些比如数学运算和字符串处理等简单的基本功能。
+所以lua不适合作为开发独立应用程序的语言。
+
+
+
+
+
+## 虚拟机
+
+
+
+### 什么是虚拟机
+
+虚拟机是借助于操作系统对物理机器的一种模拟。但是我们今天所讲述的虚拟机概念比较狭义，与vmware或者virtual-box不同，而是针对具体语言所实现的虚拟机。例如在JVM或者CPython中，JAVA或者python源码会被编译成相关字节码，然后在对应虚拟机上运行，JVM或CPython会对这些字节码进行取指令，译码，执行，结果回写等操作，这些步骤和真实物理机器上的概念都很相似。相对应的二进制指令是在物理机器上运行，物理机器从内存中取指令，通过总线传输到CPU，然后译码、执行、结果存储。
+
+
+虚拟机为了能够执行字节码，需要模拟出物理CPU能够执行的相关操作，与虚拟机实现相关的概念如下：
+
+（1）将源码编译成VM所能执行的具体字节码。
+（2）字节码格式（指令格式），例如三元式，树还是前缀波兰式。
+（3）函数调用相关的栈结构，函数的入口，出口，返回以及如何传参。还有为了能够顺利返回所需的相关栈帧信息如何布置。
+（4）一个“指令指针”，指向下一条待执行的指令（内存中），对应物理机器的EIP。
+（5）一个虚拟“CPU”-指令调度器，
+
+- 获取下一条指令
+- 对操作数进行解码
+- 执行这条指令
+
+这三点是解释器执行字节码最重要的开销。
+
+
+
+### 虚拟机的实现方式
+
+如今虚拟机的实现方式有两种，基于栈的和基于寄存器的，这两种实现方式各有优劣，也都有标志性的产品。基于栈的虚拟机，有JVM，CPython以及.Net CLR。基于寄存器的，有Dalvik以及Lua5.0，另外Perl听说也要改为基于寄存器方式。无论这两种方式实现机制如何，都要实现以下几点：
+
+- 取指令，其中指令来源于内存
+
+- 译码，决定指令类型（执行何种操作）。另外译码的过程要包括从内存中取操作数
+- 执行。指令译码后，被虚拟机执行（其实最终都会借助于物理机资源）
+- 存储计算结果
+
+其实这和物理机CPU的执行是很相似的，都包括取值，译码，执行，回写等步骤。但是不同的一点是虚拟机应该模仿不出流水线，例如在当前指令译码完成之后，CPU中的译码部件处于空闲状态，可以用来对下一条指令进行译码，所以流水线有多少级就相当于可以并行执行多少指令。当然中间还有些指令相关和乱序的概念，这里就不详说了。
+
+下图中一个典型的指令流水线结构，由于虚拟机在操作系统上通过程序模拟，遵循冯诺依曼结构顺序执行的，应该很难实现出流水线结构。
+![这里写图片描述](https://i-blog.csdnimg.cn/blog_migrate/bbc80176d48fbcd6e49667e8e0e44e93.png)
+
+
+
+
+
+### 基于栈的虚拟机
+
+​	基于栈的虚拟机有一个操作数栈的概念，虚拟机在进行真正的运算时都是直接与操作数栈（operand stack）进行交互，不能直接操作内存中数据（其实这句话不严谨的，虚拟机的操作数栈也是布局在内存上的），也就是说不管进行何种操作都要通过操作数栈来进行，即使是数据传递这种简单的操作。这样做的直接好处就是虚拟机可以无视具体的物理架构，特别是寄存器。但缺点也显而易见，就是速度慢，因为无论什么操作都要通过操作数栈这一结构。
+
+​	由于执行时默认都是从操作数栈上取数据，那么就无需指定操作数。例如，x86汇编"ADD EAX, EBX"，就需要指定这次运算需要从什么地方取操作数，执行完结果存放在何处。但是基于栈的虚拟机的指令就无需指定，例如加法操作就一个简单的"Add"就可以了，因为默认操作数存放在操作数栈上，直接从操作数栈上pop出两条数据直接执行加法运算，运算后的结果默认存放在栈顶。其中操作数栈（operand stack）的深度由编译器静态确定，方便给栈帧预分配空间。这个和不能再栈上定义变长数组相似（其实这句话不严谨的，栈上分配变长数组，需要编译器的支持，分配在栈顶），由于局部变量的地址只能在编译期（compile time）确定针对当前栈帧的offset，如果中间有一个变量是一个变长数组的话，那么后面变量的offset就无法确定了（vector的数据是分配在堆上的，自己控制）。例如执行"a = b + c"，在基于栈的虚拟机上字节码指令如下所示：
+
+```
+I1: LOAD C
+I2: LOAD B
+I3: ADD 
+I4: STORE A
+```
+
+由于操作数都是隐式地，所以指令可以做的很短，一般都是一个或者两个字节。但是显而易见就是指令条数会显著增加。而基于寄存器虚拟机执行该操作只有一条指令，
+
+```
+I1: add a, b, c
+```
+
+其中a，b，c都是虚拟寄存器。操作数栈上的变化如下图所示：
+
+首先从符号表上读取数据压入操作数栈，
+
+![这里写图片描述](https://i-blog.csdnimg.cn/blog_migrate/cb08829e56b4a56bfdda8e70491be8f0.jpeg)
+
+然后从栈中弹出操作数执行加法运算，这步操作有物理机器执行，如下图所示：
+
+![这里写图片描述](https://i-blog.csdnimg.cn/blog_migrate/9b28bdcae94381ac6f54ba8d6a714066.jpeg)
+
+
+
+从图示中可以看出，数据从局部变量表中还要经过一次操作数栈的操作，注意操作数栈和局部变量表都是存放在内存上，内存到内存的数据传输在x86的机器上都是要经过一次数据总线传输的。可以得出一次简单的加法基本上需要9次数据传输，想想都很慢。
+
+但是基于栈的虚拟机优点就是可移植，寄存器由硬件直接提供。使用栈架构的指令集，用户程序（编译后的字节码）不会直接使用硬件中的寄存器，同时为了提高运行时的速度，可以将一些访问比较频繁的数据存放到寄存器中以获取尽量好的性能。另外，基于栈的虚拟机中指令更加紧凑，一个字节或者两个字节即可存储，同时编译器实现也比较简单，不用进行寄存器分配。寄存器分配是一门大学问。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 基于寄存器的虚拟机
+
+前面提到过基于栈的虚拟机，这里我们简要介绍一下基于寄存器的虚拟机运行机制。
+
+基于寄存器的虚拟机中没有操作数栈的概念，但是有很多虚拟寄存器，一般情况下这些寄存器（操作数）都是别名，需要执行引擎对这些寄存器（操作数）的解析，找出操作数的具体位置，然后取出操作数进行运算。
+
+既然是虚拟寄存器，那么肯定不在CPU中（想想也不应该在CPU中，虚拟机的根本目的就是跨平台和兼容性），其实和操作数栈相同，这些寄存器也存放在运行时栈中，本质上就是一个数组。
+
+
+新的虚拟机也用栈分配活动记录，寄存器就在该活动记录中。当进入Lua程序的函数体时，函数从栈中分配一个足以容纳该函数所有寄存器的活动记录。**函数的所有局部变量都各占据一个寄存器。因此，存取局部变量是相当高效的。**
+
+上面就是Lua虚拟机对寄存器的相关描述
+
+ 从上图中我们可以看到，其实“寄存器”的概念只是当前栈帧中一块连续的内存区域。这些数据在运算的时候，直接送入物理CPU进行计算，无需再传送到operand stack上然后再进行运算。例如"ADD R3, R2, R1"的示意图就如下所示：
+
+![这里写图片描述](https://i-blog.csdnimg.cn/blog_migrate/2fa62b6e66c4cfa98f7820930074483e.jpeg)
+
+
+
+其实"ADD R3, R2, R1"还要经过译码的一个过程，当然当前这条指令的种类和操作数由虚拟机进行解释。后面我们会看到，在有些实现中，有一个很大的switch-case来进行指令的分派及真正的运算过程。
+
+下图是Lua虚拟机的一些指令，该图片来自[这篇文章](https://docs.google.com/viewer?url=http://www.lua.org/doc/jucs05.pdf)，中译文[这里](https://docs.google.com/viewer?url=http://www.codingnow.com/2000/download/The%20Implementation%20of%20Lua5.0.pdf)。
+
+![这里写图片描述](https://i-blog.csdnimg.cn/blog_migrate/0c2329d989fd46b6238b14818b1a67f3.png) 使用寄存器式虚拟机没有基于栈的虚拟机在拷贝数据而使用的大量的出入栈（push/pop)指令。同时指令更紧凑更简洁。但是由于显示指定了操作数，所以基于寄存器的代码会比基于栈的代码要大，但是由于指令数量的减少，其实没有大多少。
+
+
+
+
+
+### **栈式虚拟机 VS 寄存器式虚拟机**
+
+（1）**指令条数：栈式虚拟机多**
+（2）**代码尺寸：栈式虚拟机小**
+（3）**移植性：栈式虚拟机移植性更好**
+（4）**指令优化：寄存器式虚拟机更能优化**
+
+![image-20241106105739660](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106105739660.png) 解释器最重要的开销在于指令调度(instruction dispatch)，指令调度主要操作包括从内存中取出指令，然后跳转到解释器相对应的代码段，然后执行这条指令。其中一个简易实现就是使用switch-based的方式来进行，这种方式简单易实现，另外任何语言都有相应的switch语句。switch-based的指令调度，通过一个死循环不断的从内存取出指令来执行，针对不同的指令选择不同的执行方式。
+
+
+
+一种JVM基于SBD实现方式如下图所示：
+
+![这里写图片描述](https://i-blog.csdnimg.cn/blog_migrate/05667132a208a11eca2004a8149aeb0d.jpeg) 
+
+这种方式实现简单，代码移植性好，但是有一个缺点就是分支预测失效的概率比较高。
+
+现在的CPU都是基于流水线结构的，间接跳转指令的跳转结果需要等到执行级才能知晓，如果预测失败需要排空流水线，流水线级数越多分支预测失败导致流水线排空的时间越长。
+
+由于编译后的指令是随机的，不太可能提取出预测模式
+
+
+
+
+
+### 参考文献
+
+https://zhuanlan.zhihu.com/p/61888678
+
+https://blog.csdn.net/dashuniuniu/article/details/50347149
+
+
+
+
+
+## lua的虚拟机
+
+
+
+为了达到较高的执行效率，lua代码并不是直接被Lua解释器解释执行，而是会先编译为字节码，然后再交给lua虚拟机去执行
+
+lua代码称为chunk，编译成的字节码则称为二进制chunk（Binary chunk）
+
+lua.exe、wlua.exe解释器可直接执行lua代码（解释器内部会先将其编译成字节码），也可执行使用luac.exe将lua代码预编译（Precompiled）为字节码
+
+使用预编译的字节码并不会加快脚本执行的速度，但可以加快脚本加载的速度，并在一定程度上保护源代码
+
+luac.exe可作为编译器，把lua代码编译成字节码，同时可作为反编译器，分析字节码的内容
+
+```
+luac.exe -v  									// 显示luac的版本号
+
+luac.exe Hello.lua  							// 在当前目录下，编译得到Hello.lua的二进制chunk文件luac.out（默认含调试符号）
+
+luac.exe -o Hello.out Hello1.lua Hello2.lua 	// 在当前目录下，编译得到Hello1.lua和Hello2.lua的二进制chunk文件Hello.out（默认含调试符号）
+
+luac.exe -s -o d:\Hello.out Hello.lua  			// 编译得到Hello.lua的二进制chunk文件d:\Hello.out（去掉调试符号）
+
+luac.exe -p Hello1.lua Hello2.lua  				// 对Hello1.lua和Hello2.lua只进行语法检测（注：只会检查语法规则，不会检查变量、函数等是否定义												  //和实现，函数参数返回值是否合法）
+```
+
+
+
+
+
+### Prototype
+
+lua编译器以函数为单位对源代码进行编译，每个函数会被编译成一个称之为原型（Prototype）的结构
+
+原型主要包含6部分内容：
+
+- 函数基本信息（basic info：含参数数量、局部变量数量等信息）、
+- 字节码（bytecodes）、
+- 常量（constants）表、
+- upvalue（闭包捕获的非局部变量）表、
+- 调试信息（debug info）、
+- 子函数原型列表（sub functions）
+
+原型结构使用这种嵌套递归结构，来描述函数中定义的子函数
+
+![img](https://img2018.cnblogs.com/blog/78946/201910/78946-20191013210920844-2106047153.png) 
+
+注：lua允许开发者可将语句写到文件的全局范围中，这是因为lua在编译时会将整个文件放到一个称之为main函数中，并以它为起点进行编译
+
+
+
+### 二进制chunk
+
+Hello.lua源代码如下：
+
+```
+print ("hello")
+
+function add(a, b)
+ return a+b
+end
+```
+
+编译得到的Hello.out的二进制为：
+
+![img](https://img2018.cnblogs.com/blog/78946/201910/78946-20191013232149911-1605916547.png) 
+
+二进制chunk（Binary chunk）的格式并没有标准化，也没有任何官方文档对其进行说明，一切以lua官方实现的源代码为准。
+
+其设计并没有考虑跨平台，对于需要超过一个字节表示的数据，必须要考虑大小端（Endianness）问题。
+
+lua官方实现的做法比较简单：编译lua脚本时，直接按照本机的大小端方式生成二进制chunk文件，当加载二进制chunk文件时，会探测被加载文件的大小端方式，如果和本机不匹配，就拒绝加载.
+
+二进制chunk格式设计也没有考虑不同lua版本之间的兼容问题，当加载二进制chunk文件时，会检测其版本号，如果和当前lua版本不匹配，就拒绝加载
+
+另外，二进制chunk格式设计也没有被刻意设计得很紧凑。在某些情况下，一段lua代码编译成二进制chunk后，甚至会被文本形式的源代码还要大。
+
+预编译成二进制chunk主要是为了提升加载速度，因此这也不是很大的问题.
+
+
+
+![image-20241106135224595](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106135224595.png)
+
+![image-20241106135623627](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106135623627.png)
+
+![image-20241106135644885](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106135644885.png)
+
+![image-20241106135657880](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106135657880.png)
+
+
+
+注1：二进制chunk中的字符串分为三种情况：
+
+①NULL字符串用0x00表示 
+
+②长度小于等于253（0xFD）的字符串，先用1个byte存储字符串长度+1的数值，然后是字节数组 
+
+③长度大于等于254（0xFE）的字符串，第一个字节是0xFF，后面跟一个8字节size_t类型存储字符串长度+1的数值，然后是字节数组 
+
+![image-20241106140108038](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106140108038.png) 
+
+
+
+查看二进制chunk中的所有函数（精简模式）： 
+
+```
+luac.exe -l Hello.lua
+
+luac.exe -l Hello.out
+```
+
+![img](https://img2018.cnblogs.com/blog/78946/201910/78946-20191012143924264-1726509288.png) 
+
+注1：每个函数信息包括两个部分：前面两行是函数的基本信息，后面是函数的指令列表
+
+注2：函数的基本信息包括：函数名称、函数的起始行列号、函数包含的指令数量、函数地址
+
+​    函数的参数params个数（0+表示函数为不固定参数）、寄存器slots数量、upvalue数量、局部变量locals数量、常量constants数量、子函数functions数量
+
+注3：指令列表里的每一条指令包含指令序号、对应代码行号、操作码和操作数。分号后为luac生成的注释，以便于我们理解指令
+
+注4：整个文件内容被放置到了main函数中，并以它作为嵌套起点
+
+
+
+
+
+查看二进制chunk中的所有函数（详细模式）： 
+
+```
+luac.exe -l -l Hello.lua  注：参数为2个-l
+
+luac.exe -l -l Hello.out  注：详细模式下，luac会把常量表、局部变量表和upvalue表的信息也打印出来 
+```
+
+![image-20241106140409090](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106140409090.png)
+
+
+
+### **lua指令集**
+
+Lua虚拟机的指令集为定长（Fixed-width）指令集，每条指令占4个字节（32bits），其中操作码（OpCode）占6bits，操作数（Operand）使用剩余的26bits
+
+Lua5.3版本共有47条指令，按功能可分为6大类：常量加载指令、运算符相关指令、循环和跳转指令、函数调用相关指令、表操作指令和Upvalue操作指令
+
+按编码模式分为4类：iABC（39）、iABx（3）、iAsBx（4）、iAx（1）
+
+![image-20241106140739533](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106140739533.png) 4种模式中，只有iAsBx下的sBx操作数会被解释成有符号整数，其他情况下操作数均被解释为无符号整数
+
+操作数A主要用来表示目标寄存器索引，其他操作数按表示信息可分为4种类型：OpArgN、OpArgU、OpArgR、OpArgK
+
+![image-20241106140859666](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106140859666.png) 
+
+### **Lua栈索引**
+
+![image-20241106141009694](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106141009694.png) 
+
+### **Lua State**
+
+![image-20241106141036435](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241106141036435.png)
+
+
+
+### 指令表
+
+https://www.cnblogs.com/kekec/p/11768935.html
+
+
+
+
+
+
+
+
+
+
+
+### 关键函数和结构分析
+
+**luaL_dofile**：包含了luaL_loadfile和lua_pcall两个步骤，分别对应了函数的解析和执行阶段。
+
+**luaL_loadfile**：会调用具体的parser，对lua文件进行进行词法和语法分析，把source转化成opcode，并创建Proto结构保存该opcode和该函数的元信息。 Proto结构如下：
+
+![img](https://pic1.zhimg.com/v2-12e92dcaed56fb89b5a40fa006fad83e_1440w.jpg) 
+
+该结构基本涵盖了parse阶段该函数的所有分析信息。主要包括以下几部分：
+
+- 常量表。比如在函数里写了a = 1 + 2，那这里的1和2就会放在常量表里。
+- 局部变量信息。包含了局部变量的名字和它在函数中的生存周期区间(用pc来衡量)。
+- Upvalue信息。包含了该upvalue的名字和它是否归属于本函数栈还是外层函数栈的标记。
+- opcode列表。包含了该函数实际调用的所有指令。其实就是一个int32类型的列表，因为lua虚拟机里每个指令对应一个int32.
+
+
+
+**lua_pcall**：这个函数最终会调到luaD_call，也就是lua虚拟机里函数执行的主要函数。
+
+![img](https://pica.zhimg.com/v2-7088aed9f24b28deff6962541bc1fd86_1440w.jpg) 
+
+从代码里可以看出，luaD_call的调用分为两步：
+
+- luaD_precall：
+
+- - 如果是C函数或者C闭包，会直接创建单个函数调用的运行时结构**CallInfo**，来完成函数的进栈和出栈。
+  - 如果是lua闭包，在precall中只会做函数调用前的准备工作，实际执行会在后一步luaV_execute中进行。这里的准备工作主要包括：(1)处理lua的不定长参数、参数数量不够时的nil填充等。(2)分配CallInfo结构，并填充该函数运行时所需的base、top、opcode等信息，注意CallInfo结构里还有个很关键的func字段，它指向栈里对应的LClosure结构，这个结构为虚拟机后续执行提供upvalue表和常量表的查询，毕竟后续对常量和upvalue的read操作，都是需要把它们从这两个表中加载到寄存器里的。
+
+- luaV_execute：这一步就是我们前面提到的lua虚拟机的CPU了，因为所有指令的实际执行都是在这个函数里完成的。它做的主要工作，就是在一个大循环里，不断的fetch和dispatch指令。每次的fetch就是把pc加1，而dispatch就是一个大的swtich-case，每个不同类型的opcode对应不同的执行逻辑。举一个创建table的例子：
+
+![img](https://pic3.zhimg.com/v2-9035e1835430f61e193931e76e293ee4_1440w.jpg)
+
+在该指令中，会首先对32位指令进行位操作，得到该table的初始数组和hash表部分的大小b和c，然后调用luaH_new来创建table，最后根据b和c的值，对table进行resize操作。
+
+另外，前面提到的**CallInfo**结构，包含了单个函数调用，lua虚拟机所需要的辅助数据结构，它的结构如下：
+
+![img](https://pic3.zhimg.com/v2-dc76992f74f9741ec621035e6d5b2028_1440w.jpg) 
+
+下图是lua虚拟机在执行第二个函数时的一个栈示意图：
+
+![img](https://picx.zhimg.com/v2-4971a3734020cd93625a30fd872c0227_1440w.jpg)
+
+
+
+我们来看下lua_State里与之相关的几个字段：
+
+- stack。TValue*类型，记录了"内存"起始地址。
+- base。TValue*类型，记录当前函数的第一个参数位置。
+- top。TValue*类型，记录当前函数的栈顶。
+- base_ci。当前栈里所有的函数调用CallInfo数组。
+- ci。当前函数的CallInfo。
+
+
+
+可以发现，通过这样的组织结构，luavm可以方便的获取到任意函数的位置以及其中的所有参数位置。而每个CallInfo里又记录了函数的执行pc，因此vm对函数的执行可以说是了如指掌了。
+
+
+
+### 指令格式
+
+
+
+前文已经提到，lua虚拟机的单条指令长度为32位。其位分布如下图所示：
+
+![img](https://pic2.zhimg.com/v2-ecbca5a1ef4b6dbec76776a9c533a4a1_1440w.jpg)
+
+这里的OpCode，就是指令的类型，由于其只有6位，所有lua最多支持63种指令类型。而对于A、B、C、Bx、sBx等，都是该指令的参数，参数的值通常指的是一个相对偏移，例如相对于当前函数base的偏移，相对于常量表头的偏移等。另外，根据指令的不同，参数个数和类型也可能不同。来看几个常用的例子：
+
+- 从变量赋值：
+
+![img](https://pic2.zhimg.com/v2-ddf5e947dc8d27f8240fb1899df39ca3_1440w.jpg) 其实就是简单的把寄存器RB(i)的值赋值到寄存器RA(i)中去，这里的寄存器指的就是我们栈里头的某个坑位。 所以这里的RA和RB宏，都是一个栈地址获取操作，全部的定义如下：
+
+![img](https://pic2.zhimg.com/v2-6262636d6dec3f1b3ffe5b79285d8cc7_1440w.jpg)
+
+这些宏的内部实现主要分为2步：
+
+- - 通过GETARG_XXX(i)从当前指令中获取参数XXX的值
+  - 用函数base或者常量表base去加这个参数值得到最终的栈(寄存器)地址。
+
+
+
+- 从常量赋值：
+
+![img](https://pic1.zhimg.com/v2-7274298ed396ec97d44cc40de2e71dc0_1440w.jpg) 
+
+与变量赋值唯一的不同，就是RB是基于常量表的偏移。
+
+
+
+- 设置table字段：
+
+![img](https://picx.zhimg.com/v2-df392d48339683071d4ed939ecb75d55_1440w.png) 
+
+这里不上代码了，这里RK是一个条件宏，因为我有可能是t[a] = b, 也可能是t[1](https://link.zhihu.com/?target=https%3A//blog.csdn.net/dashuniuniu/article/details/50347149) = b，key如果是变量a，说明a肯定是在函数栈里头的变量，对应的寻址就用RB，而如果key是1，说明它不存在函数栈里头，而是在函数常量表里头，寻址就用KB。
+
+
+
+
+
+### 简单例子
+
+我们结合一个简单的lua chunk，decompile一下它生成的byte code(这里decode使用的也是书中介绍的ChunkSpy工具，目前已支持了5.3)，从而加深理解：
+
+![img](https://pic4.zhimg.com/v2-5093ea98fbf955224a10c4e9a6888395_1440w.jpg) 我们先来看下该chunk对应的函数，在生成的字节码里，称之为level 1 function：
+
+![img](https://pic2.zhimg.com/v2-74e78a50d9c30c610a460d559b5e7d27_1440w.jpg)
+
+
+
+一个函数最终的字节码，基本就包含三块：
+
+- 常量表
+- upvalue表
+- code。所有的字节指令，都是在玩常量表、upvalue表和寄存器栈。可以结合具体的指令来理解。
+
+我们再来看下定义在chunk里的testFunc函数，它被称为level 2函数，如果我在testFunc里还嵌套了子函数，称为level 3函数，以此类推。该函数的字节码与level 1的格式基本一致，这里就直接上图，不逐行解释了：
+
+![img](https://pic1.zhimg.com/v2-0a99fbec7e3c10d4334bbc19b418f142_1440w.jpg) 
+
+
+
+### 虚拟机执行流程图
+
+在梳理完整个lua虚拟机的源码分析，opcode的生成和执行逻辑以后，我们可以上书中的一个总流程图来回顾一下：
+
+![img](https://pic3.zhimg.com/v2-5aba6c214bf203c7a439b453fa922b92_1440w.jpg) 
+
+这个图中最核心的两块，一个是Proto结构，它是分析阶段和执行阶段的桥梁；另一个是OpCode的执行，这一块可以结合前面虚拟机概念，以及Stack-based和Register-based VM的区别一起理解，包括但不限于：从CallInfo里fetch指令，指令执行时的switch case跳转和操作数的寻址，运行时的栈帧布局，lua_State中的关键字段等等。 本文的总结就到这里，后面有时间可能会啃一啃书中第六章“指令的解析与执行”，因为这两章其实联系比较紧密，到时候如果有新的收获也会同步到这边来。
+
+
+
+
+
+
+
+
+
+
+
+### 参考文献
+
+https://zhuanlan.zhihu.com/p/61888678
+
+https://www.cnblogs.com/kekec/p/11768935.html
+
+
+
+
+
+## C++项目嵌入lua虚拟机
+
+
+
+### 参考文献
+
+https://blog.csdn.net/m0_46577050/article/details/123004338
+
+http://cppdebug.com/archives/71
+
+亲爱的chat-gpt
+
+
+
+### 安装
+
+**1.下载lua源码**
+
+**这里选择5.3**
+
+https://www.lua.org/versions.html#5.3
+
+**2.CMakeLists.txt**
+
+为 Lua 编写一个 `CMakeLists.txt` 文件，用于配置构建过程。假设你的 Lua 源码位于 `lua-x.y.z` 目录（根据实际版本号命名），你可以在该目录下创建如下内容的 `CMakeLists.txt` 文件：
+
+```
+cmake_minimum_required(VERSION 3.10)
+
+project(lua LANGUAGES C)
+
+# 指定源文件
+file(GLOB LUA_SRC
+    "src/*.c"
+)
+
+# 排除不需要编译为静态库的源文件，如 lua.c 和 luac.c
+list(REMOVE_ITEM LUA_SRC
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/lua.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/luac.c"
+)
+
+# 添加静态库目标
+add_library(lua STATIC ${LUA_SRC})
+
+# 设置头文件目录
+target_include_directories(lua PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src")
+```
+
+`lua.c` 和 `luac.c` 是 Lua 源代码中的两个主要可执行文件的入口点：
+
+1. **`lua.c`**：这是用于构建 Lua 解释器的源文件。Lua 解释器是一个独立的应用程序，允许你在命令行运行 Lua 脚本。
+2. **`luac.c`**：这是用于构建 Lua 编译器的源文件，`luac` 是一个将 Lua 脚本编译成字节码的工具。
+
+当你在使用 Lua 作为嵌入式库时（例如，在 C++ 项目中集成 Lua），通常不需要单独编译这两个文件。原因如下：
+
+- **嵌入式用法**：如果你的目的是将 Lua 嵌入到一个更大的应用程序中，你只需要编译和链接 Lua 的核心库部分（即其他的 `.c` 文件如 `lapi.c`, `lauxlib.c`, `lbaselib.c` 等），而不是完整的解释器或编译器。这样可以直接创建和交互 Lua 状态机，并执行 Lua 代码。
+- **自定义环境**：在一个应用程序内嵌 Lua 时，你可能会提供自己的输入/输出机制、错误处理和其他上下文支持功能，而这些通常由 `lua.c` 提供标准实现。通过跳过这些文件，你有更大的自由来定制 Lua 的行为以适应你的应用程序需求。
+
+因此，除非你希望在你的项目中也包括独立的 Lua 解释器或编译器，否则不需要编译 `lua.c` 和 `luac.c`。你可以专注于把 Lua 的核心库集成到你的应用程序中即可。
+
+
+
+**3.使用 CMake 配置和生成项目**
+
+```
+mkdir build
+cd build
+cmake .. -G "Visual Studio 17 2022"  # 根据你安装的版本调整生成器名称
+```
+
+**4.编译 Lua 静态库**
+
+- 使用 Visual Studio 打开生成的 `.sln` 文件。
+
+- 在 Visual Studio 中选择 `Release` 或 `Debug` 配置，然后编译解决方案。这将生成一个名为 `lua.lib` 的静态库文件。
+
+**5.添加 Lua 静态库到你的项目**
+
+- 将 `lua.lib` 文件复制到你的项目目录下，通常放在一个特定的库文件夹中，比如 `libs`。
+- 将所有 Lua 头文件（例如 `lua.h`, `lualib.h`, `lauxlib.h` 等）复制到项目的一个包含目录中，比如 `include`。
+
+**6.然后就是在项目属性中配置**
+
+- 包含目录
+- 库目录
+- 附加依赖项
+
+**7.测试**
+
+```
+extern "C" {
+#include "lua.h"
+#include "lualib.h"
+#include "lauxlib.h"
+}
+
+int main() {
+    lua_State *L = luaL_newstate();  // 创建新的 Lua 状态机
+    luaL_openlibs(L);                // 打开标准库
+
+    // 执行一些 Lua 脚本或函数
+    if (luaL_dostring(L, "print('Hello from Lua')")) {
+        const char *error = lua_tostring(L, -1);
+        fprintf(stderr, "%s\n", error);
+    }
+
+    lua_close(L);  // 关闭 Lua 状态机
+    return 0;
+}
+```
+
+
+
+**注意：**
+
+`lua.hpp` 是一个包含文件，通常在使用 C++ 编写 Lua 绑定时使用。它将 Lua 的所有核心函数和库打包在一起，并且用 `extern "C"` 包裹，以确保正确的 C 链接性。这对于在 C++ 项目中使用 Lua 的 API 是很方便的。
+
+如果你正在编写 C++ 应用程序并需要使用 Lua API，`lua.hpp` 可以作为一个整体的头文件来包含，而不是分别包含 `lua.h`, `lualib.h`, 和 `lauxlib.h`。这样可以简化你的代码：
+
+```
+extern "C" {
+#include "lua.hpp"
+}
+
+int main() {
+    lua_State *L = luaL_newstate(); // 创建新的 Lua 状态机
+    luaL_openlibs(L);               // 打开标准库
+
+    // 执行一些 Lua 脚本或函数
+    if (luaL_dostring(L, "print('Hello from Lua')")) {
+        const char *error = lua_tostring(L, -1);
+        fprintf(stderr, "%s\n", error);
+    }
+
+    lua_close(L);  // 关闭 Lua 状态机
+    return 0;
+}
+```
+
+
+
+因此，在你的项目中，是建议将 `lua.hpp` 放入你的包含目录中，并在你的源文件中直接包含它以便使用 Lua API。这样可以确保与你的 C++ 代码良好集成。
+
+
+
+### 使用
+
+关于lua虚拟机中的栈
+
+- `-1` 是栈顶的索引；在 Lua 的虚拟栈中，负索引用于从栈顶向下计数，所以 `-1` 总是指向当前栈顶元素。
+- `1` 是索引，表示栈底的第一个元素（即最早被压入栈的元素）。
+
+**初始时的栈**
+
+Lua 栈在初始创建时是空的。在你执行任何操作之前，例如压入值或调用函数，栈中没有任何元素。当你将数据压入栈（例如使用 `lua_push*` 系列函数）或者进行某些调用（如运行 Lua 脚本或函数）时，才会在栈中增加元素。
+
+**关于索引**
+
+在 Lua 的 C API 中，如果你尝试通过 `lua_tostring` 或其他类似函数访问一个超出栈范围的索引，Lua 通常不会直接崩溃。相反，它会返回一个表示失败或无效的结果。例如：
+
+- 对于 `lua_tostring(L, index)`，如果索引超出了有效范围，通常会返回 `NULL`，表示没有可用的字符串。
+
+需要注意的是，访问无效索引不会修改栈，也不会抛出异常。但是，最好始终确保访问有效索引，以避免逻辑错误和未定义行为。使用诸如 `lua_gettop` 来检查当前栈的大小，可以帮助避免这种错误。
+
+
+
+
+
+#### **`luaL_newstate()`**:
+
+创建一个新的 Lua 状态机（virtual machine）。
+
+```
+lua_State *L = luaL_newstate();
+```
+
+#### **`luaL_openlibs()`**:
+
+打开所有标准 Lua 库，以便在 Lua 环境中使用。
+
+```
+luaL_openlibs(L);
+```
+
+#### **luaL_loadfile()**:
+
+读取并编译指定的 Lua 脚本文件。如果成功，它会将编译好的 Lua 函数（chunk）压入栈顶，并返回 `LUA_OK`加载并编译一个 Lua 文件，但不执行。
+
+```
+if (luaL_loadfile(L, "script.lua") || lua_pcall(L, 0, 0, 0)) {
+    fprintf(stderr, "Error: %s\n", lua_tostring(L, -1));
+}
+```
+
+#### **`luaL_dofile()`**:
+
+加载并执行一个 Lua 文件，相当于 `luaL_loadfile` 加上 `lua_pcall`。
+
+```
+if (luaL_dofile(L, "script.lua")) {
+    fprintf(stderr, "Error: %s\n", lua_tostring(L, -1));
+}
+```
+
+#### **`luaL_dostring()`**:
+
+执行一段 Lua 代码字符串。
+
+```
+if (luaL_dostring(L, "print('Hello from Lua')")) {
+    fprintf(stderr, "Error: %s\n", lua_tostring(L, -1));
+}
+```
+
+#### **lua_getglobal()**:
+
+从 Lua 全局环境中获取一个变量，并将其压入栈顶。
+
+```
+lua_getglobal(L, "variableName");
+```
+
+#### **`lua_setglobal()`**:
+
+将栈顶的值设置为全局变量,然后将栈顶元素弹出
+
+```
+lua_pushnumber(L, 42);
+lua_setglobal(L, "answer");
+```
+
+#### **`lua_tonumber()` 和 `lua_tostring()`**:
+
+从栈中获取类型转换后的数值或字符串，不会修改栈
+
+```
+double num = lua_tonumber(L, -1); // 取栈顶的数字
+const char *str = lua_tostring(L, -1); // 取栈顶的字符串
+```
+
+#### **`lua_pushnumber()`、`lua_pushstring()`**:
+
+将 C 的数值或字符串压入 Lua 栈。
+
+```
+lua_pushnumber(L, 3.14);
+lua_pushstring(L, "Hello");
+```
+
+#### lua_pop
+
+`lua_pop` 是 Lua C API 中的一个方便宏，用于从堆栈中移除元素。它本质上是通过调用 `lua_settop` 函数来实现这一操作。
+
+```
+void lua_pop(lua_State *L, int n)
+```
+
+- `L`: 指向 Lua 状态的指针。
+- `n`: 要从栈顶移除的元素个数。
+
+`lua_pop(L, n)` 等同于 `lua_settop(L, -n-1)`，即设置堆栈的新的顶部位置，从而移除指定数量的元素。
+
+例如，如果你想要从堆栈中移除一个元素，可以这样使用：
+
+```
+lua_pop(L, 1);
+```
+
+如果需要移除多个元素，比如三个，可以这样做：
+
+```
+lua_pop(L, 3);
+```
+
+
+
+这个操作非常有用，尤其是在处理完某些操作后清理栈上的临时数据或错误信息时。
+
+
+
+#### **`lua_pcall()`**:
+
+Lua C API 中的一个函数，用于安全调用 Lua 函数。它提供了错误处理机制，即使出现运行时错误，也能防止程序崩溃。
+
+```
+int lua_pcall(lua_State *L, int nargs, int nresults, int errfunc);
+```
+
+- `L`: 指向 Lua 状态的指针。
+- `nargs`: 被调用函数的参数个数。
+- `nresults`: 调用后期望返回的结果数量。
+- `errfunc`: 错误处理函数在栈中的索引，通常设为 0 表示不使用特殊的错误处理函数。
+
+`lua_pcall` 返回值：
+
+- `LUA_OK` (0)：表示调用成功。
+- 非零值：表示调用失败，返回对应的错误码，如 `LUA_ERRRUN`, `LUA_ERRMEM`, `LUA_ERRERR` 等等。
+
+lua:
+
+```
+name = "C++";
+
+function hello()
+	print("hello world");
+end
+
+function say(str)
+	print(str);
+end
+
+function add(x,y)
+	return 8;
+end
+```
+
+```
+//调用一个无参数无返回的lua函数
+lua_getglobal(L,"hello");
+lua_call(L,0,0);
+
+//调用一个有参数无返回值的lua函数
+lua_getglobal(L,"say");
+lua_pushstring(L,"C++ NB");
+lua_call(L,1,0);
+
+//调用一个有两个参数有返回的函数
+lua_getglobal(L,"add");
+//将参数从左到右依次压入栈
+lua_pushinteger(L,7);
+lua_pushinteger(L,3);
+lua_call(L,2,1);
+
+//获取返回值
+int add = lua_tointeger(L,-1);
+std::cout << "7 + 3 = " << add << std::endl;
+```
+
+
+
+#### **`lua_close()`**:
+
+关闭并清理一个 Lua 状态机。
+
+```
+lua_close(L);
+```
+
+
+
+#### lua_gettop()
+
+`lua_gettop` 是 Lua C API 中的一个函数，用于获取 Lua 堆栈的栈顶索引。这个索引表示栈中最后一个元素的位置，也即是栈中当前有多少个元素。它的典型用法是在需要知道栈状态或操作栈中的元素时。
+
+
+
+
+
+### 案例
+
+#### c中调用lua代码
+
+```
+int LuaTest() {
+    int result = 0;
+    int num = 0;
+
+    // 创建新的 Lua 状态机
+    lua_State* L = luaL_newstate();     
+    // 打开标准库
+    luaL_openlibs(L);                   
+    
+    //加载lua文件
+    string luaFile = "Lua/hello.lua";
+    if (luaL_loadfile(L, luaFile.c_str()) != LUA_OK) {
+        std::cerr << "Failed to load Lua file: " << lua_tostring(L, -1) << std::endl;
+        lua_pop(L, 1); // Remove error message from the stack
+        result = -1;
+        goto Exit0;
+    }
+
+    //获取栈中元素数量
+    num = lua_gettop(L);
+    cout << "栈中元素数量：" << num << endl;
+
+    // 执行chunk
+    if (lua_pcall(L, 0, 0, 0) != LUA_OK) {
+        std::cerr << "Failed to run Lua file: " << lua_tostring(L, -1) << std::endl;
+        lua_pop(L, 1);
+        result = -2;
+        goto Exit0;
+    }
+
+    //获取栈中元素数量
+    num = lua_gettop(L);
+    cout << "栈中元素数量：" << num << endl;
+
+    //获取一个全局变量
+    lua_getglobal(L, "myName");
+    if (lua_isstring(L, -1)) {
+        const char* myName = lua_tostring(L, -1);
+        lua_pop(L, 1);
+        std::cout << "getGlobal myName: " << myName << std::endl;
+    }
+    else {
+        std::cout << "getGlobal myName does not exist or is not a string." << std::endl;
+    }
+
+    //设置一个全局变量
+    lua_pushstring(L, "Handsome");    
+    lua_setglobal(L, "nanfengjun");           
+    lua_getglobal(L, "nanfengjun");
+    if (lua_isstring(L, -1)) {
+        const char* name = lua_tostring(L, -1);
+        lua_pop(L, 1);
+        std::cout << "getGlobal nanfengjun: " << name << std::endl;
+    }
+    else {
+        std::cout << "getGlobal nanfengjun does not exist or is not a string." << std::endl;
+    }
+    
+    //调用一个无参数无返回的lua函数
+    lua_getglobal(L, "hello");
+    lua_call(L, 0, 0);
+
+    //调用一个有参数的lua函数
+    lua_getglobal(L, "say");
+    lua_pushstring(L, "C++ NB");
+    lua_call(L, 1, 0);
+
+    //调用一个有参数有返回的函数
+    lua_getglobal(L, "add");
+    //将参数从左到右依次压入栈
+    lua_pushinteger(L, 7);
+    lua_pushinteger(L, 3);
+    lua_call(L, 2, 1);
+    //获取返回值
+    num = lua_tointeger(L, -1);
+    std::cout << "7 + 3 = " << num << std::endl;
+    lua_pop(L, 1);                      //清理返回值占用的栈   
+
+Exit0:
+    lua_close(L);                       // 关闭 Lua 状态机
+    system("pause");
+    return result;
+}
+```
+
+
+
+
+
+## C#项目内嵌lua虚拟机
+
+在 C# 项目中嵌入一个 Lua 虚拟机，你可以使用诸如 NLua 或 MoonSharp 这样的库。这些库提供了与 Lua 脚本的集成，允许你在 C# 环境中运行 Lua 代码。以下是如何使用这两个库的基本介绍：
+
+### 使用 NLua
+
+NLua 是一个基于 Lua 5.3 的 .NET 库，可以轻松在 C# 中执行 Lua 脚本。
+
+1. **安装 NLua**:
+
+   - 通过 NuGet 安装 NLua：在你的项目中运行以下命令：
+
+     ```
+     Install-Package NLua
+     ```
+
+     
+
+2. **使用 NLua 执行 Lua 脚本**:
+
+   ```
+   using System;
+   using NLua;
+   
+   class Program
+   {
+       static void Main()
+       {
+           using (Lua lua = new Lua())
+           {
+               // 简单执行一段 Lua 脚本
+               lua.DoString("print('Hello from Lua!')");
+   
+               // 定义和调用一个 Lua 函数
+               lua.DoString(@"
+                   function add(a, b)
+                       return a + b
+                   end
+               ");
+               
+               LuaFunction addFunction = lua["add"] as LuaFunction;
+               double result = (double)addFunction.Call(3, 4)[0];
+               Console.WriteLine($"Result of add: {result}");
+           }
+       }
+   }
+   ```
+
+   
+
+### 使用 MoonSharp
+
+MoonSharp 是一个用 C# 实现的 Lua 解释器，完全托管于 .NET 环境中。
+
+1. **安装 MoonSharp**:
+
+   - 通过 NuGet 安装 MoonSharp.Interpreter：在你的项目中运行以下命令：
+
+     ```
+     Install-Package MoonSharp.Interpreter
+     ```
+
+     
+
+2. **使用 MoonSharp 执行 Lua 脚本**:
+
+   ```
+   using System;
+   using MoonSharp.Interpreter;
+   
+   class Program
+   {
+       static void Main()
+       {
+           // 初始化 MoonSharp
+           Script script = new Script();
+   
+           // 执行一段 Lua 脚本
+           script.DoString("print('Hello from Lua with MoonSharp!')");
+   
+           // 定义和调用一个 Lua 函数
+           DynValue res = script.DoString(@"
+               function add(a, b)
+                   return a + b
+               end
+   
+               return add(3, 4)
+           ");
+   
+           Console.WriteLine($"Result of add: {res.Number}");
+       }
+   }
+   ```
+
+   
+
+### 总结
+
+- **NLua** 使用的是原生 Lua 引擎，性能接近于标准 Lua，但需要适当处理原生库的依赖。
+- **MoonSharp** 是纯托管的，不依赖原生库，适合所有 .NET 环境，尤其是在兼容性方面表现优异。
+
+选择哪一个库取决于你的项目需求和环境限制。如果需要跨平台和无外部依赖，MoonSharp 可能是更好的选择。而如果需要原生 Lua 性能特征，NLua 是一个不错的选项。
+
 
 
 
@@ -20177,6 +20990,837 @@ transform.SetSiblingIndex(n);//将该物体作为父物体的第n个子物体(�
 
 
 
+
+
+## 循环复用列表
+
+
+
+
+
+### 前言
+
+[游戏开发](https://so.csdn.net/so/search?q=游戏开发&spm=1001.2101.3001.7020)中，经常需要用到列表显示，比如排行榜列表、邮件列表、好友列表等等，而当列表数据很多时，我们就要考虑使用循环复用列表了，比如循环复用使用10个`item`来显示`100`个数据。
+
+
+
+### 原理
+
+原理其实就是，列表向上滑动时，当`item`超过显示区域的上边界时，把`item`移动到列表底部，重复使用`item`并更新`item`的`ui`显示，向下滑动同理，把超过显示区域底部的`item`复用到顶部。
+
+为了方便大家理解，我成图，如下：
+
+![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/6206bf0065127dca1cabc77c42ee2c5c.png) 
+
+
+
+### 实现
+
+#### `RecyclingListView`：循环列表类
+
+![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/0533afb550e6eba2500b16e5d1cc0627.png) 
+
+主要接口和属性：
+
+```
+/// <summary>
+/// 列表行数，赋值时，会执行列表重新计算
+/// </summary>
+public int RowCount
+
+/// <summary>
+/// 供外部调用，强制刷新整个列表，比如数据变化了，刷新一下列表
+/// </summary>
+public virtual void Refresh()
+
+/// <summary>
+/// 供外部调用，强制刷新整个列表的局部item
+/// </summary>
+/// <param name="rowStart">开始行</param>
+/// <param name="count">数量</param>
+public virtual void Refresh(int rowStart, int count)
+
+/// <summary>
+/// 供外部调用，强制刷新整个列表的某一个item
+/// </summary>
+public virtual void Refresh(RecyclingListViewItem item)
+
+/// <summary>
+/// 清空列表
+/// </summary>
+public virtual void Clear()
+
+/// <summary>
+/// 供外部调用，强制滚动列表，使某一行显示在列表中
+/// </summary>
+/// <param name="row">行号</param>
+/// <param name="posType">目标行显示在列表的位置：顶部，中心，底部</param>
+public virtual void ScrollToRow(int row, ScrollPosType posType)
+```
+
+`RecyclingListView`脚本需要挂在`ScrollRect`所在的节点上。
+
+有三个参数：
+
+- `Child Obj`：列表项`item`，`Item`必须挂`RecyclingListViewItem`或它的子类脚本。
+- `Row Padding`：列表`item`之间的间隔。
+- `Pre Alloc Height`：预先分配列表高度，默认为0。
+
+![img](https://i-blog.csdnimg.cn/blog_migrate/53137d037eb83c2cf3e9d7b32d42fd37.png) 
+
+
+
+#### 列表item脚本：RecyclingListViewItem
+
+列表`item`基类，主要接口和属性：
+
+```
+/// <summary>
+/// 循环列表
+/// </summary>
+public RecyclingListView ParentList
+
+/// <summary>
+/// 行号
+/// </summary>
+public int CurrentRow
+
+public RectTransform RectTransform
+
+/// <summary>
+/// item更新事件响应函数
+/// </summary>
+public virtual void NotifyCurrentAssignment(RecyclingListView v, int row)
+```
+
+
+
+具体列表`item`需要继承`RecyclingListViewItem`，在子类中实现具体更新`item`逻辑，例：
+
+```
+using UnityEngine.UI;
+
+public struct TestChildData
+{
+    public string Title;
+    public int Row;
+
+    public TestChildData(string title, int row)
+    {
+        Title = title;
+        Row = row;
+    }
+}
+
+
+public class TestChildItem : RecyclingListViewItem
+{
+    public Text titleText;
+    public Text rowText;
+
+    private TestChildData childData;
+    public TestChildData ChildData
+    {
+        get { return childData; }
+        set
+        {
+            childData = value;
+            titleText.text = childData.Title;
+            rowText.text = $"行号：{childData.Row}";
+        }
+    }
+}
+```
+
+列表`item`挂上`TestChildItem `脚本。
+
+![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/f6351582e7c5eb2fcf464002c439b0a4.png) 
+
+##### 3、测试脚本
+
+做个简单的测试界面：
+
+![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/3ce4d826e4597728d1b4ff3992212841.png) 
+
+写个测试脚本`TestPanel `，测试一下循环列表，挂在`TestPanel`节点上，赋值对应的`ui`对象。
+
+![在这里插入图片描述](https://i-blog.csdnimg.cn/blog_migrate/c79cab01ebc35134f8a438cc99004992.png) 
+
+```
+using System.Collections.Generic;
+using UnityEngine;
+using Random = UnityEngine.Random;
+using UnityEngine.UI;
+
+public class TestPanel : MonoBehaviour
+{
+    public RecyclingListView scrollList;
+    /// <summary>
+    /// 列表数据
+    /// </summary>
+    private List<TestChildData> data = new List<TestChildData>();
+
+    public InputField createRowCntInput;
+    public Button createListBtn;
+    public Button clearListBtn;
+
+    public InputField deleteItemInput;
+    public Button deleteItemBtn;
+    public Button addItemBtn;
+
+    public InputField moveToRowInput;
+    public Button moveToTopBtn;
+    public Button moveToCenterBtn;
+    public Button moveToBottomBtn;
+
+    private void Start()
+    {
+        // 列表item更新回调
+        scrollList.ItemCallback = PopulateItem;
+
+        // 创建列表
+        createListBtn.onClick.AddListener(CreateList);
+
+        // 清空列表
+        clearListBtn.onClick.AddListener(ClearList);
+
+
+        // 删除某一行
+        deleteItemBtn.onClick.AddListener(DeleteItem);
+
+        // 添加行
+        addItemBtn.onClick.AddListener(AddItem);
+
+        // 将目标行移动到列表的顶部、中心、底部
+        moveToTopBtn.onClick.AddListener(() => 
+        {
+            MoveToRow(RecyclingListView.ScrollPosType.Top);
+        });
+
+        moveToCenterBtn.onClick.AddListener(() =>
+        {
+            MoveToRow(RecyclingListView.ScrollPosType.Center);
+        });
+
+        moveToBottomBtn.onClick.AddListener(() =>
+        {
+            MoveToRow(RecyclingListView.ScrollPosType.Bottom);
+        });
+    }
+
+    /// <summary>
+    /// item更新回调
+    /// </summary>
+    /// <param name="item">复用的item对象</param>
+    /// <param name="rowIndex">行号</param>
+    private void PopulateItem(RecyclingListViewItem item, int rowIndex)
+    {
+        var child = item as TestChildItem;
+        child.ChildData = data[rowIndex];
+    }
+
+    private void CreateList()
+    {
+        if (string.IsNullOrEmpty(createRowCntInput.text))
+        {
+            Debug.LogError("请输入行数");
+            return;
+        }
+        var rowCnt = int.Parse(createRowCntInput.text);
+
+        data.Clear();
+        // 模拟数据
+        string[] randomTitles = new[] {
+            "黄沙百战穿金甲，不破楼兰终不还",
+            "且将新火试新茶，诗酒趁年华",
+            "苟利国家生死以，岂因祸福避趋之",
+            "枫叶经霜艳，梅花透雪香",
+            "夏虫不可语于冰",
+            "落花无言，人淡如菊",
+            "宠辱不惊，闲看庭前花开花落；去留无意，漫随天外云卷云舒",
+            "衣带渐宽终不悔，为伊消得人憔悴",
+            "从善如登，从恶如崩",
+            "欲穷千里目，更上一层楼",
+            "草木本无意，荣枯自有时",
+            "纸上得来终觉浅，绝知此事要躬行",
+            "不是一番梅彻骨，怎得梅花扑鼻香",
+            "青青子衿，悠悠我心",
+            "瓜田不纳履，李下不正冠"
+        };
+        for (int i = 0; i < rowCnt; ++i)
+        {
+            data.Add(new TestChildData(randomTitles[Random.Range(0, randomTitles.Length)], i));
+        }
+
+        // 设置数据，此时列表会执行更新
+        scrollList.RowCount = data.Count;
+    }
+
+    private void ClearList()
+    {
+        data.Clear();
+        scrollList.Clear();
+    }
+
+    private void DeleteItem()
+    {
+        if (string.IsNullOrEmpty(deleteItemInput.text))
+        {
+            Debug.LogError("请输入行号");
+            return;
+        }
+        var rowIndex = int.Parse(deleteItemInput.text);
+        data.RemoveAll(item => (item.Row == rowIndex));
+
+        scrollList.RowCount = data.Count;
+    }
+
+    private void AddItem()
+    {
+        data.Add(new TestChildData("我是新增的行", data.Count));
+        scrollList.RowCount = data.Count;
+    }
+
+    private void MoveToRow(RecyclingListView.ScrollPosType posType)
+    {
+        if (string.IsNullOrEmpty(moveToRowInput.text))
+        {
+            Debug.LogError("请输入行号");
+            return;
+        }
+        var rowIndex = int.Parse(moveToRowInput.text);
+        scrollList.ScrollToRow(rowIndex, posType);
+    }
+}
+```
+
+
+
+### 完整代码
+
+#### 1、RecyclingListView.cs
+
+```
+using System;
+using UnityEngine;
+using UnityEngine.UI;
+
+/// <summary>
+/// 循环复用列表
+/// </summary>
+[RequireComponent(typeof(ScrollRect))]
+public class RecyclingListView : MonoBehaviour
+{
+    [Tooltip("子节点物体")]
+    public RecyclingListViewItem ChildObj;
+    [Tooltip("行间隔")]
+    public float RowPadding = 15f;
+    [Tooltip("事先预留的最小列表高度")]
+    public float PreAllocHeight = 0;
+
+    public enum ScrollPosType
+    {
+        Top,
+        Center,
+        Bottom,
+    }
+
+
+    public float VerticalNormalizedPosition
+    {
+        get => scrollRect.verticalNormalizedPosition;
+        set => scrollRect.verticalNormalizedPosition = value;
+    }
+
+
+    /// <summary>
+    /// 列表行数
+    /// </summary>
+    protected int rowCount;
+
+    /// <summary>
+    /// 列表行数，赋值时，会执行列表重新计算
+    /// </summary>
+    public int RowCount
+    {
+        get => rowCount;
+        set
+        {
+            if (rowCount != value)
+            {
+                rowCount = value;
+                // 先禁用滚动变化
+                ignoreScrollChange = true;
+                // 更新高度
+                UpdateContentHeight();
+                // 重新启用滚动变化
+                ignoreScrollChange = false;
+                // 重新计算item
+                ReorganiseContent(true);
+            }
+        }
+    }
+
+    /// <summary>
+    /// item更新回调函数委托
+    /// </summary>
+    /// <param name="item">子节点对象</param>
+    /// <param name="rowIndex">行数</param>
+    public delegate void ItemDelegate(RecyclingListViewItem item, int rowIndex);
+
+    /// <summary>
+    /// item更新回调函数委托
+    /// </summary>
+    public ItemDelegate ItemCallback;
+
+    protected ScrollRect scrollRect;
+    /// <summary>
+    /// 复用的item数组
+    /// </summary>
+    protected RecyclingListViewItem[] childItems;
+
+    /// <summary>
+    /// 循环列表中，第一个item的索引，最开始每个item都有一个原始索引，最顶部的item的原始索引就是childBufferStart
+    /// 由于列表是循环复用的，所以往下滑动时，childBufferStart会从0开始到n，然后又从0开始，以此往复
+    /// 如果是往上滑动，则是从0到-n，再从0开始，以此往复
+    /// </summary>
+    protected int childBufferStart = 0;
+    /// <summary>
+    /// 列表中最顶部的item的真实数据索引，比如有一百条数据，复用10个item，当前最顶部是第60条数据，那么sourceDataRowStart就是59（注意索引从0开始）
+    /// </summary>
+    protected int sourceDataRowStart;
+
+    protected bool ignoreScrollChange = false;
+    protected float previousBuildHeight = 0;
+    protected const int rowsAboveBelow = 1;
+
+    protected virtual void Awake()
+    {
+        scrollRect = GetComponent<ScrollRect>();
+        ChildObj.gameObject.SetActive(false);
+    }
+
+
+    protected virtual void OnEnable()
+    {
+        scrollRect.onValueChanged.AddListener(OnScrollChanged);
+        ignoreScrollChange = false;
+    }
+
+    protected virtual void OnDisable()
+    {
+        scrollRect.onValueChanged.RemoveListener(OnScrollChanged);
+    }
+
+
+    /// <summary>
+    /// 供外部调用，强制刷新整个列表，比如数据变化了，刷新一下列表
+    /// </summary>
+    public virtual void Refresh()
+    {
+        ReorganiseContent(true);
+    }
+
+    /// <summary>
+    /// 供外部调用，强制刷新整个列表的局部item
+    /// </summary>
+    /// <param name="rowStart">开始行</param>
+    /// <param name="count">数量</param>
+    public virtual void Refresh(int rowStart, int count)
+    {
+        int sourceDataLimit = sourceDataRowStart + childItems.Length;
+        for (int i = 0; i < count; ++i)
+        {
+            int row = rowStart + i;
+            if (row < sourceDataRowStart || row >= sourceDataLimit)
+                continue;
+
+            int bufIdx = WrapChildIndex(childBufferStart + row - sourceDataRowStart);
+            if (childItems[bufIdx] != null)
+            {
+                UpdateChild(childItems[bufIdx], row);
+            }
+        }
+    }
+
+    /// <summary>
+    /// 供外部调用，强制刷新整个列表的某一个item
+    /// </summary>
+    public virtual void Refresh(RecyclingListViewItem item)
+    {
+
+        for (int i = 0; i < childItems.Length; ++i)
+        {
+            int idx = WrapChildIndex(childBufferStart + i);
+            if (childItems[idx] != null && childItems[idx] == item)
+            {
+                UpdateChild(childItems[i], sourceDataRowStart + i);
+                break;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 清空列表
+    /// </summary>
+    public virtual void Clear()
+    {
+        RowCount = 0;
+    }
+
+
+    /// <summary>
+    /// 供外部调用，强制滚动列表，使某一行显示在列表中
+    /// </summary>
+    /// <param name="row">行号</param>
+    /// <param name="posType">目标行显示在列表的位置：顶部，中心，底部</param>
+    public virtual void ScrollToRow(int row, ScrollPosType posType)
+    {
+        scrollRect.verticalNormalizedPosition = GetRowScrollPosition(row, posType);
+    }
+
+    /// <summary>
+    /// 获得归一化的滚动位置，该位置将给定的行在视图中居中
+    /// </summary>
+    /// <param name="row">行号</param>
+    /// <returns></returns>
+    public float GetRowScrollPosition(int row, ScrollPosType posType)
+    {
+        // 视图高
+        float vpHeight = ViewportHeight();
+        float rowHeight = RowHeight();
+        // 将目标行滚动到列表目标位置时，列表顶部的位置
+        float vpTop = 0;
+        switch (posType)
+        {
+            case ScrollPosType.Top:
+                {
+                    vpTop = row * rowHeight;
+                }
+                break;
+            case ScrollPosType.Center:
+                {
+                    // 目标行的中心位置与列表顶部的距离
+                    float rowCentre = (row + 0.5f) * rowHeight;
+                    // 视口中心位置
+                    float halfVpHeight = vpHeight * 0.5f;
+
+                    vpTop = Mathf.Max(0, rowCentre - halfVpHeight);
+                }
+                break;
+            case ScrollPosType.Bottom:
+                {
+                    vpTop = (row+1) * rowHeight - vpHeight;
+                }
+                break;
+        }
+
+
+        // 滚动后，列表底部的位置
+        float vpBottom = vpTop + vpHeight;
+        // 列表内容总高度
+        float contentHeight = scrollRect.content.sizeDelta.y;
+        // 如果滚动后，列表底部的位置已经超过了列表总高度，则调整列表顶部的位置
+        if (vpBottom > contentHeight)
+            vpTop = Mathf.Max(0, vpTop - (vpBottom - contentHeight));
+
+        // 反插值，计算两个值之间的Lerp参数。也就是value在from和to之间的比例值
+        return Mathf.InverseLerp(contentHeight - vpHeight, 0, vpTop);
+    }
+
+    /// <summary>
+    /// 根据行号获取复用的item对象
+    /// </summary>
+    /// <param name="row">行号</param>
+    protected RecyclingListViewItem GetRowItem(int row)
+    {
+        if (childItems != null &&
+            row >= sourceDataRowStart && row < sourceDataRowStart + childItems.Length &&
+            row < rowCount)
+        {
+            // 注意这里要根据行号计算复用的item原始索引
+            return childItems[WrapChildIndex(childBufferStart + row - sourceDataRowStart)];
+        }
+
+        return null;
+    }
+
+    protected virtual bool CheckChildItems()
+    {
+        // 列表视口高度
+        float vpHeight = ViewportHeight();
+        float buildHeight = Mathf.Max(vpHeight, PreAllocHeight);
+        bool rebuild = childItems == null || buildHeight > previousBuildHeight;
+        if (rebuild)
+        {
+
+            int childCount = Mathf.RoundToInt(0.5f + buildHeight / RowHeight());
+            childCount += rowsAboveBelow * 2;
+
+            if (childItems == null)
+                childItems = new RecyclingListViewItem[childCount];
+            else if (childCount > childItems.Length)
+                Array.Resize(ref childItems, childCount);
+
+            // 创建item
+            for (int i = 0; i < childItems.Length; ++i)
+            {
+                if (childItems[i] == null)
+                {
+                    var item = Instantiate(ChildObj);
+                    childItems[i] = item;
+                }
+                childItems[i].RectTransform.SetParent(scrollRect.content, false);
+                childItems[i].gameObject.SetActive(false);
+            }
+
+            previousBuildHeight = buildHeight;
+        }
+
+        return rebuild;
+    }
+
+
+    /// <summary>
+    /// 列表滚动时，会回调此函数
+    /// </summary>
+    /// <param name="normalisedPos">归一化的位置</param>
+    protected virtual void OnScrollChanged(Vector2 normalisedPos)
+    {
+        if (!ignoreScrollChange)
+        {
+            ReorganiseContent(false);
+        }
+    }
+
+    /// <summary>
+    /// 重新计算列表内容
+    /// </summary>
+    /// <param name="clearContents">是否要清空列表重新计算</param>
+    protected virtual void ReorganiseContent(bool clearContents)
+    {
+
+        if (clearContents)
+        {
+            scrollRect.StopMovement();
+            scrollRect.verticalNormalizedPosition = 1;
+        }
+
+        bool childrenChanged = CheckChildItems();
+        // 是否要更新整个列表
+        bool populateAll = childrenChanged || clearContents;
+
+
+        float ymin = scrollRect.content.localPosition.y;
+
+        // 第一个可见item的索引
+        int firstVisibleIndex = (int)(ymin / RowHeight());
+
+
+        int newRowStart = firstVisibleIndex - rowsAboveBelow;
+
+        // 滚动变化量
+        int diff = newRowStart - sourceDataRowStart;
+        if (populateAll || Mathf.Abs(diff) >= childItems.Length)
+        {
+
+            sourceDataRowStart = newRowStart;
+            childBufferStart = 0;
+            int rowIdx = newRowStart;
+            foreach (var item in childItems)
+            {
+                UpdateChild(item, rowIdx++);
+            }
+
+        }
+        else if (diff != 0)
+        {
+            int newBufferStart = (childBufferStart + diff) % childItems.Length;
+
+            if (diff < 0)
+            {
+                // 向前滑动
+                for (int i = 1; i <= -diff; ++i)
+                {
+                    // 得到复用item的索引
+                    int wrapIndex = WrapChildIndex(childBufferStart - i);
+                    int rowIdx = sourceDataRowStart - i;
+                    UpdateChild(childItems[wrapIndex], rowIdx);
+                }
+            }
+            else
+            {
+                // 向后滑动
+                int prevLastBufIdx = childBufferStart + childItems.Length - 1;
+                int prevLastRowIdx = sourceDataRowStart + childItems.Length - 1;
+                for (int i = 1; i <= diff; ++i)
+                {
+                    int wrapIndex = WrapChildIndex(prevLastBufIdx + i);
+                    int rowIdx = prevLastRowIdx + i;
+                    UpdateChild(childItems[wrapIndex], rowIdx);
+                }
+            }
+
+            sourceDataRowStart = newRowStart;
+
+            childBufferStart = newBufferStart;
+        }
+    }
+
+    private int WrapChildIndex(int idx)
+    {
+        while (idx < 0)
+            idx += childItems.Length;
+
+        return idx % childItems.Length;
+    }
+
+    /// <summary>
+    /// 获取一行的高度，注意要加上RowPadding
+    /// </summary>
+    private float RowHeight()
+    {
+        return RowPadding + ChildObj.RectTransform.rect.height;
+    }
+
+    /// <summary>
+    /// 获取列表视口的高度
+    /// </summary>
+    private float ViewportHeight()
+    {
+        return scrollRect.viewport.rect.height;
+    }
+
+    protected virtual void UpdateChild(RecyclingListViewItem child, int rowIdx)
+    {
+        if (rowIdx < 0 || rowIdx >= rowCount)
+        {
+            child.gameObject.SetActive(false);
+        }
+        else
+        {
+            if (ItemCallback == null)
+            {
+                Debug.Log("RecyclingListView is missing an ItemCallback, cannot function", this);
+                return;
+            }
+
+            // 移动到正确的位置
+            var childRect = ChildObj.RectTransform.rect;
+            Vector2 pivot = ChildObj.RectTransform.pivot;
+            float ytoppos = RowHeight() * rowIdx;
+            float ypos = ytoppos + (1f - pivot.y) * childRect.height;
+            float xpos = 0 + pivot.x * childRect.width;
+            child.RectTransform.anchoredPosition = new Vector2(xpos, -ypos);
+            child.NotifyCurrentAssignment(this, rowIdx);
+
+            // 更新数据
+            ItemCallback(child, rowIdx);
+
+            child.gameObject.SetActive(true);
+        }
+    }
+
+    /// <summary>
+    /// 更新content的高度
+    /// </summary>
+    protected virtual void UpdateContentHeight()
+    {
+        // 列表高度
+        float height = ChildObj.RectTransform.rect.height * rowCount + (rowCount - 1) * RowPadding;
+        // 更新content的高度
+        var sz = scrollRect.content.sizeDelta;
+        scrollRect.content.sizeDelta = new Vector2(sz.x, height);
+    }
+
+    protected virtual void DisableAllChildren()
+    {
+        if (childItems != null)
+        {
+            for (int i = 0; i < childItems.Length; ++i)
+            {
+                childItems[i].gameObject.SetActive(false);
+            }
+        }
+    }
+}
+
+```
+
+#### 2、RecyclingListViewItem.cs
+
+```
+using UnityEngine;
+
+/// <summary>
+/// 列表item，你自己写的列表item需要继承该类
+/// </summary>
+[RequireComponent(typeof(RectTransform))]
+public class RecyclingListViewItem : MonoBehaviour
+{
+
+    private RecyclingListView parentList;
+
+    /// <summary>
+    /// 循环列表
+    /// </summary>
+    public RecyclingListView ParentList
+    {
+        get => parentList;
+    }
+
+    private int currentRow;
+    /// <summary>
+    /// 行号
+    /// </summary>
+    public int CurrentRow
+    {
+        get => currentRow;
+    }
+
+    private RectTransform rectTransform;
+    public RectTransform RectTransform
+    {
+        get
+        {
+            if (rectTransform == null)
+                rectTransform = GetComponent<RectTransform>();
+            return rectTransform;
+        }
+    }
+
+    private void Awake()
+    {
+        rectTransform = GetComponent<RectTransform>();
+    }
+
+    /// <summary>
+    /// item更新事件响应函数
+    /// </summary>
+    public virtual void NotifyCurrentAssignment(RecyclingListView v, int row)
+    {
+        parentList = v;
+        currentRow = row;
+    }
+}
+```
+
+
+
+### 参考文献
+
+https://blog.csdn.net/linxinfa/article/details/115396546
+
+
+
+
+
+
+
+
+
+
+
 ## 伤害跳字
 
 
@@ -20544,7 +22188,15 @@ public class MousePosition : MonoBehaviour
 
 
 
-# 游戏AI行为决策
+# 游戏AI
+
+
+
+
+
+
+
+
 
 ## 概要
 
@@ -21031,9 +22683,20 @@ Enemy
 
 ### 前言
 
-行为树，是目前游戏中应用较为广泛的一种行为决策模型。这离不开它成熟的可视化编辑工具，例如Unity商城中的「Behaviour Designer」，甚至是虚幻引擎也自带此类编辑工具。而且它的设计逻辑并不复杂，其所利用的树状结构，很符合人的思考方式。
+**有限状态机的缺陷：**
 
-接下来，我们会先对它的运作逻辑进行介绍，然后再试图用代码实现它。树状结构在不借助可视化工具的情况下是不容易呈现清楚的，这里我借鉴了Steve Rabin的《[Game AI Pro](http://www.gameaipro.com/)》中行为树的实现方式，利用代码缩进稍稍实现了一些可视化（本教程使用C#代码实现）。下面我们就开始吧！
+- 各个状态类之间互相依赖很严重，耦合度很高。
+- 结构不灵活，可扩展性不高，难以脚本化/可视化。
+
+
+
+
+
+
+
+
+
+
 
 ### 运作逻辑
 
@@ -21875,7 +23538,11 @@ public partial class BehaviorTreeBuilder
 
 
 
+## ai实现思路
 
+### 格挡招架
+
+如果是AI，请参考只狼一心的行为。被动招架和主动招架。被动就是触发伤害不扣血而是格挡，主动是玩家攻击朝前发射射线，击中的对象告诉他，我要砍人了。AI播放招架动画。
 
 
 
@@ -22273,3 +23940,32 @@ z锁定，可以锁定也可以不锁定，但是锁定可以让你更容易看�
 那要不要找一个变身期间的音乐当做持续时间呢？嘻嘻，想想都爽啊。
 
 别人：快，快去关掉他的音响。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 网络模块，网络包的快速检验头
+
+
+
+
+
+
+
+
+
+
+
+
+
