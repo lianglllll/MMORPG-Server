@@ -19,7 +19,7 @@ namespace GameServer.Service
 
     public class ItemService:Singleton<ItemService>
     {
-        public void start()
+        public void Start()
         {
             MessageRouter.Instance.Subscribe<InventoryInfoRequest>(_InventoryInfoRequest);
             MessageRouter.Instance.Subscribe<ItemPlacementRequest>(_ItemPlacementRequest);

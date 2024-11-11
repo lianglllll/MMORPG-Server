@@ -31,7 +31,7 @@ public class DataManager : Singleton<DataManager>
 
 
     //初始化，就是将文件中的数据读入
-    public void init()
+    public void Init()
     {
         //获取文件对象信息
         spaceDefineDict = Load<SpaceDefine>("Data/SpaceDefine.json");

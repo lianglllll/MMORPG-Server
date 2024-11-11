@@ -36,7 +36,7 @@ namespace GameServer
 
             //装载配置文件
             Log.Debug("[加载Json配置文件]");
-            DataManager.Instance.init();
+            DataManager.Instance.Init();
 
             //proto类型加载
             Log.Debug("[proto类型加载]");
@@ -63,27 +63,28 @@ namespace GameServer
             SpaceService.Instance.Start();
 
             //开启战斗服务
-            CombatService.Instance.Start();
             Log.Debug("[启动战斗服务]");
+            CombatService.Instance.Start();
 
             //开启频道聊天服务
-            ChatService.Instance.start();
             Log.Debug("[启动频道服务]");
+            ChatService.Instance.Start();
 
             //开启物品服务
-            ItemService.Instance.start();
             Log.Debug("[启动物品服务]");
+            ItemService.Instance.Start();
 
             //中心计时器任务加载(使用了Timer)
+            Log.Debug("[激活世界心跳Tick]");
             Scheduler.Instance.Start();
             //添加中心计时器任务：
             Scheduler.Instance.AddTask(() => {
                 EntityManager.Instance.Update();
                 SpaceManager.Instance.Update();
-            }, 0.02f);
-            Log.Debug("[激活世界心跳Tick]");
+            }, Config.Server.UpdateHz);
 
-            Console.ReadKey();//防止进程结束
+            //防止进程结束
+            Console.ReadKey();
         }
     }
 }

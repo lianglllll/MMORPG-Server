@@ -17,7 +17,7 @@ namespace GameServer.Service
 {
     public class ChatService:Singleton<ChatService>
     {
-        public void start()
+        public void Start()
         {
             MessageRouter.Instance.Subscribe<ChatRequest>(_ChatRequest);
         }

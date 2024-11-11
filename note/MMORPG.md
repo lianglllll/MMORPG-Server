@@ -2,35 +2,31 @@
 
 
 
-## 世界是怎么活起来的
+**世界是怎么活起来的**
 
 变化不是连续的，而是以普朗克长度为单位的时间间隔变化。十分像我们游戏世界中的tick。
 
 
 
-## 技术框架易沉迷，请勿上瘾
+
+
+**没用永恒的框架，只有永恒的原理**
 
 
 
-<img src="MMORPG.assets/image-20240430112005937.png" alt="image-20240430112005937" style="zoom:50%;" /> 
+ 
+
+**被隐盖的原理和价值**
+
+ 
 
 
 
-### 被隐盖的原理和价值
-
-<img src="MMORPG.assets/image-20240430111955084.png" alt="image-20240430111955084" style="zoom:50%;" /> 
+ 
 
 
 
-比如说数据库，大部分人只会用ORM框架 
 
-<img src="MMORPG.assets/image-20240430112129186.png" alt="image-20240430112129186" style="zoom:50%;" /> 
-
-![image-20240430112418871](MMORPG.assets/image-20240430112418871.png)
-
-
-
-### 没用永恒的框架，只有永恒的原理
 
 
 
@@ -3558,6 +3554,95 @@ IEnumerator CalledCoroutine()
 
 
 
+## AssemlyDefinition
+
+
+
+### 引入
+
+每一个csproj文件对应着最终导出工程的dll文件
+
+**一般的unity工程中会产生的4个dll文件**
+
+Assembly-CSharp:包含了我们一切通用的cs脚本，也就是不在特殊目录下的cs脚本叫会编译到这样的一个dll文件中。
+
+Assembly-Editor:所有Editor目录下的脚本会全部编译到这里(根目录下的和其他目录下的(除了Plugins目录下))
+
+Assembly-CSharp-firstpass:在Plugins目录下，同时不在Plugins/Editor目录下的脚本
+
+Assembly-CSharp-Editor-firstpass：在Plugins/Editor目录下的脚本
+
+
+
+当这个会有一个很大的问题：我们改变这些目录当中的任何一个脚本的时候，对应的csproj就会重新编译
+
+在一个大的工程中，会有成百上千个cs脚本，这个编译的时间就会很长，这是让人无法接受的。
+
+
+
+### AssemlyDefinition
+
+为了解决这个问题，unity就提供了AssemlyDefinition来解决这个问题
+
+举个例子我们创建一个AssemlyDefinition文件RootDef，在同目录的已经子目录下的脚本都会被编译到RootDef.dll中
+
+![image-20241111163802545](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241111163802545.png)
+
+
+
+
+
+### inspector
+
+![image-20241111164710571](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241111164710571.png) 
+
+
+
+
+
+### 依赖关系
+
+![image-20241111164343714](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241111164343714.png) 例如：Editor可以引用其他三个程序集的内容(注意箭头方向，反过来是不能引用的)
+
+
+
+看看我们新建definition后的以来关系，rooDef和subDef是新建的Definition,且rootDef引用了SubDef
+
+![image-20241111164612509](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241111164612509.png) 
+
+补充，放在项目里的第三方dll其优先级均低于自定义asmdef，可以在自定义asmdef中放心使用。
+
+
+
+
+
+
+
+## unity编译流程
+
+Unity 的编译流程是一个多阶段的过程，旨在确保所有脚本和资源在正确的顺序内进行编译和打包，以便在编辑器中和构建出的项目中正常运行。以下是 Unity 脚本编译的一般流程：
+
+1. **Assembly Definitions (如果适用)**：
+   - 如果项目中使用了 Assembly Definition 文件（`.asmdef`），这些将定义自包含的程序集，允许你更精细地控制哪些脚本一起编译。
+2. **FirstPass 编译**：
+   - Unity 首先编译 `Plugins` 目录下的脚本。通常，这些脚本在 `Assets/Plugins` 或 `Assets/Standard Assets` 下。
+   - `FirstPass` 阶段编译的脚本用于处理与跨平台插件相关的代码，因为这些文件可能会被其他脚本引用。
+3. **普通脚本编译**：
+   - 在完成 `FirstPass` 后，Unity 会编译剩余的 C# 脚本。这包括除了放置在特定文件夹如 `Plugins` 中的脚本之外的大部分项目脚本。
+4. **Editor 脚本编译**：
+   - `Editor` 文件夹中的脚本在普通脚本后编译。这些脚本仅在 Unity 编辑器中执行，不会包含在最终构建的游戏中。
+5. **更新程序集缓存**：
+   - 编译完成后，Unity 更新程序集缓存以提高下次编译速度。
+6. **增量编译**：
+   - 如果只是少数脚本发生变化，Unity 将尝试只重新编译这些变化的脚本，而不是整个项目，从而加快开发速度。
+7. **处理代码依赖和引用**：
+   - Unity 会自动处理脚本之间的依赖关系，确保在脚本引用另一个脚本时，引用的脚本总是已经编译好并可用。
+8. **生成反射数据**：
+   - 对于使用反射的功能，Unity 会在编译过程中收集所需的信息。
+9. **构建最终应用程序**：
+   - 在用户触发构建操作时，Unity 使用编译好的程序集，将它们连同场景及其他资源一起打包成目标平台的可执行文件。
+
+这个流程确保了复杂项目中的脚本可以正确编译、链接，并提高了整体编译效率。每个阶段有其特定的任务，以保持项目的结构清晰且易于管理。
 
 
 
@@ -3566,13 +3651,46 @@ IEnumerator CalledCoroutine()
 
 
 
-# unity中的目录结果和特殊文件
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# unity中的目录结构和特殊文件
 
 ## unity工程文件夹里的目录结构
 
 
 
-### 1、特殊文件夹
+### 特殊文件夹
 
 
 
@@ -3675,7 +3793,7 @@ Android：path = “jar:file://” + Application.dataPath + “!/assets/”;
 
 
 
-### 2.一些通常的Asset类型
+### 一些通常的Asset类型
 
 
 
@@ -3727,12 +3845,12 @@ meta.png
 
 
 
-### 3.脚本
+### 脚本
 
 unity支持三种脚本语言，分别是C#、JavaScript、Boo，最常用的是前两种，当然还有后来扩展的支持Lua脚本的库（slua、ulua）。
 生成的对应的工程.png
 
-#### 1.编译顺序
+#### 编译顺序
 
 编译顺序的原则是在第一个引用之前编译它，参考官网文档可以知道，Unity中的可以将脚本代码放在Assets文件夹下任何位置，但是不同的位置会有不同的编译顺序。规则如下：
 (1) 首先编译**Standard Assets，Pro Standard Assets，Plugins文件夹**（除Editor，可以是一级子目录或是更深的目录）下的脚本；
@@ -3741,7 +3859,7 @@ unity支持三种脚本语言，分别是C#、JavaScript、Boo，最常用的是
 (4) 最后编译Editor下的脚本（不在Standard Assets，Pro Standard Assets，Plugins文件夹下的）；
 基于以上编译顺序，一般来说，我们直接在Assets下建立一个Scripts文件夹放置脚本文件，它处于编译的“第三位”。
 
-#### 2.编译结果：
+#### 编译结果：
 
 项目工程文件夹中会生成类似如下几个文件， 按顺序分别对应着上述四个编译顺序：（GameTool是项目名称）
 GameTool.CSharp.Plugins.csproj
@@ -3963,6 +4081,8 @@ Burst 编译器是 Unity 提供的一个高性能编译器，专门用来优化�
 
 `.meta` 文件通常是由 Unity 引擎创建的，用于存储项目中文件的元数据。每个资产（如脚本、材质、场景、预制件等）都会有一个对应的 `.meta` 文件。
 
+
+
 ### `.meta` 文件的作用
 
 1. **唯一标识符 (GUID)**：每个 `.meta` 文件中都包含一个唯一的 GUID (Globally Unique Identifier)，Unity 使用这个 GUID 来跟踪项目中的资源，即使资源被重命名或移动，Unity 依然能够通过 GUID 识别该资源。
@@ -3972,6 +4092,8 @@ Burst 编译器是 Unity 提供的一个高性能编译器，专门用来优化�
 3. **文件依赖关系**：`.meta` 文件还可以存储文件之间的依赖关系，比如一个预制件依赖的材质文件，Unity 会在 `.meta` 文件中跟踪这些依赖关系。
 
 4. **版本控制**：如果你使用版本控制系统（如 Git）管理 Unity 项目，`.meta` 文件是需要一并提交到版本库中的，以确保在不同开发环境中资源不会丢失或错乱。
+
+
 
 ### 示例
 
@@ -3989,6 +4111,8 @@ TextureImporter:
 
 在这个例子中，`.meta` 文件中包含了资源的 `guid` 和一些与纹理导入相关的设置。
 
+
+
 ### 注意事项
 
 - 请勿手动编辑 `.meta` 文件，除非你完全了解它的结构和作用。
@@ -4000,7 +4124,7 @@ TextureImporter:
 
 `PlayerPrefs` 在游戏打包后会根据平台不同，将数据存储在不同的位置。以下是常见平台的存储位置：
 
-### 1. **Windows**
+### **Windows**
 
 存储位置为注册表（Registry）：
 
@@ -4008,19 +4132,19 @@ TextureImporter:
 
 可以通过 Unity 的 `PlayerSettings` 来设置 `CompanyName` 和 `ProductName`，这两个字段会决定实际的存储路径。
 
-### 2. **macOS**
+### **macOS**
 
 存储位置为 `plist` 文件：
 
 - 路径: `~/Library/Preferences/unity.[CompanyName].[ProductName].plist`
 
-### 3. **Linux**
+### **Linux**
 
 存储在 `prefs` 文件中：
 
 - 路径: `~/.config/unity3d/[CompanyName]/[ProductName]/prefs`
 
-### 4. **Android**
+###  **Android**
 
 在 Android 平台上，`PlayerPrefs` 数据会存储在应用的内部存储中，通常在沙盒文件系统内：
 
@@ -4028,28 +4152,28 @@ TextureImporter:
 
 需要 `root` 权限才能访问该文件。
 
-### 5. **iOS**
+###  **iOS**
 
 在 iOS 平台上，`PlayerPrefs` 数据会存储在 `NSUserDefaults` 中：
 
 - 路径: `~/Library/Preferences/[bundle identifier].plist`
 
-### 6. **WebGL**
+### **WebGL**
 
 对于 WebGL 构建，`PlayerPrefs` 使用浏览器的 `localStorage` 进行存储。
 
-
-
-比如
+### 例子
 
 在 Windows 平台上，`PlayerPrefs` 数据存储在注册表中。要查找它，可以按照以下步骤进行操作：
 
-### 步骤 1: 打开注册表编辑器
+#### 步骤 1: 打开注册表编辑器
 
 1. 按下 `Win + R` 键，打开“运行”对话框。
 2. 输入 `regedit`，然后按下 `Enter` 键。
 
-### 步骤 2: 导航到 `PlayerPrefs` 存储位置
+
+
+#### 步骤 2: 导航到 `PlayerPrefs` 存储位置
 
 在注册表编辑器中，导航到以下路径：
 
@@ -4068,7 +4192,15 @@ HKEY_CURRENT_USER\Software\[CompanyName]\[ProductName]
 
 
 
+
+
+
+
 # ======
+
+
+
+
 
 # c#基础
 
@@ -11068,6 +11200,8 @@ public class MyChildClass : SingletonNonMono<MyChildClass>
 
 
 
+# ======
+
 
 
 
@@ -16231,6 +16365,97 @@ Mongodb与传统型的关系型数据库的对比
 
 
 
+#### 安装和测试
+
+我们使用 包管理工具来安装(尝试过自己安装，装了两天还是有问题，太折磨人了还找不出了哪里错了)
+
+
+
+**安装vcpkg**
+
+```
+git clone https://github.com/microsoft/vcpkg.git
+cd vcpkg
+.\bootstrap-vcpkg.bat   # Windows
+./bootstrap-vcpkg.sh    # Linux/macOS
+```
+
+**安装MongoDB C++ Driver**
+
+```
+vcpkg install mongo-cxx-driver
+```
+
+**集成 vcpkg with Visual Studio**
+
+```
+vcpkg integrate install
+```
+
+这一步可能会有问题
+
+如果 `vcpkg integrate` 没有效果，可以手动在项目属性中添加：
+
+- 打开项目属性。
+- 转到“VC++目录”下的“包含目录”。
+- 添加 `$(VCPKG_ROOT)\installed\x64-windows\include`，其中 `$(VCPKG_ROOT)` 是你的 `vcpkg` 安装根目录变量。
+
+
+
+**测试案例**
+
+```
+#include <bsoncxx/builder/stream/document.hpp>
+#include <bsoncxx/json.hpp>
+#include <mongocxx/client.hpp>
+#include <mongocxx/instance.hpp>
+#include <mongocxx/uri.hpp>
+#include <iostream>
+
+int main() {
+    // 初始化 MongoDB 的全局状态
+    mongocxx::instance instance{};
+
+    // 创建客户端并连接到 MongoDB
+    mongocxx::client client{mongocxx::uri{}};
+
+    // 选择数据库和集合
+    auto db = client["testdb"];
+    auto collection = db["testcollection"];
+
+    // 构建一个 BSON 文档来插入
+    bsoncxx::builder::stream::document document{};
+    document << "name" << "Alice"
+             << "age" << 30
+             << "email" << "alice@example.com";
+
+    // 插入文档到集合
+    collection.insert_one(document.view());
+
+    // 构建查询来寻找文档
+    bsoncxx::builder::stream::document query{};
+    query << "name" << "Alice";
+
+    // 执行查询并输出结果
+    auto cursor = collection.find(query.view());
+    for (auto&& doc : cursor) {
+        std::cout << bsoncxx::to_json(doc) << std::endl;
+    }
+
+    return 0;
+}
+```
+
+
+
+
+
+#### 使用
+
+
+
+
+
 
 
 
@@ -20168,106 +20393,22 @@ Exit0:
 
 ## C#项目内嵌lua虚拟机
 
-在 C# 项目中嵌入一个 Lua 虚拟机，你可以使用诸如 NLua 或 MoonSharp 这样的库。这些库提供了与 Lua 脚本的集成，允许你在 C# 环境中运行 Lua 代码。以下是如何使用这两个库的基本介绍：
+这里主要使用xlua来进行举例子
 
-### 使用 NLua
+- Lua 虚拟机由 C/C++ 实现，因此它可以直接与宿主进行通信
+- C# 则可以依靠 C API 通过 P/Invoke 方式调用 Lua 虚拟机函数
+- 即 C# 可以借助 C/C++ 来与 Lua 进行数据通信
+- XLua 相关 P/Invoke 调用接口位于 `LuaDLL.cs` 文件
 
-NLua 是一个基于 Lua 5.3 的 .NET 库，可以轻松在 C# 中执行 Lua 脚本。
 
-1. **安装 NLua**:
 
-   - 通过 NuGet 安装 NLua：在你的项目中运行以下命令：
 
-     ```
-     Install-Package NLua
-     ```
 
-     
 
-2. **使用 NLua 执行 Lua 脚本**:
 
-   ```
-   using System;
-   using NLua;
-   
-   class Program
-   {
-       static void Main()
-       {
-           using (Lua lua = new Lua())
-           {
-               // 简单执行一段 Lua 脚本
-               lua.DoString("print('Hello from Lua!')");
-   
-               // 定义和调用一个 Lua 函数
-               lua.DoString(@"
-                   function add(a, b)
-                       return a + b
-                   end
-               ");
-               
-               LuaFunction addFunction = lua["add"] as LuaFunction;
-               double result = (double)addFunction.Call(3, 4)[0];
-               Console.WriteLine($"Result of add: {result}");
-           }
-       }
-   }
-   ```
 
-   
 
-### 使用 MoonSharp
 
-MoonSharp 是一个用 C# 实现的 Lua 解释器，完全托管于 .NET 环境中。
-
-1. **安装 MoonSharp**:
-
-   - 通过 NuGet 安装 MoonSharp.Interpreter：在你的项目中运行以下命令：
-
-     ```
-     Install-Package MoonSharp.Interpreter
-     ```
-
-     
-
-2. **使用 MoonSharp 执行 Lua 脚本**:
-
-   ```
-   using System;
-   using MoonSharp.Interpreter;
-   
-   class Program
-   {
-       static void Main()
-       {
-           // 初始化 MoonSharp
-           Script script = new Script();
-   
-           // 执行一段 Lua 脚本
-           script.DoString("print('Hello from Lua with MoonSharp!')");
-   
-           // 定义和调用一个 Lua 函数
-           DynValue res = script.DoString(@"
-               function add(a, b)
-                   return a + b
-               end
-   
-               return add(3, 4)
-           ");
-   
-           Console.WriteLine($"Result of add: {res.Number}");
-       }
-   }
-   ```
-
-   
-
-### 总结
-
-- **NLua** 使用的是原生 Lua 引擎，性能接近于标准 Lua，但需要适当处理原生库的依赖。
-- **MoonSharp** 是纯托管的，不依赖原生库，适合所有 .NET 环境，尤其是在兼容性方面表现优异。
-
-选择哪一个库取决于你的项目需求和环境限制。如果需要跨平台和无外部依赖，MoonSharp 可能是更好的选择。而如果需要原生 Lua 性能特征，NLua 是一个不错的选项。
 
 
 
@@ -21005,6 +21146,91 @@ transform.SetSiblingIndex(n);//将该物体作为父物体的第n个子物体(�
 
 
 ### 原理
+
+
+
+#### 数据从何而来？
+
+单机游戏--本地硬盘中的数据
+
+网络游戏--服务器数据库中
+
+这些数据都会来到我们的客户端逻辑中，我们使用List来存储。
+
+
+
+#### 可视范围
+
+这个你需要充分理解scollview这个ui组件
+
+- 里面的ViewPort就相当于我们的可视范围
+- content就相当于一个运动着的履带
+
+当滑动条在最上面的时候，我们的content左上角y值几乎是0，我们当这个点位零点
+
+我们就很简单地可以获得content左上角的坐标y值和viewport左上角坐标y值他们的差值，Y
+
+又因为我们是知道viewport的高度的，Y + H = Y'
+
+**所以可视范围起始位置是Y**
+
+**可视范围结束位置Y+H**
+
+
+
+ ![image-20241110222307336](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241110222307336.png)
+
+
+
+#### 获取哪些道具应该被显示
+
+假设一个格子是80*80，Y = 90  一行有3个格子
+
+我们可以通过数学运算来将要显示物品的下标计算出来
+
+Y / 格子高度 * 一行有N个格子 = **显示的第一行第一个物品下标**
+
+90 / 80 * 3 = 3;
+
+![image-20241110223043596](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241110223043596.png) 
+
+同理：
+
+Y’ = 330 
+
+330 / 80 * 3 = 12（显示最后一行的第一个物品下标）  
+
+
+
+再举个例子
+
+![image-20241110224154039](D:\MyProject\MMORPG\note\MMORPG.assets\image-20241110224154039.png) 
+
+#### 记录当前显示的内容
+
+需要一个容器来记录当前显示着的信息，目的是每次改变时能够进行判断，
+
+不在第三步算出来的索引范围内的格子对象,移除
+
+在第三步算出来的索引范围内的格子对象,添加
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 原理其实就是，列表向上滑动时，当`item`超过显示区域的上边界时，把`item`移动到列表底部，重复使用`item`并更新`item`的`ui`显示，向下滑动同理，把超过显示区域底部的`item`复用到顶部。
 
@@ -21811,7 +22037,7 @@ public class RecyclingListViewItem : MonoBehaviour
 
 https://blog.csdn.net/linxinfa/article/details/115396546
 
-
+https://www.yxtown.com/course/81/task/6877/show
 
 
 
@@ -22198,9 +22424,13 @@ public class MousePosition : MonoBehaviour
 
 
 
-## 概要
+## 初步介绍
 
-![image-20230904200801021](MMORPG.assets/image-20230904200801021.png)
+
+
+### 游戏AI是什么
+
+![ ](MMORPG.assets/image-20230904200801021.png) 
 
 **感知**：可以检测附近玩家或者环境的变化，比如说：有没有玩家进入它的视野，有没有玩家对它进行攻击，感知到这些情况，就可以根据这些情况去做决策
 
@@ -22224,9 +22454,7 @@ AI包括的能力：寻路能力、移动、视野、技能
 
 4.飞僵：有技能
 
-
-
-旋风狼：
+**旋风狼：**
 
 1.生命值为0 死亡倒地
 
@@ -22241,6 +22469,283 @@ AI包括的能力：寻路能力、移动、视野、技能
 6.血量低于10%狂化
 
 
+
+
+
+
+
+### 介绍一些游戏AI
+
+------
+
+#### 4X游戏AI
+
+![img](https://img2018.cnblogs.com/blog/1409576/201811/1409576-20181129113340093-631290847.jpg)
+
+《群星》《文明》《王国风云》等为代表的4X游戏，战略游戏的一种，其主要的四个游戏目的分别是：
+eXplore（探索），eXpand（扩张），eXploit（掠夺），eXterminate（毁灭）。
+
+为了让玩家在4X进程中受到阻挡，4X游戏AI必须得足够聪明做出决策，
+但又同时为了不让玩家觉得无法胜利，它往往不是采用最优策略，而是使用更“人性化”的策略，
+（例如反应延迟，走的路径稍微扭曲，模糊决策等做法）。
+
+#### 《求生之路》系列
+
+![img](https://img2018.cnblogs.com/blog/1409576/201811/1409576-20181123114432533-523983455.png)
+
+作为一款FPS游戏，很难说《求生之路》里的怪物有多智能——它们本来就该是愚蠢而凶猛的。真正有技术含量的是它的“导演系统”，AI Director作为后台的核心，会根据玩家在游戏中的具体表现调控游戏的节奏。怪物出现的地点、数量，何处刷新道具等等，配合上根据形势动态变换的音乐，给了用户更真实的游戏体验。
+
+#### 角色扮演/沙盒游戏中的NPC
+
+![img](https://img2018.cnblogs.com/blog/1409576/201811/1409576-20181123114435910-1404177291.png)
+
+在一些自由度较高的游戏中，为了让玩家更好的融入这个世界，游戏会对NPC进行很多详细的设定。比如在《巫师》系列中，每个NPC都有自己的性格设定，包括会话数据库，让他们可以进行丰富的动作和对话。在GTA这种沙盒游戏中更是这样。
+
+#### 基于AI自动生成的文字冒险游戏
+
+![img](https://img2020.cnblogs.com/blog/1409576/202006/1409576-20200614012210114-347443129.png)
+
+
+
+### 参考文献
+
+https://www.cnblogs.com/KillerAery/p/10003678.html
+
+
+
+
+
+## AI的感知
+
+
+
+### 视觉感知
+
+视觉感知是一种常见的感知。
+在许多即时战略游戏或者类DOTA游戏里，一个单位的视觉感知往往是圆形范围的。
+
+![img](https://img2018.cnblogs.com/blog/1409576/201812/1409576-20181202160423470-1312878589.jpg)
+
+#### 扇形视野
+
+当然在其他大部分俯视角游戏里，一个智能体的视觉感知应该是类似现实人眼观看的扇形范围。
+
+![img](https://img2018.cnblogs.com/blog/1409576/201812/1409576-20181202234921770-1874698000.png)
+
+对于横板游戏，可以把视野“竖”起来，检测方式无多少差别。
+对于空间更加复杂的3D游戏，可能需要视锥体（立体）检测。
+
+> 一个更快的技巧是照样做成扇形检测，只是再额外增加高度差检测（即看作2.5D处理）。
+
+但是视野实际还需考虑阻挡问题，这里提供1种主流解决视野遮挡的思路：
+
+**在所在区域的所有潜在目标进行遍历，每次遍历 先判断是否在扇形范围内，
+再做一条智能体到目标的射线，若射线碰到的第一个物体是该目标，则感知到该目标。**
+
+![img](https://img2018.cnblogs.com/blog/1409576/201812/1409576-20181202234729419-811215453.png)
+
+进一步的优化则可以预先“规划”好区域，构建潜在可视集（PVS），尽可能过滤不必要的目标，缩小所在区域的潜在目标数量
+（例如屋外看不到房内的人，也就可以过滤掉房内的人），那么检测速度就非常快。
+
+```
+//视野感知
+class ViewPerception {
+public:
+	//进行一次视野感知探测
+	void check(Vector2 position) {
+		//先清理上次的结果
+		perceptionResult.clear();
+
+		//逐个潜在目标检测
+		for (Object* target : potentialTargets) {
+			//运用简单的数学运算判断点是否在扇形范围：
+
+			//先进行距离判断是否在半径内。
+			Vector2 offset = target.getPosition() - position;
+			float distanceSq = offset.lengthSquare();
+			if (distanceSq > radiusSq)continue;
+
+			//look向量和射线单位向量的数量积绝对值 若大于 数量积限制，
+			//则证明该射线离look向量的角度 超出数量积限制的对应角度。
+			float dotproduct = fabs(offset.normalize().dot(look));
+			if (dotproduct > dotproductlimit)continue;
+
+			//最后使用射线检测第一个碰到的物体是不是目标物体
+			//若射线第一个碰到的物体是目标物体，则可视为 看见了该物体
+			if (raycast(position, target->position).result.object == target) {
+				perceptionResult.emplace_back(target);
+			}
+		}
+	}
+private:
+	Vector2 look;				//朝前的单位向量
+	float radiusSq;				//扇形半径的平方
+	float dotproductlimit;		//数量积限制
+	std::vector<Target*> perceptionResult;	//感知到的目标（结果）
+	//....
+};
+```
+
+> TIP:判断点在圆形范围应比较距离的平方和半径的平方，每次判断就可以减少一次开方的运算。
+
+
+
+
+
+#### 椭圆视野
+
+上述扇形视野有几个缺陷:
+
+- 智能体应该能看到贴近侧方的物体（甚至能感知到贴近背后的位置）
+- 智能体对于正前方向应该能看的更远
+
+基于这些缺陷，我们加了一个圆形和狭长的扇形视野范围（紫色点为智能体）：
+
+![img](https://img2018.cnblogs.com/blog/1409576/201909/1409576-20190930130502471-1753996234.png)
+
+但是这样计算量就提升了不少，一个代替方法是使用椭圆型视野（紫色点为智能体）：
+
+![img](https://img2018.cnblogs.com/blog/1409576/201909/1409576-20190930130458014-190702617.png)
+
+椭圆（任意转向）的长轴长为2a，短轴长为2b，两个焦点离圆心的距离是c和-c（而且c2=a2−b2c2=a2−b2）。
+椭圆上任意一点到两个焦点的距离之和必等于2a，利用这个性质可推理出：
+若某个点与椭圆上两个焦点距离之和小于2a，则必在椭圆内。
+
+因此我们只要预设好常量值：
+
+- a：取决于视野的长度
+- b：取决于视野的宽度
+- c：由c2=a2−b2c2=a2−b2计算出
+- d1,d2：在智能体位置正前方d1距离的点为焦点c1，正前方d2距离的点为焦点c2。
+
+```
+bool ViewPerception::checkPointInEllipse(Vector2 targetPosition){
+  Vector2 c1 = this->position + this->look * d1;
+  Vector2 c2 = this->position + this->look * d2;
+
+  if(distance(c1,targetPosition)+distance(c2,targetPosition) <= 2*a)return true;
+  
+  return false;
+}
+```
+
+椭圆型的视野不仅能解决上述缺陷，在现实中也更贴近人类视觉的模型，计算量也只略高于一个扇形视野计算。
+
+
+
+#### 基于分片的高性能视域搜索系统
+
+在很多策略游戏里，视域（Line-of-Sight，简称LOS）是很重要的概念。
+在典型RTS游戏里，视域分为可见区域，不可见区域，已探索（但不可见）区域，说白了就是战争迷雾机制。
+
+为了实现视域系统，我们先把游戏世界分为一个个整齐的分片（可以是正方形网格，六边形...）。
+当我们检测某个分片是否可见时，直观的做法是直接判断该分片位置是否位于玩家视野几何形状。潜在的问题是，分片越多需要检测的次数呈几何级数增长。
+
+而更高性能的做法是：
+
+**1. 首先每个分片记录一个数值（一般是用二维数组记录），用于记录该分片是否可视。**
+
+在实现时为满足更复杂的需求可以记录额外的数据：
+
+- 多单位视野共享，应该用一个计数，当其中一个单位不再看见该分片时，可以减少计数，而不是直接修改为不可视。
+- 多方视野，应该用一个（可能多个）Byte值，其中每个位表示某方视野是否可见。这可以用在观战系统，随时屏蔽某一方或者只关注某一个玩家的视野。
+- 多种视域类型，例如可见区域，不可见区域，已探索区域...则得记录枚举值。
+
+**2. 每帧将玩家的旧视野（上一帧的视野）对应的所有分片数值修改为不可视，然后根据新视野（当前帧的视野）对应的所有分片数值修改为可视。**
+
+在修改的时候，我们可以用一个LOS模板来帮助我们快速找到视野分片，并修改之。
+这个LOS模板实际上就是列表数组，每一行记录该行所有视野分片的位置：
+
+```cpp
+for(int i = 0 ; i < LOStemplate.size() ; ++i){
+  for(int j = 0 ; j < LOStemplate[i].size(); ++j){
+    tiles[positionX + i - offset][positionY + LOStemplate[i][j]] = true;
+  }
+}
+```
+
+得益于LOS模板，我们不仅可以引入圆形LOS，还可以引入类似手电筒视野的LOS：
+
+![img](https://img2018.cnblogs.com/blog/1409576/201909/1409576-20190912001712415-723311486.png)
+
+由于游戏里玩家可能转向，对于一些非圆形LOS，我们可以准备多个LOS模板（例如对应90°，60°，30°..方向的LOS模板）：
+
+![img](https://img2018.cnblogs.com/blog/1409576/201909/1409576-20190912001707798-310067557.png)
+
+因为LOS模板完全可以通过预计算先算出来，所以使用它的CPU开销只与它的视野分片数相关而不是与地图分片数相关，这个性能开销已经很不错了。
+
+**3. 当需要检测分片是否可见时，直接访问记录来获取。**
+
+一个技巧是，不要主动搜索，而是利用分片记录来主动通知：
+例如当一个单位需要搜索视野内的一个敌人时，不是在该单位的LOS模板范围内主动遍历搜索敌人所在的分片，
+而是敌人自己根据当前位置的分片数据（多方视野记录），主动通知可看到该分片的单位。
+
+简单来说，思想是基于事件驱动而非轮询，效率也提升的相当不错。
+
+
+
+### 听觉感知
+
+听觉感知一般比较简单粗暴：一个圆形/球形范围检测，
+而且一般还无需考虑阻挡问题（现实中的声音传播可近似看作无阻挡）。
+
+![img](https://img2018.cnblogs.com/blog/1409576/201812/1409576-20181202235412874-641790742.png)
+
+另外的，听觉感知一般需要得到的信息：
+
+- 声音来源（例如发出声音的生物）
+- 声音大小和距离
+
+通过简单的线性计算，由声音大小和距离可以计算出实际接受声音的大小。
+将这个信息作为额外数据交由决策使用。
+（例如一个警卫，听到太大的声音就进入敌对状态，小的声音则进入警戒状态）
+
+```
+//听觉感知
+class ListenPerception {
+public:
+	//进行一次听力感知探测
+	void check(Vector2 position) {
+
+		perceptionResult.clear();
+
+		//逐个潜在声源检测
+		for (Voice& voice : potentialVoices) {
+			//判断目标点是否在圆形范围,即距离是否在半径内。
+			Vector3 offset = voice.getPosition() - position;
+			float distanceSq = offset.lengthSquare();
+			if (distanceSq > radiusSq)continue;
+
+			//实际声音大小会随着距离增大而衰减
+			float volume = voice.getVolume() / distanceSq;
+
+			perceptionResult.emplace_back(voice.getTarget(),volume);
+		}
+	}
+private:
+	float radiusSq;			//范围半径
+	std::vector<std::pair<Target*, float>> perceptionResult;	//感知到的目标+实际声音大小（结果）
+};
+
+```
+
+
+
+### 其它感知
+
+------
+
+这个其实应该叫杂项感知，因为一般来说，视觉感知和听力感知已经足够一个基本的智能体所需感知了。
+
+但极少情况还可能一些智能体需要知道各种杂项信息（例如队长给警卫发送了一条无线电消息，要求警卫赶往队长所在位置支援）。
+
+
+
+
+
+### 参考文献
+
+https://www.cnblogs.com/KillerAery/p/10053817.html
 
 
 
@@ -22681,6 +23186,8 @@ Enemy
 
 
 
+
+
 ### 前言
 
 **有限状态机的缺陷：**
@@ -22692,36 +23199,296 @@ Enemy
 
 
 
-
-
-
-
-
-
 ### 运作逻辑
 
-#### 1.根节点驱动
+![img](D:\MyProject\MMORPG\note\MMORPG.assets\1409576-20191003000503893-725298179.png)
 
-如果你已经了解「有限状态机（FSM）」的话，你应该知道，有限状态机在运作时常常会停留在一个状态中，不断执行该状态的逻辑，直至接受到状态转移的指令才变化到其它状态。而行为树则是会不断从根节点向下搜索，即「**根节点驱动**」，来找到合适的「动作」执行，执行完毕后会再回到根节点重复这个过程。以下面这个「怪物攻击玩家」行为树为例：
+行为树由一个个节点组成
 
-[![img](MMORPG.assets/3306371-20231201215937020-2125698706.png)](https://img2023.cnblogs.com/blog/3306371/202312/3306371-20231201215937020-2125698706.png)
+- 结构：树状结构
+- 运行流程：从根节点开始自顶向下往下遍历，每经过一个节点就执行节点对应的功能。
 
-假设「攻击」动作的逻辑是「向玩家挥一拳」，现在怪物发现玩家且玩家在攻击范围内。那么，按照行为树的逻辑，它会经过「战斗 → 试图攻击 → 攻击」一路下来，最终向玩家挥出一拳 (￣ε(#￣)☆╰╮o(￣皿￣///)。
+我们规定，每个节点都提供自己的excute函数，返还执行失败/成功结果。
+然后根据不同节点的执行结果，遍历的路径随之改变，而这个过程中遍历到什么节点就执行excute函数。
 
-至此，「攻击」就算是完成了，若是在状态机中，攻击也算是一种状态的话，怪物必然会停留于此，等待下一帧时再挥出一拳。但在行为树中呢？它确实也会在下一帧时在挥出一拳，只是会再经过「战斗 → 试图攻击 → 攻击」这个过程，也就是前面所说的，从根节点再次出发。
+```
+//节点类（基类）
+class Node{
+  //...
+public:
+  virtual bool excute() = 0;      //执行函数，返还 成功/失败
+  //...
+};
+```
 
-你可能也发现了，这明显是脱裤子放屁的行为，它确实可以算是行为树的小缺点。但其实行为树的深度通常并不会太深，多几次布尔判断或小遍历倒也不打紧；而且有一种**事件驱动**的行为树实现方法，能以“空间换时间”的手段改善这种情况，感兴趣的同学可以去了解一下。
+主流的行为树实现，将节点主要分为四种类型。
+下面列举四种节点类型及其对应excute函数的行为：
 
-#### 2.特殊的节点
+- 控制节点（非叶节点），行为是控制遍历路径的走向。
+- 条件节点（叶节点），行为是提供条件的判断结果。
+- 行为节点（叶节点）：行为是执行智能体的行为。
+- 装饰节点 ：行为是修饰（辅助）其他三类节点。
 
-行为树的一大特点，就是**将条件与行为本身进行了分离**。
-什么意思呢？我们仍以上面那张图为例，只是稍稍修改下表现方式（也更接近行为树真正的样子）：
 
-[![img](MMORPG.assets/3306371-20231201223752295-1676670576.png)](https://img2023.cnblogs.com/blog/3306371/202312/3306371-20231201223752295-1676670576.png)
 
-好像多了几个圈？那现在，请你将这些圈也视为和「攻击」一样类型的节点。这样一来，我们将「判断逻辑」、「顺序遍历（图中的红色箭头）」、「动作」都用节点来表示了。这有什么好处呢？好处就在于我们可以将它们进行**各种各样的组合**！比如，如果有一个怪物比较胆小，遇到玩家后会逃跑，我们就可以用图中的「发现玩家」+「移动到该位置（逃跑的位置）」来实现；也可以配合新的节点来组合，比如「已知玩家最后出现的位置」+ 新节点：「朝指定位置开火」，就可以实现远程追击。
 
-总之，正是因为行为树有一系列特殊的节点，使得开发者可以降低各个行为之间的关联（也就是解耦），再配合上树状结构的特点，开发者可以灵活地进行组装，实现节点的重复利用，避免写重复的代码，提高了开发效率。（用过有限状态机写游戏AI的同学一定能体会到这点的好处）
+
+### 行为树 控制节点
+
+------
+
+**控制节点**是用于控制如何执行子节点（控制遍历路径的走向）。
+
+由于非叶节点的特性，其需要提供容纳子节点的容器和添加子节点的函数。
+所以先写好非叶节点的类：
+
+```cpp
+class NonLeafNode : public Node {
+	std::vector<Node*> children;    //子节点群
+public:
+	void addChild(Node*);           //添加子节点
+	virtual bool excute() = 0;      //执行函数，返还 成功/失败
+};
+```
+
+下面列出一些控制节点的介绍：
+
+#### 选择节点(Selector)
+
+按顺序执行多个子节点，若成功执行一个子节点，则不继续执行下一个子节点。
+
+![img](https://img2018.cnblogs.com/blog/1409576/201812/1409576-20181204084642128-630857633.png)
+
+举例：实现要不攻击,要不防御,要不逃跑。
+用一个选择节点，按顺序添加<攻击节点>和<防御节点>和<逃跑节点>作为子节点。
+
+```cpp
+class SelectorNode : public NonLeafNode{
+public:
+  virtual bool excute()override{
+  	for(auto child : children){
+  		//如果有一个子节点执行成功，则跳出
+  		if(child->excute() == true){break;}
+  	}
+  	return true;
+  }
+};
+```
+
+#### 顺序节点(Sequence)
+
+按顺序执行多个子节点，若遇到一个子节点不能执行，则不继续执行下一个子节点。
+
+![img](https://img2018.cnblogs.com/blog/1409576/201812/1409576-20181204084648191-1202113135.png)
+
+举例：实现先开门再移动到房子里。
+用一个顺序节点，按顺序添加<开门节点>和<移动节点>作为子节点。
+
+```cpp
+class SequenceNode : public NonLeafNode{
+public:
+  virtual bool excute()override{
+  	for(auto child : children){
+  		//如果有一个子节点执行失败，则跳出
+  		if(child->excute() == false){break;}
+  	}
+  	return true;
+  }
+};
+```
+
+#### 并行节点（Parallel）
+
+同时执行多个节点。
+
+![img](https://img2018.cnblogs.com/blog/1409576/201812/1409576-20181204084651384-1392013712.png)
+
+举例：一边说话和一边走路。
+用一个并行节点，添加<说话节点>和<走路节点>作为子节点。
+
+```cpp
+class ParallelNode : public NonLeafNode{
+public：
+  virtual bool excute()override{
+  	//执行所有子节点
+  	for(auto child : children){
+  		child->excute();
+  	}
+  	return true;
+  }
+};
+```
+
+> 常用的控制节点一般是<并行节点><选择节点><并行节点>。当然还有其他更多控制节点种类(不常用)：
+
+- 随机选择节点(随机执行一个子节点)。例如偶尔闲逛，偶尔停下来发呆。
+- 随机顺序节点(随机顺序执行若干个子节点)
+- 次数限制节点(只允许执行若干次)
+- 权值选择节点(执行权值最高的子节点)
+- 等等..
+
+可能到这里，有想到还有个问题：为什么控制节点也需要提供(执行成功/执行失败)两种执行结果。
+答：这样做就可以做到决策的复合——控制节点不仅可以控制行为节点，也能控制控制节点。
+
+### 行为树 条件节点
+
+------
+
+#### 前提条件
+
+执行节点不会总是一帆风顺的，有成功也总会有失败的结果。
+这就是引入前提条件的作用——
+满足前提条件，才能成功执行行为，返还**执行成功**结果。否则不能执行行为，返还**执行失败**结果。
+
+![img](https://img2018.cnblogs.com/blog/1409576/201812/1409576-20181204090520800-1672213080.png)
+
+但是每个节点的前提总会不同，或有些没有前提(换句话说总是能满足前提)。
+
+一个可行的做法是：让行为节点含有bool函数对象（或函数接口）。这样对于不同的逻辑条件，就可以写成不同的bool函数，绑定给相应的行为节点。
+
+```cpp
+	std::function<bool()> condition;	//前提条件
+```
+
+现在比较成熟的做法是把前提条件抽象分离成新的节点类型，称之为**条件节点**。
+将其作为叶节点混入行为树，提供条件的判断结果，交给控制节点决策。
+
+它相当模块化,更加方便适用。
+
+![img](https://img2018.cnblogs.com/blog/1409576/201903/1409576-20190318002921097-1043205521.png)
+
+> 这里的Sequence节点是上面控制节点的一种：能够让其所有子节点依次运行，若运行到其中一个子节点失败则不继续往下运行。
+> 这样可以实现出不满足条件则失败的效果。
+
+```cpp
+class ConditionNode : public Node {
+	std::function<bool()> condition; 	//前提条件
+public:
+		virtual bool excute()override {
+		return condition();
+	}
+};
+```
+
+### 行为树 行为节点
+
+------
+
+**行为节点**是代表智能体行为的叶节点，其执行函数一般位该节点代表的行为。
+
+行为节点的类型是比较多的，毕竟一个智能体的行为是多种多样的，而且都得根据自己的智能体模型定制行为节点类型。
+这里列举一些行为：站立，射击，移动，跟随，远离，保持距离....
+
+#### 持续行为
+
+一些行为是可以瞬间执行完的(例如转身?)，
+而另外一些动作则是执行持续一段时间才能完成的(例如攻击从启动攻击行为到攻击结算要1秒左右的时间)。
+
+因此，这些持续行为节点的excute函数里，应先启动智能体的持续行为，然后挂起该行为树（更通俗地说是暂停行为树），等到持续时间结束才允许退出excute函数并继续遍历该行为树。
+为了支持挂起行为树而不影响其他CPU代码执行，我们往往需要利用协程等待该其行为完成而不产生CPU阻塞，而且开销远低于真正的线程。
+此外，一般是一个行为树对应维护一个协程。
+
+> 不了解协程是什么，可以参考下我的Unity协程笔记：[Unity C#笔记 协程 - KillerAery - 博客园](https://www.cnblogs.com/KillerAery/p/10336388.html)
+
+#### 行为节点示例实现
+
+```cpp
+//行为节点类（基类）
+class BehaviorNode : public Node{
+public:
+	virtual bool excute() = 0;			//执行节点
+};
+//举例：移动行为节点
+class MoveTo : public BehaviorNode{
+public:
+	virtual bool excute()override{
+		...  //让智能体启动移动行为
+    ...  //协程暂时挂起直到持续时间结束
+		return true;
+	}
+};
+```
+
+### 行为树 装饰节点
+
+------
+
+**装饰节点**，顾名思义，是用来修饰（辅助）的节点。
+
+例如执行结果取反/并/或,重复执行若干次等辅助修饰节点的作用，均可做成装饰节点。
+
+```cpp
+//取反节点
+class InvertNode : public OneChildNonLeafNode{
+public:
+  virtual bool excute()override{
+  		return !child->excute();
+  }
+};
+//重复执行次数节点
+class CountNode : public OneChildNonLeafNode{
+  int count;
+public:
+  virtual bool excute()override{
+      while(--count){
+        if(child->excute() == false)return false;
+      }
+  		return true;
+  }
+};
+```
+
+> OneChildNonLeafNode是指最多可拥有一个子节点的非叶节点类，这里就不做具体实现。
+
+
+
+
+
+### 总结和对比
+
+到这里，我们可以看到行为树的本质：
+
+- 把所有行为（走，跑，打，站等等）分离出来作为各种**行为节点**，
+- 然后以不同的**控制节点**,**条件节点**,**装饰节点**将这些行为复合在一起，组合成一套复杂的AI。
+
+相比较传统的有限状态机：
+
+- 易脚本化/可视化的决策逻辑
+- 逻辑和实现的低耦合，可复用的节点
+- 可以迅速而便捷的组织较复杂的行为决策
+
+这里并不是说有限状态机一无所用：
+
+- 状态机可以搭配行为树：状态机负责智能体的身体状态，行为树则负责智能体的智能决策。这样在行为树做决策前，得考虑状态机的状态。
+- 状态机适用于简单的AI：对于区区需两三个状态的智能，状态机解决绰绰有余。
+- 状态机运行效率略高于行为树：因为状态机的运行总是在当前状态开始，而行为树的运行总在根开始，这样就额外多了一些要遍历的节点（也就多了一些运行开销）。
+
+> 在《杀手：赦免》的人群系统里，人群的状态机AI只有简单的3种状态，由于人群的智能体数量较多，若采取行为树AI，则会大大影响性能。
+
+简而言之：行为树是适合复杂AI的解决方案。
+
+- 对于Unity用户，Unity商店现在已经有一个比较完善的行为树设计(Behavior Designer)插件可供购买使用。
+
+
+
+### **扩展**
+
+- 可让根节点记录该AI要操控的智能体引用（指针），每次进行决策，传给子节点当前要操控的智能体引用。这样就可以使AI行为树容易改变寄主。
+  (例如1个丧尸死了被释放内存了，寄生它的AI行为树不必释放并标记为可用。一旦产生新的丧尸，就可以给这个行为树根节点更换新的寄主，标记再改回来)
+- 得益于树状结构，重复执行次数节点（或其他类似的节点），可以让它执行完相应的次数后，解开与父节点的连接，释放自己以及自己的子节点。
+- 共享节点型行为树是可供多个智能体共用的一种行为树，是节省内存的一种设计：http://www.aisharing.com/archives/563
+- LOD优化技术：LOD原本是3D渲染的优化技术。对于远处的物体，渲染面数可以适当减少，对于近处的物体，则需要适当增加细节渲染面数。
+  同样的可以用于AI上，对于远处的AI，不需要精准每帧执行，可以适当延长到每若干帧执行。
+
+一个武装小队队员的AI行为树示例：
+
+![img](https://img2018.cnblogs.com/blog/1409576/201812/1409576-20181203215115435-762967891.jpg)
+
+
+
+
+
+
 
 ### 代码实现
 
@@ -23502,6 +24269,12 @@ public partial class BehaviorTreeBuilder
 
 [游戏AI行为决策——Behavior Tree（行为树） - 狐王驾虎 - 博客园 (cnblogs.com)](https://www.cnblogs.com/OwlCat/p/17871494.html)
 
+https://www.cnblogs.com/KillerAery/p/10007887.html
+
+
+
+
+
 
 
 
@@ -23516,7 +24289,288 @@ public partial class BehaviorTreeBuilder
 
 
 
+## 黑板模式
 
+
+
+### 前言
+
+“黑板”（Blackboard）在人工智能领域已经是一个很古老的东西了。它基于一种很直观的概念，就是一群人为了解决一个问题，在黑板前聚集，
+每个人都可以发表自己的意见，然后在黑板上写下自己的看法，当然你也可以基于别人记录在黑板上的看法，
+来发表和更新自己的看法，在这样不断的意见交换，看法更新的过程中，越来越趋向于对于问题的最终解答。
+一开始的黑板模式就是这样一个由多个子系统来共同协作的人工智能解决方案。
+
+![img](https://img2018.cnblogs.com/blog/1409576/201901/1409576-20190117164442022-482873635.jpg) 
+
+### 定义
+
+基于上面的描述，我们可以看到黑板有几个功能：
+
+- 记录：每个人可以写下自己的看法。
+- 更新：调整已有的看法。
+- 删除：删除对于过时的，或者错误的看法。
+- 读取：黑板上的内容谁都能自由阅读。
+
+所以从本质上来说，黑板就是这样一个共享数据的结构，它对于多个系统间通信是很有帮助的。
+
+它提供一种数据传递的方式，有助于系统的封装和解耦合。
+
+![img](https://img2018.cnblogs.com/blog/1409576/201901/1409576-20190117165052363-43396811.jpg) 对于各个子系统而言，只需要把自己的运算的结果数据记录在黑板上，至于这个数据谁会去用，并不需要关心。
+反过来也是一样，对于自己的运算时需要用到的数据，可以从黑板上去获取，至于这个数据是谁提供的，也不需要关心。
+只要这个数据在黑板上，就够可以认为是合法数据，这就提供的了一种灵活性，各个子系统的设计也会相对独立。
+
+
+
+### 优缺点
+
+#### 好处
+
+现在游戏中，也大量的使用黑板（或者类黑板）模式，因为游戏系统的模块间通信的需求也是很多的，AI，动画，物理，实体与实体间，等等，他们都需要彼此交换数据，我想，大家经常碰到的一个头疼的问题就是，这个数据应该存在哪里？存在这里也可以，存在那里也可以，或者索性做个Data类来存，所以在Player类里，变量会越来越多，变量列表越来越长。
+
+针对这种情况黑板可以帮助解决一部分问题，特别是对于在多模块之间需要通信的数据，我们再来看一下它几个好处：
+
+- 解耦合：黑板做为独立的数据模块，可以”超然”于所有的模块之外，提供一些额外的数据维护和管理的功能，这个让我想到了那些内存数据库，比如redis和memcached，从某种程度上，黑板就像程序内的数据库。
+- 共享性：黑板的数据是共享的，比如我们要去拿一个数据，我们不需要先拿到它的实例（还需要考虑是否为null），然后再通过get方法去取数据，我们只需要存一个黑板的实例，然后通过黑板获取数据的方法来获取。这就类似设计模式中的Facade方法，黑板提供了这样一个facade层，使得RWD的接口保持统一。
+- 数据的维护和管理：黑板提供数据的RWD，生命期，作用域等内容，让我们可以从管理数据的漩涡中解脱出来，让专业的人做专业的事。
+
+#### 缺点
+
+- RWD（读写删）操作相对随意，特别是WD操作，容易造成数据被破坏，或者产生子系统间的竞争：
+  比如，系统A和系统B都会去修改data1，那到底以谁的值为准呢？
+- 可能会产生非法数据：
+  一般认为，只要在黑板上的数据，就是合法的数据，在读取的时候，不需要判断它是否合法，
+  但如果一个子系统没有很好的维护它自己产生的数据（比如，该删除的时候没删除，或者赋值错误），
+  那别人读取该数据的系统时候，就会产生错误的运算结果。
+
+
+
+### 扩展
+
+博客(指AI分享站的博客)上有一篇较早的文章就讨论过这样的问题，像黑板这样的共享数据结构，既是黄金屋，又是垃圾堆，用好不容易，所以在黑板原有的功能中，我们可以加一些额外的功能：
+
+- 数据过期时间：对于写入黑板的数据，可以加一个过期时间的功能，比如3秒后，该数据过期，这很实用，可以提高数据维护的便利程度。
+- 数据作用域：我们可以规定可以读写该数据子系统，默认情况下，黑板的数据都是全局可见的，就像程序中的全局变量一样，但如果我们希望某些数据只有对个别子系统开放，就可以通过作用域字段来指定。
+
+
+
+
+
+### 一个游戏使用黑板模式的例子
+
+需求：我们在游戏中有一个技能，可以给角色提供一种狂暴状态，持续10秒。
+
+游戏中很多别的系统在计算中，需要检查该角色是否有这样的一个狂暴的状态，然后做一些后续的判断。
+在这样一个例子中，常规的做法可能是，在角色上存一个变量，技能触发的时候，置成True，然后维护一个计时器，设为10秒，
+每帧检查这个计时器，当时间到了，就把这个值再置成False，再提供一个get方法给外部系统调用。
+
+这样的逻辑正确，但相对繁琐，不够优雅。如果我们换用黑板模式来维护这个数据应该怎么写呢？就一句话：
+
+```
+player.GetBB().SetValue(BBKEY_FURIOUS, true).SetExpiredTime(10);
+```
+
+我们先获取了黑板的实例（GetBB），然后设置了变量为True（SetValue），然后再设置了过期时间为10秒（SetExpiredTime），这样在10秒内如果访问这个变量，会返回True，但如果过了10秒，这个变量就会返回False，而所有对于数据的管理就被完整的封装在了黑板的实现中。
+
+当然，黑板可以有很多块，像我上面的例子，我就是在角色身上建了一块黑板，用来存储与角色相关的数据，还可以建一块全局的黑板，用来存储整个游戏层面上的数据通信。不管建了几块这样的黑板，它的原理都是一样的，具体如何选择，还是取决于实际情况。
+
+有人可能会说，我把变量一个一个具体定义，和存在黑板中用key-value的结构好像区别也不大，确实，用黑板确实能带来一些好处，但好处还不够多。
+
+但黑板有一个另外的优势，那就是支持可视化编程和数据驱动，结合现在的引擎来看，这样的好处真是大大的。
+现在主流的引擎，都会提供一个强大的可视化的编辑器，通过一些UI上的操作，就能完成一些复杂的游戏逻辑，像行为树和状态机在游戏行业的经久不衰，一方面是因为它的概念比较简单和直观，另一方面也是因为它在可视化编程和数据驱动方面的优势。黑板在这样的潮流中，也是一点不落后。
+
+首先它采用的存储方式是key-value的字典结构，很通用，可以通过配置文件简单定义，通过范型和反射很容易去创建，修改和读取。其次它作为共享数据，可以很好的和类似行为树和状态机这样的系统协同工作。
+
+
+
+### 其他使用黑板模式的例子
+
+
+
+#### 行为树通信
+
+行为树的节点间也是存在通信的需求的，最常见的就是序列节点：
+比如我们有一个简单的攻击序列节点，第一个节点是选择目标，第二个节点是攻击，这里就存在一个节点间通信的需求。
+
+在”选择目标”的节点里会选择一个攻击目标，然后在攻击的节点里会对这个目标实施攻击。所以”攻击目标”这个数据就会在两个节点间进行通信，第一个节点输出，第二个节点输入，那这个数据应该存在哪里呢？
+
+![img](https://img2018.cnblogs.com/blog/1409576/201901/1409576-20190117164448412-1816850407.png)
+
+存在角色身上是一个选择，还有一个选择，就是存在与这个行为树绑定的黑板上面，
+在Unity的Behaivor Design这个行为树插件里，这样的变量就叫共享变量。
+
+它的概念其实就是和黑板类似的（它在两个节点中分别创建了一个指向这个共享变量的引用，
+主要是方便编辑器操作和代码上的访问），在编辑器中，我们就可以创建这样一个变量，
+然后把它拖到第一个和第二个节点的相应变量里。
+
+
+
+#### 状态机通信
+
+状态机也是一样的，当各个状态跳转的时候，势必也会带来一些数据的通信。
+这个时候，黑板就能很好的帮助这样的系统进行共享数据的管理。
+
+关于状态机的例子，大家可以看Unity上一个状态机的插件PlayMaker。
+
+![img](https://img2018.cnblogs.com/blog/1409576/201901/1409576-20190117102526518-1240798357.png)
+
+(Unity里Animator状态机的黑板模式)
+
+
+
+
+
+### 小结和简易黑板模式实现
+
+黑板是一个很好的共享数据系统，我很推荐大家在自己的代码库中加一个黑板的库，并应用到你核心游戏部分的实现中，这个小小的东西，会带来很大的思维和代码质量的提升。如果还不是很熟悉的同学，可以去用用看我刚刚说到Unity的那两个插件，这样你就会对数据通信，共享数据，黑板等概念更为清楚。
+
+```
+#pragma once
+#include <map>
+#include <any>
+#include <list>
+
+//黑板类
+class BlackBoard
+{
+private:
+	//黑板计时器
+	struct BlackBoardTimer {
+		float timer;
+		std::string key;
+		std::any value;
+	};
+protected:
+	std::map<std::string, std::any> mDatas;
+	std::list<BlackBoardTimer> mTimers;
+public:
+	BlackBoard();
+	~BlackBoard();
+	//设置数据
+	void setValue(std::string key, bool value);
+	void setValue(std::string key, bool value, float expiredTime , bool expiredValue);
+	void setValue(std::string key, int value);
+	void setValue(std::string key, int value, float expiredTime, int expiredValue);
+	void setValue(std::string key, float value);
+	void setValue(std::string key, float value, float expiredTime, float expiredValue);
+	void setValue(std::string key, std::string value);
+	//访问数据
+	int getInt(std::string key);
+	float getFloat(std::string key);
+	bool getBool(std::string key);
+	std::string getString(std::string key);
+	//更新时间
+	void update(float dt);
+};
+```
+
+```
+#include "BlackBoard.h"
+
+BlackBoard::BlackBoard()
+{
+}
+
+BlackBoard::~BlackBoard()
+{
+}
+
+void BlackBoard::setValue(std::string key, int value)
+{
+	mDatas.emplace(key, value);
+}
+
+void BlackBoard::setValue(std::string key, int value, float expiredTime, int expiredValue)
+{
+	setValue(key, value);
+	mTimers.emplace_back(BlackBoardTimer{ expiredTime,key,expiredValue });
+}
+
+void BlackBoard::setValue(std::string key, float value)
+{
+	mDatas.emplace(key, value);
+}
+
+void BlackBoard::setValue(std::string key, float value, float expiredTime, float expiredValue)
+{
+	setValue(key, value);
+	mTimers.emplace_back(BlackBoardTimer{ expiredTime,key,expiredValue });
+}
+
+void BlackBoard::setValue(std::string key, bool value)
+{
+	mDatas.emplace(key, value);
+}
+
+void BlackBoard::setValue(std::string key, bool value, float expiredTime, bool expiredValue)
+{
+	setValue(key, value);
+	mTimers.emplace_back(BlackBoardTimer{ expiredTime,key,expiredValue });
+}
+
+int BlackBoard::getInt(std::string key)
+{
+	auto & value = mDatas.at(key);
+	return std::any_cast<int>(value);
+}
+
+void BlackBoard::setValue(std::string key, std::string value)
+{
+	mDatas.emplace(key, value);
+}
+
+float BlackBoard::getFloat(std::string key)
+{
+	auto& value = mDatas.at(key);
+	return std::any_cast<float>(value);
+}
+
+bool BlackBoard::getBool(std::string key)
+{
+	auto& value = mDatas.at(key);
+	return std::any_cast<bool>(value);
+}
+
+std::string BlackBoard::getString(std::string key)
+{
+	auto& value = mDatas.at(key);
+	return std::any_cast<std::string>(value);
+}
+
+void BlackBoard::update(float dt)
+{
+	auto itr = mTimers.begin();
+	while(itr != mTimers.end()) {
+		itr->timer -= dt;
+		if (itr->timer <= 0.0f) {
+			mDatas[itr->key] = itr->value;
+			itr = mTimers.erase(itr);
+		}
+		else {
+			++itr;
+		}
+	}
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 参考文献
+
+https://www.cnblogs.com/KillerAery/p/10054558.html
 
 
 
@@ -23543,6 +24597,133 @@ public partial class BehaviorTreeBuilder
 ### 格挡招架
 
 如果是AI，请参考只狼一心的行为。被动招架和主动招架。被动就是触发伤害不扣血而是格挡，主动是玩家攻击朝前发射射线，击中的对象告诉他，我要砍人了。AI播放招架动画。
+
+
+
+
+
+
+
+# 测试
+
+
+
+## 概述
+
+游戏测试是确保游戏质量和稳定性的关键步骤，涉及多种测试类型，以识别和解决潜在问题。以下是游戏测试的主要方面概述：
+
+1. **功能测试（Functional Testing）**：
+   - 验证游戏功能是否按照设计要求正常工作，包括玩法机制、用户界面等。
+2. **性能测试（Performance Testing）**：
+   - 测试游戏在各种硬件和设置下的运行效率，如帧率、加载时间和资源使用。
+3. **兼容性测试（Compatibility Testing）**：
+   - 检查游戏在不同设备、操作系统和平台上的表现，以确保广泛的兼容性。
+4. **网络测试（Network Testing）**：
+   - 针对在线多人游戏进行的测试，以保证网络功能的可靠性、同步性和低延迟。
+5. **安全性测试（Security Testing）**：
+   - 识别并修复可能的安全漏洞，防止作弊和数据泄露。
+6. **回归测试（Regression Testing）**：
+   - 在代码更新后进行，以验证新的改动没有引入新的问题或破坏现有功能。
+7. **用户体验测试（User Experience Testing）**：
+   - 通过玩家反馈评估游戏的可玩性、难度和平衡性，以及整体用户满意度。
+8. **本地化测试（Localization Testing）**：
+   - 确保翻译准确性和文化适应性，检查文本是否正确显示及适配各语言环境。
+9. **声音和音乐测试（Audio Testing）**：
+   - 验证音效和背景音乐的播放是否正常，以及音质和混音效果。
+10. **Alpha/Beta测试**：
+    - 游戏开发的早期版本由选择的玩家群体进行测试，以获取实际用户的反馈和发现隐藏的问题。
+
+这些测试方法一起帮助开发团队确保游戏的高质量发布，提供给玩家一个无缝和愉快的游戏体验。
+
+
+
+
+
+
+
+
+
+## 压力测试
+
+
+
+### 概要
+
+1.**服务器压力测试**
+
+由于游戏代码需要处理的数据量随人数增加，因此同一时刻参与人数较多的玩法和功能容易引起服务器负载过高，比如抢红包、登陆排队、多人战斗等。当服务器负载高时会严重影响玩家体验，甚至引发逻辑错误问题。参与人数较多的重要模块外放前，对其进行服务器压力测试是保证游戏口碑的必要步骤。
+
+![img](https://pic3.zhimg.com/v2-93c35d0ae262a900f8c6df9e70588002_b.jpg) 2.**客户端压力测试**
+
+当同屏玩家数量较大，或者 UI 操作涉及的数据较多时，都可能引起客户端卡顿，需要模拟相应操作并进行客户端性能测试。具体玩家数量的阈值标准由游戏实际帧率情况决定。
+
+3.**第三方服务测试**
+
+游戏中的第三方服务是指，部分通用功能的实现通过调用第三方接口完成。
+
+4.**云游戏测试**
+
+当云游戏平台压力过大时，可能造成排队资源无法释放、黑屏和连接服务器失败等问题。
+
+
+
+### 压测性能指标
+
+压力测试时，需要关注哪些游戏性能数据呢？有以下几个指标：
+
+#### **CPU、内存、IO 和流量**
+
+当游戏并发操作数量提升时，服务器和客户端的 CPU、内存、IO 和网络流量都会随之增加，也可能成为游戏进程的性能瓶颈，因此需要重点关注。
+
+
+
+#### **游戏进程LOG信息**
+
+游戏 LOG 中存储了一些判断游戏性能的重要指标信息，压测中主要关注的包括：
+
+- **游戏 LUA 内存**：LUA 的 collectgarbage("count")返回结果，如果测试过程中持续增大则说明有泄漏风险。
+- **游戏在线人数**：也是重要的性能指标，因为当服务器压力过大时可能导致玩家异常掉线。
+- **游戏 CPU**：逻辑线程的 CPU 负载情况，数值越大则表示负载越高。
+- **数据库待执行的查询请求数量**：此数量如果一直增加，则说明当前游戏处理请求的能力跟不上请求产生速度，故请求会一直堆积；查询待执行越久则玩家等待越久，因此这个数量等于 0 或保持在较低数值（<10）比较理想。
+
+案例分析：在压测某个数据库操作频繁的玩法时，需要测试服务器对数据库请求的极限处理能力，以便于调整玩法 CD。一般操作是，逐步缓慢增加测试的并发数量，以保持数据库 LOG 的待执行查询数量在刚好等于 0，但是再增加并发则要排队的状态。实际操作发现难度系数较大，于是反其道而行之：让请求堆积到一定数量之后停止脚本，再根据两条 LOG 之间的变化值除以时间间隔，计算得出当前机器每秒处理数据库请求数量的上限值。
+
+- 游戏 DELAY：游戏逻辑推进时间落后真实时间的秒数，DELAY 数值越大说明进程越卡；或者 CPU 虽然已经达到 100%，但是 DELAY 一直保持较小（<1），则说明游戏可以承载当前的并发操作数量。
+
+案例分析：
+某次压测任务是，需要比较三种不同型号 CPU 处理游戏运算的性能情况。一开始的策略是，在每种型号的 CPU 上都跑相同并发数量的测试用例， 在没有 DELAY 的情况下比较 CPU 负载绝对值；但是测试结果与预期并不相符。经过分析发现，操作系统调度优化策略会导致在没有 DELAY 的情况下，CPU 负载绝对值高低并不能真实反映 CPU 性能。于是变更测试思路，改为测试在游戏出现DELAY 的情况下，比较相同时间和并发量时的 DELAY 增长幅度，最终测试结果符合预期，如图：
+
+![img](https://pic3.zhimg.com/v2-f089dcf12b7246d719ef93aaf61f543e_b.jpg) 
+
+
+
+
+
+
+
+
+
+### 参考文献
+
+https://www.cnblogs.com/R-bear/p/18014200
+
+https://blog.csdn.net/qq_30007885/article/details/118224224
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -23598,13 +24779,21 @@ public partial class BehaviorTreeBuilder
 
 
 
-## 关于client角色动画是否使用根动画
 
-目前的问题在于，我们sycn的的角色是否可以使用根动画来完成的。
 
-理论上是可以的，只需要给他指令，就好像是本地控制的角色一样罢了。
 
-但是有一个精度问题，最终可能会造成滑步和状态动画没切换等问题需要注意
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -23641,6 +24830,42 @@ public partial class BehaviorTreeBuilder
 <img src="MMORPG.assets/image-20240621214209833.png" alt="image-20240621214209833" style="zoom: 33%;" /> 
 
 <img src="MMORPG.assets/image-20240621214230913.png" alt="image-20240621214230913" style="zoom:50%;" /> 
+
+
+
+
+
+结合现代的技术的考虑，现阶段是根本无法表现出高阶修士的真正实力和压迫力的，我们只能退而求其次选择一个接近末法时代的世界，修士和武修各分天下。
+
+修为限制在筑基期，最大的能力就是制空能力了。
+
+同时又现代科技的加持，灵能装甲，灵能大炮等等。
+
+对抗体现在哪里呢？是否可以参考环太平洋天外之魔，但是来到此方世界收到规则的压制，最大可能就是一个假丹期吧，筑基修士配合现代科技还是可以与之对抗的。
+
+未来发展？
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
