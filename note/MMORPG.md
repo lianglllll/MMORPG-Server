@@ -2775,7 +2775,511 @@ https://www.bilibili.com/video/BV1FN4y1G7n1/?spm_id_from=333.788&vd_source=ff929
 
 
 
+# unity中的目录结构和特殊文件
 
+## unity工程文件夹里的目录结构
+
+
+
+### 特殊文件夹
+
+
+
+Unity工程[根目录](https://so.csdn.net/so/search?q=根目录&spm=1001.2101.3001.7020)下，有三个特殊文件夹：Assets、Library、ProjectSettings
+
+
+
+#### Assets
+
+Unity工程中所用到的所有Asset都放在该文件夹中，是资源文件的根目录，很多[API](https://so.csdn.net/so/search?q=API&spm=1001.2101.3001.7020)都是基于这个文件目录的，查找目录都需要带上Assets，比如AssetDatabase。
+
+
+
+#### Library
+
+Unity会把Asset下支持的资源导入成自身识别的格式，以及编译代码成为DLL文件，都放在Library文件夹中。
+
+
+
+#### ProjectSettings
+
+编辑器中设置的各种参数
+
+下面都是存在Assets目录下的文件的了。
+
+
+
+#### Editor
+
+为Unity编辑器扩展程序的目录，可以在根目录下，也可以在子目录下，只要名字叫“Editor”，而且数量不限。Editor下面放的所有资源文件和脚本文件都不会被打进包中，而且脚本只能在编辑器模式下使用。一般会把扩展的编辑器放在这里，或只是编辑器程序用到的dll库，比如任务编辑器、角色编辑器、技能编辑器、战斗编辑器……以及各种小工具。
+
+
+
+#### Editor Default Resources
+
+名字带空格，必须在Assets目录下，里面放编辑器程序用到的一些资源，比如图片，文本文件等。不会被打进包内，可以直接通过EditorGUIUtility.Load去读取该文件夹下的资源。
+
+
+
+#### Gizmos
+
+Gizmos.DrawIcon在场景中某个位置绘制一张图片，该图片必须是在Gizmos文件夹下。
+
+```
+void OnDrawGizmos() {
+    Gizmos.DrawIcon(transform.position, “0.png”, true);
+}
+```
+
+OnDrawGizmos是MonoBehaviour的生命周期函数，但是只在编辑器模式下每一帧都会执行。Gizmos类能完成多种在场景视图中绘制需求，做编辑器或调试的时候经常会用到，比如在场景视图中绘制一条辅助线。（用Debug.DrawLine，Debug.DrawRay也可以绘制简单的东西）
+
+
+
+#### Plugins
+
+该文件夹一般会放置几种文件，第三方包、工具代码、sdk。
+plugin分为两种：Managed plugins and Native plugins
+Managed plugins：就是.NET编写的工具，运行于.NET平台（包括mono）的代码库，可以是脚本文件，也可以本身是DLL。NGUI源码就放在该文件夹下面的。
+Native plugins：原生代码编写的库，比如第三方sdk，一般是dll、so、jar等等。
+该文件夹下的东西会在standard compiler时编译（最先编译），以保证在其它地方使用时能找到。
+
+
+
+#### Resources
+
+存放资源的特殊文件夹，可以在根目录下，也可以在子目录下，只要名字叫“Resources”就行，比如目录：/xxx/xxx/Resources 和 /Resources 是一样的，而且可有多个叫Resources的文件夹。Resources文件夹下的资源不管用还是不用都会被打包进.apk或者.ipa，因为Unity无法判断脚本有没有访问了其中的资源。需要注意的是项目中可以有多个Resources文件夹，所以如果不同目录的Resources存在同名资源，在打包的时候就会报错。
+Resources中全部资源会被打包成一个缺省的AssetBundle（resources.assets）。
+在该文件夹下的资源，可以通过Resources类进行加载使用。API地址
+
+
+
+#### Standard Assets
+
+存放导入的第三方资源包。
+
+
+
+#### StreamingAssets
+
+该文件夹也会在打包的时候全部打进包中，但它是“原封不动”的打包进去（直接拷贝到的包里）。**游戏运行时只能读不能写。**
+不同的平台最后的路径也不同，可以使用unity提供的Application.streamingAssetsPath，它会根据平台返回正确的路径，如下：
+
+```
+Mac OS or Windows：path = Application.dataPath + “/StreamingAssets”;
+IOS：path = Application.dataPath + “/Raw”;
+Android：path = “jar:file://” + Application.dataPath + “!/assets/”;
+```
+
+我们一般会把初始的AssetBundle资源放在该文件夹下，并且通过WWW或AssetBundle.LoadFromFile加载使用。
+
+
+
+#### Hide Assets
+
+隐藏文件夹和文件
+以".“开头
+以”~“结尾
+名字为"cvs”
+扩展名为".tmp"
+
+
+
+### 一些通常的Asset类型
+
+
+
+#### Image：
+
+支持绝大多数的image type，例如BMP、JPG、TIF、TGA、PSD
+
+#### Model：
+
+eg、.max、.blend、.mb、.ma，它们将通过FBX插件导入。或者直接在3D app导出FBX放到unity project中
+Mesh and Animations：unity支持绝大多数流行的3D app的model（Maya、Cinema 4D、3ds Max、Cheetah3D、Modo、Lightwave、Blender、SketchUp）
+
+#### Audio Files：
+
+如果是非压缩的audio，unity将会根据import setting压缩导入（更多）
+
+
+
+#### Other：
+
+##### Asset Store
+
+里面有很多免费和收费的插件，可以供开发者下载使用。
+下载的第三方工具是以package文件存在，导入package：
+package.png
+
+##### 导入
+
+unity会自动导入Asset目录下的资源，可以是unity支持的，也可以是不支持的，而在程序中用到的（比如二进制文件）。
+当在Asset下进行保存、移动、删除等修改文件的操作，unity都会自动导入。
+
+##### 自定义导入
+
+导入外界的unity可识别的Asset时，可以自定义导入设置，在工程中点击资源文件，然后Inspector视图中就会看到相应的设置：
+
+##### 导入结果
+
+导入资源之后，除了要生成.meta文件，unity并不是直接使用这些资源的，而是在导入的过程中，生成了unity内部特定的格式（unity可识别）文件在游戏中使用，储存在Library目录下，而原始资源不变，仍然放在原来位置。当然，每次修改原始文件，unity都会重新导入一次，才能在unity中看到改过之后的样子。
+正因为Library存放了导入资源的结果，所以每次删除Library或里面某个文件，都会让unity重新导入相应的资源（生成内部格式），但对工程没有影响。
+
+##### .meta文件
+
+Asset中的所有文件、文件夹，经过unity的导入过程后，会为每个都生成一个.meta文件，这个文件是unity内部管理文件的重要内容，里面记录着一些信息。
+你知道unity是怎么管理资源依赖关系的吗？可以试着更改一个挂在prefab上的脚本的目录或者名字，而这些prefab依然可以正常的调用那些脚本。
+unity在第一次导入新文件的时候，会生成一个Unique ID，用来标志这个asset，它就是unity内部用来区分asset的。Unique ID是全局唯一的，保存在.meta文件中。
+在unity中资源间的依赖关系引用都是用Unique ID来实现的，如果一个资源丢失了.meta文件，那依赖它的资源就找不到它了。
+.meta文件内容如下，包括Unique ID和Import Setting的内容
+meta.png
+
+
+
+### 脚本
+
+unity支持三种脚本语言，分别是C#、JavaScript、Boo，最常用的是前两种，当然还有后来扩展的支持Lua脚本的库（slua、ulua）。
+生成的对应的工程.png
+
+#### 编译顺序
+
+编译顺序的原则是在第一个引用之前编译它，参考官网文档可以知道，Unity中的可以将脚本代码放在Assets文件夹下任何位置，但是不同的位置会有不同的编译顺序。规则如下：
+(1) 首先编译**Standard Assets，Pro Standard Assets，Plugins文件夹**（除Editor，可以是一级子目录或是更深的目录）下的脚本；
+(2) 接着编译**Standard Assets，Pro Standard Assets，Plugins文件夹**下(可以是一级子目录或是更深的目录)的**Editor**目录下的脚本；
+(3) 然后编译Assets文件夹下，不在Editor目录的所有脚本；
+(4) 最后编译Editor下的脚本（不在Standard Assets，Pro Standard Assets，Plugins文件夹下的）；
+基于以上编译顺序，一般来说，我们直接在Assets下建立一个Scripts文件夹放置脚本文件，它处于编译的“第三位”。
+
+#### 编译结果：
+
+项目工程文件夹中会生成类似如下几个文件， 按顺序分别对应着上述四个编译顺序：（GameTool是项目名称）
+GameTool.CSharp.Plugins.csproj
+GameTool.CSharp.Editor.Plugins.csproj
+GameTool.CSharp.csproj
+GameTool.CSharp.Editor.csproj
+所有脚本被编译成几个DLL文件，位于工程根目录 / Library / ScriptAssemblies。
+生成如下三个dll：
+Assembly-CSharp-Editor.dll：包含所有Editor下的脚本
+Assembly-CSharp-firstpass.dll：包含Standard Assets、Pro Standard Assets、Plugins文件夹下的脚本
+Assembly-CSharp.dll：包含除以上两种，在Assets目录下的脚本。
+
+
+
+#### Plugins（doc）
+
+内容包括了Plugin导入设置、怎样创建使用两种Plugin、怎样利用底层渲染接口以及一些基础知识。
+在打包的时候，会把plugin里面的各种库，拷贝到包体中相应的位置（不同平台不一样，具体在可以把工程分别打成几个平台的包）
+win平台
+这是win32平台的包，Managed里面放置的托管库，Mono里面放的是mono的库，Plugins是平台库（native plugin）
+
+分平台打包，就需要对不同平台的plugin区分，方法是在Plugins目录下建立相应平台的文件夹，unity在为不同平台打包的时候，除了会将相应平台的plugin里的脚本编译成Assembly-CSharp-firstpass.dll，还会把已经是dll、so等库直接拷贝到包内相应位置。
+Plugins/x86：win32位平台plugin
+Plugins/x86_64：win64位平台plugin
+Plugins/Android：Android平台
+Plugins/iOS：iOS平台
+
+
+
+#### Object
+
+UnityEngine.Object是所有类的基类，它描述了Asset上使用的所有resource的序列化数据，它有几个重要的派生类：GameObject，Component，MonoBehaviour
+
+
+
+#### GameObject
+
+GameObject是组件的容器，所有Component都在可以挂在上面，Unity以组价化思想构建，所有功能拆分成各个组件，需要某个功能只需挂上相应的组件，组件之间相互独立，逻辑互补交叉。当然组件式开发也有最大的弊端就是组件之间的交互。
+
+
+
+#### Component
+
+Component作为组件的基类，unity中有大量的组件，Transform、Renderer、Collider、MeshFilter都是组件。
+
+
+
+#### MonoBehaviour
+
+开发时创建的脚本，需要挂在GameObject上的脚本都是继承自MonoBehaviour。
+
+
+
+#### ScriptableObject
+
+自定义可被Unity识别的资源类型，可打成AssetBundle，可通过Resources or AssetBundle加载。
+
+
+
+#### 序列化
+
+Asset和Object的关系
+Object作为Asset的序列化数据，比如以Texture导入一张图片，那么就用Texture对象记录描述了该图片。
+Asset可能有多个Object，比如prefab的GameObject上挂着多个组件，这样Asset和Object就是一对多的关系。那么问题来了，同一个Object怎么区分分别挂在不同GameObject上的对象的？等等，这里是一定要区分的，因为它们要包含序列化数据（在Inspector视图设置的），而不是在游戏运行中再new。
+
+
+
+#### Class ID 和 File ID（object id）
+
+先梳理一下关系，unity通过guid找到asset，其中asset上可能又挂了很多组件，每个组件又对应着一个class，而在序列化的时候是对象。Class ID是unity定义好的（传送），File ID是为对象生成的id，也就是说，我用guid + (class id 可有) + file id 就能确定某个资源上的组件对象。
+
+
+
+#### YMAL
+
+是一种标记语言，如果不了解语言格式可以看网站。
+
+
+
+#### Text-Based Scene Files
+
+和二进制文件一样，unity还提供了基于文本的场景文件，使用YAML标记语言，通过文本描述了asset和object组件之间的关系是怎么关联、保存数据等。
+通过设置Edit -> Project Setting -> Editor -> Asset Serialization -> Force Text，我们可以查看所有Object信息了。
+
+
+
+
+
+## unity pc打包后目录的结构
+
+当你使用 Unity 将项目打包为 PC 平台的可执行文件时，Unity 会生成一个包含多个文件和文件夹的目录结构。这些文件和文件夹对于游戏的运行至关重要。以下是常见的目录结构及其说明：
+
+1. **游戏名称.exe**：
+
+   - 这是你游戏的可执行文件。双击此文件即可运行你的游戏。
+
+2. **游戏名称_Data**
+
+   这是游戏的资源文件夹。它包含了所有的游戏资源，如场景、脚本、图像、音频、材质和其他所有 Unity 打包的内容。
+
+3. **游戏名称_Data**\Managed 文件夹：
+
+   - 包含游戏使用的所有 .NET 程序集 (DLL)，其中包括 Unity 的标准库和你的 C# 脚本编译后的程序集
+
+4. **游戏名称_Data\Plugins** 文件夹：
+
+   - 存放原生插件（通常是 .dll 或 .so 文件），这些插件提供了特定平台的功能或是用来调用一些原生的系统库。
+
+5. **游戏名称_Data\Resources** 文件夹：
+
+   - 如果你在项目中有使用 `Resources` 文件夹，这里会包含所有通过 `Resources.Load` 加载的资源。此文件夹下的资源在游戏启动时会被加载。
+
+6. **游戏名称_Data\StreamingAssets** 文件夹：
+
+   - 这里包含你在 Unity 项目中的 `StreamingAssets` 文件夹中的所有文件。这些文件不会被 Unity 处理成特定格式，而是会以原始形式包含在内，通常用于需要在运行时直接读取的文件。
+
+7. **MonoBleedingEdge** 文件夹：
+
+   - 如果项目使用了 Unity 的 Mono 运行时，你可能会看到这个文件夹。它包含 Mono 虚拟机和一些基础的 .NET 库。
+
+8. **UnityCrashHandler64.exe**：
+
+   - 这是 Unity 内置的崩溃处理程序，当游戏崩溃时它会运行并生成崩溃日志。
+
+9. **UnityPlayer.dll**：
+
+   - 这是 Unity 游戏引擎的核心运行库，它包含了 Unity 运行时的主要功能。每个使用 Unity 构建的游戏都会有这个文件。
+
+10. **baselib.dll**
+
+   `baselib.dll` 是 Unity 引擎中的一个基础库动态链接库（DLL）文件，提供了许多底层的功能和服务，供 Unity 以及你的游戏在运行时使用。
+
+   `baselib.dll` 的作用：
+
+   - **底层服务**：`baselib.dll` 提供了一些底层的系统服务和抽象，帮助 Unity 引擎与操作系统进行交互。这可能包括内存管理、线程处理、文件操作、网络通信等基本功能。
+   - **跨平台支持**：`baselib.dll` 是 Unity 为了简化跨平台开发而引入的一个库，它封装了不同平台的系统调用，使得开发者不必处理各个平台的差异性。
+
+   不能删除 `baselib.dll` 的原因：
+
+   - **游戏依赖性**：尽管 `baselib.dll` 的功能相对底层且不直接暴露给开发者使用，但它是 Unity 引擎正常运行不可缺少的一部分。删除它会导致游戏在运行时缺少关键的基础功能，从而无法正常工作。
+   - **引擎集成**：Unity 引擎依赖于 `baselib.dll` 来执行许多低级别的操作，这些操作对游戏的稳定性和性能至关重要。
+
+   总结
+
+   `baselib.dll` 是 Unity 项目中必不可少的文件，在游戏发布时不能删除。它提供了关键的底层功能，确保游戏在目标平台上正常运行。与其他重要的 DLL 文件一样，`baselib.dll` 应该包含在你发布的游戏版本中。
+
+11. **配置文件**（可选）：
+
+   - 可能会有一个 `.cfg` 或 `.ini` 文件，用于存储与游戏启动相关的配置，如窗口大小、分辨率、音量等。
+
+
+
+**其他注意事项：**
+
+- 游戏打包出来的目录结构是 Unity 打包过程自动生成的，你通常不需要手动修改这些文件或文件夹，除非你对打包流程非常了解并且知道自己在做什么。
+- 游戏的资源通常会被 Unity 序列化和打包成专有格式，你不能简单地在这些文件夹中直接编辑游戏内容。
+
+**通过理解这个目录结构，你可以更好地管理和发布你的 Unity 游戏，确保所有必要的文件都包含在内以保证游戏的正常运行。**
+
+
+
+**MMOGame_BackUpThisFolder_ButDontShipItWithYourGame**
+
+`MMOGame_BackUpThisFolder_ButDontShipItWithYourGame` 文件夹是在 Unity 项目打包时自动生成的，它的作用是备份一些与项目打包和运行无关的文件。这些文件通常是用于调试或开发时的工具、缓存、日志等内容，因此在最终的游戏发布版本中不需要包含这些文件。
+
+这个文件夹中的内容可能包括以下几类文件：
+
+1. **调试信息**：如编译时的临时文件、日志文件、符号文件等，帮助开发者在开发和调试过程中追踪问题。
+
+2. **缓存数据**：编译或打包过程中生成的一些临时数据，可能加快后续的编译过程。
+
+3. **开发工具**：如编辑器扩展或调试工具生成的文件，这些文件不属于最终的游戏内容。
+
+这个文件夹通常只在本地开发环境中有用，在将项目发布或分享给其他人时，可以忽略或删除它。正如文件夹的名字所提示的那样，它不应该包含在游戏的最终发布版本中。
+
+
+
+**MMOGame_BurstDebugInformation_DoNotShip**
+
+`MMOGame_BurstDebugInformation_DoNotShip` 文件夹是在使用 Unity 的 Burst 编译器时生成的，里面包含了 Burst 编译器用于调试的相关信息。
+
+Burst 编译器是 Unity 提供的一个高性能编译器，专门用来优化性能关键的 C# 代码，特别是与 Unity 的 Jobs 系统结合使用时。`BurstDebugInformation` 文件夹中的内容主要包括以下内容：
+
+1. **调试信息文件**：这些文件帮助开发者在使用 Burst 编译器时进行调试，例如查看在特定平台上如何优化代码的细节。
+
+2. **符号文件**：这些文件包含与 Burst 编译的代码相关的符号信息，通常用于调试优化后的代码。
+
+与 `BackUpThisFolder_ButDontShipItWithYourGame` 文件夹类似，`BurstDebugInformation_DoNotShip` 文件夹中的内容不应包含在最终发布的游戏版本中。它们仅供开发和调试时使用，因此可以在发布游戏时安全地忽略或删除。
+
+
+
+**`.pdb` 文件**
+
+在发布游戏的最终版本时，通常可以删除 `.pdb` 文件，因为它们主要用于调试，不是游戏运行所必需的。然而，是否应该删除所有 `.pdb` 文件，取决于你的具体需求：
+
+**可以删除 `.pdb` 文件的情况：**
+
+- **发布最终版本**：发布给用户的游戏版本通常不需要包含 `.pdb` 文件，因为这些文件包含调试符号，用于在开发和调试过程中帮助开发者理解崩溃报告或调试代码。
+- **减少文件大小**：删除 `.pdb` 文件可以显著减小游戏安装包的大小。
+- **保护代码隐私**：`.pdb` 文件中包含详细的代码信息，删除它们可以防止反向工程和代码泄露。
+
+**不建议删除 `.pdb` 文件的情况：**
+
+- **内部测试和调试**：如果你或你的测试团队仍在对游戏进行调试，那么保留 `.pdb` 文件可以帮助你快速定位问题。
+- **崩溃报告分析**：有时在分析用户的崩溃报告时，`.pdb` 文件可以提供有用的信息。如果你打算在发布后继续支持游戏并修复错误，保留 `.pdb` 文件（至少是备份）可能是一个好主意。
+
+**建议**
+
+- **发布版本中删除**：在最终发布的游戏版本中，删除 `.pdb` 文件是一个常见的做法，以减少文件大小并保护代码。
+- **备份 `.pdb` 文件**：即使从发布版本中删除，建议你在本地或版本控制系统中备份这些文件，以便将来需要时使用。
+
+总结来说，除非你有特定的调试需求，通常可以在发布版本中删除所有 `.pdb` 文件。
+
+
+
+
+
+## .meta文件
+
+`.meta` 文件通常是由 Unity 引擎创建的，用于存储项目中文件的元数据。每个资产（如脚本、材质、场景、预制件等）都会有一个对应的 `.meta` 文件。
+
+
+
+### `.meta` 文件的作用
+
+1. **唯一标识符 (GUID)**：每个 `.meta` 文件中都包含一个唯一的 GUID (Globally Unique Identifier)，Unity 使用这个 GUID 来跟踪项目中的资源，即使资源被重命名或移动，Unity 依然能够通过 GUID 识别该资源。
+
+2. **Import 设置**：对于一些特定类型的文件（如图片、模型等），`.meta` 文件中会存储一些导入设置（import settings），如压缩选项、分辨率等。
+
+3. **文件依赖关系**：`.meta` 文件还可以存储文件之间的依赖关系，比如一个预制件依赖的材质文件，Unity 会在 `.meta` 文件中跟踪这些依赖关系。
+
+4. **版本控制**：如果你使用版本控制系统（如 Git）管理 Unity 项目，`.meta` 文件是需要一并提交到版本库中的，以确保在不同开发环境中资源不会丢失或错乱。
+
+
+
+### 示例
+
+一个简单的 `.meta` 文件可能看起来如下：
+
+```plaintext
+fileFormatVersion: 2
+guid: d73a8efc6c6e431eab0b4f23f111c776
+TextureImporter:
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsPerUnit: 100
+  mipmaps:
+    enableMipMap: 0
+```
+
+在这个例子中，`.meta` 文件中包含了资源的 `guid` 和一些与纹理导入相关的设置。
+
+
+
+### 注意事项
+
+- 请勿手动编辑 `.meta` 文件，除非你完全了解它的结构和作用。
+- 如果不小心删除了 `.meta` 文件，Unity 会重新生成，但这可能会导致引用错误或丢失资源关联。
+
+
+
+## PlayerPrefs 
+
+`PlayerPrefs` 在游戏打包后会根据平台不同，将数据存储在不同的位置。以下是常见平台的存储位置：
+
+### **Windows**
+
+存储位置为注册表（Registry）：
+
+- 路径: `HKEY_CURRENT_USER\Software\[CompanyName]\[ProductName]`
+
+可以通过 Unity 的 `PlayerSettings` 来设置 `CompanyName` 和 `ProductName`，这两个字段会决定实际的存储路径。
+
+### **macOS**
+
+存储位置为 `plist` 文件：
+
+- 路径: `~/Library/Preferences/unity.[CompanyName].[ProductName].plist`
+
+### **Linux**
+
+存储在 `prefs` 文件中：
+
+- 路径: `~/.config/unity3d/[CompanyName]/[ProductName]/prefs`
+
+###  **Android**
+
+在 Android 平台上，`PlayerPrefs` 数据会存储在应用的内部存储中，通常在沙盒文件系统内：
+
+- 路径: `/data/data/[package name]/shared_prefs/[package name].xml`
+
+需要 `root` 权限才能访问该文件。
+
+###  **iOS**
+
+在 iOS 平台上，`PlayerPrefs` 数据会存储在 `NSUserDefaults` 中：
+
+- 路径: `~/Library/Preferences/[bundle identifier].plist`
+
+### **WebGL**
+
+对于 WebGL 构建，`PlayerPrefs` 使用浏览器的 `localStorage` 进行存储。
+
+### 例子
+
+在 Windows 平台上，`PlayerPrefs` 数据存储在注册表中。要查找它，可以按照以下步骤进行操作：
+
+#### 步骤 1: 打开注册表编辑器
+
+1. 按下 `Win + R` 键，打开“运行”对话框。
+2. 输入 `regedit`，然后按下 `Enter` 键。
+
+
+
+#### 步骤 2: 导航到 `PlayerPrefs` 存储位置
+
+在注册表编辑器中，导航到以下路径：
+
+```
+plaintext
+
+
+复制代码
+HKEY_CURRENT_USER\Software\[CompanyName]\[ProductName]
+```
+
+- **`[CompanyName]`**: 这是你在 Unity 项目中设置的公司名称，对应于 `PlayerSettings` 中的 **Company Name**。
+- **`[ProductName]`**: 这是你在 Unity 项目中设置的产品名称，对应于 `PlayerSettings` 中的 **Product Name**。
+
+![image-20240907230048575](MMORPG.assets/image-20240907230048575.png) 
 
 
 
@@ -3684,511 +4188,7 @@ Unity 的编译流程是一个多阶段的过程，旨在确保所有脚本和�
 
 
 
-# unity中的目录结构和特殊文件
 
-## unity工程文件夹里的目录结构
-
-
-
-### 特殊文件夹
-
-
-
-Unity工程[根目录](https://so.csdn.net/so/search?q=根目录&spm=1001.2101.3001.7020)下，有三个特殊文件夹：Assets、Library、ProjectSettings
-
-
-
-#### Assets
-
-Unity工程中所用到的所有Asset都放在该文件夹中，是资源文件的根目录，很多[API](https://so.csdn.net/so/search?q=API&spm=1001.2101.3001.7020)都是基于这个文件目录的，查找目录都需要带上Assets，比如AssetDatabase。
-
-
-
-#### Library
-
-Unity会把Asset下支持的资源导入成自身识别的格式，以及编译代码成为DLL文件，都放在Library文件夹中。
-
-
-
-#### ProjectSettings
-
-编辑器中设置的各种参数
-
-下面都是存在Assets目录下的文件的了。
-
-
-
-#### Editor
-
-为Unity编辑器扩展程序的目录，可以在根目录下，也可以在子目录下，只要名字叫“Editor”，而且数量不限。Editor下面放的所有资源文件和脚本文件都不会被打进包中，而且脚本只能在编辑器模式下使用。一般会把扩展的编辑器放在这里，或只是编辑器程序用到的dll库，比如任务编辑器、角色编辑器、技能编辑器、战斗编辑器……以及各种小工具。
-
-
-
-#### Editor Default Resources
-
-名字带空格，必须在Assets目录下，里面放编辑器程序用到的一些资源，比如图片，文本文件等。不会被打进包内，可以直接通过EditorGUIUtility.Load去读取该文件夹下的资源。
-
-
-
-#### Gizmos
-
-Gizmos.DrawIcon在场景中某个位置绘制一张图片，该图片必须是在Gizmos文件夹下。
-
-```
-void OnDrawGizmos() {
-    Gizmos.DrawIcon(transform.position, “0.png”, true);
-}
-```
-
-OnDrawGizmos是MonoBehaviour的生命周期函数，但是只在编辑器模式下每一帧都会执行。Gizmos类能完成多种在场景视图中绘制需求，做编辑器或调试的时候经常会用到，比如在场景视图中绘制一条辅助线。（用Debug.DrawLine，Debug.DrawRay也可以绘制简单的东西）
-
-
-
-#### Plugins
-
-该文件夹一般会放置几种文件，第三方包、工具代码、sdk。
-plugin分为两种：Managed plugins and Native plugins
-Managed plugins：就是.NET编写的工具，运行于.NET平台（包括mono）的代码库，可以是脚本文件，也可以本身是DLL。NGUI源码就放在该文件夹下面的。
-Native plugins：原生代码编写的库，比如第三方sdk，一般是dll、so、jar等等。
-该文件夹下的东西会在standard compiler时编译（最先编译），以保证在其它地方使用时能找到。
-
-
-
-#### Resources
-
-存放资源的特殊文件夹，可以在根目录下，也可以在子目录下，只要名字叫“Resources”就行，比如目录：/xxx/xxx/Resources 和 /Resources 是一样的，而且可有多个叫Resources的文件夹。Resources文件夹下的资源不管用还是不用都会被打包进.apk或者.ipa，因为Unity无法判断脚本有没有访问了其中的资源。需要注意的是项目中可以有多个Resources文件夹，所以如果不同目录的Resources存在同名资源，在打包的时候就会报错。
-Resources中全部资源会被打包成一个缺省的AssetBundle（resources.assets）。
-在该文件夹下的资源，可以通过Resources类进行加载使用。API地址
-
-
-
-#### Standard Assets
-
-存放导入的第三方资源包。
-
-
-
-#### StreamingAssets
-
-该文件夹也会在打包的时候全部打进包中，但它是“原封不动”的打包进去（直接拷贝到的包里）。**游戏运行时只能读不能写。**
-不同的平台最后的路径也不同，可以使用unity提供的Application.streamingAssetsPath，它会根据平台返回正确的路径，如下：
-
-```
-Mac OS or Windows：path = Application.dataPath + “/StreamingAssets”;
-IOS：path = Application.dataPath + “/Raw”;
-Android：path = “jar:file://” + Application.dataPath + “!/assets/”;
-```
-
-我们一般会把初始的AssetBundle资源放在该文件夹下，并且通过WWW或AssetBundle.LoadFromFile加载使用。
-
-
-
-#### Hide Assets
-
-隐藏文件夹和文件
-以".“开头
-以”~“结尾
-名字为"cvs”
-扩展名为".tmp"
-
-
-
-### 一些通常的Asset类型
-
-
-
-#### Image：
-
-支持绝大多数的image type，例如BMP、JPG、TIF、TGA、PSD
-
-#### Model：
-
-eg、.max、.blend、.mb、.ma，它们将通过FBX插件导入。或者直接在3D app导出FBX放到unity project中
-Mesh and Animations：unity支持绝大多数流行的3D app的model（Maya、Cinema 4D、3ds Max、Cheetah3D、Modo、Lightwave、Blender、SketchUp）
-
-#### Audio Files：
-
-如果是非压缩的audio，unity将会根据import setting压缩导入（更多）
-
-
-
-#### Other：
-
-##### Asset Store
-
-里面有很多免费和收费的插件，可以供开发者下载使用。
-下载的第三方工具是以package文件存在，导入package：
-package.png
-
-##### 导入
-
-unity会自动导入Asset目录下的资源，可以是unity支持的，也可以是不支持的，而在程序中用到的（比如二进制文件）。
-当在Asset下进行保存、移动、删除等修改文件的操作，unity都会自动导入。
-
-##### 自定义导入
-
-导入外界的unity可识别的Asset时，可以自定义导入设置，在工程中点击资源文件，然后Inspector视图中就会看到相应的设置：
-
-##### 导入结果
-
-导入资源之后，除了要生成.meta文件，unity并不是直接使用这些资源的，而是在导入的过程中，生成了unity内部特定的格式（unity可识别）文件在游戏中使用，储存在Library目录下，而原始资源不变，仍然放在原来位置。当然，每次修改原始文件，unity都会重新导入一次，才能在unity中看到改过之后的样子。
-正因为Library存放了导入资源的结果，所以每次删除Library或里面某个文件，都会让unity重新导入相应的资源（生成内部格式），但对工程没有影响。
-
-##### .meta文件
-
-Asset中的所有文件、文件夹，经过unity的导入过程后，会为每个都生成一个.meta文件，这个文件是unity内部管理文件的重要内容，里面记录着一些信息。
-你知道unity是怎么管理资源依赖关系的吗？可以试着更改一个挂在prefab上的脚本的目录或者名字，而这些prefab依然可以正常的调用那些脚本。
-unity在第一次导入新文件的时候，会生成一个Unique ID，用来标志这个asset，它就是unity内部用来区分asset的。Unique ID是全局唯一的，保存在.meta文件中。
-在unity中资源间的依赖关系引用都是用Unique ID来实现的，如果一个资源丢失了.meta文件，那依赖它的资源就找不到它了。
-.meta文件内容如下，包括Unique ID和Import Setting的内容
-meta.png
-
-
-
-### 脚本
-
-unity支持三种脚本语言，分别是C#、JavaScript、Boo，最常用的是前两种，当然还有后来扩展的支持Lua脚本的库（slua、ulua）。
-生成的对应的工程.png
-
-#### 编译顺序
-
-编译顺序的原则是在第一个引用之前编译它，参考官网文档可以知道，Unity中的可以将脚本代码放在Assets文件夹下任何位置，但是不同的位置会有不同的编译顺序。规则如下：
-(1) 首先编译**Standard Assets，Pro Standard Assets，Plugins文件夹**（除Editor，可以是一级子目录或是更深的目录）下的脚本；
-(2) 接着编译**Standard Assets，Pro Standard Assets，Plugins文件夹**下(可以是一级子目录或是更深的目录)的**Editor**目录下的脚本；
-(3) 然后编译Assets文件夹下，不在Editor目录的所有脚本；
-(4) 最后编译Editor下的脚本（不在Standard Assets，Pro Standard Assets，Plugins文件夹下的）；
-基于以上编译顺序，一般来说，我们直接在Assets下建立一个Scripts文件夹放置脚本文件，它处于编译的“第三位”。
-
-#### 编译结果：
-
-项目工程文件夹中会生成类似如下几个文件， 按顺序分别对应着上述四个编译顺序：（GameTool是项目名称）
-GameTool.CSharp.Plugins.csproj
-GameTool.CSharp.Editor.Plugins.csproj
-GameTool.CSharp.csproj
-GameTool.CSharp.Editor.csproj
-所有脚本被编译成几个DLL文件，位于工程根目录 / Library / ScriptAssemblies。
-生成如下三个dll：
-Assembly-CSharp-Editor.dll：包含所有Editor下的脚本
-Assembly-CSharp-firstpass.dll：包含Standard Assets、Pro Standard Assets、Plugins文件夹下的脚本
-Assembly-CSharp.dll：包含除以上两种，在Assets目录下的脚本。
-
-
-
-#### Plugins（doc）
-
-内容包括了Plugin导入设置、怎样创建使用两种Plugin、怎样利用底层渲染接口以及一些基础知识。
-在打包的时候，会把plugin里面的各种库，拷贝到包体中相应的位置（不同平台不一样，具体在可以把工程分别打成几个平台的包）
-win平台
-这是win32平台的包，Managed里面放置的托管库，Mono里面放的是mono的库，Plugins是平台库（native plugin）
-
-分平台打包，就需要对不同平台的plugin区分，方法是在Plugins目录下建立相应平台的文件夹，unity在为不同平台打包的时候，除了会将相应平台的plugin里的脚本编译成Assembly-CSharp-firstpass.dll，还会把已经是dll、so等库直接拷贝到包内相应位置。
-Plugins/x86：win32位平台plugin
-Plugins/x86_64：win64位平台plugin
-Plugins/Android：Android平台
-Plugins/iOS：iOS平台
-
-
-
-#### Object
-
-UnityEngine.Object是所有类的基类，它描述了Asset上使用的所有resource的序列化数据，它有几个重要的派生类：GameObject，Component，MonoBehaviour
-
-
-
-#### GameObject
-
-GameObject是组件的容器，所有Component都在可以挂在上面，Unity以组价化思想构建，所有功能拆分成各个组件，需要某个功能只需挂上相应的组件，组件之间相互独立，逻辑互补交叉。当然组件式开发也有最大的弊端就是组件之间的交互。
-
-
-
-#### Component
-
-Component作为组件的基类，unity中有大量的组件，Transform、Renderer、Collider、MeshFilter都是组件。
-
-
-
-#### MonoBehaviour
-
-开发时创建的脚本，需要挂在GameObject上的脚本都是继承自MonoBehaviour。
-
-
-
-#### ScriptableObject
-
-自定义可被Unity识别的资源类型，可打成AssetBundle，可通过Resources or AssetBundle加载。
-
-
-
-#### 序列化
-
-Asset和Object的关系
-Object作为Asset的序列化数据，比如以Texture导入一张图片，那么就用Texture对象记录描述了该图片。
-Asset可能有多个Object，比如prefab的GameObject上挂着多个组件，这样Asset和Object就是一对多的关系。那么问题来了，同一个Object怎么区分分别挂在不同GameObject上的对象的？等等，这里是一定要区分的，因为它们要包含序列化数据（在Inspector视图设置的），而不是在游戏运行中再new。
-
-
-
-#### Class ID 和 File ID（object id）
-
-先梳理一下关系，unity通过guid找到asset，其中asset上可能又挂了很多组件，每个组件又对应着一个class，而在序列化的时候是对象。Class ID是unity定义好的（传送），File ID是为对象生成的id，也就是说，我用guid + (class id 可有) + file id 就能确定某个资源上的组件对象。
-
-
-
-#### YMAL
-
-是一种标记语言，如果不了解语言格式可以看网站。
-
-
-
-#### Text-Based Scene Files
-
-和二进制文件一样，unity还提供了基于文本的场景文件，使用YAML标记语言，通过文本描述了asset和object组件之间的关系是怎么关联、保存数据等。
-通过设置Edit -> Project Setting -> Editor -> Asset Serialization -> Force Text，我们可以查看所有Object信息了。
-
-
-
-
-
-## unity pc打包后目录的结构
-
-当你使用 Unity 将项目打包为 PC 平台的可执行文件时，Unity 会生成一个包含多个文件和文件夹的目录结构。这些文件和文件夹对于游戏的运行至关重要。以下是常见的目录结构及其说明：
-
-1. **游戏名称.exe**：
-
-   - 这是你游戏的可执行文件。双击此文件即可运行你的游戏。
-
-2. **游戏名称_Data**
-
-   这是游戏的资源文件夹。它包含了所有的游戏资源，如场景、脚本、图像、音频、材质和其他所有 Unity 打包的内容。
-
-3. **游戏名称_Data**\Managed 文件夹：
-
-   - 包含游戏使用的所有 .NET 程序集 (DLL)，其中包括 Unity 的标准库和你的 C# 脚本编译后的程序集
-
-4. **游戏名称_Data\Plugins** 文件夹：
-
-   - 存放原生插件（通常是 .dll 或 .so 文件），这些插件提供了特定平台的功能或是用来调用一些原生的系统库。
-
-5. **游戏名称_Data\Resources** 文件夹：
-
-   - 如果你在项目中有使用 `Resources` 文件夹，这里会包含所有通过 `Resources.Load` 加载的资源。此文件夹下的资源在游戏启动时会被加载。
-
-6. **游戏名称_Data\StreamingAssets** 文件夹：
-
-   - 这里包含你在 Unity 项目中的 `StreamingAssets` 文件夹中的所有文件。这些文件不会被 Unity 处理成特定格式，而是会以原始形式包含在内，通常用于需要在运行时直接读取的文件。
-
-7. **MonoBleedingEdge** 文件夹：
-
-   - 如果项目使用了 Unity 的 Mono 运行时，你可能会看到这个文件夹。它包含 Mono 虚拟机和一些基础的 .NET 库。
-
-8. **UnityCrashHandler64.exe**：
-
-   - 这是 Unity 内置的崩溃处理程序，当游戏崩溃时它会运行并生成崩溃日志。
-
-9. **UnityPlayer.dll**：
-
-   - 这是 Unity 游戏引擎的核心运行库，它包含了 Unity 运行时的主要功能。每个使用 Unity 构建的游戏都会有这个文件。
-
-10. **baselib.dll**
-
-   `baselib.dll` 是 Unity 引擎中的一个基础库动态链接库（DLL）文件，提供了许多底层的功能和服务，供 Unity 以及你的游戏在运行时使用。
-
-   `baselib.dll` 的作用：
-
-   - **底层服务**：`baselib.dll` 提供了一些底层的系统服务和抽象，帮助 Unity 引擎与操作系统进行交互。这可能包括内存管理、线程处理、文件操作、网络通信等基本功能。
-   - **跨平台支持**：`baselib.dll` 是 Unity 为了简化跨平台开发而引入的一个库，它封装了不同平台的系统调用，使得开发者不必处理各个平台的差异性。
-
-   不能删除 `baselib.dll` 的原因：
-
-   - **游戏依赖性**：尽管 `baselib.dll` 的功能相对底层且不直接暴露给开发者使用，但它是 Unity 引擎正常运行不可缺少的一部分。删除它会导致游戏在运行时缺少关键的基础功能，从而无法正常工作。
-   - **引擎集成**：Unity 引擎依赖于 `baselib.dll` 来执行许多低级别的操作，这些操作对游戏的稳定性和性能至关重要。
-
-   总结
-
-   `baselib.dll` 是 Unity 项目中必不可少的文件，在游戏发布时不能删除。它提供了关键的底层功能，确保游戏在目标平台上正常运行。与其他重要的 DLL 文件一样，`baselib.dll` 应该包含在你发布的游戏版本中。
-
-11. **配置文件**（可选）：
-
-   - 可能会有一个 `.cfg` 或 `.ini` 文件，用于存储与游戏启动相关的配置，如窗口大小、分辨率、音量等。
-
-
-
-**其他注意事项：**
-
-- 游戏打包出来的目录结构是 Unity 打包过程自动生成的，你通常不需要手动修改这些文件或文件夹，除非你对打包流程非常了解并且知道自己在做什么。
-- 游戏的资源通常会被 Unity 序列化和打包成专有格式，你不能简单地在这些文件夹中直接编辑游戏内容。
-
-**通过理解这个目录结构，你可以更好地管理和发布你的 Unity 游戏，确保所有必要的文件都包含在内以保证游戏的正常运行。**
-
-
-
-**MMOGame_BackUpThisFolder_ButDontShipItWithYourGame**
-
-`MMOGame_BackUpThisFolder_ButDontShipItWithYourGame` 文件夹是在 Unity 项目打包时自动生成的，它的作用是备份一些与项目打包和运行无关的文件。这些文件通常是用于调试或开发时的工具、缓存、日志等内容，因此在最终的游戏发布版本中不需要包含这些文件。
-
-这个文件夹中的内容可能包括以下几类文件：
-
-1. **调试信息**：如编译时的临时文件、日志文件、符号文件等，帮助开发者在开发和调试过程中追踪问题。
-
-2. **缓存数据**：编译或打包过程中生成的一些临时数据，可能加快后续的编译过程。
-
-3. **开发工具**：如编辑器扩展或调试工具生成的文件，这些文件不属于最终的游戏内容。
-
-这个文件夹通常只在本地开发环境中有用，在将项目发布或分享给其他人时，可以忽略或删除它。正如文件夹的名字所提示的那样，它不应该包含在游戏的最终发布版本中。
-
-
-
-**MMOGame_BurstDebugInformation_DoNotShip**
-
-`MMOGame_BurstDebugInformation_DoNotShip` 文件夹是在使用 Unity 的 Burst 编译器时生成的，里面包含了 Burst 编译器用于调试的相关信息。
-
-Burst 编译器是 Unity 提供的一个高性能编译器，专门用来优化性能关键的 C# 代码，特别是与 Unity 的 Jobs 系统结合使用时。`BurstDebugInformation` 文件夹中的内容主要包括以下内容：
-
-1. **调试信息文件**：这些文件帮助开发者在使用 Burst 编译器时进行调试，例如查看在特定平台上如何优化代码的细节。
-
-2. **符号文件**：这些文件包含与 Burst 编译的代码相关的符号信息，通常用于调试优化后的代码。
-
-与 `BackUpThisFolder_ButDontShipItWithYourGame` 文件夹类似，`BurstDebugInformation_DoNotShip` 文件夹中的内容不应包含在最终发布的游戏版本中。它们仅供开发和调试时使用，因此可以在发布游戏时安全地忽略或删除。
-
-
-
-**`.pdb` 文件**
-
-在发布游戏的最终版本时，通常可以删除 `.pdb` 文件，因为它们主要用于调试，不是游戏运行所必需的。然而，是否应该删除所有 `.pdb` 文件，取决于你的具体需求：
-
-**可以删除 `.pdb` 文件的情况：**
-
-- **发布最终版本**：发布给用户的游戏版本通常不需要包含 `.pdb` 文件，因为这些文件包含调试符号，用于在开发和调试过程中帮助开发者理解崩溃报告或调试代码。
-- **减少文件大小**：删除 `.pdb` 文件可以显著减小游戏安装包的大小。
-- **保护代码隐私**：`.pdb` 文件中包含详细的代码信息，删除它们可以防止反向工程和代码泄露。
-
-**不建议删除 `.pdb` 文件的情况：**
-
-- **内部测试和调试**：如果你或你的测试团队仍在对游戏进行调试，那么保留 `.pdb` 文件可以帮助你快速定位问题。
-- **崩溃报告分析**：有时在分析用户的崩溃报告时，`.pdb` 文件可以提供有用的信息。如果你打算在发布后继续支持游戏并修复错误，保留 `.pdb` 文件（至少是备份）可能是一个好主意。
-
-**建议**
-
-- **发布版本中删除**：在最终发布的游戏版本中，删除 `.pdb` 文件是一个常见的做法，以减少文件大小并保护代码。
-- **备份 `.pdb` 文件**：即使从发布版本中删除，建议你在本地或版本控制系统中备份这些文件，以便将来需要时使用。
-
-总结来说，除非你有特定的调试需求，通常可以在发布版本中删除所有 `.pdb` 文件。
-
-
-
-
-
-## .meta文件
-
-`.meta` 文件通常是由 Unity 引擎创建的，用于存储项目中文件的元数据。每个资产（如脚本、材质、场景、预制件等）都会有一个对应的 `.meta` 文件。
-
-
-
-### `.meta` 文件的作用
-
-1. **唯一标识符 (GUID)**：每个 `.meta` 文件中都包含一个唯一的 GUID (Globally Unique Identifier)，Unity 使用这个 GUID 来跟踪项目中的资源，即使资源被重命名或移动，Unity 依然能够通过 GUID 识别该资源。
-
-2. **Import 设置**：对于一些特定类型的文件（如图片、模型等），`.meta` 文件中会存储一些导入设置（import settings），如压缩选项、分辨率等。
-
-3. **文件依赖关系**：`.meta` 文件还可以存储文件之间的依赖关系，比如一个预制件依赖的材质文件，Unity 会在 `.meta` 文件中跟踪这些依赖关系。
-
-4. **版本控制**：如果你使用版本控制系统（如 Git）管理 Unity 项目，`.meta` 文件是需要一并提交到版本库中的，以确保在不同开发环境中资源不会丢失或错乱。
-
-
-
-### 示例
-
-一个简单的 `.meta` 文件可能看起来如下：
-
-```plaintext
-fileFormatVersion: 2
-guid: d73a8efc6c6e431eab0b4f23f111c776
-TextureImporter:
-  spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsPerUnit: 100
-  mipmaps:
-    enableMipMap: 0
-```
-
-在这个例子中，`.meta` 文件中包含了资源的 `guid` 和一些与纹理导入相关的设置。
-
-
-
-### 注意事项
-
-- 请勿手动编辑 `.meta` 文件，除非你完全了解它的结构和作用。
-- 如果不小心删除了 `.meta` 文件，Unity 会重新生成，但这可能会导致引用错误或丢失资源关联。
-
-
-
-## PlayerPrefs 
-
-`PlayerPrefs` 在游戏打包后会根据平台不同，将数据存储在不同的位置。以下是常见平台的存储位置：
-
-### **Windows**
-
-存储位置为注册表（Registry）：
-
-- 路径: `HKEY_CURRENT_USER\Software\[CompanyName]\[ProductName]`
-
-可以通过 Unity 的 `PlayerSettings` 来设置 `CompanyName` 和 `ProductName`，这两个字段会决定实际的存储路径。
-
-### **macOS**
-
-存储位置为 `plist` 文件：
-
-- 路径: `~/Library/Preferences/unity.[CompanyName].[ProductName].plist`
-
-### **Linux**
-
-存储在 `prefs` 文件中：
-
-- 路径: `~/.config/unity3d/[CompanyName]/[ProductName]/prefs`
-
-###  **Android**
-
-在 Android 平台上，`PlayerPrefs` 数据会存储在应用的内部存储中，通常在沙盒文件系统内：
-
-- 路径: `/data/data/[package name]/shared_prefs/[package name].xml`
-
-需要 `root` 权限才能访问该文件。
-
-###  **iOS**
-
-在 iOS 平台上，`PlayerPrefs` 数据会存储在 `NSUserDefaults` 中：
-
-- 路径: `~/Library/Preferences/[bundle identifier].plist`
-
-### **WebGL**
-
-对于 WebGL 构建，`PlayerPrefs` 使用浏览器的 `localStorage` 进行存储。
-
-### 例子
-
-在 Windows 平台上，`PlayerPrefs` 数据存储在注册表中。要查找它，可以按照以下步骤进行操作：
-
-#### 步骤 1: 打开注册表编辑器
-
-1. 按下 `Win + R` 键，打开“运行”对话框。
-2. 输入 `regedit`，然后按下 `Enter` 键。
-
-
-
-#### 步骤 2: 导航到 `PlayerPrefs` 存储位置
-
-在注册表编辑器中，导航到以下路径：
-
-```
-plaintext
-
-
-复制代码
-HKEY_CURRENT_USER\Software\[CompanyName]\[ProductName]
-```
-
-- **`[CompanyName]`**: 这是你在 Unity 项目中设置的公司名称，对应于 `PlayerSettings` 中的 **Company Name**。
-- **`[ProductName]`**: 这是你在 Unity 项目中设置的产品名称，对应于 `PlayerSettings` 中的 **Product Name**。
-
-![image-20240907230048575](MMORPG.assets/image-20240907230048575.png) 
 
 
 
@@ -14771,7 +14771,77 @@ AOI：Area Of Interest 一个很大的地图当中，你不能把所有的信息
 
 
 
+
+
+# [项目规范]
+
+
+
+
+
+## C#代码规范
+
+文件
+
+类
+
+枚举
+
+函数
+
+变量
+
+
+
+
+
+## Proto代码规范
+
+文件
+
+枚举
+
+message
+
+
+
+
+
+## Lua代码规范
+
+文件
+
+类
+
+枚举
+
+函数
+
+变量
+
+
+
+
+
+## Git描述规范
+
+git提交的规范我们统一添加前缀
+
+```
+[更新]
+[优化]
+[添加]
+```
+
+
+
+
+
+
+
 # 网络模块
+
+
 
 ## 概要
 
@@ -14797,7 +14867,7 @@ LengthFieldDecoder：消息解码器
 
 
 
- **监听器**：它要绑定在一个端口上，客户端连接的时候就是通过ip和端口号直接连接过来，连接到监听器之后，监听器是不给你处理数据的，它只是在这里监听等着你连接进来而已，然后监听器会将连接交个线程进行处理。
+**监听器**：它要绑定在一个端口上，客户端连接的时候就是通过ip和端口号直接连接过来，连接到监听器之后，监听器是不给你处理数据的，它只是在这里监听等着你连接进来而已，然后监听器会将连接交个线程进行处理。
 
 **线程池**：监听器将接收的连接交给某个线程（哪一个空闲就给哪个，如果都在忙就稍后再处理 ），所以说是由线程池和客户端保持联系，进行数据通信。 如果你cup有8个线程，那么同一时间就只能有8个线程运行。
 
@@ -15982,7 +16052,7 @@ hacker通过修改前端现在看到本来不应该看到的东西，在竞技�
 
 
 
-# 同步核心
+# 同步Core
 
 ## 角色设计
 
@@ -15996,7 +16066,7 @@ hacker通过修改前端现在看到本来不应该看到的东西，在竞技�
 
 
 
-属性
+## 属性设计
 
 ![image-20241013113709801](MMORPG.assets/image-20241013113709801.png)
 
@@ -16135,7 +16205,7 @@ spawner是刷怪对象，负责怪物的刷新。
 
 
 
-## 中心计时器
+## 世界心跳(WorldHeartBeat)
 
 模拟unity的调度系统,将我们的游戏时间活起来
 
