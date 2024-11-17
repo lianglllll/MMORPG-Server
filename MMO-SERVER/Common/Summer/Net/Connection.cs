@@ -9,10 +9,10 @@ using System.IO;
 using Google.Protobuf;
 using Google.Protobuf.Reflection;
 using Serilog;
-using GameServer.core;
 using Proto;
 using System.Threading;
 using System.Collections;
+using Common.Summer.Net;
 
 namespace GameServer.Network
 {

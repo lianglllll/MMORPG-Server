@@ -124,7 +124,6 @@ namespace GameServer.Network
                 Log.Information(e.ToString());
                 PassiveDisconnection();
             }
-
         }
 
         /// <summary>
@@ -133,17 +132,14 @@ namespace GameServer.Network
         /// <param name="len"></param>
         private void ReadMessage(int len)
         {
-
             //headLen+bodyLen=totalLen
 
             int headLen = lengthFieldOffset + lengthFieldLength;//魔法值+长度字段的长度
             int adj = lengthAdjustment; //body偏移量
 
-
             //循环开始之前mOffect代表上次剩余长度
             //所以moffect需要加上本次送过来的len
             mOffect += len;
-           
 
             //循环解析
             while (true)
@@ -175,8 +171,6 @@ namespace GameServer.Network
                 //整个包的长度为
                 int total = headLen + bodyLen;
 
-
-
                 //获取数据
                 byte[] data = new byte[bodyLen];
                 Array.Copy(mBuffer, headLen, data, 0, bodyLen);
@@ -186,10 +180,11 @@ namespace GameServer.Network
                 mOffect = mOffect - total;
 
                 //完成一个数据包
-                Received(data);
+                Received?.Invoke(data);
             }
 
         }
+
         /// <summary>
         /// 获取大端模式int值
         /// </summary>
@@ -206,7 +201,6 @@ namespace GameServer.Network
         /// </summary>
         private void PassiveDisconnection()
         {
-
             try
             {
                 mSocket?.Shutdown(SocketShutdown.Both); //停止数据发送和接收，确保正常关闭连接。
@@ -233,6 +227,5 @@ namespace GameServer.Network
             isStart = false;
             PassiveDisconnection();
         }
-
     }
 }

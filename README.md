@@ -23,6 +23,8 @@
 
 - 当前最新的提交是跑不动的因为还没修改完毕,如果需要能正常运行的请回滚到这个版本：[[优化\]entity体系优化](https://github.com/lianglllll/MMORPG/commit/f6ffd16b4dfb8d5f54ca9adc12fae552add90e5e)
 
+
+
 # 项目已完成功能
 
 **网络模块**
@@ -95,7 +97,7 @@
 
 - 需要重构一下战斗系统
 
-背包系统
+包系统
 
 - 背包界面和装备界面UI需要优化
 - 物品使用逻辑需要优化
@@ -131,13 +133,202 @@ AI
 
 **Tools**：里面有proto工具、excel工具、构建mysql数据库的sql文件。
 
-**note**:是本人在学习项目的时候所做笔记（也迁移了其他知识，基本上我所学做的笔记都在里头了）
-
 
 
 # 项目部署运行
 
-项目部署的流程文档在 ./note/MMORPG.md中
+
+
+## Unity 编辑器插件
+
+
+
+![image-20241031210804398](README.assets/image-20241031210804398-1731842150687-34.png)
+
+
+
+
+
+### hybridClr
+
+https://hybridclr.doc.code-philosophy.com/docs/beginner/quickstart
+
+
+
+vs 安装组件
+
+
+
+![image-20241031211158387](README.assets/image-20241031211158387-1731842150687-35.png)
+
+### Yooasset 2.1.1
+
+切记使用 2.1.1 版本，因为后面的版本改了一些接口，我们的项目还没升级
+
+https://www.yooasset.com/docs/guide-editor/QuickStart
+
+
+
+ 
+
+### BetterStreamingAssets
+
+[BetterStreamingAssets](https://github.com/gwiazdorrr/BetterStreamingAssets)
+
+通过 github 的 url 导入即可
+
+
+
+### inputsystem
+
+直接在管理器导入即可
+
+
+
+### Post Processing
+
+直接在管理器导入即可
+
+
+
+
+
+## windows 下安装 mysql 环境
+
+
+
+这里以windows10举例子
+
+### 安装 mysql
+
+我们这里使用的版本是 mysql 8.4.3LTS
+
+https://dev.mysql.com/downloads/mysql/
+
+![image-20241102120751826](README.assets/image-20241102120751826-1731842150688-36.png)
+
+一路傻瓜式安装即可。
+
+可参考：https://www.runoob.com/w3cnote/windows10-mysql-installer.html
+
+
+
+
+
+### 导入 sql 文件
+
+这里我们使用数据库工具来完成这个工作
+
+1.安装工具，这里我们使用 JookDB（网上随便找的）
+
+https://jookdb.com/download.html
+
+2.创建我们项目的数据库 mmorpg
+
+![image-20241102183824895](README.assets/image-20241102183824895-1731842150688-37.png) 3.执行 sql 文件
+
+
+
+![image-20241102183944857](README.assets/image-20241102183944857-1731842150688-38.png) ![image-20241102184013053](README.assets/image-20241102184013053-1731842150688-39.png)
+
+
+
+
+
+### 更改 server 配置信息
+
+在 server 中 config.yaml 修改数据库的 username 和 password
+
+注意yaml的格式，:号后面要有一个空格
+
+![image-20241102184302056](README.assets/image-20241102184302056-1731842150688-40.png) 
+
+
+
+## windows下面启动server程序
+
+启动后这样就没出现什么问题了。
+
+![image-20241102184624018](README.assets/image-20241102184624018-1731842150688-41.png) 
+
+
+
+## 资源服务器部署
+
+
+
+**1.搞一个服务器**
+
+可以使用本机来做服务器，但是我们这里以云服务器来举例子
+
+这边使用一台阿里云的云服务器。
+
+**2.安装宝塔面板**
+
+https://www.bt.cn/new/download.html
+
+记得在安全组中将宝塔的端口在云服务器上放行
+
+然后就进入面板的网页，下载web服务器相关的资源(这里用默认的方案)
+
+**3.网站搭建**
+
+自己创建一个网站
+
+然后在网站根目录创建mmo文件夹
+
+![image-20241102192526343](README.assets/image-20241102192526343-1731842150688-42.png)
+
+mmo文件夹里面是这样的
+
+![image-20241102192553433](README.assets/image-20241102192553433-1731842150688-43.png)
+
+其中game-config.json就是选择服务器时需要用到的信息
+
+```
+{
+    "ServerList":[
+        {
+            "name":"本地服务器",
+            "host":"127.0.0.1",
+            "port":55555,
+            "state":0
+        },
+        {
+            "name":"云服务器",
+            "host":"x.x.x.x",
+            "port":55555,
+            "state":0
+        }
+    ]
+}
+```
+
+
+
+
+
+PC文件夹就存放我们PC平台下的热更资源包、Android同理
+
+**注意将网站的端口在云服务器安全组中放行**
+
+注意，需要在untiy中将Main脚本的AssetServer字段改为云服务器的mmo目录处
+
+
+
+![image-20241102195034307](README.assets/image-20241102195034307-1731842150688-44.png) 
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

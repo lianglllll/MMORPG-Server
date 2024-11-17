@@ -25,7 +25,7 @@ namespace GameServer
             //初始化日志环境
             Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Debug()
-            .WriteTo.Console()
+            .WriteTo.Console(outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
             .WriteTo.File("logs\\server-log.txt", rollingInterval: RollingInterval.Day)
             .CreateLogger();
             Log.Debug("[日志服务启动]");

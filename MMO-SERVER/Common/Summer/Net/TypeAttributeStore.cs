@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameServer.core
+namespace Common.Summer.Net
 {
     /// <summary>
     /// 一个通用的属性存储（自定义的）
@@ -13,7 +13,7 @@ namespace GameServer.core
     public class TypeAttributeStore
     {
         private Dictionary<string, object> _dict = new Dictionary<string, object>();
-        
+
         /// <summary>
         /// 根据类型存放属性
         /// </summary>
@@ -44,7 +44,7 @@ namespace GameServer.core
             {
                 return (T)_dict[key];
             }
-            return default(T);
+            return default;
         }
 
     }
