@@ -1,0 +1,38 @@
+{
+  "LoginPanel": {
+    "PanelName": "LoginPanel",
+    "Resource": "UI/Prefabs/LoginPanel.prefab"
+  },
+  "RegisterPanel": {
+    "PanelName": "RegisterPanel",
+    "Resource": "UI/Prefabs/RegisterPanel.prefab"
+  },
+  "SelectRolePanel": {
+    "PanelName": "SelectRolePanel",
+    "Resource": "UI/Prefabs/SelectRolePanel.prefab"
+  },
+  "CreateRolePanel": {
+    "PanelName": "CreateRolePanel",
+    "Resource": "UI/Prefabs/CreateRolePanel.prefab"
+  },
+  "RoleListItem": {
+    "PanelName": "RoleListItem",
+    "Resource": "UI/Prefabs/RoleListItem.prefab"
+  },
+  "CombatPanel": {
+    "PanelName": "CombatPanel",
+    "Resource": "UI/Prefabs/CombatPanel.prefab"
+  },
+  "KnapsackPanel": {
+    "PanelName": "KnapsackPanel",
+    "Resource": "UI/Prefabs/Inventory/KnapsackPanel.prefab"
+  },
+  "VocationItem": {
+    "PanelName": "VocationItem",
+    "Resource": "UI/Prefabs/VocationItem.prefab"
+  },
+  "ServerPanel": {
+    "PanelName": "ServerPanel",
+    "Resource": "UI/Prefabs/Server/ServerPanel.prefab"
+  }
+}

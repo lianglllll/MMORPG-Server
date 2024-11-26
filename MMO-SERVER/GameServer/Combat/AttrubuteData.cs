@@ -12,7 +12,6 @@ namespace GameServer.Combat
     //这些个属性数据都是可以合并到一起，形成角色最终的属性
     public class AttrubuteData
     {
-
         //速度
         public int Speed;
         //最大生命值
@@ -67,7 +66,6 @@ namespace GameServer.Combat
             this.INT    += attrubuteData.INT;
             this.AGI    += attrubuteData.AGI;
         }
-
 
         //delete
         //减少属性
