@@ -10,7 +10,7 @@ using GameServer.Model;
 using GameServer.Manager;
 using Serilog;
 using GameServer.Core;
-using GameServer.core;
+using GameServer.Net;
 
 namespace GameServer.Service
 {

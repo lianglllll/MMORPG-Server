@@ -1,5 +1,4 @@
-﻿using GameServer.core;
-using GameServer.Core;
+﻿using GameServer.Core;
 using GameServer.Database;
 using GameServer.InventorySystem;
 using GameServer.Manager;
@@ -13,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GameServer.Net;
 
 namespace GameServer.Service
 {

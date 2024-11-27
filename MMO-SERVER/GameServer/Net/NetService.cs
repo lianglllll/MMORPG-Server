@@ -6,9 +6,9 @@ using Serilog;
 using Proto;
 using System.Threading;
 using GameServer.Database;
-using GameServer.core;
 using GameServer.Utils;
 using Common.Summer.GameServer;
+using GameServer.Net;
 
 namespace GameServer.Network
 {

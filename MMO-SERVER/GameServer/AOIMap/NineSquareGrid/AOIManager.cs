@@ -1,14 +1,10 @@
 using GameServer;
-using GameServer.Model;
-using Google.Protobuf.WellKnownTypes;
-using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using YamlDotNet.Core;
 
-namespace AOIMap;
+namespace GameServer.AOIMap.NineSquareGrid;
 
 /// <summary>
 /// 格子里的单位
@@ -113,7 +109,7 @@ public class AOIManager<T> where T : IAOIUnit
 
     // 上
     public int MaxY { get; private set; }
-    
+
     // X方向格子的数量
     public int CntsX { get; private set; }
 
@@ -147,12 +143,12 @@ public class AOIManager<T> where T : IAOIUnit
         MaxX = maxX;
         MaxY = maxY;
         //计算水平方向格子数量，向上取整
-        CntsX = (int)Math.Ceiling((maxX-minX)/(float)cellSize);
+        CntsX = (int)Math.Ceiling((maxX - minX) / (float)cellSize);
         //计算垂直方向格子数量，向上取整
-        CntsY = (int)Math.Ceiling((maxY-minY)/(float)cellSize);
+        CntsY = (int)Math.Ceiling((maxY - minY) / (float)cellSize);
 
         // 给aoi初始化区域中所有的格子进行编号和初始化
-        Grids = new Dictionary<int,Grid>();
+        Grids = new Dictionary<int, Grid>();
         for (int y = 0; y < CntsY; y++)
         {
             for (int x = 0; x < CntsX; x++)
@@ -198,7 +194,7 @@ public class AOIManager<T> where T : IAOIUnit
     {
         return GetSurroundGrids(gid).Values.ToList();
     }
-    public Dictionary<int,Grid> GetSurroundGrids(int gID)
+    public Dictionary<int, Grid> GetSurroundGrids(int gID)
     {
         Dictionary<int, Grid> result = new();
         if (!Grids.ContainsKey(gID))
@@ -221,7 +217,7 @@ public class AOIManager<T> where T : IAOIUnit
             if (newX >= 0 && newX < CntsX && newY >= 0 && newY < CntsY)
             {
                 int _gid = newY * CntsX + newX;
-                if(Grids.TryGetValue(_gid,out var gird))
+                if (Grids.TryGetValue(_gid, out var gird))
                 {
                     result[_gid] = gird;
                 }
@@ -299,7 +295,7 @@ public class AOIManager<T> where T : IAOIUnit
     {
         var pos = obj.AoiPos;
         var grid = GetGridByPos(pos.x, pos.y);
-        if(grid == null)
+        if (grid == null)
         {
             obj.OnPosError();
             return;
@@ -313,7 +309,7 @@ public class AOIManager<T> where T : IAOIUnit
     {
         var pos = obj.AoiPos;
         var grid = GetGridByPos(pos.x, pos.y);
-        if(grid == null)
+        if (grid == null)
         {
             obj.OnPosError();
             return;
@@ -335,11 +331,11 @@ public class AOIManager<T> where T : IAOIUnit
         var curGid = GetGidByPos(curPos.x, curPos.y);
         return Move(unit, oldGid, curGid);
     }
-    private bool Move(T unit,int oldGid, int currGid)
+    private bool Move(T unit, int oldGid, int currGid)
     {
         var oldGrid = Grids.GetValueOrDefault(oldGid);
         var currGrid = Grids.GetValueOrDefault(currGid);
-        
+
         var isCrossGrid = false;
 
         if (oldGrid != currGrid)
@@ -384,5 +380,5 @@ public class AOIManager<T> where T : IAOIUnit
         return isCrossGrid;
     }
 
-    
+
 }

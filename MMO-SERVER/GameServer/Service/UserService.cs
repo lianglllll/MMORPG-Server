@@ -10,7 +10,7 @@ using GameServer.Model;
 using GameServer.Manager;
 using GameServer;
 using GameServer.Database;
-using GameServer.core;
+using GameServer.Net;
 
 namespace GameServer.Service
 {

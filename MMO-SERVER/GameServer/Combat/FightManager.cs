@@ -18,7 +18,7 @@ namespace GameServer.Combat
     public class FightManager
     {
         private Space space;
-        public List<Missile> missiles = new List<Missile>();        //当前场景下的投射物列表
+        public List<Missile> missiles = new List<Missile>();        //当前场景下的投射物列表 todo
 
         //待处理的技能施法队列：收集来自各个客户端的施法请求,线性处理，避免多线程并发问题。
         public ConcurrentQueue<CastInfo> castInfoQueue = new ConcurrentQueue<CastInfo>();

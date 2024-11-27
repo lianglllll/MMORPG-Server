@@ -3,17 +3,11 @@ using GameServer.Manager;
 using GameServer.Model;
 using Google.Protobuf;
 using Serilog;
-using GameServer;
 using GameServer.Network;
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Common.Summer.GameServer;
 
-namespace GameServer.core
+namespace GameServer.Net
 {
     /// <summary>
     /// 用户会话,代表玩家客户端，只有登录成功的用户才有session
@@ -52,7 +46,7 @@ namespace GameServer.core
         {
             if (Conn != null)
             {
-                while(msgBuffer.TryDequeue(out var msg))
+                while (msgBuffer.TryDequeue(out var msg))
                 {
                     Log.Information("补发消息：" + msg);
                     Conn.Send(msg);
@@ -75,7 +69,7 @@ namespace GameServer.core
             //让session失效
             SessionManager.Instance.RemoveSession(Id);
             //移除chr
-            if(character != null)
+            if (character != null)
             {
                 character.currentSpace?.EntityLeave(character);
                 CharacterManager.Instance.RemoveCharacter(character.EntityId);

@@ -1,19 +1,9 @@
 ﻿using Proto;
-using GameServer;
-using GameServer.Network;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GameServer.Database;
-using GameServer.Manager;
 using Serilog;
 using GameServer.Core;
 using GameServer.InventorySystem;
-using GameServer.core;
-using System.Runtime.ConstrainedExecution;
-using AOIMap;
+using GameServer.Net;
 
 namespace GameServer.Model
 {

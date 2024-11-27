@@ -1,26 +1,13 @@
-﻿using Serilog;
-using GameServer.Network;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Proto;
 using GameServer.Manager;
-using GameServer.core;
 using GameServer.Combat;
-using GameServer;
 using Google.Protobuf;
 using GameServer.Core;
-using AOIMap;
-using GameServer.Database;
 using AOI;
-using System.Security.Policy;
 using GameServer.Utils;
-using MySqlX.XDevAPI;
-using System.Runtime.ConstrainedExecution;
-using System.Diagnostics;
-using Org.BouncyCastle.Utilities.IO;
 using System.Collections.Concurrent;
 using Common.Summer.GameServer;
 
@@ -41,12 +28,10 @@ namespace GameServer.Model
         public SpawnManager spawnManager = new SpawnManager();                                      //怪物孵化器，负责怪物的孵化
         public FightManager fightManager = new FightManager();                                      //战斗管理器，负责技能、投射物、伤害、actor信息的更新
         public EItemManager itemManager = new EItemManager();                                       //物品管理器，管理场景中出现的物品
-        public AoiZone aoiZone = new AoiZone(0.001f,0.001f);                    //AOI管理器：十字链表空间(unity坐标系)
+        public AoiZone aoiZone = new AoiZone(0.001f,0.001f);                                        //AOI管理器：十字链表空间(unity坐标系)
         private Vector2 viewArea = new(Config.Server.AoiViewArea, Config.Server.AoiViewArea);
 
-        /// <summary>
-        /// 构造函数
-        /// </summary>
+
         public Space(){}
         public Space(SpaceDefine spaceDefine)
         {

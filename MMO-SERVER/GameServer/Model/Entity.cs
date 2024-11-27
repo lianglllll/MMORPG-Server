@@ -1,14 +1,6 @@
 ﻿using Proto;
-using GameServer;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GameServer.Core;
-using AOIMap;
-using GameServer.Combat;
-using Serilog;
 
 namespace GameServer.Model
 {
