@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.PortableExecutable;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
 namespace lLua.binchunk
 {
-    //具体的而记者chunk解析工作由reader来完成
+    //具体的chunk解析工作由reader来完成
     public class Reader
     {
         private byte[] data;
@@ -16,84 +11,6 @@ namespace lLua.binchunk
         {
             this.data = data;
             this.position = 0;
-        }
-
-        public byte ReadByte()
-        {
-            if (position + 1 > data.Length)
-            {
-                throw new InvalidOperationException("Attempt to read beyond the end of the data.");
-            }
-
-            byte b = data[position];
-            position++;
-            return b;
-        }
-
-        public uint ReadUint32()
-        {
-            if (position + 4 > data.Length)
-            {
-                throw new InvalidOperationException("Attempt to read beyond the end of the data.");
-            }
-
-            uint value = BitConverter.ToUInt32(data, position);
-            position += 4;
-            return value;
-        }
-
-        public ulong ReadUint64()
-        {
-            if (position + 8 > data.Length)
-            {
-                throw new InvalidOperationException("Attempt to read beyond the end of the data.");
-            }
-
-            ulong value = BitConverter.ToUInt64(data, position);
-            position += 8;
-            return value;
-        }
-
-        public long ReadLuaInteger()
-        {
-            return (long)ReadUint64();
-        }
-
-        public double ReadLuaNumber()
-        {
-            ulong bits = ReadUint64();
-            return BitConverter.Int64BitsToDouble((long)bits);
-        }
-
-        public byte[] ReadBytes(uint n)
-        {
-            if (position + n > data.Length)
-            {
-                throw new InvalidOperationException("Attempt to read beyond the end of the data.");
-            }
-
-            byte[] bytes = new byte[n];
-            Array.Copy(data, position, bytes, 0, n);
-            position += (int)n;
-            return bytes;
-        }
-
-        public string ReadString()
-        {
-            uint size = ReadByte(); // Attempt to read a short string
-
-            if (size == 0) // Null string
-            {
-                return "";
-            }
-
-            if (size == 0xFF) // Long string
-            {
-                size = (uint)ReadUint64();
-            }
-
-            byte[] bytes = ReadBytes(size - 1); // Read the string bytes, excluding the terminator
-            return Encoding.UTF8.GetString(bytes); // Convert bytes to UTF-8 string
         }
 
         public void CheckHeader()
@@ -155,22 +72,100 @@ namespace lLua.binchunk
             return new Prototype
             {
                 Source = source,
-                LineDefined = ReadUint32(),
-                LastLineDefined = ReadUint32(),
-                NumParams = ReadByte(),
-                IsVararg = ReadByte(),
-                MaxStackSize = ReadByte(),
-                Code = ReadCode(),
-                Constants = ReadConstants(),
-                Upvalues = ReadUpvalues(),
-                Protos = ReadProtos(source),
-                LineInfo = ReadLineInfo(),
-                LocVars = ReadLocVars(),
-                UpvalueNames = ReadUpvalueNames()
+                LineDefined =       ReadUint32(),
+                LastLineDefined =   ReadUint32(),
+                NumParams =         ReadByte(),
+                IsVararg =          ReadByte(),
+                MaxStackSize =      ReadByte(),
+                Code =              ReadCode(),
+                Constants =         ReadConstants(),
+                Upvalues =          ReadUpvalues(),
+                Protos =            ReadProtos(source),
+                LineInfo =          ReadLineInfo(),
+                LocVars =           ReadLocVars(),
+                UpvalueNames =      ReadUpvalueNames()
             };
         }
 
-        public List<uint> ReadCode()
+        public byte ReadByte()
+        {
+            if (position + 1 > data.Length)
+            {
+                throw new InvalidOperationException("Attempt to read beyond the end of the data.");
+            }
+
+            byte b = data[position];
+            position++;
+            return b;
+        }
+
+        private uint ReadUint32()
+        {
+            if (position + 4 > data.Length)
+            {
+                throw new InvalidOperationException("Attempt to read beyond the end of the data.");
+            }
+
+            uint value = BitConverter.ToUInt32(data, position);
+            position += 4;
+            return value;
+        }
+
+        private ulong ReadUint64()
+        {
+            if (position + 8 > data.Length)
+            {
+                throw new InvalidOperationException("Attempt to read beyond the end of the data.");
+            }
+
+            ulong value = BitConverter.ToUInt64(data, position);
+            position += 8;
+            return value;
+        }
+
+        private long ReadLuaInteger()
+        {
+            return (long)ReadUint64();
+        }
+
+        private double ReadLuaNumber()
+        {
+            ulong bits = ReadUint64();
+            return BitConverter.Int64BitsToDouble((long)bits);
+        }
+
+        private byte[] ReadBytes(uint n)
+        {
+            if (position + n > data.Length)
+            {
+                throw new InvalidOperationException("Attempt to read beyond the end of the data.");
+            }
+
+            byte[] bytes = new byte[n];
+            Array.Copy(data, position, bytes, 0, n);
+            position += (int)n;
+            return bytes;
+        }
+
+        private string ReadString()
+        {
+            uint size = ReadByte(); // Attempt to read a short string
+
+            if (size == 0) // Null string
+            {
+                return "";
+            }
+
+            if (size == 0xFF) // Long string
+            {
+                size = (uint)ReadUint64();
+            }
+
+            byte[] bytes = ReadBytes(size - 1); // Read the string bytes, excluding the terminator
+            return Encoding.UTF8.GetString(bytes); // Convert bytes to UTF-8 string
+        }
+
+        private List<uint> ReadCode()
         {
             // 创建一个大小为 ReadUint32 返回值的 uint 列表
             int size = (int)ReadUint32();  // 从字节流中读取长度
@@ -185,7 +180,7 @@ namespace lLua.binchunk
             return code;
         }
 
-        public List<object> ReadConstants()
+        private List<object> ReadConstants()
         {
             // 创建一个大小为 ReadUint32 返回值的 object 列表
             int size = (int)ReadUint32();  // 从字节流中读取常量表的长度
@@ -200,7 +195,7 @@ namespace lLua.binchunk
             return constants;
         }
 
-        public object ReadConstant()
+        private object ReadConstant()
         {
             byte tag = ReadByte(); // 获取标签
 
@@ -227,7 +222,7 @@ namespace lLua.binchunk
             }
         }
 
-        public List<Upvalue> ReadUpvalues()
+        private List<Upvalue> ReadUpvalues()
         {
             uint count = ReadUint32();
             var upvalues = new List<Upvalue>((int)count);
@@ -241,7 +236,7 @@ namespace lLua.binchunk
             return upvalues;
         }
 
-        public List<Prototype> ReadProtos(string parentSource)
+        private List<Prototype> ReadProtos(string parentSource)
         {
             uint count = ReadUint32();
             var protos = new List<Prototype>((int)count);
@@ -254,7 +249,7 @@ namespace lLua.binchunk
             return protos;
         }
 
-        public List<uint> ReadLineInfo()
+        private List<uint> ReadLineInfo()
         {
             uint count = ReadUint32();
             var lineInfo = new List<uint>((int)count);
@@ -267,7 +262,7 @@ namespace lLua.binchunk
             return lineInfo;
         }
 
-        public List<LocVar> ReadLocVars()
+        private List<LocVar> ReadLocVars()
         {
             uint count = ReadUint32();
             var locVars = new List<LocVar>((int)count);
@@ -283,7 +278,7 @@ namespace lLua.binchunk
             return locVars;
         }
 
-        public List<string> ReadUpvalueNames()
+        private List<string> ReadUpvalueNames()
         {
             uint count = ReadUint32();
             var names = new List<string>((int)count);
