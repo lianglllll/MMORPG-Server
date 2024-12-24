@@ -1,4 +1,4 @@
-# unity
+# unity && vs
 .vs/
 Library/
 Logs/
@@ -31,7 +31,6 @@ HybridCLRData/
 /**/StreamingAssets/*.dll.bytes.meta
 /MMO-Client/MMOGame/Bundles/
 /MMO-Client/MMOGame/yoo/
-
 
 # 工具的tmp
 /Tools/**/out-csharp/
