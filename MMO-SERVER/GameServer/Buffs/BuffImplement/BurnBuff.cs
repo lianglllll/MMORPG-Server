@@ -1,5 +1,5 @@
 ﻿using Common.Summer.Core;
-using Proto;
+using HS.Protobuf.Combat.Skill;
 using System.Collections.Generic;
 
 namespace GameServer.Buffs.BuffImplement

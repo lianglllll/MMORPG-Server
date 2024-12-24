@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Linq;
-using Proto;
 using GameServer.AI;
 using GameServer.Manager;
 using GameServer.Combat;
 using Common.Summer.Core;
+using HS.Protobuf.Combat.Skill;
+using HS.Protobuf.Scene;
+using HS.Protobuf.SceneEntity;
 
 namespace GameServer.Model
 {

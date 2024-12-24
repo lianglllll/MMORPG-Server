@@ -1,6 +1,6 @@
-﻿using Proto;
-using System;
+﻿using System;
 using Common.Summer.Core;
+using HS.Protobuf.SceneEntity;
 
 namespace GameServer.Model
 {
@@ -56,7 +56,7 @@ namespace GameServer.Model
         /// <summary>
         /// NetEntity 网络对象属性
         /// </summary>
-        public Proto.NetEntity EntityData
+        public NetEntity EntityData
         {
             get {
                 return netObj;

@@ -1,0 +1,39 @@
+syntax = "proto3";
+package HS.Protobuf.Combat.Buff;
+
+//buff类型
+enum BuffType{
+	Buff = 0;
+	Debuff = 1;
+}
+
+//buff叠加方式
+enum BuffConflict{
+	Combine = 0;		//合并为一个buff，叠层(提升等级)
+	Separate = 1;		//独立存在
+	Cover = 2;			//覆盖，后者覆盖前者
+}
+
+message BuffInfo{
+	int32 id = 1;	//实例id
+	int32 bid = 2;
+	int32 ownerId = 3;
+	int32 providerId = 4;
+	int32 currentLevel = 5;		//当前等级
+	float ResidualDuration = 6;	//当前剩余时间
+}
+
+//buff添加响应
+message BuffsAddResponse{
+	repeated BuffInfo list = 1;
+}
+
+//buff移除响应
+message BuffsRemoveResponse{
+	repeated BuffInfo list = 1;
+}
+
+//buff更新响应
+message BuffsUpdateResponse{
+	repeated BuffInfo list = 1;
+}

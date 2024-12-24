@@ -1,0 +1,45 @@
+syntax = "proto3";
+package HS.Protobuf.Chat;
+
+enum ChatChannel{
+	ALL = 0;				
+	LOCAL = 1;
+	WORLD = 2;
+	SYSTEM = 4;
+	PRIVATE = 8;
+	TEAM = 16;
+	GUILD = 32;
+}
+
+message ChatMessage{
+	ChatChannel channel = 1;
+	int32 id = 2;
+	int32 from_id = 3;
+	string from_name = 4;			//假设两个玩家在不同的地图私聊，因为客户端只记录本地图的玩家信息，所以找不到name。
+									//也可以拿着这个id去问服务端，但是这样会加大服务端的压力
+	int32 to_id = 5;
+	string to_name = 6;
+	string content = 7;
+	double time = 8;				//时间，来拿做判断啊。比如说排序，聊天时能拿最近5分钟的消息....
+}
+
+message ChatRequest{
+	ChatMessage message = 1;
+}
+
+message ChatResponseOne{
+	int32  resultCode		= 1;	
+	string resultMsg		= 2;
+	ChatMessage message		= 3;
+}
+
+message ChatResponse{
+	int32  resultCode						= 1;	
+	string resultMsg						= 2;
+	repeated ChatMessage localMessages		= 3;
+	repeated ChatMessage worldMessages		= 4;
+	repeated ChatMessage systemMessages		= 5;
+	repeated ChatMessage privateMessages	= 6;
+	repeated ChatMessage teamMessages		= 7;
+	repeated ChatMessage guildMessages		= 8;
+}

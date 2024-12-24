@@ -1,10 +1,9 @@
 ﻿using Common.Summer.Core;
 using GameServer.Combat;
-using Proto;
+using HS.Protobuf.SceneEntity;
 
 namespace GameServer.AI.FSM.State
 {
-
     public class AttackState : IState<Param>
     {
         private Skill curUsedSkill;

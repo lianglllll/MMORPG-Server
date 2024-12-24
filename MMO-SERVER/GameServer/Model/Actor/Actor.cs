@@ -1,9 +1,12 @@
-﻿using Proto;
+﻿using HS.Protobuf.Backpack;
 using GameServer.Combat;
 using GameServer.Manager;
 using GameServer.Buffs;
 using GameServer.core;
 using Common.Summer.Core;
+using HS.Protobuf.SceneEntity;
+using HS.Protobuf.Combat.Skill;
+using HS.Protobuf.Scene;
 
 namespace GameServer.Model
 {

@@ -1,11 +1,12 @@
 ﻿using GameServer.InventorySystem;
 using GameServer.Manager;
 using GameServer.Model;
-using Proto;
 using GameServer.Net;
 using Common.Summer.Tools;
 using Common.Summer.Net;
 using Common.Summer.Core;
+using HS.Protobuf.Backpack;
+using HS.Protobuf.Scene;
 
 namespace GameServer.Service
 {
@@ -110,13 +111,13 @@ namespace GameServer.Service
             var res = new ItemDiscardResponse();
             if (discardAmount > 0)
             {
-                res.Result = Result.Success;
+                res.ResultCode = 0;
                 res.ItemId = item.ItemId;
-                res.Amout = discardAmount;
+                res.Amount = discardAmount;
             }
             else
             {
-                res.Result = Result.Fault;
+                res.ResultCode = 1;
             }
             sender.Send(res);
         }
@@ -174,15 +175,15 @@ namespace GameServer.Service
                 var res = new ItemPickupResponse();
                 if (alreadyAddedAmount > 0)
                 {
-                    res.Result = Result.Success;
+                    res.ResultCode = 0;
                     res.ItemId = eItem.Item.ItemId;
-                    res.Amout = alreadyAddedAmount;
+                    res.Amount = alreadyAddedAmount;
                     //更新ui
                     _KnapsacUpdateResponse(chr);
                 }
                 else
                 {
-                    res.Result = Result.Fault;
+                    res.ResultCode = 1;
                 }
                 sender.Send(res);
 

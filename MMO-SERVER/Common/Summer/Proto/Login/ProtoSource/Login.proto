@@ -1,0 +1,103 @@
+syntax = "proto3";
+import "Scene/ProtoSource/SceneEntity.proto";
+package HS.Protobuf.Login;
+
+//注册
+message UserRegisterRequest{
+	string username = 1;
+	string password = 2;
+}
+message UserRegisterResponse{
+	int32 code = 1;
+	string message = 2;
+}
+
+//登录
+message UserLoginRequest{
+	string username = 1;
+	string password = 2;
+}
+message UserLoginResponse{
+	int32 code = 1;
+	string message = 2;
+	bool success = 3;
+	string sessionId = 4;
+}
+
+//角色创建
+message CharacterCreateRequest{
+	string name = 1;
+	int32 jobType = 2;
+}
+message CharacterCreateResponse{
+	bool success = 1;
+	string message = 2;
+	HS.Protobuf.SceneEntity.NetActor character = 3;
+}
+
+// 查询角色列表的请求
+message CharacterListRequest{
+}
+message CharacterListResponse{
+	repeated HS.Protobuf.SceneEntity.NetActor characterList = 1;
+}
+// 删除角色的请求
+message CharacterDeleteRequest{
+	int32 characterId = 1;
+}
+message CharacterDeleteResponse{
+	bool success = 1;
+	string message = 2;
+}
+
+//重连请求
+message ReconnectRequest{
+	string sessionId = 1;
+}
+message  ReconnectResponse{
+	bool success = 1;
+	int32 entityId = 2;//重连的角色，0代表为选择角色
+}
+
+//退出游戏
+message ExitRequest{
+
+}
+message ExitResponse{
+
+}
+
+//重新选择角色
+
+
+//重新登录
+
+// 获取通信的密钥
+message GetCommunicationSecretKeyRequest{
+	string clientPublicKey = 1;
+}
+message GetCommunicationSecretKeyResponse{
+	string key1 = 1;
+	string key2 = 2;
+}
+
+message giao{
+	int32 s = 1;
+}
+
+
+//============================================公告==========================================
+message KillRankingListItem{
+	string chrName = 1;
+	int64 killCount = 2;
+}
+
+message ServerInfoRequest{
+	
+}
+
+message ServerInfoResponse{
+	int32 OnlinePlayerCount = 1;
+	int32 UserCount = 2;
+	repeated KillRankingListItem killRankingList = 3;
+}

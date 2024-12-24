@@ -25,21 +25,23 @@ namespace HS.Protobuf.ControlCenter {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChNDb250cm9sQ2VudGVyLnByb3RvEhlIUy5Qcm90b2J1Zi5Db250cm9sQ2Vu",
-            "dGVyGh9Db21tb24vUHJvdG9Tb3VyY2UvQ29tbW9uLnByb3RvIl8KDlNlcnZl",
-            "ckluZm9Ob2RlEjMKCnNlcnZlclR5cGUYASABKA4yHy5IUy5Qcm90b2J1Zi5D",
-            "b21tb24uU0VSVkVSX1RZUEUSCgoCaXAYAiABKAkSDAoEcG9ydBgDIAEoBSJe",
-            "ChlTZXJ2ZXJJbmZvUmVnaXN0ZXJSZXF1ZXN0EkEKDnNlcnZlckluZm9Ob2Rl",
-            "GAEgASgLMikuSFMuUHJvdG9idWYuQ29udHJvbENlbnRlci5TZXJ2ZXJJbmZv",
-            "Tm9kZSJVChpTZXJ2ZXJJbmZvUmVnaXN0ZXJSZXNwb25zZRISCgpyZXN1bHRD",
-            "b2RlGAEgASgFEhEKCXJlc3VsdE1zZxgCIAEoCRIQCghzZXJ2ZXJJZBgDIAEo",
-            "BSqfAQoUQ29udHJvbENlbnRlclByb3RvY2wSHgoaQ09OVFJPTENFTlRFUl9Q",
-            "Uk9UT0NMX05PTkUQABIyCi1DT05UUk9MQ0VOVEVSX1BST1RPQ0xfU0VSVkVS",
-            "SU5GT19SRUdJU1RFUl9SRVEQkU4SMwouQ09OVFJPTENFTlRFUl9QUk9UT0NM",
-            "X1NFUlZFUklORk9fUkVHSVNURVJfUkVTUBCSTmIGcHJvdG8z"));
+            "dGVyGh9Db21tb24vUHJvdG9Tb3VyY2UvQ29tbW9uLnByb3RvIpUBCg5TZXJ2",
+            "ZXJJbmZvTm9kZRIzCgpzZXJ2ZXJUeXBlGAEgASgOMh8uSFMuUHJvdG9idWYu",
+            "Q29tbW9uLlNFUlZFUl9UWVBFEgoKAmlwGAIgASgJEgwKBHBvcnQYAyABKAUS",
+            "DwoHd29ybGRJZBgEIAEoBRIPCgdzY2VuZUlkGAUgASgFEhIKCmluc3RhbmNl",
+            "SWQYBiABKAUiXgoZU2VydmVySW5mb1JlZ2lzdGVyUmVxdWVzdBJBCg5zZXJ2",
+            "ZXJJbmZvTm9kZRgBIAEoCzIpLkhTLlByb3RvYnVmLkNvbnRyb2xDZW50ZXIu",
+            "U2VydmVySW5mb05vZGUiVQoaU2VydmVySW5mb1JlZ2lzdGVyUmVzcG9uc2US",
+            "EgoKcmVzdWx0Q29kZRgBIAEoBRIRCglyZXN1bHRNc2cYAiABKAkSEAoIc2Vy",
+            "dmVySWQYAyABKAUqnwEKFENvbnRyb2xDZW50ZXJQcm90b2NsEh4KGkNPTlRS",
+            "T0xDRU5URVJfUFJPVE9DTF9OT05FEAASMgotQ09OVFJPTENFTlRFUl9QUk9U",
+            "T0NMX1NFUlZFUklORk9fUkVHSVNURVJfUkVREJFOEjMKLkNPTlRST0xDRU5U",
+            "RVJfUFJPVE9DTF9TRVJWRVJJTkZPX1JFR0lTVEVSX1JFU1AQkk5iBnByb3Rv",
+            "Mw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::HS.Protobuf.Common.CommonReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.ControlCenter.ControlCenterProtocl), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.ControlCenter.ServerInfoNode), global::HS.Protobuf.ControlCenter.ServerInfoNode.Parser, new[]{ "ServerType", "Ip", "Port" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.ControlCenter.ServerInfoNode), global::HS.Protobuf.ControlCenter.ServerInfoNode.Parser, new[]{ "ServerType", "Ip", "Port", "WorldId", "SceneId", "InstanceId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.ControlCenter.ServerInfoRegisterRequest), global::HS.Protobuf.ControlCenter.ServerInfoRegisterRequest.Parser, new[]{ "ServerInfoNode" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.ControlCenter.ServerInfoRegisterResponse), global::HS.Protobuf.ControlCenter.ServerInfoRegisterResponse.Parser, new[]{ "ResultCode", "ResultMsg", "ServerId" }, null, null, null, null)
           }));
@@ -100,6 +102,9 @@ namespace HS.Protobuf.ControlCenter {
       serverType_ = other.serverType_;
       ip_ = other.ip_;
       port_ = other.port_;
+      worldId_ = other.worldId_;
+      sceneId_ = other.sceneId_;
+      instanceId_ = other.instanceId_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -136,17 +141,48 @@ namespace HS.Protobuf.ControlCenter {
     /// <summary>Field number for the "port" field.</summary>
     public const int PortFieldNumber = 3;
     private int port_;
-    /// <summary>
-    ///比如：世界号
-    ///      场景号
-    ///		实例号（先不实现）
-    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int Port {
       get { return port_; }
       set {
         port_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "worldId" field.</summary>
+    public const int WorldIdFieldNumber = 4;
+    private int worldId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int WorldId {
+      get { return worldId_; }
+      set {
+        worldId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "sceneId" field.</summary>
+    public const int SceneIdFieldNumber = 5;
+    private int sceneId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int SceneId {
+      get { return sceneId_; }
+      set {
+        sceneId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "instanceId" field.</summary>
+    public const int InstanceIdFieldNumber = 6;
+    private int instanceId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int InstanceId {
+      get { return instanceId_; }
+      set {
+        instanceId_ = value;
       }
     }
 
@@ -168,6 +204,9 @@ namespace HS.Protobuf.ControlCenter {
       if (ServerType != other.ServerType) return false;
       if (Ip != other.Ip) return false;
       if (Port != other.Port) return false;
+      if (WorldId != other.WorldId) return false;
+      if (SceneId != other.SceneId) return false;
+      if (InstanceId != other.InstanceId) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -178,6 +217,9 @@ namespace HS.Protobuf.ControlCenter {
       if (ServerType != global::HS.Protobuf.Common.SERVER_TYPE.None) hash ^= ServerType.GetHashCode();
       if (Ip.Length != 0) hash ^= Ip.GetHashCode();
       if (Port != 0) hash ^= Port.GetHashCode();
+      if (WorldId != 0) hash ^= WorldId.GetHashCode();
+      if (SceneId != 0) hash ^= SceneId.GetHashCode();
+      if (InstanceId != 0) hash ^= InstanceId.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -208,6 +250,18 @@ namespace HS.Protobuf.ControlCenter {
         output.WriteRawTag(24);
         output.WriteInt32(Port);
       }
+      if (WorldId != 0) {
+        output.WriteRawTag(32);
+        output.WriteInt32(WorldId);
+      }
+      if (SceneId != 0) {
+        output.WriteRawTag(40);
+        output.WriteInt32(SceneId);
+      }
+      if (InstanceId != 0) {
+        output.WriteRawTag(48);
+        output.WriteInt32(InstanceId);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -230,6 +284,18 @@ namespace HS.Protobuf.ControlCenter {
         output.WriteRawTag(24);
         output.WriteInt32(Port);
       }
+      if (WorldId != 0) {
+        output.WriteRawTag(32);
+        output.WriteInt32(WorldId);
+      }
+      if (SceneId != 0) {
+        output.WriteRawTag(40);
+        output.WriteInt32(SceneId);
+      }
+      if (InstanceId != 0) {
+        output.WriteRawTag(48);
+        output.WriteInt32(InstanceId);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -248,6 +314,15 @@ namespace HS.Protobuf.ControlCenter {
       }
       if (Port != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Port);
+      }
+      if (WorldId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(WorldId);
+      }
+      if (SceneId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(SceneId);
+      }
+      if (InstanceId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(InstanceId);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -269,6 +344,15 @@ namespace HS.Protobuf.ControlCenter {
       }
       if (other.Port != 0) {
         Port = other.Port;
+      }
+      if (other.WorldId != 0) {
+        WorldId = other.WorldId;
+      }
+      if (other.SceneId != 0) {
+        SceneId = other.SceneId;
+      }
+      if (other.InstanceId != 0) {
+        InstanceId = other.InstanceId;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -297,6 +381,18 @@ namespace HS.Protobuf.ControlCenter {
             Port = input.ReadInt32();
             break;
           }
+          case 32: {
+            WorldId = input.ReadInt32();
+            break;
+          }
+          case 40: {
+            SceneId = input.ReadInt32();
+            break;
+          }
+          case 48: {
+            InstanceId = input.ReadInt32();
+            break;
+          }
         }
       }
     #endif
@@ -322,6 +418,18 @@ namespace HS.Protobuf.ControlCenter {
           }
           case 24: {
             Port = input.ReadInt32();
+            break;
+          }
+          case 32: {
+            WorldId = input.ReadInt32();
+            break;
+          }
+          case 40: {
+            SceneId = input.ReadInt32();
+            break;
+          }
+          case 48: {
+            InstanceId = input.ReadInt32();
             break;
           }
         }

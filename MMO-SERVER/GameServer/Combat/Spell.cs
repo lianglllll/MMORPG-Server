@@ -1,8 +1,8 @@
 ﻿using GameServer.Manager;
 using GameServer.Model;
-using Proto;
 using Serilog;
 using Common.Summer.Core;
+using HS.Protobuf.Combat.Skill;
 
 
 namespace GameServer.Combat

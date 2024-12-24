@@ -1,9 +1,9 @@
 ﻿using GameServer.Model;
-using Proto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Common.Summer.Tools;
+using HS.Protobuf.Combat.Buff;
 
 namespace GameServer.Buffs
 {

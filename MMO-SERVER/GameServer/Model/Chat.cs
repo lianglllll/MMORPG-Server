@@ -1,9 +1,5 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GameServer.Manager;
-using Proto;
+﻿using GameServer.Manager;
+using HS.Protobuf.Chat;
 
 namespace GameServer.Model
 {
@@ -36,7 +32,7 @@ namespace GameServer.Model
             if (res == null)
             {
                 res = new ChatResponse();
-                res.Result = Result.Success;
+                res.ResultCode = 0;
             }
 
             //获取各个频道的信息

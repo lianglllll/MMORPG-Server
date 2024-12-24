@@ -1,5 +1,5 @@
 ﻿using Common.Summer.Core;
-using Proto;
+using HS.Protobuf.SceneEntity;
 
 namespace GameServer.AI.FSM.State
 {

@@ -1,11 +1,12 @@
 ﻿using GameServer.Net;
-using Proto;
 using GameServer.Model;
 using GameServer.Manager;
 using GameServer.InventorySystem;
 using Common.Summer.Tools;
 using Common.Summer.Core;
 using Common.Summer.Net;
+using HS.Protobuf.Chat;
+using HS.Protobuf.Backpack;
 
 namespace GameServer.Service
 {
@@ -33,15 +34,15 @@ namespace GameServer.Service
                 if(targetChr == null)
                 {
                     ChatResponse res = new ChatResponse();
-                    res.Result = Result.Fault;
-                    res.Errormsg = "对方不在线";
+                    res.ResultCode = 1;
+                    res.ResultMsg = "对方不在线";
                     res.PrivateMessages.Add(message.Message);
                     conn.Send(res);
                 }
                 else
                 {
                     ChatResponse res = new ChatResponse();
-                    res.Result = Result.Success;
+                    res.ResultCode = 0;
                     res.PrivateMessages.Add(message.Message);
                     //向target发送res
 
@@ -57,11 +58,9 @@ namespace GameServer.Service
                 ChatManager.Instance.AddMessage(chr, message.Message);
                 //广播
                 ChatResponseOne res = new ChatResponseOne();
-                res.Result = Result.Success;
+                res.ResultCode = 0;
                 res.Message = message.Message;
                 chr.currentSpace.Broadcast(res);
-
-
             }
 
             if (message.Message.Content == "-wear")

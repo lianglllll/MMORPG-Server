@@ -1,13 +1,8 @@
 ﻿using GameServer.Combat;
 using GameServer.Model;
 using GameServer.Skills;
-using Proto;
-using Serilog;
-using System;
+using HS.Protobuf.Combat.Skill;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameServer.Manager
 {

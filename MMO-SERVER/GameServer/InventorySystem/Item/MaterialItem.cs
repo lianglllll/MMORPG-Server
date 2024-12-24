@@ -1,6 +1,4 @@
-using Proto;
-using System.Collections;
-using System.Collections.Generic;
+using HS.Protobuf.Backpack;
 
 namespace GameServer.InventorySystem
 {

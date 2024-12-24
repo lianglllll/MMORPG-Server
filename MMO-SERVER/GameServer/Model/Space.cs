@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Proto;
 using GameServer.Manager;
 using GameServer.Combat;
 using Google.Protobuf;
@@ -9,6 +8,8 @@ using AOI;
 using GameServer.Utils;
 using System.Collections.Concurrent;
 using Common.Summer.Core;
+using HS.Protobuf.Scene;
+using HS.Protobuf.SceneEntity;
 
 namespace GameServer.Model
 {

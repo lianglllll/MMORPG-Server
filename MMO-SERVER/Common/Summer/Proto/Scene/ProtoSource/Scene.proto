@@ -1,0 +1,80 @@
+syntax = "proto3";
+import "Scene/ProtoSource/SceneEntity.proto";
+package HS.Protobuf.Scene;
+
+//进入游戏请求
+message GameEnterRequest{
+	int32 characterId = 1;
+}
+message GameEnterResponse{
+	int32  resultCode		= 1;
+	string resultMsg		= 2;
+}
+
+//有其他角色进入场景响应
+message SpaceCharactersEnterResponse{
+	int32 spaceId = 1;
+	repeated HS.Protobuf.SceneEntity.NetActor characterList = 2;
+}
+//character进入场景响应(自己)
+message SpaceEnterResponse{
+	HS.Protobuf.SceneEntity.NetActor character = 1;
+	repeated HS.Protobuf.SceneEntity.NetActor characterList = 2;
+	repeated HS.Protobuf.SceneEntity.NetEItem eItemList = 3;
+}
+
+//entity离开场景响应,通知其他玩家
+message SpaceEntityLeaveResponse{
+	int32 entityId = 1;
+}
+
+//同步entity:位置+状态
+message NEntitySync{
+	HS.Protobuf.SceneEntity.NetEntity entity = 1;
+	bool force = 2;			//是否强制同步位置和旋转
+	HS.Protobuf.SceneEntity.ActorState state = 3;
+	int32 flag1 = 4;
+}
+//场景内的同步请求
+message SpaceEntitySyncRequest{
+	NEntitySync entitySync = 1;
+}
+message SpaceEntitySyncResponse{
+	NEntitySync entitySync = 1;
+}
+//场景内的同步响应,和上面那个一样，
+message CtlClientSpaceEntitySyncResponse{
+	NEntitySync entitySync = 1;
+}
+
+//传送请求
+message SpaceDeliverRequest{
+	int32 spaceId = 1;
+	int32 pointId = 2;	//场景中哪一个点的id
+}
+message SpaceDeliverResponse{
+	int32  resultCode		= 1;
+	string resultMsg		= 2;
+}
+
+//复活请求
+message ReviveRequest{
+	int32 entityId = 1;
+}
+message ReviveResponse{
+	NEntitySync nEntitySycn = 1;
+}
+
+// itemEntity 信息同步响应包（没用上）
+message NetEItemSync{
+	HS.Protobuf.SceneEntity.NetEItem  netEItem =  1;
+}
+// item进入场景响应
+message SpaceItemEnterResponse{
+	HS.Protobuf.SceneEntity.NetEItem  netEItem =  1;
+}
+
+//actor属性更新响应
+message PropertyUpdateRsponse{
+	repeated HS.Protobuf.SceneEntity.PropertyUpdate list = 1;
+}

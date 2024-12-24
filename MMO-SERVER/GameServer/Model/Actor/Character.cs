@@ -1,9 +1,11 @@
-﻿using Proto;
-using GameServer.Database;
+﻿using GameServer.Database;
 using Serilog;
 using GameServer.InventorySystem;
 using GameServer.Net;
 using Common.Summer.Core;
+using HS.Protobuf.SceneEntity;
+using HS.Protobuf.Scene;
+using HS.Protobuf.Backpack;
 
 namespace GameServer.Model
 {

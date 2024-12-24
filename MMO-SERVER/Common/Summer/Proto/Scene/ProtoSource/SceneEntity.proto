@@ -1,0 +1,114 @@
+syntax = "proto3";
+import "Common/ProtoSource/Common.proto";
+import "Combat/ProtoSource/Skill.proto";
+import "Combat/ProtoSource/Buff.proto";
+import "Backpack/ProtoSource/Backpack.proto";
+package HS.Protobuf.SceneEntity;
+
+//entity位置信息
+message NetEntity {
+	int32 id = 1;
+	HS.Protobuf.Common.Vec3 position = 2;
+	HS.Protobuf.Common.Vec3 direction = 3;
+}
+
+//活动单位的模式
+enum ActorMode{
+	FREE = 0;		//自由进行任何操作
+	DEAD = 1;		//死亡，无法操作。
+	REST = 2;		//休息，挂机 回血回蓝(可以坐下的时候触发)
+	FIGHT = 3;		//战斗状态，持续一段时间，期间可能无法骑马吧。
+}
+//活动单位的行为
+enum ActorCombatMode{
+    Stand = 0;
+	Equip = 1;
+	SwordFlight = 2;
+}
+enum ActorState{
+    AirDown = 0;
+	Death = 1;
+	Defense = 2;
+	Dizzy = 3;
+	Evade = 4;
+	Hurt = 5;
+	Idle = 6;
+	JumpUp = 7;
+	Move = 8;
+	Skill = 9;
+	Constant = 10;
+}
+
+//actor类型
+enum ActorType
+{
+    Character=0;
+    Monster=1;
+    NPC=2;
+}
+
+//actor信息
+message NetActor{
+	int32 id = 1;
+	int32 tid = 2;//单位类型
+	NetEntity entity = 3;
+	string name = 4;
+	int32 level = 5;
+	int64 exp = 6;
+	int32 spaceId = 7; 
+	int64 gold = 8;
+	float hp=9;
+	float mp=10;
+	ActorType actorType = 11; 
+	repeated HS.Protobuf.Combat.Skill.SkillInfo skills = 12;			//技能列表
+	repeated HS.Protobuf.Backpack.ItemInfo equipList = 13;	 	//穿戴装备
+	float hpMax = 14;
+	float mpMax = 15;
+	int32 speed = 16;
+	repeated HS.Protobuf.Combat.Buff.BuffInfo buffsList = 17;		//actor的buff
+}
+
+//actor属性更新消息类型
+message PropertyUpdate{
+	//属性类型枚举
+	enum Prop{
+		HP = 0;		
+		MP = 1;
+		HPMax = 2;
+		MPMax = 3;
+		Mode = 4;
+		Level = 5;
+		Name = 6;
+		Golds = 7;
+		Exp = 8;		//经验
+		Energy = 9;		//活力
+		Speed = 10;
+		CombatMode = 11;
+		
+		//幸运、罪恶、技能点
+	}
+
+	//为了可以存放不同的类型的数据
+	message PropertyValue{
+		oneof value{
+			int32 int_value = 1;
+			float float_value = 2;
+			string string_value = 3;
+			ActorMode mode_value = 4;
+			int64 long_value = 5;
+			ActorCombatMode combatMode_value = 6;
+		}
+	}
+
+	int32 entity_id = 1;
+	Prop property = 2;
+	PropertyValue oldValue = 3;
+	PropertyValue newValue = 4;
+}
+
+// Net itemEntity信息
+message NetEItem{
+	HS.Protobuf.Backpack.ItemInfo ItemInfo = 1;
+	int32 spaceId = 2;
+	NetEntity entity = 3;
+}

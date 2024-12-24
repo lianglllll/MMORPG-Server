@@ -1,6 +1,6 @@
 ﻿using Common.Summer.Core;
 using GameServer.InventorySystem;
-using Proto;
+using HS.Protobuf.SceneEntity;
 
 namespace GameServer.Model
 {

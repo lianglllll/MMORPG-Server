@@ -1,11 +1,12 @@
 ﻿using GameServer.Net;
 using System;
-using Proto;
 using GameServer.Model;
 using GameServer.Manager;
 using Common.Summer.Tools;
 using Common.Summer.Net;
 using Common.Summer.Core;
+using HS.Protobuf.Scene;
+using HS.Protobuf.SceneEntity;
 
 namespace GameServer.Service
 {

@@ -1,5 +1,5 @@
 ﻿using GameServer.Model;
-using Proto;
+using HS.Protobuf.Combat.Buff;
 using System;
 
 namespace GameServer.Buffs

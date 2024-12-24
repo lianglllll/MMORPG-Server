@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GameServer.Net;
-using Proto;
 using Serilog;
 using GameServer.Model;
 using GameServer.Manager;
@@ -12,6 +8,9 @@ using GameServer.Database;
 using Common.Summer.Tools;
 using Common.Summer.Net;
 using Common.Summer.Core;
+using HS.Protobuf.Login;
+using HS.Protobuf.Scene;
+using HS.Protobuf.SceneEntity;
 
 namespace GameServer.Service
 {
@@ -29,15 +28,15 @@ namespace GameServer.Service
         /// </summary>
         public void Start()
         {
-            MessageRouter.Instance.Subscribe<Proto.GameEnterRequest>(_GameEnterRequest);
-            MessageRouter.Instance.Subscribe<Proto.UserLoginRequest>(_UserLoginRequest);
-            MessageRouter.Instance.Subscribe<Proto.CharacterCreateRequest>(_CharacterCreateRequest);
-            MessageRouter.Instance.Subscribe<Proto.CharacterListRequest>(_CharacterListRequest);
-            MessageRouter.Instance.Subscribe<Proto.CharacterDeleteRequest>(_CharacterDeleteRequest);
-            MessageRouter.Instance.Subscribe<Proto.UserRegisterRequest>(_UserRegisterRequest);
-            MessageRouter.Instance.Subscribe<Proto.ReconnectRequest>(_ReconnectRequest);
-            MessageRouter.Instance.Subscribe<Proto.ServerInfoRequest>(_ServerInfoRequest);
-            MessageRouter.Instance.Subscribe<Proto.GetCommunicationSecretKeyRequest>(_GetCommunicationSecretKeyRequest);
+            MessageRouter.Instance.Subscribe<GameEnterRequest>(_GameEnterRequest);
+            MessageRouter.Instance.Subscribe<UserLoginRequest>(_UserLoginRequest);
+            MessageRouter.Instance.Subscribe<CharacterCreateRequest>(_CharacterCreateRequest);
+            MessageRouter.Instance.Subscribe<CharacterListRequest>(_CharacterListRequest);
+            MessageRouter.Instance.Subscribe<CharacterDeleteRequest>(_CharacterDeleteRequest);
+            MessageRouter.Instance.Subscribe<UserRegisterRequest>(_UserRegisterRequest);
+            MessageRouter.Instance.Subscribe<ReconnectRequest>(_ReconnectRequest);
+            MessageRouter.Instance.Subscribe<ServerInfoRequest>(_ServerInfoRequest);
+            MessageRouter.Instance.Subscribe<GetCommunicationSecretKeyRequest>(_GetCommunicationSecretKeyRequest);
         }
 
         /// <summary>

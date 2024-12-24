@@ -2,7 +2,8 @@
 using GameServer.Buffs.BuffImplement;
 using GameServer.Manager;
 using GameServer.Model;
-using Proto;
+using HS.Protobuf.Combat.Skill;
+using HS.Protobuf.SceneEntity;
 using System;
 using System.Collections.Generic;
 using System.Linq;

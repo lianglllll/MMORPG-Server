@@ -1,9 +1,9 @@
 ﻿using GameServer.Model;
 using Google.Protobuf.Collections;
-using Proto;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Common.Summer.Tools;
+using HS.Protobuf.Chat;
 
 namespace GameServer.Manager
 {

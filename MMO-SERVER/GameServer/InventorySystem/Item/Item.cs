@@ -1,13 +1,8 @@
-using Proto;
+using HS.Protobuf.Backpack;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-
-
 
 namespace GameServer.InventorySystem
 {
-
     /// <summary>
     /// 物品基类
     /// </summary>

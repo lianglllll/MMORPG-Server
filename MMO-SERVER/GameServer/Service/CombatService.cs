@@ -1,11 +1,12 @@
 ﻿using GameServer.Manager;
 using GameServer.Model;
-using Proto;
 using Serilog;
 using GameServer.Net;
 using Common.Summer.Tools;
 using Common.Summer.Net;
 using Common.Summer.Core;
+using HS.Protobuf.Combat.Skill;
+using HS.Protobuf.Scene;
 
 namespace GameServer.Service
 {

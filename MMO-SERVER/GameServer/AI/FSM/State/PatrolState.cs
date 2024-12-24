@@ -1,7 +1,7 @@
 ﻿using GameServer.Combat;
 using GameServer.Model;
 using System.Linq;
-using Proto;
+using HS.Protobuf.SceneEntity;
 using Common.Summer.Core;
 
 namespace GameServer.AI.FSM.State

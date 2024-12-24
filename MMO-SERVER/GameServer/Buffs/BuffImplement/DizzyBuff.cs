@@ -1,9 +1,5 @@
-﻿using Proto;
-using System;
+﻿using HS.Protobuf.SceneEntity;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameServer.Buffs.BuffImplement
 {
