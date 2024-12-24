@@ -1,15 +1,8 @@
 syntax = "proto3";
-
+import "Common/Summer/Proto/ProtoSource/Common.proto";
 package proto;
 
-//============================================心跳检测==========================================
-message HeartBeatRequest{
 
-}
-
-message HeartBeatResponse{
-
-}
 
 //============================================公告==========================================
 message KillRankingListItem{
@@ -28,18 +21,13 @@ message ServerInfoResponse{
 }
 
 //====================================entity=================================================
-//网络三维向量
-message Vec3 {
-	int32 x = 1;
-	int32 y = 2;
-	int32 z = 3;
-}
+
 
 //entity位置信息
 message NetEntity {
 	int32 id = 1;
-	Vec3 position = 2;
-	Vec3 direction = 3;
+	HS.Protobuf.Common.Vec3 position = 2;
+	HS.Protobuf.Common.Vec3 direction = 3;
 }
 
 //活动单位的模式
@@ -237,6 +225,18 @@ message ExitResponse{
 
 //重新登录
 
+// 获取通信的密钥
+message GetCommunicationSecretKeyRequest{
+	string clientPublicKey = 1;
+}
+message GetCommunicationSecretKeyResponse{
+	string key1 = 1;
+	string key2 = 2;
+}
+
+message giao{
+	int32 s = 1;
+}
 
 
 //========================================skill========================================
@@ -263,7 +263,7 @@ message CastInfo{
 	int32 casterId = 1;
 	int32 skillId = 2;
 	int32 targetId = 3;
-	Vec3 point = 4;	//技能施法点
+	HS.Protobuf.Common.Vec3 point = 4;	//技能施法点
 	CastResult result = 5;//技能释放结果
 }
 
