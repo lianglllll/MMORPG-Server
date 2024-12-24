@@ -8,18 +8,14 @@ using System.Threading;
 
 namespace Common.Summer.Net
 {
-    /// <summary>
-    /// 消息单元
-    /// </summary>
+    //消息单元
     class Msg
     {
-        public Connection sender;//谁发的
+        public Connection conn;//谁发的
         public IMessage message;//消息
     }
 
-    /// <summary>
-    /// 消息分发器
-    /// </summary>
+    // 消息路由
     public class MessageRouter:Singleton<MessageRouter>
     {
         private int ThreadCount = 1; //线程个数
@@ -57,7 +53,6 @@ namespace Common.Summer.Net
                 Thread.Sleep(100);
             }
         }
-
         public void Stop()
         {
             running = false;
@@ -70,27 +65,7 @@ namespace Common.Summer.Net
             Thread.Sleep(50);
         }
 
-        /// <summary>
-        /// 添加消息到消息队列
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="message"></param>
-        public void AddMessage(Connection sender, Google.Protobuf.IMessage message)
-        {
-            //加锁
-            lock(messageQueue)
-            {
-                messageQueue.Enqueue(new Msg() { sender = sender, message = message });
-            }
-            //唤醒一个进程来处理消息队列
-            threadEvent.Set();
-        }
 
-        /// <summary>
-        ///  订阅频道
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="handler"></param>
         public void Subscribe<T>(MessageHandler<T> handler) where T : Google.Protobuf.IMessage
         {
             string type = typeof(T).FullName;
@@ -103,13 +78,7 @@ namespace Common.Summer.Net
             //添加订阅者,因为这里它不知道是什么类型的委托，所以要转型（这里是委托链注意，可能会多次绑定）
             delegateMap[type] = (MessageHandler < T >)delegateMap[type]  + handler;
         }
-
-        /// <summary>
-        /// 退订频道
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="handler"></param>
-        public void Off<T>(MessageHandler<T> handler) where T : Google.Protobuf.IMessage
+        public void UnSubscribe<T>(MessageHandler<T> handler) where T : Google.Protobuf.IMessage
         {
             string key = typeof(T).FullName;
             if (!delegateMap.ContainsKey(key))
@@ -120,13 +89,21 @@ namespace Common.Summer.Net
             delegateMap[key] = (MessageHandler<T>)delegateMap[key] - handler;
         }
 
-        /// <summary>
-        /// 多线程消息处理
-        /// </summary>
-        /// <param name="state"></param>
+
+        // 添加消息到消息队列
+        public void AddMessage(Connection sender, Google.Protobuf.IMessage message)
+        {
+            //加锁
+            lock (messageQueue)
+            {
+                messageQueue.Enqueue(new Msg() { conn = sender, message = message });
+            }
+            //唤醒一个进程来处理消息队列
+            threadEvent.Set();
+        }
+        // 多线程消息处理
         private void MessageWork(object state)
         {
-           // Console.WriteLine("MessageWork thread start");
             try
             {
                 //考虑到线程安全
@@ -155,7 +132,7 @@ namespace Common.Summer.Net
                     if (package != null)
                     {
                         //处理这个数据包
-                        executeMessage(msg.sender, package);//将package向下传递
+                        executeMessage(msg.conn, package);//将package向下传递
                     }
                 }              
             }
@@ -170,7 +147,6 @@ namespace Common.Summer.Net
             Console.WriteLine("MessageWork thread end");
             
         }
-
         private void executeMessage(Connection sender, IMessage message)
         {
             var fullName = message.GetType().FullName;
@@ -185,7 +161,6 @@ namespace Common.Summer.Net
                 }
             }
         }
-
 
         #region 弃用
         /*

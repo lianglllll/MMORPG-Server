@@ -1,7 +1,6 @@
 syntax = "proto3";
-import "Common/Summer/Proto/ProtoSource/Common.proto";
+import "Common/ProtoSource/Common.proto";
 package proto;
-
 
 
 //============================================公告==========================================

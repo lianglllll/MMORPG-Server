@@ -48,7 +48,6 @@ namespace Common.Summer.Net
             m_disconnected = null;
         }
 
-
         private void _ConnectToServer()
         {
             if (m_connection != null && m_connection.Socket.Connected) return;

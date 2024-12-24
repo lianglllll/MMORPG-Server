@@ -17,8 +17,4 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Net\Proto\ProtoClass\" />
-  </ItemGroup>
-
 </Project>

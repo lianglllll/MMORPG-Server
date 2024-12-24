@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Summer\Proto\ProtoClass\Common.proto" />
+    <None Remove="Summer\Proto\Common\ProtoClass\Common.proto" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,8 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Summer\Proto\ProtoClass\" />
-    <Folder Include="Summer\Proto\ProtoSource\" />
+    <Folder Include="Summer\Proto\Common\ProtoClass\" />
+    <Folder Include="Summer\Proto\Common\ProtoSource\" />
   </ItemGroup>
 
 </Project>

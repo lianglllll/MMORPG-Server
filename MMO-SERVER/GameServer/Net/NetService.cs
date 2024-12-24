@@ -8,6 +8,8 @@ using Common.Summer.Net;
 using Common.Summer.Tools;
 using System.Collections.Concurrent;
 using HS.Protobuf.Common;
+using Common.Summer.Proto;
+using HS.Protobuf.ControlCenter;
 
 namespace GameServer.Net
 {
@@ -16,46 +18,61 @@ namespace GameServer.Net
     /// </summary>
     public class NetService : Singleton<NetService>
     {
+        private int m_serverId;
         private TcpServer m_tcpServer;
-        private ConcurrentDictionary<Connection, DateTime> m_lastHeartbeatTimes = new ConcurrentDictionary<Connection, DateTime>();
-        private ConcurrentDictionary<string, TcpClient> m_otherServer = new ConcurrentDictionary<string, TcpClient>();
+        private ConcurrentDictionary<Connection, DateTime> m_lastHeartbeatTimes = new();
+        private ConcurrentDictionary<SERVER_TYPE, TcpClient> m_curConnOtherServer = new();
         private float m_heartBeatTimeOut;
 
         public void Init()
         {
             // 启动消息分发器
             MessageRouter.Instance.Start(Config.Server.workerCount);
+            ProtoHelper.Init();
+
+            RegisterProto();
 
             //连接controlcenter服务器
             TcpClient m_ccClient = new TcpClient();
-            m_otherServer.TryAdd("CC", m_ccClient);
+            m_curConnOtherServer.TryAdd(SERVER_TYPE.Controlcenter, m_ccClient);
             m_ccClient.Init(Config.CCConfig.ip, Config.CCConfig.port, _CCConnectedCallback, _CCConnectedFailedCallback, _CCDisconnectedCallback);
-        }
-        private void Init2()
-        {
-            // 启动网络监听
-            m_tcpServer = new TcpServer();
-            m_tcpServer.Init(Config.Server.ip, Config.Server.port, 100, _OnConnected, _OnDisconnected);
-
-            // 心跳包消息的订阅
-            MessageRouter.Instance.Subscribe<HeartBeatRequest>(OnHeartBeatRequest);
-            // 定时检查心跳包的情况
-            m_heartBeatTimeOut = Config.Server.heartBeatTimeOut;
-            Timer timer = new Timer(_CheckHeatBeat, null, TimeSpan.Zero, TimeSpan.FromSeconds(Config.Server.heartBeatCheckInterval));
-            // 定时发送心跳包
-            Scheduler.Instance.AddTask(_Send2OtherServerHeatBeatReq, Config.Server.heartBeatSendInterval, 0);
         }
         public void UnInit()
         {
             m_tcpServer.UnInit();
             m_tcpServer = null;
             m_lastHeartbeatTimes.Clear();
-            m_otherServer.Clear();
+            m_curConnOtherServer.Clear();
+        }
+        private bool RegisterProto()
+        {
+            // 协议注册
+            ProtoHelper.Register<HeartBeatRequest>((int)CommonProtocl.HeartbeatReq);
+            ProtoHelper.Register<HeartBeatResponse>((int)CommonProtocl.HeartbeatResp);
+            ProtoHelper.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
+            ProtoHelper.Register<ServerInfoRegisterResponse>((int)ControlCenterProtocl.ServerinfoRegisterResp);
+
+            // 消息的订阅
+            MessageRouter.Instance.Subscribe<HeartBeatRequest>(_HeartBeatRequest);
+            MessageRouter.Instance.Subscribe<HeartBeatResponse>(_HeartBeatResponse);
+            MessageRouter.Instance.Subscribe<ServerInfoRegisterResponse>(_ServerInfoRegisterResponse);
+
+            return true;
         }
 
         private void _CCConnectedCallback()
         {
-            Init2();
+            // 定时发送心跳包
+            Scheduler.Instance.AddTask(_Send2OtherServerHeatBeatReq, Config.Server.heartBeatSendInterval, 0);
+
+            //向cc注册自己
+            ServerInfoRegisterRequest req = new();
+            ServerInfoNode node = new();
+            node.ServerType = SERVER_TYPE.Game;
+            node.Ip = Config.Server.ip;
+            node.Port = Config.Server.port;
+            req.ServerInfoNode = node;
+            m_curConnOtherServer[SERVER_TYPE.Controlcenter].Send(req);
         }
         private void _CCConnectedFailedCallback(bool isEnd)
         {
@@ -74,7 +91,32 @@ namespace GameServer.Net
         {
             //尝试重连
         }
+        private void _ServerInfoRegisterResponse(Connection conn, ServerInfoRegisterResponse message)
+        {
+            if(message.ResultCode == 0)
+            {
+                m_serverId = message.ServerId;
+                Log.Information("Successfully registered this server information with the ControlCenter.");
+                Log.Information($"The server ID of this server is [{m_serverId}]");
+                _StartListening();
+            }
+            else
+            {
+                Log.Error(message.ResultMsg);
+            }
+        }
 
+        private void _StartListening()
+        {
+            Log.Information("Starting to listen for connections.");
+            // 启动网络监听
+            m_tcpServer = new TcpServer();
+            m_tcpServer.Init(Config.Server.ip, Config.Server.port, 100, _OnConnected, _OnDisconnected);
+
+            // 定时检查心跳包的情况
+            m_heartBeatTimeOut = Config.Server.heartBeatTimeOut;
+            Timer timer = new Timer(_CheckHeatBeat, null, TimeSpan.Zero, TimeSpan.FromSeconds(Config.Server.heartBeatCheckInterval));
+        }
         private void _OnConnected(Connection conn)
         {
             try
@@ -145,7 +187,7 @@ namespace GameServer.Net
             conn.CloseConnection();
         }
 
-        public void OnHeartBeatRequest(Connection conn, HeartBeatRequest message)
+        private void _HeartBeatRequest(Connection conn, HeartBeatRequest message)
         {
             //更新心跳时间
             m_lastHeartbeatTimes[conn] = DateTime.Now;
@@ -179,11 +221,15 @@ namespace GameServer.Net
         }
         private void _Send2OtherServerHeatBeatReq()
         {
-            foreach(var v in m_otherServer.Values)
+            foreach(var v in m_curConnOtherServer.Values)
             {
                 HeartBeatRequest req = new HeartBeatRequest();
                 v.Send(req);
             }
+        }
+        private void _HeartBeatResponse(Connection sender, HeartBeatResponse message)
+        {
+
         }
     }
 }

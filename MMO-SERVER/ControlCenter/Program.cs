@@ -67,7 +67,7 @@ namespace ControlCenter
         {
             while (true)
             {
-                Console.Write("press command to execute:\n"); // Display a prompt
+                Console.Write("press command to execute:\n");
                 string input = Console.ReadLine();
 
                 if (string.IsNullOrEmpty(input))
@@ -84,7 +84,14 @@ namespace ControlCenter
                         UnInit();
                         Environment.Exit(0);
                         return true;
-
+                    case "showgameserver":
+                        var dict = NetService.Instance.get();
+                        foreach(var pair in dict)
+                        {
+                            Console.WriteLine(pair.Key);
+                            Console.WriteLine(pair.Value);
+                        }
+                        break;
                     default:
                         Console.WriteLine($"Unknown command: {command}");
                         break;
@@ -94,7 +101,6 @@ namespace ControlCenter
         public static void Main(string[] args)
         {
             Init();
-
             Shell();
         }
     }

@@ -71,6 +71,14 @@ namespace GameServer
 
             //开启网络服务
             NetService.Instance.Init();
+
+            Log.Information("[GameServer]初始化,配置如下：");
+            Log.Information($"ip：{Config.Server.ip}");
+            Log.Information($"port：{Config.Server.port}");
+            Log.Information($"workerCount：{Config.Server.workerCount}");
+            Log.Information($"updateHz：{Config.Server.updateHz}");
+            Log.Information($"aoiViewArea：{Config.Server.aoiViewArea}");
+
             return true;
         } 
         private static bool UnInit()

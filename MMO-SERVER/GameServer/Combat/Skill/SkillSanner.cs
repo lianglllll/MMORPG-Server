@@ -58,7 +58,7 @@ namespace GameServer.Skills
                 }
             }
 
-            Log.Debug("==>共加载{0}个自定义技能", count);
+            //Log.Debug("==>共加载{0}个自定义技能", count);
         }
 
         /// <summary>
