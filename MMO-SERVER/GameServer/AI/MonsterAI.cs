@@ -1,14 +1,6 @@
 ﻿using GameServer.AI.FSM.State;
-using GameServer.Core;
-using GameServer.Manager;
 using GameServer.Model;
-using Serilog;
-using GameServer;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GameServer.AI.FSM;
 
 namespace GameServer.AI

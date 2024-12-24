@@ -11,11 +11,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Summer\Proto\ProtoClass\Common.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Google.Protobuf" Version="3.22.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Serilog" Version="2.12.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="YamlDotNet" Version="16.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Summer\Proto\ProtoClass\" />
+    <Folder Include="Summer\Proto\ProtoSource\" />
   </ItemGroup>
 
 </Project>

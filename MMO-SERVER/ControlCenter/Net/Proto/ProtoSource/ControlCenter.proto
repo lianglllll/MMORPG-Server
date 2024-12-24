@@ -1,0 +1,20 @@
+syntax = "proto3";
+import "Common/Summer/Proto/ProtoSource/Common.proto";
+package HS.Protobuf.ControlCenter;
+
+enum ControlCenterProtocl{
+	CONTROLCENTER_PROTOCL_NONE = 0;
+	CONTROLCENTER_PROTOCL_SERVERINFO_REGISTER_REQ = 10001;	// [ServerInfoRegisterRequest]
+	CONTROLCENTER_PROTOCL_SERVERINFO_REGISTER_RESP = 10002;	// [ServerInfoRegisterResponse]
+}
+
+message ServerInfoRegisterRequest{
+	HS.Protobuf.Common.SERVER_TYPE serverType = 1;
+	string ip = 2;
+	int32 port = 3;
+}
+
+message ServerInfoRegisterResponse{
+	int32  resultCode             = 1;	//0 成功 小于0正常流程  大于0异常流程
+	string resultMsg              = 2;
+}

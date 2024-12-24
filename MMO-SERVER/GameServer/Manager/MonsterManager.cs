@@ -1,11 +1,6 @@
-﻿using GameServer.Core;
-using GameServer.Model;
-using GameServer;
-using System;
+﻿using GameServer.Model;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Common.Summer.Core;
 
 namespace GameServer.Manager
 {

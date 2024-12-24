@@ -1,6 +1,6 @@
 ﻿using Proto;
 using System;
-using GameServer.Core;
+using Common.Summer.Core;
 
 namespace GameServer.Model
 {

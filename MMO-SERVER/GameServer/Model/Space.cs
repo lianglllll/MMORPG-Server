@@ -5,11 +5,10 @@ using Proto;
 using GameServer.Manager;
 using GameServer.Combat;
 using Google.Protobuf;
-using GameServer.Core;
 using AOI;
 using GameServer.Utils;
 using System.Collections.Concurrent;
-using Common.Summer.GameServer;
+using Common.Summer.Core;
 
 namespace GameServer.Model
 {
@@ -29,7 +28,7 @@ namespace GameServer.Model
         public FightManager fightManager = new FightManager();                                      //战斗管理器，负责技能、投射物、伤害、actor信息的更新
         public EItemManager itemManager = new EItemManager();                                       //物品管理器，管理场景中出现的物品
         public AoiZone aoiZone = new AoiZone(0.001f,0.001f);                                        //AOI管理器：十字链表空间(unity坐标系)
-        private Vector2 viewArea = new(Config.Server.AoiViewArea, Config.Server.AoiViewArea);
+        private Vector2 viewArea = new(Config.Server.aoiViewArea, Config.Server.aoiViewArea);
 
 
         public Space(){}

@@ -4,10 +4,9 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
-using Common.Summer.GameServer;
 using Common.Summer.Tools;
 
-namespace Common.Summer.core
+namespace Common.Summer.Core
 {
     //中心计时器
     public class Scheduler : Singleton<Scheduler>

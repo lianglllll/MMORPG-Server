@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameServer
+namespace Common.Summer.Tools
 {
     /// <summary>
     /// 池化数据流

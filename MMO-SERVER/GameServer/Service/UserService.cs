@@ -3,23 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GameServer.Network;
+using GameServer.Net;
 using Proto;
 using Serilog;
 using GameServer.Model;
 using GameServer.Manager;
-using GameServer;
 using GameServer.Database;
-using GameServer.Net;
+using Common.Summer.Tools;
+using Common.Summer.Net;
+using Common.Summer.Core;
 
 namespace GameServer.Service
 {
-
-
     /// <summary>
     /// 玩家服务
     /// 注册，登录，创建角色，进入游戏
-    /// 应该还需要一个userManager，service只负责接收来到的请求并且向mananger传递，根据manager传回来的信息进行响应结果
     /// </summary>
     public class UserService:Singleton<UserService>
     {
@@ -38,8 +36,8 @@ namespace GameServer.Service
             MessageRouter.Instance.Subscribe<Proto.CharacterDeleteRequest>(_CharacterDeleteRequest);
             MessageRouter.Instance.Subscribe<Proto.UserRegisterRequest>(_UserRegisterRequest);
             MessageRouter.Instance.Subscribe<Proto.ReconnectRequest>(_ReconnectRequest);
-
             MessageRouter.Instance.Subscribe<Proto.ServerInfoRequest>(_ServerInfoRequest);
+            MessageRouter.Instance.Subscribe<Proto.GetCommunicationSecretKeyRequest>(_GetCommunicationSecretKeyRequest);
         }
 
         /// <summary>
@@ -401,6 +399,16 @@ namespace GameServer.Service
             }
             sender.Send(response);
 
+        }
+
+        // 当前连接获取一个通信密钥
+        private void _GetCommunicationSecretKeyRequest(Connection sender, GetCommunicationSecretKeyRequest message)
+        {
+            var pair = sender.m_encryptionManager.GetComunicationKey(message.ClientPublicKey);
+            GetCommunicationSecretKeyResponse response = new GetCommunicationSecretKeyResponse();
+            response.Key1 = pair.key1;
+            response.Key2 = pair.key2;
+            sender.Send(response);
         }
 
     }

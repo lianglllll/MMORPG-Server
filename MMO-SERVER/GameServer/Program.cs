@@ -1,90 +1,114 @@
 ﻿using System;
-using System.Net;
-using System.Net.Sockets;
-using GameServer;
-using Proto;
 using Serilog;
 using GameServer.Service;
 using GameServer.Database;
-using GameServer.Model;
 using GameServer.Manager;
-using GameServer.AI;
-using GameServer.InventorySystem;
-using GameServer.Core;
-using GameServer.Utils;
 using GameServer.Skills;
-using GameServer.AI.BehaviorTree;
-using GameServer.Network;
+using GameServer.Net;
+using GameServer.Utils;
+using Common.Summer.Core;
+using Common.Summer.Proto;
+using Serilog.Sinks.SystemConsole.Themes;
+using System.Collections.Generic;
 
 namespace GameServer
 {
     class Program
     {
-        static void Main(string[] args)
+        private static bool Init()
         {
             //初始化日志环境
+            var customTheme = new AnsiConsoleTheme(new Dictionary<ConsoleThemeStyle, string>
+            {
+                [ConsoleThemeStyle.Text] = "\x1b[37m", // White
+                [ConsoleThemeStyle.SecondaryText] = "\x1b[37m", // Gray
+                [ConsoleThemeStyle.TertiaryText] = "\x1b[90m", // Dark gray
+                [ConsoleThemeStyle.Invalid] = "\x1b[33m", // Yellow
+                [ConsoleThemeStyle.Null] = "\x1b[34m", // Blue
+                [ConsoleThemeStyle.Name] = "\x1b[32m", // Green
+                [ConsoleThemeStyle.String] = "\x1b[36m", // Cyan
+                [ConsoleThemeStyle.Number] = "\x1b[35m", // Magenta
+                [ConsoleThemeStyle.Boolean] = "\x1b[34m", // Blue
+                [ConsoleThemeStyle.Scalar] = "\x1b[32m", // Green
+                [ConsoleThemeStyle.LevelVerbose] = "\x1b[90m", // Dark gray
+                [ConsoleThemeStyle.LevelDebug] = "\x1b[37m", // White
+                [ConsoleThemeStyle.LevelInformation] = "\x1b[32m", // Green
+                [ConsoleThemeStyle.LevelWarning] = "\x1b[33m", // Yellow
+                [ConsoleThemeStyle.LevelError] = "\x1b[31m", // Red
+                [ConsoleThemeStyle.LevelFatal] = "\x1b[41m\x1b[37m" // Red background, white text
+            });
             Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Debug()
-            .WriteTo.Console(outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
-            .WriteTo.File("logs\\server-log.txt", rollingInterval: RollingInterval.Day)
-            .CreateLogger();
-            Log.Debug("[日志服务启动]");
+                .MinimumLevel.Debug()
+                .WriteTo.Console(
+                    theme: customTheme,
+                    outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}"
+                )
+                .WriteTo.File(
+                    "logs\\server-log.txt",
+                    rollingInterval: RollingInterval.Day,
+                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}"
+                )
+                .CreateLogger();
 
-            //加载配置文件
-            Log.Debug("[加载server配置信息]");
-            Config.Init();
-
-            //装载配置文件
-            Log.Debug("[加载Json配置文件]");
-            DataManager.Instance.Init();
-
-            //proto类型加载
-            Log.Debug("[proto类型加载]");
-            ProtoHelper.Init();
-
-            //加载自定义技能类
-            Log.Debug("[加载自定义技能类]");
-            SkillSanner.Start();
-
-            //数据库服务
-            Log.Debug("[启动数据库服务]");
-            DbManager.Init();
-
-            //开启网络服务
-            Log.Debug("[启动网络服务]");
-            NetService.Instance.Start();
-
-            //开启玩家服务
-            Log.Debug("[启动玩家服务]");
-            UserService.Instance.Start();
-
-            //开启地图服务
-            Log.Debug("[启动地图服务]");
-            SpaceService.Instance.Start();
-
-            //开启战斗服务
-            Log.Debug("[启动战斗服务]");
+            Config.Init();                      // 加载服务器配置
+            DataManager.Instance.Init();        // 加载json配置文件
+            ProtoHelper.Init();                 // proto类型加载
+            SkillSanner.Start();                // 加载自定义技能类
+            DbManager.Init();                   
+            UserService.Instance.Start();       
+            SpaceService.Instance.Start();      
             CombatService.Instance.Start();
-
-            //开启频道聊天服务
-            Log.Debug("[启动频道服务]");
             ChatService.Instance.Start();
-
-            //开启物品服务
-            Log.Debug("[启动物品服务]");
             ItemService.Instance.Start();
 
             //中心计时器任务加载(使用了Timer)
-            Log.Debug("[激活世界心跳Tick]");
-            Scheduler.Instance.Start();
+            Scheduler.Instance.Start(Config.Server.updateHz);
             //添加中心计时器任务：
             Scheduler.Instance.AddTask(() => {
                 EntityManager.Instance.Update();
                 SpaceManager.Instance.Update();
-            }, Config.Server.UpdateHz);
+            }, Config.Server.updateHz);
 
-            //防止进程结束
-            Console.ReadKey();
+            //开启网络服务
+            NetService.Instance.Init();
+            return true;
+        } 
+        private static bool UnInit()
+        {
+            return true;
+        }
+        private static bool Shell()
+        {
+            while (true)
+            {
+                Console.Write("press command to execute:\n"); // Display a prompt
+                string input = Console.ReadLine();
+
+                if (string.IsNullOrEmpty(input))
+                    continue;
+
+                // Parse command
+                string[] args = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                string command = args[0].ToLower();
+
+                switch (command)
+                {
+                    case "exit":
+                        Console.WriteLine("Exiting the shell.");
+                        UnInit();
+                        Environment.Exit(0);
+                        return true;
+
+                    default:
+                        Console.WriteLine($"Unknown command: {command}");
+                        break;
+                }
+            }
+        }
+        public static void Main(string[] args)
+        {
+            Init();
+            Shell();
         }
     }
 }

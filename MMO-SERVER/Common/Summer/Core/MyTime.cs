@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Common.Summer.GameServer
+namespace Common.Summer.Core
 {
     //时间单位
     public enum TimeUnit

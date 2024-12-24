@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Linq;
 using Proto;
-using GameServer.Core;
 using GameServer.AI;
 using GameServer.Manager;
 using GameServer.Combat;
-using Common.Summer.GameServer;
+using Common.Summer.Core;
 
 namespace GameServer.Model
 {

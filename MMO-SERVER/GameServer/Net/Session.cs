@@ -3,9 +3,8 @@ using GameServer.Manager;
 using GameServer.Model;
 using Google.Protobuf;
 using Serilog;
-using GameServer.Network;
 using System.Collections.Concurrent;
-using Common.Summer.GameServer;
+using Common.Summer.Core;
 
 namespace GameServer.Net
 {

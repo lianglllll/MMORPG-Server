@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 
-namespace Common.Summer
+namespace Common.Summer.Tools
 {
 
     /// <summary>

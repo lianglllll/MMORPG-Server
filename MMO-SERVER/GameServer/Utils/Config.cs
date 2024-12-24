@@ -1,6 +1,3 @@
-using Newtonsoft.Json;
-using Serilog;
-using GameServer;
 using System.IO;
 using YamlDotNet.Serialization;
 
@@ -33,13 +30,31 @@ namespace GameServer.Utils
         public int port { get; set; }
 
         [YamlMember(Alias = "workerCount")]
-        public int WorkerCount { get; set; }        
+        public int workerCount { get; set; }        
         
         [YamlMember(Alias = "aoiViewArea")]
-        public float AoiViewArea { get; set; }        
+        public float aoiViewArea { get; set; }        
         
         [YamlMember(Alias = "updateHz")]
-        public int UpdateHz { get; set; }
+        public int updateHz { get; set; }
+
+        [YamlMember(Alias = "heartBeatTimeOut")]
+        public float heartBeatTimeOut { get; set; }
+
+        [YamlMember(Alias = "heartBeatCheckInterval")]
+        public float heartBeatCheckInterval { get; set; }
+
+        [YamlMember(Alias = "heartBeatSendInterval")]
+        public float heartBeatSendInterval { get; set; }
+    }
+
+    public class CCConfig
+    {
+        [YamlMember(Alias = "ip")]
+        public string ip { get; set; }
+
+        [YamlMember(Alias = "port")]
+        public int port { get; set; }
     }
 
     public class AppConfig
@@ -49,6 +64,9 @@ namespace GameServer.Utils
 
         [YamlMember(Alias = "server")]
         public ServerConfig Server { get; set; }
+
+        [YamlMember(Alias = "cc")]
+        public CCConfig CCServer { get; set; }
     }
 
     public static class Config
@@ -67,9 +85,7 @@ namespace GameServer.Utils
         }
 
         public static DatabaseConfig Database => _config?.Database;
-
         public static ServerConfig Server => _config?.Server;
-
+        public static CCConfig CCConfig => _config?.CCServer;
     }
-
 }

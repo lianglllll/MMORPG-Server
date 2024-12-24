@@ -1,10 +1,5 @@
-﻿using GameServer.Core;
+﻿using Common.Summer.Core;
 using GameServer.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameServer.Combat
 {
@@ -31,7 +26,6 @@ namespace GameServer.Combat
         protected virtual Vector3 GetDirection() => Vector3.zero;
 
     }
-
 
     //定义SCEntity类,继承自SCObject
     public class SCEntity : SCObject

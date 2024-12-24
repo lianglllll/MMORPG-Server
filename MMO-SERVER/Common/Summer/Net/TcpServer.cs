@@ -7,10 +7,10 @@ using System.Net;
 using System.Net.Sockets;
 using Serilog;
 using Google.Protobuf;
+using Common.Summer.Core;
 
-namespace GameServer.Network
+namespace Common.Summer.Net
 {
-
     /// <summary>
     /// 负责监听TCP网络端口，基于Async编程模型，其中SocketAsyncEventArg实现了iocp模型
     /// 三个委托
@@ -24,80 +24,71 @@ namespace GameServer.Network
     public class TcpServer
     {
         //网络连接的属性
-        private IPEndPoint endPoint;    //网络终结点
-        private Socket listenerSocket;  //服务端监听对象
-        private int backlog = 100;      //可以排队接收的传入连接数
+        private IPEndPoint m_endPoint;    //网络终结点
+        private Socket m_listenerSocket;  //服务端监听对象
+        private int m_backlog = 100;      //可以排队接收的传入连接数
 
         //委托
         public delegate void ConnectedCallback(Connection conn);                
-        public delegate void DataReceivedCallback(Connection conn,IMessage data);
         public delegate void DisconnectedCallback(Connection conn);             
-        public event ConnectedCallback Connected;       //接收到连接的事件
-        public event DataReceivedCallback DataReceived; //接收到消息的事件          
-        public event DisconnectedCallback Disconnected; //接收到连接断开的事件
+        private event ConnectedCallback m_connected;       //接收到连接的事件
+        private event DisconnectedCallback m_disconnected; //接收到连接断开的事件
 
-        /// <summary>
-        /// 构造方法
-        /// </summary>
-        /// <param name="host"></param>
-        /// <param name="port"></param>
-        public TcpServer(string host,int port,int backlog = 100)
-        {
-            //构造网络终结点
-            endPoint = new IPEndPoint(IPAddress.Parse(host), port);
-            this.backlog = backlog;
-        }
-
-        /// <summary>
-        /// 是否正在运行
-        /// </summary>
         public bool IsRunning
         {
             get
             {
-                return listenerSocket != null;
+                return m_listenerSocket != null;
             }
         }
-        /// <summary>
-        /// 启动服务，开始监听连接
-        /// </summary>
-        public void Start()
+
+        public void Init(string host, int port, int backlog , 
+            ConnectedCallback connected, DisconnectedCallback disconnected)
         {
             if (!IsRunning)
             {
-                listenerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                listenerSocket.Bind(endPoint);                                        //绑定一个IPEndPoint
-                listenerSocket.Listen(backlog);                                       //开始监听，并设置等待队列长度 
+                //事件注册
+                m_connected += connected;
+                m_disconnected += disconnected;
+
+                //构造网络终结点
+                m_endPoint = new IPEndPoint(IPAddress.Parse(host), port);
+                this.m_backlog = backlog;
+
+                m_listenerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                m_listenerSocket.Bind(m_endPoint);                                        //绑定一个IPEndPoint
+                m_listenerSocket.Listen(backlog);                                       //开始监听，并设置等待队列长度 
 
                 SocketAsyncEventArgs args = new SocketAsyncEventArgs();             //可以复用,当前监听连接socket复用
-                args.Completed += OnAccept;                                         //当有用户的连接时触发回调函数
+                args.Completed += _OnAccepted;                                         //当有用户的连接时触发回调函数
 
-                listenerSocket.AcceptAsync(args);                                   //异步接收
+                m_listenerSocket.AcceptAsync(args);                                   //异步接收
             }
             else
             {
                 Log.Information("TcpServer already running");
             }
         }
-        /// <summary>
-        /// 主动关闭服务，停止监听连接
-        /// </summary>
+        public void UnInit()
+        {
+            if (m_listenerSocket != null)
+            {
+                m_listenerSocket.Close();
+                m_listenerSocket = null;
+            }
+            m_connected = null;
+            m_disconnected = null;
+        }
         public void Stop()
         {
-            if (listenerSocket == null)
-            {
-                return;
-            }
-            listenerSocket.Close();
-            listenerSocket = null;
+
+        }
+        public void Resume()
+        {
+
         }
 
-        /// <summary>
-        /// 接收到连接的回调
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnAccept(object sender, SocketAsyncEventArgs e)
+        private void _OnAccepted(object sender, SocketAsyncEventArgs e)
         {
             //连入的客户端
             Socket clientSocket = e.AcceptSocket;
@@ -105,7 +96,7 @@ namespace GameServer.Network
 
             //继续接收下一位(异步操作)
             e.AcceptSocket = null;
-            listenerSocket.AcceptAsync(e);
+            m_listenerSocket.AcceptAsync(e);
 
             //有人连接进来
             try
@@ -113,12 +104,11 @@ namespace GameServer.Network
                 if (flag == SocketError.Success && clientSocket != null && clientSocket.Connected)
                 {
                     // 为连接成功的 client 构造一个 connection 对象
-                    Connection conn = new Connection(clientSocket);
-                    conn.OnDataReceived += OnDataReceived;
-                    conn.OnDisconnected += OnDisconnected;
+                    Connection conn = new Connection();
+                    conn.Init(clientSocket, _OnDisconnected);
 
                     // 通过委托将连接成功向上传递给 NetService
-                    Connected?.Invoke(conn);
+                    m_connected?.Invoke(conn);
                 }
                 else
                 {
@@ -131,24 +121,9 @@ namespace GameServer.Network
             }
 
         }
-
-        /// <summary>
-        /// 接收到数据的回调
-        /// </summary>
-        /// <param name="conn"></param>
-        /// <param name="data"></param>
-        private void OnDataReceived(Connection conn, IMessage data)
+        private void _OnDisconnected(Connection conn)
         {
-            DataReceived?.Invoke(conn, data);
+            m_disconnected?.Invoke(conn);
         }
-        /// <summary>
-        /// 接收到连接断开的回调
-        /// </summary>
-        /// <param name="conn"></param>
-        private void OnDisconnected(Connection conn)
-        {
-            Disconnected?.Invoke(conn);
-        }
-
     }
 }

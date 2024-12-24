@@ -1,10 +1,9 @@
 ﻿using Proto;
-using GameServer.Core;
 using GameServer.Combat;
 using GameServer.Manager;
 using GameServer.Buffs;
 using GameServer.core;
-using Common.Summer.GameServer;
+using Common.Summer.Core;
 
 namespace GameServer.Model
 {

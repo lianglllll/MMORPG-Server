@@ -1,12 +1,10 @@
 ﻿using GameServer.Model;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using GameServer.Core;
 using GameServer.Utils;
 using Serilog;
 using GameServer.Manager;
-using GameServer;
+using Common.Summer.Core;
 
 namespace AOI
 {
@@ -257,7 +255,7 @@ namespace AOI
         /// <returns></returns>
         public IEnumerable<Entity> FindViewEntity(int key,bool includeSelf=false)
         {
-            var area = Config.Server.AoiViewArea;
+            var area = Config.Server.aoiViewArea;
             var handle = Refresh(key, new Vector2(area, area));
             //handle有可能为空
             if (handle == null) return new HashSet<Entity>();

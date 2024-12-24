@@ -15,8 +15,7 @@
           "Newtonsoft.Json": "13.0.3",
           "Serilog": "2.12.0",
           "Serilog.Sinks.Console": "4.1.0",
-          "Serilog.Sinks.File": "5.0.0",
-          "YamlDotNet": "15.1.1"
+          "Serilog.Sinks.File": "5.0.0"
         },
         "runtime": {
           "GameServer.dll": {}
@@ -328,11 +327,11 @@
           }
         }
       },
-      "YamlDotNet/15.1.1": {
+      "YamlDotNet/16.2.1": {
         "runtime": {
           "lib/net6.0/YamlDotNet.dll": {
-            "assemblyVersion": "15.0.0.0",
-            "fileVersion": "15.1.1.0"
+            "assemblyVersion": "16.0.0.0",
+            "fileVersion": "16.2.1.0"
           }
         }
       },
@@ -342,10 +341,14 @@
           "Newtonsoft.Json": "13.0.3",
           "Serilog": "2.12.0",
           "Serilog.Sinks.Console": "4.1.0",
-          "Serilog.Sinks.File": "5.0.0"
+          "Serilog.Sinks.File": "5.0.0",
+          "YamlDotNet": "16.2.1"
         },
         "runtime": {
-          "Common.dll": {}
+          "Common.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       }
     }
@@ -559,12 +562,12 @@
       "path": "system.windows.extensions/4.7.0",
       "hashPath": "system.windows.extensions.4.7.0.nupkg.sha512"
     },
-    "YamlDotNet/15.1.1": {
+    "YamlDotNet/16.2.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-GjK+j6XmaFoLhdGpv5jVkt1wbUwVvZaWsUEPzr6gfA/VaEgYMlwZXeVyWJOqFK9U41mSocZvSuLkEFFhVEj0HA==",
-      "path": "yamldotnet/15.1.1",
-      "hashPath": "yamldotnet.15.1.1.nupkg.sha512"
+      "sha512": "sha512-im6zTVgesjcfTRfuMpnx51Rg2svWenp/3q5XBfcIzgj8PNIkkSD2xEl9HWcVi2SaJPP9XcXUdzed9gSDEuf1TA==",
+      "path": "yamldotnet/16.2.1",
+      "hashPath": "yamldotnet.16.2.1.nupkg.sha512"
     },
     "Common/1.0.0": {
       "type": "project",

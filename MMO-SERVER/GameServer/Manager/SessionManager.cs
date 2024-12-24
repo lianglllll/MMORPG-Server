@@ -1,12 +1,11 @@
 ﻿using GameServer.Database;
-using GameServer;
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Timers;
-using Common.Summer.GameServer;
-using GameServer.Network;
 using GameServer.Net;
+using Common.Summer.Tools;
+using Common.Summer.Core;
 
 namespace GameServer.Manager
 {
@@ -55,7 +54,7 @@ namespace GameServer.Manager
             if (session != null)
             {
                 //让其conn连接失效
-                NetService.Instance.ActiveClose(session.Conn);
+                NetService.Instance.CloseConnection(session.Conn);
                 session.Conn = null;
             }
         }

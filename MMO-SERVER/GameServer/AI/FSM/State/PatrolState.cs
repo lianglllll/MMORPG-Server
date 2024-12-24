@@ -1,14 +1,8 @@
 ﻿using GameServer.Combat;
-using GameServer.Manager;
 using GameServer.Model;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Common.Summer.GameServer;
-using GameServer.AI.FSM;
 using Proto;
+using Common.Summer.Core;
 
 namespace GameServer.AI.FSM.State
 {

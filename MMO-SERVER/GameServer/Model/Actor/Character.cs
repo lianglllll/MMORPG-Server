@@ -1,9 +1,9 @@
 ﻿using Proto;
 using GameServer.Database;
 using Serilog;
-using GameServer.Core;
 using GameServer.InventorySystem;
 using GameServer.Net;
+using Common.Summer.Core;
 
 namespace GameServer.Model
 {

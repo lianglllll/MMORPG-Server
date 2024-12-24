@@ -1,11 +1,5 @@
-﻿using GameServer.AI.FSM;
-using GameServer.Core;
+﻿using Common.Summer.Core;
 using Proto;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameServer.AI.FSM.State
 {

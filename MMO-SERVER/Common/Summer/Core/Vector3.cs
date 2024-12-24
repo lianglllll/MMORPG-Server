@@ -1,16 +1,11 @@
-﻿using Proto;
-using GameServer;
+﻿using HS.Protobuf.Common;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using Common.Summer.GameServer;
 
-namespace GameServer.Core
+
+namespace Common.Summer.Core
 {
     public struct Vector3 : IEquatable<Vector3>, IFormattable
     {

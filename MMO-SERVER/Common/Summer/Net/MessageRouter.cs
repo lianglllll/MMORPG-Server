@@ -1,11 +1,12 @@
-﻿using Google.Protobuf;
+﻿using Common.Summer.Core;
+using Common.Summer.Tools;
+using Google.Protobuf;
 using Serilog;
 using System;
 using System.Collections.Concurrent;
-
 using System.Threading;
 
-namespace GameServer.Network
+namespace Common.Summer.Net
 {
     /// <summary>
     /// 消息单元
@@ -13,8 +14,7 @@ namespace GameServer.Network
     class Msg
     {
         public Connection sender;//谁发的
-        public Google.Protobuf.IMessage message;//消息
-
+        public IMessage message;//消息
     }
 
     /// <summary>
@@ -33,7 +33,7 @@ namespace GameServer.Network
         //消息队列，所有客户端发送过来的消息都暂存到这里
         private ConcurrentQueue<Msg> messageQueue = new ConcurrentQueue<Msg>();
 
-        //消息处理器(这里是一个委托)
+        //消息处理委托
         public delegate void MessageHandler<T>(Connection sender, T message);
 
         //消息频道（技能频道，战斗频道，物品频道）（订阅记录）
@@ -121,33 +121,6 @@ namespace GameServer.Network
         }
 
         /// <summary>
-        /// 触发相对应订阅的事件
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="sender"></param>
-        /// <param name="msg"></param>
-        private void Fire<T>(Connection sender, T msg) {
-
-            string type = typeof(T).FullName;
-            //Console.WriteLine(type);
-            //没人订阅自然就不需要处理这个消息了
-            if (delegateMap.ContainsKey(type))
-            {
-                //Console.WriteLine(type);
-                MessageHandler<T> handler = (MessageHandler<T>)delegateMap[type];
-                try
-                {
-                    handler?.Invoke(sender, msg);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("MessageRouter.Fire error:"+e.StackTrace);
-                }
-            }
-
-        }
-
-        /// <summary>
         /// 多线程消息处理
         /// </summary>
         /// <param name="state"></param>
@@ -176,7 +149,7 @@ namespace GameServer.Network
                         if (messageQueue.Count == 0) continue;
                         messageQueue.TryDequeue(out msg);
                     }
-                    Google.Protobuf.IMessage package = msg.message;
+                    IMessage package = msg.message;
 
                     //判断这个包是什么类型
                     if (package != null)
@@ -212,5 +185,39 @@ namespace GameServer.Network
                 }
             }
         }
+
+
+        #region 弃用
+        /*
+        /// <summary>
+        /// 触发相对应订阅的事件
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sender"></param>
+        /// <param name="msg"></param>
+        private void Fire<T>(Connection sender, T msg)
+        {
+
+            string type = typeof(T).FullName;
+            //Console.WriteLine(type);
+            //没人订阅自然就不需要处理这个消息了
+            if (delegateMap.ContainsKey(type))
+            {
+                //Console.WriteLine(type);
+                MessageHandler<T> handler = (MessageHandler<T>)delegateMap[type];
+                try
+                {
+                    handler?.Invoke(sender, msg);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("MessageRouter.Fire error:" + e.StackTrace);
+                }
+            }
+
+        }
+
+        */
+        #endregion
     }
 }

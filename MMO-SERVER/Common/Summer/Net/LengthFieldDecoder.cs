@@ -1,10 +1,8 @@
 ﻿using Serilog;
 using System;
-using System.Net;
 using System.Net.Sockets;
-using System.Text;
 
-namespace GameServer.Network
+namespace Common.Summer.Net
 {
     //todo 这里的异步模型还是begin/end 我们改成async
     /// <summary>
@@ -20,87 +18,99 @@ namespace GameServer.Network
     ///                     而数据部分的前两个字节是我们的proto协议的编号
     public class LengthFieldDecoder
     {
-        private bool isStart = false;           //解码器是否已经启动
-        private Socket mSocket;                 //连接客户端的socket
-        private int lengthFieldOffset =0;       //第几个字节是长度字段
-        private int lengthFieldLength = 4;      //长度字段本身占几个字节
-        private int lengthAdjustment = 0;       //长度字段和内容之间距离几个字节（也就是长度字段记录了整一个数据包的长度，负数代表向前偏移，body实际长度要减去这个绝对值）
-        private int initialBytesToStrip = 4;    //表示获取完一个完整的数据包之后，舍弃前面的多少个字节
-        private byte[] mBuffer;                 //接收数据的缓存空间
-        private int mOffect = 0;                //缓冲区目前的长度
-        private int mSize = 64 * 1024;          //一次性接收数据的最大字节，默认64kMb
+        private bool m_isStart = false;             //解码器是否已经启动
+        private Socket m_Socket;                    //连接客户端的socket
+        private int m_lengthFieldOffset =0;         //第几个字节是长度字段
+        private int m_lengthFieldLength = 4;        //长度字段本身占几个字节
+        private int m_lengthAdjustment = 0;         //长度字段和内容之间距离几个字节（也就是长度字段记录了整一个数据包的长度，负数代表向前偏移，body实际长度要减去这个绝对值）
+        private int m_initialBytesToStrip = 4;      //表示获取完一个完整的数据包之后，舍弃前面的多少个字节
+        private byte[] m_buffer;                    //接收数据的缓存空间
+        private int m_offect = 0;                   //缓冲区目前的长度
+        private int m_size = 64 * 1024;             //一次性接收数据的最大字节，默认64kMb
 
         //委托事件
         public delegate void ReceivedHandler(byte[] data);
         public delegate void DisconnectedHandler();
-        public event ReceivedHandler Received;
-        public event DisconnectedHandler Disconnected;
+        private event ReceivedHandler m_onDataRecived;
+        private event DisconnectedHandler m_onDisconnected;
 
-        /// <summary>
-        /// 构造方法
-        /// </summary>
-        /// <param name="socket">客户端socket</param>
-        /// <param name="maxBufferLength"></param>
-        /// <param name="lengthFieldOffset"></param>
-        /// <param name="lengthFieldLength"></param>
-        /// <param name="lengthAdjustment"></param>
-        /// <param name="initialBytesToStrip"></param>
-        public LengthFieldDecoder(Socket socket, int maxBufferLength, int lengthFieldOffset, int lengthFieldLength,int lengthAdjustment, int initialBytesToStrip)
+        public LengthFieldDecoder(Socket socket, int maxBufferLength, int lengthFieldOffset,
+            int lengthFieldLength,int lengthAdjustment, int initialBytesToStrip, 
+            ReceivedHandler onDataRecived, DisconnectedHandler onDisconnected)
         {
-            mSocket = socket;
-            mSize = maxBufferLength;
-            this.lengthFieldOffset = lengthFieldOffset;
-            this.lengthFieldLength = lengthFieldLength;
-            this.lengthAdjustment = lengthAdjustment;
-            this.initialBytesToStrip = initialBytesToStrip;
-            mBuffer = new byte[mSize];
+            m_Socket = socket;
+            m_size = maxBufferLength;
+            this.m_lengthFieldOffset = lengthFieldOffset;
+            this.m_lengthFieldLength = lengthFieldLength;
+            this.m_lengthAdjustment = lengthAdjustment;
+            this.m_initialBytesToStrip = initialBytesToStrip;
+            m_buffer = new byte[m_size];
+            m_onDataRecived = onDataRecived;
+            m_onDisconnected = onDisconnected;
         }
 
-        /// <summary>
-        /// 启动解码器
-        /// </summary>
-        public void Start()
+        public void Init()
         {
-            if (mSocket != null && !isStart)
+            if (m_Socket != null && !m_isStart)
             {
-                mSocket.BeginReceive(mBuffer, mOffect, mSize - mOffect, SocketFlags.None, new AsyncCallback(OnReceive), null);
-                isStart = true;
+                m_isStart = true;
+                m_Socket.BeginReceive(m_buffer, m_offect, m_size - m_offect, SocketFlags.None, new AsyncCallback(OnReceive), null);
             }
         }
+        private void _PassiveDisconnection()
+        {
+            try
+            {
+                m_Socket?.Shutdown(SocketShutdown.Both); //停止数据发送和接收，确保正常关闭连接。
+                m_Socket?.Close();                       //关闭 Socket 并释放其资源
+                //mSocket?.Dispose();                     //释放 Socket 占用的所有资源，特别是非托管资源。（Close已经隐式调用了）
+            }
+            catch
+            {
 
-        /// <summary>
-        /// 异步接收的回调
-        /// </summary>
-        /// <param name="result"></param>
+            }
+            m_Socket = null;
+
+            //并且向上传递消息断开信息
+            if (m_isStart)
+            {
+                m_onDisconnected?.Invoke();
+            }
+        }
+        public void ActiveDisconnection()
+        {
+            m_isStart = false;
+            _PassiveDisconnection();
+        }
         public void OnReceive(IAsyncResult result)
         {
             try
             {
                 int len = 0;
-                if(mSocket != null && mSocket.Connected)
+                if (m_Socket != null && m_Socket.Connected)
                 {
-                    len = mSocket.EndReceive(result);
+                    len = m_Socket.EndReceive(result);
                 }
 
                 // 消息长度为0，代表连接已经断开
                 if (len == 0)
                 {
-                    PassiveDisconnection();
+                    _PassiveDisconnection();
                     return;
                 }
 
                 //处理信息
-                ReadMessage(len);
+                _ReadMessage(len);
 
                 // 继续接收数据
-                if (mSocket != null && mSocket.Connected)
+                if (m_Socket != null && m_Socket.Connected)
                 {
-                    mSocket.BeginReceive(mBuffer, mOffect, mSize - mOffect, SocketFlags.None, new AsyncCallback(OnReceive), null);
+                    m_Socket.BeginReceive(m_buffer, m_offect, m_size - m_offect, SocketFlags.None, new AsyncCallback(OnReceive), null);
                 }
                 else
                 {
                     Log.Information("[LengthFieldDecoder]Socket 已断开连接，无法继续接收数据。");
-                    PassiveDisconnection();
+                    _PassiveDisconnection();
                 }
 
             }
@@ -109,37 +119,34 @@ namespace GameServer.Network
                 // Socket 已经被释放
                 Log.Information("[LengthFieldDecoder:ObjectDisposedException]");
                 Log.Information(e.ToString());
-                PassiveDisconnection();
+                _PassiveDisconnection();
             }
             catch (SocketException e)
             {
                 //打印一下异常，并且断开与客户端的连接
                 Log.Information("[[LengthFieldDecoder:SocketException]");
                 Log.Information(e.ToString());
-                PassiveDisconnection();
-            } catch (Exception e)
+                _PassiveDisconnection();
+            }
+            catch (Exception e)
             {
                 //打印一下异常，并且断开与客户端的连接
                 Log.Information("[LengthFieldDecoder:Exception]");
                 Log.Information(e.ToString());
-                PassiveDisconnection();
+                _PassiveDisconnection();
             }
         }
-
-        /// <summary>
-        /// 处理数据，并且进行转发处理
-        /// </summary>
-        /// <param name="len"></param>
-        private void ReadMessage(int len)
+        // 处理数据，并且进行转发处理
+        private void _ReadMessage(int len)
         {
             //headLen+bodyLen=totalLen
 
-            int headLen = lengthFieldOffset + lengthFieldLength;//魔法值+长度字段的长度
-            int adj = lengthAdjustment; //body偏移量
+            int headLen = m_lengthFieldOffset + m_lengthFieldLength;//魔法值+长度字段的长度
+            int adj = m_lengthAdjustment; //body偏移量
 
             //循环开始之前mOffect代表上次剩余长度
             //所以moffect需要加上本次送过来的len
-            mOffect += len;
+            m_offect += len;
 
             //循环解析
             while (true)
@@ -147,22 +154,21 @@ namespace GameServer.Network
                 //此时缓冲区内有moffect长度的字节需要去处理
 
                 //如果未处理的数据超出缓冲区大小限制
-                if (mOffect > mSize)
+                if (m_offect > m_size)
                 {
                     throw new IndexOutOfRangeException("数据超出限制");
                 }
-                if (mOffect < headLen)
+                if (m_offect < headLen)
                 {
                     //接收的数据不够一个完整的包，继续接收
                     return;
                 }
 
                 //获取body长度，通过大端模式
-                //int bodyLen = BitConverter.ToInt32(mBuffer, lengthFieldOffset);
-                int bodyLen = GetInt32BE(mBuffer, lengthFieldOffset);
+                int bodyLen = _GetInt32BE(m_buffer, m_lengthFieldOffset);
 
                 //判断body够不够长
-                if (mOffect < headLen + adj + bodyLen)
+                if (m_offect < headLen + adj + bodyLen)
                 {
                     //接收的数据不够一个完整的包，继续接收
                     return;
@@ -173,59 +179,21 @@ namespace GameServer.Network
 
                 //获取数据
                 byte[] data = new byte[bodyLen];
-                Array.Copy(mBuffer, headLen, data, 0, bodyLen);
+                Array.Copy(m_buffer, headLen, data, 0, bodyLen);
 
                 //数据解析完毕就需要更新buffer缓冲区
-                Array.Copy(mBuffer, bodyLen+ headLen, mBuffer, 0, mOffect- total);
-                mOffect = mOffect - total;
+                Array.Copy(m_buffer, bodyLen+ headLen, m_buffer, 0, m_offect- total);
+                m_offect = m_offect - total;
 
                 //完成一个数据包
-                Received?.Invoke(data);
+                m_onDataRecived?.Invoke(data);
             }
 
         }
-
-        /// <summary>
-        /// 获取大端模式int值
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="index"></param>
-        /// <returns></returns>
-        private int GetInt32BE(byte[] data, int index)
+        // 获取大端模式int值
+        private int _GetInt32BE(byte[] data, int index)
         {
             return (data[index] << 0x18) | (data[index + 1] << 0x10) | (data[index + 2] << 8) | (data[index + 3]);
-        }
-
-        /// <summary>
-        /// 被动关闭连接
-        /// </summary>
-        private void PassiveDisconnection()
-        {
-            try
-            {
-                mSocket?.Shutdown(SocketShutdown.Both); //停止数据发送和接收，确保正常关闭连接。
-                mSocket?.Close();                       //关闭 Socket 并释放其资源
-                //mSocket?.Dispose();                     //释放 Socket 占用的所有资源，特别是非托管资源。（Close已经隐式调用了）
-            }
-            catch { 
-                
-            } 
-            mSocket = null;
-
-            //并且向上传递消息断开信息
-            if (isStart)
-            {
-                Disconnected?.Invoke();
-            }
-        }
-
-        /// <summary>
-        /// 主动关闭连接
-        /// </summary>
-        public void ActiveClose()
-        {
-            isStart = false;
-            PassiveDisconnection();
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Common.Summer
+namespace Common.Summer.Tools
 {
     /// <summary>
     /// id生成器

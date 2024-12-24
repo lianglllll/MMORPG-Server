@@ -1,11 +1,7 @@
-﻿using Proto;
+﻿using HS.Protobuf.Common;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace GameServer.Core
+namespace Common.Summer.Core
 {
     //
     // 摘要:

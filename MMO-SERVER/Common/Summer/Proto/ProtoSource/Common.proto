@@ -1,0 +1,42 @@
+﻿syntax = "proto3";
+package HS.Protobuf.Common;
+
+
+enum CommonProtocl{
+	COMMON_PROTOCL_NONE = 0;
+	COMMON_PROTOCL_HEARTBEAT_REQ = 1001;
+	COMMON_PROTOCL_HEARTBEAT_RESP = 1002;
+}
+
+
+
+enum SERVER_TYPE{
+	SERVER_TYPE_NONE			= 0;
+	SERVER_TYPE_CTNTROLCENTER	= 1;
+	SERVER_TYPE_LOGIN			= 2;
+	SERVER_TYPE_LOGINGATE		= 3;
+	SERVER_TYPE_LOGINGATEMGR	= 4;
+	SERVER_TYPE_GAME			= 5;
+	SERVER_TYPE_GAMEGATE		= 6;
+	SERVER_TYPE_GAMEGATEMGR		= 7;
+	SERVER_TYPE_SCENE			= 8;
+	SERVER_TYPE_TEST			= 9;
+}
+
+// 网络三维向量
+message Vec3 {
+	int32 x = 1;
+	int32 y = 2;
+	int32 z = 3;
+}
+
+//============================================心跳检测==========================================
+
+
+message HeartBeatRequest{
+
+}
+
+message HeartBeatResponse{
+
+}

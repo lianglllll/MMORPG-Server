@@ -1,16 +1,11 @@
-﻿using GameServer.Core;
-using GameServer.Manager;
+﻿using GameServer.Manager;
 using GameServer.Model;
 using Proto;
 using Serilog;
-using GameServer;
-using GameServer.Network;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GameServer.Net;
+using Common.Summer.Tools;
+using Common.Summer.Net;
+using Common.Summer.Core;
 
 namespace GameServer.Service
 {
@@ -76,7 +71,7 @@ namespace GameServer.Service
             var sp = SpaceManager.Instance.GetSpaceById(message.SpaceId);
             DataManager.Instance.revivalPointDefindeDict.TryGetValue(message.PointId, out var pointDef);
             if (sp == null || pointDef == null) return;
-            chr.TransmitTo(sp, new Core.Vector3Int(pointDef.X, pointDef.Y, pointDef.Z));
+            chr.TransmitTo(sp, new Vector3Int(pointDef.X, pointDef.Y, pointDef.Z));
 
         }
     }

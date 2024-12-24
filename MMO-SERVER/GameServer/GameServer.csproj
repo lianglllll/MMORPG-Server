@@ -19,7 +19,6 @@
     <PackageReference Include="Serilog" Version="2.12.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
-    <PackageReference Include="YamlDotNet" Version="15.1.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +30,9 @@
 		<None Update="config.yaml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
+	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Net\Proto\ProtoClass\" />
 	</ItemGroup>		
 
 </Project>

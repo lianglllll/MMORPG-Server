@@ -1,62 +1,81 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
-using GameServer.Network;
 using Serilog;
-using Proto;
 using System.Threading;
-using GameServer.Database;
 using GameServer.Utils;
-using Common.Summer.GameServer;
-using GameServer.Net;
+using Common.Summer.Core;
+using Common.Summer.Net;
+using Common.Summer.Tools;
+using System.Collections.Concurrent;
+using HS.Protobuf.Common;
 
-namespace GameServer.Network
+namespace GameServer.Net
 {
     /// <summary>
     /// 网络服务
     /// </summary>
     public class NetService : Singleton<NetService>
     {
-        //负责监听TCP连接
-        TcpServer tcpServer;
-        //记录conn最后一次心跳包的时间
-        private Dictionary<Connection, DateTime> heartBeatPairs = new Dictionary<Connection, DateTime>();
-        //心跳超时时间
-        private static int HEARTBEATTIMEOUT = 5;
-        //服务器查询心跳字典的间隔时间
-        private static int HEARTBEATQUERYTIME = 5;
+        private TcpServer m_tcpServer;
+        private ConcurrentDictionary<Connection, DateTime> m_lastHeartbeatTimes = new ConcurrentDictionary<Connection, DateTime>();
+        private ConcurrentDictionary<string, TcpClient> m_otherServer = new ConcurrentDictionary<string, TcpClient>();
+        private float m_heartBeatTimeOut;
 
-        public NetService()
+        public void Init()
         {
-            tcpServer = new TcpServer(Config.Server.ip, Config.Server.port);
-            tcpServer.Connected += OnConnected;
-            tcpServer.Disconnected += OnDisconnected;
+            // 启动消息分发器
+            MessageRouter.Instance.Start(Config.Server.workerCount);
+
+            //连接controlcenter服务器
+            TcpClient m_ccClient = new TcpClient();
+            m_otherServer.TryAdd("CC", m_ccClient);
+            m_ccClient.Init(Config.CCConfig.ip, Config.CCConfig.port, _CCConnectedCallback, _CCConnectedFailedCallback, _CCDisconnectedCallback);
+        }
+        private void Init2()
+        {
+            // 启动网络监听
+            m_tcpServer = new TcpServer();
+            m_tcpServer.Init(Config.Server.ip, Config.Server.port, 100, _OnConnected, _OnDisconnected);
+
+            // 心跳包消息的订阅
+            MessageRouter.Instance.Subscribe<HeartBeatRequest>(OnHeartBeatRequest);
+            // 定时检查心跳包的情况
+            m_heartBeatTimeOut = Config.Server.heartBeatTimeOut;
+            Timer timer = new Timer(_CheckHeatBeat, null, TimeSpan.Zero, TimeSpan.FromSeconds(Config.Server.heartBeatCheckInterval));
+            // 定时发送心跳包
+            Scheduler.Instance.AddTask(_Send2OtherServerHeatBeatReq, Config.Server.heartBeatSendInterval, 0);
+        }
+        public void UnInit()
+        {
+            m_tcpServer.UnInit();
+            m_tcpServer = null;
+            m_lastHeartbeatTimes.Clear();
+            m_otherServer.Clear();
         }
 
-        /// <summary>
-        /// 开启当前服务
-        /// </summary>
-        public void Start()
+        private void _CCConnectedCallback()
         {
-            //启动网络监听
-            tcpServer.Start();
-
-            //启动消息分发器
-            MessageRouter.Instance.Start(Config.Server.WorkerCount);
-
-            //订阅心跳事件
-            MessageRouter.Instance.Subscribe<HeartBeatRequest>(_HeartBeatRequest);
-
-            //定时检查心跳包的情况
-            Timer timer = new Timer(TimerCallback, null, TimeSpan.Zero, TimeSpan.FromSeconds(HEARTBEATQUERYTIME));
+            Init2();
+        }
+        private void _CCConnectedFailedCallback(bool isEnd)
+        {
+            if (isEnd)
+            {
+                Log.Error("Connect to controlCenter failed, the server may not be turned on");
+            }
+            else
+            {
+                //做一下重新连接
+                Log.Error("Connect to controlCenter failed, attempting to reconnect controlCenter");
+            }
 
         }
+        private void _CCDisconnectedCallback()
+        {
+            //尝试重连
+        }
 
-        /// <summary>
-        /// 客户端连接成功的回调
-        /// </summary>
-        /// <param name="conn"></param>
-        private void OnConnected(Connection conn)
+        private void _OnConnected(Connection conn)
         {
             try
             {
@@ -66,7 +85,7 @@ namespace GameServer.Network
                     Log.Information("[连接成功]" + IPAddress.Parse(((IPEndPoint)ipe).Address.ToString()) + " : " + ((IPEndPoint)ipe).Port.ToString());
 
                     // 给conn添加心跳时间
-                    heartBeatPairs[conn] = DateTime.Now;
+                    m_lastHeartbeatTimes[conn] = DateTime.Now;
                 }
                 else
                 {
@@ -80,16 +99,12 @@ namespace GameServer.Network
 
 
         }
-        /// <summary>
-        /// 客户端断开连接回调
-        /// </summary>
-        /// <param name="conn"></param>
-        private void OnDisconnected(Connection conn)
+        private void _OnDisconnected(Connection conn)
         {
             //从心跳字典中删除连接
-            if (heartBeatPairs.ContainsKey(conn))
+            if (m_lastHeartbeatTimes.ContainsKey(conn))
             {
-                heartBeatPairs.Remove(conn);
+                m_lastHeartbeatTimes.TryRemove(conn,out _);
             }
 
             //session
@@ -109,58 +124,14 @@ namespace GameServer.Network
                 Log.Information("[连接断开]未知用户");
             }
         }
-
-        /// <summary>
-        /// 接收到心跳包的处理
-        /// </summary>
-        /// <param name="conn"></param>
-        /// <param name="message"></param>
-        public void _HeartBeatRequest(Connection conn, HeartBeatRequest message)
-        {
-            //更新心跳时间
-            heartBeatPairs[conn] = DateTime.Now;
-            var session = conn.Get<Session>();
-            if (session != null)
-            {
-                session.LastHeartTime = MyTime.time;
-            }
-
-            //响应
-            HeartBeatResponse resp = new HeartBeatResponse();
-            conn.Send(resp);
-        }
-        /// <summary>
-        /// 检查心跳包的回调,这里是自己启动了一个timer。可以考虑交给中心计时器
-        /// </summary>
-        /// <param name="state"></param>
-        private void TimerCallback(object state)
-        {
-            DateTime nowTime = DateTime.Now;
-            //这里规定心跳包超过30秒没用更新就将连接清理
-            foreach (var kv in heartBeatPairs)
-            {
-                TimeSpan gap = nowTime - kv.Value;
-                if (gap.TotalSeconds > HEARTBEATTIMEOUT)
-                {
-                    //关闭超时的客户端连接
-                    Connection conn = kv.Key;
-                    Log.Information("[心跳检查]心跳超时==>");//移除相关的资源
-                    ActiveClose(conn);
-                }
-            }
-        }
-
-        /// <summary>
-        /// 主动关闭某个连接
-        /// </summary>
-        public void ActiveClose(Connection conn)
+        public void CloseConnection(Connection conn)
         {
             if (conn == null) return;
 
             //从心跳字典中删除连接
-            if (heartBeatPairs.ContainsKey(conn))
+            if (m_lastHeartbeatTimes.ContainsKey(conn))
             {
-                heartBeatPairs.Remove(conn);
+                m_lastHeartbeatTimes.TryRemove(conn, out _);
             }
 
             //session
@@ -171,7 +142,48 @@ namespace GameServer.Network
             }
 
             //转交给下一层的connection去进行关闭
-            conn.ActiveClose();
+            conn.CloseConnection();
+        }
+
+        public void OnHeartBeatRequest(Connection conn, HeartBeatRequest message)
+        {
+            //更新心跳时间
+            m_lastHeartbeatTimes[conn] = DateTime.Now;
+
+            //更新运行时间
+            var session = conn.Get<Session>();
+            if (session != null)
+            {
+                session.LastHeartTime = MyTime.time;
+            }
+
+            //响应
+            HeartBeatResponse resp = new HeartBeatResponse();
+            conn.Send(resp);
+        }
+        private void _CheckHeatBeat(object state)
+        {
+            DateTime nowTime = DateTime.Now;
+            //这里规定心跳包超过m_lastHeartbeatTimes秒没用更新就将连接清理
+            foreach (var kv in m_lastHeartbeatTimes)
+            {
+                TimeSpan gap = nowTime - kv.Value;
+                if (gap.TotalSeconds > m_heartBeatTimeOut)
+                {
+                    //关闭超时的客户端连接
+                    Connection conn = kv.Key;
+                    Log.Information("[心跳检查]心跳超时==>");//移除相关的资源
+                    CloseConnection(conn);
+                }
+            }
+        }
+        private void _Send2OtherServerHeatBeatReq()
+        {
+            foreach(var v in m_otherServer.Values)
+            {
+                HeartBeatRequest req = new HeartBeatRequest();
+                v.Send(req);
+            }
         }
     }
 }

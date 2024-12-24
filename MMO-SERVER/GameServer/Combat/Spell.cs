@@ -1,20 +1,12 @@
-﻿using GameServer.Core;
-using GameServer.Manager;
+﻿using GameServer.Manager;
 using GameServer.Model;
 using Proto;
 using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GameServer.Combat.Skills;
-using Org.BouncyCastle.Asn1.X509;
+using Common.Summer.Core;
 
 
 namespace GameServer.Combat
 {
-
     /// <summary>
     /// 技能施法器
     /// 每个actor都有自己的技能施法器
@@ -117,7 +109,6 @@ namespace GameServer.Combat
         }
         private void SpellPosition(Skill skill, Vector3 position)
         {
-
             //检测是否能执行技能
             SCObject sco = new SCPosition(position);
             var res = skill.CanUse(sco);
