@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace lLua.binchunk
+namespace lLua.Binchunk
 {
     //具体的chunk解析工作由reader来完成
     public class Reader

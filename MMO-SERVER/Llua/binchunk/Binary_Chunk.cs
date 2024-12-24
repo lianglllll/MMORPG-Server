@@ -1,7 +1,7 @@
 ﻿
 using lLua.VM;
 
-namespace lLua.binchunk
+namespace lLua.Binchunk
 {
     public static class LuaConstants
     {
@@ -155,7 +155,7 @@ namespace lLua.binchunk
                     line = f.LineInfo[pc].ToString();
                 }
 
-                var i = new LInstruction(c);
+                var i = new Instruction(c);
                 Console.Write($"\t{pc + 1}\t[{line}]\t{i.OpName()} \t");
                 PrintOperands(i);
                 Console.WriteLine();
@@ -185,7 +185,7 @@ namespace lLua.binchunk
             }
         }
 
-        public static void PrintOperands(LInstruction i)
+        public static void PrintOperands(Instruction i)
         {
             switch (i.OpMode())
             {
