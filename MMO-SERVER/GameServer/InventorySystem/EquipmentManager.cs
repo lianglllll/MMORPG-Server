@@ -1,6 +1,6 @@
 ﻿using GameServer.Model;
 using GameServer.Service;
-using HS.Protobuf.Backpack;
+using HS.Protobuf.Game.Backpack;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 

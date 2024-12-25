@@ -6,7 +6,7 @@ using Common.Summer.Tools;
 using Common.Summer.Core;
 using Common.Summer.Net;
 using HS.Protobuf.Chat;
-using HS.Protobuf.Backpack;
+using HS.Protobuf.Game.Backpack;
 
 namespace GameServer.Service
 {

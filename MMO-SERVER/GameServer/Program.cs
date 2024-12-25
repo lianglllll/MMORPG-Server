@@ -69,16 +69,15 @@ namespace GameServer
                 SpaceManager.Instance.Update();
             }, Config.Server.updateHz);
 
-            //开启网络服务
-            NetService.Instance.Init();
-
             Log.Information("[GameServer]初始化,配置如下：");
             Log.Information($"ip：{Config.Server.ip}");
-            Log.Information($"port：{Config.Server.port}");
+            Log.Information($"port：{Config.Server.userPort}");
             Log.Information($"workerCount：{Config.Server.workerCount}");
             Log.Information($"updateHz：{Config.Server.updateHz}");
             Log.Information($"aoiViewArea：{Config.Server.aoiViewArea}");
 
+            //开启网络服务
+            ServersMgr.Instance.Init();
             return true;
         } 
         private static bool UnInit()
@@ -116,7 +115,7 @@ namespace GameServer
         public static void Main(string[] args)
         {
             Init();
-            Shell();
+            //Shell();
         }
     }
 }

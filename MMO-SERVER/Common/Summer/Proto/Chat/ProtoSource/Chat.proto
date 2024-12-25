@@ -1,6 +1,11 @@
 syntax = "proto3";
 package HS.Protobuf.Chat;
 
+enum ChatProtocl{
+	CHAT_PROTOCL_NONE = 0;
+}
+
+// todo
 enum ChatChannel{
 	ALL = 0;				
 	LOCAL = 1;
@@ -10,7 +15,6 @@ enum ChatChannel{
 	TEAM = 16;
 	GUILD = 32;
 }
-
 message ChatMessage{
 	ChatChannel channel = 1;
 	int32 id = 2;
@@ -26,13 +30,6 @@ message ChatMessage{
 message ChatRequest{
 	ChatMessage message = 1;
 }
-
-message ChatResponseOne{
-	int32  resultCode		= 1;	
-	string resultMsg		= 2;
-	ChatMessage message		= 3;
-}
-
 message ChatResponse{
 	int32  resultCode						= 1;	
 	string resultMsg						= 2;
@@ -42,4 +39,9 @@ message ChatResponse{
 	repeated ChatMessage privateMessages	= 6;
 	repeated ChatMessage teamMessages		= 7;
 	repeated ChatMessage guildMessages		= 8;
+}
+message ChatResponseOne{
+	int32  resultCode		= 1;	
+	string resultMsg		= 2;
+	ChatMessage message		= 3;
 }

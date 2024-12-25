@@ -25,23 +25,18 @@ namespace HS.Protobuf.ControlCenter {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChNDb250cm9sQ2VudGVyLnByb3RvEhlIUy5Qcm90b2J1Zi5Db250cm9sQ2Vu",
-            "dGVyGh9Db21tb24vUHJvdG9Tb3VyY2UvQ29tbW9uLnByb3RvIpUBCg5TZXJ2",
-            "ZXJJbmZvTm9kZRIzCgpzZXJ2ZXJUeXBlGAEgASgOMh8uSFMuUHJvdG9idWYu",
-            "Q29tbW9uLlNFUlZFUl9UWVBFEgoKAmlwGAIgASgJEgwKBHBvcnQYAyABKAUS",
-            "DwoHd29ybGRJZBgEIAEoBRIPCgdzY2VuZUlkGAUgASgFEhIKCmluc3RhbmNl",
-            "SWQYBiABKAUiXgoZU2VydmVySW5mb1JlZ2lzdGVyUmVxdWVzdBJBCg5zZXJ2",
-            "ZXJJbmZvTm9kZRgBIAEoCzIpLkhTLlByb3RvYnVmLkNvbnRyb2xDZW50ZXIu",
-            "U2VydmVySW5mb05vZGUiVQoaU2VydmVySW5mb1JlZ2lzdGVyUmVzcG9uc2US",
-            "EgoKcmVzdWx0Q29kZRgBIAEoBRIRCglyZXN1bHRNc2cYAiABKAkSEAoIc2Vy",
-            "dmVySWQYAyABKAUqnwEKFENvbnRyb2xDZW50ZXJQcm90b2NsEh4KGkNPTlRS",
-            "T0xDRU5URVJfUFJPVE9DTF9OT05FEAASMgotQ09OVFJPTENFTlRFUl9QUk9U",
-            "T0NMX1NFUlZFUklORk9fUkVHSVNURVJfUkVREJFOEjMKLkNPTlRST0xDRU5U",
-            "RVJfUFJPVE9DTF9TRVJWRVJJTkZPX1JFR0lTVEVSX1JFU1AQkk5iBnByb3Rv",
-            "Mw=="));
+            "dGVyGh9Db21tb24vUHJvdG9Tb3VyY2UvQ29tbW9uLnByb3RvIlcKGVNlcnZl",
+            "ckluZm9SZWdpc3RlclJlcXVlc3QSOgoOc2VydmVySW5mb05vZGUYASABKAsy",
+            "Ii5IUy5Qcm90b2J1Zi5Db21tb24uU2VydmVySW5mb05vZGUiVQoaU2VydmVy",
+            "SW5mb1JlZ2lzdGVyUmVzcG9uc2USEgoKcmVzdWx0Q29kZRgBIAEoBRIRCgly",
+            "ZXN1bHRNc2cYAiABKAkSEAoIc2VydmVySWQYAyABKAUqnwEKFENvbnRyb2xD",
+            "ZW50ZXJQcm90b2NsEh4KGkNPTlRST0xDRU5URVJfUFJPVE9DTF9OT05FEAAS",
+            "MgotQ09OVFJPTENFTlRFUl9QUk9UT0NMX1NFUlZFUklORk9fUkVHSVNURVJf",
+            "UkVREJFOEjMKLkNPTlRST0xDRU5URVJfUFJPVE9DTF9TRVJWRVJJTkZPX1JF",
+            "R0lTVEVSX1JFU1AQkk5iBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::HS.Protobuf.Common.CommonReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.ControlCenter.ControlCenterProtocl), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.ControlCenter.ServerInfoNode), global::HS.Protobuf.ControlCenter.ServerInfoNode.Parser, new[]{ "ServerType", "Ip", "Port", "WorldId", "SceneId", "InstanceId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.ControlCenter.ServerInfoRegisterRequest), global::HS.Protobuf.ControlCenter.ServerInfoRegisterRequest.Parser, new[]{ "ServerInfoNode" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.ControlCenter.ServerInfoRegisterResponse), global::HS.Protobuf.ControlCenter.ServerInfoRegisterResponse.Parser, new[]{ "ResultCode", "ResultMsg", "ServerId" }, null, null, null, null)
           }));
@@ -65,380 +60,6 @@ namespace HS.Protobuf.ControlCenter {
   #endregion
 
   #region Messages
-  public sealed partial class ServerInfoNode : pb::IMessage<ServerInfoNode>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
-    private static readonly pb::MessageParser<ServerInfoNode> _parser = new pb::MessageParser<ServerInfoNode>(() => new ServerInfoNode());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<ServerInfoNode> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.ControlCenter.ControlCenterReflection.Descriptor.MessageTypes[0]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ServerInfoNode() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ServerInfoNode(ServerInfoNode other) : this() {
-      serverType_ = other.serverType_;
-      ip_ = other.ip_;
-      port_ = other.port_;
-      worldId_ = other.worldId_;
-      sceneId_ = other.sceneId_;
-      instanceId_ = other.instanceId_;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ServerInfoNode Clone() {
-      return new ServerInfoNode(this);
-    }
-
-    /// <summary>Field number for the "serverType" field.</summary>
-    public const int ServerTypeFieldNumber = 1;
-    private global::HS.Protobuf.Common.SERVER_TYPE serverType_ = global::HS.Protobuf.Common.SERVER_TYPE.None;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::HS.Protobuf.Common.SERVER_TYPE ServerType {
-      get { return serverType_; }
-      set {
-        serverType_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "ip" field.</summary>
-    public const int IpFieldNumber = 2;
-    private string ip_ = "";
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string Ip {
-      get { return ip_; }
-      set {
-        ip_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
-    /// <summary>Field number for the "port" field.</summary>
-    public const int PortFieldNumber = 3;
-    private int port_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int Port {
-      get { return port_; }
-      set {
-        port_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "worldId" field.</summary>
-    public const int WorldIdFieldNumber = 4;
-    private int worldId_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int WorldId {
-      get { return worldId_; }
-      set {
-        worldId_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "sceneId" field.</summary>
-    public const int SceneIdFieldNumber = 5;
-    private int sceneId_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int SceneId {
-      get { return sceneId_; }
-      set {
-        sceneId_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "instanceId" field.</summary>
-    public const int InstanceIdFieldNumber = 6;
-    private int instanceId_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int InstanceId {
-      get { return instanceId_; }
-      set {
-        instanceId_ = value;
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override bool Equals(object other) {
-      return Equals(other as ServerInfoNode);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(ServerInfoNode other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (ServerType != other.ServerType) return false;
-      if (Ip != other.Ip) return false;
-      if (Port != other.Port) return false;
-      if (WorldId != other.WorldId) return false;
-      if (SceneId != other.SceneId) return false;
-      if (InstanceId != other.InstanceId) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (ServerType != global::HS.Protobuf.Common.SERVER_TYPE.None) hash ^= ServerType.GetHashCode();
-      if (Ip.Length != 0) hash ^= Ip.GetHashCode();
-      if (Port != 0) hash ^= Port.GetHashCode();
-      if (WorldId != 0) hash ^= WorldId.GetHashCode();
-      if (SceneId != 0) hash ^= SceneId.GetHashCode();
-      if (InstanceId != 0) hash ^= InstanceId.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
-      if (ServerType != global::HS.Protobuf.Common.SERVER_TYPE.None) {
-        output.WriteRawTag(8);
-        output.WriteEnum((int) ServerType);
-      }
-      if (Ip.Length != 0) {
-        output.WriteRawTag(18);
-        output.WriteString(Ip);
-      }
-      if (Port != 0) {
-        output.WriteRawTag(24);
-        output.WriteInt32(Port);
-      }
-      if (WorldId != 0) {
-        output.WriteRawTag(32);
-        output.WriteInt32(WorldId);
-      }
-      if (SceneId != 0) {
-        output.WriteRawTag(40);
-        output.WriteInt32(SceneId);
-      }
-      if (InstanceId != 0) {
-        output.WriteRawTag(48);
-        output.WriteInt32(InstanceId);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (ServerType != global::HS.Protobuf.Common.SERVER_TYPE.None) {
-        output.WriteRawTag(8);
-        output.WriteEnum((int) ServerType);
-      }
-      if (Ip.Length != 0) {
-        output.WriteRawTag(18);
-        output.WriteString(Ip);
-      }
-      if (Port != 0) {
-        output.WriteRawTag(24);
-        output.WriteInt32(Port);
-      }
-      if (WorldId != 0) {
-        output.WriteRawTag(32);
-        output.WriteInt32(WorldId);
-      }
-      if (SceneId != 0) {
-        output.WriteRawTag(40);
-        output.WriteInt32(SceneId);
-      }
-      if (InstanceId != 0) {
-        output.WriteRawTag(48);
-        output.WriteInt32(InstanceId);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CalculateSize() {
-      int size = 0;
-      if (ServerType != global::HS.Protobuf.Common.SERVER_TYPE.None) {
-        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) ServerType);
-      }
-      if (Ip.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Ip);
-      }
-      if (Port != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Port);
-      }
-      if (WorldId != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(WorldId);
-      }
-      if (SceneId != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(SceneId);
-      }
-      if (InstanceId != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(InstanceId);
-      }
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(ServerInfoNode other) {
-      if (other == null) {
-        return;
-      }
-      if (other.ServerType != global::HS.Protobuf.Common.SERVER_TYPE.None) {
-        ServerType = other.ServerType;
-      }
-      if (other.Ip.Length != 0) {
-        Ip = other.Ip;
-      }
-      if (other.Port != 0) {
-        Port = other.Port;
-      }
-      if (other.WorldId != 0) {
-        WorldId = other.WorldId;
-      }
-      if (other.SceneId != 0) {
-        SceneId = other.SceneId;
-      }
-      if (other.InstanceId != 0) {
-        InstanceId = other.InstanceId;
-      }
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 8: {
-            ServerType = (global::HS.Protobuf.Common.SERVER_TYPE) input.ReadEnum();
-            break;
-          }
-          case 18: {
-            Ip = input.ReadString();
-            break;
-          }
-          case 24: {
-            Port = input.ReadInt32();
-            break;
-          }
-          case 32: {
-            WorldId = input.ReadInt32();
-            break;
-          }
-          case 40: {
-            SceneId = input.ReadInt32();
-            break;
-          }
-          case 48: {
-            InstanceId = input.ReadInt32();
-            break;
-          }
-        }
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 8: {
-            ServerType = (global::HS.Protobuf.Common.SERVER_TYPE) input.ReadEnum();
-            break;
-          }
-          case 18: {
-            Ip = input.ReadString();
-            break;
-          }
-          case 24: {
-            Port = input.ReadInt32();
-            break;
-          }
-          case 32: {
-            WorldId = input.ReadInt32();
-            break;
-          }
-          case 40: {
-            SceneId = input.ReadInt32();
-            break;
-          }
-          case 48: {
-            InstanceId = input.ReadInt32();
-            break;
-          }
-        }
-      }
-    }
-    #endif
-
-  }
-
   public sealed partial class ServerInfoRegisterRequest : pb::IMessage<ServerInfoRegisterRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -453,7 +74,7 @@ namespace HS.Protobuf.ControlCenter {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.ControlCenter.ControlCenterReflection.Descriptor.MessageTypes[1]; }
+      get { return global::HS.Protobuf.ControlCenter.ControlCenterReflection.Descriptor.MessageTypes[0]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -485,10 +106,10 @@ namespace HS.Protobuf.ControlCenter {
 
     /// <summary>Field number for the "serverInfoNode" field.</summary>
     public const int ServerInfoNodeFieldNumber = 1;
-    private global::HS.Protobuf.ControlCenter.ServerInfoNode serverInfoNode_;
+    private global::HS.Protobuf.Common.ServerInfoNode serverInfoNode_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::HS.Protobuf.ControlCenter.ServerInfoNode ServerInfoNode {
+    public global::HS.Protobuf.Common.ServerInfoNode ServerInfoNode {
       get { return serverInfoNode_; }
       set {
         serverInfoNode_ = value;
@@ -582,7 +203,7 @@ namespace HS.Protobuf.ControlCenter {
       }
       if (other.serverInfoNode_ != null) {
         if (serverInfoNode_ == null) {
-          ServerInfoNode = new global::HS.Protobuf.ControlCenter.ServerInfoNode();
+          ServerInfoNode = new global::HS.Protobuf.Common.ServerInfoNode();
         }
         ServerInfoNode.MergeFrom(other.ServerInfoNode);
       }
@@ -603,7 +224,7 @@ namespace HS.Protobuf.ControlCenter {
             break;
           case 10: {
             if (serverInfoNode_ == null) {
-              ServerInfoNode = new global::HS.Protobuf.ControlCenter.ServerInfoNode();
+              ServerInfoNode = new global::HS.Protobuf.Common.ServerInfoNode();
             }
             input.ReadMessage(ServerInfoNode);
             break;
@@ -625,7 +246,7 @@ namespace HS.Protobuf.ControlCenter {
             break;
           case 10: {
             if (serverInfoNode_ == null) {
-              ServerInfoNode = new global::HS.Protobuf.ControlCenter.ServerInfoNode();
+              ServerInfoNode = new global::HS.Protobuf.Common.ServerInfoNode();
             }
             input.ReadMessage(ServerInfoNode);
             break;
@@ -651,7 +272,7 @@ namespace HS.Protobuf.ControlCenter {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.ControlCenter.ControlCenterReflection.Descriptor.MessageTypes[2]; }
+      get { return global::HS.Protobuf.ControlCenter.ControlCenterReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

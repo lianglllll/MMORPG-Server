@@ -1,5 +1,5 @@
 syntax = "proto3";
-package HS.Protobuf.Backpack;
+package HS.Protobuf.Game.Backpack;
 
 // ±³°üÏµÍ³
 

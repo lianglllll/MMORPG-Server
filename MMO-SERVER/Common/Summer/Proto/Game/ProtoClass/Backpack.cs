@@ -9,7 +9,7 @@ using pb = global::Google.Protobuf;
 using pbc = global::Google.Protobuf.Collections;
 using pbr = global::Google.Protobuf.Reflection;
 using scg = global::System.Collections.Generic;
-namespace HS.Protobuf.Backpack {
+namespace HS.Protobuf.Game.Backpack {
 
   /// <summary>Holder for reflection information generated from Backpack.proto</summary>
   public static partial class BackpackReflection {
@@ -24,74 +24,75 @@ namespace HS.Protobuf.Backpack {
     static BackpackReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cg5CYWNrcGFjay5wcm90bxIUSFMuUHJvdG9idWYuQmFja3BhY2sicAoISXRl",
-            "bUluZm8SDgoGaXRlbUlkGAEgASgFEg4KBmFtb3VudBgCIAEoBRIQCghwb3Np",
-            "dGlvbhgDIAEoBRIyCgllcXVpcGRhdGEYBCABKAsyHy5IUy5Qcm90b2J1Zi5C",
-            "YWNrcGFjay5FcXVpcERhdGEiCwoJRXF1aXBEYXRhIqQBCgpJdGVtVXBkYXRl",
-            "EjkKBHR5cGUYASABKA4yKy5IUy5Qcm90b2J1Zi5CYWNrcGFjay5JdGVtVXBk",
-            "YXRlLlVwZGF0ZVR5cGUSLAoEaXRtZRgCIAEoCzIeLkhTLlByb3RvYnVmLkJh",
-            "Y2twYWNrLkl0ZW1JbmZvIi0KClVwZGF0ZVR5cGUSBwoDQUREEAASCgoGREVM",
-            "RVRFEAESCgoGVVBEQVRFEAIiTwoNSW52ZW50b3J5SW5mbxIQCghjYXBhY2l0",
-            "eRgBIAEoBRIsCgRsaXN0GAIgAygLMh4uSFMuUHJvdG9idWYuQmFja3BhY2su",
-            "SXRlbUluZm8ibwoUSW52ZW50b3J5SW5mb1JlcXVlc3QSEAoIZW50aXR5SWQY",
-            "ASABKAUSFQoNcXVlcnlLbmFwc2FjaxgCIAEoCBIWCg5xdWVyeVdhcmVob3Vz",
-            "ZRgDIAEoCBIWCg5xdWVyeUVxdWlwbWVudBgEIAEoCCLcAQoVSW52ZW50b3J5",
-            "SW5mb1Jlc3BvbnNlEhAKCGVudGl0eUlkGAEgASgFEjkKDEtuYXBzYWNrSW5m",
-            "bxgCIAEoCzIjLkhTLlByb3RvYnVmLkJhY2twYWNrLkludmVudG9yeUluZm8S",
-            "OgoNV2FyZWhvdXNlSW5mbxgDIAEoCzIjLkhTLlByb3RvYnVmLkJhY2twYWNr",
-            "LkludmVudG9yeUluZm8SOgoNRXF1aXBtZW50SW5mbxgEIAEoCzIjLkhTLlBy",
-            "b3RvYnVmLkJhY2twYWNrLkludmVudG9yeUluZm8ilAEKFEl0ZW1QbGFjZW1l",
-            "bnRSZXF1ZXN0EhAKCGVudGl0eUlkGAEgASgFEkAKE29yaWdpbkludmVudG9y",
-            "eVRwZXkYAiABKA4yIy5IUy5Qcm90b2J1Zi5CYWNrcGFjay5JbnZlbnRvcnlU",
+            "Cg5CYWNrcGFjay5wcm90bxIZSFMuUHJvdG9idWYuR2FtZS5CYWNrcGFjayJ1",
+            "CghJdGVtSW5mbxIOCgZpdGVtSWQYASABKAUSDgoGYW1vdW50GAIgASgFEhAK",
+            "CHBvc2l0aW9uGAMgASgFEjcKCWVxdWlwZGF0YRgEIAEoCzIkLkhTLlByb3Rv",
+            "YnVmLkdhbWUuQmFja3BhY2suRXF1aXBEYXRhIgsKCUVxdWlwRGF0YSKuAQoK",
+            "SXRlbVVwZGF0ZRI+CgR0eXBlGAEgASgOMjAuSFMuUHJvdG9idWYuR2FtZS5C",
+            "YWNrcGFjay5JdGVtVXBkYXRlLlVwZGF0ZVR5cGUSMQoEaXRtZRgCIAEoCzIj",
+            "LkhTLlByb3RvYnVmLkdhbWUuQmFja3BhY2suSXRlbUluZm8iLQoKVXBkYXRl",
+            "VHlwZRIHCgNBREQQABIKCgZERUxFVEUQARIKCgZVUERBVEUQAiJUCg1JbnZl",
+            "bnRvcnlJbmZvEhAKCGNhcGFjaXR5GAEgASgFEjEKBGxpc3QYAiADKAsyIy5I",
+            "Uy5Qcm90b2J1Zi5HYW1lLkJhY2twYWNrLkl0ZW1JbmZvIm8KFEludmVudG9y",
+            "eUluZm9SZXF1ZXN0EhAKCGVudGl0eUlkGAEgASgFEhUKDXF1ZXJ5S25hcHNh",
+            "Y2sYAiABKAgSFgoOcXVlcnlXYXJlaG91c2UYAyABKAgSFgoOcXVlcnlFcXVp",
+            "cG1lbnQYBCABKAgi6wEKFUludmVudG9yeUluZm9SZXNwb25zZRIQCghlbnRp",
+            "dHlJZBgBIAEoBRI+CgxLbmFwc2Fja0luZm8YAiABKAsyKC5IUy5Qcm90b2J1",
+            "Zi5HYW1lLkJhY2twYWNrLkludmVudG9yeUluZm8SPwoNV2FyZWhvdXNlSW5m",
+            "bxgDIAEoCzIoLkhTLlByb3RvYnVmLkdhbWUuQmFja3BhY2suSW52ZW50b3J5",
+            "SW5mbxI/Cg1FcXVpcG1lbnRJbmZvGAQgASgLMiguSFMuUHJvdG9idWYuR2Ft",
+            "ZS5CYWNrcGFjay5JbnZlbnRvcnlJbmZvIpkBChRJdGVtUGxhY2VtZW50UmVx",
+            "dWVzdBIQCghlbnRpdHlJZBgBIAEoBRJFChNvcmlnaW5JbnZlbnRvcnlUcGV5",
+            "GAIgASgOMiguSFMuUHJvdG9idWYuR2FtZS5CYWNrcGFjay5JbnZlbnRvcnlU",
             "eXBlEhMKC29yaWdpbkluZGV4GAMgASgFEhMKC3RhcmdldEluZGV4GAQgASgF",
             "IkQKDkl0ZW1Vc2VSZXF1ZXN0EhAKCGVudGl0eUlkGAEgASgFEhEKCXNsb3RJ",
             "bmRleBgCIAEoBRINCgVjb3VudBgDIAEoBSJDCg9JdGVtVXNlUmVzcG9uc2US",
             "DgoGcmVzdWx0GAEgASgIEhEKCXNsb3RJbmRleBgCIAEoBRINCgVjb3VudBgD",
-            "IAEoBSJqChJJdGVtRGlzY2FyZFJlcXVlc3QSEQoJc2xvdEluZGV4GAEgASgF",
-            "Eg4KBm51bWJlchgCIAEoBRIxCgR0eXBlGAMgASgOMiMuSFMuUHJvdG9idWYu",
-            "QmFja3BhY2suSW52ZW50b3J5VHlwZSJcChNJdGVtRGlzY2FyZFJlc3BvbnNl",
-            "EhIKCnJlc3VsdENvZGUYASABKAUSEQoJcmVzdWx0TXNnGAIgASgJEg4KBml0",
-            "ZW1JZBgDIAEoBRIOCgZhbW91bnQYBCABKAUiJQoRSXRlbVBpY2tVcFJlcXVl",
-            "c3QSEAoIZW50aXR5SWQYASABKAUiWwoSSXRlbVBpY2t1cFJlc3BvbnNlEhIK",
-            "CnJlc3VsdENvZGUYASABKAUSEQoJcmVzdWx0TXNnGAIgASgJEg4KBml0ZW1J",
-            "ZBgDIAEoBRIOCgZhbW91bnQYBCABKAUiDwoNRXF1aXBzUmVxdWVzdCJWCg5F",
-            "cXVpcHNSZXNwb25zZRIQCghlbnRpdHlJZBgBIAEoBRIyCgplcXVpcHNMaXN0",
-            "GAIgAygLMh4uSFMuUHJvdG9idWYuQmFja3BhY2suSXRlbUluZm8iXAoURXF1",
-            "aXBzVXBkYXRlUmVzcG9uc2USEAoIZW50aXR5SWQYASABKAUSMgoKZXF1aXBz",
-            "TGlzdBgCIAMoCzIeLkhTLlByb3RvYnVmLkJhY2twYWNrLkl0ZW1JbmZvIikK",
-            "FFdlYXJFcXVpcG1lbnRSZXF1ZXN0EhEKCXNsb3RJbmRleBgBIAEoBSJIChZV",
-            "bmxvYWRFcXVpcG1lbnRSZXF1ZXN0Ei4KBHR5cGUYASABKA4yIC5IUy5Qcm90",
-            "b2J1Zi5CYWNrcGFjay5FcXVpcHNUeXBlKjcKCEl0ZW1UeXBlEgwKCE1hdGVy",
-            "aWFsEAASDgoKQ29uc3VtYWJsZRABEg0KCUVxdWlwbWVudBACKlAKB1F1YWxp",
-            "dHkSCgoGQ29tbW9uEAASCAoERmluZRABEggKBFJhcmUQAhIICgRFcGljEAMS",
-            "DQoJTGVnZW5kYXJ5EAQSDAoIQXJ0aWZhY3QQBSqqAQoKRXF1aXBzVHlwZRIJ",
-            "CgVVTlNFVBAAEgoKBldlYXBvbhABEhMKD1NlY29uZGFyeVdlYXBvbhACEgoK",
-            "BkhlbG1ldBADEggKBE5lY2sQBBIJCgVDaGVzdBAFEg0KCVdyaXN0YmFuZBAG",
-            "EggKBEJlbHQQBxIMCghCcmFjZWxldBAIEggKBExlZ3MQCRIICgRSaW5nEAoS",
-            "CQoFQm9vdHMQCxIJCgVXaW5ncxAMKlMKDUludmVudG9yeVR5cGUSDAoIS25h",
-            "cHNhY2sQABINCglXYXJlaG91c2UQARITCg9FcXVpcG1lbnRDb2x1bW4QAhIQ",
-            "CgxDdXJyZW50U2NlbmUQA2IGcHJvdG8z"));
+            "IAEoBSJvChJJdGVtRGlzY2FyZFJlcXVlc3QSEQoJc2xvdEluZGV4GAEgASgF",
+            "Eg4KBm51bWJlchgCIAEoBRI2CgR0eXBlGAMgASgOMiguSFMuUHJvdG9idWYu",
+            "R2FtZS5CYWNrcGFjay5JbnZlbnRvcnlUeXBlIlwKE0l0ZW1EaXNjYXJkUmVz",
+            "cG9uc2USEgoKcmVzdWx0Q29kZRgBIAEoBRIRCglyZXN1bHRNc2cYAiABKAkS",
+            "DgoGaXRlbUlkGAMgASgFEg4KBmFtb3VudBgEIAEoBSIlChFJdGVtUGlja1Vw",
+            "UmVxdWVzdBIQCghlbnRpdHlJZBgBIAEoBSJbChJJdGVtUGlja3VwUmVzcG9u",
+            "c2USEgoKcmVzdWx0Q29kZRgBIAEoBRIRCglyZXN1bHRNc2cYAiABKAkSDgoG",
+            "aXRlbUlkGAMgASgFEg4KBmFtb3VudBgEIAEoBSIPCg1FcXVpcHNSZXF1ZXN0",
+            "IlsKDkVxdWlwc1Jlc3BvbnNlEhAKCGVudGl0eUlkGAEgASgFEjcKCmVxdWlw",
+            "c0xpc3QYAiADKAsyIy5IUy5Qcm90b2J1Zi5HYW1lLkJhY2twYWNrLkl0ZW1J",
+            "bmZvImEKFEVxdWlwc1VwZGF0ZVJlc3BvbnNlEhAKCGVudGl0eUlkGAEgASgF",
+            "EjcKCmVxdWlwc0xpc3QYAiADKAsyIy5IUy5Qcm90b2J1Zi5HYW1lLkJhY2tw",
+            "YWNrLkl0ZW1JbmZvIikKFFdlYXJFcXVpcG1lbnRSZXF1ZXN0EhEKCXNsb3RJ",
+            "bmRleBgBIAEoBSJNChZVbmxvYWRFcXVpcG1lbnRSZXF1ZXN0EjMKBHR5cGUY",
+            "ASABKA4yJS5IUy5Qcm90b2J1Zi5HYW1lLkJhY2twYWNrLkVxdWlwc1R5cGUq",
+            "NwoISXRlbVR5cGUSDAoITWF0ZXJpYWwQABIOCgpDb25zdW1hYmxlEAESDQoJ",
+            "RXF1aXBtZW50EAIqUAoHUXVhbGl0eRIKCgZDb21tb24QABIICgRGaW5lEAES",
+            "CAoEUmFyZRACEggKBEVwaWMQAxINCglMZWdlbmRhcnkQBBIMCghBcnRpZmFj",
+            "dBAFKqoBCgpFcXVpcHNUeXBlEgkKBVVOU0VUEAASCgoGV2VhcG9uEAESEwoP",
+            "U2Vjb25kYXJ5V2VhcG9uEAISCgoGSGVsbWV0EAMSCAoETmVjaxAEEgkKBUNo",
+            "ZXN0EAUSDQoJV3Jpc3RiYW5kEAYSCAoEQmVsdBAHEgwKCEJyYWNlbGV0EAgS",
+            "CAoETGVncxAJEggKBFJpbmcQChIJCgVCb290cxALEgkKBVdpbmdzEAwqUwoN",
+            "SW52ZW50b3J5VHlwZRIMCghLbmFwc2FjaxAAEg0KCVdhcmVob3VzZRABEhMK",
+            "D0VxdWlwbWVudENvbHVtbhACEhAKDEN1cnJlbnRTY2VuZRADYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.Backpack.ItemType), typeof(global::HS.Protobuf.Backpack.Quality), typeof(global::HS.Protobuf.Backpack.EquipsType), typeof(global::HS.Protobuf.Backpack.InventoryType), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Backpack.ItemInfo), global::HS.Protobuf.Backpack.ItemInfo.Parser, new[]{ "ItemId", "Amount", "Position", "Equipdata" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Backpack.EquipData), global::HS.Protobuf.Backpack.EquipData.Parser, null, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Backpack.ItemUpdate), global::HS.Protobuf.Backpack.ItemUpdate.Parser, new[]{ "Type", "Itme" }, null, new[]{ typeof(global::HS.Protobuf.Backpack.ItemUpdate.Types.UpdateType) }, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Backpack.InventoryInfo), global::HS.Protobuf.Backpack.InventoryInfo.Parser, new[]{ "Capacity", "List" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Backpack.InventoryInfoRequest), global::HS.Protobuf.Backpack.InventoryInfoRequest.Parser, new[]{ "EntityId", "QueryKnapsack", "QueryWarehouse", "QueryEquipment" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Backpack.InventoryInfoResponse), global::HS.Protobuf.Backpack.InventoryInfoResponse.Parser, new[]{ "EntityId", "KnapsackInfo", "WarehouseInfo", "EquipmentInfo" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Backpack.ItemPlacementRequest), global::HS.Protobuf.Backpack.ItemPlacementRequest.Parser, new[]{ "EntityId", "OriginInventoryTpey", "OriginIndex", "TargetIndex" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Backpack.ItemUseRequest), global::HS.Protobuf.Backpack.ItemUseRequest.Parser, new[]{ "EntityId", "SlotIndex", "Count" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Backpack.ItemUseResponse), global::HS.Protobuf.Backpack.ItemUseResponse.Parser, new[]{ "Result", "SlotIndex", "Count" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Backpack.ItemDiscardRequest), global::HS.Protobuf.Backpack.ItemDiscardRequest.Parser, new[]{ "SlotIndex", "Number", "Type" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Backpack.ItemDiscardResponse), global::HS.Protobuf.Backpack.ItemDiscardResponse.Parser, new[]{ "ResultCode", "ResultMsg", "ItemId", "Amount" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Backpack.ItemPickUpRequest), global::HS.Protobuf.Backpack.ItemPickUpRequest.Parser, new[]{ "EntityId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Backpack.ItemPickupResponse), global::HS.Protobuf.Backpack.ItemPickupResponse.Parser, new[]{ "ResultCode", "ResultMsg", "ItemId", "Amount" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Backpack.EquipsRequest), global::HS.Protobuf.Backpack.EquipsRequest.Parser, null, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Backpack.EquipsResponse), global::HS.Protobuf.Backpack.EquipsResponse.Parser, new[]{ "EntityId", "EquipsList" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Backpack.EquipsUpdateResponse), global::HS.Protobuf.Backpack.EquipsUpdateResponse.Parser, new[]{ "EntityId", "EquipsList" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Backpack.WearEquipmentRequest), global::HS.Protobuf.Backpack.WearEquipmentRequest.Parser, new[]{ "SlotIndex" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Backpack.UnloadEquipmentRequest), global::HS.Protobuf.Backpack.UnloadEquipmentRequest.Parser, new[]{ "Type" }, null, null, null, null)
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.Game.Backpack.ItemType), typeof(global::HS.Protobuf.Game.Backpack.Quality), typeof(global::HS.Protobuf.Game.Backpack.EquipsType), typeof(global::HS.Protobuf.Game.Backpack.InventoryType), }, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.Backpack.ItemInfo), global::HS.Protobuf.Game.Backpack.ItemInfo.Parser, new[]{ "ItemId", "Amount", "Position", "Equipdata" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.Backpack.EquipData), global::HS.Protobuf.Game.Backpack.EquipData.Parser, null, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.Backpack.ItemUpdate), global::HS.Protobuf.Game.Backpack.ItemUpdate.Parser, new[]{ "Type", "Itme" }, null, new[]{ typeof(global::HS.Protobuf.Game.Backpack.ItemUpdate.Types.UpdateType) }, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.Backpack.InventoryInfo), global::HS.Protobuf.Game.Backpack.InventoryInfo.Parser, new[]{ "Capacity", "List" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.Backpack.InventoryInfoRequest), global::HS.Protobuf.Game.Backpack.InventoryInfoRequest.Parser, new[]{ "EntityId", "QueryKnapsack", "QueryWarehouse", "QueryEquipment" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.Backpack.InventoryInfoResponse), global::HS.Protobuf.Game.Backpack.InventoryInfoResponse.Parser, new[]{ "EntityId", "KnapsackInfo", "WarehouseInfo", "EquipmentInfo" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.Backpack.ItemPlacementRequest), global::HS.Protobuf.Game.Backpack.ItemPlacementRequest.Parser, new[]{ "EntityId", "OriginInventoryTpey", "OriginIndex", "TargetIndex" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.Backpack.ItemUseRequest), global::HS.Protobuf.Game.Backpack.ItemUseRequest.Parser, new[]{ "EntityId", "SlotIndex", "Count" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.Backpack.ItemUseResponse), global::HS.Protobuf.Game.Backpack.ItemUseResponse.Parser, new[]{ "Result", "SlotIndex", "Count" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.Backpack.ItemDiscardRequest), global::HS.Protobuf.Game.Backpack.ItemDiscardRequest.Parser, new[]{ "SlotIndex", "Number", "Type" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.Backpack.ItemDiscardResponse), global::HS.Protobuf.Game.Backpack.ItemDiscardResponse.Parser, new[]{ "ResultCode", "ResultMsg", "ItemId", "Amount" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.Backpack.ItemPickUpRequest), global::HS.Protobuf.Game.Backpack.ItemPickUpRequest.Parser, new[]{ "EntityId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.Backpack.ItemPickupResponse), global::HS.Protobuf.Game.Backpack.ItemPickupResponse.Parser, new[]{ "ResultCode", "ResultMsg", "ItemId", "Amount" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.Backpack.EquipsRequest), global::HS.Protobuf.Game.Backpack.EquipsRequest.Parser, null, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.Backpack.EquipsResponse), global::HS.Protobuf.Game.Backpack.EquipsResponse.Parser, new[]{ "EntityId", "EquipsList" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.Backpack.EquipsUpdateResponse), global::HS.Protobuf.Game.Backpack.EquipsUpdateResponse.Parser, new[]{ "EntityId", "EquipsList" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.Backpack.WearEquipmentRequest), global::HS.Protobuf.Game.Backpack.WearEquipmentRequest.Parser, new[]{ "SlotIndex" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.Backpack.UnloadEquipmentRequest), global::HS.Protobuf.Game.Backpack.UnloadEquipmentRequest.Parser, new[]{ "Type" }, null, null, null, null)
           }));
     }
     #endregion
@@ -234,7 +235,7 @@ namespace HS.Protobuf.Backpack {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Backpack.BackpackReflection.Descriptor.MessageTypes[0]; }
+      get { return global::HS.Protobuf.Game.Backpack.BackpackReflection.Descriptor.MessageTypes[0]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -314,13 +315,13 @@ namespace HS.Protobuf.Backpack {
 
     /// <summary>Field number for the "equipdata" field.</summary>
     public const int EquipdataFieldNumber = 4;
-    private global::HS.Protobuf.Backpack.EquipData equipdata_;
+    private global::HS.Protobuf.Game.Backpack.EquipData equipdata_;
     /// <summary>
     ///装备信息，物品有这个属性，说明是武器。
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::HS.Protobuf.Backpack.EquipData Equipdata {
+    public global::HS.Protobuf.Game.Backpack.EquipData Equipdata {
       get { return equipdata_; }
       set {
         equipdata_ = value;
@@ -462,7 +463,7 @@ namespace HS.Protobuf.Backpack {
       }
       if (other.equipdata_ != null) {
         if (equipdata_ == null) {
-          Equipdata = new global::HS.Protobuf.Backpack.EquipData();
+          Equipdata = new global::HS.Protobuf.Game.Backpack.EquipData();
         }
         Equipdata.MergeFrom(other.Equipdata);
       }
@@ -495,7 +496,7 @@ namespace HS.Protobuf.Backpack {
           }
           case 34: {
             if (equipdata_ == null) {
-              Equipdata = new global::HS.Protobuf.Backpack.EquipData();
+              Equipdata = new global::HS.Protobuf.Game.Backpack.EquipData();
             }
             input.ReadMessage(Equipdata);
             break;
@@ -529,7 +530,7 @@ namespace HS.Protobuf.Backpack {
           }
           case 34: {
             if (equipdata_ == null) {
-              Equipdata = new global::HS.Protobuf.Backpack.EquipData();
+              Equipdata = new global::HS.Protobuf.Game.Backpack.EquipData();
             }
             input.ReadMessage(Equipdata);
             break;
@@ -558,7 +559,7 @@ namespace HS.Protobuf.Backpack {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Backpack.BackpackReflection.Descriptor.MessageTypes[1]; }
+      get { return global::HS.Protobuf.Game.Backpack.BackpackReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -713,7 +714,7 @@ namespace HS.Protobuf.Backpack {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Backpack.BackpackReflection.Descriptor.MessageTypes[2]; }
+      get { return global::HS.Protobuf.Game.Backpack.BackpackReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -746,10 +747,10 @@ namespace HS.Protobuf.Backpack {
 
     /// <summary>Field number for the "type" field.</summary>
     public const int TypeFieldNumber = 1;
-    private global::HS.Protobuf.Backpack.ItemUpdate.Types.UpdateType type_ = global::HS.Protobuf.Backpack.ItemUpdate.Types.UpdateType.Add;
+    private global::HS.Protobuf.Game.Backpack.ItemUpdate.Types.UpdateType type_ = global::HS.Protobuf.Game.Backpack.ItemUpdate.Types.UpdateType.Add;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::HS.Protobuf.Backpack.ItemUpdate.Types.UpdateType Type {
+    public global::HS.Protobuf.Game.Backpack.ItemUpdate.Types.UpdateType Type {
       get { return type_; }
       set {
         type_ = value;
@@ -758,10 +759,10 @@ namespace HS.Protobuf.Backpack {
 
     /// <summary>Field number for the "itme" field.</summary>
     public const int ItmeFieldNumber = 2;
-    private global::HS.Protobuf.Backpack.ItemInfo itme_;
+    private global::HS.Protobuf.Game.Backpack.ItemInfo itme_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::HS.Protobuf.Backpack.ItemInfo Itme {
+    public global::HS.Protobuf.Game.Backpack.ItemInfo Itme {
       get { return itme_; }
       set {
         itme_ = value;
@@ -792,7 +793,7 @@ namespace HS.Protobuf.Backpack {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Type != global::HS.Protobuf.Backpack.ItemUpdate.Types.UpdateType.Add) hash ^= Type.GetHashCode();
+      if (Type != global::HS.Protobuf.Game.Backpack.ItemUpdate.Types.UpdateType.Add) hash ^= Type.GetHashCode();
       if (itme_ != null) hash ^= Itme.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -812,7 +813,7 @@ namespace HS.Protobuf.Backpack {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Type != global::HS.Protobuf.Backpack.ItemUpdate.Types.UpdateType.Add) {
+      if (Type != global::HS.Protobuf.Game.Backpack.ItemUpdate.Types.UpdateType.Add) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -830,7 +831,7 @@ namespace HS.Protobuf.Backpack {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Type != global::HS.Protobuf.Backpack.ItemUpdate.Types.UpdateType.Add) {
+      if (Type != global::HS.Protobuf.Game.Backpack.ItemUpdate.Types.UpdateType.Add) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -848,7 +849,7 @@ namespace HS.Protobuf.Backpack {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Type != global::HS.Protobuf.Backpack.ItemUpdate.Types.UpdateType.Add) {
+      if (Type != global::HS.Protobuf.Game.Backpack.ItemUpdate.Types.UpdateType.Add) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
       }
       if (itme_ != null) {
@@ -866,12 +867,12 @@ namespace HS.Protobuf.Backpack {
       if (other == null) {
         return;
       }
-      if (other.Type != global::HS.Protobuf.Backpack.ItemUpdate.Types.UpdateType.Add) {
+      if (other.Type != global::HS.Protobuf.Game.Backpack.ItemUpdate.Types.UpdateType.Add) {
         Type = other.Type;
       }
       if (other.itme_ != null) {
         if (itme_ == null) {
-          Itme = new global::HS.Protobuf.Backpack.ItemInfo();
+          Itme = new global::HS.Protobuf.Game.Backpack.ItemInfo();
         }
         Itme.MergeFrom(other.Itme);
       }
@@ -891,12 +892,12 @@ namespace HS.Protobuf.Backpack {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Type = (global::HS.Protobuf.Backpack.ItemUpdate.Types.UpdateType) input.ReadEnum();
+            Type = (global::HS.Protobuf.Game.Backpack.ItemUpdate.Types.UpdateType) input.ReadEnum();
             break;
           }
           case 18: {
             if (itme_ == null) {
-              Itme = new global::HS.Protobuf.Backpack.ItemInfo();
+              Itme = new global::HS.Protobuf.Game.Backpack.ItemInfo();
             }
             input.ReadMessage(Itme);
             break;
@@ -917,12 +918,12 @@ namespace HS.Protobuf.Backpack {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            Type = (global::HS.Protobuf.Backpack.ItemUpdate.Types.UpdateType) input.ReadEnum();
+            Type = (global::HS.Protobuf.Game.Backpack.ItemUpdate.Types.UpdateType) input.ReadEnum();
             break;
           }
           case 18: {
             if (itme_ == null) {
-              Itme = new global::HS.Protobuf.Backpack.ItemInfo();
+              Itme = new global::HS.Protobuf.Game.Backpack.ItemInfo();
             }
             input.ReadMessage(Itme);
             break;
@@ -965,7 +966,7 @@ namespace HS.Protobuf.Backpack {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Backpack.BackpackReflection.Descriptor.MessageTypes[3]; }
+      get { return global::HS.Protobuf.Game.Backpack.BackpackReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1013,12 +1014,12 @@ namespace HS.Protobuf.Backpack {
 
     /// <summary>Field number for the "list" field.</summary>
     public const int ListFieldNumber = 2;
-    private static readonly pb::FieldCodec<global::HS.Protobuf.Backpack.ItemInfo> _repeated_list_codec
-        = pb::FieldCodec.ForMessage(18, global::HS.Protobuf.Backpack.ItemInfo.Parser);
-    private readonly pbc::RepeatedField<global::HS.Protobuf.Backpack.ItemInfo> list_ = new pbc::RepeatedField<global::HS.Protobuf.Backpack.ItemInfo>();
+    private static readonly pb::FieldCodec<global::HS.Protobuf.Game.Backpack.ItemInfo> _repeated_list_codec
+        = pb::FieldCodec.ForMessage(18, global::HS.Protobuf.Game.Backpack.ItemInfo.Parser);
+    private readonly pbc::RepeatedField<global::HS.Protobuf.Game.Backpack.ItemInfo> list_ = new pbc::RepeatedField<global::HS.Protobuf.Game.Backpack.ItemInfo>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::HS.Protobuf.Backpack.ItemInfo> List {
+    public pbc::RepeatedField<global::HS.Protobuf.Game.Backpack.ItemInfo> List {
       get { return list_; }
     }
 
@@ -1187,7 +1188,7 @@ namespace HS.Protobuf.Backpack {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Backpack.BackpackReflection.Descriptor.MessageTypes[4]; }
+      get { return global::HS.Protobuf.Game.Backpack.BackpackReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1490,7 +1491,7 @@ namespace HS.Protobuf.Backpack {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Backpack.BackpackReflection.Descriptor.MessageTypes[5]; }
+      get { return global::HS.Protobuf.Game.Backpack.BackpackReflection.Descriptor.MessageTypes[5]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1537,10 +1538,10 @@ namespace HS.Protobuf.Backpack {
 
     /// <summary>Field number for the "KnapsackInfo" field.</summary>
     public const int KnapsackInfoFieldNumber = 2;
-    private global::HS.Protobuf.Backpack.InventoryInfo knapsackInfo_;
+    private global::HS.Protobuf.Game.Backpack.InventoryInfo knapsackInfo_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::HS.Protobuf.Backpack.InventoryInfo KnapsackInfo {
+    public global::HS.Protobuf.Game.Backpack.InventoryInfo KnapsackInfo {
       get { return knapsackInfo_; }
       set {
         knapsackInfo_ = value;
@@ -1549,10 +1550,10 @@ namespace HS.Protobuf.Backpack {
 
     /// <summary>Field number for the "WarehouseInfo" field.</summary>
     public const int WarehouseInfoFieldNumber = 3;
-    private global::HS.Protobuf.Backpack.InventoryInfo warehouseInfo_;
+    private global::HS.Protobuf.Game.Backpack.InventoryInfo warehouseInfo_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::HS.Protobuf.Backpack.InventoryInfo WarehouseInfo {
+    public global::HS.Protobuf.Game.Backpack.InventoryInfo WarehouseInfo {
       get { return warehouseInfo_; }
       set {
         warehouseInfo_ = value;
@@ -1561,10 +1562,10 @@ namespace HS.Protobuf.Backpack {
 
     /// <summary>Field number for the "EquipmentInfo" field.</summary>
     public const int EquipmentInfoFieldNumber = 4;
-    private global::HS.Protobuf.Backpack.InventoryInfo equipmentInfo_;
+    private global::HS.Protobuf.Game.Backpack.InventoryInfo equipmentInfo_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::HS.Protobuf.Backpack.InventoryInfo EquipmentInfo {
+    public global::HS.Protobuf.Game.Backpack.InventoryInfo EquipmentInfo {
       get { return equipmentInfo_; }
       set {
         equipmentInfo_ = value;
@@ -1700,19 +1701,19 @@ namespace HS.Protobuf.Backpack {
       }
       if (other.knapsackInfo_ != null) {
         if (knapsackInfo_ == null) {
-          KnapsackInfo = new global::HS.Protobuf.Backpack.InventoryInfo();
+          KnapsackInfo = new global::HS.Protobuf.Game.Backpack.InventoryInfo();
         }
         KnapsackInfo.MergeFrom(other.KnapsackInfo);
       }
       if (other.warehouseInfo_ != null) {
         if (warehouseInfo_ == null) {
-          WarehouseInfo = new global::HS.Protobuf.Backpack.InventoryInfo();
+          WarehouseInfo = new global::HS.Protobuf.Game.Backpack.InventoryInfo();
         }
         WarehouseInfo.MergeFrom(other.WarehouseInfo);
       }
       if (other.equipmentInfo_ != null) {
         if (equipmentInfo_ == null) {
-          EquipmentInfo = new global::HS.Protobuf.Backpack.InventoryInfo();
+          EquipmentInfo = new global::HS.Protobuf.Game.Backpack.InventoryInfo();
         }
         EquipmentInfo.MergeFrom(other.EquipmentInfo);
       }
@@ -1737,21 +1738,21 @@ namespace HS.Protobuf.Backpack {
           }
           case 18: {
             if (knapsackInfo_ == null) {
-              KnapsackInfo = new global::HS.Protobuf.Backpack.InventoryInfo();
+              KnapsackInfo = new global::HS.Protobuf.Game.Backpack.InventoryInfo();
             }
             input.ReadMessage(KnapsackInfo);
             break;
           }
           case 26: {
             if (warehouseInfo_ == null) {
-              WarehouseInfo = new global::HS.Protobuf.Backpack.InventoryInfo();
+              WarehouseInfo = new global::HS.Protobuf.Game.Backpack.InventoryInfo();
             }
             input.ReadMessage(WarehouseInfo);
             break;
           }
           case 34: {
             if (equipmentInfo_ == null) {
-              EquipmentInfo = new global::HS.Protobuf.Backpack.InventoryInfo();
+              EquipmentInfo = new global::HS.Protobuf.Game.Backpack.InventoryInfo();
             }
             input.ReadMessage(EquipmentInfo);
             break;
@@ -1777,21 +1778,21 @@ namespace HS.Protobuf.Backpack {
           }
           case 18: {
             if (knapsackInfo_ == null) {
-              KnapsackInfo = new global::HS.Protobuf.Backpack.InventoryInfo();
+              KnapsackInfo = new global::HS.Protobuf.Game.Backpack.InventoryInfo();
             }
             input.ReadMessage(KnapsackInfo);
             break;
           }
           case 26: {
             if (warehouseInfo_ == null) {
-              WarehouseInfo = new global::HS.Protobuf.Backpack.InventoryInfo();
+              WarehouseInfo = new global::HS.Protobuf.Game.Backpack.InventoryInfo();
             }
             input.ReadMessage(WarehouseInfo);
             break;
           }
           case 34: {
             if (equipmentInfo_ == null) {
-              EquipmentInfo = new global::HS.Protobuf.Backpack.InventoryInfo();
+              EquipmentInfo = new global::HS.Protobuf.Game.Backpack.InventoryInfo();
             }
             input.ReadMessage(EquipmentInfo);
             break;
@@ -1820,7 +1821,7 @@ namespace HS.Protobuf.Backpack {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Backpack.BackpackReflection.Descriptor.MessageTypes[6]; }
+      get { return global::HS.Protobuf.Game.Backpack.BackpackReflection.Descriptor.MessageTypes[6]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1867,10 +1868,10 @@ namespace HS.Protobuf.Backpack {
 
     /// <summary>Field number for the "originInventoryTpey" field.</summary>
     public const int OriginInventoryTpeyFieldNumber = 2;
-    private global::HS.Protobuf.Backpack.InventoryType originInventoryTpey_ = global::HS.Protobuf.Backpack.InventoryType.Knapsack;
+    private global::HS.Protobuf.Game.Backpack.InventoryType originInventoryTpey_ = global::HS.Protobuf.Game.Backpack.InventoryType.Knapsack;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::HS.Protobuf.Backpack.InventoryType OriginInventoryTpey {
+    public global::HS.Protobuf.Game.Backpack.InventoryType OriginInventoryTpey {
       get { return originInventoryTpey_; }
       set {
         originInventoryTpey_ = value;
@@ -1928,7 +1929,7 @@ namespace HS.Protobuf.Backpack {
     public override int GetHashCode() {
       int hash = 1;
       if (EntityId != 0) hash ^= EntityId.GetHashCode();
-      if (OriginInventoryTpey != global::HS.Protobuf.Backpack.InventoryType.Knapsack) hash ^= OriginInventoryTpey.GetHashCode();
+      if (OriginInventoryTpey != global::HS.Protobuf.Game.Backpack.InventoryType.Knapsack) hash ^= OriginInventoryTpey.GetHashCode();
       if (OriginIndex != 0) hash ^= OriginIndex.GetHashCode();
       if (TargetIndex != 0) hash ^= TargetIndex.GetHashCode();
       if (_unknownFields != null) {
@@ -1953,7 +1954,7 @@ namespace HS.Protobuf.Backpack {
         output.WriteRawTag(8);
         output.WriteInt32(EntityId);
       }
-      if (OriginInventoryTpey != global::HS.Protobuf.Backpack.InventoryType.Knapsack) {
+      if (OriginInventoryTpey != global::HS.Protobuf.Game.Backpack.InventoryType.Knapsack) {
         output.WriteRawTag(16);
         output.WriteEnum((int) OriginInventoryTpey);
       }
@@ -1979,7 +1980,7 @@ namespace HS.Protobuf.Backpack {
         output.WriteRawTag(8);
         output.WriteInt32(EntityId);
       }
-      if (OriginInventoryTpey != global::HS.Protobuf.Backpack.InventoryType.Knapsack) {
+      if (OriginInventoryTpey != global::HS.Protobuf.Game.Backpack.InventoryType.Knapsack) {
         output.WriteRawTag(16);
         output.WriteEnum((int) OriginInventoryTpey);
       }
@@ -2004,7 +2005,7 @@ namespace HS.Protobuf.Backpack {
       if (EntityId != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(EntityId);
       }
-      if (OriginInventoryTpey != global::HS.Protobuf.Backpack.InventoryType.Knapsack) {
+      if (OriginInventoryTpey != global::HS.Protobuf.Game.Backpack.InventoryType.Knapsack) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) OriginInventoryTpey);
       }
       if (OriginIndex != 0) {
@@ -2028,7 +2029,7 @@ namespace HS.Protobuf.Backpack {
       if (other.EntityId != 0) {
         EntityId = other.EntityId;
       }
-      if (other.OriginInventoryTpey != global::HS.Protobuf.Backpack.InventoryType.Knapsack) {
+      if (other.OriginInventoryTpey != global::HS.Protobuf.Game.Backpack.InventoryType.Knapsack) {
         OriginInventoryTpey = other.OriginInventoryTpey;
       }
       if (other.OriginIndex != 0) {
@@ -2057,7 +2058,7 @@ namespace HS.Protobuf.Backpack {
             break;
           }
           case 16: {
-            OriginInventoryTpey = (global::HS.Protobuf.Backpack.InventoryType) input.ReadEnum();
+            OriginInventoryTpey = (global::HS.Protobuf.Game.Backpack.InventoryType) input.ReadEnum();
             break;
           }
           case 24: {
@@ -2088,7 +2089,7 @@ namespace HS.Protobuf.Backpack {
             break;
           }
           case 16: {
-            OriginInventoryTpey = (global::HS.Protobuf.Backpack.InventoryType) input.ReadEnum();
+            OriginInventoryTpey = (global::HS.Protobuf.Game.Backpack.InventoryType) input.ReadEnum();
             break;
           }
           case 24: {
@@ -2123,7 +2124,7 @@ namespace HS.Protobuf.Backpack {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Backpack.BackpackReflection.Descriptor.MessageTypes[7]; }
+      get { return global::HS.Protobuf.Game.Backpack.BackpackReflection.Descriptor.MessageTypes[7]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2389,7 +2390,7 @@ namespace HS.Protobuf.Backpack {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Backpack.BackpackReflection.Descriptor.MessageTypes[8]; }
+      get { return global::HS.Protobuf.Game.Backpack.BackpackReflection.Descriptor.MessageTypes[8]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2655,7 +2656,7 @@ namespace HS.Protobuf.Backpack {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Backpack.BackpackReflection.Descriptor.MessageTypes[9]; }
+      get { return global::HS.Protobuf.Game.Backpack.BackpackReflection.Descriptor.MessageTypes[9]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2713,10 +2714,10 @@ namespace HS.Protobuf.Backpack {
 
     /// <summary>Field number for the "type" field.</summary>
     public const int TypeFieldNumber = 3;
-    private global::HS.Protobuf.Backpack.InventoryType type_ = global::HS.Protobuf.Backpack.InventoryType.Knapsack;
+    private global::HS.Protobuf.Game.Backpack.InventoryType type_ = global::HS.Protobuf.Game.Backpack.InventoryType.Knapsack;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::HS.Protobuf.Backpack.InventoryType Type {
+    public global::HS.Protobuf.Game.Backpack.InventoryType Type {
       get { return type_; }
       set {
         type_ = value;
@@ -2750,7 +2751,7 @@ namespace HS.Protobuf.Backpack {
       int hash = 1;
       if (SlotIndex != 0) hash ^= SlotIndex.GetHashCode();
       if (Number != 0) hash ^= Number.GetHashCode();
-      if (Type != global::HS.Protobuf.Backpack.InventoryType.Knapsack) hash ^= Type.GetHashCode();
+      if (Type != global::HS.Protobuf.Game.Backpack.InventoryType.Knapsack) hash ^= Type.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2777,7 +2778,7 @@ namespace HS.Protobuf.Backpack {
         output.WriteRawTag(16);
         output.WriteInt32(Number);
       }
-      if (Type != global::HS.Protobuf.Backpack.InventoryType.Knapsack) {
+      if (Type != global::HS.Protobuf.Game.Backpack.InventoryType.Knapsack) {
         output.WriteRawTag(24);
         output.WriteEnum((int) Type);
       }
@@ -2799,7 +2800,7 @@ namespace HS.Protobuf.Backpack {
         output.WriteRawTag(16);
         output.WriteInt32(Number);
       }
-      if (Type != global::HS.Protobuf.Backpack.InventoryType.Knapsack) {
+      if (Type != global::HS.Protobuf.Game.Backpack.InventoryType.Knapsack) {
         output.WriteRawTag(24);
         output.WriteEnum((int) Type);
       }
@@ -2819,7 +2820,7 @@ namespace HS.Protobuf.Backpack {
       if (Number != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Number);
       }
-      if (Type != global::HS.Protobuf.Backpack.InventoryType.Knapsack) {
+      if (Type != global::HS.Protobuf.Game.Backpack.InventoryType.Knapsack) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
       }
       if (_unknownFields != null) {
@@ -2840,7 +2841,7 @@ namespace HS.Protobuf.Backpack {
       if (other.Number != 0) {
         Number = other.Number;
       }
-      if (other.Type != global::HS.Protobuf.Backpack.InventoryType.Knapsack) {
+      if (other.Type != global::HS.Protobuf.Game.Backpack.InventoryType.Knapsack) {
         Type = other.Type;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -2867,7 +2868,7 @@ namespace HS.Protobuf.Backpack {
             break;
           }
           case 24: {
-            Type = (global::HS.Protobuf.Backpack.InventoryType) input.ReadEnum();
+            Type = (global::HS.Protobuf.Game.Backpack.InventoryType) input.ReadEnum();
             break;
           }
         }
@@ -2894,7 +2895,7 @@ namespace HS.Protobuf.Backpack {
             break;
           }
           case 24: {
-            Type = (global::HS.Protobuf.Backpack.InventoryType) input.ReadEnum();
+            Type = (global::HS.Protobuf.Game.Backpack.InventoryType) input.ReadEnum();
             break;
           }
         }
@@ -2918,7 +2919,7 @@ namespace HS.Protobuf.Backpack {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Backpack.BackpackReflection.Descriptor.MessageTypes[10]; }
+      get { return global::HS.Protobuf.Game.Backpack.BackpackReflection.Descriptor.MessageTypes[10]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3221,7 +3222,7 @@ namespace HS.Protobuf.Backpack {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Backpack.BackpackReflection.Descriptor.MessageTypes[11]; }
+      get { return global::HS.Protobuf.Game.Backpack.BackpackReflection.Descriptor.MessageTypes[11]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3410,7 +3411,7 @@ namespace HS.Protobuf.Backpack {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Backpack.BackpackReflection.Descriptor.MessageTypes[12]; }
+      get { return global::HS.Protobuf.Game.Backpack.BackpackReflection.Descriptor.MessageTypes[12]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3713,7 +3714,7 @@ namespace HS.Protobuf.Backpack {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Backpack.BackpackReflection.Descriptor.MessageTypes[13]; }
+      get { return global::HS.Protobuf.Game.Backpack.BackpackReflection.Descriptor.MessageTypes[13]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3868,7 +3869,7 @@ namespace HS.Protobuf.Backpack {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Backpack.BackpackReflection.Descriptor.MessageTypes[14]; }
+      get { return global::HS.Protobuf.Game.Backpack.BackpackReflection.Descriptor.MessageTypes[14]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3913,12 +3914,12 @@ namespace HS.Protobuf.Backpack {
 
     /// <summary>Field number for the "equipsList" field.</summary>
     public const int EquipsListFieldNumber = 2;
-    private static readonly pb::FieldCodec<global::HS.Protobuf.Backpack.ItemInfo> _repeated_equipsList_codec
-        = pb::FieldCodec.ForMessage(18, global::HS.Protobuf.Backpack.ItemInfo.Parser);
-    private readonly pbc::RepeatedField<global::HS.Protobuf.Backpack.ItemInfo> equipsList_ = new pbc::RepeatedField<global::HS.Protobuf.Backpack.ItemInfo>();
+    private static readonly pb::FieldCodec<global::HS.Protobuf.Game.Backpack.ItemInfo> _repeated_equipsList_codec
+        = pb::FieldCodec.ForMessage(18, global::HS.Protobuf.Game.Backpack.ItemInfo.Parser);
+    private readonly pbc::RepeatedField<global::HS.Protobuf.Game.Backpack.ItemInfo> equipsList_ = new pbc::RepeatedField<global::HS.Protobuf.Game.Backpack.ItemInfo>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::HS.Protobuf.Backpack.ItemInfo> EquipsList {
+    public pbc::RepeatedField<global::HS.Protobuf.Game.Backpack.ItemInfo> EquipsList {
       get { return equipsList_; }
     }
 
@@ -4086,7 +4087,7 @@ namespace HS.Protobuf.Backpack {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Backpack.BackpackReflection.Descriptor.MessageTypes[15]; }
+      get { return global::HS.Protobuf.Game.Backpack.BackpackReflection.Descriptor.MessageTypes[15]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4131,12 +4132,12 @@ namespace HS.Protobuf.Backpack {
 
     /// <summary>Field number for the "equipsList" field.</summary>
     public const int EquipsListFieldNumber = 2;
-    private static readonly pb::FieldCodec<global::HS.Protobuf.Backpack.ItemInfo> _repeated_equipsList_codec
-        = pb::FieldCodec.ForMessage(18, global::HS.Protobuf.Backpack.ItemInfo.Parser);
-    private readonly pbc::RepeatedField<global::HS.Protobuf.Backpack.ItemInfo> equipsList_ = new pbc::RepeatedField<global::HS.Protobuf.Backpack.ItemInfo>();
+    private static readonly pb::FieldCodec<global::HS.Protobuf.Game.Backpack.ItemInfo> _repeated_equipsList_codec
+        = pb::FieldCodec.ForMessage(18, global::HS.Protobuf.Game.Backpack.ItemInfo.Parser);
+    private readonly pbc::RepeatedField<global::HS.Protobuf.Game.Backpack.ItemInfo> equipsList_ = new pbc::RepeatedField<global::HS.Protobuf.Game.Backpack.ItemInfo>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::HS.Protobuf.Backpack.ItemInfo> EquipsList {
+    public pbc::RepeatedField<global::HS.Protobuf.Game.Backpack.ItemInfo> EquipsList {
       get { return equipsList_; }
     }
 
@@ -4304,7 +4305,7 @@ namespace HS.Protobuf.Backpack {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Backpack.BackpackReflection.Descriptor.MessageTypes[16]; }
+      get { return global::HS.Protobuf.Game.Backpack.BackpackReflection.Descriptor.MessageTypes[16]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4496,7 +4497,7 @@ namespace HS.Protobuf.Backpack {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Backpack.BackpackReflection.Descriptor.MessageTypes[17]; }
+      get { return global::HS.Protobuf.Game.Backpack.BackpackReflection.Descriptor.MessageTypes[17]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4528,10 +4529,10 @@ namespace HS.Protobuf.Backpack {
 
     /// <summary>Field number for the "type" field.</summary>
     public const int TypeFieldNumber = 1;
-    private global::HS.Protobuf.Backpack.EquipsType type_ = global::HS.Protobuf.Backpack.EquipsType.Unset;
+    private global::HS.Protobuf.Game.Backpack.EquipsType type_ = global::HS.Protobuf.Game.Backpack.EquipsType.Unset;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::HS.Protobuf.Backpack.EquipsType Type {
+    public global::HS.Protobuf.Game.Backpack.EquipsType Type {
       get { return type_; }
       set {
         type_ = value;
@@ -4561,7 +4562,7 @@ namespace HS.Protobuf.Backpack {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Type != global::HS.Protobuf.Backpack.EquipsType.Unset) hash ^= Type.GetHashCode();
+      if (Type != global::HS.Protobuf.Game.Backpack.EquipsType.Unset) hash ^= Type.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -4580,7 +4581,7 @@ namespace HS.Protobuf.Backpack {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Type != global::HS.Protobuf.Backpack.EquipsType.Unset) {
+      if (Type != global::HS.Protobuf.Game.Backpack.EquipsType.Unset) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -4594,7 +4595,7 @@ namespace HS.Protobuf.Backpack {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Type != global::HS.Protobuf.Backpack.EquipsType.Unset) {
+      if (Type != global::HS.Protobuf.Game.Backpack.EquipsType.Unset) {
         output.WriteRawTag(8);
         output.WriteEnum((int) Type);
       }
@@ -4608,7 +4609,7 @@ namespace HS.Protobuf.Backpack {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Type != global::HS.Protobuf.Backpack.EquipsType.Unset) {
+      if (Type != global::HS.Protobuf.Game.Backpack.EquipsType.Unset) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Type);
       }
       if (_unknownFields != null) {
@@ -4623,7 +4624,7 @@ namespace HS.Protobuf.Backpack {
       if (other == null) {
         return;
       }
-      if (other.Type != global::HS.Protobuf.Backpack.EquipsType.Unset) {
+      if (other.Type != global::HS.Protobuf.Game.Backpack.EquipsType.Unset) {
         Type = other.Type;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -4642,7 +4643,7 @@ namespace HS.Protobuf.Backpack {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            Type = (global::HS.Protobuf.Backpack.EquipsType) input.ReadEnum();
+            Type = (global::HS.Protobuf.Game.Backpack.EquipsType) input.ReadEnum();
             break;
           }
         }
@@ -4661,7 +4662,7 @@ namespace HS.Protobuf.Backpack {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            Type = (global::HS.Protobuf.Backpack.EquipsType) input.ReadEnum();
+            Type = (global::HS.Protobuf.Game.Backpack.EquipsType) input.ReadEnum();
             break;
           }
         }

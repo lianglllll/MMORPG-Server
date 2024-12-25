@@ -15,7 +15,7 @@ namespace Common.Summer.Proto
     {
         //考虑到每次输送类型名太长了，所以imessage类型一个序号
         private static Dictionary<int, Type> m_sequence2type = new Dictionary<int, Type>();
-        private static Dictionary<Type, int> m_m_type2sequence = new Dictionary<Type, int>();
+        private static Dictionary<Type, int> m_type2sequence = new Dictionary<Type, int>();
 
         public static void Init()
         {
@@ -29,8 +29,8 @@ namespace Common.Summer.Proto
         public static bool Register<T>(int id) where T : Google.Protobuf.IMessage
         {
             Type type = typeof(T);
-            m_sequence2type.Add(id, type);
-            m_m_type2sequence.Add(type, id);
+            m_sequence2type[id] = type;
+            m_type2sequence[type] = id;
             return true;
         }
 
@@ -41,7 +41,7 @@ namespace Common.Summer.Proto
         /// <returns></returns>
         public static int Type2Seq(Type type)
         {
-            return m_m_type2sequence[type];
+            return m_type2sequence[type];
         }
 
         /// <summary>

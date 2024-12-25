@@ -5,7 +5,7 @@ using GameServer.Net;
 using Common.Summer.Core;
 using HS.Protobuf.SceneEntity;
 using HS.Protobuf.Scene;
-using HS.Protobuf.Backpack;
+using HS.Protobuf.Game.Backpack;
 
 namespace GameServer.Model
 {

@@ -1,6 +1,6 @@
 ﻿using Common.Summer.Core;
 using GameServer.Model;
-using HS.Protobuf.Backpack;
+using HS.Protobuf.Game.Backpack;
 using Serilog;
 using System;
 using System.Collections.Concurrent;

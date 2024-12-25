@@ -8,17 +8,9 @@ enum ControlCenterProtocl{
 	CONTROLCENTER_PROTOCL_SERVERINFO_REGISTER_RESP = 10002;	// [ServerInfoRegisterResponse]
 }
 
-message ServerInfoNode{
-	HS.Protobuf.Common.SERVER_TYPE serverType = 1;
-	string ip			= 2;
-	int32 port			= 3;
-	int32 worldId		= 4;
-	int32 sceneId		= 5;
-	int32 instanceId	= 6;
-}
 
 message ServerInfoRegisterRequest{
-	ServerInfoNode serverInfoNode = 1;
+	HS.Protobuf.Common.ServerInfoNode serverInfoNode = 1;
 }
 
 message ServerInfoRegisterResponse{

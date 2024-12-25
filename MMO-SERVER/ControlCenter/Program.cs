@@ -3,6 +3,7 @@ using Common.Summer.Core;
 using Serilog.Sinks.SystemConsole.Themes;
 using ControlCenter.Utils;
 using ControlCenter.Net;
+using ControlCenter.Core;
 
 namespace ControlCenter
 {
@@ -43,13 +44,9 @@ namespace ControlCenter
                 )
                 .CreateLogger();
 
-            //加载服务器配置
             Config.Init();
-            
-            //中心计时器任务加载(使用了Timer)
             Scheduler.Instance.Start(Config.Server.updateHz);
-
-            //开启网络服务
+            ServersMgr.Instance.Init();
             NetService.Instance.Init();
 
             Log.Information("[ControlCenter]初始化成功,配置如下：");
@@ -85,8 +82,8 @@ namespace ControlCenter
                         Environment.Exit(0);
                         return true;
                     case "showgameserver":
-                        var dict = NetService.Instance.get();
-                        foreach(var pair in dict)
+                        var dict = ServersMgr.Instance.GetServers();
+                        foreach (var pair in dict)
                         {
                             Console.WriteLine(pair.Key);
                             Console.WriteLine(pair.Value);

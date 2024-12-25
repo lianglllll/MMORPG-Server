@@ -6,8 +6,10 @@ database:
   dbName: mmorpg
 
 server:
+  gameWorldId: 1
   ip: 127.0.0.1
-  port: 55555
+  userPort: 55555
+  serverPort: 55556
   # 工作线程数
   workerCount: 2
   # AOI视野距离(米)

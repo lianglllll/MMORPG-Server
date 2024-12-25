@@ -1,4 +1,4 @@
-﻿using HS.Protobuf.Backpack;
+﻿using HS.Protobuf.Game.Backpack;
 using GameServer.Combat;
 using GameServer.Manager;
 using GameServer.Buffs;

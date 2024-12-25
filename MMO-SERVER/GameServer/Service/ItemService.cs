@@ -5,7 +5,7 @@ using GameServer.Net;
 using Common.Summer.Tools;
 using Common.Summer.Net;
 using Common.Summer.Core;
-using HS.Protobuf.Backpack;
+using HS.Protobuf.Game.Backpack;
 using HS.Protobuf.Scene;
 
 namespace GameServer.Service

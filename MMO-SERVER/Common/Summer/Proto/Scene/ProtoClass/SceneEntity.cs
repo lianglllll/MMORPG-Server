@@ -27,46 +27,46 @@ namespace HS.Protobuf.SceneEntity {
             "ChFTY2VuZUVudGl0eS5wcm90bxIXSFMuUHJvdG9idWYuU2NlbmVFbnRpdHka",
             "H0NvbW1vbi9Qcm90b1NvdXJjZS9Db21tb24ucHJvdG8aHkNvbWJhdC9Qcm90",
             "b1NvdXJjZS9Ta2lsbC5wcm90bxodQ29tYmF0L1Byb3RvU291cmNlL0J1ZmYu",
-            "cHJvdG8aI0JhY2twYWNrL1Byb3RvU291cmNlL0JhY2twYWNrLnByb3RvInAK",
-            "CU5ldEVudGl0eRIKCgJpZBgBIAEoBRIqCghwb3NpdGlvbhgCIAEoCzIYLkhT",
-            "LlByb3RvYnVmLkNvbW1vbi5WZWMzEisKCWRpcmVjdGlvbhgDIAEoCzIYLkhT",
-            "LlByb3RvYnVmLkNvbW1vbi5WZWMzIroDCghOZXRBY3RvchIKCgJpZBgBIAEo",
-            "BRILCgN0aWQYAiABKAUSMgoGZW50aXR5GAMgASgLMiIuSFMuUHJvdG9idWYu",
-            "U2NlbmVFbnRpdHkuTmV0RW50aXR5EgwKBG5hbWUYBCABKAkSDQoFbGV2ZWwY",
-            "BSABKAUSCwoDZXhwGAYgASgDEg8KB3NwYWNlSWQYByABKAUSDAoEZ29sZBgI",
-            "IAEoAxIKCgJocBgJIAEoAhIKCgJtcBgKIAEoAhI1CglhY3RvclR5cGUYCyAB",
-            "KA4yIi5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5BY3RvclR5cGUSMwoGc2tp",
-            "bGxzGAwgAygLMiMuSFMuUHJvdG9idWYuQ29tYmF0LlNraWxsLlNraWxsSW5m",
-            "bxIxCgllcXVpcExpc3QYDSADKAsyHi5IUy5Qcm90b2J1Zi5CYWNrcGFjay5J",
-            "dGVtSW5mbxINCgVocE1heBgOIAEoAhINCgVtcE1heBgPIAEoAhINCgVzcGVl",
-            "ZBgQIAEoBRI0CglidWZmc0xpc3QYESADKAsyIS5IUy5Qcm90b2J1Zi5Db21i",
-            "YXQuQnVmZi5CdWZmSW5mbyLzBAoOUHJvcGVydHlVcGRhdGUSEQoJZW50aXR5",
-            "X2lkGAEgASgFEj4KCHByb3BlcnR5GAIgASgOMiwuSFMuUHJvdG9idWYuU2Nl",
-            "bmVFbnRpdHkuUHJvcGVydHlVcGRhdGUuUHJvcBJHCghvbGRWYWx1ZRgDIAEo",
-            "CzI1LkhTLlByb3RvYnVmLlNjZW5lRW50aXR5LlByb3BlcnR5VXBkYXRlLlBy",
-            "b3BlcnR5VmFsdWUSRwoIbmV3VmFsdWUYBCABKAsyNS5IUy5Qcm90b2J1Zi5T",
-            "Y2VuZUVudGl0eS5Qcm9wZXJ0eVVwZGF0ZS5Qcm9wZXJ0eVZhbHVlGvIBCg1Q",
-            "cm9wZXJ0eVZhbHVlEhMKCWludF92YWx1ZRgBIAEoBUgAEhUKC2Zsb2F0X3Zh",
-            "bHVlGAIgASgCSAASFgoMc3RyaW5nX3ZhbHVlGAMgASgJSAASOAoKbW9kZV92",
-            "YWx1ZRgEIAEoDjIiLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5LkFjdG9yTW9k",
-            "ZUgAEhQKCmxvbmdfdmFsdWUYBSABKANIABJEChBjb21iYXRNb2RlX3ZhbHVl",
-            "GAYgASgOMiguSFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuQWN0b3JDb21iYXRN",
-            "b2RlSABCBwoFdmFsdWUihgEKBFByb3ASBgoCSFAQABIGCgJNUBABEgkKBUhQ",
-            "TWF4EAISCQoFTVBNYXgQAxIICgRNb2RlEAQSCQoFTGV2ZWwQBRIICgROYW1l",
-            "EAYSCQoFR29sZHMQBxIHCgNFeHAQCBIKCgZFbmVyZ3kQCRIJCgVTcGVlZBAK",
-            "Eg4KCkNvbWJhdE1vZGUQCyKBAQoITmV0RUl0ZW0SMAoISXRlbUluZm8YASAB",
-            "KAsyHi5IUy5Qcm90b2J1Zi5CYWNrcGFjay5JdGVtSW5mbxIPCgdzcGFjZUlk",
-            "GAIgASgFEjIKBmVudGl0eRgDIAEoCzIiLkhTLlByb3RvYnVmLlNjZW5lRW50",
-            "aXR5Lk5ldEVudGl0eSo0CglBY3Rvck1vZGUSCAoERlJFRRAAEggKBERFQUQQ",
-            "ARIICgRSRVNUEAISCQoFRklHSFQQAyo4Cg9BY3RvckNvbWJhdE1vZGUSCQoF",
-            "U3RhbmQQABIJCgVFcXVpcBABEg8KC1N3b3JkRmxpZ2h0EAIqigEKCkFjdG9y",
-            "U3RhdGUSCwoHQWlyRG93bhAAEgkKBURlYXRoEAESCwoHRGVmZW5zZRACEgkK",
-            "BURpenp5EAMSCQoFRXZhZGUQBBIICgRIdXJ0EAUSCAoESWRsZRAGEgoKBkp1",
-            "bXBVcBAHEggKBE1vdmUQCBIJCgVTa2lsbBAJEgwKCENvbnN0YW50EAoqMAoJ",
-            "QWN0b3JUeXBlEg0KCUNoYXJhY3RlchAAEgsKB01vbnN0ZXIQARIHCgNOUEMQ",
-            "AmIGcHJvdG8z"));
+            "cHJvdG8aH0dhbWUvUHJvdG9Tb3VyY2UvQmFja3BhY2sucHJvdG8icAoJTmV0",
+            "RW50aXR5EgoKAmlkGAEgASgFEioKCHBvc2l0aW9uGAIgASgLMhguSFMuUHJv",
+            "dG9idWYuQ29tbW9uLlZlYzMSKwoJZGlyZWN0aW9uGAMgASgLMhguSFMuUHJv",
+            "dG9idWYuQ29tbW9uLlZlYzMivwMKCE5ldEFjdG9yEgoKAmlkGAEgASgFEgsK",
+            "A3RpZBgCIAEoBRIyCgZlbnRpdHkYAyABKAsyIi5IUy5Qcm90b2J1Zi5TY2Vu",
+            "ZUVudGl0eS5OZXRFbnRpdHkSDAoEbmFtZRgEIAEoCRINCgVsZXZlbBgFIAEo",
+            "BRILCgNleHAYBiABKAMSDwoHc3BhY2VJZBgHIAEoBRIMCgRnb2xkGAggASgD",
+            "EgoKAmhwGAkgASgCEgoKAm1wGAogASgCEjUKCWFjdG9yVHlwZRgLIAEoDjIi",
+            "LkhTLlByb3RvYnVmLlNjZW5lRW50aXR5LkFjdG9yVHlwZRIzCgZza2lsbHMY",
+            "DCADKAsyIy5IUy5Qcm90b2J1Zi5Db21iYXQuU2tpbGwuU2tpbGxJbmZvEjYK",
+            "CWVxdWlwTGlzdBgNIAMoCzIjLkhTLlByb3RvYnVmLkdhbWUuQmFja3BhY2su",
+            "SXRlbUluZm8SDQoFaHBNYXgYDiABKAISDQoFbXBNYXgYDyABKAISDQoFc3Bl",
+            "ZWQYECABKAUSNAoJYnVmZnNMaXN0GBEgAygLMiEuSFMuUHJvdG9idWYuQ29t",
+            "YmF0LkJ1ZmYuQnVmZkluZm8i8wQKDlByb3BlcnR5VXBkYXRlEhEKCWVudGl0",
+            "eV9pZBgBIAEoBRI+Cghwcm9wZXJ0eRgCIAEoDjIsLkhTLlByb3RvYnVmLlNj",
+            "ZW5lRW50aXR5LlByb3BlcnR5VXBkYXRlLlByb3ASRwoIb2xkVmFsdWUYAyAB",
+            "KAsyNS5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5Qcm9wZXJ0eVVwZGF0ZS5Q",
+            "cm9wZXJ0eVZhbHVlEkcKCG5ld1ZhbHVlGAQgASgLMjUuSFMuUHJvdG9idWYu",
+            "U2NlbmVFbnRpdHkuUHJvcGVydHlVcGRhdGUuUHJvcGVydHlWYWx1ZRryAQoN",
+            "UHJvcGVydHlWYWx1ZRITCglpbnRfdmFsdWUYASABKAVIABIVCgtmbG9hdF92",
+            "YWx1ZRgCIAEoAkgAEhYKDHN0cmluZ192YWx1ZRgDIAEoCUgAEjgKCm1vZGVf",
+            "dmFsdWUYBCABKA4yIi5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5BY3Rvck1v",
+            "ZGVIABIUCgpsb25nX3ZhbHVlGAUgASgDSAASRAoQY29tYmF0TW9kZV92YWx1",
+            "ZRgGIAEoDjIoLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5LkFjdG9yQ29tYmF0",
+            "TW9kZUgAQgcKBXZhbHVlIoYBCgRQcm9wEgYKAkhQEAASBgoCTVAQARIJCgVI",
+            "UE1heBACEgkKBU1QTWF4EAMSCAoETW9kZRAEEgkKBUxldmVsEAUSCAoETmFt",
+            "ZRAGEgkKBUdvbGRzEAcSBwoDRXhwEAgSCgoGRW5lcmd5EAkSCQoFU3BlZWQQ",
+            "ChIOCgpDb21iYXRNb2RlEAsihgEKCE5ldEVJdGVtEjUKCEl0ZW1JbmZvGAEg",
+            "ASgLMiMuSFMuUHJvdG9idWYuR2FtZS5CYWNrcGFjay5JdGVtSW5mbxIPCgdz",
+            "cGFjZUlkGAIgASgFEjIKBmVudGl0eRgDIAEoCzIiLkhTLlByb3RvYnVmLlNj",
+            "ZW5lRW50aXR5Lk5ldEVudGl0eSo0CglBY3Rvck1vZGUSCAoERlJFRRAAEggK",
+            "BERFQUQQARIICgRSRVNUEAISCQoFRklHSFQQAyo4Cg9BY3RvckNvbWJhdE1v",
+            "ZGUSCQoFU3RhbmQQABIJCgVFcXVpcBABEg8KC1N3b3JkRmxpZ2h0EAIqigEK",
+            "CkFjdG9yU3RhdGUSCwoHQWlyRG93bhAAEgkKBURlYXRoEAESCwoHRGVmZW5z",
+            "ZRACEgkKBURpenp5EAMSCQoFRXZhZGUQBBIICgRIdXJ0EAUSCAoESWRsZRAG",
+            "EgoKBkp1bXBVcBAHEggKBE1vdmUQCBIJCgVTa2lsbBAJEgwKCENvbnN0YW50",
+            "EAoqMAoJQWN0b3JUeXBlEg0KCUNoYXJhY3RlchAAEgsKB01vbnN0ZXIQARIH",
+            "CgNOUEMQAmIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::HS.Protobuf.Common.CommonReflection.Descriptor, global::HS.Protobuf.Combat.Skill.SkillReflection.Descriptor, global::HS.Protobuf.Combat.Buff.BuffReflection.Descriptor, global::HS.Protobuf.Backpack.BackpackReflection.Descriptor, },
+          new pbr::FileDescriptor[] { global::HS.Protobuf.Common.CommonReflection.Descriptor, global::HS.Protobuf.Combat.Skill.SkillReflection.Descriptor, global::HS.Protobuf.Combat.Buff.BuffReflection.Descriptor, global::HS.Protobuf.Game.Backpack.BackpackReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.SceneEntity.ActorMode), typeof(global::HS.Protobuf.SceneEntity.ActorCombatMode), typeof(global::HS.Protobuf.SceneEntity.ActorState), typeof(global::HS.Protobuf.SceneEntity.ActorType), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.SceneEntity.NetEntity), global::HS.Protobuf.SceneEntity.NetEntity.Parser, new[]{ "Id", "Position", "Direction" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.SceneEntity.NetActor), global::HS.Protobuf.SceneEntity.NetActor.Parser, new[]{ "Id", "Tid", "Entity", "Name", "Level", "Exp", "SpaceId", "Gold", "Hp", "Mp", "ActorType", "Skills", "EquipList", "HpMax", "MpMax", "Speed", "BuffsList" }, null, null, null, null),
@@ -633,15 +633,15 @@ namespace HS.Protobuf.SceneEntity {
 
     /// <summary>Field number for the "equipList" field.</summary>
     public const int EquipListFieldNumber = 13;
-    private static readonly pb::FieldCodec<global::HS.Protobuf.Backpack.ItemInfo> _repeated_equipList_codec
-        = pb::FieldCodec.ForMessage(106, global::HS.Protobuf.Backpack.ItemInfo.Parser);
-    private readonly pbc::RepeatedField<global::HS.Protobuf.Backpack.ItemInfo> equipList_ = new pbc::RepeatedField<global::HS.Protobuf.Backpack.ItemInfo>();
+    private static readonly pb::FieldCodec<global::HS.Protobuf.Game.Backpack.ItemInfo> _repeated_equipList_codec
+        = pb::FieldCodec.ForMessage(106, global::HS.Protobuf.Game.Backpack.ItemInfo.Parser);
+    private readonly pbc::RepeatedField<global::HS.Protobuf.Game.Backpack.ItemInfo> equipList_ = new pbc::RepeatedField<global::HS.Protobuf.Game.Backpack.ItemInfo>();
     /// <summary>
     ///´©´÷×°±¸
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::HS.Protobuf.Backpack.ItemInfo> EquipList {
+    public pbc::RepeatedField<global::HS.Protobuf.Game.Backpack.ItemInfo> EquipList {
       get { return equipList_; }
     }
 
@@ -2021,10 +2021,10 @@ namespace HS.Protobuf.SceneEntity {
 
     /// <summary>Field number for the "ItemInfo" field.</summary>
     public const int ItemInfoFieldNumber = 1;
-    private global::HS.Protobuf.Backpack.ItemInfo itemInfo_;
+    private global::HS.Protobuf.Game.Backpack.ItemInfo itemInfo_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::HS.Protobuf.Backpack.ItemInfo ItemInfo {
+    public global::HS.Protobuf.Game.Backpack.ItemInfo ItemInfo {
       get { return itemInfo_; }
       set {
         itemInfo_ = value;
@@ -2168,7 +2168,7 @@ namespace HS.Protobuf.SceneEntity {
       }
       if (other.itemInfo_ != null) {
         if (itemInfo_ == null) {
-          ItemInfo = new global::HS.Protobuf.Backpack.ItemInfo();
+          ItemInfo = new global::HS.Protobuf.Game.Backpack.ItemInfo();
         }
         ItemInfo.MergeFrom(other.ItemInfo);
       }
@@ -2198,7 +2198,7 @@ namespace HS.Protobuf.SceneEntity {
             break;
           case 10: {
             if (itemInfo_ == null) {
-              ItemInfo = new global::HS.Protobuf.Backpack.ItemInfo();
+              ItemInfo = new global::HS.Protobuf.Game.Backpack.ItemInfo();
             }
             input.ReadMessage(ItemInfo);
             break;
@@ -2231,7 +2231,7 @@ namespace HS.Protobuf.SceneEntity {
             break;
           case 10: {
             if (itemInfo_ == null) {
-              ItemInfo = new global::HS.Protobuf.Backpack.ItemInfo();
+              ItemInfo = new global::HS.Protobuf.Game.Backpack.ItemInfo();
             }
             input.ReadMessage(ItemInfo);
             break;

@@ -23,11 +23,17 @@ namespace GameServer.Utils
 
     public class ServerConfig
     {
+        [YamlMember(Alias = "gameWorldId")]
+        public int gameWorldId;
+
         [YamlMember(Alias = "ip")]
         public string ip { get; set; }
 
-        [YamlMember(Alias = "port")]
-        public int port { get; set; }
+        [YamlMember(Alias = "userPort")]
+        public int userPort { get; set; }
+
+        [YamlMember(Alias = "serverPort")]
+        public int serverPort { get; set; }
 
         [YamlMember(Alias = "workerCount")]
         public int workerCount { get; set; }        

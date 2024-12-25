@@ -24,15 +24,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Summer\Proto\Backpack\ProtoClass\" />
-    <Folder Include="Summer\Proto\Backpack\ProtoSource\" />
     <Folder Include="Summer\Proto\Chat\ProtoClass\" />
     <Folder Include="Summer\Proto\Chat\ProtoSource\" />
     <Folder Include="Summer\Proto\Combat\ProtoClass\" />
     <Folder Include="Summer\Proto\Common\ProtoClass\" />
     <Folder Include="Summer\Proto\Common\ProtoSource\" />
-    <Folder Include="Summer\Proto\Game\ProtoClass\" />
-    <Folder Include="Summer\Proto\Game\ProtoSource\" />
     <Folder Include="Summer\Proto\Login\ProtoClass\" />
     <Folder Include="Summer\Proto\Login\ProtoSource\" />
     <Folder Include="Summer\Proto\Scene\ProtoClass\" />

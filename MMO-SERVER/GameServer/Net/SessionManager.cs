@@ -3,13 +3,12 @@ using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Timers;
-using GameServer.Net;
 using Common.Summer.Tools;
 using Common.Summer.Core;
 
-namespace GameServer.Manager
+namespace GameServer.Net
 {
-    public class SessionManager:Singleton<SessionManager>
+    public class SessionManager : Singleton<SessionManager>
     {
         private int SESSIONTIMEOUT = 120;
 
@@ -41,7 +40,7 @@ namespace GameServer.Manager
 
         public Session GetSession(string sessionId)
         {
-            if(sessions.TryGetValue(sessionId, out var session))
+            if (sessions.TryGetValue(sessionId, out var session))
             {
                 return session;
             }
@@ -54,7 +53,7 @@ namespace GameServer.Manager
             if (session != null)
             {
                 //让其conn连接失效
-                NetService.Instance.CloseConnection(session.Conn);
+                NetService.Instance.CloseUserConnection(session.Conn);
                 session.Conn = null;
             }
         }
@@ -75,7 +74,7 @@ namespace GameServer.Manager
         public void CheckSession()
         {
             sessions.Values.AsParallel()
-                .Where(s => (MyTime.time - s.LastHeartTime) > SESSIONTIMEOUT)
+                .Where(s => MyTime.time - s.LastHeartTime > SESSIONTIMEOUT)
                 .ForAll(s => s.Leave());
         }
 

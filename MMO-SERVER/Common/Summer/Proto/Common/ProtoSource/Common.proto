@@ -1,11 +1,12 @@
 ﻿syntax = "proto3";
 package HS.Protobuf.Common;
 
-
 enum CommonProtocl{
 	COMMON_PROTOCL_NONE = 0;
-	COMMON_PROTOCL_HEARTBEAT_REQ = 1001;
-	COMMON_PROTOCL_HEARTBEAT_RESP = 1002;
+	COMMON_PROTOCL_CS_HEARTBEAT_REQ		= 1001;
+	COMMON_PROTOCL_CS_HEARTBEAT_RESP	= 1002;
+	COMMON_PROTOCL_SS_HEARTBEAT_REQ		= 1003;
+	COMMON_PROTOCL_SS_HEARTBEAT_RESP	= 1004;
 }
 
 enum SERVER_TYPE{
@@ -18,7 +19,50 @@ enum SERVER_TYPE{
 	SERVER_TYPE_GAMEGATE		= 6;
 	SERVER_TYPE_GAMEGATEMGR		= 7;
 	SERVER_TYPE_SCENE			= 8;
-	SERVER_TYPE_TEST			= 9;
+	SERVER_TYPE_DBPROXY			= 9;
+	// 关于pb区域号划分
+	// login:	20000	login/longinGate/loginGateMgr
+	// game:	30000	背包/聊天/任务/商店/好友/邮件/排行榜/公会/活动
+	// scene:	40000	场景/副本 
+	// DB:		50000	mongodb/redis
+	// combat:	60000	skill buff   
+}
+
+message ServerInfoNode{
+	HS.Protobuf.Common.SERVER_TYPE serverType = 1;
+	string ip			= 2;
+	int32 port			= 3;
+	int32 serverId		= 4;
+	oneof payload{   
+		ControlCenterServerInfoNode controlCenterInfo = 5;
+		LoginServerInfoNode loginServerInfo = 6;
+		LoginGateServerInfoNode loginGateServerInfo = 7;
+		LoginGateMgrServerInfoNode loginGateMgrServerInfo = 8;
+		GameServerInfoNode gameServerInfo = 9;
+		GameGateServerInfoNode gameGateServerInfo = 10;
+		GameGateMgrServerInfoNode gameGateMgrServerInfo = 11;
+		SceneServerInfoNode sceneServerInfo = 12;
+		DBProxyServerInfoNode dbProxyServerInfo = 13;
+	}
+}
+message ControlCenterServerInfoNode{
+}
+message LoginServerInfoNode{
+}
+message LoginGateServerInfoNode{
+}
+message LoginGateMgrServerInfoNode{
+}
+message GameServerInfoNode{
+	int32 gameWorldId = 1;
+}
+message GameGateServerInfoNode{
+}
+message GameGateMgrServerInfoNode{
+}
+message SceneServerInfoNode{
+}
+message DBProxyServerInfoNode{
 }
 
 // 网络三维向量
@@ -29,12 +73,15 @@ message Vec3 {
 }
 
 //============================================心跳检测==========================================
-
-
-message HeartBeatRequest{
+message CSHeartBeatRequest{
 
 }
+message CSHeartBeatResponse{
 
-message HeartBeatResponse{
+}
+message SSHeartBeatRequest{
+
+}
+message SSHeartBeatResponse{
 
 }

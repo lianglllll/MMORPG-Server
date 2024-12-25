@@ -2,7 +2,7 @@ syntax = "proto3";
 import "Common/ProtoSource/Common.proto";
 import "Combat/ProtoSource/Skill.proto";
 import "Combat/ProtoSource/Buff.proto";
-import "Backpack/ProtoSource/Backpack.proto";
+import "Game/ProtoSource/Backpack.proto";
 package HS.Protobuf.SceneEntity;
 
 //entity位置信息
@@ -61,7 +61,7 @@ message NetActor{
 	float mp=10;
 	ActorType actorType = 11; 
 	repeated HS.Protobuf.Combat.Skill.SkillInfo skills = 12;			//技能列表
-	repeated HS.Protobuf.Backpack.ItemInfo equipList = 13;	 	//穿戴装备
+	repeated HS.Protobuf.Game.Backpack.ItemInfo equipList = 13;	 	//穿戴装备
 	float hpMax = 14;
 	float mpMax = 15;
 	int32 speed = 16;
@@ -108,7 +108,7 @@ message PropertyUpdate{
 
 // Net itemEntity信息
 message NetEItem{
-	HS.Protobuf.Backpack.ItemInfo ItemInfo = 1;
+	HS.Protobuf.Game.Backpack.ItemInfo ItemInfo = 1;
 	int32 spaceId = 2;
 	NetEntity entity = 3;
 }

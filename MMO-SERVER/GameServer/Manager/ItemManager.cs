@@ -1,6 +1,6 @@
 ﻿using GameServer.Model;
 using Common.Summer.Tools;
-using HS.Protobuf.Backpack;
+using HS.Protobuf.Game.Backpack;
 
 namespace GameServer.Manager
 {

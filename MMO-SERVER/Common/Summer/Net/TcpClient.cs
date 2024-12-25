@@ -13,18 +13,22 @@ namespace Common.Summer.Net
         private Socket m_clientSocket;
         private SocketAsyncEventArgs m_connectArgs;
         private Connection m_connection;
-        public delegate void ConnectedCallback();
-        public delegate void ConnectedFailedCallback(bool isEnd);
-        public delegate void DisconnectedCallback();
-        private event ConnectedCallback m_connected;            
-        private event ConnectedFailedCallback m_connectFailed;  
-        private event DisconnectedCallback m_disconnected;
+
+        public delegate void TcpClientConnectedCallback(Connection conn);
+        public delegate void TcpClientConnectedFailedCallback(bool isEnd);
+        public delegate void TcpClientDisconnectedCallback(Connection conn);
+
+        private event TcpClientConnectedCallback m_connected;            
+        private event TcpClientConnectedFailedCallback m_connectFailed;  
+        private event TcpClientDisconnectedCallback m_disconnected;
+
         private int m_curReConnectionCount;
         private int m_maxReConnectionCount = 10;
         private float m_reConnectionInterval = 2f;
 
         public void Init(string ip, int port, 
-            ConnectedCallback connected, ConnectedFailedCallback connectFailed, DisconnectedCallback disconnected)
+            TcpClientConnectedCallback connected, TcpClientConnectedFailedCallback connectFailed, 
+            TcpClientDisconnectedCallback disconnected)
         {
             m_clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             m_connectArgs = new SocketAsyncEventArgs();
@@ -61,7 +65,7 @@ namespace Common.Summer.Net
                 Socket clientSocket = e.UserToken as Socket;
                 m_connection = new Connection();
                 m_connection.Init(clientSocket, _OnDisconnected);
-                m_connected?.Invoke();
+                m_connected?.Invoke(m_connection);
             }
             else
             {
@@ -78,10 +82,10 @@ namespace Common.Summer.Net
             }
 
         }
-        private  void _OnDisconnected(Connection sender)
+        private  void _OnDisconnected(Connection conn)
         {
             m_connection = null;
-            m_disconnected?.Invoke();
+            m_disconnected?.Invoke(conn);
         }
 
         public bool Send(IMessage message)

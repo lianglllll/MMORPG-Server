@@ -1,4 +1,4 @@
-using HS.Protobuf.Backpack;
+using HS.Protobuf.Game.Backpack;
 using System;
 
 namespace GameServer.InventorySystem
