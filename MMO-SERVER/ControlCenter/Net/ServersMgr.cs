@@ -2,6 +2,7 @@
 using Common.Summer.Net;
 using Common.Summer.Proto;
 using Common.Summer.Tools;
+using ControlCenter.Net;
 using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
 using Serilog;
@@ -15,6 +16,9 @@ namespace ControlCenter.Core
 
         public bool Init()
         {
+            NetService.Instance.Init();
+            ControlCenterHandler.Instance.Init();
+
             // proto注册
             ProtoHelper.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
             ProtoHelper.Register<ServerInfoRegisterResponse>((int)ControlCenterProtocl.ServerinfoRegisterResp);
@@ -86,6 +90,18 @@ namespace ControlCenter.Core
             Log.Information($"[ServerInfoRegister] 注册成功，{node.ToString()}");
         End:
             conn.Send(resp);
+        }
+        public List<ServerInfoNode> GetAllServerInfoByServerType(SERVER_TYPE sERVER_TYPE)
+        {
+            List<ServerInfoNode> serverInfoNodes = new();
+            foreach (var item in m_servers)
+            {
+                if (item.Value.ServerType == sERVER_TYPE)
+                {
+                    serverInfoNodes.Add(item.Value);
+                }
+            }
+            return serverInfoNodes;
         }
 
         // test

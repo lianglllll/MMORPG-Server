@@ -13,7 +13,7 @@ namespace GameServer.Net
     public class ServersMgr : Singleton<ServersMgr>
     {
         private ServerInfoNode m_curServerInfoNode;
-        private Dictionary<SERVER_TYPE, TcpClient> m_outgoingServerConnection = new();
+        private Dictionary<SERVER_TYPE, NetClient> m_outgoingServerConnection = new();
 
         public void Init()
         {
@@ -26,49 +26,36 @@ namespace GameServer.Net
             m_curServerInfoNode.ServerId = 0;
             gNode.GameWorldId = Config.Server.gameWorldId;
             m_curServerInfoNode.GameServerInfo = gNode;
-
             // 网络服务开启
             NetService.Instance.Init();
-
             // 协议注册
             ProtoHelper.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
             ProtoHelper.Register<ServerInfoRegisterResponse>((int)ControlCenterProtocl.ServerinfoRegisterResp);
-            ProtoHelper.Register<SSHeartBeatRequest>((int)CommonProtocl.SsHeartbeatReq);
-            ProtoHelper.Register<SSHeartBeatResponse>((int)CommonProtocl.SsHeartbeatResp);
-
             // 消息的订阅
             MessageRouter.Instance.Subscribe<ServerInfoRegisterResponse>(_RegisterServerInfo2ControlCenterResponse);
-            MessageRouter.Instance.Subscribe<SSHeartBeatResponse>(_SSHeartBeatResponse);
 
-            // 连接到控制中心cc
-            TcpClient ccClient = new TcpClient();
-            ccClient.Init(Config.CCConfig.ip, Config.CCConfig.port, _CCConnectedCallback, _CCConnectedFailedCallback, _CCDisconnectedCallback);
-            m_outgoingServerConnection.Add(SERVER_TYPE.Controlcenter, ccClient);
-
-            // 定时发送ss心跳包
-            Scheduler.Instance.AddTask(_SendSSHeatBeatReq, Config.Server.heartBeatSendInterval, 0);
+            _CCConnectToControlCenter();
         }
         public void UnInit()
         {
 
         }
 
-        private void _CCConnectedCallback(Connection conn)
+        private void _CCConnectToControlCenter()
+        {
+            NetService.Instance.ConnctToServer(Config.CCConfig.ip, Config.CCConfig.port, _CCConnectedCallback, _CCConnectedFailedCallback, _CCDisconnectedCallback);
+        }
+        private void _CCConnectedCallback(NetClient tcpClient)
         {
             Log.Information("Successfully connected to the control center server.");
-            //向cc注册自己
+            // 记录
+            m_outgoingServerConnection[SERVER_TYPE.Controlcenter] = tcpClient;
+            // 向cc注册自己
             ServerInfoRegisterRequest req = new();
-            ServerInfoNode node = new();
-            GameServerInfoNode gNode = new();
-            node.ServerType = SERVER_TYPE.Game;
-            node.Ip = Config.Server.ip;
-            node.Port = Config.Server.userPort;
-            gNode.GameWorldId = Config.Server.gameWorldId;
-            node.GameServerInfo = gNode;
-            req.ServerInfoNode = node;
-            m_outgoingServerConnection[SERVER_TYPE.Controlcenter]?.Send(req);
+            req.ServerInfoNode = m_curServerInfoNode;
+            tcpClient.Send(req);
         }
-        private void _CCConnectedFailedCallback(bool isEnd)
+        private void _CCConnectedFailedCallback(NetClient tcpClient,bool isEnd)
         {
             if (isEnd)
             {
@@ -81,7 +68,7 @@ namespace GameServer.Net
             }
 
         }
-        private void _CCDisconnectedCallback(Connection conn)
+        private void _CCDisconnectedCallback(NetClient tcpClient)
         {
             
         }
@@ -101,18 +88,5 @@ namespace GameServer.Net
             }
         }
 
-        private void _SendSSHeatBeatReq()
-        {
-            foreach (var v in m_outgoingServerConnection.Values)
-            {
-                SSHeartBeatRequest req = new SSHeartBeatRequest();
-                v.Send(req);
-            }
-        }
-        private void _SSHeartBeatResponse(Connection sender, SSHeartBeatResponse message)
-        {
-            // 知道对端也活着，嘻嘻。
-        }
     }
 }
-

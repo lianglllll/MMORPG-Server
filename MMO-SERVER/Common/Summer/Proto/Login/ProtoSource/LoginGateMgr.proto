@@ -1,0 +1,17 @@
+syntax = "proto3";
+import "Common/ProtoSource/Common.proto";
+package HS.Protobuf.LoginGateMgr;
+
+enum LoginGateMgrProtocl{
+	LOGINGATEMGR_PROTOCL_NONE = 0;
+	LOGINGATEMGR_PROTOCL_REGISTER_LOGINGATE_INSTANCE_REQ = 22001;	//[RegisterLoginGateInstanceRequest]
+	LOGINGATEMGR_PROTOCL_REGISTER_LOGINGATE_INSTANCE_RESP = 22002;	//[RegisterLoginGateInstanceResponse]
+}
+
+message RegisterLoginGateInstanceRequest{
+	HS.Protobuf.Common.ServerInfoNode ServerInfoNode = 1;
+}
+message RegisterLoginGateInstanceResponse{
+	int32  resultCode		= 1;	//0 成功 小于0正常流程  大于0异常流程
+	string resultMsg		= 2;
+}

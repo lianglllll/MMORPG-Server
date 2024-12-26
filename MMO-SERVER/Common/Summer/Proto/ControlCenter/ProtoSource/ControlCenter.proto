@@ -6,15 +6,24 @@ enum ControlCenterProtocl{
 	CONTROLCENTER_PROTOCL_NONE = 0;
 	CONTROLCENTER_PROTOCL_SERVERINFO_REGISTER_REQ = 10001;	// [ServerInfoRegisterRequest]
 	CONTROLCENTER_PROTOCL_SERVERINFO_REGISTER_RESP = 10002;	// [ServerInfoRegisterResponse]
+	CONTROLCENTER_PROTOCL_GET_ALLSERVERINFO_REQ = 10003;	// [GetAllServerInfoRequest]
+	CONTROLCENTER_PROTOCL_GET_ALLSERVERINFO_RESP = 10004;	// [GetAllServerInfoResponse]
 }
-
 
 message ServerInfoRegisterRequest{
 	HS.Protobuf.Common.ServerInfoNode serverInfoNode = 1;
 }
-
 message ServerInfoRegisterResponse{
 	int32  resultCode		= 1;	//0 成功 小于0正常流程  大于0异常流程
 	string resultMsg		= 2;
 	int32 serverId			= 3;
 }
+
+message GetAllServerInfoRequest{
+	HS.Protobuf.Common.SERVER_TYPE serverType = 1;
+}
+message GetAllServerInfoResponse{
+	HS.Protobuf.Common.SERVER_TYPE serverType = 1;
+	repeated HS.Protobuf.Common.ServerInfoNode serverInfoNodes = 2;
+}
+

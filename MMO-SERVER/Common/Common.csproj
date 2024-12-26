@@ -30,7 +30,6 @@
     <Folder Include="Summer\Proto\Common\ProtoClass\" />
     <Folder Include="Summer\Proto\Common\ProtoSource\" />
     <Folder Include="Summer\Proto\Login\ProtoClass\" />
-    <Folder Include="Summer\Proto\Login\ProtoSource\" />
     <Folder Include="Summer\Proto\Scene\ProtoClass\" />
   </ItemGroup>
 

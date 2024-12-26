@@ -41,7 +41,15 @@ namespace Common.Summer.Proto
         /// <returns></returns>
         public static int Type2Seq(Type type)
         {
-            return m_type2sequence[type];
+            if (m_type2sequence.ContainsKey(type))
+            {
+                return m_type2sequence[type];
+            }
+            else
+            {
+                Log.Error($"[ProtoHelper.Type2Seq]未找到对应的协议类型:{type.ToString()}");
+                return -1;
+            }
         }
 
         /// <summary>
@@ -51,7 +59,15 @@ namespace Common.Summer.Proto
         /// <returns></returns>
         public static Type Seq2Type(int code)
         {
-            return m_sequence2type[code];
+            if (m_sequence2type.ContainsKey(code))
+            {
+                return m_sequence2type[code];
+            }
+            else
+            {
+                Log.Error($"[ProtoHelper.Seq2Type]未找到对应的协议id:{code}");
+                return null;
+            }
         }
 
         /// <summary>
@@ -65,6 +81,11 @@ namespace Common.Summer.Proto
         public static IMessage ParseFrom(int typeCode,byte[] data ,int offset,int len)
         {
             Type t = Seq2Type(typeCode);
+            if (t == null)
+            {
+                Log.Error($"[ProtoHelper.ParseFrom]解析失败，协议号:{typeCode}");
+                return null;
+            }
             var desc = t.GetProperty("Descriptor").GetValue(t) as MessageDescriptor;
             var msg = desc.Parser.ParseFrom(data, 2, data.Length - 2);
             return msg;

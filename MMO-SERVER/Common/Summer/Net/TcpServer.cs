@@ -51,7 +51,7 @@ namespace Common.Summer.Net
                 this.m_backlog = backlog;
 
                 m_listenerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                m_listenerSocket.Bind(m_endPoint);                                        //绑定一个IPEndPoint
+                m_listenerSocket.Bind(m_endPoint);                                      //绑定一个IPEndPoint
                 m_listenerSocket.Listen(backlog);                                       //开始监听，并设置等待队列长度 
 
                 SocketAsyncEventArgs args = new SocketAsyncEventArgs();             //可以复用,当前监听连接socket复用

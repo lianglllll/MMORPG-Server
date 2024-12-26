@@ -47,7 +47,6 @@ namespace ControlCenter
             Config.Init();
             Scheduler.Instance.Start(Config.Server.updateHz);
             ServersMgr.Instance.Init();
-            NetService.Instance.Init();
 
             Log.Information("[ControlCenter]初始化成功,配置如下：");
             Log.Information($"ip：{Config.Server.ip}");
@@ -81,7 +80,7 @@ namespace ControlCenter
                         UnInit();
                         Environment.Exit(0);
                         return true;
-                    case "showgameserver":
+                    case "ss":
                         var dict = ServersMgr.Instance.GetServers();
                         foreach (var pair in dict)
                         {

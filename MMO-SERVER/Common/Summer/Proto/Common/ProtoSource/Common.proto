@@ -29,10 +29,10 @@ enum SERVER_TYPE{
 }
 
 message ServerInfoNode{
-	HS.Protobuf.Common.SERVER_TYPE serverType = 1;
-	string ip			= 2;
-	int32 port			= 3;
-	int32 serverId		= 4;
+	int32 serverId		= 1;
+	HS.Protobuf.Common.SERVER_TYPE serverType = 2;
+	string ip			= 3;
+	int32 port			= 4;
 	oneof payload{   
 		ControlCenterServerInfoNode controlCenterInfo = 5;
 		LoginServerInfoNode loginServerInfo = 6;
@@ -50,6 +50,7 @@ message ControlCenterServerInfoNode{
 message LoginServerInfoNode{
 }
 message LoginGateServerInfoNode{
+	int32 targetLoginServerId = 1;
 }
 message LoginGateMgrServerInfoNode{
 }

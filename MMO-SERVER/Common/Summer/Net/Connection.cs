@@ -55,7 +55,10 @@ namespace Common.Summer.Core
         {
             ushort code = _GetUShort(data, 0);
             var msg = ProtoHelper.ParseFrom((int)code, data, 2, data.Length - 2);
-
+            if(msg == null)
+            {
+                return;
+            }
             //交给消息路由，让其帮忙转发
             if (MessageRouter.Instance.Running)
             {
@@ -83,6 +86,10 @@ namespace Common.Summer.Core
                 using (var ds = DataStream.Allocate())
                 {
                     int code = ProtoHelper.Type2Seq(message.GetType());
+                    if(code == -1)
+                    {
+                        return;
+                    }
                     ds.WriteInt(message.CalculateSize() + 2);             //长度字段
                     ds.WriteUShort((ushort)code);                       //协议编号字段
                     message.WriteTo(ds);                                //数据

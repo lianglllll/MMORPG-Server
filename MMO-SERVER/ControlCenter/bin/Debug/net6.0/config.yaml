@@ -1,6 +1,6 @@
 server:
   ip: 127.0.0.1
-  port: 11111
+  port: 10100
   # 逻辑处理频率(hz)
   updateHz: 50
   # 工作线程数

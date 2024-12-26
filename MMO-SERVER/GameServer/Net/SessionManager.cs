@@ -17,12 +17,10 @@ namespace GameServer.Net
 
         public int OnlineUserCount => sessions.Count;
 
-        public SessionManager()
+        public void Init()
         {
             //创建一个计时器,1秒触发
-            var timer = new Timer(1000);
-            timer.Elapsed += (sender, e) => CheckSession();
-            timer.Start();
+            Scheduler.Instance.AddTask(CheckSession, 1000, 0);
         }
 
         /// <summary>

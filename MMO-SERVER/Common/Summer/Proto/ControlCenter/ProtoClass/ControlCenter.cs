@@ -29,16 +29,25 @@ namespace HS.Protobuf.ControlCenter {
             "ckluZm9SZWdpc3RlclJlcXVlc3QSOgoOc2VydmVySW5mb05vZGUYASABKAsy",
             "Ii5IUy5Qcm90b2J1Zi5Db21tb24uU2VydmVySW5mb05vZGUiVQoaU2VydmVy",
             "SW5mb1JlZ2lzdGVyUmVzcG9uc2USEgoKcmVzdWx0Q29kZRgBIAEoBRIRCgly",
-            "ZXN1bHRNc2cYAiABKAkSEAoIc2VydmVySWQYAyABKAUqnwEKFENvbnRyb2xD",
-            "ZW50ZXJQcm90b2NsEh4KGkNPTlRST0xDRU5URVJfUFJPVE9DTF9OT05FEAAS",
-            "MgotQ09OVFJPTENFTlRFUl9QUk9UT0NMX1NFUlZFUklORk9fUkVHSVNURVJf",
-            "UkVREJFOEjMKLkNPTlRST0xDRU5URVJfUFJPVE9DTF9TRVJWRVJJTkZPX1JF",
-            "R0lTVEVSX1JFU1AQkk5iBnByb3RvMw=="));
+            "ZXN1bHRNc2cYAiABKAkSEAoIc2VydmVySWQYAyABKAUiTgoXR2V0QWxsU2Vy",
+            "dmVySW5mb1JlcXVlc3QSMwoKc2VydmVyVHlwZRgBIAEoDjIfLkhTLlByb3Rv",
+            "YnVmLkNvbW1vbi5TRVJWRVJfVFlQRSKMAQoYR2V0QWxsU2VydmVySW5mb1Jl",
+            "c3BvbnNlEjMKCnNlcnZlclR5cGUYASABKA4yHy5IUy5Qcm90b2J1Zi5Db21t",
+            "b24uU0VSVkVSX1RZUEUSOwoPc2VydmVySW5mb05vZGVzGAIgAygLMiIuSFMu",
+            "UHJvdG9idWYuQ29tbW9uLlNlcnZlckluZm9Ob2RlKoQCChRDb250cm9sQ2Vu",
+            "dGVyUHJvdG9jbBIeChpDT05UUk9MQ0VOVEVSX1BST1RPQ0xfTk9ORRAAEjIK",
+            "LUNPTlRST0xDRU5URVJfUFJPVE9DTF9TRVJWRVJJTkZPX1JFR0lTVEVSX1JF",
+            "URCRThIzCi5DT05UUk9MQ0VOVEVSX1BST1RPQ0xfU0VSVkVSSU5GT19SRUdJ",
+            "U1RFUl9SRVNQEJJOEjAKK0NPTlRST0xDRU5URVJfUFJPVE9DTF9HRVRfQUxM",
+            "U0VSVkVSSU5GT19SRVEQk04SMQosQ09OVFJPTENFTlRFUl9QUk9UT0NMX0dF",
+            "VF9BTExTRVJWRVJJTkZPX1JFU1AQlE5iBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::HS.Protobuf.Common.CommonReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.ControlCenter.ControlCenterProtocl), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.ControlCenter.ServerInfoRegisterRequest), global::HS.Protobuf.ControlCenter.ServerInfoRegisterRequest.Parser, new[]{ "ServerInfoNode" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.ControlCenter.ServerInfoRegisterResponse), global::HS.Protobuf.ControlCenter.ServerInfoRegisterResponse.Parser, new[]{ "ResultCode", "ResultMsg", "ServerId" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.ControlCenter.ServerInfoRegisterResponse), global::HS.Protobuf.ControlCenter.ServerInfoRegisterResponse.Parser, new[]{ "ResultCode", "ResultMsg", "ServerId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.ControlCenter.GetAllServerInfoRequest), global::HS.Protobuf.ControlCenter.GetAllServerInfoRequest.Parser, new[]{ "ServerType" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.ControlCenter.GetAllServerInfoResponse), global::HS.Protobuf.ControlCenter.GetAllServerInfoResponse.Parser, new[]{ "ServerType", "ServerInfoNodes" }, null, null, null, null)
           }));
     }
     #endregion
@@ -55,6 +64,14 @@ namespace HS.Protobuf.ControlCenter {
     /// [ServerInfoRegisterResponse]
     /// </summary>
     [pbr::OriginalName("CONTROLCENTER_PROTOCL_SERVERINFO_REGISTER_RESP")] ServerinfoRegisterResp = 10002,
+    /// <summary>
+    /// [GetAllServerInfoRequest]
+    /// </summary>
+    [pbr::OriginalName("CONTROLCENTER_PROTOCL_GET_ALLSERVERINFO_REQ")] GetAllserverinfoReq = 10003,
+    /// <summary>
+    /// [GetAllServerInfoResponse]
+    /// </summary>
+    [pbr::OriginalName("CONTROLCENTER_PROTOCL_GET_ALLSERVERINFO_RESP")] GetAllserverinfoResp = 10004,
   }
 
   #endregion
@@ -515,6 +532,410 @@ namespace HS.Protobuf.ControlCenter {
           }
           case 24: {
             ServerId = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class GetAllServerInfoRequest : pb::IMessage<GetAllServerInfoRequest>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<GetAllServerInfoRequest> _parser = new pb::MessageParser<GetAllServerInfoRequest>(() => new GetAllServerInfoRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<GetAllServerInfoRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::HS.Protobuf.ControlCenter.ControlCenterReflection.Descriptor.MessageTypes[2]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetAllServerInfoRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetAllServerInfoRequest(GetAllServerInfoRequest other) : this() {
+      serverType_ = other.serverType_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetAllServerInfoRequest Clone() {
+      return new GetAllServerInfoRequest(this);
+    }
+
+    /// <summary>Field number for the "serverType" field.</summary>
+    public const int ServerTypeFieldNumber = 1;
+    private global::HS.Protobuf.Common.SERVER_TYPE serverType_ = global::HS.Protobuf.Common.SERVER_TYPE.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::HS.Protobuf.Common.SERVER_TYPE ServerType {
+      get { return serverType_; }
+      set {
+        serverType_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as GetAllServerInfoRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(GetAllServerInfoRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (ServerType != other.ServerType) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (ServerType != global::HS.Protobuf.Common.SERVER_TYPE.None) hash ^= ServerType.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (ServerType != global::HS.Protobuf.Common.SERVER_TYPE.None) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) ServerType);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (ServerType != global::HS.Protobuf.Common.SERVER_TYPE.None) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) ServerType);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (ServerType != global::HS.Protobuf.Common.SERVER_TYPE.None) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) ServerType);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(GetAllServerInfoRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.ServerType != global::HS.Protobuf.Common.SERVER_TYPE.None) {
+        ServerType = other.ServerType;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            ServerType = (global::HS.Protobuf.Common.SERVER_TYPE) input.ReadEnum();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            ServerType = (global::HS.Protobuf.Common.SERVER_TYPE) input.ReadEnum();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class GetAllServerInfoResponse : pb::IMessage<GetAllServerInfoResponse>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<GetAllServerInfoResponse> _parser = new pb::MessageParser<GetAllServerInfoResponse>(() => new GetAllServerInfoResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<GetAllServerInfoResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::HS.Protobuf.ControlCenter.ControlCenterReflection.Descriptor.MessageTypes[3]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetAllServerInfoResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetAllServerInfoResponse(GetAllServerInfoResponse other) : this() {
+      serverType_ = other.serverType_;
+      serverInfoNodes_ = other.serverInfoNodes_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetAllServerInfoResponse Clone() {
+      return new GetAllServerInfoResponse(this);
+    }
+
+    /// <summary>Field number for the "serverType" field.</summary>
+    public const int ServerTypeFieldNumber = 1;
+    private global::HS.Protobuf.Common.SERVER_TYPE serverType_ = global::HS.Protobuf.Common.SERVER_TYPE.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::HS.Protobuf.Common.SERVER_TYPE ServerType {
+      get { return serverType_; }
+      set {
+        serverType_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "serverInfoNodes" field.</summary>
+    public const int ServerInfoNodesFieldNumber = 2;
+    private static readonly pb::FieldCodec<global::HS.Protobuf.Common.ServerInfoNode> _repeated_serverInfoNodes_codec
+        = pb::FieldCodec.ForMessage(18, global::HS.Protobuf.Common.ServerInfoNode.Parser);
+    private readonly pbc::RepeatedField<global::HS.Protobuf.Common.ServerInfoNode> serverInfoNodes_ = new pbc::RepeatedField<global::HS.Protobuf.Common.ServerInfoNode>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<global::HS.Protobuf.Common.ServerInfoNode> ServerInfoNodes {
+      get { return serverInfoNodes_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as GetAllServerInfoResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(GetAllServerInfoResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (ServerType != other.ServerType) return false;
+      if(!serverInfoNodes_.Equals(other.serverInfoNodes_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (ServerType != global::HS.Protobuf.Common.SERVER_TYPE.None) hash ^= ServerType.GetHashCode();
+      hash ^= serverInfoNodes_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (ServerType != global::HS.Protobuf.Common.SERVER_TYPE.None) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) ServerType);
+      }
+      serverInfoNodes_.WriteTo(output, _repeated_serverInfoNodes_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (ServerType != global::HS.Protobuf.Common.SERVER_TYPE.None) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) ServerType);
+      }
+      serverInfoNodes_.WriteTo(ref output, _repeated_serverInfoNodes_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (ServerType != global::HS.Protobuf.Common.SERVER_TYPE.None) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) ServerType);
+      }
+      size += serverInfoNodes_.CalculateSize(_repeated_serverInfoNodes_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(GetAllServerInfoResponse other) {
+      if (other == null) {
+        return;
+      }
+      if (other.ServerType != global::HS.Protobuf.Common.SERVER_TYPE.None) {
+        ServerType = other.ServerType;
+      }
+      serverInfoNodes_.Add(other.serverInfoNodes_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            ServerType = (global::HS.Protobuf.Common.SERVER_TYPE) input.ReadEnum();
+            break;
+          }
+          case 18: {
+            serverInfoNodes_.AddEntriesFrom(input, _repeated_serverInfoNodes_codec);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            ServerType = (global::HS.Protobuf.Common.SERVER_TYPE) input.ReadEnum();
+            break;
+          }
+          case 18: {
+            serverInfoNodes_.AddEntriesFrom(ref input, _repeated_serverInfoNodes_codec);
             break;
           }
         }

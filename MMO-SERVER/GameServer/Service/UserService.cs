@@ -46,7 +46,6 @@ namespace GameServer.Service
         /// <param name="message"></param>
         private void _UserRegisterRequest(Connection conn, UserRegisterRequest message)
         {
-
             //查询用户是否存在
             long count = DbManager.fsql.Select<DbUser>().Where(p => p.Username == message.Username).Count();
 
@@ -235,7 +234,6 @@ namespace GameServer.Service
                 resp.Message = "创建失败";
                 conn.Send(resp);
             }
-
 
         }
 

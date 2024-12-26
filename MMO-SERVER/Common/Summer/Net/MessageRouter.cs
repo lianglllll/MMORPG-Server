@@ -66,7 +66,7 @@ namespace Common.Summer.Net
         }
 
 
-        public void Subscribe<T>(MessageHandler<T> handler) where T : Google.Protobuf.IMessage
+        public void Subscribe<T>(MessageHandler<T> handler) where T : IMessage
         {
             string type = typeof(T).FullName;
             
@@ -91,12 +91,12 @@ namespace Common.Summer.Net
 
 
         // 添加消息到消息队列
-        public void AddMessage(Connection sender, Google.Protobuf.IMessage message)
+        public void AddMessage(Connection conn, Google.Protobuf.IMessage message)
         {
             //加锁
             lock (messageQueue)
             {
-                messageQueue.Enqueue(new Msg() { conn = sender, message = message });
+                messageQueue.Enqueue(new Msg() { conn = conn, message = message });
             }
             //唤醒一个进程来处理消息队列
             threadEvent.Set();
@@ -147,14 +147,14 @@ namespace Common.Summer.Net
             Console.WriteLine("MessageWork thread end");
             
         }
-        private void executeMessage(Connection sender, IMessage message)
+        private void executeMessage(Connection conn, IMessage message)
         {
             var fullName = message.GetType().FullName;
             if(delegateMap.TryGetValue(fullName,out var handler))
             {
                 try
                 {
-                    handler.DynamicInvoke(sender, message);
+                    handler.DynamicInvoke(conn, message);
                 }catch(Exception e)
                 {
                     Log.Error("[MessageRouter.executeMessage]" + e.StackTrace);

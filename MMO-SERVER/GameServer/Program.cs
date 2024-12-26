@@ -52,7 +52,6 @@ namespace GameServer
 
             Config.Init();                      // 加载服务器配置
             DataManager.Instance.Init();        // 加载json配置文件
-            ProtoHelper.Init();                 // proto类型加载
             SkillSanner.Start();                // 加载自定义技能类
             DbManager.Init();                   
             UserService.Instance.Start();       
@@ -69,7 +68,7 @@ namespace GameServer
                 SpaceManager.Instance.Update();
             }, Config.Server.updateHz);
 
-            Log.Information("[GameServer]初始化,配置如下：");
+            Log.Information("[LoginServer]初始化,配置如下：");
             Log.Information($"ip：{Config.Server.ip}");
             Log.Information($"port：{Config.Server.userPort}");
             Log.Information($"workerCount：{Config.Server.workerCount}");
@@ -77,6 +76,7 @@ namespace GameServer
             Log.Information($"aoiViewArea：{Config.Server.aoiViewArea}");
 
             //开启网络服务
+            SessionManager.Instance.Init();
             ServersMgr.Instance.Init();
             return true;
         } 
