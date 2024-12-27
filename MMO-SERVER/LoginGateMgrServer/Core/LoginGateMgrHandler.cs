@@ -43,14 +43,15 @@ namespace LoginGateMgrServer.Core
             if(message.ServerType == SERVER_TYPE.Login)
             {
                 LogingateMonitor.Instance.UpdateLoginServerInfo(message.ServerInfoNodes.ToList());
-                Log.Debug(message.ToString());
+                // Log.Debug(message.ToString());
             }
 
         }
 
         private void _HandleRegisterLoginGateInstanceResponse(Connection sender, RegisterLoginGateInstanceResponse message)
         {
-            throw new NotImplementedException();
+
+            Log.Debug("有gate来罗");
         }
 
     }

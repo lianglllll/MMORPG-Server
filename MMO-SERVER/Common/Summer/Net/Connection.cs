@@ -102,6 +102,10 @@ namespace Common.Summer.Core
             }
 
         }
+        public void Send(ByteString data)
+        {
+            _SocketSend(data.ToByteArray());
+        }
 
         /// <summary>
         /// 通过socket发送，原生数据
@@ -152,5 +156,7 @@ namespace Common.Summer.Core
                 return (ushort)((data[offset] << 8) | data[offset + 1]);
             return (ushort)((data[offset + 1] << 8) | data[offset]);
         }
+
+
     }
 }

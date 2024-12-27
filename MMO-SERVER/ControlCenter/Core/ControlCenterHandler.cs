@@ -26,7 +26,6 @@ namespace ControlCenter.Core
             return true;
         }
 
-
         private void _HandleGetAllServerInfoRequest(Connection conn, GetAllServerInfoRequest message)
         {
             var resp = new GetAllServerInfoResponse();

@@ -25,18 +25,32 @@ namespace HS.Protobuf.LoginGateMgr {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChJMb2dpbkdhdGVNZ3IucHJvdG8SGEhTLlByb3RvYnVmLkxvZ2luR2F0ZU1n",
-            "chofQ29tbW9uL1Byb3RvU291cmNlL0NvbW1vbi5wcm90byJeCiBSZWdpc3Rl",
-            "ckxvZ2luR2F0ZUluc3RhbmNlUmVxdWVzdBI6Cg5TZXJ2ZXJJbmZvTm9kZRgB",
-            "IAEoCzIiLkhTLlByb3RvYnVmLkNvbW1vbi5TZXJ2ZXJJbmZvTm9kZSJKCiFS",
-            "ZWdpc3RlckxvZ2luR2F0ZUluc3RhbmNlUmVzcG9uc2USEgoKcmVzdWx0Q29k",
-            "ZRgBIAEoBRIRCglyZXN1bHRNc2cYAiABKAkqrQEKE0xvZ2luR2F0ZU1nclBy",
-            "b3RvY2wSHQoZTE9HSU5HQVRFTUdSX1BST1RPQ0xfTk9ORRAAEjoKNExPR0lO",
-            "R0FURU1HUl9QUk9UT0NMX1JFR0lTVEVSX0xPR0lOR0FURV9JTlNUQU5DRV9S",
-            "RVEQ8asBEjsKNUxPR0lOR0FURU1HUl9QUk9UT0NMX1JFR0lTVEVSX0xPR0lO",
-            "R0FURV9JTlNUQU5DRV9SRVNQEPKrAWIGcHJvdG8z"));
+            "chofQ29tbW9uL1Byb3RvU291cmNlL0NvbW1vbi5wcm90byLSAQoXRXhlY3V0",
+            "ZUxHQ29tbWFuZFJlcXVlc3QSOwoHY29tbWFuZBgBIAEoDjIqLkhTLlByb3Rv",
+            "YnVmLkxvZ2luR2F0ZU1nci5Mb2dpbkdhdGVDb21tYW5kEhkKEWxvZ2luR2F0",
+            "ZVNlcnZlcklkGAIgASgFEhEKCXRpbWVTdGFtcBgDIAEoAxJBChNsb2dpblNl",
+            "cnZlckluZm9Ob2RlGAQgASgLMiIuSFMuUHJvdG9idWYuQ29tbW9uLlNlcnZl",
+            "ckluZm9Ob2RlSABCCQoHcGF5bG9hZCJBChhFeGVjdXRlTEdDb21tYW5kUmVz",
+            "cG9uc2USEgoKcmVzdWx0Q29kZRgBIAEoBRIRCglyZXN1bHRNc2cYAiABKAki",
+            "XgogUmVnaXN0ZXJMb2dpbkdhdGVJbnN0YW5jZVJlcXVlc3QSOgoOU2VydmVy",
+            "SW5mb05vZGUYASABKAsyIi5IUy5Qcm90b2J1Zi5Db21tb24uU2VydmVySW5m",
+            "b05vZGUiSgohUmVnaXN0ZXJMb2dpbkdhdGVJbnN0YW5jZVJlc3BvbnNlEhIK",
+            "CnJlc3VsdENvZGUYASABKAUSEQoJcmVzdWx0TXNnGAIgASgJKpQCChNMb2dp",
+            "bkdhdGVNZ3JQcm90b2NsEh0KGUxPR0lOR0FURU1HUl9QUk9UT0NMX05PTkUQ",
+            "ABI6CjRMT0dJTkdBVEVNR1JfUFJPVE9DTF9SRUdJU1RFUl9MT0dJTkdBVEVf",
+            "SU5TVEFOQ0VfUkVREPGrARI7CjVMT0dJTkdBVEVNR1JfUFJPVE9DTF9SRUdJ",
+            "U1RFUl9MT0dJTkdBVEVfSU5TVEFOQ0VfUkVTUBDyqwESMQorTE9HSU5HQVRF",
+            "TUdSX1BST1RPQ0xfRVhFQ1VURV9MR19DT01NQU5EX1JFURDzqwESMgosTE9H",
+            "SU5HQVRFTUdSX1BST1RPQ0xfRVhFQ1VURV9MR19DT01NQU5EX1JFU1AQ9KsB",
+            "KqUBChBMb2dpbkdhdGVDb21tYW5kEhsKF0xPR0lOX0dBVEVfQ09NTUFORF9O",
+            "T05FEAASHAoYTE9HSU5fR0FURV9DT01NQU5EX1NUQVJUEAESGwoXTE9HSU5f",
+            "R0FURV9DT01NQU5EX1NUT1AQAhIdChlMT0dJTl9HQVRFX0NPTU1BTkRfUkVT",
+            "VU1FEAMSGgoWTE9HSU5fR0FURV9DT01NQU5EX0VORBAEYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::HS.Protobuf.Common.CommonReflection.Descriptor, },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.LoginGateMgr.LoginGateMgrProtocl), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.LoginGateMgr.LoginGateMgrProtocl), typeof(global::HS.Protobuf.LoginGateMgr.LoginGateCommand), }, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.LoginGateMgr.ExecuteLGCommandRequest), global::HS.Protobuf.LoginGateMgr.ExecuteLGCommandRequest.Parser, new[]{ "Command", "LoginGateServerId", "TimeStamp", "LoginServerInfoNode" }, new[]{ "Payload" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.LoginGateMgr.ExecuteLGCommandResponse), global::HS.Protobuf.LoginGateMgr.ExecuteLGCommandResponse.Parser, new[]{ "ResultCode", "ResultMsg" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.LoginGateMgr.RegisterLoginGateInstanceRequest), global::HS.Protobuf.LoginGateMgr.RegisterLoginGateInstanceRequest.Parser, new[]{ "ServerInfoNode" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.LoginGateMgr.RegisterLoginGateInstanceResponse), global::HS.Protobuf.LoginGateMgr.RegisterLoginGateInstanceResponse.Parser, new[]{ "ResultCode", "ResultMsg" }, null, null, null, null)
           }));
@@ -55,11 +69,596 @@ namespace HS.Protobuf.LoginGateMgr {
     ///[RegisterLoginGateInstanceResponse]
     /// </summary>
     [pbr::OriginalName("LOGINGATEMGR_PROTOCL_REGISTER_LOGINGATE_INSTANCE_RESP")] RegisterLogingateInstanceResp = 22002,
+    /// <summary>
+    ///[ExecuteLGCommandRequest]
+    /// </summary>
+    [pbr::OriginalName("LOGINGATEMGR_PROTOCL_EXECUTE_LG_COMMAND_REQ")] ExecuteLgCommandReq = 22003,
+    /// <summary>
+    ///[ExecuteLGCommandResponse]
+    /// </summary>
+    [pbr::OriginalName("LOGINGATEMGR_PROTOCL_EXECUTE_LG_COMMAND_RESP")] ExecuteLgCommandResp = 22004,
+  }
+
+  public enum LoginGateCommand {
+    [pbr::OriginalName("LOGIN_GATE_COMMAND_NONE")] None = 0,
+    [pbr::OriginalName("LOGIN_GATE_COMMAND_START")] Start = 1,
+    [pbr::OriginalName("LOGIN_GATE_COMMAND_STOP")] Stop = 2,
+    [pbr::OriginalName("LOGIN_GATE_COMMAND_RESUME")] Resume = 3,
+    [pbr::OriginalName("LOGIN_GATE_COMMAND_END")] End = 4,
   }
 
   #endregion
 
   #region Messages
+  public sealed partial class ExecuteLGCommandRequest : pb::IMessage<ExecuteLGCommandRequest>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<ExecuteLGCommandRequest> _parser = new pb::MessageParser<ExecuteLGCommandRequest>(() => new ExecuteLGCommandRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<ExecuteLGCommandRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::HS.Protobuf.LoginGateMgr.LoginGateMgrReflection.Descriptor.MessageTypes[0]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ExecuteLGCommandRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ExecuteLGCommandRequest(ExecuteLGCommandRequest other) : this() {
+      command_ = other.command_;
+      loginGateServerId_ = other.loginGateServerId_;
+      timeStamp_ = other.timeStamp_;
+      switch (other.PayloadCase) {
+        case PayloadOneofCase.LoginServerInfoNode:
+          LoginServerInfoNode = other.LoginServerInfoNode.Clone();
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ExecuteLGCommandRequest Clone() {
+      return new ExecuteLGCommandRequest(this);
+    }
+
+    /// <summary>Field number for the "command" field.</summary>
+    public const int CommandFieldNumber = 1;
+    private global::HS.Protobuf.LoginGateMgr.LoginGateCommand command_ = global::HS.Protobuf.LoginGateMgr.LoginGateCommand.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::HS.Protobuf.LoginGateMgr.LoginGateCommand Command {
+      get { return command_; }
+      set {
+        command_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "loginGateServerId" field.</summary>
+    public const int LoginGateServerIdFieldNumber = 2;
+    private int loginGateServerId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int LoginGateServerId {
+      get { return loginGateServerId_; }
+      set {
+        loginGateServerId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "timeStamp" field.</summary>
+    public const int TimeStampFieldNumber = 3;
+    private long timeStamp_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public long TimeStamp {
+      get { return timeStamp_; }
+      set {
+        timeStamp_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "loginServerInfoNode" field.</summary>
+    public const int LoginServerInfoNodeFieldNumber = 4;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::HS.Protobuf.Common.ServerInfoNode LoginServerInfoNode {
+      get { return payloadCase_ == PayloadOneofCase.LoginServerInfoNode ? (global::HS.Protobuf.Common.ServerInfoNode) payload_ : null; }
+      set {
+        payload_ = value;
+        payloadCase_ = value == null ? PayloadOneofCase.None : PayloadOneofCase.LoginServerInfoNode;
+      }
+    }
+
+    private object payload_;
+    /// <summary>Enum of possible cases for the "payload" oneof.</summary>
+    public enum PayloadOneofCase {
+      None = 0,
+      LoginServerInfoNode = 4,
+    }
+    private PayloadOneofCase payloadCase_ = PayloadOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public PayloadOneofCase PayloadCase {
+      get { return payloadCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearPayload() {
+      payloadCase_ = PayloadOneofCase.None;
+      payload_ = null;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as ExecuteLGCommandRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(ExecuteLGCommandRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Command != other.Command) return false;
+      if (LoginGateServerId != other.LoginGateServerId) return false;
+      if (TimeStamp != other.TimeStamp) return false;
+      if (!object.Equals(LoginServerInfoNode, other.LoginServerInfoNode)) return false;
+      if (PayloadCase != other.PayloadCase) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Command != global::HS.Protobuf.LoginGateMgr.LoginGateCommand.None) hash ^= Command.GetHashCode();
+      if (LoginGateServerId != 0) hash ^= LoginGateServerId.GetHashCode();
+      if (TimeStamp != 0L) hash ^= TimeStamp.GetHashCode();
+      if (payloadCase_ == PayloadOneofCase.LoginServerInfoNode) hash ^= LoginServerInfoNode.GetHashCode();
+      hash ^= (int) payloadCase_;
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (Command != global::HS.Protobuf.LoginGateMgr.LoginGateCommand.None) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) Command);
+      }
+      if (LoginGateServerId != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(LoginGateServerId);
+      }
+      if (TimeStamp != 0L) {
+        output.WriteRawTag(24);
+        output.WriteInt64(TimeStamp);
+      }
+      if (payloadCase_ == PayloadOneofCase.LoginServerInfoNode) {
+        output.WriteRawTag(34);
+        output.WriteMessage(LoginServerInfoNode);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Command != global::HS.Protobuf.LoginGateMgr.LoginGateCommand.None) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) Command);
+      }
+      if (LoginGateServerId != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(LoginGateServerId);
+      }
+      if (TimeStamp != 0L) {
+        output.WriteRawTag(24);
+        output.WriteInt64(TimeStamp);
+      }
+      if (payloadCase_ == PayloadOneofCase.LoginServerInfoNode) {
+        output.WriteRawTag(34);
+        output.WriteMessage(LoginServerInfoNode);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (Command != global::HS.Protobuf.LoginGateMgr.LoginGateCommand.None) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Command);
+      }
+      if (LoginGateServerId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(LoginGateServerId);
+      }
+      if (TimeStamp != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(TimeStamp);
+      }
+      if (payloadCase_ == PayloadOneofCase.LoginServerInfoNode) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(LoginServerInfoNode);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(ExecuteLGCommandRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Command != global::HS.Protobuf.LoginGateMgr.LoginGateCommand.None) {
+        Command = other.Command;
+      }
+      if (other.LoginGateServerId != 0) {
+        LoginGateServerId = other.LoginGateServerId;
+      }
+      if (other.TimeStamp != 0L) {
+        TimeStamp = other.TimeStamp;
+      }
+      switch (other.PayloadCase) {
+        case PayloadOneofCase.LoginServerInfoNode:
+          if (LoginServerInfoNode == null) {
+            LoginServerInfoNode = new global::HS.Protobuf.Common.ServerInfoNode();
+          }
+          LoginServerInfoNode.MergeFrom(other.LoginServerInfoNode);
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Command = (global::HS.Protobuf.LoginGateMgr.LoginGateCommand) input.ReadEnum();
+            break;
+          }
+          case 16: {
+            LoginGateServerId = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            TimeStamp = input.ReadInt64();
+            break;
+          }
+          case 34: {
+            global::HS.Protobuf.Common.ServerInfoNode subBuilder = new global::HS.Protobuf.Common.ServerInfoNode();
+            if (payloadCase_ == PayloadOneofCase.LoginServerInfoNode) {
+              subBuilder.MergeFrom(LoginServerInfoNode);
+            }
+            input.ReadMessage(subBuilder);
+            LoginServerInfoNode = subBuilder;
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            Command = (global::HS.Protobuf.LoginGateMgr.LoginGateCommand) input.ReadEnum();
+            break;
+          }
+          case 16: {
+            LoginGateServerId = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            TimeStamp = input.ReadInt64();
+            break;
+          }
+          case 34: {
+            global::HS.Protobuf.Common.ServerInfoNode subBuilder = new global::HS.Protobuf.Common.ServerInfoNode();
+            if (payloadCase_ == PayloadOneofCase.LoginServerInfoNode) {
+              subBuilder.MergeFrom(LoginServerInfoNode);
+            }
+            input.ReadMessage(subBuilder);
+            LoginServerInfoNode = subBuilder;
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class ExecuteLGCommandResponse : pb::IMessage<ExecuteLGCommandResponse>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<ExecuteLGCommandResponse> _parser = new pb::MessageParser<ExecuteLGCommandResponse>(() => new ExecuteLGCommandResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<ExecuteLGCommandResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::HS.Protobuf.LoginGateMgr.LoginGateMgrReflection.Descriptor.MessageTypes[1]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ExecuteLGCommandResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ExecuteLGCommandResponse(ExecuteLGCommandResponse other) : this() {
+      resultCode_ = other.resultCode_;
+      resultMsg_ = other.resultMsg_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ExecuteLGCommandResponse Clone() {
+      return new ExecuteLGCommandResponse(this);
+    }
+
+    /// <summary>Field number for the "resultCode" field.</summary>
+    public const int ResultCodeFieldNumber = 1;
+    private int resultCode_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int ResultCode {
+      get { return resultCode_; }
+      set {
+        resultCode_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "resultMsg" field.</summary>
+    public const int ResultMsgFieldNumber = 2;
+    private string resultMsg_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string ResultMsg {
+      get { return resultMsg_; }
+      set {
+        resultMsg_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as ExecuteLGCommandResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(ExecuteLGCommandResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (ResultCode != other.ResultCode) return false;
+      if (ResultMsg != other.ResultMsg) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (ResultCode != 0) hash ^= ResultCode.GetHashCode();
+      if (ResultMsg.Length != 0) hash ^= ResultMsg.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (ResultCode != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(ResultCode);
+      }
+      if (ResultMsg.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(ResultMsg);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (ResultCode != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(ResultCode);
+      }
+      if (ResultMsg.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(ResultMsg);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (ResultCode != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(ResultCode);
+      }
+      if (ResultMsg.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(ResultMsg);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(ExecuteLGCommandResponse other) {
+      if (other == null) {
+        return;
+      }
+      if (other.ResultCode != 0) {
+        ResultCode = other.ResultCode;
+      }
+      if (other.ResultMsg.Length != 0) {
+        ResultMsg = other.ResultMsg;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            ResultCode = input.ReadInt32();
+            break;
+          }
+          case 18: {
+            ResultMsg = input.ReadString();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            ResultCode = input.ReadInt32();
+            break;
+          }
+          case 18: {
+            ResultMsg = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
   public sealed partial class RegisterLoginGateInstanceRequest : pb::IMessage<RegisterLoginGateInstanceRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -74,7 +673,7 @@ namespace HS.Protobuf.LoginGateMgr {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.LoginGateMgr.LoginGateMgrReflection.Descriptor.MessageTypes[0]; }
+      get { return global::HS.Protobuf.LoginGateMgr.LoginGateMgrReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -272,7 +871,7 @@ namespace HS.Protobuf.LoginGateMgr {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.LoginGateMgr.LoginGateMgrReflection.Descriptor.MessageTypes[1]; }
+      get { return global::HS.Protobuf.LoginGateMgr.LoginGateMgrReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

@@ -1,21 +1,23 @@
-﻿using Serilog;
+﻿using System;
+using System.Net;
+using Serilog;
+using System.Threading;
+using GameServer.Utils;
 using Common.Summer.Core;
 using Common.Summer.Net;
 using Common.Summer.Tools;
 using System.Collections.Concurrent;
 using HS.Protobuf.Common;
 using Common.Summer.Proto;
-using LoginServer.Utils;
 using static Common.Summer.Net.NetClient;
-using LoginGateMgrServer.Core;
-using System.Net;
 
-namespace LoginGateMgrServer.Net
+namespace LoginGateServer.Net
 {
     public class NetService : Singleton<NetService>
     {
-        private TcpServer? m_acceptServer;
+        private TcpServer? m_acceptUser;
         private float m_heartBeatTimeOut;
+        private ConcurrentDictionary<Connection, DateTime> m_userConnHeartbeatTimestamps = new();
         private ConcurrentDictionary<Connection, DateTime> m_serverConnHeartbeatTimestamps = new();
         private List<NetClient> m_outgoingServerConnection = new();
 
@@ -25,46 +27,50 @@ namespace LoginGateMgrServer.Net
             MessageRouter.Instance.Start(Config.Server.workerCount);
             ProtoHelper.Init();
             // 协议注册
+            ProtoHelper.Register<CSHeartBeatRequest>((int)CommonProtocl.CsHeartbeatReq);
+            ProtoHelper.Register<CSHeartBeatResponse>((int)CommonProtocl.CsHeartbeatResp);
             ProtoHelper.Register<SSHeartBeatRequest>((int)CommonProtocl.SsHeartbeatReq);
             ProtoHelper.Register<SSHeartBeatResponse>((int)CommonProtocl.SsHeartbeatResp);
             // 消息的订阅
-            MessageRouter.Instance.Subscribe<SSHeartBeatRequest>(_SSHeartBeatRequest);
+            MessageRouter.Instance.Subscribe<CSHeartBeatRequest>(_CSHeartBeatRequest);
             MessageRouter.Instance.Subscribe<SSHeartBeatResponse>(_SSHeartBeatResponse);
             // 定时发送ss心跳包
             Scheduler.Instance.AddTask(_SendSSHeatBeatReq, Config.Server.heartBeatSendInterval, 0);
         }
         public void Init2()
         {
-            _StartListeningForServerConnections();
+            _StartListeningForUserConnections();
             // 定时检查心跳包的情况
             m_heartBeatTimeOut = Config.Server.heartBeatTimeOut;
             Scheduler.Instance.AddTask(_CheckHeatBeat, Config.Server.heartBeatCheckInterval, 0);
         }
         public void UnInit()
         {
-            m_acceptServer?.UnInit();
-            m_acceptServer = null;
+            m_acceptUser?.UnInit();
+            m_acceptUser = null;
+            m_userConnHeartbeatTimestamps.Clear();
             m_serverConnHeartbeatTimestamps.Clear();
         }
 
-        // loginGate服务器连接过来的
-        private void _StartListeningForServerConnections()
+        // 1.用户连接过来的
+        private void _StartListeningForUserConnections()
         {
-            Log.Information("Starting to listen for serverConnections.");
+            Log.Information("Starting to listen for userConnections.");
             // 启动网络监听
-            m_acceptServer = new TcpServer();
-            m_acceptServer.Init(Config.Server.ip, Config.Server.port, 100, _HandleServerConnected, _HandleServerDisconnected);
+            m_acceptUser = new TcpServer();
+            m_acceptUser.Init(Config.Server.ip, Config.Server.userPort, 100, _HandleUserConnected, _HandleClientDisconnected);
         }
-        private void _HandleServerConnected(Connection conn)
+        private void _HandleUserConnected(Connection conn)
         {
             try
             {
                 if (conn.Socket != null && conn.Socket.Connected)
                 {
-                    var ipe = conn.Socket.RemoteEndPoint;
-                    Log.Debug("[连接成功]" + IPAddress.Parse(((IPEndPoint)ipe).Address.ToString()) + " : " + ((IPEndPoint)ipe).Port.ToString());
+                    //var ipe = conn.Socket.RemoteEndPoint;
+                    //Log.Information("[连接成功]" + IPAddress.Parse(((IPEndPoint)ipe).Address.ToString()) + " : " + ((IPEndPoint)ipe).Port.ToString());
+                    
                     // 给conn添加心跳时间
-                    m_serverConnHeartbeatTimestamps[conn] = DateTime.Now;
+                    m_userConnHeartbeatTimestamps[conn] = DateTime.Now;
                 }
                 else
                 {
@@ -78,37 +84,34 @@ namespace LoginGateMgrServer.Net
 
 
         }
-        private void _HandleServerDisconnected(Connection conn)
+        private void _HandleClientDisconnected(Connection conn)
         {
             //从心跳字典中删除连接
-            if (m_serverConnHeartbeatTimestamps.ContainsKey(conn))
+            if (m_userConnHeartbeatTimestamps.ContainsKey(conn))
             {
-                m_serverConnHeartbeatTimestamps.TryRemove(conn, out _);
+                m_userConnHeartbeatTimestamps.TryRemove(conn,out _);
             }
-
-            // 通知上层删除
-            // 暂时没有需求
         }
-        public void CloseServerConnection(Connection conn)
+        public void CloseUserConnection(Connection conn)
         {
             if (conn == null) return;
 
             //从心跳字典中删除连接
-            if (m_serverConnHeartbeatTimestamps.ContainsKey(conn))
+            if (m_userConnHeartbeatTimestamps.ContainsKey(conn))
             {
-                m_serverConnHeartbeatTimestamps.TryRemove(conn, out _);
+                m_userConnHeartbeatTimestamps.TryRemove(conn, out _);
             }
 
             //转交给下一层的connection去进行关闭
             conn.CloseConnection();
         }
-        private void _SSHeartBeatRequest(Connection conn, SSHeartBeatRequest message)
+        private void _CSHeartBeatRequest(Connection conn, CSHeartBeatRequest message)
         {
             //更新心跳时间
-            m_serverConnHeartbeatTimestamps[conn] = DateTime.Now;
+            m_userConnHeartbeatTimestamps[conn] = DateTime.Now;
 
             //响应
-            SSHeartBeatResponse resp = new();
+            CSHeartBeatResponse resp = new CSHeartBeatResponse();
             conn.Send(resp);
         }
         private void _CheckHeatBeat()
@@ -116,8 +119,7 @@ namespace LoginGateMgrServer.Net
             DateTime nowTime = DateTime.Now;
 
             //这里规定心跳包超过m_lastHeartbeatTimes秒没用更新就将连接清理
-
-            foreach (var kv in m_serverConnHeartbeatTimestamps)
+            foreach (var kv in m_userConnHeartbeatTimestamps)
             {
                 TimeSpan gap = nowTime - kv.Value;
                 if (gap.TotalSeconds > m_heartBeatTimeOut)
@@ -125,13 +127,13 @@ namespace LoginGateMgrServer.Net
                     //关闭超时的客户端连接
                     Connection conn = kv.Key;
                     //Log.Information("[心跳检查]心跳超时==>");//移除相关的资源
-                    CloseServerConnection(conn);
+                    CloseUserConnection(conn);
                 }
             }
-
         }
 
-        // loginserver连接到其他服务器
+
+        // 3.服务器主动连接其他的服务器
         public NetClient ConnctToServer(string ip, int port,
             TcpClientConnectedCallback connected, TcpClientConnectedFailedCallback connectFailed,
             TcpClientDisconnectedCallback disconnected)

@@ -136,7 +136,7 @@ namespace LoginServer.Net
             NetClient tcpClient = new NetClient();
             connected += OutgoingServerConnectionConnected;
             disconnected += OutgoingServerConnectionDisconnected;
-            tcpClient.Init(Config.CCConfig.ip, Config.CCConfig.port, connected, connectFailed, disconnected);
+            tcpClient.Init(ip, port, connected, connectFailed, disconnected);
             return tcpClient;
         }
         private void OutgoingServerConnectionConnected(NetClient tcpClient)

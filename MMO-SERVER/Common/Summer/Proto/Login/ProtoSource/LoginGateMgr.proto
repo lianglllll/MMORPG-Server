@@ -6,7 +6,32 @@ enum LoginGateMgrProtocl{
 	LOGINGATEMGR_PROTOCL_NONE = 0;
 	LOGINGATEMGR_PROTOCL_REGISTER_LOGINGATE_INSTANCE_REQ = 22001;	//[RegisterLoginGateInstanceRequest]
 	LOGINGATEMGR_PROTOCL_REGISTER_LOGINGATE_INSTANCE_RESP = 22002;	//[RegisterLoginGateInstanceResponse]
+	LOGINGATEMGR_PROTOCL_EXECUTE_LG_COMMAND_REQ = 22003;			//[ExecuteLGCommandRequest]
+	LOGINGATEMGR_PROTOCL_EXECUTE_LG_COMMAND_RESP = 22004;			//[ExecuteLGCommandResponse]
 }
+
+enum LoginGateCommand{
+	LOGIN_GATE_COMMAND_NONE = 0;
+	LOGIN_GATE_COMMAND_START = 1;
+	LOGIN_GATE_COMMAND_STOP = 2;
+	LOGIN_GATE_COMMAND_RESUME = 3;
+	LOGIN_GATE_COMMAND_END = 4;
+}
+
+message ExecuteLGCommandRequest{
+	LoginGateCommand command = 1;
+	int32 loginGateServerId = 2;
+	int64 timeStamp = 3;
+	oneof payload{
+		HS.Protobuf.Common.ServerInfoNode loginServerInfoNode = 4;	
+	}
+}
+
+message ExecuteLGCommandResponse{
+	int32  resultCode		= 1;	
+	string resultMsg		= 2;
+}
+
 
 message RegisterLoginGateInstanceRequest{
 	HS.Protobuf.Common.ServerInfoNode ServerInfoNode = 1;
@@ -15,3 +40,6 @@ message RegisterLoginGateInstanceResponse{
 	int32  resultCode		= 1;	//0 成功 小于0正常流程  大于0异常流程
 	string resultMsg		= 2;
 }
+
+
+

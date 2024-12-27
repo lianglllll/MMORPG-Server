@@ -45,14 +45,22 @@ namespace LoginGateMgrServer.Net
 
         }
 
-        // 准备工作完成后，正式开始
-        private bool Lauch()
+        private bool _ExecutePhase1()
         {
             //开启监测
             LoginGateMgrHandler.Instance.Init();
             LogingateMonitor.Instance.Init();
+
             // 开始网络监听，预示着当前服务器的正式启动
             NetService.Instance.Init2();
+            return true;
+        }
+        private bool _ExecutePhase2()
+        {
+            return true;
+        }
+        private bool _ExecutePhase3()
+        {
             return true;
         }
 
@@ -94,7 +102,7 @@ namespace LoginGateMgrServer.Net
                 m_curServerInfoNode.ServerId = message.ServerId;
                 Log.Information("[Successfully registered this server information with the ControlCenter.]");
                 Log.Information($"The server ID of this server is [{message.ServerId}]");
-                Lauch();
+                _ExecutePhase1();
             }
             else
             {
