@@ -30,8 +30,9 @@ namespace HS.Protobuf.LoginGateMgr {
             "YnVmLkxvZ2luR2F0ZU1nci5Mb2dpbkdhdGVDb21tYW5kEhkKEWxvZ2luR2F0",
             "ZVNlcnZlcklkGAIgASgFEhEKCXRpbWVTdGFtcBgDIAEoAxJBChNsb2dpblNl",
             "cnZlckluZm9Ob2RlGAQgASgLMiIuSFMuUHJvdG9idWYuQ29tbW9uLlNlcnZl",
-            "ckluZm9Ob2RlSABCCQoHcGF5bG9hZCJBChhFeGVjdXRlTEdDb21tYW5kUmVz",
-            "cG9uc2USEgoKcmVzdWx0Q29kZRgBIAEoBRIRCglyZXN1bHRNc2cYAiABKAki",
+            "ckluZm9Ob2RlSABCCQoHcGF5bG9hZCJuChhFeGVjdXRlTEdDb21tYW5kUmVz",
+            "cG9uc2USEgoKcmVzdWx0Q29kZRgBIAEoBRI+CgplcnJDb21tYW5kGAIgASgO",
+            "MiouSFMuUHJvdG9idWYuTG9naW5HYXRlTWdyLkxvZ2luR2F0ZUNvbW1hbmQi",
             "XgogUmVnaXN0ZXJMb2dpbkdhdGVJbnN0YW5jZVJlcXVlc3QSOgoOU2VydmVy",
             "SW5mb05vZGUYASABKAsyIi5IUy5Qcm90b2J1Zi5Db21tb24uU2VydmVySW5m",
             "b05vZGUiSgohUmVnaXN0ZXJMb2dpbkdhdGVJbnN0YW5jZVJlc3BvbnNlEhIK",
@@ -50,7 +51,7 @@ namespace HS.Protobuf.LoginGateMgr {
           new pbr::FileDescriptor[] { global::HS.Protobuf.Common.CommonReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.LoginGateMgr.LoginGateMgrProtocl), typeof(global::HS.Protobuf.LoginGateMgr.LoginGateCommand), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.LoginGateMgr.ExecuteLGCommandRequest), global::HS.Protobuf.LoginGateMgr.ExecuteLGCommandRequest.Parser, new[]{ "Command", "LoginGateServerId", "TimeStamp", "LoginServerInfoNode" }, new[]{ "Payload" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.LoginGateMgr.ExecuteLGCommandResponse), global::HS.Protobuf.LoginGateMgr.ExecuteLGCommandResponse.Parser, new[]{ "ResultCode", "ResultMsg" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.LoginGateMgr.ExecuteLGCommandResponse), global::HS.Protobuf.LoginGateMgr.ExecuteLGCommandResponse.Parser, new[]{ "ResultCode", "ErrCommand" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.LoginGateMgr.RegisterLoginGateInstanceRequest), global::HS.Protobuf.LoginGateMgr.RegisterLoginGateInstanceRequest.Parser, new[]{ "ServerInfoNode" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.LoginGateMgr.RegisterLoginGateInstanceResponse), global::HS.Protobuf.LoginGateMgr.RegisterLoginGateInstanceResponse.Parser, new[]{ "ResultCode", "ResultMsg" }, null, null, null, null)
           }));
@@ -468,7 +469,7 @@ namespace HS.Protobuf.LoginGateMgr {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ExecuteLGCommandResponse(ExecuteLGCommandResponse other) : this() {
       resultCode_ = other.resultCode_;
-      resultMsg_ = other.resultMsg_;
+      errCommand_ = other.errCommand_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -490,15 +491,15 @@ namespace HS.Protobuf.LoginGateMgr {
       }
     }
 
-    /// <summary>Field number for the "resultMsg" field.</summary>
-    public const int ResultMsgFieldNumber = 2;
-    private string resultMsg_ = "";
+    /// <summary>Field number for the "errCommand" field.</summary>
+    public const int ErrCommandFieldNumber = 2;
+    private global::HS.Protobuf.LoginGateMgr.LoginGateCommand errCommand_ = global::HS.Protobuf.LoginGateMgr.LoginGateCommand.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string ResultMsg {
-      get { return resultMsg_; }
+    public global::HS.Protobuf.LoginGateMgr.LoginGateCommand ErrCommand {
+      get { return errCommand_; }
       set {
-        resultMsg_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        errCommand_ = value;
       }
     }
 
@@ -518,7 +519,7 @@ namespace HS.Protobuf.LoginGateMgr {
         return true;
       }
       if (ResultCode != other.ResultCode) return false;
-      if (ResultMsg != other.ResultMsg) return false;
+      if (ErrCommand != other.ErrCommand) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -527,7 +528,7 @@ namespace HS.Protobuf.LoginGateMgr {
     public override int GetHashCode() {
       int hash = 1;
       if (ResultCode != 0) hash ^= ResultCode.GetHashCode();
-      if (ResultMsg.Length != 0) hash ^= ResultMsg.GetHashCode();
+      if (ErrCommand != global::HS.Protobuf.LoginGateMgr.LoginGateCommand.None) hash ^= ErrCommand.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -550,9 +551,9 @@ namespace HS.Protobuf.LoginGateMgr {
         output.WriteRawTag(8);
         output.WriteInt32(ResultCode);
       }
-      if (ResultMsg.Length != 0) {
-        output.WriteRawTag(18);
-        output.WriteString(ResultMsg);
+      if (ErrCommand != global::HS.Protobuf.LoginGateMgr.LoginGateCommand.None) {
+        output.WriteRawTag(16);
+        output.WriteEnum((int) ErrCommand);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -568,9 +569,9 @@ namespace HS.Protobuf.LoginGateMgr {
         output.WriteRawTag(8);
         output.WriteInt32(ResultCode);
       }
-      if (ResultMsg.Length != 0) {
-        output.WriteRawTag(18);
-        output.WriteString(ResultMsg);
+      if (ErrCommand != global::HS.Protobuf.LoginGateMgr.LoginGateCommand.None) {
+        output.WriteRawTag(16);
+        output.WriteEnum((int) ErrCommand);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -585,8 +586,8 @@ namespace HS.Protobuf.LoginGateMgr {
       if (ResultCode != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(ResultCode);
       }
-      if (ResultMsg.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(ResultMsg);
+      if (ErrCommand != global::HS.Protobuf.LoginGateMgr.LoginGateCommand.None) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) ErrCommand);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -603,8 +604,8 @@ namespace HS.Protobuf.LoginGateMgr {
       if (other.ResultCode != 0) {
         ResultCode = other.ResultCode;
       }
-      if (other.ResultMsg.Length != 0) {
-        ResultMsg = other.ResultMsg;
+      if (other.ErrCommand != global::HS.Protobuf.LoginGateMgr.LoginGateCommand.None) {
+        ErrCommand = other.ErrCommand;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -625,8 +626,8 @@ namespace HS.Protobuf.LoginGateMgr {
             ResultCode = input.ReadInt32();
             break;
           }
-          case 18: {
-            ResultMsg = input.ReadString();
+          case 16: {
+            ErrCommand = (global::HS.Protobuf.LoginGateMgr.LoginGateCommand) input.ReadEnum();
             break;
           }
         }
@@ -648,8 +649,8 @@ namespace HS.Protobuf.LoginGateMgr {
             ResultCode = input.ReadInt32();
             break;
           }
-          case 18: {
-            ResultMsg = input.ReadString();
+          case 16: {
+            ErrCommand = (global::HS.Protobuf.LoginGateMgr.LoginGateCommand) input.ReadEnum();
             break;
           }
         }

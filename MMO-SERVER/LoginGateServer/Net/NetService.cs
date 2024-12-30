@@ -37,19 +37,28 @@ namespace LoginGateServer.Net
             // 定时发送ss心跳包
             Scheduler.Instance.AddTask(_SendSSHeatBeatReq, Config.Server.heartBeatSendInterval, 0);
         }
-        public void Init2()
-        {
-            _StartListeningForUserConnections();
-            // 定时检查心跳包的情况
-            m_heartBeatTimeOut = Config.Server.heartBeatTimeOut;
-            Scheduler.Instance.AddTask(_CheckHeatBeat, Config.Server.heartBeatCheckInterval, 0);
-        }
+
         public void UnInit()
         {
             m_acceptUser?.UnInit();
             m_acceptUser = null;
             m_userConnHeartbeatTimestamps.Clear();
             m_serverConnHeartbeatTimestamps.Clear();
+        }
+        public void Start()
+        {
+            _StartListeningForUserConnections();
+            // 定时检查心跳包的情况
+            m_heartBeatTimeOut = Config.Server.heartBeatTimeOut;
+            Scheduler.Instance.AddTask(_CheckHeatBeat, Config.Server.heartBeatCheckInterval, 0);
+        }
+        public void Stop()
+        {
+            m_acceptUser?.Stop();
+        }
+        public void Resume()
+        {
+            m_acceptUser?.Resume();
         }
 
         // 1.用户连接过来的
@@ -163,6 +172,11 @@ namespace LoginGateServer.Net
         private void _SSHeartBeatResponse(Connection conn, SSHeartBeatResponse message)
         {
             // 知道对端也活着，嘻嘻。
+        }
+        public void CloseServerConnection(NetClient nc)
+        {
+            var conn = nc.CloseConnection();
+            m_serverConnHeartbeatTimestamps.TryRemove(conn,out _);
         }
     }
 }

@@ -33,7 +33,7 @@ namespace LoginGateMgrServer.Net
             // 定时发送ss心跳包
             Scheduler.Instance.AddTask(_SendSSHeatBeatReq, Config.Server.heartBeatSendInterval, 0);
         }
-        public void Init2()
+        public void Start()
         {
             _StartListeningForServerConnections();
             // 定时检查心跳包的情况
@@ -87,7 +87,12 @@ namespace LoginGateMgrServer.Net
             }
 
             // 通知上层删除
-            // 暂时没有需求
+            int serverId = conn.Get<int>();
+            if(serverId != 0)
+            {
+                LogingateMonitor.Instance.LoginGateDisconnection(serverId);
+            }
+
         }
         public void CloseServerConnection(Connection conn)
         {

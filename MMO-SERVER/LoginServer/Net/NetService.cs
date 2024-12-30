@@ -105,7 +105,7 @@ namespace LoginServer.Net
             m_serverConnHeartbeatTimestamps[conn] = DateTime.Now;
 
             //响应
-            CSHeartBeatResponse resp = new CSHeartBeatResponse();
+            SSHeartBeatResponse resp = new();
             conn.Send(resp);
         }
         private void _CheckHeatBeat()

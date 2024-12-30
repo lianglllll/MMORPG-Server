@@ -35,6 +35,5 @@ namespace ControlCenter.Core
             conn.Send(resp);
         }
 
-
     }
 }

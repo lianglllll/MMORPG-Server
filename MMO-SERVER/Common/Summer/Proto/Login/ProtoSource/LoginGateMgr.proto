@@ -29,9 +29,8 @@ message ExecuteLGCommandRequest{
 
 message ExecuteLGCommandResponse{
 	int32  resultCode		= 1;	
-	string resultMsg		= 2;
+	LoginGateCommand errCommand = 2;
 }
-
 
 message RegisterLoginGateInstanceRequest{
 	HS.Protobuf.Common.ServerInfoNode ServerInfoNode = 1;

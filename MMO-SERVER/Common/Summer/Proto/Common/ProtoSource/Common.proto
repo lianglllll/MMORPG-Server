@@ -44,6 +44,7 @@ message ServerInfoNode{
 		SceneServerInfoNode sceneServerInfo = 12;
 		DBProxyServerInfoNode dbProxyServerInfo = 13;
 	}
+	int32 eventBitmap	= 14;
 }
 message ControlCenterServerInfoNode{
 }

@@ -29,10 +29,12 @@ namespace HS.Protobuf.LoginGate {
             "cm90b2NvbENvZGUYASABKAUSFwoPZW5jcnlwdGlvbkxldmVsGAIgASgFEgwK",
             "BGRhdGEYAyABKAwqUAoQTG9naW5HYXRlUHJvdG9jbBIaChZMT0dJTkdBVEVf",
             "UFJPVE9DTF9OT05FEAASIAoaTE9HSU5HQVRFX1BST1RPQ0xfRU5WRUxPUEUQ",
-            "iaQBYgZwcm90bzM="));
+            "iaQBKmoKD0xvZ2luR2F0ZVN0YXR1cxIbChdMT0dJTkdBVEVfU1RBVFVTX0FD",
+            "VElWRRAAEhsKF0xPR0lOR0FURV9TVEFUVVNfUEFVU0VEEAESHQoZTE9HSU5H",
+            "QVRFX1NUQVRVU19JTkFDVElWRRACYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::HS.Protobuf.Common.CommonReflection.Descriptor, },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.LoginGate.LoginGateProtocl), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.LoginGate.LoginGateProtocl), typeof(global::HS.Protobuf.LoginGate.LoginGateStatus), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.LoginGate.Envelope), global::HS.Protobuf.LoginGate.Envelope.Parser, new[]{ "ProtocolCode", "EncryptionLevel", "Data" }, null, null, null, null)
           }));
     }
@@ -43,6 +45,21 @@ namespace HS.Protobuf.LoginGate {
   public enum LoginGateProtocl {
     [pbr::OriginalName("LOGINGATE_PROTOCL_NONE")] None = 0,
     [pbr::OriginalName("LOGINGATE_PROTOCL_ENVELOPE")] Envelope = 21001,
+  }
+
+  public enum LoginGateStatus {
+    /// <summary>
+    /// 工作中
+    /// </summary>
+    [pbr::OriginalName("LOGINGATE_STATUS_ACTIVE")] Active = 0,
+    /// <summary>
+    /// 暂停
+    /// </summary>
+    [pbr::OriginalName("LOGINGATE_STATUS_PAUSED")] Paused = 1,
+    /// <summary>
+    /// 非工作状态
+    /// </summary>
+    [pbr::OriginalName("LOGINGATE_STATUS_INACTIVE")] Inactive = 2,
   }
 
   #endregion

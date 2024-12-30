@@ -20,7 +20,7 @@ namespace LoginGateServer.Net
         private NetClient? m_CCClient;
         private NetClient? m_LGMClient;
         private NetClient? m_LClient;
-        
+
         public void Init()
         {
             // 本服务器的信息
@@ -31,9 +31,11 @@ namespace LoginGateServer.Net
             m_curSin.Port = Config.Server.serverPort;
             m_curSin.ServerId = 0;
             m_curSin.LoginGateServerInfo = lgNode;
+            m_curSin.EventBitmap = SetEventBitmap();
 
-            // 部分网络服务开启
+            // 网络服务初始化
             NetService.Instance.Init();
+
             // 协议注册
             ProtoHelper.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
             ProtoHelper.Register<ServerInfoRegisterResponse>((int)ControlCenterProtocl.ServerinfoRegisterResp);
@@ -49,17 +51,37 @@ namespace LoginGateServer.Net
             MessageRouter.Instance.Subscribe<GetAllServerInfoResponse>(_HandleGetAllServerInfoResponse);
             MessageRouter.Instance.Subscribe<ExecuteLGCommandRequest>(_ExecuteLGCommandRequest);
 
-            // 连接到控制中心cc
-            _ConnectToCC();
+            // 开始流程
+            _ExecutePhase0();
         }
         public void UnInit()
         {
 
         }
+        private int SetEventBitmap()
+        {
+            int bitmap = 0;
+            List<ClusterEventType> events = new List<ClusterEventType>
+            {
+                ClusterEventType.LogingatemgrEnter,
+            };
+            foreach(var e in events)
+            {
+                bitmap |= (1 << (int)e);
+            }
+            return bitmap;
+        }
 
-        // 一阶段：cc注册完成
-        // 二阶段：lgm注册完成
-        // 三阶段：l注册完成
+        // 零阶段：连接cc
+        // 一阶段：cc注册完成,获取gatemgr信息
+        // 二阶段：lgm注册完成，等待分配任务
+        // 三阶段：l连接成功，等待接受用户连接
+        private bool _ExecutePhase0()
+        {
+            // 连接到控制中心cc
+            _ConnectToCC();
+            return true;
+        }
         private bool _ExecutePhase1()
         {
             // 获取LoginGateMgr的信息
@@ -70,12 +92,13 @@ namespace LoginGateServer.Net
         }
         private bool _ExecutePhase2()
         {
+            Log.Information("waiting for the LoginGateMgr server to assign tasks.");
             return true;
         }
         private bool _ExecutePhase3()
         {
             // 开始网络监听，预示着当前服务器的正式启动
-            NetService.Instance.Init2();
+            NetService.Instance.Start();
             return true;
         }
 
@@ -88,6 +111,7 @@ namespace LoginGateServer.Net
             Log.Information("Successfully connected to the control center server.");
             // 记录
             m_CCClient = tcpClient;
+
             // 向cc注册自己
             ServerInfoRegisterRequest req = new();
             req.ServerInfoNode = m_curSin;
@@ -131,11 +155,22 @@ namespace LoginGateServer.Net
             if (list.Count == 0)
             {
                 Log.Error("No LoginGateMgr server information was obtained.");
-                Log.Information("The server may not be start.");
+                Log.Error("The LoginGateMgr server may not be start.");
                 return;
             }
-            m_curLGMSin = list[0];    // 集群只有一个 
-            _ConnectToLGM();
+            if (m_curLGMSin == null)
+            {
+                m_curLGMSin = list[0];    // 集群只有一个
+                _ConnectToLGM();
+            }
+        }
+        public void SetLGMAndConnect(ServerInfoNode sin)
+        {
+            if(m_curLGMSin == null)
+            {
+                m_curLGMSin = sin;
+                _ConnectToLGM();
+            }
         }
         private void _ConnectToLGM()
         {
@@ -225,28 +260,60 @@ namespace LoginGateServer.Net
 
         private void _ExecuteLGCommandRequest(Connection conn, ExecuteLGCommandRequest message)
         {
+            int resultCode = 0;
             switch (message.Command)
             {
                 case LoginGateCommand.Start:
                     _ExecuteStart(message);
                     break;
                 case LoginGateCommand.Stop:
+                    _ExecuteStop();
                     break;
                 case LoginGateCommand.Resume:
+                    _ExecuteResume();
                     break;
                 case LoginGateCommand.End:
+                    _ExecuteEnd();
                     break;
                 default:
                     Log.Error("[ServersMgr._ExecuteLGCommandRequest]未识别的命令");
                     break;
             }
+
+            ExecuteLGCommandResponse resp = new();
+            resp.ResultCode = resultCode;
+            resp.ErrCommand = message.Command;
+            conn.Send(resp);
         }
         private bool _ExecuteStart(ExecuteLGCommandRequest message)
         {
             if(message.LoginServerInfoNode != null)
             {
+                Log.Information("Command:Start......");
                 m_curLSin = message.LoginServerInfoNode;
                 _ConnectToL();
+                return true;
+            }
+            return false;
+        }
+        private bool _ExecuteStop()
+        {
+            // 停止当前的accept即可
+            NetService.Instance.Stop();
+            return true;
+        }
+        private bool _ExecuteResume()
+        {
+            NetService.Instance.Resume();
+            return true;
+        }
+        private bool _ExecuteEnd()
+        {
+            if(m_LClient != null)
+            {
+                NetService.Instance.CloseServerConnection(m_LClient);
+                m_LClient = null;
+                m_curLSin = null;
                 return true;
             }
             return false;

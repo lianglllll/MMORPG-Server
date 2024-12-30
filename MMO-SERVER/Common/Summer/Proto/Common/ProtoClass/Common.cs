@@ -24,7 +24,7 @@ namespace HS.Protobuf.Common {
     static CommonReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "CgxDb21tb24ucHJvdG8SEkhTLlByb3RvYnVmLkNvbW1vbiKUBgoOU2VydmVy",
+            "CgxDb21tb24ucHJvdG8SEkhTLlByb3RvYnVmLkNvbW1vbiKpBgoOU2VydmVy",
             "SW5mb05vZGUSEAoIc2VydmVySWQYASABKAUSMwoKc2VydmVyVHlwZRgCIAEo",
             "DjIfLkhTLlByb3RvYnVmLkNvbW1vbi5TRVJWRVJfVFlQRRIKCgJpcBgDIAEo",
             "CRIMCgRwb3J0GAQgASgFEkwKEWNvbnRyb2xDZW50ZXJJbmZvGAUgASgLMi8u",
@@ -42,31 +42,31 @@ namespace HS.Protobuf.Common {
             "QgoPc2NlbmVTZXJ2ZXJJbmZvGAwgASgLMicuSFMuUHJvdG9idWYuQ29tbW9u",
             "LlNjZW5lU2VydmVySW5mb05vZGVIABJGChFkYlByb3h5U2VydmVySW5mbxgN",
             "IAEoCzIpLkhTLlByb3RvYnVmLkNvbW1vbi5EQlByb3h5U2VydmVySW5mb05v",
-            "ZGVIAEIJCgdwYXlsb2FkIh0KG0NvbnRyb2xDZW50ZXJTZXJ2ZXJJbmZvTm9k",
-            "ZSIVChNMb2dpblNlcnZlckluZm9Ob2RlIjYKF0xvZ2luR2F0ZVNlcnZlcklu",
-            "Zm9Ob2RlEhsKE3RhcmdldExvZ2luU2VydmVySWQYASABKAUiHAoaTG9naW5H",
-            "YXRlTWdyU2VydmVySW5mb05vZGUiKQoSR2FtZVNlcnZlckluZm9Ob2RlEhMK",
-            "C2dhbWVXb3JsZElkGAEgASgFIhgKFkdhbWVHYXRlU2VydmVySW5mb05vZGUi",
-            "GwoZR2FtZUdhdGVNZ3JTZXJ2ZXJJbmZvTm9kZSIVChNTY2VuZVNlcnZlcklu",
-            "Zm9Ob2RlIhcKFURCUHJveHlTZXJ2ZXJJbmZvTm9kZSInCgRWZWMzEgkKAXgY",
-            "ASABKAUSCQoBeRgCIAEoBRIJCgF6GAMgASgFIhQKEkNTSGVhcnRCZWF0UmVx",
-            "dWVzdCIVChNDU0hlYXJ0QmVhdFJlc3BvbnNlIhQKElNTSGVhcnRCZWF0UmVx",
-            "dWVzdCIVChNTU0hlYXJ0QmVhdFJlc3BvbnNlKsIBCg1Db21tb25Qcm90b2Ns",
-            "EhcKE0NPTU1PTl9QUk9UT0NMX05PTkUQABIkCh9DT01NT05fUFJPVE9DTF9D",
-            "U19IRUFSVEJFQVRfUkVREOkHEiUKIENPTU1PTl9QUk9UT0NMX0NTX0hFQVJU",
-            "QkVBVF9SRVNQEOoHEiQKH0NPTU1PTl9QUk9UT0NMX1NTX0hFQVJUQkVBVF9S",
-            "RVEQ6wcSJQogQ09NTU9OX1BST1RPQ0xfU1NfSEVBUlRCRUFUX1JFU1AQ7Acq",
-            "jwIKC1NFUlZFUl9UWVBFEhQKEFNFUlZFUl9UWVBFX05PTkUQABIdChlTRVJW",
-            "RVJfVFlQRV9DT05UUk9MQ0VOVEVSEAESFQoRU0VSVkVSX1RZUEVfTE9HSU4Q",
-            "AhIZChVTRVJWRVJfVFlQRV9MT0dJTkdBVEUQAxIcChhTRVJWRVJfVFlQRV9M",
-            "T0dJTkdBVEVNR1IQBBIUChBTRVJWRVJfVFlQRV9HQU1FEAUSGAoUU0VSVkVS",
-            "X1RZUEVfR0FNRUdBVEUQBhIbChdTRVJWRVJfVFlQRV9HQU1FR0FURU1HUhAH",
-            "EhUKEVNFUlZFUl9UWVBFX1NDRU5FEAgSFwoTU0VSVkVSX1RZUEVfREJQUk9Y",
-            "WRAJYgZwcm90bzM="));
+            "ZGVIABITCgtldmVudEJpdG1hcBgOIAEoBUIJCgdwYXlsb2FkIh0KG0NvbnRy",
+            "b2xDZW50ZXJTZXJ2ZXJJbmZvTm9kZSIVChNMb2dpblNlcnZlckluZm9Ob2Rl",
+            "IjYKF0xvZ2luR2F0ZVNlcnZlckluZm9Ob2RlEhsKE3RhcmdldExvZ2luU2Vy",
+            "dmVySWQYASABKAUiHAoaTG9naW5HYXRlTWdyU2VydmVySW5mb05vZGUiKQoS",
+            "R2FtZVNlcnZlckluZm9Ob2RlEhMKC2dhbWVXb3JsZElkGAEgASgFIhgKFkdh",
+            "bWVHYXRlU2VydmVySW5mb05vZGUiGwoZR2FtZUdhdGVNZ3JTZXJ2ZXJJbmZv",
+            "Tm9kZSIVChNTY2VuZVNlcnZlckluZm9Ob2RlIhcKFURCUHJveHlTZXJ2ZXJJ",
+            "bmZvTm9kZSInCgRWZWMzEgkKAXgYASABKAUSCQoBeRgCIAEoBRIJCgF6GAMg",
+            "ASgFIhQKEkNTSGVhcnRCZWF0UmVxdWVzdCIVChNDU0hlYXJ0QmVhdFJlc3Bv",
+            "bnNlIhQKElNTSGVhcnRCZWF0UmVxdWVzdCIVChNTU0hlYXJ0QmVhdFJlc3Bv",
+            "bnNlKsIBCg1Db21tb25Qcm90b2NsEhcKE0NPTU1PTl9QUk9UT0NMX05PTkUQ",
+            "ABIkCh9DT01NT05fUFJPVE9DTF9DU19IRUFSVEJFQVRfUkVREOkHEiUKIENP",
+            "TU1PTl9QUk9UT0NMX0NTX0hFQVJUQkVBVF9SRVNQEOoHEiQKH0NPTU1PTl9Q",
+            "Uk9UT0NMX1NTX0hFQVJUQkVBVF9SRVEQ6wcSJQogQ09NTU9OX1BST1RPQ0xf",
+            "U1NfSEVBUlRCRUFUX1JFU1AQ7AcqjwIKC1NFUlZFUl9UWVBFEhQKEFNFUlZF",
+            "Ul9UWVBFX05PTkUQABIdChlTRVJWRVJfVFlQRV9DT05UUk9MQ0VOVEVSEAES",
+            "FQoRU0VSVkVSX1RZUEVfTE9HSU4QAhIZChVTRVJWRVJfVFlQRV9MT0dJTkdB",
+            "VEUQAxIcChhTRVJWRVJfVFlQRV9MT0dJTkdBVEVNR1IQBBIUChBTRVJWRVJf",
+            "VFlQRV9HQU1FEAUSGAoUU0VSVkVSX1RZUEVfR0FNRUdBVEUQBhIbChdTRVJW",
+            "RVJfVFlQRV9HQU1FR0FURU1HUhAHEhUKEVNFUlZFUl9UWVBFX1NDRU5FEAgS",
+            "FwoTU0VSVkVSX1RZUEVfREJQUk9YWRAJYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.Common.CommonProtocl), typeof(global::HS.Protobuf.Common.SERVER_TYPE), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Common.ServerInfoNode), global::HS.Protobuf.Common.ServerInfoNode.Parser, new[]{ "ServerId", "ServerType", "Ip", "Port", "ControlCenterInfo", "LoginServerInfo", "LoginGateServerInfo", "LoginGateMgrServerInfo", "GameServerInfo", "GameGateServerInfo", "GameGateMgrServerInfo", "SceneServerInfo", "DbProxyServerInfo" }, new[]{ "Payload" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Common.ServerInfoNode), global::HS.Protobuf.Common.ServerInfoNode.Parser, new[]{ "ServerId", "ServerType", "Ip", "Port", "ControlCenterInfo", "LoginServerInfo", "LoginGateServerInfo", "LoginGateMgrServerInfo", "GameServerInfo", "GameGateServerInfo", "GameGateMgrServerInfo", "SceneServerInfo", "DbProxyServerInfo", "EventBitmap" }, new[]{ "Payload" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Common.ControlCenterServerInfoNode), global::HS.Protobuf.Common.ControlCenterServerInfoNode.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Common.LoginServerInfoNode), global::HS.Protobuf.Common.LoginServerInfoNode.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Common.LoginGateServerInfoNode), global::HS.Protobuf.Common.LoginGateServerInfoNode.Parser, new[]{ "TargetLoginServerId" }, null, null, null, null),
@@ -157,6 +157,7 @@ namespace HS.Protobuf.Common {
       serverType_ = other.serverType_;
       ip_ = other.ip_;
       port_ = other.port_;
+      eventBitmap_ = other.eventBitmap_;
       switch (other.PayloadCase) {
         case PayloadOneofCase.ControlCenterInfo:
           ControlCenterInfo = other.ControlCenterInfo.Clone();
@@ -352,6 +353,18 @@ namespace HS.Protobuf.Common {
       }
     }
 
+    /// <summary>Field number for the "eventBitmap" field.</summary>
+    public const int EventBitmapFieldNumber = 14;
+    private int eventBitmap_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int EventBitmap {
+      get { return eventBitmap_; }
+      set {
+        eventBitmap_ = value;
+      }
+    }
+
     private object payload_;
     /// <summary>Enum of possible cases for the "payload" oneof.</summary>
     public enum PayloadOneofCase {
@@ -408,6 +421,7 @@ namespace HS.Protobuf.Common {
       if (!object.Equals(GameGateMgrServerInfo, other.GameGateMgrServerInfo)) return false;
       if (!object.Equals(SceneServerInfo, other.SceneServerInfo)) return false;
       if (!object.Equals(DbProxyServerInfo, other.DbProxyServerInfo)) return false;
+      if (EventBitmap != other.EventBitmap) return false;
       if (PayloadCase != other.PayloadCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -429,6 +443,7 @@ namespace HS.Protobuf.Common {
       if (payloadCase_ == PayloadOneofCase.GameGateMgrServerInfo) hash ^= GameGateMgrServerInfo.GetHashCode();
       if (payloadCase_ == PayloadOneofCase.SceneServerInfo) hash ^= SceneServerInfo.GetHashCode();
       if (payloadCase_ == PayloadOneofCase.DbProxyServerInfo) hash ^= DbProxyServerInfo.GetHashCode();
+      if (EventBitmap != 0) hash ^= EventBitmap.GetHashCode();
       hash ^= (int) payloadCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -500,6 +515,10 @@ namespace HS.Protobuf.Common {
         output.WriteRawTag(106);
         output.WriteMessage(DbProxyServerInfo);
       }
+      if (EventBitmap != 0) {
+        output.WriteRawTag(112);
+        output.WriteInt32(EventBitmap);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -562,6 +581,10 @@ namespace HS.Protobuf.Common {
         output.WriteRawTag(106);
         output.WriteMessage(DbProxyServerInfo);
       }
+      if (EventBitmap != 0) {
+        output.WriteRawTag(112);
+        output.WriteInt32(EventBitmap);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -611,6 +634,9 @@ namespace HS.Protobuf.Common {
       if (payloadCase_ == PayloadOneofCase.DbProxyServerInfo) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(DbProxyServerInfo);
       }
+      if (EventBitmap != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(EventBitmap);
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -634,6 +660,9 @@ namespace HS.Protobuf.Common {
       }
       if (other.Port != 0) {
         Port = other.Port;
+      }
+      if (other.EventBitmap != 0) {
+        EventBitmap = other.EventBitmap;
       }
       switch (other.PayloadCase) {
         case PayloadOneofCase.ControlCenterInfo:
@@ -804,6 +833,10 @@ namespace HS.Protobuf.Common {
             DbProxyServerInfo = subBuilder;
             break;
           }
+          case 112: {
+            EventBitmap = input.ReadInt32();
+            break;
+          }
         }
       }
     #endif
@@ -914,6 +947,10 @@ namespace HS.Protobuf.Common {
             }
             input.ReadMessage(subBuilder);
             DbProxyServerInfo = subBuilder;
+            break;
+          }
+          case 112: {
+            EventBitmap = input.ReadInt32();
             break;
           }
         }

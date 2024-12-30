@@ -51,6 +51,14 @@ namespace Common.Summer.Net
             m_connectFailed = null;
             m_disconnected = null;
         }
+        public Connection CloseConnection()
+        {
+            UnInit();
+            var conn = m_connection;
+            m_connection = null;
+            return m_connection;
+        }
+
 
         private void _ConnectToServer()
         {

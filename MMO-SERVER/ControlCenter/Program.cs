@@ -80,14 +80,6 @@ namespace ControlCenter
                         UnInit();
                         Environment.Exit(0);
                         return true;
-                    case "ss":
-                        var dict = ServersMgr.Instance.GetServers();
-                        foreach (var pair in dict)
-                        {
-                            Console.WriteLine(pair.Key);
-                            Console.WriteLine(pair.Value);
-                        }
-                        break;
                     default:
                         Console.WriteLine($"Unknown command: {command}");
                         break;

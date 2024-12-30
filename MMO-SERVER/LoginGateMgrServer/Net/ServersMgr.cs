@@ -14,7 +14,7 @@ namespace LoginGateMgrServer.Net
     {
         private ServerInfoNode? m_curServerInfoNode;
         public NetClient ccClient;
-
+        public int ServerId { get { return m_curServerInfoNode.ServerId; } }
         public void Init()
         {
             // 本服务器的信息
@@ -25,6 +25,7 @@ namespace LoginGateMgrServer.Net
             m_curServerInfoNode.Port = Config.Server.port;
             m_curServerInfoNode.ServerId = 0;
             m_curServerInfoNode.LoginGateMgrServerInfo = lNode;
+            m_curServerInfoNode.EventBitmap = SetEventBitmap();
 
             // 网络服务开启
             NetService.Instance.Init();
@@ -32,17 +33,33 @@ namespace LoginGateMgrServer.Net
             // 协议注册
             ProtoHelper.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
             ProtoHelper.Register<ServerInfoRegisterResponse>((int)ControlCenterProtocl.ServerinfoRegisterResp);
+            // 下面这个协议是重复注册过的，原因是时序问题会报错，我看得不舒服。
+            ProtoHelper.Register<ClusterEventResponse>((int)ControlCenterProtocl.ClusterEventResp);
+
 
             // 消息的订阅
             MessageRouter.Instance.Subscribe<ServerInfoRegisterResponse>(_RegisterServerInfo2ControlCenterResponse);
 
             // 连接到控制中心cc
             _CCConnectToControlCenter();
-
         }
         public void UnInit()
         {
 
+        }
+        private int SetEventBitmap()
+        {
+            int bitmap = 0;
+            List<ClusterEventType> events = new List<ClusterEventType>
+            {
+                ClusterEventType.LoginEnter,
+                ClusterEventType.LoginExit,
+            };
+            foreach (var e in events)
+            {
+                bitmap |= (1 << (int)e);
+            }
+            return bitmap;
         }
 
         private bool _ExecutePhase1()
@@ -52,15 +69,7 @@ namespace LoginGateMgrServer.Net
             LogingateMonitor.Instance.Init();
 
             // 开始网络监听，预示着当前服务器的正式启动
-            NetService.Instance.Init2();
-            return true;
-        }
-        private bool _ExecutePhase2()
-        {
-            return true;
-        }
-        private bool _ExecutePhase3()
-        {
+            NetService.Instance.Start();
             return true;
         }
 
@@ -109,6 +118,5 @@ namespace LoginGateMgrServer.Net
                 Log.Error(message.ResultMsg);
             }
         }
-           
     }
 }

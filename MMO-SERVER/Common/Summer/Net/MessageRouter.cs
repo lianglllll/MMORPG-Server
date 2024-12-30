@@ -4,6 +4,7 @@ using Google.Protobuf;
 using Serilog;
 using System;
 using System.Collections.Concurrent;
+using System.Reflection;
 using System.Threading;
 
 namespace Common.Summer.Net
@@ -155,9 +156,16 @@ namespace Common.Summer.Net
                 try
                 {
                     handler.DynamicInvoke(conn, message);
-                }catch(Exception e)
+                }
+                catch (TargetInvocationException e)
                 {
-                    Log.Error("[MessageRouter.executeMessage]" + e.StackTrace);
+                    Log.Error($"[{fullName}]");
+                    Log.Error($"[MessageRouter.executeMessage] Inner Exception: {e.InnerException?.Message} \nStackTrace: {e.InnerException?.StackTrace ?? e.StackTrace}");
+                }
+                catch (Exception e)
+                {
+                    Log.Error($"[{fullName}]");
+                    Log.Error($"[MessageRouter.executeMessage] Exception: {e.Message} \nStackTrace: {e.StackTrace}");
                 }
             }
         }

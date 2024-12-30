@@ -8,8 +8,30 @@ enum ControlCenterProtocl{
 	CONTROLCENTER_PROTOCL_SERVERINFO_REGISTER_RESP = 10002;	// [ServerInfoRegisterResponse]
 	CONTROLCENTER_PROTOCL_GET_ALLSERVERINFO_REQ = 10003;	// [GetAllServerInfoRequest]
 	CONTROLCENTER_PROTOCL_GET_ALLSERVERINFO_RESP = 10004;	// [GetAllServerInfoResponse]
+	CONTROLCENTER_PROTOCL_CLUSTER_EVENT_RESP = 10006;		// [ClusterEventResponse]
 }
 
+enum ClusterEventType {
+    CLUSTER_EVENT_TYPE_UNKNOWN_EVENT = 0;       // 未知事件，作为默认值
+    CLUSTER_EVENT_TYPE_LOGINGATE_ENTER = 1;     // logingate 进入集群
+    CLUSTER_EVENT_TYPE_LOGINGATE_EXIT = 2;      // logingate 退出集群
+    CLUSTER_EVENT_TYPE_LOGIN_ENTER = 3;         // login 进入集群
+    CLUSTER_EVENT_TYPE_LOGIN_EXIT = 4;          // login 退出集群
+    CLUSTER_EVENT_TYPE_GAME_ENTER = 5;          // game 进入集群
+    CLUSTER_EVENT_TYPE_GAME_EXIT = 6;           // game 退出集群
+    CLUSTER_EVENT_TYPE_GAMEGATE_ENTER = 7;      // gamegate 进入集群
+    CLUSTER_EVENT_TYPE_GAMEGATE_EXIT = 8;       // gamegate 退出集群 
+	CLUSTER_EVENT_TYPE_LOGINGATEMGR_ENTER = 9;  // logingatemgr 进入集群
+	CLUSTER_EVENT_TYPE_GAMEGATEMGR_ENTER = 10;  // gamegatemgr 进入集群
+	CLUSTER_EVENT_TYPE_SCENE_ENTER = 11;        // scene 进入集群
+	CLUSTER_EVENT_TYPE_DBPROXY_ENTER = 12;      // dbproxy 进入集群
+}
+
+message ClusterEventResponse{
+	int32 serverId = 1;
+	ClusterEventType eventType = 2;
+	HS.Protobuf.Common.ServerInfoNode serverInfoNode = 3;
+}
 message ServerInfoRegisterRequest{
 	HS.Protobuf.Common.ServerInfoNode serverInfoNode = 1;
 }
@@ -18,7 +40,6 @@ message ServerInfoRegisterResponse{
 	string resultMsg		= 2;
 	int32 serverId			= 3;
 }
-
 message GetAllServerInfoRequest{
 	HS.Protobuf.Common.SERVER_TYPE serverType = 1;
 }

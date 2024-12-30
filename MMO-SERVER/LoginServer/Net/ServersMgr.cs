@@ -24,6 +24,7 @@ namespace LoginServer.Net
             m_curServerInfoNode.Port = Config.Server.port;
             m_curServerInfoNode.ServerId = 0;
             m_curServerInfoNode.LoginServerInfo = lNode;
+            m_curServerInfoNode.EventBitmap = SetEventBitmap();
 
             // 网络服务开启
             NetService.Instance.Init();
@@ -43,6 +44,20 @@ namespace LoginServer.Net
         {
 
         }
+        private int SetEventBitmap()
+        {
+            int bitmap = 0;
+            List<ClusterEventType> events = new List<ClusterEventType>
+            {
+                ClusterEventType.DbproxyEnter,
+            };
+            foreach (var e in events)
+            {
+                bitmap |= (1 << (int)e);
+            }
+            return bitmap;
+        }
+
 
         // cc
         private void _CCConnectToControlCenter()

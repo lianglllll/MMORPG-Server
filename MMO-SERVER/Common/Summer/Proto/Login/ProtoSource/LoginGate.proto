@@ -7,6 +7,12 @@ enum LoginGateProtocl{
 	LOGINGATE_PROTOCL_ENVELOPE = 21001;
 }
 
+enum LoginGateStatus {
+    LOGINGATE_STATUS_ACTIVE = 0;   // 工作中
+    LOGINGATE_STATUS_PAUSED = 1;   // 暂停
+    LOGINGATE_STATUS_INACTIVE = 2; // 非工作状态
+}
+
 message Envelope{
 	int32 protocolCode = 1;
 	int32 encryptionLevel = 2;

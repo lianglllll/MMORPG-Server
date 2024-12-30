@@ -18,6 +18,8 @@ namespace Common.Summer.Net
     /// </summary>
     public class TcpServer
     {
+        private bool m_isRunning = false;   //是否正在运行
+
         //网络连接的属性
         private IPEndPoint m_endPoint;    //网络终结点
         private Socket m_listenerSocket;  //服务端监听对象
@@ -29,19 +31,13 @@ namespace Common.Summer.Net
         private event ConnectedCallback m_connected;       //接收到连接的事件
         private event DisconnectedCallback m_disconnected; //接收到连接断开的事件
 
-        public bool IsRunning
-        {
-            get
-            {
-                return m_listenerSocket != null;
-            }
-        }
-
         public void Init(string host, int port, int backlog , 
             ConnectedCallback connected, DisconnectedCallback disconnected)
         {
-            if (!IsRunning)
+            if (!m_isRunning)
             {
+                m_isRunning = true;
+
                 //事件注册
                 m_connected += connected;
                 m_disconnected += disconnected;
@@ -54,7 +50,7 @@ namespace Common.Summer.Net
                 m_listenerSocket.Bind(m_endPoint);                                      //绑定一个IPEndPoint
                 m_listenerSocket.Listen(backlog);                                       //开始监听，并设置等待队列长度 
 
-                SocketAsyncEventArgs args = new SocketAsyncEventArgs();             //可以复用,当前监听连接socket复用
+                SocketAsyncEventArgs args = new SocketAsyncEventArgs();                //可以复用,当前监听连接socket复用
                 args.Completed += _OnAccepted;                                         //当有用户的连接时触发回调函数
 
                 m_listenerSocket.AcceptAsync(args);                                   //异步接收
@@ -76,15 +72,23 @@ namespace Common.Summer.Net
         }
         public void Stop()
         {
-
+            m_isRunning = false;
         }
         public void Resume()
         {
-
+            m_isRunning = true;
+            SocketAsyncEventArgs args = new SocketAsyncEventArgs();                
+            args.Completed += _OnAccepted;                                         
+            m_listenerSocket.AcceptAsync(args);                                   
         }
 
         private void _OnAccepted(object sender, SocketAsyncEventArgs e)
         {
+            if(m_isRunning == false)
+            {
+                return;
+            }
+
             //连入的客户端
             Socket clientSocket = e.AcceptSocket;
             SocketError flag = e.SocketError;

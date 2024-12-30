@@ -19,11 +19,15 @@ namespace LoginGateMgrServer.Core
             ProtoHelper.Register<GetAllServerInfoResponse>((int)ControlCenterProtocl.GetAllserverinfoResp);
             ProtoHelper.Register<RegisterLoginGateInstanceRequest>((int)LoginGateMgrProtocl.RegisterLogingateInstanceReq);
             ProtoHelper.Register<RegisterLoginGateInstanceResponse>((int)LoginGateMgrProtocl.RegisterLogingateInstanceResp);
-
+            ProtoHelper.Register<ExecuteLGCommandRequest>((int)LoginGateMgrProtocl.ExecuteLgCommandReq);
+            ProtoHelper.Register<ExecuteLGCommandResponse>((int)LoginGateMgrProtocl.ExecuteLgCommandResp);
+            ProtoHelper.Register<ClusterEventResponse>((int)ControlCenterProtocl.ClusterEventResp);
 
             // 消息的订阅
             MessageRouter.Instance.Subscribe<GetAllServerInfoResponse>(_HandleGetAllServerInfoResponse);
-            MessageRouter.Instance.Subscribe<RegisterLoginGateInstanceResponse>(_HandleRegisterLoginGateInstanceResponse);
+            MessageRouter.Instance.Subscribe<RegisterLoginGateInstanceRequest>(_HandleRegisterLoginGateInstanceRequest);
+            MessageRouter.Instance.Subscribe<ExecuteLGCommandResponse>(_HandleExecuteLGCommandResponse);
+            MessageRouter.Instance.Subscribe<ClusterEventResponse>(_HandleClusterEventResponse);
 
         }
 
@@ -32,27 +36,63 @@ namespace LoginGateMgrServer.Core
 
         }
 
-        public void SendGetAllServerInfoRequest()
+        public void SendGetAllLoginServerInfoRequest()
         {
             var req = new GetAllServerInfoRequest();
             req.ServerType = SERVER_TYPE.Login; 
             ServersMgr.Instance.ccClient.Send(req);
         }
-        private void _HandleGetAllServerInfoResponse(Connection sender, GetAllServerInfoResponse message)
+        private void _HandleGetAllServerInfoResponse(Connection conn, GetAllServerInfoResponse message)
         {
             if(message.ServerType == SERVER_TYPE.Login)
             {
-                LogingateMonitor.Instance.UpdateLoginServerInfo(message.ServerInfoNodes.ToList());
+                LogingateMonitor.Instance.InitLoginServerInfo(message.ServerInfoNodes.ToList());
                 // Log.Debug(message.ToString());
             }
 
         }
-
-        private void _HandleRegisterLoginGateInstanceResponse(Connection sender, RegisterLoginGateInstanceResponse message)
+        private void _HandleRegisterLoginGateInstanceRequest(Connection conn, RegisterLoginGateInstanceRequest message)
         {
-
-            Log.Debug("有gate来罗");
+            bool success = LogingateMonitor.Instance.RegisterLoginGateInstance(conn ,message.ServerInfoNode);
+            RegisterLoginGateInstanceResponse resp = new();
+            if (success)
+            {
+                resp.ResultCode = 0;
+            }
+            else
+            {
+                resp.ResultCode = 1;
+                resp.ResultMsg = "RegisterLoginGateInstance failed";
+            }
+            conn.Send(resp);
         }
+        private void _HandleExecuteLGCommandResponse(Connection sender, ExecuteLGCommandResponse message)
+        {
+            if(message.ResultCode == 0)
+            {
+            }
+            else
+            {
+                Log.Error("ExecuteLGCommandResponse failed");
+            }
+        }
+        private void _HandleClusterEventResponse(Connection sender, ClusterEventResponse message)
+        {
+            if(message.EventType == ClusterEventType.LoginEnter)
+            {
+                Log.Debug("A new Login server has joined the cluster.");
+                LogingateMonitor.Instance.AddLoginServerInfo(message.ServerInfoNode);
+            }
+            else if (message.EventType == ClusterEventType.LoginExit)
+            {
+                Log.Debug("A Login server has left the cluster.");
+                LogingateMonitor.Instance.RemoveLoginServerInfo(message.ServerId);
 
+            }
+            else
+            {
+                Log.Debug("Unknown ccEvent");
+            }
+        }
     }
 }

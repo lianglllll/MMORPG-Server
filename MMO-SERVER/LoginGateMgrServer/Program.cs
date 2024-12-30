@@ -47,7 +47,7 @@ namespace LoginServer
             Config.Init();                      
             Scheduler.Instance.Start(Config.Server.updateHz);
 
-            Log.Information("[GameServer]初始化,配置如下：");
+            Log.Information("[LoginGateMgrServer]初始化,配置如下：");
             Log.Information($"ip：{Config.Server.ip}");
             Log.Information($"port：{Config.Server.port}");
             Log.Information($"workerCount：{Config.Server.workerCount}");

@@ -45,7 +45,7 @@ namespace LoginGateServer
                 .CreateLogger();
 
             Config.Init();                      
-            Log.Information("[LoginServer]初始化,配置如下：");
+            Log.Information("[LoginGateServer]初始化,配置如下：");
             Log.Information($"ip：{Config.Server.ip}");
             Log.Information($"userPort：{Config.Server.userPort}");
             Log.Information($"serverPort：{Config.Server.serverPort}");

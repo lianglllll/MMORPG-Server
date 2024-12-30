@@ -25,25 +25,42 @@ namespace HS.Protobuf.ControlCenter {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChNDb250cm9sQ2VudGVyLnByb3RvEhlIUy5Qcm90b2J1Zi5Db250cm9sQ2Vu",
-            "dGVyGh9Db21tb24vUHJvdG9Tb3VyY2UvQ29tbW9uLnByb3RvIlcKGVNlcnZl",
-            "ckluZm9SZWdpc3RlclJlcXVlc3QSOgoOc2VydmVySW5mb05vZGUYASABKAsy",
-            "Ii5IUy5Qcm90b2J1Zi5Db21tb24uU2VydmVySW5mb05vZGUiVQoaU2VydmVy",
-            "SW5mb1JlZ2lzdGVyUmVzcG9uc2USEgoKcmVzdWx0Q29kZRgBIAEoBRIRCgly",
-            "ZXN1bHRNc2cYAiABKAkSEAoIc2VydmVySWQYAyABKAUiTgoXR2V0QWxsU2Vy",
-            "dmVySW5mb1JlcXVlc3QSMwoKc2VydmVyVHlwZRgBIAEoDjIfLkhTLlByb3Rv",
-            "YnVmLkNvbW1vbi5TRVJWRVJfVFlQRSKMAQoYR2V0QWxsU2VydmVySW5mb1Jl",
-            "c3BvbnNlEjMKCnNlcnZlclR5cGUYASABKA4yHy5IUy5Qcm90b2J1Zi5Db21t",
-            "b24uU0VSVkVSX1RZUEUSOwoPc2VydmVySW5mb05vZGVzGAIgAygLMiIuSFMu",
-            "UHJvdG9idWYuQ29tbW9uLlNlcnZlckluZm9Ob2RlKoQCChRDb250cm9sQ2Vu",
-            "dGVyUHJvdG9jbBIeChpDT05UUk9MQ0VOVEVSX1BST1RPQ0xfTk9ORRAAEjIK",
-            "LUNPTlRST0xDRU5URVJfUFJPVE9DTF9TRVJWRVJJTkZPX1JFR0lTVEVSX1JF",
-            "URCRThIzCi5DT05UUk9MQ0VOVEVSX1BST1RPQ0xfU0VSVkVSSU5GT19SRUdJ",
-            "U1RFUl9SRVNQEJJOEjAKK0NPTlRST0xDRU5URVJfUFJPVE9DTF9HRVRfQUxM",
-            "U0VSVkVSSU5GT19SRVEQk04SMQosQ09OVFJPTENFTlRFUl9QUk9UT0NMX0dF",
-            "VF9BTExTRVJWRVJJTkZPX1JFU1AQlE5iBnByb3RvMw=="));
+            "dGVyGh9Db21tb24vUHJvdG9Tb3VyY2UvQ29tbW9uLnByb3RvIqQBChRDbHVz",
+            "dGVyRXZlbnRSZXNwb25zZRIQCghzZXJ2ZXJJZBgBIAEoBRI+CglldmVudFR5",
+            "cGUYAiABKA4yKy5IUy5Qcm90b2J1Zi5Db250cm9sQ2VudGVyLkNsdXN0ZXJF",
+            "dmVudFR5cGUSOgoOc2VydmVySW5mb05vZGUYAyABKAsyIi5IUy5Qcm90b2J1",
+            "Zi5Db21tb24uU2VydmVySW5mb05vZGUiVwoZU2VydmVySW5mb1JlZ2lzdGVy",
+            "UmVxdWVzdBI6Cg5zZXJ2ZXJJbmZvTm9kZRgBIAEoCzIiLkhTLlByb3RvYnVm",
+            "LkNvbW1vbi5TZXJ2ZXJJbmZvTm9kZSJVChpTZXJ2ZXJJbmZvUmVnaXN0ZXJS",
+            "ZXNwb25zZRISCgpyZXN1bHRDb2RlGAEgASgFEhEKCXJlc3VsdE1zZxgCIAEo",
+            "CRIQCghzZXJ2ZXJJZBgDIAEoBSJOChdHZXRBbGxTZXJ2ZXJJbmZvUmVxdWVz",
+            "dBIzCgpzZXJ2ZXJUeXBlGAEgASgOMh8uSFMuUHJvdG9idWYuQ29tbW9uLlNF",
+            "UlZFUl9UWVBFIowBChhHZXRBbGxTZXJ2ZXJJbmZvUmVzcG9uc2USMwoKc2Vy",
+            "dmVyVHlwZRgBIAEoDjIfLkhTLlByb3RvYnVmLkNvbW1vbi5TRVJWRVJfVFlQ",
+            "RRI7Cg9zZXJ2ZXJJbmZvTm9kZXMYAiADKAsyIi5IUy5Qcm90b2J1Zi5Db21t",
+            "b24uU2VydmVySW5mb05vZGUqswIKFENvbnRyb2xDZW50ZXJQcm90b2NsEh4K",
+            "GkNPTlRST0xDRU5URVJfUFJPVE9DTF9OT05FEAASMgotQ09OVFJPTENFTlRF",
+            "Ul9QUk9UT0NMX1NFUlZFUklORk9fUkVHSVNURVJfUkVREJFOEjMKLkNPTlRS",
+            "T0xDRU5URVJfUFJPVE9DTF9TRVJWRVJJTkZPX1JFR0lTVEVSX1JFU1AQkk4S",
+            "MAorQ09OVFJPTENFTlRFUl9QUk9UT0NMX0dFVF9BTExTRVJWRVJJTkZPX1JF",
+            "URCTThIxCixDT05UUk9MQ0VOVEVSX1BST1RPQ0xfR0VUX0FMTFNFUlZFUklO",
+            "Rk9fUkVTUBCUThItCihDT05UUk9MQ0VOVEVSX1BST1RPQ0xfQ0xVU1RFUl9F",
+            "VkVOVF9SRVNQEJZOKv8DChBDbHVzdGVyRXZlbnRUeXBlEiQKIENMVVNURVJf",
+            "RVZFTlRfVFlQRV9VTktOT1dOX0VWRU5UEAASJgoiQ0xVU1RFUl9FVkVOVF9U",
+            "WVBFX0xPR0lOR0FURV9FTlRFUhABEiUKIUNMVVNURVJfRVZFTlRfVFlQRV9M",
+            "T0dJTkdBVEVfRVhJVBACEiIKHkNMVVNURVJfRVZFTlRfVFlQRV9MT0dJTl9F",
+            "TlRFUhADEiEKHUNMVVNURVJfRVZFTlRfVFlQRV9MT0dJTl9FWElUEAQSIQod",
+            "Q0xVU1RFUl9FVkVOVF9UWVBFX0dBTUVfRU5URVIQBRIgChxDTFVTVEVSX0VW",
+            "RU5UX1RZUEVfR0FNRV9FWElUEAYSJQohQ0xVU1RFUl9FVkVOVF9UWVBFX0dB",
+            "TUVHQVRFX0VOVEVSEAcSJAogQ0xVU1RFUl9FVkVOVF9UWVBFX0dBTUVHQVRF",
+            "X0VYSVQQCBIpCiVDTFVTVEVSX0VWRU5UX1RZUEVfTE9HSU5HQVRFTUdSX0VO",
+            "VEVSEAkSKAokQ0xVU1RFUl9FVkVOVF9UWVBFX0dBTUVHQVRFTUdSX0VOVEVS",
+            "EAoSIgoeQ0xVU1RFUl9FVkVOVF9UWVBFX1NDRU5FX0VOVEVSEAsSJAogQ0xV",
+            "U1RFUl9FVkVOVF9UWVBFX0RCUFJPWFlfRU5URVIQDGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::HS.Protobuf.Common.CommonReflection.Descriptor, },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.ControlCenter.ControlCenterProtocl), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.ControlCenter.ControlCenterProtocl), typeof(global::HS.Protobuf.ControlCenter.ClusterEventType), }, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.ControlCenter.ClusterEventResponse), global::HS.Protobuf.ControlCenter.ClusterEventResponse.Parser, new[]{ "ServerId", "EventType", "ServerInfoNode" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.ControlCenter.ServerInfoRegisterRequest), global::HS.Protobuf.ControlCenter.ServerInfoRegisterRequest.Parser, new[]{ "ServerInfoNode" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.ControlCenter.ServerInfoRegisterResponse), global::HS.Protobuf.ControlCenter.ServerInfoRegisterResponse.Parser, new[]{ "ResultCode", "ResultMsg", "ServerId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.ControlCenter.GetAllServerInfoRequest), global::HS.Protobuf.ControlCenter.GetAllServerInfoRequest.Parser, new[]{ "ServerType" }, null, null, null, null),
@@ -72,11 +89,342 @@ namespace HS.Protobuf.ControlCenter {
     /// [GetAllServerInfoResponse]
     /// </summary>
     [pbr::OriginalName("CONTROLCENTER_PROTOCL_GET_ALLSERVERINFO_RESP")] GetAllserverinfoResp = 10004,
+    /// <summary>
+    /// [ClusterEventResponse]
+    /// </summary>
+    [pbr::OriginalName("CONTROLCENTER_PROTOCL_CLUSTER_EVENT_RESP")] ClusterEventResp = 10006,
+  }
+
+  public enum ClusterEventType {
+    /// <summary>
+    /// 未知事件，作为默认值
+    /// </summary>
+    [pbr::OriginalName("CLUSTER_EVENT_TYPE_UNKNOWN_EVENT")] UnknownEvent = 0,
+    /// <summary>
+    /// logingate 进入集群
+    /// </summary>
+    [pbr::OriginalName("CLUSTER_EVENT_TYPE_LOGINGATE_ENTER")] LogingateEnter = 1,
+    /// <summary>
+    /// logingate 退出集群
+    /// </summary>
+    [pbr::OriginalName("CLUSTER_EVENT_TYPE_LOGINGATE_EXIT")] LogingateExit = 2,
+    /// <summary>
+    /// login 进入集群
+    /// </summary>
+    [pbr::OriginalName("CLUSTER_EVENT_TYPE_LOGIN_ENTER")] LoginEnter = 3,
+    /// <summary>
+    /// login 退出集群
+    /// </summary>
+    [pbr::OriginalName("CLUSTER_EVENT_TYPE_LOGIN_EXIT")] LoginExit = 4,
+    /// <summary>
+    /// game 进入集群
+    /// </summary>
+    [pbr::OriginalName("CLUSTER_EVENT_TYPE_GAME_ENTER")] GameEnter = 5,
+    /// <summary>
+    /// game 退出集群
+    /// </summary>
+    [pbr::OriginalName("CLUSTER_EVENT_TYPE_GAME_EXIT")] GameExit = 6,
+    /// <summary>
+    /// gamegate 进入集群
+    /// </summary>
+    [pbr::OriginalName("CLUSTER_EVENT_TYPE_GAMEGATE_ENTER")] GamegateEnter = 7,
+    /// <summary>
+    /// gamegate 退出集群 
+    /// </summary>
+    [pbr::OriginalName("CLUSTER_EVENT_TYPE_GAMEGATE_EXIT")] GamegateExit = 8,
+    /// <summary>
+    /// center 进入集群
+    /// </summary>
+    [pbr::OriginalName("CLUSTER_EVENT_TYPE_LOGINGATEMGR_ENTER")] LogingatemgrEnter = 9,
+    /// <summary>
+    /// center 进入集群
+    /// </summary>
+    [pbr::OriginalName("CLUSTER_EVENT_TYPE_GAMEGATEMGR_ENTER")] GamegatemgrEnter = 10,
+    /// <summary>
+    /// center 进入集群
+    /// </summary>
+    [pbr::OriginalName("CLUSTER_EVENT_TYPE_SCENE_ENTER")] SceneEnter = 11,
+    /// <summary>
+    /// center 进入集群
+    /// </summary>
+    [pbr::OriginalName("CLUSTER_EVENT_TYPE_DBPROXY_ENTER")] DbproxyEnter = 12,
   }
 
   #endregion
 
   #region Messages
+  public sealed partial class ClusterEventResponse : pb::IMessage<ClusterEventResponse>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<ClusterEventResponse> _parser = new pb::MessageParser<ClusterEventResponse>(() => new ClusterEventResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<ClusterEventResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::HS.Protobuf.ControlCenter.ControlCenterReflection.Descriptor.MessageTypes[0]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ClusterEventResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ClusterEventResponse(ClusterEventResponse other) : this() {
+      serverId_ = other.serverId_;
+      eventType_ = other.eventType_;
+      serverInfoNode_ = other.serverInfoNode_ != null ? other.serverInfoNode_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ClusterEventResponse Clone() {
+      return new ClusterEventResponse(this);
+    }
+
+    /// <summary>Field number for the "serverId" field.</summary>
+    public const int ServerIdFieldNumber = 1;
+    private int serverId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int ServerId {
+      get { return serverId_; }
+      set {
+        serverId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "eventType" field.</summary>
+    public const int EventTypeFieldNumber = 2;
+    private global::HS.Protobuf.ControlCenter.ClusterEventType eventType_ = global::HS.Protobuf.ControlCenter.ClusterEventType.UnknownEvent;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::HS.Protobuf.ControlCenter.ClusterEventType EventType {
+      get { return eventType_; }
+      set {
+        eventType_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "serverInfoNode" field.</summary>
+    public const int ServerInfoNodeFieldNumber = 3;
+    private global::HS.Protobuf.Common.ServerInfoNode serverInfoNode_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::HS.Protobuf.Common.ServerInfoNode ServerInfoNode {
+      get { return serverInfoNode_; }
+      set {
+        serverInfoNode_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as ClusterEventResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(ClusterEventResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (ServerId != other.ServerId) return false;
+      if (EventType != other.EventType) return false;
+      if (!object.Equals(ServerInfoNode, other.ServerInfoNode)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (ServerId != 0) hash ^= ServerId.GetHashCode();
+      if (EventType != global::HS.Protobuf.ControlCenter.ClusterEventType.UnknownEvent) hash ^= EventType.GetHashCode();
+      if (serverInfoNode_ != null) hash ^= ServerInfoNode.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (ServerId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(ServerId);
+      }
+      if (EventType != global::HS.Protobuf.ControlCenter.ClusterEventType.UnknownEvent) {
+        output.WriteRawTag(16);
+        output.WriteEnum((int) EventType);
+      }
+      if (serverInfoNode_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(ServerInfoNode);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (ServerId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(ServerId);
+      }
+      if (EventType != global::HS.Protobuf.ControlCenter.ClusterEventType.UnknownEvent) {
+        output.WriteRawTag(16);
+        output.WriteEnum((int) EventType);
+      }
+      if (serverInfoNode_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(ServerInfoNode);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (ServerId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(ServerId);
+      }
+      if (EventType != global::HS.Protobuf.ControlCenter.ClusterEventType.UnknownEvent) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) EventType);
+      }
+      if (serverInfoNode_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ServerInfoNode);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(ClusterEventResponse other) {
+      if (other == null) {
+        return;
+      }
+      if (other.ServerId != 0) {
+        ServerId = other.ServerId;
+      }
+      if (other.EventType != global::HS.Protobuf.ControlCenter.ClusterEventType.UnknownEvent) {
+        EventType = other.EventType;
+      }
+      if (other.serverInfoNode_ != null) {
+        if (serverInfoNode_ == null) {
+          ServerInfoNode = new global::HS.Protobuf.Common.ServerInfoNode();
+        }
+        ServerInfoNode.MergeFrom(other.ServerInfoNode);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            ServerId = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            EventType = (global::HS.Protobuf.ControlCenter.ClusterEventType) input.ReadEnum();
+            break;
+          }
+          case 26: {
+            if (serverInfoNode_ == null) {
+              ServerInfoNode = new global::HS.Protobuf.Common.ServerInfoNode();
+            }
+            input.ReadMessage(ServerInfoNode);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            ServerId = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            EventType = (global::HS.Protobuf.ControlCenter.ClusterEventType) input.ReadEnum();
+            break;
+          }
+          case 26: {
+            if (serverInfoNode_ == null) {
+              ServerInfoNode = new global::HS.Protobuf.Common.ServerInfoNode();
+            }
+            input.ReadMessage(ServerInfoNode);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
   public sealed partial class ServerInfoRegisterRequest : pb::IMessage<ServerInfoRegisterRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -91,7 +439,7 @@ namespace HS.Protobuf.ControlCenter {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.ControlCenter.ControlCenterReflection.Descriptor.MessageTypes[0]; }
+      get { return global::HS.Protobuf.ControlCenter.ControlCenterReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -289,7 +637,7 @@ namespace HS.Protobuf.ControlCenter {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.ControlCenter.ControlCenterReflection.Descriptor.MessageTypes[1]; }
+      get { return global::HS.Protobuf.ControlCenter.ControlCenterReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -555,7 +903,7 @@ namespace HS.Protobuf.ControlCenter {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.ControlCenter.ControlCenterReflection.Descriptor.MessageTypes[2]; }
+      get { return global::HS.Protobuf.ControlCenter.ControlCenterReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -744,7 +1092,7 @@ namespace HS.Protobuf.ControlCenter {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.ControlCenter.ControlCenterReflection.Descriptor.MessageTypes[3]; }
+      get { return global::HS.Protobuf.ControlCenter.ControlCenterReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
