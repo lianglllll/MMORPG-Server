@@ -2,6 +2,11 @@ syntax = "proto3";
 import "Scene/ProtoSource/SceneEntity.proto";
 package HS.Protobuf.Login;
 
+enum LoginProtocl{
+	LOGIN_PROTOCL_NONE = 0;
+	LOGIN_PROTOCL_NONE1 = 1;
+}
+
 //зЂВс
 message UserRegisterRequest{
 	string username = 1;

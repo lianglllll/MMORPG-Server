@@ -62,10 +62,15 @@ namespace HS.Protobuf.Common {
             "VEUQAxIcChhTRVJWRVJfVFlQRV9MT0dJTkdBVEVNR1IQBBIUChBTRVJWRVJf",
             "VFlQRV9HQU1FEAUSGAoUU0VSVkVSX1RZUEVfR0FNRUdBVEUQBhIbChdTRVJW",
             "RVJfVFlQRV9HQU1FR0FURU1HUhAHEhUKEVNFUlZFUl9UWVBFX1NDRU5FEAgS",
-            "FwoTU0VSVkVSX1RZUEVfREJQUk9YWRAJYgZwcm90bzM="));
+            "FwoTU0VSVkVSX1RZUEVfREJQUk9YWRAJKoIBCgtHYXRlQ29tbWFuZBIVChFH",
+            "QVRFX0NPTU1BTkRfTk9ORRAAEhYKEkdBVEVfQ09NTUFORF9TVEFSVBABEhUK",
+            "EUdBVEVfQ09NTUFORF9TVE9QEAISFwoTR0FURV9DT01NQU5EX1JFU1VNRRAD",
+            "EhQKEEdBVEVfQ09NTUFORF9FTkQQBCpWCgpHYXRlU3RhdHVzEhYKEkdBVEVf",
+            "U1RBVFVTX0FDVElWRRAAEhYKEkdBVEVfU1RBVFVTX1BBVVNFRBABEhgKFEdB",
+            "VEVfU1RBVFVTX0lOQUNUSVZFEAJiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.Common.CommonProtocl), typeof(global::HS.Protobuf.Common.SERVER_TYPE), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.Common.CommonProtocl), typeof(global::HS.Protobuf.Common.SERVER_TYPE), typeof(global::HS.Protobuf.Common.GateCommand), typeof(global::HS.Protobuf.Common.GateStatus), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Common.ServerInfoNode), global::HS.Protobuf.Common.ServerInfoNode.Parser, new[]{ "ServerId", "ServerType", "Ip", "Port", "ControlCenterInfo", "LoginServerInfo", "LoginGateServerInfo", "LoginGateMgrServerInfo", "GameServerInfo", "GameGateServerInfo", "GameGateMgrServerInfo", "SceneServerInfo", "DbProxyServerInfo", "EventBitmap" }, new[]{ "Payload" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Common.ControlCenterServerInfoNode), global::HS.Protobuf.Common.ControlCenterServerInfoNode.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Common.LoginServerInfoNode), global::HS.Protobuf.Common.LoginServerInfoNode.Parser, null, null, null, null, null),
@@ -114,6 +119,29 @@ namespace HS.Protobuf.Common {
     /// combat:	60000	skill buff   
     /// </summary>
     [pbr::OriginalName("SERVER_TYPE_DBPROXY")] Dbproxy = 9,
+  }
+
+  public enum GateCommand {
+    [pbr::OriginalName("GATE_COMMAND_NONE")] None = 0,
+    [pbr::OriginalName("GATE_COMMAND_START")] Start = 1,
+    [pbr::OriginalName("GATE_COMMAND_STOP")] Stop = 2,
+    [pbr::OriginalName("GATE_COMMAND_RESUME")] Resume = 3,
+    [pbr::OriginalName("GATE_COMMAND_END")] End = 4,
+  }
+
+  public enum GateStatus {
+    /// <summary>
+    /// 工作中
+    /// </summary>
+    [pbr::OriginalName("GATE_STATUS_ACTIVE")] Active = 0,
+    /// <summary>
+    /// 暂停
+    /// </summary>
+    [pbr::OriginalName("GATE_STATUS_PAUSED")] Paused = 1,
+    /// <summary>
+    /// 非工作状态
+    /// </summary>
+    [pbr::OriginalName("GATE_STATUS_INACTIVE")] Inactive = 2,
   }
 
   #endregion

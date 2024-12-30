@@ -1,0 +1,14 @@
+syntax = "proto3";
+import "Common/ProtoSource/Common.proto";
+package HS.Protobuf.GameGate;
+
+enum GameGateProtocl{
+	GAMEGATE_PROTOCL_NONE = 0;
+	GAMEGATE_PROTOCL_GGEnvelope = 31001;
+}
+
+message GGEnvelope{
+	int32 protocolCode = 1;
+	int32 encryptionLevel = 2;
+	bytes data = 3;
+}

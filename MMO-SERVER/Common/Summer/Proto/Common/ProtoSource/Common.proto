@@ -67,6 +67,23 @@ message SceneServerInfoNode{
 message DBProxyServerInfoNode{
 }
 
+enum GateCommand{
+	GATE_COMMAND_NONE = 0;
+	GATE_COMMAND_START = 1;
+	GATE_COMMAND_STOP = 2;
+	GATE_COMMAND_RESUME = 3;
+	GATE_COMMAND_END = 4;
+}
+
+enum GateStatus {
+    GATE_STATUS_ACTIVE = 0;   // 工作中
+    GATE_STATUS_PAUSED = 1;   // 暂停
+    GATE_STATUS_INACTIVE = 2; // 非工作状态
+}
+
+
+//============================================Transform==========================================
+
 // 网络三维向量
 message Vec3 {
 	int32 x = 1;

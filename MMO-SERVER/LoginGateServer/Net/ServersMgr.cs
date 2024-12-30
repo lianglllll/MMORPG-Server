@@ -2,12 +2,12 @@
 using Common.Summer.Net;
 using Common.Summer.Proto;
 using Common.Summer.Tools;
-using GameServer.Utils;
 using Google.Protobuf;
 using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
 using HS.Protobuf.LoginGateMgr;
 using LoginGateServer.Core;
+using LoginGateServer.Utils;
 using Serilog;
 
 namespace LoginGateServer.Net
@@ -20,7 +20,6 @@ namespace LoginGateServer.Net
         private NetClient? m_CCClient;
         private NetClient? m_LGMClient;
         private NetClient? m_LClient;
-
         public void Init()
         {
             // 本服务器的信息
@@ -99,6 +98,7 @@ namespace LoginGateServer.Net
         {
             // 开始网络监听，预示着当前服务器的正式启动
             NetService.Instance.Start();
+            ClientMessageDispatcher.Instance.Init();
             return true;
         }
 
@@ -263,16 +263,16 @@ namespace LoginGateServer.Net
             int resultCode = 0;
             switch (message.Command)
             {
-                case LoginGateCommand.Start:
+                case GateCommand.Start:
                     _ExecuteStart(message);
                     break;
-                case LoginGateCommand.Stop:
+                case GateCommand.Stop:
                     _ExecuteStop();
                     break;
-                case LoginGateCommand.Resume:
+                case GateCommand.Resume:
                     _ExecuteResume();
                     break;
-                case LoginGateCommand.End:
+                case GateCommand.End:
                     _ExecuteEnd();
                     break;
                 default:

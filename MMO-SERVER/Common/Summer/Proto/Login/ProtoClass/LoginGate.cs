@@ -25,17 +25,15 @@ namespace HS.Protobuf.LoginGate {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Cg9Mb2dpbkdhdGUucHJvdG8SFUhTLlByb3RvYnVmLkxvZ2luR2F0ZRofQ29t",
-            "bW9uL1Byb3RvU291cmNlL0NvbW1vbi5wcm90byJHCghFbnZlbG9wZRIUCgxw",
-            "cm90b2NvbENvZGUYASABKAUSFwoPZW5jcnlwdGlvbkxldmVsGAIgASgFEgwK",
-            "BGRhdGEYAyABKAwqUAoQTG9naW5HYXRlUHJvdG9jbBIaChZMT0dJTkdBVEVf",
-            "UFJPVE9DTF9OT05FEAASIAoaTE9HSU5HQVRFX1BST1RPQ0xfRU5WRUxPUEUQ",
-            "iaQBKmoKD0xvZ2luR2F0ZVN0YXR1cxIbChdMT0dJTkdBVEVfU1RBVFVTX0FD",
-            "VElWRRAAEhsKF0xPR0lOR0FURV9TVEFUVVNfUEFVU0VEEAESHQoZTE9HSU5H",
-            "QVRFX1NUQVRVU19JTkFDVElWRRACYgZwcm90bzM="));
+            "bW9uL1Byb3RvU291cmNlL0NvbW1vbi5wcm90byJJCgpMR0VudmVsb3BlEhQK",
+            "DHByb3RvY29sQ29kZRgBIAEoBRIXCg9lbmNyeXB0aW9uTGV2ZWwYAiABKAUS",
+            "DAoEZGF0YRgDIAEoDCpSChBMb2dpbkdhdGVQcm90b2NsEhoKFkxPR0lOR0FU",
+            "RV9QUk9UT0NMX05PTkUQABIiChxMT0dJTkdBVEVfUFJPVE9DTF9MR0VOVkVM",
+            "T1BFEImkAWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::HS.Protobuf.Common.CommonReflection.Descriptor, },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.LoginGate.LoginGateProtocl), typeof(global::HS.Protobuf.LoginGate.LoginGateStatus), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.LoginGate.Envelope), global::HS.Protobuf.LoginGate.Envelope.Parser, new[]{ "ProtocolCode", "EncryptionLevel", "Data" }, null, null, null, null)
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.LoginGate.LoginGateProtocl), }, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.LoginGate.LGEnvelope), global::HS.Protobuf.LoginGate.LGEnvelope.Parser, new[]{ "ProtocolCode", "EncryptionLevel", "Data" }, null, null, null, null)
           }));
     }
     #endregion
@@ -44,37 +42,25 @@ namespace HS.Protobuf.LoginGate {
   #region Enums
   public enum LoginGateProtocl {
     [pbr::OriginalName("LOGINGATE_PROTOCL_NONE")] None = 0,
-    [pbr::OriginalName("LOGINGATE_PROTOCL_ENVELOPE")] Envelope = 21001,
-  }
-
-  public enum LoginGateStatus {
     /// <summary>
-    /// 工作中
+    /// [LGEnvelope]
     /// </summary>
-    [pbr::OriginalName("LOGINGATE_STATUS_ACTIVE")] Active = 0,
-    /// <summary>
-    /// 暂停
-    /// </summary>
-    [pbr::OriginalName("LOGINGATE_STATUS_PAUSED")] Paused = 1,
-    /// <summary>
-    /// 非工作状态
-    /// </summary>
-    [pbr::OriginalName("LOGINGATE_STATUS_INACTIVE")] Inactive = 2,
+    [pbr::OriginalName("LOGINGATE_PROTOCL_LGENVELOPE")] Lgenvelope = 21001,
   }
 
   #endregion
 
   #region Messages
-  public sealed partial class Envelope : pb::IMessage<Envelope>
+  public sealed partial class LGEnvelope : pb::IMessage<LGEnvelope>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<Envelope> _parser = new pb::MessageParser<Envelope>(() => new Envelope());
+    private static readonly pb::MessageParser<LGEnvelope> _parser = new pb::MessageParser<LGEnvelope>(() => new LGEnvelope());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<Envelope> Parser { get { return _parser; } }
+    public static pb::MessageParser<LGEnvelope> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -90,7 +76,7 @@ namespace HS.Protobuf.LoginGate {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Envelope() {
+    public LGEnvelope() {
       OnConstruction();
     }
 
@@ -98,7 +84,7 @@ namespace HS.Protobuf.LoginGate {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Envelope(Envelope other) : this() {
+    public LGEnvelope(LGEnvelope other) : this() {
       protocolCode_ = other.protocolCode_;
       encryptionLevel_ = other.encryptionLevel_;
       data_ = other.data_;
@@ -107,8 +93,8 @@ namespace HS.Protobuf.LoginGate {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public Envelope Clone() {
-      return new Envelope(this);
+    public LGEnvelope Clone() {
+      return new LGEnvelope(this);
     }
 
     /// <summary>Field number for the "protocolCode" field.</summary>
@@ -150,12 +136,12 @@ namespace HS.Protobuf.LoginGate {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as Envelope);
+      return Equals(other as LGEnvelope);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(Envelope other) {
+    public bool Equals(LGEnvelope other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -254,7 +240,7 @@ namespace HS.Protobuf.LoginGate {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(Envelope other) {
+    public void MergeFrom(LGEnvelope other) {
       if (other == null) {
         return;
       }

@@ -19,7 +19,7 @@ enum LoginGateCommand{
 }
 
 message ExecuteLGCommandRequest{
-	LoginGateCommand command = 1;
+	HS.Protobuf.Common.GateCommand command = 1;
 	int32 loginGateServerId = 2;
 	int64 timeStamp = 3;
 	oneof payload{
@@ -29,7 +29,7 @@ message ExecuteLGCommandRequest{
 
 message ExecuteLGCommandResponse{
 	int32  resultCode		= 1;	
-	LoginGateCommand errCommand = 2;
+	HS.Protobuf.Common.GateCommand errCommand = 2;
 }
 
 message RegisterLoginGateInstanceRequest{

@@ -1,6 +1,6 @@
 server:
   ip: 127.0.0.1
-  userPort: 10600
+  userPort: 10700
   serverPort: 10601
   # 工作线程数
   workerCount: 1

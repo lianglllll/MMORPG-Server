@@ -20,8 +20,6 @@ namespace LoginGateServer.Core
         }
         public void UnInit()
         {
-
-
         }
         private void _HandleClusterEventResponse(Connection sender, ClusterEventResponse message)
         {

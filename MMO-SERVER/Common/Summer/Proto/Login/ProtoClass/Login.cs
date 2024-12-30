@@ -50,10 +50,12 @@ namespace HS.Protobuf.Login {
             "dW50GAIgASgDIhMKEVNlcnZlckluZm9SZXF1ZXN0IoMBChJTZXJ2ZXJJbmZv",
             "UmVzcG9uc2USGQoRT25saW5lUGxheWVyQ291bnQYASABKAUSEQoJVXNlckNv",
             "dW50GAIgASgFEj8KD2tpbGxSYW5raW5nTGlzdBgDIAMoCzImLkhTLlByb3Rv",
-            "YnVmLkxvZ2luLktpbGxSYW5raW5nTGlzdEl0ZW1iBnByb3RvMw=="));
+            "YnVmLkxvZ2luLktpbGxSYW5raW5nTGlzdEl0ZW0qPwoMTG9naW5Qcm90b2Ns",
+            "EhYKEkxPR0lOX1BST1RPQ0xfTk9ORRAAEhcKE0xPR0lOX1BST1RPQ0xfTk9O",
+            "RTEQAWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::HS.Protobuf.SceneEntity.SceneEntityReflection.Descriptor, },
-          new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.Login.LoginProtocl), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Login.UserRegisterRequest), global::HS.Protobuf.Login.UserRegisterRequest.Parser, new[]{ "Username", "Password" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Login.UserRegisterResponse), global::HS.Protobuf.Login.UserRegisterResponse.Parser, new[]{ "Code", "Message" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Login.UserLoginRequest), global::HS.Protobuf.Login.UserLoginRequest.Parser, new[]{ "Username", "Password" }, null, null, null, null),
@@ -79,6 +81,14 @@ namespace HS.Protobuf.Login {
     #endregion
 
   }
+  #region Enums
+  public enum LoginProtocl {
+    [pbr::OriginalName("LOGIN_PROTOCL_NONE")] None = 0,
+    [pbr::OriginalName("LOGIN_PROTOCL_NONE1")] None1 = 1,
+  }
+
+  #endregion
+
   #region Messages
   /// <summary>
   ///зЂВс

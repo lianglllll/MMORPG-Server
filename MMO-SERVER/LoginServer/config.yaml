@@ -4,7 +4,7 @@ database:
 
 server:
   ip: 127.0.0.1
-  port: 10700
+  port: 10800
   # 工作线程数
   workerCount: 1
   # 逻辑处理频率(hz)

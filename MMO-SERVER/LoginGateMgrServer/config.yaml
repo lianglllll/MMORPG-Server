@@ -1,6 +1,6 @@
 server:
   ip: 127.0.0.1
-  port: 10500
+  port: 10600
   # 工作线程数
   workerCount: 1
   # 逻辑处理频率(hz)

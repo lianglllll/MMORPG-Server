@@ -1,0 +1,31 @@
+syntax = "proto3";
+import "Common/ProtoSource/Common.proto";
+package HS.Protobuf.GameGateMgr;
+
+enum GameGateMgrProtocl{
+	GAMEGATEMGR_PROTOCL_NONE = 0;
+	GAMEGATEMGR_PROTOCL_REGISTER_GG_INSTANCE_REQ = 32001;	//[RegisterGameGateInstanceRequest]
+	GAMEGATEMGR_PROTOCL_REGISTER_GG_INSTANCE_RESP = 32002;	//[RegisterGameGateInstanceResponse]
+	GAMEGATEMGR_PROTOCL_EXECUTE_GG_COMMAND_REQ = 32003;				//[ExecuteGGCommandRequest]
+	GAMEGATEMGR_PROTOCL_EXECUTE_GG_COMMAND_RESP = 32004;			//[ExecuteGGCommandResponse]
+}
+message ExecuteGGCommandRequest{
+	HS.Protobuf.Common.GateCommand command = 1;
+	int32 gateServerId = 2;
+	int64 timeStamp = 3;
+	oneof payload{
+		HS.Protobuf.Common.ServerInfoNode gameServerInfoNode = 4;	
+	}
+}
+message ExecuteGGCommandResponse{
+	int32  resultCode		= 1;	
+	HS.Protobuf.Common.GateCommand errCommand = 2;
+}
+message RegisterGameGateInstanceRequest{
+	HS.Protobuf.Common.ServerInfoNode serverInfoNode = 1;
+}
+message RegisterGameGateInstanceResponse{
+	int32  resultCode		= 1;	//0 成功 小于0正常流程  大于0异常流程
+	string resultMsg		= 2;
+}
+

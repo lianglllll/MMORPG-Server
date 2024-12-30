@@ -1,6 +1,6 @@
 using YamlDotNet.Serialization;
 
-namespace GameServer.Utils
+namespace LoginGateServer.Utils
 {
     public class ServerConfig
     {

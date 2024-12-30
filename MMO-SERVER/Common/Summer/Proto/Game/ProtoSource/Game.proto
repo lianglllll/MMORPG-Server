@@ -1,0 +1,3 @@
+syntax = "proto3";
+import "Common/ProtoSource/Common.proto";
+package HS.Protobuf.Game;

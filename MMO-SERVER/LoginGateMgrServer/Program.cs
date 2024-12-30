@@ -3,9 +3,8 @@ using Common.Summer.Core;
 using Serilog.Sinks.SystemConsole.Themes;
 using LoginServer.Utils;
 using LoginGateMgrServer.Net;
-using LoginGateMgrServer.Core;
 
-namespace LoginServer
+namespace LoginGateMgrServer
 {
     class Program
     {

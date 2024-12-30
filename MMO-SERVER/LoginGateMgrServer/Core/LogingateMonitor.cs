@@ -13,7 +13,7 @@ namespace LoginGateMgrServer.Core
         public Connection Connection { get; set; }
         public ServerInfoNode ServerInfo { get; set; }
         public int curLoginServerId { get; set; }
-        public LoginGateStatus Status { get; set; }
+        public GateStatus Status { get; set; }
     }
     class LoginEntry
     {
@@ -103,10 +103,10 @@ namespace LoginGateMgrServer.Core
             {
                 var lgEntry = m_logingateInstances[lgId];
                 lgEntry.curLoginServerId = -1;
-                lgEntry.Status = LoginGateStatus.Inactive;
+                lgEntry.Status = GateStatus.Inactive;
                 ExecuteLGCommandRequest req = new();
                 req.TimeStamp = Scheduler.UnixTime;
-                req.Command = LoginGateCommand.End;
+                req.Command = GateCommand.End;
                 lgEntry.Connection.Send(req);
             }
             m_loginInstances.Remove(serverId);
@@ -126,7 +126,7 @@ namespace LoginGateMgrServer.Core
                 Connection = conn,
                 ServerInfo = serverInfoNode,
                 curLoginServerId = -1,
-                Status = LoginGateStatus.Inactive,
+                Status = GateStatus.Inactive,
             };
             m_logingateInstances.Add(serverInfoNode.ServerId, entry);
             AssignTaskToLogingate(serverInfoNode.ServerId);
@@ -148,7 +148,7 @@ namespace LoginGateMgrServer.Core
 
             // 校验
             if (!m_logingateInstances.ContainsKey(loginGateServerId) 
-                || m_logingateInstances[loginGateServerId].Status != LoginGateStatus.Inactive)
+                || m_logingateInstances[loginGateServerId].Status != GateStatus.Inactive)
             {
                 goto End;
             }
@@ -175,8 +175,8 @@ namespace LoginGateMgrServer.Core
             var lgEntry = m_logingateInstances[loginGateServerId];
             if (loginServerId == -1)
             {
-                lgEntry.Status = LoginGateStatus.Inactive;
-                req.Command = LoginGateCommand.End;
+                lgEntry.Status = GateStatus.Inactive;
+                req.Command = GateCommand.End;
                 req.LoginGateServerId = ServersMgr.Instance.ServerId;
                 idleQueue.Enqueue(loginGateServerId);
             }
@@ -185,8 +185,8 @@ namespace LoginGateMgrServer.Core
                 // 分配任务
                 m_loginInstances[loginServerId].curGate.Add(loginGateServerId);
                 lgEntry.curLoginServerId = loginServerId;
-                lgEntry.Status = LoginGateStatus.Active;
-                req.Command = LoginGateCommand.Start;
+                lgEntry.Status = GateStatus.Active;
+                req.Command = GateCommand.Start;
                 req.LoginGateServerId = ServersMgr.Instance.ServerId;
                 req.LoginServerInfoNode = m_loginInstances[loginServerId].ServerInfo;
             }
@@ -213,12 +213,12 @@ namespace LoginGateMgrServer.Core
             LoginGateEntry gEntry = m_logingateInstances[loginGateServerId];
             lEntry.curGate.Add(loginGateServerId);
             gEntry.curLoginServerId = loginServerId;
-            gEntry.Status = LoginGateStatus.Active;
+            gEntry.Status = GateStatus.Active;
 
             // 发包
             ExecuteLGCommandRequest req = new();
             req.TimeStamp = Scheduler.UnixTime;
-            req.Command = LoginGateCommand.Start;
+            req.Command = GateCommand.Start;
             req.LoginGateServerId = ServersMgr.Instance.ServerId;
             req.LoginServerInfoNode = lEntry.ServerInfo;
             gEntry.Connection.Send(req);

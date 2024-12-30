@@ -133,19 +133,19 @@ namespace HS.Protobuf.ControlCenter {
     /// </summary>
     [pbr::OriginalName("CLUSTER_EVENT_TYPE_GAMEGATE_EXIT")] GamegateExit = 8,
     /// <summary>
-    /// center 进入集群
+    /// logingatemgr 进入集群
     /// </summary>
     [pbr::OriginalName("CLUSTER_EVENT_TYPE_LOGINGATEMGR_ENTER")] LogingatemgrEnter = 9,
     /// <summary>
-    /// center 进入集群
+    /// gamegatemgr 进入集群
     /// </summary>
     [pbr::OriginalName("CLUSTER_EVENT_TYPE_GAMEGATEMGR_ENTER")] GamegatemgrEnter = 10,
     /// <summary>
-    /// center 进入集群
+    /// scene 进入集群
     /// </summary>
     [pbr::OriginalName("CLUSTER_EVENT_TYPE_SCENE_ENTER")] SceneEnter = 11,
     /// <summary>
-    /// center 进入集群
+    /// dbproxy 进入集群
     /// </summary>
     [pbr::OriginalName("CLUSTER_EVENT_TYPE_DBPROXY_ENTER")] DbproxyEnter = 12,
   }

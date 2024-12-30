@@ -8,8 +8,8 @@ database:
 server:
   gameWorldId: 1
   ip: 127.0.0.1
-  userPort: 10301
-  serverPort: 10302
+  userPort: 10500
+  serverPort: 10501
   # 工作线程数
   workerCount: 1
   # AOI视野距离(米)
