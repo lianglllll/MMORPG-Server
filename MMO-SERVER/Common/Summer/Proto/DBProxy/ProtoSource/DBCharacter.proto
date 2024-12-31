@@ -1,0 +1,63 @@
+syntax = "proto3";
+package HS.Protobuf.DBProxy.DBCharacter;
+
+enum DBCharacterProtocl{
+	DBCHARACTER_PROTOCL_NONE = 0;
+	DBCHARACTER_PROTOCL_GET_DBCHARACTER_REQ = 51001;	// [GetDBCharacterRequest]
+	DBCHARACTER_PROTOCL_GET_DBCHARACTER_RESP = 51002;	// [GetDBCharacterReponse]
+	DBCHARACTER_PROTOCL_ADD_DBCHARACTER_REQ = 51003;	// [AddDBCharacterRequset]
+	DBCHARACTER_PROTOCL_ADD_DBCHARACTER_RESP = 51004;	// [AddDBCharacterResponse]
+	DBCHARACTER_PROTOCL_DELETE_DBCHARACTER_REQ = 51005;		// [DeleteDBCharacterRequest]
+	DBCHARACTER_PROTOCL_DELETE_DBCHARACTER_RESP = 51006;	// [DeleteDBCharacterResponse]
+}
+
+message DBCharacterStatisticsNode{
+	int32 killCount = 1;
+}
+message DBCharacterStatusNode{
+	int32 hp = 1;
+	int32 mp = 2;
+	int32 level = 3;
+	int32 exp = 4;
+	int32 curSpaceId = 5;
+	int32 x = 6;
+	int32 y = 7;
+	int32 z = 8;
+}
+message DBCharacterAssetsNode{
+	bytes backpackData = 1;
+	bytes equipsData = 2;
+}
+message DBCharacterNode{
+	string cId = 1;
+	string uId = 2;
+	int32 professionId = 3;
+	string chrName = 4;
+	DBCharacterStatisticsNode chrStatistics = 5;
+	DBCharacterStatusNode chrStatus = 6;
+	DBCharacterAssetsNode chrAssets = 7;
+}
+
+message GetDBCharacterRequest{
+	string cId = 1;
+}
+message GetDBCharacterReponse{
+	int32 resultCode = 1;
+	string resultMsg = 2;
+	DBCharacterNode chrNode = 3;
+}
+message AddDBCharacterRequset{
+	DBCharacterNode chrNode = 1;
+}
+message AddDBCharacterResponse{
+	int32 resultCode = 1;
+	string resultMsg = 2;
+	string cId = 3;
+}
+message DeleteDBCharacterRequest{
+	string cId = 1;
+}
+message DeleteDBCharacterResponse{
+	int32 resultCode = 1;
+	string resultMsg = 2;
+}

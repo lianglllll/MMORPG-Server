@@ -29,6 +29,8 @@
     <Folder Include="Summer\Proto\Combat\ProtoClass\" />
     <Folder Include="Summer\Proto\Common\ProtoClass\" />
     <Folder Include="Summer\Proto\Common\ProtoSource\" />
+    <Folder Include="Summer\Proto\DBProxy\ProtoClass\" />
+    <Folder Include="Summer\Proto\DBProxy\ProtoSource\" />
     <Folder Include="Summer\Proto\Login\ProtoClass\" />
     <Folder Include="Summer\Proto\Scene\ProtoClass\" />
   </ItemGroup>

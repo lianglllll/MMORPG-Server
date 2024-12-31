@@ -146,7 +146,6 @@ namespace Common.Summer.Net
                 Interlocked.Decrement(ref WorkerCount);//WorkerCount-1
             }
             Console.WriteLine("MessageWork thread end");
-            
         }
         private void executeMessage(Connection conn, IMessage message)
         {

@@ -1,0 +1,57 @@
+syntax = "proto3";
+package HS.Protobuf.DBProxy.DBUser;
+
+enum DBUserProtocl{
+	DBUSER_PROTOCL_NONE = 0;
+	DBUSER_PROTOCL_GET_DBUSER_REQ = 50001;	// [GetDBUserRequest]
+	DBUSER_PROTOCL_GET_DBUSER_RESP = 50002;	// [GetDBUserResponse]
+	DBUSER_PROTOCL_ADD_DBUSER_REQ = 50003;	// [AddDBUserRequset]
+	DBUSER_PROTOCL_ADD_DBUSER_RESP = 50004;	// [AddDBUserResponse]
+	DBUSER_PROTOCL_UPDATE_DBUSER_PASSWORD_REQ = 50005;	// [UpdateDBUserPasswordRequest]
+	DBUSER_PROTOCL_UPDATE_DBUSER_PASSWORD_RESP = 50006;	// [UpdateDBUserPasswordResponse]
+	DBUSER_PROTOCL_DELETE_DBUSER_REQ = 50007;	// [DeleteDBUserRequest]
+	DBUSER_PROTOCL_DELETE_DBUSER_RESP = 50008;	// [DeleteDBUserResponse]
+
+}
+
+message DBUserNode{
+	string uId = 1;
+	string userName = 2;
+	string password = 3;
+	repeated string characterIds = 4;
+}
+
+message GetDBUserRequest{
+	string userName = 1;
+}
+message GetDBUserResponse{
+	int32 resultCode = 1;
+	string resultMsg = 2;
+	DBUserNode user = 3;
+}
+
+message AddDBUserRequset{
+	string userName = 1;
+	string password = 2;
+}
+message AddDBUserResponse{
+	int32 resultCode = 1;
+	string resultMsg = 2;
+}
+
+message UpdateDBUserPasswordRequest{
+	string uId = 1;
+	string newPassword = 2;
+}
+message UpdateDBUserPasswordResponse{
+	int32 resultCode = 1;
+	string resultMsg = 2;
+}
+
+message DeleteDBUserRequest{
+	string uId = 1;
+}
+message DeleteDBUserResponse{
+	int32 resultCode = 1;
+	string resultMsg = 2;
+}
