@@ -1,18 +1,22 @@
 using YamlDotNet.Serialization;
 
-namespace LoginServer.Utils
+namespace SceneServer.Utils
 {
+
     public class ServerConfig
     {
         [YamlMember(Alias = "ip")]
         public string ip { get; set; }
 
-        [YamlMember(Alias = "port")]
-        public int port { get; set; }
+        [YamlMember(Alias = "serverPort")]
+        public int serverPort { get; set; }
 
         [YamlMember(Alias = "workerCount")]
         public int workerCount { get; set; }        
-     
+        
+        [YamlMember(Alias = "aoiViewArea")]
+        public float aoiViewArea { get; set; }        
+        
         [YamlMember(Alias = "updateHz")]
         public int updateHz { get; set; }
 
@@ -37,6 +41,7 @@ namespace LoginServer.Utils
 
     public class AppConfig
     {
+
         [YamlMember(Alias = "server")]
         public ServerConfig Server { get; set; }
 
@@ -58,6 +63,7 @@ namespace LoginServer.Utils
             var deserializer = new DeserializerBuilder().Build();
             _config = deserializer.Deserialize<AppConfig>(yaml);
         }
+
         public static ServerConfig Server => _config?.Server;
         public static CCConfig CCConfig => _config?.CCServer;
     }

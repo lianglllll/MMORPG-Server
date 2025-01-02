@@ -1,7 +1,7 @@
 server:
   ip: 127.0.0.1
   userPort: 10700
-  serverPort: 10601
+  serverPort: 10701
   # 工作线程数
   workerCount: 1
   # 逻辑处理频率(hz)

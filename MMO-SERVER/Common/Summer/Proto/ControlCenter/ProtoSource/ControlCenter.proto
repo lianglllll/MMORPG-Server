@@ -22,16 +22,24 @@ enum ClusterEventType {
     CLUSTER_EVENT_TYPE_GAMEGATE_ENTER = 7;      // gamegate 进入集群
     CLUSTER_EVENT_TYPE_GAMEGATE_EXIT = 8;       // gamegate 退出集群 
 	CLUSTER_EVENT_TYPE_LOGINGATEMGR_ENTER = 9;  // logingatemgr 进入集群
-	CLUSTER_EVENT_TYPE_GAMEGATEMGR_ENTER = 10;  // gamegatemgr 进入集群
-	CLUSTER_EVENT_TYPE_SCENE_ENTER = 11;        // scene 进入集群
-	CLUSTER_EVENT_TYPE_DBPROXY_ENTER = 12;      // dbproxy 进入集群
+	CLUSTER_EVENT_TYPE_LOGINGATEMGR_EXIT = 10;	// logingatemgr 进入集群
+	CLUSTER_EVENT_TYPE_GAMEGATEMGR_ENTER = 11;  // gamegatemgr 进入集群
+	CLUSTER_EVENT_TYPE_GAMEGATEMGR_EXIT = 12;	// gamegatemgr 进入集群
+	CLUSTER_EVENT_TYPE_SCENE_ENTER = 13;        // scene 进入集群
+	CLUSTER_EVENT_TYPE_SCENE_EXIT = 14;			// scene 进入集群
+	CLUSTER_EVENT_TYPE_DBPROXY_ENTER = 15;      // dbproxy 进入集群
+	CLUSTER_EVENT_TYPE_DBPROXY_EXIT = 16;		// dbproxy 进入集群
 }
 
-message ClusterEventResponse{
+message ClusterEventNode{
 	int32 serverId = 1;
 	ClusterEventType eventType = 2;
 	HS.Protobuf.Common.ServerInfoNode serverInfoNode = 3;
 }
+message ClusterEventResponse{
+	ClusterEventNode clusterEventNode = 1;
+}
+
 message ServerInfoRegisterRequest{
 	HS.Protobuf.Common.ServerInfoNode serverInfoNode = 1;
 }
@@ -39,6 +47,7 @@ message ServerInfoRegisterResponse{
 	int32  resultCode		= 1;	//0 成功 小于0正常流程  大于0异常流程
 	string resultMsg		= 2;
 	int32 serverId			= 3;
+	repeated ClusterEventNode clusterEventNodes = 4;
 }
 message GetAllServerInfoRequest{
 	HS.Protobuf.Common.SERVER_TYPE serverType = 1;

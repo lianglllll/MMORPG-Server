@@ -15,17 +15,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoginServer", "LoginServer\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DBProxyServer", "DBProxyServer\DBProxyServer.csproj", "{CEFCC24D-06CB-434D-B93A-40D291860904}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SceneServer", "SpaceServer\SceneServer.csproj", "{CF4850EE-4E67-4C24-B8EA-A6EAE77C69D2}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "lLua", "Llua\lLua.csproj", "{B052DC92-759E-4384-AD2A-39B1E0057601}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControlCenter", "ControlCenter\ControlCenter.csproj", "{3CBC2A10-60A0-4140-BCB0-EC3822099D13}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoginGateMgrServer", "LoginGateMgrServer\LoginGateMgrServer.csproj", "{6C1602AC-4DD5-43CA-AD4B-B899A6999978}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameGateServer", "GameGateServer\GameGateServer.csproj", "{E7C6B0AE-2B04-4E2F-B72D-749CD2660C27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameGateServer", "GameGateServer\GameGateServer.csproj", "{E7C6B0AE-2B04-4E2F-B72D-749CD2660C27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameGateMgrServer", "GameGateMgrServer\GameGateMgrServer.csproj", "{DFA0793B-2C53-41AA-9427-B23AD8CCEDE8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameGateMgrServer", "GameGateMgrServer\GameGateMgrServer.csproj", "{DFA0793B-2C53-41AA-9427-B23AD8CCEDE8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SceneServer", "SceneServer\SceneServer.csproj", "{D744CFD0-D29F-4B4B-82AE-7EB18382E927}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,10 +57,6 @@ Global
 		{CEFCC24D-06CB-434D-B93A-40D291860904}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEFCC24D-06CB-434D-B93A-40D291860904}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEFCC24D-06CB-434D-B93A-40D291860904}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CF4850EE-4E67-4C24-B8EA-A6EAE77C69D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF4850EE-4E67-4C24-B8EA-A6EAE77C69D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CF4850EE-4E67-4C24-B8EA-A6EAE77C69D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF4850EE-4E67-4C24-B8EA-A6EAE77C69D2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B052DC92-759E-4384-AD2A-39B1E0057601}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B052DC92-759E-4384-AD2A-39B1E0057601}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B052DC92-759E-4384-AD2A-39B1E0057601}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -81,6 +77,10 @@ Global
 		{DFA0793B-2C53-41AA-9427-B23AD8CCEDE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFA0793B-2C53-41AA-9427-B23AD8CCEDE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFA0793B-2C53-41AA-9427-B23AD8CCEDE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D744CFD0-D29F-4B4B-82AE-7EB18382E927}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D744CFD0-D29F-4B4B-82AE-7EB18382E927}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D744CFD0-D29F-4B4B-82AE-7EB18382E927}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D744CFD0-D29F-4B4B-82AE-7EB18382E927}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

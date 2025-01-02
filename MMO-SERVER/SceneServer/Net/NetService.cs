@@ -5,12 +5,10 @@ using Common.Summer.Tools;
 using System.Collections.Concurrent;
 using HS.Protobuf.Common;
 using Common.Summer.Proto;
+using SceneServer.Utils;
 using static Common.Summer.Net.NetClient;
-using System.Net;
-using GameGateMgrServer.Utils;
-using GameGateMgrServer.Core;
 
-namespace GameGateMgrServer.Net
+namespace SceneServer.Net
 {
     public class NetService : Singleton<NetService>
     {
@@ -47,13 +45,13 @@ namespace GameGateMgrServer.Net
             m_serverConnHeartbeatTimestamps.Clear();
         }
 
-        // GameGate服务器连接过来的
+        // gameGate服务器连接过来的
         private void _StartListeningForServerConnections()
         {
             Log.Information("Starting to listen for serverConnections.");
             // 启动网络监听
             m_acceptServer = new TcpServer();
-            m_acceptServer.Init(Config.Server.ip, Config.Server.port, 100, _HandleServerConnected, _HandleServerDisconnected);
+            m_acceptServer.Init(Config.Server.ip, Config.Server.serverPort, 100, _HandleServerConnected, _HandleServerDisconnected);
         }
         private void _HandleServerConnected(Connection conn)
         {
@@ -61,8 +59,6 @@ namespace GameGateMgrServer.Net
             {
                 if (conn.Socket != null && conn.Socket.Connected)
                 {
-                    var ipe = conn.Socket.RemoteEndPoint;
-                    Log.Debug("[连接成功]" + IPAddress.Parse(((IPEndPoint)ipe).Address.ToString()) + " : " + ((IPEndPoint)ipe).Port.ToString());
                     // 给conn添加心跳时间
                     m_serverConnHeartbeatTimestamps[conn] = DateTime.Now;
                 }
@@ -75,6 +71,8 @@ namespace GameGateMgrServer.Net
             {
                 Log.Error("[NetService]Socket 已被释放: " + ex.Message);
             }
+
+
         }
         private void _HandleServerDisconnected(Connection conn)
         {
@@ -85,12 +83,7 @@ namespace GameGateMgrServer.Net
             }
 
             // 通知上层删除
-            int serverId = conn.Get<int>();
-            if(serverId != 0)
-            {
-                GameGateMonitor.Instance.EntryDisconnection(serverId);
-            }
-
+            // 暂时没有需求
         }
         public void CloseServerConnection(Connection conn)
         {
@@ -134,7 +127,7 @@ namespace GameGateMgrServer.Net
 
         }
 
-        // GameGateMgrServer连接到其他服务器
+        // 连接到其他服务器
         public NetClient ConnctToServer(string ip, int port,
             TcpClientConnectedCallback connected, TcpClientConnectedFailedCallback connectFailed,
             TcpClientDisconnectedCallback disconnected)

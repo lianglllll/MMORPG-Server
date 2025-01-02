@@ -36,8 +36,7 @@ namespace LoginServer.Net
             // 消息的订阅
             MessageRouter.Instance.Subscribe<ServerInfoRegisterResponse>(_RegisterServerInfo2ControlCenterResponse);
 
-            // 连接到控制中心cc
-            _CCConnectToControlCenter();
+            _ExecutePhase0();
 
         }
         public void UnInit()
@@ -58,6 +57,23 @@ namespace LoginServer.Net
             return bitmap;
         }
 
+        private bool _ExecutePhase0()
+        {
+            // 连接到控制中心cc
+            _CCConnectToControlCenter();
+            return true;
+        }
+        private bool _ExecutePhase1(Google.Protobuf.Collections.RepeatedField<ClusterEventNode> clusterEventNodes)
+        {
+            
+            return true;
+        }
+        private bool _ExecutePhase2()
+        {
+            // 开始网络监听，预示着当前服务器的正式启动
+            NetService.Instance.Init2();
+            return true;
+        }
 
         // cc
         private void _CCConnectToControlCenter()
@@ -97,8 +113,7 @@ namespace LoginServer.Net
                 m_curServerInfoNode.ServerId = message.ServerId;
                 Log.Information("[Successfully registered this server information with the ControlCenter.]");
                 Log.Information($"The server ID of this server is [{message.ServerId}]");
-                // 开始网络监听，预示着当前服务器的正式启动
-                NetService.Instance.Init2();
+                _ExecutePhase1(message.ClusterEventNodes);
             }
             else
             {

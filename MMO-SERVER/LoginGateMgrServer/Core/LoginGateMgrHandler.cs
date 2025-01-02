@@ -15,8 +15,6 @@ namespace LoginGateMgrServer.Core
         public void Init()
         {
             // 协议注册
-            ProtoHelper.Register<GetAllServerInfoRequest>((int)ControlCenterProtocl.GetAllserverinfoReq);
-            ProtoHelper.Register<GetAllServerInfoResponse>((int)ControlCenterProtocl.GetAllserverinfoResp);
             ProtoHelper.Register<RegisterLoginGateInstanceRequest>((int)LoginGateMgrProtocl.RegisterLogingateInstanceReq);
             ProtoHelper.Register<RegisterLoginGateInstanceResponse>((int)LoginGateMgrProtocl.RegisterLogingateInstanceResp);
             ProtoHelper.Register<ExecuteLGCommandRequest>((int)LoginGateMgrProtocl.ExecuteLgCommandReq);
@@ -24,7 +22,6 @@ namespace LoginGateMgrServer.Core
             ProtoHelper.Register<ClusterEventResponse>((int)ControlCenterProtocl.ClusterEventResp);
 
             // 消息的订阅
-            MessageRouter.Instance.Subscribe<GetAllServerInfoResponse>(_HandleGetAllServerInfoResponse);
             MessageRouter.Instance.Subscribe<RegisterLoginGateInstanceRequest>(_HandleRegisterLoginGateInstanceRequest);
             MessageRouter.Instance.Subscribe<ExecuteLGCommandResponse>(_HandleExecuteLGCommandResponse);
             MessageRouter.Instance.Subscribe<ClusterEventResponse>(_HandleClusterEventResponse);
@@ -42,15 +39,7 @@ namespace LoginGateMgrServer.Core
             req.ServerType = SERVER_TYPE.Login; 
             ServersMgr.Instance.ccClient.Send(req);
         }
-        private void _HandleGetAllServerInfoResponse(Connection conn, GetAllServerInfoResponse message)
-        {
-            if(message.ServerType == SERVER_TYPE.Login)
-            {
-                LogingateMonitor.Instance.InitLoginServerInfo(message.ServerInfoNodes.ToList());
-                // Log.Debug(message.ToString());
-            }
 
-        }
         private void _HandleRegisterLoginGateInstanceRequest(Connection conn, RegisterLoginGateInstanceRequest message)
         {
             bool success = LogingateMonitor.Instance.RegisterLoginGateInstance(conn ,message.ServerInfoNode);
@@ -78,15 +67,15 @@ namespace LoginGateMgrServer.Core
         }
         private void _HandleClusterEventResponse(Connection sender, ClusterEventResponse message)
         {
-            if(message.EventType == ClusterEventType.LoginEnter)
+            if(message.ClusterEventNode.EventType == ClusterEventType.LoginEnter)
             {
                 Log.Debug("A new Login server has joined the cluster.");
-                LogingateMonitor.Instance.AddLoginServerInfo(message.ServerInfoNode);
+                LogingateMonitor.Instance.AddLoginServerInfo(message.ClusterEventNode.ServerInfoNode);
             }
-            else if (message.EventType == ClusterEventType.LoginExit)
+            else if (message.ClusterEventNode.EventType == ClusterEventType.LoginExit)
             {
                 Log.Debug("A Login server has left the cluster.");
-                LogingateMonitor.Instance.RemoveLoginServerInfo(message.ServerId);
+                LogingateMonitor.Instance.RemoveLoginServerInfo(message.ClusterEventNode.ServerId);
 
             }
             else

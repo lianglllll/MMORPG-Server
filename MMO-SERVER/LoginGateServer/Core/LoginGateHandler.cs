@@ -23,10 +23,10 @@ namespace LoginGateServer.Core
         }
         private void _HandleClusterEventResponse(Connection sender, ClusterEventResponse message)
         {
-            if(message.EventType == ClusterEventType.LogingatemgrEnter)
+            if(message.ClusterEventNode.EventType == ClusterEventType.LogingatemgrEnter)
             {
                 Log.Debug("A new LoginGateMgr server has joined the cluster.");
-                ServersMgr.Instance.SetLGMAndConnect(message.ServerInfoNode);
+                ServersMgr.Instance.SetLGMAndConnect(message.ClusterEventNode.ServerInfoNode);
             }
         }
     }

@@ -39,16 +39,13 @@ namespace GameGateServer.Net
             // 协议注册
             ProtoHelper.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
             ProtoHelper.Register<ServerInfoRegisterResponse>((int)ControlCenterProtocl.ServerinfoRegisterResp);
-            ProtoHelper.Register<RegisterGameGateInstanceRequest>((int)GameGateMgrProtocl.RegisterGgInstanceReq);
-            ProtoHelper.Register<RegisterGameGateInstanceResponse>((int)GameGateMgrProtocl.RegisterGgInstanceResp);
-            ProtoHelper.Register<GetAllServerInfoRequest>((int)ControlCenterProtocl.GetAllserverinfoReq);
-            ProtoHelper.Register<GetAllServerInfoResponse>((int)ControlCenterProtocl.GetAllserverinfoResp);
+            ProtoHelper.Register<RegisterToGGMRequest>((int)GameGateMgrProtocl.RegisterToGgmReq);
+            ProtoHelper.Register<RegisterToGGMResponse>((int)GameGateMgrProtocl.RegisterToGgmResp);
             ProtoHelper.Register<ExecuteGGCommandRequest>((int)GameGateMgrProtocl.ExecuteGgCommandReq);
             ProtoHelper.Register<ExecuteGGCommandResponse>((int)GameGateMgrProtocl.ExecuteGgCommandResp);
             // 消息的订阅
             MessageRouter.Instance.Subscribe<ServerInfoRegisterResponse>(_RegisterServerInfo2ControlCenterResponse);
-            MessageRouter.Instance.Subscribe<RegisterGameGateInstanceResponse>(_HandleRegisterGameGateInstanceResponse);
-            MessageRouter.Instance.Subscribe<GetAllServerInfoResponse>(_HandleGetAllServerInfoResponse);
+            MessageRouter.Instance.Subscribe<RegisterToGGMResponse>(_HandleRegisterToGGMResponse);
             MessageRouter.Instance.Subscribe<ExecuteGGCommandRequest>(_ExecuteGGCommandRequest);
 
             // 开始流程
@@ -82,12 +79,25 @@ namespace GameGateServer.Net
             _ConnectToCC();
             return true;
         }
-        private bool _ExecutePhase1()
+        private bool _ExecutePhase1(Google.Protobuf.Collections.RepeatedField<ClusterEventNode> clusterEventNodes)
         {
-            // 获取LoginGateMgr的信息
-            var req = new GetAllServerInfoRequest();
-            req.ServerType = SERVER_TYPE.Gamegatemgr;
-            m_CCClient.Send(req);
+            if (clusterEventNodes.Count == 0)
+            {
+                Log.Error("No GameGateMgr server information was obtained.");
+                Log.Error("The GameGateMgr server may not be start.");
+                return false;
+            }
+
+            foreach (var node in clusterEventNodes)
+            {
+                if (node.EventType == ClusterEventType.GamegatemgrEnter)
+                {
+                    m_curGGMSin = node.ServerInfoNode;// 目前集群只有一个
+                    _ConnectToGGM();
+                    break;
+                }
+            }
+
             return true;
         }
         private bool _ExecutePhase2()
@@ -142,7 +152,7 @@ namespace GameGateServer.Net
                 m_curSin.ServerId = message.ServerId;
                 Log.Information("Successfully registered this server information with the ControlCenter.");
                 Log.Information($"The server ID of this server is [{message.ServerId}]");
-                _ExecutePhase1();
+                _ExecutePhase1(message.ClusterEventNodes);
             }
             else
             {
@@ -150,22 +160,7 @@ namespace GameGateServer.Net
             }
         }
        
-        private void _HandleGetAllServerInfoResponse(Connection conn, GetAllServerInfoResponse message)
-        {
-            var list = message.ServerInfoNodes;
-            if (list.Count == 0)
-            {
-                Log.Error("No GameGateMgr server information was obtained.");
-                Log.Error("The GameGateMgr server may not be start.");
-                return;
-            }
-            if (m_curGGMSin == null)
-            {
-                m_curGGMSin = list[0];    // 集群只有一个
-                _ConnectToGGM();
-            }
-        }
-        public void SetGGMAndConnect(ServerInfoNode sin)
+        public void AddGGMServerInfo(ServerInfoNode sin)
         {
             if(m_curGGMSin == null)
             {
@@ -208,7 +203,7 @@ namespace GameGateServer.Net
         {
 
         }
-        private void _HandleRegisterGameGateInstanceResponse(Connection conn, RegisterGameGateInstanceResponse message)
+        private void _HandleRegisterToGGMResponse(Connection conn, RegisterToGGMResponse message)
         {
             if (message.ResultCode == 0)
             {

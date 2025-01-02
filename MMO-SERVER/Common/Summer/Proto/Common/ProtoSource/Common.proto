@@ -30,7 +30,7 @@ enum SERVER_TYPE{
 
 message ServerInfoNode{
 	int32 serverId		= 1;
-	HS.Protobuf.Common.SERVER_TYPE serverType = 2;
+	SERVER_TYPE serverType = 2;
 	string ip			= 3;
 	int32 port			= 4;
 	oneof payload{   
@@ -63,6 +63,7 @@ message GameGateServerInfoNode{
 message GameGateMgrServerInfoNode{
 }
 message SceneServerInfoNode{
+	int32 sceneId = 1;
 }
 message DBProxyServerInfoNode{
 }
@@ -75,10 +76,10 @@ enum GateCommand{
 	GATE_COMMAND_END = 4;
 }
 
-enum GateStatus {
-    GATE_STATUS_ACTIVE = 0;   // 工作中
-    GATE_STATUS_PAUSED = 1;   // 暂停
-    GATE_STATUS_INACTIVE = 2; // 非工作状态
+enum ServerStatus {
+    SERVER_STATUS_ACTIVE = 0;   // 工作中
+    SERVER_STATUS_PAUSED = 1;   // 暂停
+    SERVER_STATUS_INACTIVE = 2; // 非工作状态
 }
 
 

@@ -15,17 +15,14 @@ namespace GameGateMgrServer.Core
         public void Init()
         {
             // 协议注册
-            ProtoHelper.Register<GetAllServerInfoRequest>((int)ControlCenterProtocl.GetAllserverinfoReq);
-            ProtoHelper.Register<GetAllServerInfoResponse>((int)ControlCenterProtocl.GetAllserverinfoResp);
-            ProtoHelper.Register<RegisterGameGateInstanceRequest>((int)GameGateMgrProtocl.RegisterGgInstanceReq);
-            ProtoHelper.Register<RegisterGameGateInstanceResponse>((int)GameGateMgrProtocl.RegisterGgInstanceResp);
+            ProtoHelper.Register<RegisterToGGMRequest>((int)GameGateMgrProtocl.RegisterToGgmReq);
+            ProtoHelper.Register<RegisterToGGMResponse>((int)GameGateMgrProtocl.RegisterToGgmResp);
             ProtoHelper.Register<ExecuteGGCommandRequest>((int)GameGateMgrProtocl.ExecuteGgCommandReq);
             ProtoHelper.Register<ExecuteGGCommandResponse>((int)GameGateMgrProtocl.ExecuteGgCommandResp);
             ProtoHelper.Register<ClusterEventResponse>((int)ControlCenterProtocl.ClusterEventResp);
 
             // 消息的订阅
-            MessageRouter.Instance.Subscribe<GetAllServerInfoResponse>(_HandleGetAllServerInfoResponse);
-            MessageRouter.Instance.Subscribe<RegisterGameGateInstanceRequest>(_HandleRegisterGameGateInstanceRequest);
+            MessageRouter.Instance.Subscribe<RegisterToGGMRequest>(_HandleRegisterToGGMRequest);
             MessageRouter.Instance.Subscribe<ExecuteGGCommandResponse>(_HandleExecuteGGCommandResponse);
             MessageRouter.Instance.Subscribe<ClusterEventResponse>(_HandleClusterEventResponse);
 
@@ -42,19 +39,10 @@ namespace GameGateMgrServer.Core
             req.ServerType = SERVER_TYPE.Game; 
             ServersMgr.Instance.ccClient.Send(req);
         }
-        private void _HandleGetAllServerInfoResponse(Connection conn, GetAllServerInfoResponse message)
+        private void _HandleRegisterToGGMRequest(Connection conn, RegisterToGGMRequest message)
         {
-            if(message.ServerType == SERVER_TYPE.Game)
-            {
-                GameGateMonitor.Instance.InitGameServerInfo(message.ServerInfoNodes.ToList());
-                // Log.Debug(message.ToString());
-            }
-
-        }
-        private void _HandleRegisterGameGateInstanceRequest(Connection conn, RegisterGameGateInstanceRequest message)
-        {
-            bool success = GameGateMonitor.Instance.RegisterGameGateInstance(conn ,message.ServerInfoNode);
-            RegisterGameGateInstanceResponse resp = new();
+            bool success = GameGateMonitor.Instance.RegisterToGGMInstance(conn ,message.ServerInfoNode);
+            RegisterToGGMResponse resp = new();
             if (success)
             {
                 resp.ResultCode = 0;
@@ -78,15 +66,15 @@ namespace GameGateMgrServer.Core
         }
         private void _HandleClusterEventResponse(Connection sender, ClusterEventResponse message)
         {
-            if(message.EventType == ClusterEventType.GameEnter)
+            if(message.ClusterEventNode.EventType == ClusterEventType.GameEnter)
             {
                 Log.Debug("A new Game server has joined the cluster.");
-                GameGateMonitor.Instance.AddGameServerInfo(message.ServerInfoNode);
+                GameGateMonitor.Instance.AddGameServerInfo(message.ClusterEventNode.ServerInfoNode);
             }
-            else if (message.EventType == ClusterEventType.GameExit)
+            else if (message.ClusterEventNode.EventType == ClusterEventType.GameExit)
             {
                 Log.Debug("A Game server has left the cluster.");
-                GameGateMonitor.Instance.RemoveGameServerInfo(message.ServerId);
+                GameGateMonitor.Instance.RemoveGameServerInfo(message.ClusterEventNode.ServerId);
             }
             else
             {

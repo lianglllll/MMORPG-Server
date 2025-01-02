@@ -40,14 +40,11 @@ namespace LoginGateServer.Net
             ProtoHelper.Register<ServerInfoRegisterResponse>((int)ControlCenterProtocl.ServerinfoRegisterResp);
             ProtoHelper.Register<RegisterLoginGateInstanceRequest>((int)LoginGateMgrProtocl.RegisterLogingateInstanceReq);
             ProtoHelper.Register<RegisterLoginGateInstanceResponse>((int)LoginGateMgrProtocl.RegisterLogingateInstanceResp);
-            ProtoHelper.Register<GetAllServerInfoRequest>((int)ControlCenterProtocl.GetAllserverinfoReq);
-            ProtoHelper.Register<GetAllServerInfoResponse>((int)ControlCenterProtocl.GetAllserverinfoResp);
             ProtoHelper.Register<ExecuteLGCommandRequest>((int)LoginGateMgrProtocl.ExecuteLgCommandReq);
             ProtoHelper.Register<ExecuteLGCommandResponse>((int)LoginGateMgrProtocl.ExecuteLgCommandResp);
             // 消息的订阅
             MessageRouter.Instance.Subscribe<ServerInfoRegisterResponse>(_RegisterServerInfo2ControlCenterResponse);
             MessageRouter.Instance.Subscribe<RegisterLoginGateInstanceResponse>(_RegisterLoginGateInstanceResponse);
-            MessageRouter.Instance.Subscribe<GetAllServerInfoResponse>(_HandleGetAllServerInfoResponse);
             MessageRouter.Instance.Subscribe<ExecuteLGCommandRequest>(_ExecuteLGCommandRequest);
 
             // 开始流程
@@ -72,7 +69,7 @@ namespace LoginGateServer.Net
         }
 
         // 零阶段：连接cc
-        // 一阶段：cc注册完成,获取gatemgr信息
+        // 一阶段：连接lgm
         // 二阶段：lgm注册完成，等待分配任务
         // 三阶段：l连接成功，等待接受用户连接
         private bool _ExecutePhase0()
@@ -81,12 +78,24 @@ namespace LoginGateServer.Net
             _ConnectToCC();
             return true;
         }
-        private bool _ExecutePhase1()
+        private bool _ExecutePhase1(Google.Protobuf.Collections.RepeatedField<ClusterEventNode> clusterEventNodes)
         {
-            // 获取LoginGateMgr的信息
-            var req = new GetAllServerInfoRequest();
-            req.ServerType = SERVER_TYPE.Logingatemgr;
-            m_CCClient.Send(req);
+            if (clusterEventNodes.Count == 0)
+            {
+                Log.Error("No LoginGateMgr server information was obtained.");
+                Log.Error("The LoginGateMgr server may not be start.");
+                return false;
+            }
+            foreach (var node in clusterEventNodes)
+            {
+                if (node.EventType == ClusterEventType.LogingateEnter)
+                {
+                    m_curLGMSin = node.ServerInfoNode;// 目前集群只有一个
+                    _ConnectToLGM();
+                    break;
+                }
+            }
+
             return true;
         }
         private bool _ExecutePhase2()
@@ -141,29 +150,14 @@ namespace LoginGateServer.Net
                 m_curSin.ServerId = message.ServerId;
                 Log.Information("Successfully registered this server information with the ControlCenter.");
                 Log.Information($"The server ID of this server is [{message.ServerId}]");
-                _ExecutePhase1();
+                _ExecutePhase1(message.ClusterEventNodes);
             }
             else
             {
                 Log.Error(message.ResultMsg);
             }
         }
-       
-        private void _HandleGetAllServerInfoResponse(Connection conn, GetAllServerInfoResponse message)
-        {
-            var list = message.ServerInfoNodes;
-            if (list.Count == 0)
-            {
-                Log.Error("No LoginGateMgr server information was obtained.");
-                Log.Error("The LoginGateMgr server may not be start.");
-                return;
-            }
-            if (m_curLGMSin == null)
-            {
-                m_curLGMSin = list[0];    // 集群只有一个
-                _ConnectToLGM();
-            }
-        }
+
         public void SetLGMAndConnect(ServerInfoNode sin)
         {
             if(m_curLGMSin == null)

@@ -62,11 +62,11 @@ namespace LoginGateMgrServer.Net
             return bitmap;
         }
 
-        private bool _ExecutePhase1()
+        private bool _ExecutePhase1(Google.Protobuf.Collections.RepeatedField<ClusterEventNode> clusterEventNodes)
         {
             //开启监测
+            LogingateMonitor.Instance.Init(clusterEventNodes);
             LoginGateMgrHandler.Instance.Init();
-            LogingateMonitor.Instance.Init();
 
             // 开始网络监听，预示着当前服务器的正式启动
             NetService.Instance.Start();
@@ -111,7 +111,7 @@ namespace LoginGateMgrServer.Net
                 m_curServerInfoNode.ServerId = message.ServerId;
                 Log.Information("[Successfully registered this server information with the ControlCenter.]");
                 Log.Information($"The server ID of this server is [{message.ServerId}]");
-                _ExecutePhase1();
+                _ExecutePhase1(message.ClusterEventNodes);
             }
             else
             {

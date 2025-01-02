@@ -3,12 +3,12 @@ using Common.Summer.Net;
 using Common.Summer.Proto;
 using Common.Summer.Tools;
 using HS.Protobuf.ControlCenter;
-using GameGateServer.Net;
+using SceneServer.Net;
 using Serilog;
 
-namespace GameGateServer.Core
+namespace SceneServer.Core
 {
-    public class GameGateHandler : Singleton<GameGateHandler>
+    public class SceneHandler : Singleton<SceneHandler>
     {
         public void Init()
         {
@@ -22,11 +22,16 @@ namespace GameGateServer.Core
         }
         private void _HandleClusterEventResponse(Connection sender, ClusterEventResponse message)
         {
-            if(message.ClusterEventNode.EventType == ClusterEventType.GamegatemgrEnter)
+            if (message.ClusterEventNode.EventType == ClusterEventType.DbproxyEnter)
             {
-                Log.Debug("A new GameGateMgr server has joined the cluster.");
+                Log.Debug("A new DBProxy Server has joined the cluster.");
+                ServersMgr.Instance.AddDBServerInfo(message.ClusterEventNode.ServerInfoNode);
+            }else if(message.ClusterEventNode.EventType == ClusterEventType.GamegatemgrEnter)
+            {
+                Log.Debug("A new GameGateMgr Server has joined the cluster.");
                 ServersMgr.Instance.AddGGMServerInfo(message.ClusterEventNode.ServerInfoNode);
             }
         }
+
     }
 }
