@@ -13,14 +13,17 @@ using HS.Protobuf.GameGateMgr;
 
 namespace GameGateServer.Net
 {
+    class ServerEntry
+    {
+        public ServerInfoNode ServerInfoNode { get; set; }
+        public NetClient NetClient { get; set; }
+    }
+
     public class ServersMgr : Singleton<ServersMgr>
     {
         private ServerInfoNode? m_curSin;
-        private ServerInfoNode? m_curGGMSin;
-        private ServerInfoNode? m_curGSin;
-        private NetClient? m_CCClient;
-        private NetClient? m_GGMClient;
-        private NetClient? m_GClient;
+        private Dictionary<SERVER_TYPE, ServerEntry> m_outgoingServerConnection = new();
+
         public void Init()
         {
             // 本服务器的信息
@@ -35,6 +38,7 @@ namespace GameGateServer.Net
 
             // 网络服务初始化
             NetService.Instance.Init();
+            GameGateHandler.Instance.Init();
 
             // 协议注册
             ProtoHelper.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
@@ -69,10 +73,6 @@ namespace GameGateServer.Net
             return bitmap;
         }
 
-        // 零阶段：连接cc
-        // 一阶段：cc注册完成,获取gatemgr信息
-        // 二阶段：lgm注册完成，等待分配任务
-        // 三阶段：l连接成功，等待接受用户连接
         private bool _ExecutePhase0()
         {
             // 连接到控制中心cc
@@ -92,8 +92,8 @@ namespace GameGateServer.Net
             {
                 if (node.EventType == ClusterEventType.GamegatemgrEnter)
                 {
-                    m_curGGMSin = node.ServerInfoNode;// 目前集群只有一个
-                    _ConnectToGGM();
+                    // 目前集群只有一个
+                    AddGGMServerInfo(node.ServerInfoNode);
                     break;
                 }
             }
@@ -113,6 +113,7 @@ namespace GameGateServer.Net
             return true;
         }
 
+        // cc
         private void _ConnectToCC()
         {
             NetService.Instance.ConnctToServer(Config.CCConfig.ip, Config.CCConfig.port, _CCConnectedCallback, _CCConnectedFailedCallback, _CCDisconnectedCallback);
@@ -121,7 +122,7 @@ namespace GameGateServer.Net
         {
             Log.Information("Successfully connected to the control center server.");
             // 记录
-            m_CCClient = tcpClient;
+            m_outgoingServerConnection[SERVER_TYPE.Controlcenter].NetClient = tcpClient;
 
             // 向cc注册自己
             ServerInfoRegisterRequest req = new();
@@ -160,30 +161,34 @@ namespace GameGateServer.Net
             }
         }
        
+        // ggm
         public void AddGGMServerInfo(ServerInfoNode sin)
         {
-            if(m_curGGMSin == null)
+            if (!m_outgoingServerConnection.ContainsKey(SERVER_TYPE.Gamegatemgr))
             {
-                m_curGGMSin = sin;
+                var entry = new ServerEntry();
+                entry.ServerInfoNode = sin;
+                m_outgoingServerConnection[SERVER_TYPE.Gamegatemgr] = entry;
                 _ConnectToGGM();
             }
         }
         private void _ConnectToGGM()
         {
-            NetService.Instance.ConnctToServer(m_curGGMSin.Ip, m_curGGMSin.Port,
+            ServerInfoNode node = m_outgoingServerConnection[SERVER_TYPE.Gamegatemgr].ServerInfoNode;
+            NetService.Instance.ConnctToServer(node.Ip, node.Port,
                 _GameGateMgrConnectedCallback, _GameGateMgrConnectedFailedCallback, _GameGateMgrDisconnectedCallback);
         }
         private void _GameGateMgrConnectedCallback(NetClient tcpClient)
         {
             Log.Information("Successfully connected to the GameGateMgr server.");
-            
+
             // 记录
-            m_GGMClient = tcpClient;
+            m_outgoingServerConnection[SERVER_TYPE.Gamegatemgr].NetClient = tcpClient;
 
             // 向lgm注册自己
             RegisterLoginGateInstanceRequest req = new();
             req.ServerInfoNode = m_curSin;
-            m_GGMClient.Send(req);
+            tcpClient.Send(req);
         }
         private void _GameGateMgrConnectedFailedCallback(NetClient tcpClient, bool isEnd)
         {
@@ -217,39 +222,7 @@ namespace GameGateServer.Net
             }
         }
 
-        private void _ConnectToG()
-        {
-            NetService.Instance.ConnctToServer(m_curGSin.Ip, m_curGSin.Port,
-                _GameConnectedCallback, _GameConnectedFailedCallback, _GameDisconnectedCallback);
-        }
-        private void _GameConnectedCallback(NetClient tcpClient)
-        {
-            Log.Information("Successfully connected to the Game server.");
-
-            // 记录
-            m_GClient = tcpClient;
-
-            _ExecutePhase3();
-        }
-        private void _GameConnectedFailedCallback(NetClient tcpClient, bool isEnd)
-        {
-            if (isEnd)
-            {
-                Log.Error("Connect to GameServer failed, the server may not be turned on");
-            }
-            else
-            {
-                //做一下重新连接
-                Log.Error("Connect to GameServer failed, attempting to reconnect login");
-                Log.Error("重连还没写");
-            }
-
-        }
-        private void _GameDisconnectedCallback(NetClient tcpClient)
-        {
-
-        }
-
+        // command
         private void _ExecuteGGCommandRequest(Connection conn, ExecuteGGCommandRequest message)
         {
             int resultCode = 0;
@@ -282,7 +255,7 @@ namespace GameGateServer.Net
             if(message.GameServerInfoNode != null)
             {
                 Log.Information("Command:Start......");
-                m_curGSin = message.GameServerInfoNode;
+                m_outgoingServerConnection[SERVER_TYPE.Game] = new ServerEntry { ServerInfoNode = message.GameServerInfoNode };
                 _ConnectToG();
                 return true;
             }
@@ -301,19 +274,54 @@ namespace GameGateServer.Net
         }
         private bool _ExecuteEnd()
         {
-            if(m_GClient != null)
+            if(m_outgoingServerConnection.ContainsKey(SERVER_TYPE.Game))
             {
-                NetService.Instance.CloseServerConnection(m_GClient);
-                m_GClient = null;
-                m_curGSin = null;
+                NetService.Instance.CloseServerConnection(m_outgoingServerConnection[SERVER_TYPE.Game].NetClient);
+                m_outgoingServerConnection.Remove(SERVER_TYPE.Game);
                 return true;
             }
             return false;
         }
 
+        // g
+        private void _ConnectToG()
+        {
+            ServerInfoNode node = m_outgoingServerConnection[SERVER_TYPE.Game].ServerInfoNode;
+            NetService.Instance.ConnctToServer(node.Ip, node.Port,
+                _GameConnectedCallback, _GameConnectedFailedCallback, _GameDisconnectedCallback);
+        }
+        private void _GameConnectedCallback(NetClient tcpClient)
+        {
+            Log.Information("Successfully connected to the Game server.");
+
+            // 记录
+            m_outgoingServerConnection[SERVER_TYPE.Game].NetClient = tcpClient;
+
+            _ExecutePhase3();
+        }
+        private void _GameConnectedFailedCallback(NetClient tcpClient, bool isEnd)
+        {
+            if (isEnd)
+            {
+                Log.Error("Connect to GameServer failed, the server may not be turned on");
+            }
+            else
+            {
+                //做一下重新连接
+                Log.Error("Connect to GameServer failed, attempting to reconnect login");
+                Log.Error("重连还没写");
+            }
+
+        }
+        private void _GameDisconnectedCallback(NetClient tcpClient)
+        {
+
+        }
+
+        // tools
         public void SentToGameServer(ByteString data)
         {
-            m_GClient.Send(data);
+            m_outgoingServerConnection[SERVER_TYPE.Game].NetClient.Send(data);
         }
     }
 }

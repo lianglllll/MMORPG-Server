@@ -87,6 +87,5 @@ namespace GameServer.Net
                 Log.Error(message.ResultMsg);
             }
         }
-
     }
 }

@@ -53,7 +53,6 @@ namespace GameGateServer
             Log.Information($"updateHz：{Config.Server.updateHz}");
 
             Scheduler.Instance.Start(Config.Server.updateHz);
-            GameGateHandler.Instance.Init();
             ServersMgr.Instance.Init();
 
             return true;

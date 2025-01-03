@@ -5,7 +5,6 @@ using Common.Summer.Tools;
 using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
 using HS.Protobuf.GameGateMgr;
-using HS.Protobuf.LoginGateMgr;
 using SceneServer.Core;
 using SceneServer.Utils;
 using Serilog;
@@ -17,7 +16,6 @@ namespace SceneServer.Net
         public ServerInfoNode ServerInfoNode { get; set; }
         public NetClient NetClient { get; set; }
     }
-
     public class ServersMgr : Singleton<ServersMgr>
     {
         private ServerInfoNode? m_curSin;
@@ -37,7 +35,7 @@ namespace SceneServer.Net
 
             // 网络服务开启
             NetService.Instance.Init();
-            SceneHandler.Instance.Init();
+            SceneServerHandler.Instance.Init();
 
             // 协议注册
             ProtoHelper.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);

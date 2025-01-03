@@ -11,7 +11,6 @@ using HS.Protobuf.Common;
 using Common.Summer.Proto;
 using static Common.Summer.Net.NetClient;
 using System.Collections.Generic;
-using HS.Protobuf.ControlCenter;
 
 namespace GameServer.Net
 {

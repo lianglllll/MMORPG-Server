@@ -9,17 +9,22 @@ using HS.Protobuf.LoginGateMgr;
 using LoginGateServer.Core;
 using LoginGateServer.Utils;
 using Serilog;
+using System.Net.Sockets;
 
 namespace LoginGateServer.Net
 {
+    class ServerEntry
+    {
+        public ServerInfoNode ServerInfoNode { get; set; }
+        public NetClient NetClient { get; set; }
+    }
+
     public class ServersMgr : Singleton<ServersMgr>
     {
         private ServerInfoNode? m_curSin;
-        private ServerInfoNode? m_curLGMSin;
-        private ServerInfoNode? m_curLSin;
-        private NetClient? m_CCClient;
-        private NetClient? m_LGMClient;
-        private NetClient? m_LClient;
+        private Dictionary<SERVER_TYPE, ServerEntry> m_outgoingServerConnection = new();
+
+
         public void Init()
         {
             // 本服务器的信息
@@ -42,6 +47,7 @@ namespace LoginGateServer.Net
             ProtoHelper.Register<RegisterLoginGateInstanceResponse>((int)LoginGateMgrProtocl.RegisterLogingateInstanceResp);
             ProtoHelper.Register<ExecuteLGCommandRequest>((int)LoginGateMgrProtocl.ExecuteLgCommandReq);
             ProtoHelper.Register<ExecuteLGCommandResponse>((int)LoginGateMgrProtocl.ExecuteLgCommandResp);
+
             // 消息的订阅
             MessageRouter.Instance.Subscribe<ServerInfoRegisterResponse>(_RegisterServerInfo2ControlCenterResponse);
             MessageRouter.Instance.Subscribe<RegisterLoginGateInstanceResponse>(_RegisterLoginGateInstanceResponse);
@@ -68,10 +74,6 @@ namespace LoginGateServer.Net
             return bitmap;
         }
 
-        // 零阶段：连接cc
-        // 一阶段：连接lgm
-        // 二阶段：lgm注册完成，等待分配任务
-        // 三阶段：l连接成功，等待接受用户连接
         private bool _ExecutePhase0()
         {
             // 连接到控制中心cc
@@ -86,12 +88,12 @@ namespace LoginGateServer.Net
                 Log.Error("The LoginGateMgr server may not be start.");
                 return false;
             }
+
             foreach (var node in clusterEventNodes)
             {
-                if (node.EventType == ClusterEventType.LogingateEnter)
+                if (node.EventType == ClusterEventType.LogingatemgrEnter)
                 {
-                    m_curLGMSin = node.ServerInfoNode;// 目前集群只有一个
-                    _ConnectToLGM();
+                    AddLGMServerInfo(node.ServerInfoNode);
                     break;
                 }
             }
@@ -111,6 +113,7 @@ namespace LoginGateServer.Net
             return true;
         }
 
+        // cc
         private void _ConnectToCC()
         {
             NetService.Instance.ConnctToServer(Config.CCConfig.ip, Config.CCConfig.port, _CCConnectedCallback, _CCConnectedFailedCallback, _CCDisconnectedCallback);
@@ -119,7 +122,7 @@ namespace LoginGateServer.Net
         {
             Log.Information("Successfully connected to the control center server.");
             // 记录
-            m_CCClient = tcpClient;
+            m_outgoingServerConnection.Add(SERVER_TYPE.Controlcenter, new ServerEntry { NetClient = tcpClient});
 
             // 向cc注册自己
             ServerInfoRegisterRequest req = new();
@@ -158,30 +161,34 @@ namespace LoginGateServer.Net
             }
         }
 
-        public void SetLGMAndConnect(ServerInfoNode sin)
+        // lgm
+        public void AddLGMServerInfo(ServerInfoNode sin)
         {
-            if(m_curLGMSin == null)
+            if (!m_outgoingServerConnection.ContainsKey(SERVER_TYPE.Logingatemgr))
             {
-                m_curLGMSin = sin;
+                var entry = new ServerEntry();
+                entry.ServerInfoNode = sin;
+                m_outgoingServerConnection[SERVER_TYPE.Logingatemgr] = entry;
                 _ConnectToLGM();
             }
         }
         private void _ConnectToLGM()
         {
-            NetService.Instance.ConnctToServer(m_curLGMSin.Ip, m_curLGMSin.Port,
+            ServerInfoNode node = m_outgoingServerConnection[SERVER_TYPE.Logingatemgr].ServerInfoNode;
+            NetService.Instance.ConnctToServer(node.Ip, node.Port,
                 _LoginGateMgrConnectedCallback, _LoginGateMgrConnectedFailedCallback, _LoginGateMgrDisconnectedCallback);
         }
         private void _LoginGateMgrConnectedCallback(NetClient tcpClient)
         {
             Log.Information("Successfully connected to the LoginGateMgr server.");
-            
+
             // 记录
-            m_LGMClient = tcpClient;
+            m_outgoingServerConnection[SERVER_TYPE.Logingatemgr].NetClient = tcpClient;
 
             // 向lgm注册自己
             RegisterLoginGateInstanceRequest req = new();
             req.ServerInfoNode = m_curSin;
-            m_LGMClient.Send(req);
+            tcpClient.Send(req);
         }
         private void _LoginGateMgrConnectedFailedCallback(NetClient tcpClient, bool isEnd)
         {
@@ -214,44 +221,8 @@ namespace LoginGateServer.Net
                 Log.Error(message.ResultMsg);
             }
         }
-
-        private void _ConnectToL()
-        {
-            NetService.Instance.ConnctToServer(m_curLSin.Ip, m_curLSin.Port,
-                _LoginConnectedCallback, _LoginConnectedFailedCallback, _LoginDisconnectedCallback);
-        }
-        private void _LoginConnectedCallback(NetClient tcpClient)
-        {
-            Log.Information("Successfully connected to the Login server.");
-
-            // 记录
-            m_LClient = tcpClient;
-
-            _ExecutePhase3();
-        }
-        private void _LoginConnectedFailedCallback(NetClient tcpClient, bool isEnd)
-        {
-            if (isEnd)
-            {
-                Log.Error("Connect to login failed, the server may not be turned on");
-            }
-            else
-            {
-                //做一下重新连接
-                Log.Error("Connect to login failed, attempting to reconnect login");
-                Log.Error("重连还没写");
-
-
-
-
-            }
-
-        }
-        private void _LoginDisconnectedCallback(NetClient tcpClient)
-        {
-
-        }
-
+        
+        // command
         private void _ExecuteLGCommandRequest(Connection conn, ExecuteLGCommandRequest message)
         {
             int resultCode = 0;
@@ -281,10 +252,12 @@ namespace LoginGateServer.Net
         }
         private bool _ExecuteStart(ExecuteLGCommandRequest message)
         {
-            if(message.LoginServerInfoNode != null)
+            if (message.LoginServerInfoNode != null)
             {
                 Log.Information("Command:Start......");
-                m_curLSin = message.LoginServerInfoNode;
+                var entry = new ServerEntry();
+                entry.ServerInfoNode = message.LoginServerInfoNode;
+                m_outgoingServerConnection[SERVER_TYPE.Login] = entry;
                 _ConnectToL();
                 return true;
             }
@@ -303,19 +276,55 @@ namespace LoginGateServer.Net
         }
         private bool _ExecuteEnd()
         {
-            if(m_LClient != null)
+            if (m_outgoingServerConnection.ContainsKey(SERVER_TYPE.Login))
             {
-                NetService.Instance.CloseServerConnection(m_LClient);
-                m_LClient = null;
-                m_curLSin = null;
+                NetService.Instance.CloseServerConnection(m_outgoingServerConnection[SERVER_TYPE.Login].NetClient);
+                m_outgoingServerConnection.Remove(SERVER_TYPE.Login);
                 return true;
             }
             return false;
         }
 
-        public void SentToLoginServer(ByteString data)
+        // l
+        private void _ConnectToL()
         {
-            m_LClient.Send(data);
+            ServerInfoNode node = m_outgoingServerConnection[SERVER_TYPE.Login].ServerInfoNode;
+            NetService.Instance.ConnctToServer(node.Ip, node.Port,
+                _LoginConnectedCallback, _LoginConnectedFailedCallback, _LoginDisconnectedCallback);
+        }
+        private void _LoginConnectedCallback(NetClient tcpClient)
+        {
+            Log.Information("Successfully connected to the Login server.");
+            m_outgoingServerConnection[SERVER_TYPE.Login].NetClient = tcpClient;
+            _ExecutePhase3();
+        }
+        private void _LoginConnectedFailedCallback(NetClient tcpClient, bool isEnd)
+        {
+            if (isEnd)
+            {
+                Log.Error("Connect to login failed, the server may not be turned on");
+            }
+            else
+            {
+                //做一下重新连接
+                Log.Error("Connect to login failed, attempting to reconnect login");
+                Log.Error("重连还没写");
+
+
+
+
+            }
+
+        }
+        private void _LoginDisconnectedCallback(NetClient tcpClient)
+        {
+
+        }
+
+        // tools
+        public void SentToLoginServer(IMessage message)
+        {
+            m_outgoingServerConnection[SERVER_TYPE.Login].NetClient.Send(message);
         }
     }
 }

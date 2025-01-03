@@ -8,7 +8,7 @@ using Serilog;
 
 namespace SceneServer.Core
 {
-    public class SceneHandler : Singleton<SceneHandler>
+    public class SceneServerHandler : Singleton<SceneServerHandler>
     {
         public void Init()
         {

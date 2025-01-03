@@ -7,6 +7,8 @@ enum CommonProtocl{
 	COMMON_PROTOCL_CS_HEARTBEAT_RESP	= 1002;
 	COMMON_PROTOCL_SS_HEARTBEAT_REQ		= 1003;
 	COMMON_PROTOCL_SS_HEARTBEAT_RESP	= 1004;
+	COMMON_PROTOCL_IP_ENVELOPE			= 1005;
+	COMMON_PROTOCL_TCP_ENVELOPE			= 1006;
 }
 
 enum SERVER_TYPE{
@@ -26,6 +28,11 @@ enum SERVER_TYPE{
 	// scene:	40000	场景/副本 
 	// DB:		50000	mongodb/redis
 	// combat:	60000	skill buff   
+}
+enum PROTOCAL_CODE{
+	PROTOCAL_CODE_NONE = 0;
+	PROTOCAL_CODE_LOGIN = 2;
+	PROTOCAL_CODE_GAME = 5;
 }
 
 message ServerInfoNode{
@@ -82,6 +89,20 @@ enum ServerStatus {
     SERVER_STATUS_INACTIVE = 2; // 非工作状态
 }
 
+
+// 下面两个是模拟计算机网络中的协议栈进行数据封装的
+// IPEnvelope用于gate和client之间的通信
+message IPEnvelope{
+	int32 protocolCode = 1;
+	int32 encryptionLevel = 2;
+	TCPEnvelope tcpEnvelope = 3;
+}
+// TCPEnvelope用于gate和server之间的通信
+message TCPEnvelope{
+	int32 clientId = 1;
+	int32 seqId = 2;
+	bytes data = 3;
+}
 
 //============================================Transform==========================================
 

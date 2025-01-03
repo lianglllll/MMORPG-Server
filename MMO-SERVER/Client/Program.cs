@@ -6,6 +6,13 @@ using System.Collections.Generic;
 using lLua.Binchunk;
 using Common.Summer.Security;
 using Serilog.Sinks.SystemConsole.Themes;
+using System.Net;
+using Common.Summer.Net;
+using HS.Protobuf.Common;
+using Common.Summer.Proto;
+using HS.Protobuf.Login;
+using Google.Protobuf;
+using Common.Summer.Core;
 
 namespace ClientTest
 {
@@ -99,7 +106,6 @@ namespace ClientTest
                 [ConsoleThemeStyle.LevelError] = "\x1b[31m", // 红色
                 [ConsoleThemeStyle.LevelFatal] = "\x1b[41m\x1b[37m" // 红色背景，白色文本
             });
-
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .WriteTo.Console(
@@ -107,48 +113,51 @@ namespace ClientTest
                     outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
                 .CreateLogger();
 
-            // 测试日志输出
-            Log.Debug("This is a debug message.");  // 白色
-            Log.Information("This is an information message.");  // 绿色
-            Log.Warning("This is a warning message.");  // 黄色
-            Log.Error("This is an error message.");  // 红色
-            Log.Fatal("This is a fatal message.");  // 红色背景，白色文本
+            Thread.Sleep(2000);
 
-            Log.CloseAndFlush();
+            ProtoHelper.Register<IPEnvelope>((int)CommonProtocl.IpEnvelope);
+            ProtoHelper.Register<UserLoginRequest>((int)LoginProtocl.UserLoginRequest);
+            ProtoHelper.Register<UserLoginResponse>((int)LoginProtocl.UserLoginResponse);
 
-            Thread.Sleep(1000);
+            MessageRouter.Instance.Start(1);
+            MessageRouter.Instance.Subscribe<IPEnvelope>(_HandleIPEnvelope);
 
-            //var ip = "127.0.0.1";
-            //int port = 6666;
-            //IPEndPoint iPEndPoint = new IPEndPoint(IPAddress.Parse(ip), port);
+            
+            NetClient netClient = new NetClient();
+            netClient.Init("127.0.0.1", 10700,
+                (tcpClient) => { 
+                    Log.Debug("Connected to LoginGate Server.");
 
-            //Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                    IPEnvelope iPEnvelope = new IPEnvelope();
+                    TCPEnvelope tCPEnvelope = new TCPEnvelope();
+                    iPEnvelope.ProtocolCode = 2;
+                    iPEnvelope.EncryptionLevel = 0;
+                    iPEnvelope.TcpEnvelope = tCPEnvelope;
+                    tCPEnvelope.ClientId = 1;
+                    tCPEnvelope.SeqId = 1;
+                    IMessage userLoginRequest = new UserLoginRequest { Username = "admin", Password = "admin" };
+                    byte[] data = ProtoHelper.IMessageParse2BytesNoLen(userLoginRequest);
+                    tCPEnvelope.Data = ByteString.CopyFrom(data);
 
-            //socket.Connect(iPEndPoint);
+                    for(int i = 0; i < 5; i++)
+                    {
+                        tCPEnvelope.SeqId += 1;
+                        netClient.Send(iPEnvelope);
+                    }
 
-            //Log.Information("已连接远程服务器");
-
-            ////用户登录消息吧
-            //Connection conn = new Connection(socket);
-
-
-            //var msg = new Proto.UserLoginRequest();
-            //msg.Username = "abc";
-            //msg.Password = "1323";
-            //conn.Send(msg);
+                },
+                (tcpClient, isEnd) => { },
+                (tcpClient) => { });
 
 
-            //var msg2 = new Proto.GameEnterRequest();
-            //msg2.CharacterId = 1;
 
-            //conn.Send(msg2);
-
-            //socket.Close();
-
-            //TestRSA();
-
-            // Lua();
             Console.ReadLine();
+        }
+
+        private static void _HandleIPEnvelope(Connection sender, IPEnvelope message)
+        {
+            Log.Information(message.ToString());  
+
         }
     }
 }

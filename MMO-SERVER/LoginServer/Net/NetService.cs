@@ -60,6 +60,8 @@ namespace LoginServer.Net
             {
                 if (conn.Socket != null && conn.Socket.Connected)
                 {
+                    var ipe = conn.Socket.RemoteEndPoint;
+                    Log.Debug("[连接成功]" + IPAddress.Parse(((IPEndPoint)ipe).Address.ToString()) + " : " + ((IPEndPoint)ipe).Port.ToString());
                     // 给conn添加心跳时间
                     m_serverConnHeartbeatTimestamps[conn] = DateTime.Now;
                 }

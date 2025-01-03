@@ -10,9 +10,9 @@ using System.Threading;
 namespace Common.Summer.Net
 {
     //消息单元
-    class Msg
+    class MessageHandlerArgs
     {
-        public Connection conn;//谁发的
+        public Connection conn;
         public IMessage message;//消息
     }
 
@@ -28,7 +28,7 @@ namespace Common.Summer.Net
         AutoResetEvent threadEvent = new AutoResetEvent(false);  
 
         //消息队列，所有客户端发送过来的消息都暂存到这里
-        private ConcurrentQueue<Msg> messageQueue = new ConcurrentQueue<Msg>();
+        private ConcurrentQueue<MessageHandlerArgs> messageQueue = new ConcurrentQueue<MessageHandlerArgs>();
 
         //消息处理委托
         public delegate void MessageHandler<T>(Connection sender, T message);
@@ -45,7 +45,7 @@ namespace Common.Summer.Net
             for(int i = 0; i < this.ThreadCount; i++)
             {
                 //将委托任务交付给线程池
-                ThreadPool.QueueUserWorkItem(new WaitCallback(MessageWork));
+                ThreadPool.QueueUserWorkItem(new WaitCallback(_MessageWork));
             }
 
             //等待一会,让全部线程
@@ -66,7 +66,6 @@ namespace Common.Summer.Net
             Thread.Sleep(50);
         }
 
-
         public void Subscribe<T>(MessageHandler<T> handler) where T : IMessage
         {
             string type = typeof(T).FullName;
@@ -77,7 +76,7 @@ namespace Common.Summer.Net
             }
 
             //添加订阅者,因为这里它不知道是什么类型的委托，所以要转型（这里是委托链注意，可能会多次绑定）
-            delegateMap[type] = (MessageHandler < T >)delegateMap[type]  + handler;
+            delegateMap[type] = (MessageHandler <T>)delegateMap[type]  + handler;
         }
         public void UnSubscribe<T>(MessageHandler<T> handler) where T : Google.Protobuf.IMessage
         {
@@ -90,20 +89,19 @@ namespace Common.Summer.Net
             delegateMap[key] = (MessageHandler<T>)delegateMap[key] - handler;
         }
 
-
         // 添加消息到消息队列
         public void AddMessage(Connection conn, Google.Protobuf.IMessage message)
         {
             //加锁
             lock (messageQueue)
             {
-                messageQueue.Enqueue(new Msg() { conn = conn, message = message });
+                messageQueue.Enqueue(new MessageHandlerArgs() { conn = conn, message = message });
             }
             //唤醒一个进程来处理消息队列
             threadEvent.Set();
         }
         // 多线程消息处理
-        private void MessageWork(object state)
+        private void _MessageWork(object state)
         {
             try
             {
@@ -121,7 +119,7 @@ namespace Common.Summer.Net
                         continue;//防止醒过来的时候又没消息了（或者stop），再走一遍流程
                     }
                     //从消息队列中取出一个消息
-                    Msg msg = null;
+                    MessageHandlerArgs msg = null;
                     lock (messageQueue)
                     {
                         if (messageQueue.Count == 0) continue;
@@ -133,7 +131,7 @@ namespace Common.Summer.Net
                     if (package != null)
                     {
                         //处理这个数据包
-                        executeMessage(msg.conn, package);//将package向下传递
+                        _ExecuteMessage(msg.conn, package);//将package向下传递
                     }
                 }              
             }
@@ -147,7 +145,7 @@ namespace Common.Summer.Net
             }
             Console.WriteLine("MessageWork thread end");
         }
-        private void executeMessage(Connection conn, IMessage message)
+        private void _ExecuteMessage(Connection conn, IMessage message)
         {
             var fullName = message.GetType().FullName;
             if(delegateMap.TryGetValue(fullName,out var handler))

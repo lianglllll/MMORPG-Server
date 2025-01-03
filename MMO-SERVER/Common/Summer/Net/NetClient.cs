@@ -106,14 +106,5 @@ namespace Common.Summer.Net
             return false;
         }
 
-        public bool Send(ByteString data)
-        {
-            if (m_connection != null)
-            {
-                m_connection.Send(data);
-                return true;
-            }
-            return false;
-        }
     }
 }

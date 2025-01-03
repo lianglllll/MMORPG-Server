@@ -4,11 +4,5 @@ package HS.Protobuf.LoginGate;
 
 enum LoginGateProtocl{
 	LOGINGATE_PROTOCL_NONE = 0;
-	LOGINGATE_PROTOCL_LGENVELOPE = 21001;		// [LGEnvelope]
 }
 
-message LGEnvelope{
-	int32 protocolCode = 1;
-	int32 encryptionLevel = 2;
-	bytes data = 3;
-}

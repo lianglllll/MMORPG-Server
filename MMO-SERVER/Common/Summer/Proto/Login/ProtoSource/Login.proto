@@ -4,7 +4,10 @@ package HS.Protobuf.Login;
 
 enum LoginProtocl{
 	LOGIN_PROTOCL_NONE = 0;
-	LOGIN_PROTOCL_NONE1 = 1;
+	LOGIN_PROTOCL_USER_REGISTER_REQUEST = 1;
+	LOGIN_PROTOCL_USER_REGISTER_RESPONSE = 2;
+	LOGIN_PROTOCL_USER_LOGIN_REQUEST = 3;
+	LOGIN_PROTOCL_USER_LOGIN_RESPONSE = 4;
 }
 
 //×¢²á
@@ -13,8 +16,8 @@ message UserRegisterRequest{
 	string password = 2;
 }
 message UserRegisterResponse{
-	int32 code = 1;
-	string message = 2;
+	int32 resultCode = 1;
+	string resultMsg = 2;
 }
 
 //µÇÂ¼
@@ -23,11 +26,14 @@ message UserLoginRequest{
 	string password = 2;
 }
 message UserLoginResponse{
-	int32 code = 1;
-	string message = 2;
-	bool success = 3;
-	string sessionId = 4;
+	int32 resultCode = 1;
+	string resultMsg = 2;
+	string sessionId = 3;
 }
+
+
+
+
 
 //½ÇÉ«´´½¨
 message CharacterCreateRequest{

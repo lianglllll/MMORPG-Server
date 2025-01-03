@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Sockets;
 using Common.Summer.Net;
 using Common.Summer.Proto;
@@ -53,8 +54,7 @@ namespace Common.Summer.Core
         }
         private void _OnDataRecived(byte[] data)
         {
-            ushort code = _GetUShort(data, 0);
-            var msg = ProtoHelper.ParseFrom((int)code, data, 2, data.Length - 2);
+            var msg = ProtoHelper.BytesParse2IMessage(data);
             if(msg == null)
             {
                 return;
@@ -72,29 +72,11 @@ namespace Common.Summer.Core
             m_lfd.ActiveDisconnection();
         }
 
-        #region 发送网络数据包
-
-        /// <summary>
-        /// 发送消息包，编码过程(通用)
-        /// </summary>
-        /// <param name="message"></param>
-        public void Send(Google.Protobuf.IMessage message)
+        public void Send(IMessage message)
         {
             try
             {
-                //获取imessage类型所对应的编号，网络传输我们只传输编号
-                using (var ds = DataStream.Allocate())
-                {
-                    int code = ProtoHelper.Type2Seq(message.GetType());
-                    if(code == -1)
-                    {
-                        return;
-                    }
-                    ds.WriteInt(message.CalculateSize() + 2);             //长度字段
-                    ds.WriteUShort((ushort)code);                       //协议编号字段
-                    message.WriteTo(ds);                                //数据
-                    _SocketSend(ds.ToArray());
-                }
+                _SocketSend(ProtoHelper.IMessageParse2Bytes(message));
             }
             catch(Exception e)
             {
@@ -102,41 +84,16 @@ namespace Common.Summer.Core
             }
 
         }
-        public void Send(ByteString data)
-        {
-            _SocketSend(data.ToByteArray());
-        }
-
-        /// <summary>
-        /// 通过socket发送，原生数据
-        /// </summary>
-        /// <param name="data"></param>
         private void _SocketSend(byte[] data)
-        {
-            _SocketSend(data, 0, data.Length);
-        }
-
-        /// <summary>
-        /// 开始异步发送消息,原生数据
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="start"></param>
-        /// <param name="len"></param>
-        private void _SocketSend(byte[] data, int start, int len)
         {
             lock (this)//多线程问题，防止争夺send
             {
-                if (m_socket!=null && m_socket.Connected)
+                if (m_socket != null && m_socket.Connected)
                 {
-                    m_socket.BeginSend(data, start, len, SocketFlags.None, new AsyncCallback(_SendCallback), m_socket);
+                    m_socket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(_SendCallback), m_socket);
                 }
             }
         }
-
-        /// <summary>
-        /// 异步发送消息回调
-        /// </summary>
-        /// <param name="ar"></param>
         private void _SendCallback(IAsyncResult ar)
         {
             if (m_socket != null && m_socket.Connected)
@@ -146,17 +103,5 @@ namespace Common.Summer.Core
             }
 
         }
-
-        #endregion
-
-        // 获取两个字节
-        private ushort _GetUShort(byte[] data, int offset)
-        {
-            if (BitConverter.IsLittleEndian)
-                return (ushort)((data[offset] << 8) | data[offset + 1]);
-            return (ushort)((data[offset + 1] << 8) | data[offset]);
-        }
-
-
     }
 }

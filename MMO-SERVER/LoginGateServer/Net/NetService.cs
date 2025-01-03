@@ -7,6 +7,7 @@ using HS.Protobuf.Common;
 using Common.Summer.Proto;
 using static Common.Summer.Net.NetClient;
 using LoginGateServer.Utils;
+using System.Net;
 
 namespace LoginGateServer.Net
 {
@@ -72,9 +73,9 @@ namespace LoginGateServer.Net
             {
                 if (conn.Socket != null && conn.Socket.Connected)
                 {
-                    //var ipe = conn.Socket.RemoteEndPoint;
-                    //Log.Information("[连接成功]" + IPAddress.Parse(((IPEndPoint)ipe).Address.ToString()) + " : " + ((IPEndPoint)ipe).Port.ToString());
-                    
+                    var ipe = conn.Socket.RemoteEndPoint;
+                    Log.Information("[连接成功]" + IPAddress.Parse(((IPEndPoint)ipe).Address.ToString()) + " : " + ((IPEndPoint)ipe).Port.ToString());
+
                     // 给conn添加心跳时间
                     m_userConnHeartbeatTimestamps[conn] = DateTime.Now;
                 }
