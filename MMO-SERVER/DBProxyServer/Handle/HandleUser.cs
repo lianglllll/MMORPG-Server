@@ -3,10 +3,8 @@ using Common.Summer.Net;
 using Common.Summer.Proto;
 using Common.Summer.Tools;
 using DBProxyServer.Core;
-using HS.Protobuf.ControlCenter;
 using HS.Protobuf.DBProxy.DBUser;
 using MongoDB.Bson;
-using System.Linq;
 
 namespace DBProxyServer.Handle
 {
@@ -32,10 +30,9 @@ namespace DBProxyServer.Handle
 
         public async void _HandleGetDBUserRequest(Connection sender, GetDBUserRequest message)
         {
-            // Console.WriteLine($"Before await - Thread ID: {Thread.CurrentThread.ManagedThreadId}");
             GetDBUserResponse resp = new();
+            resp.TaskId = message.TaskId;
             BsonDocument userDocument = await UserOperations.Instance.GetUserByNameAsync(message.UserName);
-            // Console.WriteLine($"After await - Thread ID: {Thread.CurrentThread.ManagedThreadId}");
             if (userDocument == null)
             {
                 resp.ResultCode = 1;

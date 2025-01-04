@@ -2,9 +2,12 @@
 using Common.Summer.Net;
 using Common.Summer.Proto;
 using Common.Summer.Tools;
+using Google.Protobuf;
 using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
+using LoginGateServer.Net;
 using LoginServer.Core;
+using LoginServer.Handle;
 using LoginServer.Utils;
 using Serilog;
 
@@ -35,7 +38,10 @@ namespace LoginServer.Net
 
             // 网络服务开启
             NetService.Instance.Init();
+            SessionManager.Instance.Init();
+            LoginTokenManager.Instance.Init();
             LoginServerHandler.Instance.Init();
+            UserHandler.Instance.Init();
 
             // 协议注册
             ProtoHelper.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
@@ -96,7 +102,7 @@ namespace LoginServer.Net
         }
         private void _CCConnectedCallback(NetClient tcpClient)
         {
-            m_outgoingServerConnection.Add(SERVER_TYPE.Controlcenter, new ServerEntry { NetClient = tcpClient});
+            m_outgoingServerConnection.Add(SERVER_TYPE.Controlcenter, new ServerEntry { NetClient = tcpClient });
             Log.Information("[Successfully connected to the control center server.]");
             //向cc注册自己
             ServerInfoRegisterRequest req = new();
@@ -118,7 +124,7 @@ namespace LoginServer.Net
         }
         private void _CCDisconnectedCallback(NetClient tcpClient)
         {
-            
+
         }
         private void _RegisterServerInfo2ControlCenterResponse(Connection conn, ServerInfoRegisterResponse message)
         {
@@ -178,5 +184,11 @@ namespace LoginServer.Net
 
         }
 
+        // tools 
+        public bool SendMsgToDBProxy(IMessage message)
+        {
+            m_outgoingServerConnection[SERVER_TYPE.Dbproxy].NetClient.Send(message);
+            return true;
+        }
     }
 }

@@ -4,32 +4,49 @@ package HS.Protobuf.Login;
 
 enum LoginProtocl{
 	LOGIN_PROTOCL_NONE = 0;
-	LOGIN_PROTOCL_USER_REGISTER_REQUEST = 1;
-	LOGIN_PROTOCL_USER_REGISTER_RESPONSE = 2;
-	LOGIN_PROTOCL_USER_LOGIN_REQUEST = 3;
-	LOGIN_PROTOCL_USER_LOGIN_RESPONSE = 4;
+	LOGIN_PROTOCL_GET_LOGIN_TOKEN_REQ = 20001;
+	LOGIN_PROTOCL_GET_LOGIN_TOKEN_RESP = 20002;
+	LOGIN_PROTOCL_USER_REGISTER_REQUEST = 20003;
+	LOGIN_PROTOCL_USER_REGISTER_RESPONSE = 20004;
+	LOGIN_PROTOCL_USER_LOGIN_REQUEST = 20005;
+	LOGIN_PROTOCL_USER_LOGIN_RESPONSE = 20006;
+}
+
+message GetLoginTokenRequest{
+}
+message GetLoginTokenResponse{
+	string loginToken = 1;
 }
 
 //×¢²á
 message UserRegisterRequest{
-	string username = 1;
-	string password = 2;
+	string loginGateToken = 1;
+	string loginToken = 2;
+	string username = 3;
+	string password = 4;
 }
 message UserRegisterResponse{
-	int32 resultCode = 1;
-	string resultMsg = 2;
+	string loginGateToken = 1;
+	string loginToken = 2;
+	int32 resultCode = 3;
+	string resultMsg = 4;
 }
 
 //µÇÂ¼
 message UserLoginRequest{
-	string username = 1;
-	string password = 2;
+	string loginGateToken = 1;
+	string loginToken = 2;
+	string username = 3;
+	string password = 4;
 }
 message UserLoginResponse{
-	int32 resultCode = 1;
-	string resultMsg = 2;
-	string sessionId = 3;
+	string loginGateToken = 1;
+	string loginToken = 2;
+	int32 resultCode = 3;
+	string resultMsg = 4;
+	string sessionId = 5;
 }
+
 
 
 

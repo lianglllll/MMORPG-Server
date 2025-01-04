@@ -1,4 +1,5 @@
 ﻿using Common.Summer.Core;
+using HS.Protobuf.DBProxy.DBUser;
 
 namespace LoginServer.Net
 {
@@ -8,14 +9,11 @@ namespace LoginServer.Net
     public class Session
     {
         public string Id { get; private set; }
-        public Connection Conn;                                             //网络连接对象
-
-        public float LastHeartTime { get; set; }                            //心跳时间
+        public DBUserNode dbUser { get; set; }
 
         public Session(string sessionId)
         {
             Id = sessionId;
-            LastHeartTime = MyTime.time;
         }
 
     }

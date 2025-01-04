@@ -53,7 +53,6 @@ namespace LoginServer
             Log.Information($"updateHz：{Config.Server.updateHz}");
 
             //开启网络服务
-            SessionManager.Instance.Init();
             ServersMgr.Instance.Init();
 
             return true;

@@ -24,10 +24,9 @@ namespace HS.Protobuf.Game {
     static GameReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "CgpHYW1lLnByb3RvEhBIUy5Qcm90b2J1Zi5HYW1lGh9Db21tb24vUHJvdG9T",
-            "b3VyY2UvQ29tbW9uLnByb3RvYgZwcm90bzM="));
+            "CgpHYW1lLnByb3RvEhBIUy5Qcm90b2J1Zi5HYW1lYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::HS.Protobuf.Common.CommonReflection.Descriptor, },
+          new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, null));
     }
     #endregion

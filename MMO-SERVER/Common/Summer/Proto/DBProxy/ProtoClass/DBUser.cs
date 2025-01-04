@@ -26,33 +26,34 @@ namespace HS.Protobuf.DBProxy.DBUser {
           string.Concat(
             "CgxEQlVzZXIucHJvdG8SGkhTLlByb3RvYnVmLkRCUHJveHkuREJVc2VyIlMK",
             "CkRCVXNlck5vZGUSCwoDdUlkGAEgASgJEhAKCHVzZXJOYW1lGAIgASgJEhAK",
-            "CHBhc3N3b3JkGAMgASgJEhQKDGNoYXJhY3RlcklkcxgEIAMoCSIkChBHZXRE",
-            "QlVzZXJSZXF1ZXN0EhAKCHVzZXJOYW1lGAEgASgJInAKEUdldERCVXNlclJl",
-            "c3BvbnNlEhIKCnJlc3VsdENvZGUYASABKAUSEQoJcmVzdWx0TXNnGAIgASgJ",
-            "EjQKBHVzZXIYAyABKAsyJi5IUy5Qcm90b2J1Zi5EQlByb3h5LkRCVXNlci5E",
-            "QlVzZXJOb2RlIjYKEEFkZERCVXNlclJlcXVzZXQSEAoIdXNlck5hbWUYASAB",
-            "KAkSEAoIcGFzc3dvcmQYAiABKAkiOgoRQWRkREJVc2VyUmVzcG9uc2USEgoK",
-            "cmVzdWx0Q29kZRgBIAEoBRIRCglyZXN1bHRNc2cYAiABKAkiPwobVXBkYXRl",
-            "REJVc2VyUGFzc3dvcmRSZXF1ZXN0EgsKA3VJZBgBIAEoCRITCgtuZXdQYXNz",
-            "d29yZBgCIAEoCSJFChxVcGRhdGVEQlVzZXJQYXNzd29yZFJlc3BvbnNlEhIK",
-            "CnJlc3VsdENvZGUYASABKAUSEQoJcmVzdWx0TXNnGAIgASgJIiIKE0RlbGV0",
-            "ZURCVXNlclJlcXVlc3QSCwoDdUlkGAEgASgJIj0KFERlbGV0ZURCVXNlclJl",
-            "c3BvbnNlEhIKCnJlc3VsdENvZGUYASABKAUSEQoJcmVzdWx0TXNnGAIgASgJ",
-            "KvICCg1EQlVzZXJQcm90b2NsEhcKE0RCVVNFUl9QUk9UT0NMX05PTkUQABIj",
-            "Ch1EQlVTRVJfUFJPVE9DTF9HRVRfREJVU0VSX1JFURDRhgMSJAoeREJVU0VS",
-            "X1BST1RPQ0xfR0VUX0RCVVNFUl9SRVNQENKGAxIjCh1EQlVTRVJfUFJPVE9D",
-            "TF9BRERfREJVU0VSX1JFURDThgMSJAoeREJVU0VSX1BST1RPQ0xfQUREX0RC",
-            "VVNFUl9SRVNQENSGAxIvCilEQlVTRVJfUFJPVE9DTF9VUERBVEVfREJVU0VS",
-            "X1BBU1NXT1JEX1JFURDVhgMSMAoqREJVU0VSX1BST1RPQ0xfVVBEQVRFX0RC",
-            "VVNFUl9QQVNTV09SRF9SRVNQENaGAxImCiBEQlVTRVJfUFJPVE9DTF9ERUxF",
-            "VEVfREJVU0VSX1JFURDXhgMSJwohREJVU0VSX1BST1RPQ0xfREVMRVRFX0RC",
-            "VVNFUl9SRVNQENiGA2IGcHJvdG8z"));
+            "CHBhc3N3b3JkGAMgASgJEhQKDGNoYXJhY3RlcklkcxgEIAMoCSI0ChBHZXRE",
+            "QlVzZXJSZXF1ZXN0Eg4KBnRhc2tJZBgBIAEoBRIQCgh1c2VyTmFtZRgCIAEo",
+            "CSKAAQoRR2V0REJVc2VyUmVzcG9uc2USDgoGdGFza0lkGAEgASgFEhIKCnJl",
+            "c3VsdENvZGUYAiABKAUSEQoJcmVzdWx0TXNnGAMgASgJEjQKBHVzZXIYBCAB",
+            "KAsyJi5IUy5Qcm90b2J1Zi5EQlByb3h5LkRCVXNlci5EQlVzZXJOb2RlIjYK",
+            "EEFkZERCVXNlclJlcXVzZXQSEAoIdXNlck5hbWUYASABKAkSEAoIcGFzc3dv",
+            "cmQYAiABKAkiOgoRQWRkREJVc2VyUmVzcG9uc2USEgoKcmVzdWx0Q29kZRgB",
+            "IAEoBRIRCglyZXN1bHRNc2cYAiABKAkiPwobVXBkYXRlREJVc2VyUGFzc3dv",
+            "cmRSZXF1ZXN0EgsKA3VJZBgBIAEoCRITCgtuZXdQYXNzd29yZBgCIAEoCSJF",
+            "ChxVcGRhdGVEQlVzZXJQYXNzd29yZFJlc3BvbnNlEhIKCnJlc3VsdENvZGUY",
+            "ASABKAUSEQoJcmVzdWx0TXNnGAIgASgJIiIKE0RlbGV0ZURCVXNlclJlcXVl",
+            "c3QSCwoDdUlkGAEgASgJIj0KFERlbGV0ZURCVXNlclJlc3BvbnNlEhIKCnJl",
+            "c3VsdENvZGUYASABKAUSEQoJcmVzdWx0TXNnGAIgASgJKvICCg1EQlVzZXJQ",
+            "cm90b2NsEhcKE0RCVVNFUl9QUk9UT0NMX05PTkUQABIjCh1EQlVTRVJfUFJP",
+            "VE9DTF9HRVRfREJVU0VSX1JFURDRhgMSJAoeREJVU0VSX1BST1RPQ0xfR0VU",
+            "X0RCVVNFUl9SRVNQENKGAxIjCh1EQlVTRVJfUFJPVE9DTF9BRERfREJVU0VS",
+            "X1JFURDThgMSJAoeREJVU0VSX1BST1RPQ0xfQUREX0RCVVNFUl9SRVNQENSG",
+            "AxIvCilEQlVTRVJfUFJPVE9DTF9VUERBVEVfREJVU0VSX1BBU1NXT1JEX1JF",
+            "URDVhgMSMAoqREJVU0VSX1BST1RPQ0xfVVBEQVRFX0RCVVNFUl9QQVNTV09S",
+            "RF9SRVNQENaGAxImCiBEQlVTRVJfUFJPVE9DTF9ERUxFVEVfREJVU0VSX1JF",
+            "URDXhgMSJwohREJVU0VSX1BST1RPQ0xfREVMRVRFX0RCVVNFUl9SRVNQENiG",
+            "A2IGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.DBProxy.DBUser.DBUserProtocl), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.DBUserNode), global::HS.Protobuf.DBProxy.DBUser.DBUserNode.Parser, new[]{ "UId", "UserName", "Password", "CharacterIds" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.GetDBUserRequest), global::HS.Protobuf.DBProxy.DBUser.GetDBUserRequest.Parser, new[]{ "UserName" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.GetDBUserResponse), global::HS.Protobuf.DBProxy.DBUser.GetDBUserResponse.Parser, new[]{ "ResultCode", "ResultMsg", "User" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.GetDBUserRequest), global::HS.Protobuf.DBProxy.DBUser.GetDBUserRequest.Parser, new[]{ "TaskId", "UserName" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.GetDBUserResponse), global::HS.Protobuf.DBProxy.DBUser.GetDBUserResponse.Parser, new[]{ "TaskId", "ResultCode", "ResultMsg", "User" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.AddDBUserRequset), global::HS.Protobuf.DBProxy.DBUser.AddDBUserRequset.Parser, new[]{ "UserName", "Password" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.AddDBUserResponse), global::HS.Protobuf.DBProxy.DBUser.AddDBUserResponse.Parser, new[]{ "ResultCode", "ResultMsg" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.UpdateDBUserPasswordRequest), global::HS.Protobuf.DBProxy.DBUser.UpdateDBUserPasswordRequest.Parser, new[]{ "UId", "NewPassword" }, null, null, null, null),
@@ -427,6 +428,7 @@ namespace HS.Protobuf.DBProxy.DBUser {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public GetDBUserRequest(GetDBUserRequest other) : this() {
+      taskId_ = other.taskId_;
       userName_ = other.userName_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -437,8 +439,20 @@ namespace HS.Protobuf.DBProxy.DBUser {
       return new GetDBUserRequest(this);
     }
 
+    /// <summary>Field number for the "taskId" field.</summary>
+    public const int TaskIdFieldNumber = 1;
+    private int taskId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int TaskId {
+      get { return taskId_; }
+      set {
+        taskId_ = value;
+      }
+    }
+
     /// <summary>Field number for the "userName" field.</summary>
-    public const int UserNameFieldNumber = 1;
+    public const int UserNameFieldNumber = 2;
     private string userName_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -464,6 +478,7 @@ namespace HS.Protobuf.DBProxy.DBUser {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (TaskId != other.TaskId) return false;
       if (UserName != other.UserName) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -472,6 +487,7 @@ namespace HS.Protobuf.DBProxy.DBUser {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
+      if (TaskId != 0) hash ^= TaskId.GetHashCode();
       if (UserName.Length != 0) hash ^= UserName.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -491,8 +507,12 @@ namespace HS.Protobuf.DBProxy.DBUser {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
+      if (TaskId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(TaskId);
+      }
       if (UserName.Length != 0) {
-        output.WriteRawTag(10);
+        output.WriteRawTag(18);
         output.WriteString(UserName);
       }
       if (_unknownFields != null) {
@@ -505,8 +525,12 @@ namespace HS.Protobuf.DBProxy.DBUser {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (TaskId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(TaskId);
+      }
       if (UserName.Length != 0) {
-        output.WriteRawTag(10);
+        output.WriteRawTag(18);
         output.WriteString(UserName);
       }
       if (_unknownFields != null) {
@@ -519,6 +543,9 @@ namespace HS.Protobuf.DBProxy.DBUser {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
+      if (TaskId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(TaskId);
+      }
       if (UserName.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(UserName);
       }
@@ -533,6 +560,9 @@ namespace HS.Protobuf.DBProxy.DBUser {
     public void MergeFrom(GetDBUserRequest other) {
       if (other == null) {
         return;
+      }
+      if (other.TaskId != 0) {
+        TaskId = other.TaskId;
       }
       if (other.UserName.Length != 0) {
         UserName = other.UserName;
@@ -552,7 +582,11 @@ namespace HS.Protobuf.DBProxy.DBUser {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 10: {
+          case 8: {
+            TaskId = input.ReadInt32();
+            break;
+          }
+          case 18: {
             UserName = input.ReadString();
             break;
           }
@@ -571,7 +605,11 @@ namespace HS.Protobuf.DBProxy.DBUser {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 10: {
+          case 8: {
+            TaskId = input.ReadInt32();
+            break;
+          }
+          case 18: {
             UserName = input.ReadString();
             break;
           }
@@ -616,6 +654,7 @@ namespace HS.Protobuf.DBProxy.DBUser {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public GetDBUserResponse(GetDBUserResponse other) : this() {
+      taskId_ = other.taskId_;
       resultCode_ = other.resultCode_;
       resultMsg_ = other.resultMsg_;
       user_ = other.user_ != null ? other.user_.Clone() : null;
@@ -628,8 +667,20 @@ namespace HS.Protobuf.DBProxy.DBUser {
       return new GetDBUserResponse(this);
     }
 
+    /// <summary>Field number for the "taskId" field.</summary>
+    public const int TaskIdFieldNumber = 1;
+    private int taskId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int TaskId {
+      get { return taskId_; }
+      set {
+        taskId_ = value;
+      }
+    }
+
     /// <summary>Field number for the "resultCode" field.</summary>
-    public const int ResultCodeFieldNumber = 1;
+    public const int ResultCodeFieldNumber = 2;
     private int resultCode_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -641,7 +692,7 @@ namespace HS.Protobuf.DBProxy.DBUser {
     }
 
     /// <summary>Field number for the "resultMsg" field.</summary>
-    public const int ResultMsgFieldNumber = 2;
+    public const int ResultMsgFieldNumber = 3;
     private string resultMsg_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -653,7 +704,7 @@ namespace HS.Protobuf.DBProxy.DBUser {
     }
 
     /// <summary>Field number for the "user" field.</summary>
-    public const int UserFieldNumber = 3;
+    public const int UserFieldNumber = 4;
     private global::HS.Protobuf.DBProxy.DBUser.DBUserNode user_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -679,6 +730,7 @@ namespace HS.Protobuf.DBProxy.DBUser {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (TaskId != other.TaskId) return false;
       if (ResultCode != other.ResultCode) return false;
       if (ResultMsg != other.ResultMsg) return false;
       if (!object.Equals(User, other.User)) return false;
@@ -689,6 +741,7 @@ namespace HS.Protobuf.DBProxy.DBUser {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
+      if (TaskId != 0) hash ^= TaskId.GetHashCode();
       if (ResultCode != 0) hash ^= ResultCode.GetHashCode();
       if (ResultMsg.Length != 0) hash ^= ResultMsg.GetHashCode();
       if (user_ != null) hash ^= User.GetHashCode();
@@ -710,16 +763,20 @@ namespace HS.Protobuf.DBProxy.DBUser {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (ResultCode != 0) {
+      if (TaskId != 0) {
         output.WriteRawTag(8);
+        output.WriteInt32(TaskId);
+      }
+      if (ResultCode != 0) {
+        output.WriteRawTag(16);
         output.WriteInt32(ResultCode);
       }
       if (ResultMsg.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(26);
         output.WriteString(ResultMsg);
       }
       if (user_ != null) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(34);
         output.WriteMessage(User);
       }
       if (_unknownFields != null) {
@@ -732,16 +789,20 @@ namespace HS.Protobuf.DBProxy.DBUser {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (ResultCode != 0) {
+      if (TaskId != 0) {
         output.WriteRawTag(8);
+        output.WriteInt32(TaskId);
+      }
+      if (ResultCode != 0) {
+        output.WriteRawTag(16);
         output.WriteInt32(ResultCode);
       }
       if (ResultMsg.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(26);
         output.WriteString(ResultMsg);
       }
       if (user_ != null) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(34);
         output.WriteMessage(User);
       }
       if (_unknownFields != null) {
@@ -754,6 +815,9 @@ namespace HS.Protobuf.DBProxy.DBUser {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
+      if (TaskId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(TaskId);
+      }
       if (ResultCode != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(ResultCode);
       }
@@ -774,6 +838,9 @@ namespace HS.Protobuf.DBProxy.DBUser {
     public void MergeFrom(GetDBUserResponse other) {
       if (other == null) {
         return;
+      }
+      if (other.TaskId != 0) {
+        TaskId = other.TaskId;
       }
       if (other.ResultCode != 0) {
         ResultCode = other.ResultCode;
@@ -803,14 +870,18 @@ namespace HS.Protobuf.DBProxy.DBUser {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
+            TaskId = input.ReadInt32();
+            break;
+          }
+          case 16: {
             ResultCode = input.ReadInt32();
             break;
           }
-          case 18: {
+          case 26: {
             ResultMsg = input.ReadString();
             break;
           }
-          case 26: {
+          case 34: {
             if (user_ == null) {
               User = new global::HS.Protobuf.DBProxy.DBUser.DBUserNode();
             }
@@ -833,14 +904,18 @@ namespace HS.Protobuf.DBProxy.DBUser {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
+            TaskId = input.ReadInt32();
+            break;
+          }
+          case 16: {
             ResultCode = input.ReadInt32();
             break;
           }
-          case 18: {
+          case 26: {
             ResultMsg = input.ReadString();
             break;
           }
-          case 26: {
+          case 34: {
             if (user_ == null) {
               User = new global::HS.Protobuf.DBProxy.DBUser.DBUserNode();
             }

@@ -5,8 +5,10 @@ using Common.Summer.Tools;
 using Google.Protobuf;
 using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
+using HS.Protobuf.Login;
 using HS.Protobuf.LoginGateMgr;
 using LoginGateServer.Core;
+using LoginGateServer.Handle;
 using LoginGateServer.Utils;
 using Serilog;
 using System.Net.Sockets;
@@ -23,10 +25,15 @@ namespace LoginGateServer.Net
     {
         private ServerInfoNode? m_curSin;
         private Dictionary<SERVER_TYPE, ServerEntry> m_outgoingServerConnection = new();
-
-
+        public string LoginToken { get; private set; }
         public void Init()
         {
+            // 网络服务初始化
+            NetService.Instance.Init();
+            LoginGateHandler.Instance.Init();
+            UserHandler.Instance.Init();
+            LoginGateTokenManager.Instance.Init();
+
             // 本服务器的信息
             m_curSin = new ServerInfoNode();
             LoginGateServerInfoNode lgNode = new();
@@ -37,9 +44,6 @@ namespace LoginGateServer.Net
             m_curSin.LoginGateServerInfo = lgNode;
             m_curSin.EventBitmap = SetEventBitmap();
 
-            // 网络服务初始化
-            NetService.Instance.Init();
-
             // 协议注册
             ProtoHelper.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
             ProtoHelper.Register<ServerInfoRegisterResponse>((int)ControlCenterProtocl.ServerinfoRegisterResp);
@@ -47,15 +51,19 @@ namespace LoginGateServer.Net
             ProtoHelper.Register<RegisterLoginGateInstanceResponse>((int)LoginGateMgrProtocl.RegisterLogingateInstanceResp);
             ProtoHelper.Register<ExecuteLGCommandRequest>((int)LoginGateMgrProtocl.ExecuteLgCommandReq);
             ProtoHelper.Register<ExecuteLGCommandResponse>((int)LoginGateMgrProtocl.ExecuteLgCommandResp);
+            ProtoHelper.Register<GetLoginTokenRequest>((int)LoginProtocl.GetLoginTokenReq);
+            ProtoHelper.Register<GetLoginTokenResponse>((int)LoginProtocl.GetLoginTokenResp);
 
             // 消息的订阅
             MessageRouter.Instance.Subscribe<ServerInfoRegisterResponse>(_RegisterServerInfo2ControlCenterResponse);
             MessageRouter.Instance.Subscribe<RegisterLoginGateInstanceResponse>(_RegisterLoginGateInstanceResponse);
             MessageRouter.Instance.Subscribe<ExecuteLGCommandRequest>(_ExecuteLGCommandRequest);
+            MessageRouter.Instance.Subscribe<GetLoginTokenResponse>(_HandleGetLoginTokenResponse);
 
             // 开始流程
             _ExecutePhase0();
         }
+
         public void UnInit()
         {
 
@@ -109,7 +117,7 @@ namespace LoginGateServer.Net
         {
             // 开始网络监听，预示着当前服务器的正式启动
             NetService.Instance.Start();
-            ClientMessageDispatcher.Instance.Init();
+            
             return true;
         }
 
@@ -296,7 +304,6 @@ namespace LoginGateServer.Net
         {
             Log.Information("Successfully connected to the Login server.");
             m_outgoingServerConnection[SERVER_TYPE.Login].NetClient = tcpClient;
-            _ExecutePhase3();
         }
         private void _LoginConnectedFailedCallback(NetClient tcpClient, bool isEnd)
         {
@@ -320,6 +327,12 @@ namespace LoginGateServer.Net
         {
 
         }
+        private void _HandleGetLoginTokenResponse(Connection sender, GetLoginTokenResponse message)
+        {
+            LoginToken = message.LoginToken;
+            _ExecutePhase3();
+        }
+
 
         // tools
         public void SentToLoginServer(IMessage message)

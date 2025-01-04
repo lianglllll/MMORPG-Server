@@ -9,6 +9,7 @@ using System.Collections.Concurrent;
 
 namespace LoginGateServer.Core
 {
+    /*
     public class ClientMessageDispatcher : Singleton<ClientMessageDispatcher>
     {
         ConcurrentDictionary<int, ConcurrentDictionary<int, TaskCompletionSource<TCPEnvelope>>> m_task = new();
@@ -31,14 +32,11 @@ namespace LoginGateServer.Core
             try
             {
                 // 加解密
+
                 // 传递
                 if (message.ProtocolCode == (int)PROTOCAL_CODE.Login)
                 {
-                    Console.WriteLine("1 thread ID: " + Thread.CurrentThread.ManagedThreadId);
-
                     message.TcpEnvelope = await _DispatchMessageToLogin(message.TcpEnvelope);
-
-                    Console.WriteLine("5 thread ID: " + Thread.CurrentThread.ManagedThreadId);
                     conn.Send(message);
                 }
             }
@@ -106,4 +104,5 @@ namespace LoginGateServer.Core
             }
         }
     }
+    */
 }

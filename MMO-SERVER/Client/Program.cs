@@ -6,13 +6,12 @@ using System.Collections.Generic;
 using lLua.Binchunk;
 using Common.Summer.Security;
 using Serilog.Sinks.SystemConsole.Themes;
-using System.Net;
 using Common.Summer.Net;
-using HS.Protobuf.Common;
 using Common.Summer.Proto;
 using HS.Protobuf.Login;
 using Google.Protobuf;
 using Common.Summer.Core;
+using HS.Protobuf.LoginGate;
 
 namespace ClientTest
 {
@@ -115,49 +114,41 @@ namespace ClientTest
 
             Thread.Sleep(2000);
 
-            ProtoHelper.Register<IPEnvelope>((int)CommonProtocl.IpEnvelope);
             ProtoHelper.Register<UserLoginRequest>((int)LoginProtocl.UserLoginRequest);
             ProtoHelper.Register<UserLoginResponse>((int)LoginProtocl.UserLoginResponse);
+            ProtoHelper.Register<GetLoginGateTokenRequest>((int)LoginGateProtocl.GetLogingateTokenReq);
+            ProtoHelper.Register<GetLoginGateTokenResponse>((int)LoginGateProtocl.GetLogingateTokenResp);
 
             MessageRouter.Instance.Start(1);
-            MessageRouter.Instance.Subscribe<IPEnvelope>(_HandleIPEnvelope);
+            MessageRouter.Instance.Subscribe<UserLoginResponse>(_HandleUserLoginResponse);
+            MessageRouter.Instance.Subscribe<GetLoginGateTokenResponse>(_HandleGetLoginGateTokenResponse);
 
             
-            NetClient netClient = new NetClient();
-            netClient.Init("127.0.0.1", 10700,
-                (tcpClient) => { 
+            m_netClient = new NetClient();
+            m_netClient.Init("127.0.0.1", 10700,
+                (netClient) => { 
                     Log.Debug("Connected to LoginGate Server.");
-
-                    IPEnvelope iPEnvelope = new IPEnvelope();
-                    TCPEnvelope tCPEnvelope = new TCPEnvelope();
-                    iPEnvelope.ProtocolCode = 2;
-                    iPEnvelope.EncryptionLevel = 0;
-                    iPEnvelope.TcpEnvelope = tCPEnvelope;
-                    tCPEnvelope.ClientId = 1;
-                    tCPEnvelope.SeqId = 1;
-                    IMessage userLoginRequest = new UserLoginRequest { Username = "admin", Password = "admin" };
-                    byte[] data = ProtoHelper.IMessageParse2BytesNoLen(userLoginRequest);
-                    tCPEnvelope.Data = ByteString.CopyFrom(data);
-
-                    for(int i = 0; i < 5; i++)
-                    {
-                        tCPEnvelope.SeqId += 1;
-                        netClient.Send(iPEnvelope);
-                    }
-
                 },
                 (tcpClient, isEnd) => { },
                 (tcpClient) => { });
 
-
-
             Console.ReadLine();
         }
 
-        private static void _HandleIPEnvelope(Connection sender, IPEnvelope message)
+
+        private static NetClient m_netClient;
+        private static string loginGateToken;
+
+        private static void _HandleGetLoginGateTokenResponse(Connection sender, GetLoginGateTokenResponse message)
+        {
+            loginGateToken = message.LoginGateToken;
+            IMessage userLoginRequest = new UserLoginRequest { Username = "令狐冲", Password = "123" , LoginGateToken = loginGateToken };
+            m_netClient.Send(userLoginRequest);
+        }
+
+        private static void _HandleUserLoginResponse(Connection sender, UserLoginResponse message)
         {
             Log.Information(message.ToString());  
-
         }
     }
 }

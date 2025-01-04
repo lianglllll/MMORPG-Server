@@ -53,7 +53,6 @@ namespace LoginGateServer
             Log.Information($"updateHz：{Config.Server.updateHz}");
 
             Scheduler.Instance.Start(Config.Server.updateHz);
-            LoginGateHandler.Instance.Init();
             ServersMgr.Instance.Init();
 
             return true;

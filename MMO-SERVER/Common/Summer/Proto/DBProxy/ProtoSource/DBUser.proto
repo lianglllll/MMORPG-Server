@@ -22,12 +22,14 @@ message DBUserNode{
 }
 
 message GetDBUserRequest{
-	string userName = 1;
+	int32 taskId = 1;
+	string userName = 2;
 }
 message GetDBUserResponse{
-	int32 resultCode = 1;
-	string resultMsg = 2;
-	DBUserNode user = 3;
+	int32 taskId = 1;
+	int32 resultCode = 2;
+	string resultMsg = 3;
+	DBUserNode user = 4;
 }
 
 message AddDBUserRequset{

@@ -35,7 +35,6 @@ namespace LoginGateServer.Net
             // 定时发送ss心跳包
             Scheduler.Instance.AddTask(_SendSSHeatBeatReq, Config.Server.heartBeatSendInterval, 0);
         }
-
         public void UnInit()
         {
             m_acceptUser?.UnInit();
@@ -59,7 +58,7 @@ namespace LoginGateServer.Net
             m_acceptUser?.Resume();
         }
 
-        // 1.用户连接过来的
+        // 用户连接过来的
         private void _StartListeningForUserConnections()
         {
             Log.Information("Starting to listen for userConnections.");
@@ -76,8 +75,7 @@ namespace LoginGateServer.Net
                     var ipe = conn.Socket.RemoteEndPoint;
                     Log.Information("[连接成功]" + IPAddress.Parse(((IPEndPoint)ipe).Address.ToString()) + " : " + ((IPEndPoint)ipe).Port.ToString());
 
-                    // 给conn添加心跳时间
-                    m_userConnHeartbeatTimestamps[conn] = DateTime.Now;
+                    AllocateConnectionResource(conn);
                 }
                 else
                 {
@@ -93,11 +91,7 @@ namespace LoginGateServer.Net
         }
         private void _HandleClientDisconnected(Connection conn)
         {
-            //从心跳字典中删除连接
-            if (m_userConnHeartbeatTimestamps.ContainsKey(conn))
-            {
-                m_userConnHeartbeatTimestamps.TryRemove(conn,out _);
-            }
+            CleanConnectionResource(conn);
         }
         public void CloseUserConnection(Connection conn)
         {
@@ -111,6 +105,25 @@ namespace LoginGateServer.Net
 
             //转交给下一层的connection去进行关闭
             conn.CloseConnection();
+        }
+        private void AllocateConnectionResource(Connection conn)
+        {
+            // 给conn添加心跳时间
+            m_serverConnHeartbeatTimestamps[conn] = DateTime.Now;
+            // 分配一下连接token
+            LoginGateToken token = LoginGateTokenManager.Instance.NewToken(conn);
+            conn.Set<LoginGateToken>(token);
+        }
+        private void CleanConnectionResource(Connection conn)
+        {
+            // 从心跳字典中删除连接
+            if (m_serverConnHeartbeatTimestamps.ContainsKey(conn))
+            {
+                m_serverConnHeartbeatTimestamps.TryRemove(conn, out _);
+            }
+
+            // token回收
+            LoginGateTokenManager.Instance.RemoveToken(conn.Get<LoginGateToken>().Id);
         }
         private void _CSHeartBeatRequest(Connection conn, CSHeartBeatRequest message)
         {
@@ -140,7 +153,7 @@ namespace LoginGateServer.Net
         }
 
 
-        // 3.服务器主动连接其他的服务器
+        // 服务器主动连接其他的服务器
         public NetClient ConnctToServer(string ip, int port,
             TcpClientConnectedCallback connected, TcpClientConnectedFailedCallback connectFailed,
             TcpClientDisconnectedCallback disconnected)

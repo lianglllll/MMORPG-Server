@@ -24,14 +24,13 @@ namespace HS.Protobuf.GameGate {
     static GameGateReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cg5HYW1lR2F0ZS5wcm90bxIUSFMuUHJvdG9idWYuR2FtZUdhdGUaH0NvbW1v",
-            "bi9Qcm90b1NvdXJjZS9Db21tb24ucHJvdG8iSQoKR0dFbnZlbG9wZRIUCgxw",
-            "cm90b2NvbENvZGUYASABKAUSFwoPZW5jcnlwdGlvbkxldmVsGAIgASgFEgwK",
-            "BGRhdGEYAyABKAwqTwoPR2FtZUdhdGVQcm90b2NsEhkKFUdBTUVHQVRFX1BS",
-            "T1RPQ0xfTk9ORRAAEiEKG0dBTUVHQVRFX1BST1RPQ0xfR0dFbnZlbG9wZRCZ",
-            "8gFiBnByb3RvMw=="));
+            "Cg5HYW1lR2F0ZS5wcm90bxIUSFMuUHJvdG9idWYuR2FtZUdhdGUiSQoKR0dF",
+            "bnZlbG9wZRIUCgxwcm90b2NvbENvZGUYASABKAUSFwoPZW5jcnlwdGlvbkxl",
+            "dmVsGAIgASgFEgwKBGRhdGEYAyABKAwqTwoPR2FtZUdhdGVQcm90b2NsEhkK",
+            "FUdBTUVHQVRFX1BST1RPQ0xfTk9ORRAAEiEKG0dBTUVHQVRFX1BST1RPQ0xf",
+            "R0dFbnZlbG9wZRCZ8gFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
-          new pbr::FileDescriptor[] { global::HS.Protobuf.Common.CommonReflection.Descriptor, },
+          new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.GameGate.GameGateProtocl), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameGate.GGEnvelope), global::HS.Protobuf.GameGate.GGEnvelope.Parser, new[]{ "ProtocolCode", "EncryptionLevel", "Data" }, null, null, null, null)
           }));

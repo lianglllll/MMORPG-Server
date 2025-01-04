@@ -1,8 +1,14 @@
 syntax = "proto3";
-import "Common/ProtoSource/Common.proto";
 package HS.Protobuf.LoginGate;
 
 enum LoginGateProtocl{
 	LOGINGATE_PROTOCL_NONE = 0;
+	LOGINGATE_PROTOCL_GET_LOGINGATE_TOKEN_REQ = 21001;
+	LOGINGATE_PROTOCL_GET_LOGINGATE_TOKEN_RESP = 21002;
 }
 
+message GetLoginGateTokenRequest{
+}
+message GetLoginGateTokenResponse{
+	string loginGateToken = 1;
+}
