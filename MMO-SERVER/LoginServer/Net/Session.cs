@@ -1,5 +1,4 @@
-﻿using Common.Summer.Core;
-using HS.Protobuf.DBProxy.DBUser;
+﻿using HS.Protobuf.DBProxy.DBUser;
 
 namespace LoginServer.Net
 {

@@ -253,7 +253,7 @@ namespace GameServer.Net
             NetClient tcpClient = new NetClient();
             connected += OutgoingServerConnectionConnected;
             disconnected += OutgoingServerConnectionDisconnected;
-            tcpClient.Init(ip, port, connected, connectFailed, disconnected);
+            tcpClient.Init(ip, port, 10, connected, connectFailed, disconnected);
             return tcpClient;
         }
         private void OutgoingServerConnectionConnected(NetClient tcpClient)

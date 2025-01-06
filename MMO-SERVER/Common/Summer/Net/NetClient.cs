@@ -3,6 +3,7 @@ using System;
 using System.Net.Sockets;
 using Google.Protobuf;
 using Common.Summer.Core;
+using Serilog;
 
 
 namespace Common.Summer.Net
@@ -26,7 +27,7 @@ namespace Common.Summer.Net
         private int m_maxReConnectionCount = 10;
         private float m_reConnectionInterval = 2f;
 
-        public void Init(string ip, int port, 
+        public void Init(string ip, int port, int maxReconnectionCount,
             TcpClientConnectedCallback connected, TcpClientConnectedFailedCallback connectFailed, 
             TcpClientDisconnectedCallback disconnected)
         {
@@ -37,6 +38,7 @@ namespace Common.Summer.Net
             m_connectArgs.UserToken = m_clientSocket;
 
             m_curReConnectionCount = 0;
+            m_maxReConnectionCount = maxReconnectionCount;
             m_connected = connected;
             m_connectFailed = connectFailed;
             m_disconnected = disconnected;
@@ -53,18 +55,25 @@ namespace Common.Summer.Net
         }
         public Connection CloseConnection()
         {
-            UnInit();
             var conn = m_connection;
             m_connection = null;
-            return m_connection;
+            return conn;
         }
-
-
         private void _ConnectToServer()
         {
             if (m_connection != null && m_connection.Socket.Connected) return;
             // 异步连接
             m_clientSocket.ConnectAsync(m_connectArgs);
+        }
+        public bool ReConnectToServer()
+        {
+            if(m_clientSocket == null)
+            {
+                Log.Error("[NetClient]未初始化，紧张重连。");
+                return false;
+            }
+            _ConnectToServer();
+            return true;
         }
         private  void _ConnectCallback(object sender, SocketAsyncEventArgs e)
         {
@@ -77,7 +86,7 @@ namespace Common.Summer.Net
             }
             else
             {
-                if(m_curReConnectionCount < m_maxReConnectionCount)
+                if(m_maxReConnectionCount == 0 || m_curReConnectionCount < m_maxReConnectionCount)
                 {
                     m_curReConnectionCount++;
                     Scheduler.Instance.AddTask(_ConnectToServer, m_reConnectionInterval, m_reConnectionInterval, 1);
@@ -95,7 +104,6 @@ namespace Common.Summer.Net
             m_connection = null;
             m_disconnected?.Invoke(this);
         }
-
         public bool Send(IMessage message)
         {
             if (m_connection != null)
@@ -105,6 +113,5 @@ namespace Common.Summer.Net
             }
             return false;
         }
-
     }
 }

@@ -77,12 +77,17 @@ namespace LoginServer.Handle
 
             // 1.要考虑到今天限制登录，2.这个号被封了  3.被关小黑屋了  4.没实名认证
 
+
+
+
             // 如果当前用户在线，将其踢出游戏，防止同一账号多次登录
             Session session = SessionManager.Instance.GetSessionByUid(message.User.UId);
             if(session != null)
             {
                 // 踢出游戏
-                SessionManager.Instance.RemoveSession(session.Id);
+
+
+
             }
 
             // 分配session

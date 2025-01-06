@@ -125,7 +125,7 @@ namespace ClientTest
 
             
             m_netClient = new NetClient();
-            m_netClient.Init("127.0.0.1", 10700,
+            m_netClient.Init("127.0.0.1", 10700, 10,
                 (netClient) => { 
                     Log.Debug("Connected to LoginGate Server.");
                 },
