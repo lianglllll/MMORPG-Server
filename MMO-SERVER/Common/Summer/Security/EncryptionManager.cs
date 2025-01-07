@@ -1,61 +1,59 @@
-﻿using System.Collections.Generic;
-
-namespace Common.Summer.Security
+﻿namespace Common.Summer.Security
 {
-    enum EncryptType
-    {
-        AES,RSA
-    }
-
     public class EncryptionManager
     {
         private AesEncryption aesEncryption;
-        public string aesKey;
-        public string aesIV;
-
-        private RsaEncryption serverRsaEncryption;
-        public string serverRsaPublicKey;
-        public string serverRsaPrivateKey;
-        private string clientRsaPublicKey;
+        private RsaEncryption remoteRsaEncryption;
+        private RsaEncryption localRsaEncryption;
 
         public void Init()
         {
-            //todo
-            var pair1 = AesEncryption.GenerateAesKeyAndIv();
-            aesKey = pair1.Key;
-            aesIV = pair1.IV;
-            aesEncryption = new AesEncryption(aesKey, aesIV);
+            localRsaEncryption = new RsaEncryption();
+            remoteRsaEncryption = new RsaEncryption();
 
-            var pair2 = RsaEncryption.GenerateRsaKeyPair();
-            serverRsaPublicKey = pair2.PublicKey;
-            serverRsaPrivateKey = pair2.PrivateKey;
-            serverRsaEncryption = new RsaEncryption();
         }
-
         public void UnInit()
         {
-
+            aesEncryption = null;
+            localRsaEncryption = null;
+            remoteRsaEncryption = null;
         }
-
-        public string Encrypt(string plainText,List<string> args)
+        public string AesEncrypt(string plainText)
         {
-            return null;
+            return aesEncryption.Encrypt(plainText);
         }
-        public string Decrypt(string cipherText, List<string> args) 
-        { 
-            return null ;
-        }
-
-        //对称密钥获取
-        public (string key1,string key2) GetComunicationKey(string publicKey)
+        public string AesDecrypt(string cipherText)
         {
-            serverRsaEncryption.ImportPublicKey(publicKey);
-            string key1 = serverRsaEncryption.Encrypt(aesKey);
-            string key2 = serverRsaEncryption.Encrypt(aesIV);
-            return (key1, key2);
+            return aesEncryption.Decrypt(cipherText);
+        }
+        public string RsaEncrypt(string plainText)
+        {
+            return remoteRsaEncryption.Encrypt(plainText);
+        }
+        public string RsaDecrypt(string cipherText)
+        {
+            return localRsaEncryption.Decrypt(cipherText);
+        }
+        public (string key, string iv) GenerateAesKeyAndIv()
+        {
+            return AesEncryption.GenerateAesKeyAndIv();
+        }
+        public bool SetAesKeyAndIv(string key, string iv)
+        {
+            aesEncryption = new AesEncryption(key, iv);
+            return true;
+        }
+        public bool SetRemoteRsaPublicKey(string key)
+        {
+            remoteRsaEncryption.ImportPublicKey(key);
+            return true;
         }
 
-        //通过传入加密模式(组合形式)来进行加解密操作
+        public string GetLocalRsaPublicKey()
+        {
+            return localRsaEncryption.GetPublicKey();
+        }
+
 
         //完整性验证
 

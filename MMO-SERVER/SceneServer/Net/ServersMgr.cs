@@ -37,12 +37,12 @@ namespace SceneServer.Net
             SceneServerHandler.Instance.Init();
 
             // 协议注册
-            ProtoHelper.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
-            ProtoHelper.Register<ServerInfoRegisterResponse>((int)ControlCenterProtocl.ServerinfoRegisterResp);
-            ProtoHelper.Register<RegisterToGGMRequest>((int)GameGateMgrProtocl.RegisterToGgmReq);
-            ProtoHelper.Register<RegisterToGGMResponse>((int)GameGateMgrProtocl.RegisterToGgmResp);
-            ProtoHelper.Register<ExecuteSCommandRequest>((int)GameGateMgrProtocl.ExecuteSCommandReq);
-            ProtoHelper.Register<ExecuteSCommandResponse>((int)GameGateMgrProtocl.ExecuteSCommandResp);
+            ProtoHelper.Instance.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
+            ProtoHelper.Instance.Register<ServerInfoRegisterResponse>((int)ControlCenterProtocl.ServerinfoRegisterResp);
+            ProtoHelper.Instance.Register<RegisterToGGMRequest>((int)GameGateMgrProtocl.RegisterToGgmReq);
+            ProtoHelper.Instance.Register<RegisterToGGMResponse>((int)GameGateMgrProtocl.RegisterToGgmResp);
+            ProtoHelper.Instance.Register<ExecuteSCommandRequest>((int)GameGateMgrProtocl.ExecuteSCommandReq);
+            ProtoHelper.Instance.Register<ExecuteSCommandResponse>((int)GameGateMgrProtocl.ExecuteSCommandResp);
 
             // 消息的订阅
             MessageRouter.Instance.Subscribe<ServerInfoRegisterResponse>(_RegisterServerInfo2ControlCenterResponse);

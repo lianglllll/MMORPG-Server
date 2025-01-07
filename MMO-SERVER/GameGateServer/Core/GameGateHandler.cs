@@ -12,7 +12,7 @@ namespace GameGateServer.Core
         public void Init()
         {
             // 协议注册
-            ProtoHelper.Register<ClusterEventResponse>((int)ControlCenterProtocl.ClusterEventResp);
+            ProtoHelper.Instance.Register<ClusterEventResponse>((int)ControlCenterProtocl.ClusterEventResp);
             // 消息的订阅
             MessageRouter.Instance.Subscribe<ClusterEventResponse>(_HandleClusterEventResponse);
         }

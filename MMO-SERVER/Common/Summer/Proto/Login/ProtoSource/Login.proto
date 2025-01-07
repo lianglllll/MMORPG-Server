@@ -100,18 +100,8 @@ message ExitResponse{
 
 //重新登录
 
-// 获取通信的密钥
-message GetCommunicationSecretKeyRequest{
-	string clientPublicKey = 1;
-}
-message GetCommunicationSecretKeyResponse{
-	string key1 = 1;
-	string key2 = 2;
-}
 
-message giao{
-	int32 s = 1;
-}
+
 
 
 //============================================公告==========================================

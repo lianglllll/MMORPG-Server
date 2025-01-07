@@ -7,6 +7,10 @@ enum CommonProtocl{
 	COMMON_PROTOCL_CS_HEARTBEAT_RESP	= 1002;
 	COMMON_PROTOCL_SS_HEARTBEAT_REQ		= 1003;
 	COMMON_PROTOCL_SS_HEARTBEAT_RESP	= 1004;
+	COMMON_PROTOCL_EXCHANGE_PUBLIC_KEY_REQ	= 1005;
+	COMMON_PROTOCL_EXCHANGE_PUBLIC_KEY_RESP	= 1006;
+	COMMON_PROTOCL_Exchange_COMMUNICATION_SECRET_KEY_REQ	= 1007;
+	COMMON_PROTOCL_Exchange_COMMUNICATION_SECRET_KEY_RESP = 1008;
 }
 
 enum SERVER_TYPE{
@@ -109,4 +113,22 @@ message SSHeartBeatRequest{
 }
 message SSHeartBeatResponse{
 
+}
+
+
+// ============================================安全相关==========================================
+message ExchangePublicKeyRequest{
+	string clientPublicKey = 1;
+}
+message ExchangePublicKeyResponse{
+	string serverPublilcKey = 1;
+}
+
+message ExchangeCommunicationSecretKeyRequest{
+	string key1 = 1;
+	string key2 = 2;
+}
+message ExchangeCommunicationSecretKeyResponse{
+	int32 resultCode = 1;
+	int32 resulMsg = 2;
 }

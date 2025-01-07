@@ -14,17 +14,16 @@ namespace LoginGateMgrServer.Core
         public void Init()
         {
             // 协议注册
-            ProtoHelper.Register<RegisterLoginGateInstanceRequest>((int)LoginGateMgrProtocl.RegisterLogingateInstanceReq);
-            ProtoHelper.Register<RegisterLoginGateInstanceResponse>((int)LoginGateMgrProtocl.RegisterLogingateInstanceResp);
-            ProtoHelper.Register<ExecuteLGCommandRequest>((int)LoginGateMgrProtocl.ExecuteLgCommandReq);
-            ProtoHelper.Register<ExecuteLGCommandResponse>((int)LoginGateMgrProtocl.ExecuteLgCommandResp);
-            ProtoHelper.Register<ClusterEventResponse>((int)ControlCenterProtocl.ClusterEventResp);
+            ProtoHelper.Instance.Register<RegisterLoginGateInstanceRequest>((int)LoginGateMgrProtocl.RegisterLogingateInstanceReq);
+            ProtoHelper.Instance.Register<RegisterLoginGateInstanceResponse>((int)LoginGateMgrProtocl.RegisterLogingateInstanceResp);
+            ProtoHelper.Instance.Register<ExecuteLGCommandRequest>((int)LoginGateMgrProtocl.ExecuteLgCommandReq);
+            ProtoHelper.Instance.Register<ExecuteLGCommandResponse>((int)LoginGateMgrProtocl.ExecuteLgCommandResp);
+            ProtoHelper.Instance.Register<ClusterEventResponse>((int)ControlCenterProtocl.ClusterEventResp);
 
             // 消息的订阅
             MessageRouter.Instance.Subscribe<RegisterLoginGateInstanceRequest>(_HandleRegisterLoginGateInstanceRequest);
             MessageRouter.Instance.Subscribe<ExecuteLGCommandResponse>(_HandleExecuteLGCommandResponse);
             MessageRouter.Instance.Subscribe<ClusterEventResponse>(_HandleClusterEventResponse);
-
         }
 
         public void UnInit()
@@ -75,7 +74,6 @@ namespace LoginGateMgrServer.Core
             {
                 Log.Debug("A Login server has left the cluster.");
                 LogingateMonitor.Instance.RemoveLoginServerInfo(message.ClusterEventNode.ServerId);
-
             }
             else
             {

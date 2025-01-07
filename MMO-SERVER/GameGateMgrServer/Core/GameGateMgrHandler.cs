@@ -14,11 +14,11 @@ namespace GameGateMgrServer.Core
         public void Init()
         {
             // 协议注册
-            ProtoHelper.Register<RegisterToGGMRequest>((int)GameGateMgrProtocl.RegisterToGgmReq);
-            ProtoHelper.Register<RegisterToGGMResponse>((int)GameGateMgrProtocl.RegisterToGgmResp);
-            ProtoHelper.Register<ExecuteGGCommandRequest>((int)GameGateMgrProtocl.ExecuteGgCommandReq);
-            ProtoHelper.Register<ExecuteGGCommandResponse>((int)GameGateMgrProtocl.ExecuteGgCommandResp);
-            ProtoHelper.Register<ClusterEventResponse>((int)ControlCenterProtocl.ClusterEventResp);
+            ProtoHelper.Instance.Register<RegisterToGGMRequest>((int)GameGateMgrProtocl.RegisterToGgmReq);
+            ProtoHelper.Instance.Register<RegisterToGGMResponse>((int)GameGateMgrProtocl.RegisterToGgmResp);
+            ProtoHelper.Instance.Register<ExecuteGGCommandRequest>((int)GameGateMgrProtocl.ExecuteGgCommandReq);
+            ProtoHelper.Instance.Register<ExecuteGGCommandResponse>((int)GameGateMgrProtocl.ExecuteGgCommandResp);
+            ProtoHelper.Instance.Register<ClusterEventResponse>((int)ControlCenterProtocl.ClusterEventResp);
 
             // 消息的订阅
             MessageRouter.Instance.Subscribe<RegisterToGGMRequest>(_HandleRegisterToGGMRequest);

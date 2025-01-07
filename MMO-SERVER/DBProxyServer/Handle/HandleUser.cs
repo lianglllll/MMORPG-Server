@@ -12,14 +12,14 @@ namespace DBProxyServer.Handle
         public void Init()
         {
             // 协议注册
-            ProtoHelper.Register<GetDBUserRequest>((int)DBUserProtocl.GetDbuserReq);
-            ProtoHelper.Register<GetDBUserResponse>((int)DBUserProtocl.GetDbuserResp);
-            ProtoHelper.Register<AddDBUserRequset>((int)DBUserProtocl.AddDbuserReq);
-            ProtoHelper.Register<AddDBUserResponse>((int)DBUserProtocl.AddDbuserResp);
-            ProtoHelper.Register<UpdateDBUserPasswordRequest>((int)DBUserProtocl.UpdateDbuserPasswordReq);
-            ProtoHelper.Register<UpdateDBUserPasswordResponse>((int)DBUserProtocl.UpdateDbuserPasswordResp);
-            ProtoHelper.Register<DeleteDBUserRequest>((int)DBUserProtocl.DeleteDbuserReq);
-            ProtoHelper.Register<DeleteDBUserResponse>((int)DBUserProtocl.DeleteDbuserResp);
+            ProtoHelper.Instance.Register<GetDBUserRequest>((int)DBUserProtocl.GetDbuserReq);
+            ProtoHelper.Instance.Register<GetDBUserResponse>((int)DBUserProtocl.GetDbuserResp);
+            ProtoHelper.Instance.Register<AddDBUserRequset>((int)DBUserProtocl.AddDbuserReq);
+            ProtoHelper.Instance.Register<AddDBUserResponse>((int)DBUserProtocl.AddDbuserResp);
+            ProtoHelper.Instance.Register<UpdateDBUserPasswordRequest>((int)DBUserProtocl.UpdateDbuserPasswordReq);
+            ProtoHelper.Instance.Register<UpdateDBUserPasswordResponse>((int)DBUserProtocl.UpdateDbuserPasswordResp);
+            ProtoHelper.Instance.Register<DeleteDBUserRequest>((int)DBUserProtocl.DeleteDbuserReq);
+            ProtoHelper.Instance.Register<DeleteDBUserResponse>((int)DBUserProtocl.DeleteDbuserResp);
             // 消息的订阅
             MessageRouter.Instance.Subscribe<GetDBUserRequest>(_HandleGetDBUserRequest);
             MessageRouter.Instance.Subscribe<AddDBUserRequset>(_HandleAddDBUserRequset);

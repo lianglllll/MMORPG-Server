@@ -10,28 +10,28 @@ namespace Common.Summer.Net
     /// <summary>
     /// Protobuf序列化与反序列化
     /// </summary>
-    public class ProtoHelper
+    public class ProtoHelper : Singleton<ProtoHelper>
     {
         //考虑到每次输送类型名太长了，所以imessage类型一个序号
         private static Dictionary<int, Type> m_sequence2type = new Dictionary<int, Type>();
         private static Dictionary<Type, int> m_type2sequence = new Dictionary<Type, int>();
 
-        public static void Init()
+        public void Init()
         {
 
         }
-        public static void UnInit()
+        public void UnInit()
         {
 
         }
-        public static bool Register<T>(int id) where T : IMessage
+        public bool Register<T>(int id) where T : IMessage
         {
             Type type = typeof(T);
             m_sequence2type[id] = type;
             m_type2sequence[type] = id;
             return true;
         }
-        public static int Type2Seq(Type type)
+        public int Type2Seq(Type type)
         {
             if (m_type2sequence.ContainsKey(type))
             {
@@ -43,7 +43,7 @@ namespace Common.Summer.Net
                 return -1;
             }
         }
-        public static Type Seq2Type(int code)
+        public Type Seq2Type(int code)
         {
             if (m_sequence2type.ContainsKey(code))
             {
@@ -55,7 +55,7 @@ namespace Common.Summer.Net
                 return null;
             }
         }
-        public static IMessage BytesParse2IMessage(byte[] data)
+        public IMessage BytesParse2IMessage(byte[] data)
         {
             ushort typeCode = _GetUShort(data, 0);
             Type t = Seq2Type(typeCode);
@@ -68,7 +68,7 @@ namespace Common.Summer.Net
             var msg = desc.Parser.ParseFrom(data, 2, data.Length - 2);
             return msg;
         }
-        public static byte[] IMessageParse2Bytes(IMessage message)
+        public byte[] IMessageParse2Bytes(IMessage message)
         {
             //获取imessage类型所对应的编号，网络传输我们只传输编号
             using (var ds = DataStream.Allocate())
@@ -84,7 +84,7 @@ namespace Common.Summer.Net
                 return ds.ToArray();
             }
         }
-        private static ushort _GetUShort(byte[] data, int offset)
+        private ushort _GetUShort(byte[] data, int offset)
         {
             if (BitConverter.IsLittleEndian)
                 return (ushort)(data[offset] << 8 | data[offset + 1]);

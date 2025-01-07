@@ -11,6 +11,7 @@ using HS.Protobuf.Login;
 using Google.Protobuf;
 using Common.Summer.Core;
 using HS.Protobuf.LoginGate;
+using HS.Protobuf.Common;
 
 namespace ClientTest
 {
@@ -18,12 +19,12 @@ namespace ClientTest
     {
         static void TestAES()
         {
-            string key = "thisIsASecretKey";
-            string iv = "thisIsAnIV123456";
+            var pair = AesEncryption.GenerateAesKeyAndIv();
+            AesEncryption aes = new AesEncryption(pair.Key, pair.IV);
 
-            AesEncryption aes = new AesEncryption(key, iv);
-
-            string original = "Hello, World!";
+            string original = "Hello, World!111111111111111111111111111111111111111111111111111111111111111111111111111111111Hello, World!111111111111111111111111111111111111111111111111111111111111111111111111111111111Hello, World!111111111111111111111111111111111111111111111111111111111111111111111111111111111Hello, World!111111111111111111111111111111111111111111111111111111111111111111111111111111111Hello, World!111111111111111111111111111111111111111111111111111111111111111111111111111111111" +
+                "Hello, World!111111111111111111111111111111111111111111111111111111111111111111111111111111111Hello, World!111111111111111111111111111111111111111111111111111111111111111111111111111111111Hello, World!111111111111111111111111111111111111111111111111111111111111111111111111111111111Hello, World!111111111111111111111111111111111111111111111111111111111111111111111111111111111" +
+                "Hello, World!111111111111111111111111111111111111111111111111111111111111111111111111111111111Hello, World!111111111111111111111111111111111111111111111111111111111111111111111111111111111Hello, World!111111111111111111111111111111111111111111111111111111111111111111111111111111111Hello, World!111111111111111111111111111111111111111111111111111111111111111111111111111111111";
             Console.WriteLine("Original:   " + original);
 
             string encrypted = aes.Encrypt(original);
@@ -44,19 +45,41 @@ namespace ClientTest
             Console.WriteLine("Public Key: " + publicKey);
             Console.WriteLine("Private Key: " + privateKey);
 
-            // 加密数据
-            string originalText = "Hello, RSA!";
-            Console.WriteLine("\nOriginal: " + originalText);
+            var pair = AesEncryption.GenerateAesKeyAndIv();
 
-            rsaEncryption.ImportPublicKey(publicKey);
+            // 加密数据
+            string originalText = pair.Key;
+            Console.WriteLine("\nOriginal: " + pair.Key);
+
             string encryptedText = rsaEncryption.Encrypt(originalText);
             Console.WriteLine("Encrypted: " + encryptedText);
 
             // 解密数据
-            rsaEncryption.ImportPrivateKey(privateKey);
             string decryptedText = rsaEncryption.Decrypt(encryptedText);
             Console.WriteLine("Decrypted: " + decryptedText);
         }
+
+        static void TestRsa2()
+        {
+            EncryptionManager encryptionManager1 = new();
+            encryptionManager1.Init();
+            EncryptionManager encryptionManager2 = new();
+            encryptionManager2.Init();
+
+            string originalText = "hello world111111111111111111111111111111111111111111111111111world111111111111111111111111111111111111111111111111111world111111111111111111111111111111111111111111111111111" +
+                "world111111111111111111111111111111111111111111111111111world111111111111111111111111111111111111111111111111111world1111111" +
+                "1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111";
+            Console.WriteLine("Original: " + originalText);
+
+            encryptionManager1.SetRemoteRsaPublicKey(encryptionManager2.GetLocalRsaPublicKey());
+            string encryptedText = encryptionManager1.RsaEncrypt(originalText);
+            Console.WriteLine("Encrypted: " + encryptedText);
+
+            string decryptedText = encryptionManager2.RsaDecrypt(encryptedText);
+            Console.WriteLine("Decrypted: " + decryptedText);
+
+        }
+
 
         static void Lua()
         {
@@ -113,23 +136,25 @@ namespace ClientTest
 
             Thread.Sleep(2000);
 
-            ProtoHelper.Register<UserLoginRequest>((int)LoginProtocl.UserLoginRequest);
-            ProtoHelper.Register<UserLoginResponse>((int)LoginProtocl.UserLoginResponse);
-            ProtoHelper.Register<GetLoginGateTokenRequest>((int)LoginGateProtocl.GetLogingateTokenReq);
-            ProtoHelper.Register<GetLoginGateTokenResponse>((int)LoginGateProtocl.GetLogingateTokenResp);
+            //ProtoHelper.Register<UserLoginRequest>((int)LoginProtocl.UserLoginRequest);
+            //ProtoHelper.Register<UserLoginResponse>((int)LoginProtocl.UserLoginResponse);
+            //ProtoHelper.Register<GetLoginGateTokenRequest>((int)LoginGateProtocl.GetLogingateTokenReq);
+            //ProtoHelper.Register<GetLoginGateTokenResponse>((int)LoginGateProtocl.GetLogingateTokenResp);
 
-            MessageRouter.Instance.Start(1);
-            MessageRouter.Instance.Subscribe<UserLoginResponse>(_HandleUserLoginResponse);
-            MessageRouter.Instance.Subscribe<GetLoginGateTokenResponse>(_HandleGetLoginGateTokenResponse);
+            //MessageRouter.Instance.Start(1);
+            //MessageRouter.Instance.Subscribe<UserLoginResponse>(_HandleUserLoginResponse);
+            //MessageRouter.Instance.Subscribe<GetLoginGateTokenResponse>(_HandleGetLoginGateTokenResponse);
 
-            
-            m_netClient = new NetClient();
-            m_netClient.Init("127.0.0.1", 10700, 10,
-                (netClient) => { 
-                    Log.Debug("Connected to LoginGate Server.");
-                },
-                (tcpClient, isEnd) => { },
-                (tcpClient) => { });
+
+            //m_netClient = new NetClient();
+            //m_netClient.Init("127.0.0.1", 10700, 10,
+            //    (netClient) => { 
+            //        Log.Debug("Connected to LoginGate Server.");
+            //    },
+            //    (tcpClient, isEnd) => { },
+            //    (tcpClient) => { });
+
+            TestAES();
 
             Console.ReadLine();
         }

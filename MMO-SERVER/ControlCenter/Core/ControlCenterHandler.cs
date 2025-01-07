@@ -11,8 +11,8 @@ namespace ControlCenter.Core
         public bool Init()
         {
             // 协议注册
-            ProtoHelper.Register<GetAllServerInfoRequest>((int)ControlCenterProtocl.GetAllserverinfoReq);
-            ProtoHelper.Register<GetAllServerInfoResponse>((int)ControlCenterProtocl.GetAllserverinfoResp);
+            ProtoHelper.Instance.Register<GetAllServerInfoRequest>((int)ControlCenterProtocl.GetAllserverinfoReq);
+            ProtoHelper.Instance.Register<GetAllServerInfoResponse>((int)ControlCenterProtocl.GetAllserverinfoResp);
 
             // 消息订阅
             MessageRouter.Instance.Subscribe<GetAllServerInfoRequest>(_HandleGetAllServerInfoRequest);

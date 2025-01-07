@@ -17,12 +17,12 @@ namespace LoginServer.Handle
         public bool Init()
         {
             // 协议注册
-            ProtoHelper.Register<UserLoginRequest>((int)LoginProtocl.UserLoginRequest);
-            ProtoHelper.Register<UserLoginResponse>((int)LoginProtocl.UserLoginResponse);
-            ProtoHelper.Register<UserRegisterRequest>((int)LoginProtocl.UserRegisterRequest);
-            ProtoHelper.Register<UserRegisterResponse>((int)LoginProtocl.UserRegisterResponse);
-            ProtoHelper.Register<GetDBUserRequest>((int)DBUserProtocl.GetDbuserReq);
-            ProtoHelper.Register<GetDBUserResponse>((int)DBUserProtocl.GetDbuserResp);
+            ProtoHelper.Instance.Register<UserLoginRequest>((int)LoginProtocl.UserLoginRequest);
+            ProtoHelper.Instance.Register<UserLoginResponse>((int)LoginProtocl.UserLoginResponse);
+            ProtoHelper.Instance.Register<UserRegisterRequest>((int)LoginProtocl.UserRegisterRequest);
+            ProtoHelper.Instance.Register<UserRegisterResponse>((int)LoginProtocl.UserRegisterResponse);
+            ProtoHelper.Instance.Register<GetDBUserRequest>((int)DBUserProtocl.GetDbuserReq);
+            ProtoHelper.Instance.Register<GetDBUserResponse>((int)DBUserProtocl.GetDbuserResp);
 
             // 消息的订阅
             MessageRouter.Instance.Subscribe<UserLoginRequest>(_HandleUserLoginRequest);

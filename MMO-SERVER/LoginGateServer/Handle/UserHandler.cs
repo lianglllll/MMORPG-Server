@@ -11,10 +11,10 @@ namespace LoginGateServer.Handle
         public bool Init()
         {
             // 协议注册
-            ProtoHelper.Register<UserLoginRequest>((int)LoginProtocl.UserLoginRequest);
-            ProtoHelper.Register<UserLoginResponse>((int)LoginProtocl.UserLoginResponse);
-            ProtoHelper.Register<UserRegisterRequest>((int)LoginProtocl.UserRegisterRequest);
-            ProtoHelper.Register<UserRegisterResponse>((int)LoginProtocl.UserRegisterResponse);
+            ProtoHelper.Instance.Register<UserLoginRequest>((int)LoginProtocl.UserLoginRequest);
+            ProtoHelper.Instance.Register<UserLoginResponse>((int)LoginProtocl.UserLoginResponse);
+            ProtoHelper.Instance.Register<UserRegisterRequest>((int)LoginProtocl.UserRegisterRequest);
+            ProtoHelper.Instance.Register<UserRegisterResponse>((int)LoginProtocl.UserRegisterResponse);
             // 消息的订阅
             MessageRouter.Instance.Subscribe<UserLoginRequest>(_HandleUserLoginRequest);
             MessageRouter.Instance.Subscribe<UserLoginResponse>(_HandleUserLoginResponse);
@@ -30,7 +30,8 @@ namespace LoginGateServer.Handle
         private void _HandleUserLoginRequest(Connection conn, UserLoginRequest message)
         {
             // 解密
-
+            message.Username = conn.m_encryptionManager.AesDecrypt(message.Username);
+            message.Password = conn.m_encryptionManager.AesDecrypt(message.Password);
             // 转发到loginServer
             message.LoginToken = ServersMgr.Instance.LoginToken;
             ServersMgr.Instance.SentToLoginServer(message);
@@ -44,6 +45,8 @@ namespace LoginGateServer.Handle
         private void _HandleUserRegisterRequest(Connection conn, UserRegisterRequest message)
         {
             // 解密
+            message.Username = conn.m_encryptionManager.AesDecrypt(message.Username);
+            message.Password = conn.m_encryptionManager.AesDecrypt(message.Password);
 
             // 转发到loginServer
             ServersMgr.Instance.SentToLoginServer(message);

@@ -13,7 +13,7 @@ namespace GameGateServer.Core
         // 转发 
         public void Init()
         {
-            ProtoHelper.Register<GGEnvelope>((int)GameGateProtocl.Ggenvelope);
+            ProtoHelper.Instance.Register<GGEnvelope>((int)GameGateProtocl.Ggenvelope);
             MessageRouter.Instance.Subscribe<GGEnvelope>(_ProcessEnvelope);
         }
         public void UnInit()
@@ -31,7 +31,6 @@ namespace GameGateServer.Core
         }
         private void _DispatchMessage(ByteString data)
         {
-            ServersMgr.Instance.SentToGameServer(data);
         }
     }
 }

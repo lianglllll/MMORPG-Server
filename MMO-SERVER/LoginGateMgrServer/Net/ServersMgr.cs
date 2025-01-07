@@ -28,12 +28,13 @@ namespace LoginGateMgrServer.Net
 
             // 网络服务开启
             NetService.Instance.Init();
+            LoginGateMgrHandler.Instance.Init();
 
             // 协议注册
-            ProtoHelper.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
-            ProtoHelper.Register<ServerInfoRegisterResponse>((int)ControlCenterProtocl.ServerinfoRegisterResp);
+            ProtoHelper.Instance.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
+            ProtoHelper.Instance.Register<ServerInfoRegisterResponse>((int)ControlCenterProtocl.ServerinfoRegisterResp);
             // 下面这个协议是重复注册过的，原因是时序问题会报错，我看得不舒服。
-            ProtoHelper.Register<ClusterEventResponse>((int)ControlCenterProtocl.ClusterEventResp);
+            ProtoHelper.Instance.Register<ClusterEventResponse>((int)ControlCenterProtocl.ClusterEventResp);
 
 
             // 消息的订阅
@@ -65,7 +66,6 @@ namespace LoginGateMgrServer.Net
         {
             //开启监测
             LogingateMonitor.Instance.Init(clusterEventNodes);
-            LoginGateMgrHandler.Instance.Init();
 
             // 开始网络监听，预示着当前服务器的正式启动
             NetService.Instance.Start();

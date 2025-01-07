@@ -22,11 +22,11 @@ namespace ControlCenter.Net
         {
             // 启动消息分发器
             MessageRouter.Instance.Start(Config.Server.workerCount);
-            ProtoHelper.Init();
+            ProtoHelper.Instance.Init();
 
             // proto注册
-            ProtoHelper.Register<SSHeartBeatRequest>((int)CommonProtocl.SsHeartbeatReq);
-            ProtoHelper.Register<SSHeartBeatResponse>((int)CommonProtocl.SsHeartbeatResp);
+            ProtoHelper.Instance.Register<SSHeartBeatRequest>((int)CommonProtocl.SsHeartbeatReq);
+            ProtoHelper.Instance.Register<SSHeartBeatResponse>((int)CommonProtocl.SsHeartbeatResp);
 
             // 消息订阅
             MessageRouter.Instance.Subscribe<SSHeartBeatRequest>(_SSHeartBeatRequest);

@@ -12,12 +12,12 @@ namespace DBProxyServer.Handle
         public void Init()
         {
             // 协议注册
-            ProtoHelper.Register<GetDBCharacterRequest>((int)DBCharacterProtocl.GetDbcharacterReq);
-            ProtoHelper.Register<GetDBCharacterReponse>((int)DBCharacterProtocl.GetDbcharacterResp);
-            ProtoHelper.Register<AddDBCharacterRequset>((int)DBCharacterProtocl.AddDbcharacterReq);
-            ProtoHelper.Register<AddDBCharacterResponse>((int)DBCharacterProtocl.AddDbcharacterResp);
-            ProtoHelper.Register<DeleteDBCharacterRequest>((int)DBCharacterProtocl.DeleteDbcharacterReq);
-            ProtoHelper.Register<DeleteDBCharacterResponse>((int)DBCharacterProtocl.DeleteDbcharacterResp);
+            ProtoHelper.Instance.Register<GetDBCharacterRequest>((int)DBCharacterProtocl.GetDbcharacterReq);
+            ProtoHelper.Instance.Register<GetDBCharacterReponse>((int)DBCharacterProtocl.GetDbcharacterResp);
+            ProtoHelper.Instance.Register<AddDBCharacterRequset>((int)DBCharacterProtocl.AddDbcharacterReq);
+            ProtoHelper.Instance.Register<AddDBCharacterResponse>((int)DBCharacterProtocl.AddDbcharacterResp);
+            ProtoHelper.Instance.Register<DeleteDBCharacterRequest>((int)DBCharacterProtocl.DeleteDbcharacterReq);
+            ProtoHelper.Instance.Register<DeleteDBCharacterResponse>((int)DBCharacterProtocl.DeleteDbcharacterResp);
             // 消息的订阅
             MessageRouter.Instance.Subscribe<GetDBCharacterRequest>(_HandleGetDBCharacterRequest);
             MessageRouter.Instance.Subscribe<AddDBCharacterRequset>(_HandleAddDBCharacterRequset);

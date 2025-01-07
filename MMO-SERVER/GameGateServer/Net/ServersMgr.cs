@@ -40,12 +40,12 @@ namespace GameGateServer.Net
             GameGateHandler.Instance.Init();
 
             // 协议注册
-            ProtoHelper.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
-            ProtoHelper.Register<ServerInfoRegisterResponse>((int)ControlCenterProtocl.ServerinfoRegisterResp);
-            ProtoHelper.Register<RegisterToGGMRequest>((int)GameGateMgrProtocl.RegisterToGgmReq);
-            ProtoHelper.Register<RegisterToGGMResponse>((int)GameGateMgrProtocl.RegisterToGgmResp);
-            ProtoHelper.Register<ExecuteGGCommandRequest>((int)GameGateMgrProtocl.ExecuteGgCommandReq);
-            ProtoHelper.Register<ExecuteGGCommandResponse>((int)GameGateMgrProtocl.ExecuteGgCommandResp);
+            ProtoHelper.Instance.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
+            ProtoHelper.Instance.Register<ServerInfoRegisterResponse>((int)ControlCenterProtocl.ServerinfoRegisterResp);
+            ProtoHelper.Instance.Register<RegisterToGGMRequest>((int)GameGateMgrProtocl.RegisterToGgmReq);
+            ProtoHelper.Instance.Register<RegisterToGGMResponse>((int)GameGateMgrProtocl.RegisterToGgmResp);
+            ProtoHelper.Instance.Register<ExecuteGGCommandRequest>((int)GameGateMgrProtocl.ExecuteGgCommandReq);
+            ProtoHelper.Instance.Register<ExecuteGGCommandResponse>((int)GameGateMgrProtocl.ExecuteGgCommandResp);
             // 消息的订阅
             MessageRouter.Instance.Subscribe<ServerInfoRegisterResponse>(_RegisterServerInfo2ControlCenterResponse);
             MessageRouter.Instance.Subscribe<RegisterToGGMResponse>(_HandleRegisterToGGMResponse);
@@ -317,10 +317,5 @@ namespace GameGateServer.Net
 
         }
 
-        // tools
-        public void SentToGameServer(ByteString data)
-        {
-            m_outgoingServerConnection[SERVER_TYPE.Game].NetClient.Send(data);
-        }
     }
 }

@@ -15,7 +15,7 @@ namespace LoginGateServer.Net
         public void Init()
         {
             // 协议注册
-            ProtoHelper.Register<GetLoginTokenResponse>((int)LoginProtocl.GetLoginTokenResp);
+            ProtoHelper.Instance.Register<GetLoginTokenResponse>((int)LoginProtocl.GetLoginTokenResp);
         }
 
         public LoginToken NewToken(Connection connection)

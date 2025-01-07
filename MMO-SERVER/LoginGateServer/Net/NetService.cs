@@ -22,12 +22,12 @@ namespace LoginGateServer.Net
         {
             // 启动消息分发器
             MessageRouter.Instance.Start(Config.Server.workerCount);
-            ProtoHelper.Init();
+            ProtoHelper.Instance.Init();
             // 协议注册
-            ProtoHelper.Register<CSHeartBeatRequest>((int)CommonProtocl.CsHeartbeatReq);
-            ProtoHelper.Register<CSHeartBeatResponse>((int)CommonProtocl.CsHeartbeatResp);
-            ProtoHelper.Register<SSHeartBeatRequest>((int)CommonProtocl.SsHeartbeatReq);
-            ProtoHelper.Register<SSHeartBeatResponse>((int)CommonProtocl.SsHeartbeatResp);
+            ProtoHelper.Instance.Register<CSHeartBeatRequest>((int)CommonProtocl.CsHeartbeatReq);
+            ProtoHelper.Instance.Register<CSHeartBeatResponse>((int)CommonProtocl.CsHeartbeatResp);
+            ProtoHelper.Instance.Register<SSHeartBeatRequest>((int)CommonProtocl.SsHeartbeatReq);
+            ProtoHelper.Instance.Register<SSHeartBeatResponse>((int)CommonProtocl.SsHeartbeatResp);
             // 消息的订阅
             MessageRouter.Instance.Subscribe<CSHeartBeatRequest>(_HandleCSHeartBeatRequest);
             MessageRouter.Instance.Subscribe<SSHeartBeatResponse>(_HandleSSHeartBeatResponse);

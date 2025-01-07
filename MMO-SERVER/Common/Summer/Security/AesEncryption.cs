@@ -12,7 +12,6 @@ namespace Common.Summer.Security
 
         public AesEncryption(string Key,string IV)
         {
-            // Ensure the key and IV have a length of 16 bytes (128 bits), 24 bytes (192 bits), or 32 bytes (256 bits).
             key = Encoding.UTF8.GetBytes(Key.PadRight(32).Substring(0, 32));
             iv = Encoding.UTF8.GetBytes(IV.PadRight(16).Substring(0, 16));
         }

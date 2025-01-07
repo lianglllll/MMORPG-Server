@@ -55,7 +55,7 @@ namespace Common.Summer.Core
         }
         private void _OnDataRecived(byte[] data)
         {
-            var msg = ProtoHelper.BytesParse2IMessage(data);
+            var msg = ProtoHelper.Instance.BytesParse2IMessage(data);
             if(msg == null)
             {
                 return;
@@ -77,7 +77,7 @@ namespace Common.Summer.Core
         {
             try
             {
-                _SocketSend(ProtoHelper.IMessageParse2Bytes(message));
+                _SocketSend(ProtoHelper.Instance.IMessageParse2Bytes(message));
             }
             catch(Exception e)
             {

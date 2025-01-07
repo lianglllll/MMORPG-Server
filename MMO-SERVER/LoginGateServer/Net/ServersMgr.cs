@@ -32,6 +32,8 @@ namespace LoginGateServer.Net
             LoginGateHandler.Instance.Init();
             UserHandler.Instance.Init();
             LoginGateTokenManager.Instance.Init();
+            SecurityHandler.Instance.Init();
+
 
             // 本服务器的信息
             m_curSin = new ServerInfoNode();
@@ -44,14 +46,14 @@ namespace LoginGateServer.Net
             m_curSin.EventBitmap = SetEventBitmap();
 
             // 协议注册
-            ProtoHelper.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
-            ProtoHelper.Register<ServerInfoRegisterResponse>((int)ControlCenterProtocl.ServerinfoRegisterResp);
-            ProtoHelper.Register<RegisterLoginGateInstanceRequest>((int)LoginGateMgrProtocl.RegisterLogingateInstanceReq);
-            ProtoHelper.Register<RegisterLoginGateInstanceResponse>((int)LoginGateMgrProtocl.RegisterLogingateInstanceResp);
-            ProtoHelper.Register<ExecuteLGCommandRequest>((int)LoginGateMgrProtocl.ExecuteLgCommandReq);
-            ProtoHelper.Register<ExecuteLGCommandResponse>((int)LoginGateMgrProtocl.ExecuteLgCommandResp);
-            ProtoHelper.Register<GetLoginTokenRequest>((int)LoginProtocl.GetLoginTokenReq);
-            ProtoHelper.Register<GetLoginTokenResponse>((int)LoginProtocl.GetLoginTokenResp);
+            ProtoHelper.Instance.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
+            ProtoHelper.Instance.Register<ServerInfoRegisterResponse>((int)ControlCenterProtocl.ServerinfoRegisterResp);
+            ProtoHelper.Instance.Register<RegisterLoginGateInstanceRequest>((int)LoginGateMgrProtocl.RegisterLogingateInstanceReq);
+            ProtoHelper.Instance.Register<RegisterLoginGateInstanceResponse>((int)LoginGateMgrProtocl.RegisterLogingateInstanceResp);
+            ProtoHelper.Instance.Register<ExecuteLGCommandRequest>((int)LoginGateMgrProtocl.ExecuteLgCommandReq);
+            ProtoHelper.Instance.Register<ExecuteLGCommandResponse>((int)LoginGateMgrProtocl.ExecuteLgCommandResp);
+            ProtoHelper.Instance.Register<GetLoginTokenRequest>((int)LoginProtocl.GetLoginTokenReq);
+            ProtoHelper.Instance.Register<GetLoginTokenResponse>((int)LoginProtocl.GetLoginTokenResp);
 
             // 消息的订阅
             MessageRouter.Instance.Subscribe<ServerInfoRegisterResponse>(_RegisterServerInfo2ControlCenterResponse);

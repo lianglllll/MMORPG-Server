@@ -401,11 +401,6 @@ namespace GameServer.Service
         // 当前连接获取一个通信密钥
         private void _GetCommunicationSecretKeyRequest(Connection sender, GetCommunicationSecretKeyRequest message)
         {
-            var pair = sender.m_encryptionManager.GetComunicationKey(message.ClientPublicKey);
-            GetCommunicationSecretKeyResponse response = new GetCommunicationSecretKeyResponse();
-            response.Key1 = pair.key1;
-            response.Key2 = pair.key2;
-            sender.Send(response);
         }
 
     }

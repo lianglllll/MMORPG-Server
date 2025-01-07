@@ -13,9 +13,9 @@ namespace LoginGateServer.Core
         public void Init()
         {
             // 协议注册
-            ProtoHelper.Register<ClusterEventResponse>((int)ControlCenterProtocl.ClusterEventResp);
-            ProtoHelper.Register<GetLoginGateTokenRequest>((int)LoginGateProtocl.GetLogingateTokenReq);
-            ProtoHelper.Register<GetLoginGateTokenResponse>((int)LoginGateProtocl.GetLogingateTokenResp);
+            ProtoHelper.Instance.Register<ClusterEventResponse>((int)ControlCenterProtocl.ClusterEventResp);
+            ProtoHelper.Instance.Register<GetLoginGateTokenRequest>((int)LoginGateProtocl.GetLogingateTokenReq);
+            ProtoHelper.Instance.Register<GetLoginGateTokenResponse>((int)LoginGateProtocl.GetLogingateTokenResp);
             // 消息的订阅
             MessageRouter.Instance.Subscribe<ClusterEventResponse>(_HandleClusterEventResponse);
             MessageRouter.Instance.Subscribe<GetLoginGateTokenRequest>(_HandleGetLoginGateTokenRequest);
