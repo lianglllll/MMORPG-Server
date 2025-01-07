@@ -34,6 +34,24 @@
 
 ![小南梁界Server架构](README.assets/小南梁界Server架构.png)
 
+服务器角色简要说明：
+
+```
+中心服务器(ControlCenterServer):保存其他服务器的信息，不做逻辑处理。
+数据库服务器(DBProxyServer):作为mognodb和其他server之间沟通的代理服务器。
+登录服务器(LoginServer):完成登录、注册功能
+登录网关服务器(LoginGateServer):隔绝内外网、加解密信息、转发信息到login。
+登录网关管理服务器(LoginGateMgrServer)：监控全部LoginGate,给Login和LoginGate建立关联，扩容和收缩为login服务的loginGate数量。
+游戏服务器(GameServer)：处理与场景无关的游戏逻辑，如聊天、背包、组队、商店、任务...
+游戏网关服务器(GameGateServer)：隔绝内外网、加解密信息、转发信息到Game或者Scene。
+游戏网关管理服务器(GameGateServerMgrServer)：监控GameGate和Scene,给Game和GameGate和Scene之间建立联系，扩容和收缩为Game服务的GameGate的数量。
+场景服务器(SceneServer)：处理玩家的移动、战斗相关的逻辑。
+日志服务器(LogServer):		  待做   // 收集各个服务器的运行log，保存到数据库中。
+游戏管理员服务器(GmServer):		待做   // 接受来自web后台的命令，控制其他服务器。
+```
+
+
+
 ## 基础模块
 
 **网络模块**
