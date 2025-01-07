@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
 using Google.Protobuf;
 using System;
-using System.Reflection;
-using System.Linq;
 using Google.Protobuf.Reflection;
 using Serilog;
 using Common.Summer.Tools;
 
-namespace Common.Summer.Proto
+namespace Common.Summer.Net
 {
     /// <summary>
     /// Protobuf序列化与反序列化
@@ -26,7 +24,7 @@ namespace Common.Summer.Proto
         {
 
         }
-        public static bool Register<T>(int id) where T : Google.Protobuf.IMessage
+        public static bool Register<T>(int id) where T : IMessage
         {
             Type type = typeof(T);
             m_sequence2type[id] = type;
@@ -70,42 +68,12 @@ namespace Common.Summer.Proto
             var msg = desc.Parser.ParseFrom(data, 2, data.Length - 2);
             return msg;
         }
-        public static IMessage BytesParse2IMessage(byte[] data,out Type type)
-        {
-            ushort typeCode = _GetUShort(data, 0);
-            Type t = Seq2Type(typeCode);
-            if (t == null)
-            {
-                Log.Error($"[ProtoHelper.ParseFrom]解析失败，协议号:{typeCode}");
-                type = null;
-                return null;
-            }
-            var desc = t.GetProperty("Descriptor").GetValue(t) as MessageDescriptor;
-            var msg = desc.Parser.ParseFrom(data, 2, data.Length - 2);
-            type = t;
-            return msg;
-        }
-        public static byte[] IMessageParse2BytesNoLen(IMessage message)
-        {
-            //获取imessage类型所对应的编号，网络传输我们只传输编号
-            using (var ds = DataStream.Allocate())
-            {
-                int code = ProtoHelper.Type2Seq(message.GetType());
-                if (code == -1)
-                {
-                    return null;
-                }
-                ds.WriteUShort((ushort)code);                       //协议编号字段
-                message.WriteTo(ds);                                //数据
-                return ds.ToArray();
-            }
-        }
         public static byte[] IMessageParse2Bytes(IMessage message)
         {
             //获取imessage类型所对应的编号，网络传输我们只传输编号
             using (var ds = DataStream.Allocate())
             {
-                int code = ProtoHelper.Type2Seq(message.GetType());
+                int code = Type2Seq(message.GetType());
                 if (code == -1)
                 {
                     return null;
@@ -119,9 +87,8 @@ namespace Common.Summer.Proto
         private static ushort _GetUShort(byte[] data, int offset)
         {
             if (BitConverter.IsLittleEndian)
-                return (ushort)((data[offset] << 8) | data[offset + 1]);
-            return (ushort)((data[offset + 1] << 8) | data[offset]);
+                return (ushort)(data[offset] << 8 | data[offset + 1]);
+            return (ushort)(data[offset + 1] << 8 | data[offset]);
         }
-
     }
 }

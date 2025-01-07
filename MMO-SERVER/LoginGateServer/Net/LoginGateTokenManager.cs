@@ -1,9 +1,9 @@
 ﻿using System.Collections.Concurrent;
 using Common.Summer.Tools;
 using Common.Summer.Core;
-using Common.Summer.Proto;
 using HS.Protobuf.Login;
 using HS.Protobuf.LoginGate;
+using Common.Summer.Net;
 
 namespace LoginGateServer.Net
 {
@@ -42,8 +42,6 @@ namespace LoginGateServer.Net
             m_tokens.TryRemove(tokenId, out var token);
             if (token != null)
             {
-                //让其conn连接失效
-                NetService.Instance.CloseUserConnection(token.Conn);
                 token.Conn = null;
             }
         }

@@ -1,6 +1,5 @@
 ﻿using Common.Summer.Core;
 using Common.Summer.Net;
-using Common.Summer.Proto;
 using Common.Summer.Tools;
 using Google.Protobuf;
 using HS.Protobuf.Common;
@@ -310,16 +309,14 @@ namespace LoginGateServer.Net
             if (isEnd)
             {
                 Log.Error("Connect to login failed, the server may not be turned on");
+                
+                //做一下重新连接或者其他
+                Log.Error("重连还没写");
+
             }
             else
             {
-                //做一下重新连接
                 Log.Error("Connect to login failed, attempting to reconnect login");
-                Log.Error("重连还没写");
-
-
-
-
             }
 
         }

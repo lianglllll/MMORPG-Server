@@ -3,8 +3,8 @@ using Common.Summer.Tools;
 using Common.Summer.Core;
 using LoginServer.Net;
 using HS.Protobuf.Common;
-using Common.Summer.Proto;
 using HS.Protobuf.Login;
+using Common.Summer.Net;
 
 namespace LoginGateServer.Net
 {

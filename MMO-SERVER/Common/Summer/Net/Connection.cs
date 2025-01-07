@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Net.Sockets;
 using Common.Summer.Net;
-using Common.Summer.Proto;
 using Common.Summer.Security;
 using Common.Summer.Tools;
 using Google.Protobuf;
@@ -39,6 +38,8 @@ namespace Common.Summer.Core
             //给这个客户端连接创建一个解码器
             m_lfd = new LengthFieldDecoder(socket, 64 * 1024, 0, 4, 0, 4, _OnDataRecived, _OnDisconnected);
             m_lfd.Init();//启动解码器，开始接收消息
+
+            m_onDisconnected = disconnected;
 
             m_encryptionManager = new EncryptionManager();
             m_encryptionManager.Init();

@@ -4,7 +4,6 @@ using Common.Summer.Net;
 using Common.Summer.Tools;
 using System.Collections.Concurrent;
 using HS.Protobuf.Common;
-using Common.Summer.Proto;
 using static Common.Summer.Net.NetClient;
 using LoginGateServer.Utils;
 using System.Net;
@@ -30,8 +29,8 @@ namespace LoginGateServer.Net
             ProtoHelper.Register<SSHeartBeatRequest>((int)CommonProtocl.SsHeartbeatReq);
             ProtoHelper.Register<SSHeartBeatResponse>((int)CommonProtocl.SsHeartbeatResp);
             // 消息的订阅
-            MessageRouter.Instance.Subscribe<CSHeartBeatRequest>(_CSHeartBeatRequest);
-            MessageRouter.Instance.Subscribe<SSHeartBeatResponse>(_SSHeartBeatResponse);
+            MessageRouter.Instance.Subscribe<CSHeartBeatRequest>(_HandleCSHeartBeatRequest);
+            MessageRouter.Instance.Subscribe<SSHeartBeatResponse>(_HandleSSHeartBeatResponse);
             // 定时发送ss心跳包
             Scheduler.Instance.AddTask(_SendSSHeatBeatReq, Config.Server.heartBeatSendInterval, 0);
         }
@@ -97,11 +96,7 @@ namespace LoginGateServer.Net
         {
             if (conn == null) return;
 
-            //从心跳字典中删除连接
-            if (m_userConnHeartbeatTimestamps.ContainsKey(conn))
-            {
-                m_userConnHeartbeatTimestamps.TryRemove(conn, out _);
-            }
+            CleanConnectionResource(conn);
 
             //转交给下一层的connection去进行关闭
             conn.CloseConnection();
@@ -109,7 +104,7 @@ namespace LoginGateServer.Net
         private void AllocateConnectionResource(Connection conn)
         {
             // 给conn添加心跳时间
-            m_serverConnHeartbeatTimestamps[conn] = DateTime.Now;
+            m_userConnHeartbeatTimestamps[conn] = DateTime.Now;
             // 分配一下连接token
             LoginGateToken token = LoginGateTokenManager.Instance.NewToken(conn);
             conn.Set<LoginGateToken>(token);
@@ -117,15 +112,16 @@ namespace LoginGateServer.Net
         private void CleanConnectionResource(Connection conn)
         {
             // 从心跳字典中删除连接
-            if (m_serverConnHeartbeatTimestamps.ContainsKey(conn))
+            if (m_userConnHeartbeatTimestamps.ContainsKey(conn))
             {
-                m_serverConnHeartbeatTimestamps.TryRemove(conn, out _);
+                m_userConnHeartbeatTimestamps.TryRemove(conn, out _);
             }
 
             // token回收
             LoginGateTokenManager.Instance.RemoveToken(conn.Get<LoginGateToken>().Id);
+
         }
-        private void _CSHeartBeatRequest(Connection conn, CSHeartBeatRequest message)
+        private void _HandleCSHeartBeatRequest(Connection conn, CSHeartBeatRequest message)
         {
             //更新心跳时间
             m_userConnHeartbeatTimestamps[conn] = DateTime.Now;
@@ -146,7 +142,7 @@ namespace LoginGateServer.Net
                 {
                     //关闭超时的客户端连接
                     Connection conn = kv.Key;
-                    //Log.Information("[心跳检查]心跳超时==>");//移除相关的资源
+                    Log.Information("[心跳检查]心跳超时==>");//移除相关的资源
                     CloseUserConnection(conn);
                 }
             }
@@ -180,7 +176,7 @@ namespace LoginGateServer.Net
                 v.Send(req);
             }
         }
-        private void _SSHeartBeatResponse(Connection conn, SSHeartBeatResponse message)
+        private void _HandleSSHeartBeatResponse(Connection conn, SSHeartBeatResponse message)
         {
             // 知道对端也活着，嘻嘻。
         }

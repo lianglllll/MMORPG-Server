@@ -5,7 +5,6 @@ using Common.Summer.Net;
 using Common.Summer.Core;
 using ControlCenter.Utils;
 using HS.Protobuf.Common;
-using Common.Summer.Proto;
 using ControlCenter.Core;
 
 namespace ControlCenter.Net

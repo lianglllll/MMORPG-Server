@@ -74,6 +74,7 @@ namespace Common.Summer.Net
             //并且向上传递消息断开信息
             if (m_isStart)
             {
+                m_isStart = false;
                 m_onDisconnected?.Invoke();
             }
         }

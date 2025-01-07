@@ -7,7 +7,6 @@ using lLua.Binchunk;
 using Common.Summer.Security;
 using Serilog.Sinks.SystemConsole.Themes;
 using Common.Summer.Net;
-using Common.Summer.Proto;
 using HS.Protobuf.Login;
 using Google.Protobuf;
 using Common.Summer.Core;
