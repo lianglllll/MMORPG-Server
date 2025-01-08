@@ -1,51 +1,56 @@
 @echo off
-setlocal
+setlocal enabledelayedexpansion
 
-set DELAY=2
+goto :main
 
-set CONTROL_CENTER_DIR="ControlCenter\bin\Debug\net6.0"
-set DB_PROXY_SERVER_DIR="DBProxyServer\bin\Debug\net6.0"
-set GAME_GATE_MGR_SERVER_DIR="GameGateMgrServer\bin\Debug\net6.0"
-set GAME_GATE_SERVER_DIR="GameGateServer\bin\Debug\net6.0"
-set GAME_SERVER_DIR="GameServer\bin\Debug\net6.0"
-set LOGIN_GATE_MGR_SERVER_DIR="LoginGateMgrServer\bin\Debug\net6.0"
-set LOGIN_GATE_SERVER_DIR="LoginGateServer\bin\Debug\net6.0"
-set LOGIN_SERVER_DIR="LoginServer\bin\Debug\net6.0"
-set SPACE_SERVER_DIR="SpaceServer\bin\Debug\net6.0"
+rem 函数：启动程序并记录PID
+:StartAndRecordPID
+    echo Starting program in directory: %~dp0%~1
+    cd /d "%~dp0%~1" || (echo Failed to change directory to %~dp0%~1 & exit /b)
+    if not exist "%~2" (
+        echo File not found: %~2
+        exit /b
+    )
+    echo Current directory: %CD%
+    start "%~3" "%~2"
+    echo Started program: %~2
+    timeout /t %DELAY% /nobreak > nul
+    for /f "tokens=2 delims=," %%A in ('tasklist /fi "imagename eq %~2" /fo csv /nh') do (
+        set "PID=%%~A"
+        echo !PID! >> "%~dp0pids.txt"
+    )
+    exit /b
 
-cd /d %CONTROL_CENTER_DIR%
-start "" "ControlCenter.exe"
-timeout /t %DELAY% /nobreak > nul
+:main
 
-cd /d "%~dp0%DB_PROXY_SERVER_DIR%"
-start "" "DBProxyServer.exe"
-timeout /t %DELAY% /nobreak > nul
+rem 定义启动间隔（单位为s）
+set DELAY=1
 
-cd /d "%~dp0%GAME_GATE_MGR_SERVER_DIR%"
-start "" "GameGateMgrServer.exe"
-timeout /t %DELAY% /nobreak > nul
+rem 定义所有服务器的目录路径（相对于脚本所在位置）
+set "CONTROL_CENTER_DIR=ControlCenter\bin\Debug\net6.0"
+set "DB_PROXY_SERVER_DIR=DBProxyServer\bin\Debug\net6.0"
+set "LOGIN_GATE_MGR_SERVER_DIR=LoginGateMgrServer\bin\Debug\net6.0"
+set "LOGIN_GATE_SERVER_DIR=LoginGateServer\bin\Debug\net6.0"
+set "LOGIN_SERVER_DIR=LoginServer\bin\Debug\net6.0"
+set "GAME_GATE_MGR_SERVER_DIR=GameGateMgrServer\bin\Debug\net6.0"
+set "GAME_GATE_SERVER_DIR=GameGateServer\bin\Debug\net6.0"
+set "GAME_SERVER_DIR=GameServer\bin\Debug\net6.0"
+set "SPACE_SERVER_DIR=SpaceServer\bin\Debug\net6.0"
 
-cd /d "%~dp0%GAME_GATE_SERVER_DIR%"
-start "" "GameGateServer.exe"
-timeout /t %DELAY% /nobreak > nul
+rem 删除旧的 pids.txt 文件
+del "%~dp0pids.txt" >nul 2>&1
 
-cd /d "%~dp0%GAME_SERVER_DIR%"
-start "" "GameServer.exe"
-timeout /t %DELAY% /nobreak > nul
-
-cd /d "%~dp0%LOGIN_GATE_MGR_SERVER_DIR%"
-start "" "LoginGateMgrServer.exe"
-timeout /t %DELAY% /nobreak > nul
-
-cd /d "%~dp0%LOGIN_GATE_SERVER_DIR%"
-start "" "LoginGateServer.exe"
-timeout /t %DELAY% /nobreak > nul
-
-cd /d "%~dp0%LOGIN_SERVER_DIR%"
-start "" "LoginServer.exe"
-timeout /t %DELAY% /nobreak > nul
-
-cd /d "%~dp0%SPACE_SERVER_DIR%"
-start "" "SceneServer.exe"
-
+rem 启动每个服务并记录其 PID
+echo CONTROL_CENTER_DIR=%CONTROL_CENTER_DIR%
+call :StartAndRecordPID "%CONTROL_CENTER_DIR%" "ControlCenter.exe" "ControlCenter"
+call :StartAndRecordPID "%DB_PROXY_SERVER_DIR%" "DBProxyServer.exe" "DBProxyServer"
+call :StartAndRecordPID "%LOGIN_GATE_MGR_SERVER_DIR%" "LoginGateMgrServer.exe" "LoginGateMgrServer"
+call :StartAndRecordPID "%LOGIN_GATE_SERVER_DIR%" "LoginGateServer.exe" "LoginGateServer"
+call :StartAndRecordPID "%LOGIN_SERVER_DIR%" "LoginServer.exe" "LoginServer"
+call :StartAndRecordPID "%GAME_GATE_MGR_SERVER_DIR%" "LoginServer.exe" "LoginServer"
+goto :end
+call :StartAndRecordPID "%GAME_GATE_SERVER_DIR%" "GameGateServer.exe" "GameGateServer"
+call :StartAndRecordPID "%GAME_SERVER_DIR%" "GameServer.exe" "GameServer"
+call :StartAndRecordPID "%SPACE_SERVER_DIR%" "SceneServer.exe" "SceneServer"
+:end
 endlocal
