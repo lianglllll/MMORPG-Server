@@ -148,7 +148,6 @@ namespace Common.Summer.Core
             _addQueue.Enqueue(task);
         }
 
-
         //从任务队列中删除该任务
         public void RemoveTask(Action taskMethod)
         {
@@ -183,10 +182,9 @@ namespace Common.Summer.Core
                         frameCount = 0;
                         stopwatch.Restart();
                     }
-
                 }
                 //线程切换
-                Thread.Sleep(0);
+                Thread.Sleep(1);
             }
 
             loopThread = null;
