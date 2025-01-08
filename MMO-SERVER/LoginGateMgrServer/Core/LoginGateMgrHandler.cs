@@ -31,13 +31,6 @@ namespace LoginGateMgrServer.Core
 
         }
 
-        public void SendGetAllLoginServerInfoRequest()
-        {
-            var req = new GetAllServerInfoRequest();
-            req.ServerType = SERVER_TYPE.Login; 
-            ServersMgr.Instance.ccClient.Send(req);
-        }
-
         private void _HandleRegisterLoginGateInstanceRequest(Connection conn, RegisterLoginGateInstanceRequest message)
         {
             bool success = LogingateMonitor.Instance.RegisterLoginGateInstance(conn ,message.ServerInfoNode);

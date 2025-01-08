@@ -3,6 +3,8 @@ using Common.Summer.Core;
 using Serilog.Sinks.SystemConsole.Themes;
 using LoginServer.Utils;
 using LoginGateMgrServer.Net;
+using HS.Protobuf.ControlCenter;
+using LoginGateMgrServer.Core;
 
 namespace LoginGateMgrServer
 {
@@ -51,6 +53,9 @@ namespace LoginGateMgrServer
             Log.Information($"port：{Config.Server.port}");
             Log.Information($"workerCount：{Config.Server.workerCount}");
             Log.Information($"updateHz：{Config.Server.updateHz}");
+
+
+
 
             //开启网络服务
             ServersMgr.Instance.Init();

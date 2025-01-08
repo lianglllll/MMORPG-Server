@@ -2,6 +2,7 @@
 using Common.Summer.Net;
 using Common.Summer.Tools;
 using GameGateMgrServer.Core;
+using GameGateMgrServer.Handle;
 using GameGateMgrServer.Utils;
 using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
@@ -28,6 +29,8 @@ namespace GameGateMgrServer.Net
 
             // 网络服务开启
             NetService.Instance.Init();
+            GameGateMonitor.Instance.Init();
+            GameGateMgrHandler.Instance.Init();
 
             // 协议注册
             ProtoHelper.Instance.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
@@ -61,9 +64,7 @@ namespace GameGateMgrServer.Net
 
         private bool _ExecutePhase1(Google.Protobuf.Collections.RepeatedField<ClusterEventNode> clusterEventNodes)
         {
-            //开启监测
-            GameGateMonitor.Instance.Init(clusterEventNodes);
-            GameGateMgrHandler.Instance.Init();
+            GameGateMonitor.Instance.AddGameServerInfos(clusterEventNodes);
 
             // 开始网络监听，预示着当前服务器的正式启动
             NetService.Instance.Start();

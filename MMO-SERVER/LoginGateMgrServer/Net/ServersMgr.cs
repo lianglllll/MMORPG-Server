@@ -1,6 +1,7 @@
 ﻿using Common.Summer.Core;
 using Common.Summer.Net;
 using Common.Summer.Tools;
+using Google.Protobuf.Collections;
 using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
 using LoginGateMgrServer.Core;
@@ -26,9 +27,11 @@ namespace LoginGateMgrServer.Net
             m_curServerInfoNode.LoginGateMgrServerInfo = lNode;
             m_curServerInfoNode.EventBitmap = SetEventBitmap();
 
+            //开启监测
+            LogingateMonitor.Instance.Init();
+            LoginGateMgrHandler.Instance.Init();
             // 网络服务开启
             NetService.Instance.Init();
-            LoginGateMgrHandler.Instance.Init();
 
             // 协议注册
             ProtoHelper.Instance.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
@@ -61,12 +64,10 @@ namespace LoginGateMgrServer.Net
             }
             return bitmap;
         }
-
-        private bool _ExecutePhase1(Google.Protobuf.Collections.RepeatedField<ClusterEventNode> clusterEventNodes)
+        private bool _ExecutePhase1(RepeatedField<ClusterEventNode> clusterEventNodes)
         {
-            //开启监测
-            LogingateMonitor.Instance.Init(clusterEventNodes);
-
+            Log.Information($"The initial number of loginServer obtained is {clusterEventNodes.Count}");
+            LogingateMonitor.Instance.AddLoginServerInfos(clusterEventNodes);
             // 开始网络监听，预示着当前服务器的正式启动
             NetService.Instance.Start();
             return true;

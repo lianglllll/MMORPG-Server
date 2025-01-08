@@ -1,6 +1,7 @@
 ﻿using Common.Summer.Core;
 using Common.Summer.Tools;
 using GameGateMgrServer.Net;
+using Google.Protobuf.Collections;
 using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
 using HS.Protobuf.GameGateMgr;
@@ -68,20 +69,12 @@ namespace GameGateMgrServer.Core
         private Dictionary<string, int> m_alertThresholds = new();                // 性能指标阈值
         private Dictionary<int, List<Dictionary<string, int>>> m_metrics = new(); // 保存每个实例的历史性能指标
 
-        public bool Init(Google.Protobuf.Collections.RepeatedField<HS.Protobuf.ControlCenter.ClusterEventNode> clusterEventNodes)
+        public bool Init()
         {
             m_healthCheckInterval = 60;
             m_alertThresholds.Add("cpu_usage", 85);
             m_alertThresholds.Add("memory_usage", 80);
             Scheduler.Instance.AddTask(RunMonitoring,m_healthCheckInterval * 1000, 0);
-
-            foreach (var node in clusterEventNodes)
-            {
-                if (node.EventType == ClusterEventType.GameEnter)
-                {
-                    AddGameServerInfo(node.ServerInfoNode);
-                }
-            }
 
             return true;
         }
@@ -90,6 +83,17 @@ namespace GameGateMgrServer.Core
             return true;
         }
 
+        public bool AddGameServerInfos(RepeatedField<ClusterEventNode> clusterEventNodes)
+        {
+            foreach (var node in clusterEventNodes)
+            {
+                if (node.EventType == ClusterEventType.GameEnter)
+                {
+                    AddGameServerInfo(node.ServerInfoNode);
+                }
+            }
+            return true;
+        }
         public bool AddGameServerInfo(ServerInfoNode serverInfoNode)
         {
             // todo 有无问题呢？

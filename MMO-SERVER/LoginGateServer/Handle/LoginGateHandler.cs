@@ -6,7 +6,7 @@ using HS.Protobuf.LoginGate;
 using LoginGateServer.Net;
 using Serilog;
 
-namespace LoginGateServer.Core
+namespace LoginGateServer.Handle
 {
     public class LoginGateHandler : Singleton<LoginGateHandler>
     {
@@ -27,7 +27,7 @@ namespace LoginGateServer.Core
         }
         private void _HandleClusterEventResponse(Connection sender, ClusterEventResponse message)
         {
-            if(message.ClusterEventNode.EventType == ClusterEventType.LogingatemgrEnter)
+            if (message.ClusterEventNode.EventType == ClusterEventType.LogingatemgrEnter)
             {
                 Log.Debug("A new LoginGateMgr server has joined the cluster.");
                 ServersMgr.Instance.AddLGMServerInfo(message.ClusterEventNode.ServerInfoNode);

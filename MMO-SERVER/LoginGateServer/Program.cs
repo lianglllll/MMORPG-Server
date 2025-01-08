@@ -2,7 +2,6 @@
 using Common.Summer.Core;
 using Serilog.Sinks.SystemConsole.Themes;
 using LoginGateServer.Net;
-using LoginGateServer.Core;
 using LoginGateServer.Utils;
 
 namespace LoginGateServer

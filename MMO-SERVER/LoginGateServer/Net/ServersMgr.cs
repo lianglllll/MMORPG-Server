@@ -6,7 +6,6 @@ using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
 using HS.Protobuf.Login;
 using HS.Protobuf.LoginGateMgr;
-using LoginGateServer.Core;
 using LoginGateServer.Handle;
 using LoginGateServer.Utils;
 using Serilog;
@@ -33,7 +32,6 @@ namespace LoginGateServer.Net
             UserHandler.Instance.Init();
             LoginGateTokenManager.Instance.Init();
             SecurityHandler.Instance.Init();
-
 
             // 本服务器的信息
             m_curSin = new ServerInfoNode();
@@ -209,7 +207,6 @@ namespace LoginGateServer.Net
             {
                 //做一下重新连接
                 Log.Error("Connect to loginGateMgr failed, attempting to reconnect loginGateMgr");
-                Log.Error("重连还没写");
             }
 
         }

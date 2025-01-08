@@ -1,11 +1,12 @@
 ﻿using Common.Summer.Core;
 using Common.Summer.Tools;
+using Google.Protobuf.Collections;
 using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
-using HS.Protobuf.LoginGate;
 using HS.Protobuf.LoginGateMgr;
 using LoginGateMgrServer.Net;
 using Serilog;
+using System.Collections.Concurrent;
 
 namespace LoginGateMgrServer.Core
 {
@@ -45,21 +46,12 @@ namespace LoginGateMgrServer.Core
         private Dictionary<string, int> m_alertThresholds = new();                // 性能指标阈值
         private Dictionary<int, List<Dictionary<string, int>>> m_metrics = new(); // 保存每个实例的历史性能指标
 
-        public bool Init(Google.Protobuf.Collections.RepeatedField<HS.Protobuf.ControlCenter.ClusterEventNode> clusterEventNodes)
+        public bool Init()
         {
             m_healthCheckInterval = 60;
             m_alertThresholds.Add("cpu_usage", 85);
             m_alertThresholds.Add("memory_usage", 80);
             Scheduler.Instance.AddTask(RunMonitoring,m_healthCheckInterval * 1000, 0);
-
-            foreach (var node in clusterEventNodes)
-            {
-                if (node.EventType == ClusterEventType.GameEnter)
-                {
-                    AddLoginServerInfo(node.ServerInfoNode);
-                }
-            }
-
             return true;
         }
         public bool UnInit()
@@ -67,6 +59,17 @@ namespace LoginGateMgrServer.Core
             return true;
         }
 
+        public bool AddLoginServerInfos(RepeatedField<ClusterEventNode> clusterEventNodes)
+        {
+            foreach (var node in clusterEventNodes)
+            {
+                if (node.EventType == ClusterEventType.LoginEnter)
+                {
+                    AddLoginServerInfo(node.ServerInfoNode);
+                }
+            }
+            return true;
+        }
         public bool AddLoginServerInfo(ServerInfoNode serverInfoNode)
         {
             // todo 有无问题呢？

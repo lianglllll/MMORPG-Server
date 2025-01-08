@@ -1,15 +1,16 @@
 ﻿using Common.Summer.Core;
 using Common.Summer.Net;
 using Common.Summer.Tools;
+using GameGateMgrServer.Core;
 using GameGateMgrServer.Net;
 using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
 using HS.Protobuf.GameGateMgr;
 using Serilog;
 
-namespace GameGateMgrServer.Core
+namespace GameGateMgrServer.Handle
 {
-    public class GameGateMgrHandler:Singleton<GameGateMgrHandler>
+    public class GameGateMgrHandler : Singleton<GameGateMgrHandler>
     {
         public void Init()
         {
@@ -24,7 +25,6 @@ namespace GameGateMgrServer.Core
             MessageRouter.Instance.Subscribe<RegisterToGGMRequest>(_HandleRegisterToGGMRequest);
             MessageRouter.Instance.Subscribe<ExecuteGGCommandResponse>(_HandleExecuteGGCommandResponse);
             MessageRouter.Instance.Subscribe<ClusterEventResponse>(_HandleClusterEventResponse);
-
         }
 
         public void UnInit()
@@ -35,12 +35,12 @@ namespace GameGateMgrServer.Core
         public void SendGetAllGameServerInfoRequest()
         {
             var req = new GetAllServerInfoRequest();
-            req.ServerType = SERVER_TYPE.Game; 
+            req.ServerType = SERVER_TYPE.Game;
             ServersMgr.Instance.ccClient.Send(req);
         }
         private void _HandleRegisterToGGMRequest(Connection conn, RegisterToGGMRequest message)
         {
-            bool success = GameGateMonitor.Instance.RegisterToGGMInstance(conn ,message.ServerInfoNode);
+            bool success = GameGateMonitor.Instance.RegisterToGGMInstance(conn, message.ServerInfoNode);
             RegisterToGGMResponse resp = new();
             if (success)
             {
@@ -55,7 +55,7 @@ namespace GameGateMgrServer.Core
         }
         private void _HandleExecuteGGCommandResponse(Connection sender, ExecuteGGCommandResponse message)
         {
-            if(message.ResultCode == 0)
+            if (message.ResultCode == 0)
             {
             }
             else
@@ -65,7 +65,7 @@ namespace GameGateMgrServer.Core
         }
         private void _HandleClusterEventResponse(Connection sender, ClusterEventResponse message)
         {
-            if(message.ClusterEventNode.EventType == ClusterEventType.GameEnter)
+            if (message.ClusterEventNode.EventType == ClusterEventType.GameEnter)
             {
                 Log.Debug("A new Game server has joined the cluster.");
                 GameGateMonitor.Instance.AddGameServerInfo(message.ClusterEventNode.ServerInfoNode);
