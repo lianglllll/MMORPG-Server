@@ -80,6 +80,24 @@ namespace ClientTest
 
         }
 
+        static void TestHash()
+        {
+            // 示例密码
+            string password = "my_secure_password";
+
+            // 哈希密码
+            string hashedPassword = PasswordHasher.Instance.HashPassword(password);
+            Console.WriteLine($"Hashed Password: {hashedPassword}");
+
+            // 验证密码
+            bool isPasswordCorrect = PasswordHasher.Instance.VerifyPassword("my_secure_password", hashedPassword);
+            Console.WriteLine($"Is the password correct? {isPasswordCorrect}");
+
+            // 尝试使用错误的密码进行验证
+            bool isWrongPasswordCorrect = PasswordHasher.Instance.VerifyPassword("wrong_password", hashedPassword);
+            Console.WriteLine($"Is the wrong password correct? {isWrongPasswordCorrect}");
+        }
+
 
         static void Lua()
         {
@@ -154,7 +172,7 @@ namespace ClientTest
             //    (tcpClient, isEnd) => { },
             //    (tcpClient) => { });
 
-            TestAES();
+            TestHash();
 
             Console.ReadLine();
         }

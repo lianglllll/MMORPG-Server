@@ -7,7 +7,7 @@ server:
   # 逻辑处理频率(hz)
   updateHz: 50
   # 心跳相关(单位：秒)
-  heartBeatTimeOut: 30000
+  heartBeatTimeOut: 30
   heartBeatCheckInterval: 15
   heartBeatSendInterval: 10
 

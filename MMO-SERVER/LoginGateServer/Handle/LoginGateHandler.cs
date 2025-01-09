@@ -21,7 +21,6 @@ namespace LoginGateServer.Handle
             MessageRouter.Instance.Subscribe<GetLoginGateTokenRequest>(_HandleGetLoginGateTokenRequest);
         }
 
-
         public void UnInit()
         {
         }

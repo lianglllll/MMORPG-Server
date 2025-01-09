@@ -13,17 +13,59 @@ namespace DBProxyServer.Core
         {
             m_userCollection = dbConnection.GetCollection<BsonDocument>("user");
         }
-        public async Task<BsonDocument> GetUserByNameAsync(string name)
+        public async Task<DBUserNode> GetDBUserByNameAsync(string name)
         {
             // 使用过滤器构建器创建查询条件
             var filter = Builders<BsonDocument>.Filter.Eq("userName", name);
 
             // 查找满足条件的第一个文档
-            var user = await m_userCollection.Find(filter).FirstOrDefaultAsync();
+            var userDocument = await m_userCollection.Find(filter).FirstOrDefaultAsync();
 
-            if (user != null)
+            if (userDocument != null)
             {
-                return user;  // 返回找到的文档
+                DBUserNode dBUserNode = new();
+                dBUserNode.UId = userDocument["_id"].AsObjectId.ToString();
+                dBUserNode.UserName = userDocument["userName"].ToString();
+                dBUserNode.Password = userDocument["password"].ToString();
+                dBUserNode.Email = userDocument["email"].ToString();
+                dBUserNode.IsEmailVerified = userDocument["isEmailVerified"].ToBoolean();
+                dBUserNode.CreationTimestamp = userDocument["creationTimestamp"].ToInt64();
+                dBUserNode.LastLoginTimestamp = userDocument["lastLoginTimestamp"].ToInt64();
+                dBUserNode.LastPasswordChangeTimestamp = userDocument["lastPasswordChangeTimestamp"].ToInt64();
+                dBUserNode.LockedUntilTimesTamp = userDocument["lockedUntilTimesTamp"].ToInt64();
+                dBUserNode.AccessLevel = userDocument["accessLevel"].ToString();
+                dBUserNode.AccountStatus = userDocument["accountStatus"].ToString();
+                if (userDocument.Contains("activityLogs"))
+                {
+                    BsonArray activityLogs = userDocument["activityLogs"].AsBsonArray;
+                    foreach (var activityLog in activityLogs)
+                    {
+                        dBUserNode.ActivityLogs.Add(activityLog.ToString());
+                    }
+                }
+                if (userDocument.Contains("linkedAccounts"))
+                {
+                    BsonArray linkedAccounts = userDocument["linkedAccounts"].AsBsonArray;
+                    foreach (var linkedAccount in linkedAccounts)
+                    {
+                        var linkedAccountDoc = linkedAccount.AsBsonDocument;
+                        string key = linkedAccountDoc["Key"].AsString;
+                        string value = linkedAccountDoc["Value"].AsString;
+                        dBUserNode.LinkedAccounts.Add(key, value);
+                    }
+                }
+                if (userDocument.Contains("preferences"))
+                {
+                    BsonArray preferences = userDocument["preferences"].AsBsonArray;
+                    foreach (var preference in preferences)
+                    {
+                        var preferencesDoc = preferences.AsBsonDocument;
+                        string key = preferencesDoc["Key"].AsString;
+                        string value = preferencesDoc["Value"].AsString;
+                        dBUserNode.Preferences.Add(key, value);
+                    }
+                }
+                return dBUserNode;
             }
 
             return null;
@@ -32,13 +74,60 @@ namespace DBProxyServer.Core
         {
             try
             {
-                BsonDocument user = new BsonDocument { { "userName", dBUser.UserName }, { "password", dBUser.Password } };
+                var user = new BsonDocument
+                {
+                    { "userName", dBUser.UserName },
+                    { "password", dBUser.Password },
+                    { "email", dBUser.Email },
+                    { "isEmailVerified", dBUser.IsEmailVerified },
+                    { "creationTimestamp", dBUser.CreationTimestamp },
+                    { "lastLoginTimestamp", dBUser.LastLoginTimestamp },
+                    { "lastPasswordChangeTimestamp", dBUser.LastPasswordChangeTimestamp },
+                    { "lockedUntilTimesTamp", dBUser.LockedUntilTimesTamp },
+                    { "accessLevel", dBUser.AccessLevel },
+                    { "accountStatus", dBUser.AccountStatus }
+                };
+
+                if (dBUser.ActivityLogs != null && dBUser.ActivityLogs.Count > 0)
+                {
+                    user.Add("activityLogs", new BsonArray(dBUser.ActivityLogs));
+                }
+
+                if (dBUser.LinkedAccounts != null && dBUser.LinkedAccounts.Count > 0)
+                {
+                    var linkedAccountsArray = new BsonArray();
+                    foreach (var kvp in dBUser.LinkedAccounts)
+                    {
+                        var linkedAccountDoc = new BsonDocument
+                        {
+                            { "Key", kvp.Key },
+                            { "Value", kvp.Value }
+                        };
+                        linkedAccountsArray.Add(linkedAccountDoc);
+                    }
+                    user.Add("linkedAccounts", linkedAccountsArray);
+                }
+
+                if (dBUser.Preferences != null && dBUser.Preferences.Count > 0)
+                {
+                    var preferencesArray = new BsonArray();
+                    foreach (var kvp in dBUser.Preferences)
+                    {
+                        var preferenceDoc = new BsonDocument
+                        {
+                            { "Key", kvp.Key },
+                            { "Value", kvp.Value }
+                        };
+                        preferencesArray.Add(preferenceDoc);
+                    }
+                    user.Add("preferences", preferencesArray);
+                }
+
                 await m_userCollection.InsertOneAsync(user);
                 return true; // 插入成功
             }
             catch (Exception ex)
             {
-                // 可以根据需要记录日志或者处理特定的异常类型
                 Console.WriteLine($"Error inserting document: {ex.Message}");
                 return false; // 插入失败
             }

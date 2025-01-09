@@ -33,10 +33,6 @@ namespace LoginServer.Net
         public void RemoveSession(string sessionId)
         {
             sessions.TryRemove(sessionId, out var session);
-            if (session != null)
-            {
-                // 通知其他服务器干掉这个session
-            }
         }
     }
 }

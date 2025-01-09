@@ -97,9 +97,10 @@ namespace Common.Summer.Net
             {
                 messageQueue.Enqueue(new MessageHandlerArgs() { conn = conn, message = message });
             }
-            //唤醒一个进程来处理消息队列
+            //唤醒一个线程来处理消息队列
             threadEvent.Set();
         }
+
         // 多线程消息处理
         private void _MessageWork(object state)
         {

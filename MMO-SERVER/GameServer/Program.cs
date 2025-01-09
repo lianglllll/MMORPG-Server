@@ -7,7 +7,6 @@ using GameServer.Skills;
 using GameServer.Net;
 using GameServer.Utils;
 using Common.Summer.Core;
-using Common.Summer.Proto;
 using Serilog.Sinks.SystemConsole.Themes;
 using System.Collections.Generic;
 

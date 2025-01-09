@@ -29,14 +29,12 @@ namespace GameServer.Service
         public void Start()
         {
             MessageRouter.Instance.Subscribe<GameEnterRequest>(_GameEnterRequest);
-            MessageRouter.Instance.Subscribe<UserLoginRequest>(_UserLoginRequest);
             MessageRouter.Instance.Subscribe<CharacterCreateRequest>(_CharacterCreateRequest);
             MessageRouter.Instance.Subscribe<CharacterListRequest>(_CharacterListRequest);
             MessageRouter.Instance.Subscribe<CharacterDeleteRequest>(_CharacterDeleteRequest);
             MessageRouter.Instance.Subscribe<UserRegisterRequest>(_UserRegisterRequest);
             MessageRouter.Instance.Subscribe<ReconnectRequest>(_ReconnectRequest);
             MessageRouter.Instance.Subscribe<ServerInfoRequest>(_ServerInfoRequest);
-            MessageRouter.Instance.Subscribe<GetCommunicationSecretKeyRequest>(_GetCommunicationSecretKeyRequest);
         }
 
         /// <summary>
@@ -51,77 +49,26 @@ namespace GameServer.Service
 
             UserRegisterResponse resp = new UserRegisterResponse();
 
-            if(count > 0)
-            {
-                resp.Code = 1;
-                resp.Message = "用户名已存在";
-            }
-            else
-            {
-                DbUser dbUser = new DbUser()
-                {
-                    Username = message.Username,
-                    Password = message.Password
-                };
-                int affRows = DbManager.fsql.Insert(dbUser).ExecuteAffrows();
-                resp.Code = 0;
-                resp.Message = "注册成功";
-            }
+            //if(count > 0)
+            //{
+            //    resp.Code = 1;
+            //    resp.Message = "用户名已存在";
+            //}
+            //else
+            //{
+            //    DbUser dbUser = new DbUser()
+            //    {
+            //        Username = message.Username,
+            //        Password = message.Password
+            //    };
+            //    int affRows = DbManager.fsql.Insert(dbUser).ExecuteAffrows();
+            //    resp.Code = 0;
+            //    resp.Message = "注册成功";
+            //}
 
             conn.Send(resp);
         }
 
-        /// <summary>
-        /// 用户登录请求
-        /// </summary>
-        /// <param name="conn"></param>
-        /// <param name="message"></param>
-        private void _UserLoginRequest(Connection conn, UserLoginRequest message)
-        {
-            //获取username password
-            string username = message.Username;
-            string password = message.Password;
-
-            //查询数据库
-            DbUser dbUser =  DbManager.fsql.Select<DbUser>()
-                .Where(p => p.Username == username)
-                .Where(p => p.Password == password)
-                .First();
-
-            //校验
-            if (dbUser == null)
-            {
-                //1.要考虑到今天限制登录，2.这个号被封了  3.被关小黑屋了  4.没实名认证
-                UserLoginResponse resp1 = new UserLoginResponse();
-                resp1.Success = false;
-                resp1.Message = "用户名或密码不正确";
-                conn.Send(resp1);
-                return;
-            }
-
-            //如果当前用户在线，将其踢出游戏，防止同一账号多次登录
-            var oldsession = SessionManager.Instance.GetSessionByUserId(dbUser.Id);
-            if (oldsession != null)
-            {
-                oldsession.Leave();
-            }
-
-            //==正常登录==
-
-            //登录成功的客户端分配session对象，并且关联conn和session
-            var session = SessionManager.Instance.NewSession(dbUser);
-            conn.Set<Session>(session);
-            session.Conn = conn;
-
-            //发送给客户端的消息
-            UserLoginResponse resp = new UserLoginResponse();
-            resp.Success = true;
-            resp.Message = "登录成功";
-            resp.SessionId = session.Id;
-
-            //响应客户端
-            conn.Send(resp);
-        }
 
         /// <summary>
         /// 用户创建角色请求
@@ -398,10 +345,7 @@ namespace GameServer.Service
 
         }
 
-        // 当前连接获取一个通信密钥
-        private void _GetCommunicationSecretKeyRequest(Connection sender, GetCommunicationSecretKeyRequest message)
-        {
-        }
+
 
     }
 }

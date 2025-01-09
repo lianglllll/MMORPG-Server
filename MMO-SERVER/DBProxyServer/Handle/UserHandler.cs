@@ -7,7 +7,7 @@ using MongoDB.Bson;
 
 namespace DBProxyServer.Handle
 {
-    public class HandleUser:Singleton<HandleUser>
+    public class UserHandler:Singleton<UserHandler>
     {
         public void Init()
         {
@@ -26,13 +26,12 @@ namespace DBProxyServer.Handle
             MessageRouter.Instance.Subscribe<UpdateDBUserPasswordRequest>(_HandleUpdateDBUserPasswordRequest);
             MessageRouter.Instance.Subscribe<DeleteDBUserRequest>(_HandleDeleteDBUserRequest);
         }
-
         public async void _HandleGetDBUserRequest(Connection sender, GetDBUserRequest message)
         {
             GetDBUserResponse resp = new();
             resp.TaskId = message.TaskId;
-            BsonDocument userDocument = await UserOperations.Instance.GetUserByNameAsync(message.UserName);
-            if (userDocument == null)
+            DBUserNode dBUserNode = await UserOperations.Instance.GetDBUserByNameAsync(message.UserName);
+            if (dBUserNode == null)
             {
                 resp.ResultCode = 1;
                 resp.ResultMsg = $"No information found for the username {message.UserName}.";
@@ -40,19 +39,7 @@ namespace DBProxyServer.Handle
             }
             else
             {
-                DBUserNode uNode = new();
-                uNode.UId = userDocument["_id"].AsObjectId.ToString();
-                uNode.UserName = userDocument["userName"].ToString();
-                uNode.Password = userDocument["password"].ToString();
-                if(userDocument.Contains("characterIds"))
-                {
-                    BsonArray chrIds = userDocument["characterIds"].AsBsonArray;
-                    foreach (var chrId in chrIds)
-                    {
-                        uNode.CharacterIds.Add(chrId.ToString());
-                    }
-                }
-                resp.User = uNode;
+                resp.User = dBUserNode;
                 resp.ResultCode = 0;
             }
 
@@ -62,19 +49,33 @@ namespace DBProxyServer.Handle
         public async void _HandleAddDBUserRequset(Connection sender, AddDBUserRequset message)
         {
             AddDBUserResponse resp = new();
-            DBUserNode userNode = new() { 
-                UserName = message.UserName,
-                Password = message.Password 
-            };
-            bool success = await UserOperations.Instance.AddUserAsync(userNode);
+            resp.TaskId = message.TaskId;
+
+            // 先找找有没有重复名，有就直接拒绝他
+            DBUserNode existNode = await UserOperations.Instance.GetDBUserByNameAsync(message.DbUserNode.UserName);
+            if(existNode != null)
+            {
+                resp.ResultCode = 1;
+                goto End;
+            }
+
+            // 填一些字段
+            DBUserNode dBUserNode = message.DbUserNode;
+            dBUserNode.CreationTimestamp = Scheduler.UnixTime;
+            dBUserNode.AccountStatus = "active";
+            dBUserNode.AccessLevel = "user";
+
+            bool success = await UserOperations.Instance.AddUserAsync(dBUserNode);
             if (success)
             {
                 resp.ResultCode = 0;
             }
             else
             {
-                resp.ResultCode = 1;
+                resp.ResultCode = 2;
             }
+
+         End:
             sender.Send(resp);   
         }
         private async void _HandleUpdateDBUserPasswordRequest(Connection sender, UpdateDBUserPasswordRequest message)
@@ -110,6 +111,5 @@ namespace DBProxyServer.Handle
 
             sender.Send(resp);
         }
-
     }
 }

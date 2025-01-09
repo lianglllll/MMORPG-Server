@@ -24,42 +24,61 @@ namespace HS.Protobuf.DBProxy.DBUser {
     static DBUserReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "CgxEQlVzZXIucHJvdG8SGkhTLlByb3RvYnVmLkRCUHJveHkuREJVc2VyIlMK",
-            "CkRCVXNlck5vZGUSCwoDdUlkGAEgASgJEhAKCHVzZXJOYW1lGAIgASgJEhAK",
-            "CHBhc3N3b3JkGAMgASgJEhQKDGNoYXJhY3RlcklkcxgEIAMoCSI0ChBHZXRE",
-            "QlVzZXJSZXF1ZXN0Eg4KBnRhc2tJZBgBIAEoBRIQCgh1c2VyTmFtZRgCIAEo",
-            "CSKAAQoRR2V0REJVc2VyUmVzcG9uc2USDgoGdGFza0lkGAEgASgFEhIKCnJl",
-            "c3VsdENvZGUYAiABKAUSEQoJcmVzdWx0TXNnGAMgASgJEjQKBHVzZXIYBCAB",
-            "KAsyJi5IUy5Qcm90b2J1Zi5EQlByb3h5LkRCVXNlci5EQlVzZXJOb2RlIjYK",
-            "EEFkZERCVXNlclJlcXVzZXQSEAoIdXNlck5hbWUYASABKAkSEAoIcGFzc3dv",
-            "cmQYAiABKAkiOgoRQWRkREJVc2VyUmVzcG9uc2USEgoKcmVzdWx0Q29kZRgB",
-            "IAEoBRIRCglyZXN1bHRNc2cYAiABKAkiPwobVXBkYXRlREJVc2VyUGFzc3dv",
-            "cmRSZXF1ZXN0EgsKA3VJZBgBIAEoCRITCgtuZXdQYXNzd29yZBgCIAEoCSJF",
-            "ChxVcGRhdGVEQlVzZXJQYXNzd29yZFJlc3BvbnNlEhIKCnJlc3VsdENvZGUY",
-            "ASABKAUSEQoJcmVzdWx0TXNnGAIgASgJIiIKE0RlbGV0ZURCVXNlclJlcXVl",
-            "c3QSCwoDdUlkGAEgASgJIj0KFERlbGV0ZURCVXNlclJlc3BvbnNlEhIKCnJl",
-            "c3VsdENvZGUYASABKAUSEQoJcmVzdWx0TXNnGAIgASgJKvICCg1EQlVzZXJQ",
-            "cm90b2NsEhcKE0RCVVNFUl9QUk9UT0NMX05PTkUQABIjCh1EQlVTRVJfUFJP",
-            "VE9DTF9HRVRfREJVU0VSX1JFURDRhgMSJAoeREJVU0VSX1BST1RPQ0xfR0VU",
-            "X0RCVVNFUl9SRVNQENKGAxIjCh1EQlVTRVJfUFJPVE9DTF9BRERfREJVU0VS",
-            "X1JFURDThgMSJAoeREJVU0VSX1BST1RPQ0xfQUREX0RCVVNFUl9SRVNQENSG",
-            "AxIvCilEQlVTRVJfUFJPVE9DTF9VUERBVEVfREJVU0VSX1BBU1NXT1JEX1JF",
-            "URDVhgMSMAoqREJVU0VSX1BST1RPQ0xfVVBEQVRFX0RCVVNFUl9QQVNTV09S",
-            "RF9SRVNQENaGAxImCiBEQlVTRVJfUFJPVE9DTF9ERUxFVEVfREJVU0VSX1JF",
-            "URDXhgMSJwohREJVU0VSX1BST1RPQ0xfREVMRVRFX0RCVVNFUl9SRVNQENiG",
-            "A2IGcHJvdG8z"));
+            "CgxEQlVzZXIucHJvdG8SGkhTLlByb3RvYnVmLkRCUHJveHkuREJVc2VyIq4E",
+            "CgpEQlVzZXJOb2RlEgsKA3VJZBgBIAEoCRIQCgh1c2VyTmFtZRgCIAEoCRIQ",
+            "CghwYXNzd29yZBgDIAEoCRINCgVlbWFpbBgEIAEoCRIXCg9pc0VtYWlsVmVy",
+            "aWZpZWQYBSABKAgSGQoRY3JlYXRpb25UaW1lc3RhbXAYBiABKAMSGgoSbGFz",
+            "dExvZ2luVGltZXN0YW1wGAcgASgDEiMKG2xhc3RQYXNzd29yZENoYW5nZVRp",
+            "bWVzdGFtcBgIIAEoAxIcChRsb2NrZWRVbnRpbFRpbWVzVGFtcBgJIAEoAxIT",
+            "CgthY2Nlc3NMZXZlbBgKIAEoCRIVCg1hY2NvdW50U3RhdHVzGAsgASgJEhQK",
+            "DGFjdGl2aXR5TG9ncxgMIAMoCRJSCg5saW5rZWRBY2NvdW50cxgNIAMoCzI6",
+            "LkhTLlByb3RvYnVmLkRCUHJveHkuREJVc2VyLkRCVXNlck5vZGUuTGlua2Vk",
+            "QWNjb3VudHNFbnRyeRJMCgtwcmVmZXJlbmNlcxgOIAMoCzI3LkhTLlByb3Rv",
+            "YnVmLkRCUHJveHkuREJVc2VyLkRCVXNlck5vZGUuUHJlZmVyZW5jZXNFbnRy",
+            "eRo1ChNMaW5rZWRBY2NvdW50c0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1",
+            "ZRgCIAEoCToCOAEaMgoQUHJlZmVyZW5jZXNFbnRyeRILCgNrZXkYASABKAkS",
+            "DQoFdmFsdWUYAiABKAk6AjgBIjQKEEdldERCVXNlclJlcXVlc3QSDgoGdGFz",
+            "a0lkGAEgASgFEhAKCHVzZXJOYW1lGAIgASgJIoABChFHZXREQlVzZXJSZXNw",
+            "b25zZRIOCgZ0YXNrSWQYASABKAUSEgoKcmVzdWx0Q29kZRgCIAEoBRIRCgly",
+            "ZXN1bHRNc2cYAyABKAkSNAoEdXNlchgEIAEoCzImLkhTLlByb3RvYnVmLkRC",
+            "UHJveHkuREJVc2VyLkRCVXNlck5vZGUiXgoQQWRkREJVc2VyUmVxdXNldBIO",
+            "CgZ0YXNrSWQYASABKAUSOgoKZGJVc2VyTm9kZRgCIAEoCzImLkhTLlByb3Rv",
+            "YnVmLkRCUHJveHkuREJVc2VyLkRCVXNlck5vZGUiSgoRQWRkREJVc2VyUmVz",
+            "cG9uc2USDgoGdGFza0lkGAEgASgFEhIKCnJlc3VsdENvZGUYAiABKAUSEQoJ",
+            "cmVzdWx0TXNnGAMgASgJIj8KG1VwZGF0ZURCVXNlclBhc3N3b3JkUmVxdWVz",
+            "dBILCgN1SWQYASABKAkSEwoLbmV3UGFzc3dvcmQYAiABKAkiRQocVXBkYXRl",
+            "REJVc2VyUGFzc3dvcmRSZXNwb25zZRISCgpyZXN1bHRDb2RlGAEgASgFEhEK",
+            "CXJlc3VsdE1zZxgCIAEoCSIiChNEZWxldGVEQlVzZXJSZXF1ZXN0EgsKA3VJ",
+            "ZBgBIAEoCSI9ChREZWxldGVEQlVzZXJSZXNwb25zZRISCgpyZXN1bHRDb2Rl",
+            "GAEgASgFEhEKCXJlc3VsdE1zZxgCIAEoCSJCCh5WZXJpZnlVc2VyTmFtZUV4",
+            "aXN0ZW5jZVJlcXVlc3QSDgoGdGFza0lkGAEgASgFEhAKCHVzZXJOYW1lGAIg",
+            "ASgJIkUKH1ZlcmlmeVVzZXJOYW1lRXhpc3RlbmNlUmVzcG9uc2USDgoGdGFz",
+            "a0lkGAEgASgFEhIKCnJlc3VsdENvZGUYAiABKAUq4QMKDURCVXNlclByb3Rv",
+            "Y2wSFwoTREJVU0VSX1BST1RPQ0xfTk9ORRAAEiMKHURCVVNFUl9QUk9UT0NM",
+            "X0dFVF9EQlVTRVJfUkVRENGGAxIkCh5EQlVTRVJfUFJPVE9DTF9HRVRfREJV",
+            "U0VSX1JFU1AQ0oYDEiMKHURCVVNFUl9QUk9UT0NMX0FERF9EQlVTRVJfUkVR",
+            "ENOGAxIkCh5EQlVTRVJfUFJPVE9DTF9BRERfREJVU0VSX1JFU1AQ1IYDEi8K",
+            "KURCVVNFUl9QUk9UT0NMX1VQREFURV9EQlVTRVJfUEFTU1dPUkRfUkVRENWG",
+            "AxIwCipEQlVTRVJfUFJPVE9DTF9VUERBVEVfREJVU0VSX1BBU1NXT1JEX1JF",
+            "U1AQ1oYDEiYKIERCVVNFUl9QUk9UT0NMX0RFTEVURV9EQlVTRVJfUkVRENeG",
+            "AxInCiFEQlVTRVJfUFJPVE9DTF9ERUxFVEVfREJVU0VSX1JFU1AQ2IYDEjUK",
+            "L0RCVVNFUl9QUk9UT0NMX1ZFUklGWV9EQlVTRVJfTkFNRV9FWElTVEVOQ0Vf",
+            "UkVRENmGAxI2CjBEQlVTRVJfUFJPVE9DTF9WRVJJRllfREJVU0VSX05BTUVf",
+            "RVhJU1RFTkNFX1JFU1AQ2oYDYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.DBProxy.DBUser.DBUserProtocl), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.DBUserNode), global::HS.Protobuf.DBProxy.DBUser.DBUserNode.Parser, new[]{ "UId", "UserName", "Password", "CharacterIds" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.DBUserNode), global::HS.Protobuf.DBProxy.DBUser.DBUserNode.Parser, new[]{ "UId", "UserName", "Password", "Email", "IsEmailVerified", "CreationTimestamp", "LastLoginTimestamp", "LastPasswordChangeTimestamp", "LockedUntilTimesTamp", "AccessLevel", "AccountStatus", "ActivityLogs", "LinkedAccounts", "Preferences" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.GetDBUserRequest), global::HS.Protobuf.DBProxy.DBUser.GetDBUserRequest.Parser, new[]{ "TaskId", "UserName" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.GetDBUserResponse), global::HS.Protobuf.DBProxy.DBUser.GetDBUserResponse.Parser, new[]{ "TaskId", "ResultCode", "ResultMsg", "User" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.AddDBUserRequset), global::HS.Protobuf.DBProxy.DBUser.AddDBUserRequset.Parser, new[]{ "UserName", "Password" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.AddDBUserResponse), global::HS.Protobuf.DBProxy.DBUser.AddDBUserResponse.Parser, new[]{ "ResultCode", "ResultMsg" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.AddDBUserRequset), global::HS.Protobuf.DBProxy.DBUser.AddDBUserRequset.Parser, new[]{ "TaskId", "DbUserNode" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.AddDBUserResponse), global::HS.Protobuf.DBProxy.DBUser.AddDBUserResponse.Parser, new[]{ "TaskId", "ResultCode", "ResultMsg" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.UpdateDBUserPasswordRequest), global::HS.Protobuf.DBProxy.DBUser.UpdateDBUserPasswordRequest.Parser, new[]{ "UId", "NewPassword" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.UpdateDBUserPasswordResponse), global::HS.Protobuf.DBProxy.DBUser.UpdateDBUserPasswordResponse.Parser, new[]{ "ResultCode", "ResultMsg" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.DeleteDBUserRequest), global::HS.Protobuf.DBProxy.DBUser.DeleteDBUserRequest.Parser, new[]{ "UId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.DeleteDBUserResponse), global::HS.Protobuf.DBProxy.DBUser.DeleteDBUserResponse.Parser, new[]{ "ResultCode", "ResultMsg" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.DeleteDBUserResponse), global::HS.Protobuf.DBProxy.DBUser.DeleteDBUserResponse.Parser, new[]{ "ResultCode", "ResultMsg" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.VerifyUserNameExistenceRequest), global::HS.Protobuf.DBProxy.DBUser.VerifyUserNameExistenceRequest.Parser, new[]{ "TaskId", "UserName" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.VerifyUserNameExistenceResponse), global::HS.Protobuf.DBProxy.DBUser.VerifyUserNameExistenceResponse.Parser, new[]{ "TaskId", "ResultCode" }, null, null, null, null)
           }));
     }
     #endregion
@@ -100,6 +119,14 @@ namespace HS.Protobuf.DBProxy.DBUser {
     /// [DeleteDBUserResponse]
     /// </summary>
     [pbr::OriginalName("DBUSER_PROTOCL_DELETE_DBUSER_RESP")] DeleteDbuserResp = 50008,
+    /// <summary>
+    /// [VerifyUserNameExistenceRequest]
+    /// </summary>
+    [pbr::OriginalName("DBUSER_PROTOCL_VERIFY_DBUSER_NAME_EXISTENCE_REQ")] VerifyDbuserNameExistenceReq = 50009,
+    /// <summary>
+    /// [VerifyUserNameExistenceResponse]
+    /// </summary>
+    [pbr::OriginalName("DBUSER_PROTOCL_VERIFY_DBUSER_NAME_EXISTENCE_RESP")] VerifyDbuserNameExistenceResp = 50010,
   }
 
   #endregion
@@ -142,7 +169,17 @@ namespace HS.Protobuf.DBProxy.DBUser {
       uId_ = other.uId_;
       userName_ = other.userName_;
       password_ = other.password_;
-      characterIds_ = other.characterIds_.Clone();
+      email_ = other.email_;
+      isEmailVerified_ = other.isEmailVerified_;
+      creationTimestamp_ = other.creationTimestamp_;
+      lastLoginTimestamp_ = other.lastLoginTimestamp_;
+      lastPasswordChangeTimestamp_ = other.lastPasswordChangeTimestamp_;
+      lockedUntilTimesTamp_ = other.lockedUntilTimesTamp_;
+      accessLevel_ = other.accessLevel_;
+      accountStatus_ = other.accountStatus_;
+      activityLogs_ = other.activityLogs_.Clone();
+      linkedAccounts_ = other.linkedAccounts_.Clone();
+      preferences_ = other.preferences_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -188,15 +225,148 @@ namespace HS.Protobuf.DBProxy.DBUser {
       }
     }
 
-    /// <summary>Field number for the "characterIds" field.</summary>
-    public const int CharacterIdsFieldNumber = 4;
-    private static readonly pb::FieldCodec<string> _repeated_characterIds_codec
-        = pb::FieldCodec.ForString(34);
-    private readonly pbc::RepeatedField<string> characterIds_ = new pbc::RepeatedField<string>();
+    /// <summary>Field number for the "email" field.</summary>
+    public const int EmailFieldNumber = 4;
+    private string email_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<string> CharacterIds {
-      get { return characterIds_; }
+    public string Email {
+      get { return email_; }
+      set {
+        email_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "isEmailVerified" field.</summary>
+    public const int IsEmailVerifiedFieldNumber = 5;
+    private bool isEmailVerified_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool IsEmailVerified {
+      get { return isEmailVerified_; }
+      set {
+        isEmailVerified_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "creationTimestamp" field.</summary>
+    public const int CreationTimestampFieldNumber = 6;
+    private long creationTimestamp_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public long CreationTimestamp {
+      get { return creationTimestamp_; }
+      set {
+        creationTimestamp_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "lastLoginTimestamp" field.</summary>
+    public const int LastLoginTimestampFieldNumber = 7;
+    private long lastLoginTimestamp_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public long LastLoginTimestamp {
+      get { return lastLoginTimestamp_; }
+      set {
+        lastLoginTimestamp_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "lastPasswordChangeTimestamp" field.</summary>
+    public const int LastPasswordChangeTimestampFieldNumber = 8;
+    private long lastPasswordChangeTimestamp_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public long LastPasswordChangeTimestamp {
+      get { return lastPasswordChangeTimestamp_; }
+      set {
+        lastPasswordChangeTimestamp_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "lockedUntilTimesTamp" field.</summary>
+    public const int LockedUntilTimesTampFieldNumber = 9;
+    private long lockedUntilTimesTamp_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public long LockedUntilTimesTamp {
+      get { return lockedUntilTimesTamp_; }
+      set {
+        lockedUntilTimesTamp_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "accessLevel" field.</summary>
+    public const int AccessLevelFieldNumber = 10;
+    private string accessLevel_ = "";
+    /// <summary>
+    /// 例如 "admin", "user"}
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string AccessLevel {
+      get { return accessLevel_; }
+      set {
+        accessLevel_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "accountStatus" field.</summary>
+    public const int AccountStatusFieldNumber = 11;
+    private string accountStatus_ = "";
+    /// <summary>
+    /// 例如 "active", "suspended", "deleted"
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string AccountStatus {
+      get { return accountStatus_; }
+      set {
+        accountStatus_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "activityLogs" field.</summary>
+    public const int ActivityLogsFieldNumber = 12;
+    private static readonly pb::FieldCodec<string> _repeated_activityLogs_codec
+        = pb::FieldCodec.ForString(98);
+    private readonly pbc::RepeatedField<string> activityLogs_ = new pbc::RepeatedField<string>();
+    /// <summary>
+    /// 存储一系列活动描述或ID
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<string> ActivityLogs {
+      get { return activityLogs_; }
+    }
+
+    /// <summary>Field number for the "linkedAccounts" field.</summary>
+    public const int LinkedAccountsFieldNumber = 13;
+    private static readonly pbc::MapField<string, string>.Codec _map_linkedAccounts_codec
+        = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForString(18, ""), 106);
+    private readonly pbc::MapField<string, string> linkedAccounts_ = new pbc::MapField<string, string>();
+    /// <summary>
+    /// 例如 {"google": "google_id", "facebook": "fb_id"}
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::MapField<string, string> LinkedAccounts {
+      get { return linkedAccounts_; }
+    }
+
+    /// <summary>Field number for the "preferences" field.</summary>
+    public const int PreferencesFieldNumber = 14;
+    private static readonly pbc::MapField<string, string>.Codec _map_preferences_codec
+        = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForString(18, ""), 114);
+    private readonly pbc::MapField<string, string> preferences_ = new pbc::MapField<string, string>();
+    /// <summary>
+    /// 偏好设置
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::MapField<string, string> Preferences {
+      get { return preferences_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -217,7 +387,17 @@ namespace HS.Protobuf.DBProxy.DBUser {
       if (UId != other.UId) return false;
       if (UserName != other.UserName) return false;
       if (Password != other.Password) return false;
-      if(!characterIds_.Equals(other.characterIds_)) return false;
+      if (Email != other.Email) return false;
+      if (IsEmailVerified != other.IsEmailVerified) return false;
+      if (CreationTimestamp != other.CreationTimestamp) return false;
+      if (LastLoginTimestamp != other.LastLoginTimestamp) return false;
+      if (LastPasswordChangeTimestamp != other.LastPasswordChangeTimestamp) return false;
+      if (LockedUntilTimesTamp != other.LockedUntilTimesTamp) return false;
+      if (AccessLevel != other.AccessLevel) return false;
+      if (AccountStatus != other.AccountStatus) return false;
+      if(!activityLogs_.Equals(other.activityLogs_)) return false;
+      if (!LinkedAccounts.Equals(other.LinkedAccounts)) return false;
+      if (!Preferences.Equals(other.Preferences)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -228,7 +408,17 @@ namespace HS.Protobuf.DBProxy.DBUser {
       if (UId.Length != 0) hash ^= UId.GetHashCode();
       if (UserName.Length != 0) hash ^= UserName.GetHashCode();
       if (Password.Length != 0) hash ^= Password.GetHashCode();
-      hash ^= characterIds_.GetHashCode();
+      if (Email.Length != 0) hash ^= Email.GetHashCode();
+      if (IsEmailVerified != false) hash ^= IsEmailVerified.GetHashCode();
+      if (CreationTimestamp != 0L) hash ^= CreationTimestamp.GetHashCode();
+      if (LastLoginTimestamp != 0L) hash ^= LastLoginTimestamp.GetHashCode();
+      if (LastPasswordChangeTimestamp != 0L) hash ^= LastPasswordChangeTimestamp.GetHashCode();
+      if (LockedUntilTimesTamp != 0L) hash ^= LockedUntilTimesTamp.GetHashCode();
+      if (AccessLevel.Length != 0) hash ^= AccessLevel.GetHashCode();
+      if (AccountStatus.Length != 0) hash ^= AccountStatus.GetHashCode();
+      hash ^= activityLogs_.GetHashCode();
+      hash ^= LinkedAccounts.GetHashCode();
+      hash ^= Preferences.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -259,7 +449,41 @@ namespace HS.Protobuf.DBProxy.DBUser {
         output.WriteRawTag(26);
         output.WriteString(Password);
       }
-      characterIds_.WriteTo(output, _repeated_characterIds_codec);
+      if (Email.Length != 0) {
+        output.WriteRawTag(34);
+        output.WriteString(Email);
+      }
+      if (IsEmailVerified != false) {
+        output.WriteRawTag(40);
+        output.WriteBool(IsEmailVerified);
+      }
+      if (CreationTimestamp != 0L) {
+        output.WriteRawTag(48);
+        output.WriteInt64(CreationTimestamp);
+      }
+      if (LastLoginTimestamp != 0L) {
+        output.WriteRawTag(56);
+        output.WriteInt64(LastLoginTimestamp);
+      }
+      if (LastPasswordChangeTimestamp != 0L) {
+        output.WriteRawTag(64);
+        output.WriteInt64(LastPasswordChangeTimestamp);
+      }
+      if (LockedUntilTimesTamp != 0L) {
+        output.WriteRawTag(72);
+        output.WriteInt64(LockedUntilTimesTamp);
+      }
+      if (AccessLevel.Length != 0) {
+        output.WriteRawTag(82);
+        output.WriteString(AccessLevel);
+      }
+      if (AccountStatus.Length != 0) {
+        output.WriteRawTag(90);
+        output.WriteString(AccountStatus);
+      }
+      activityLogs_.WriteTo(output, _repeated_activityLogs_codec);
+      linkedAccounts_.WriteTo(output, _map_linkedAccounts_codec);
+      preferences_.WriteTo(output, _map_preferences_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -282,7 +506,41 @@ namespace HS.Protobuf.DBProxy.DBUser {
         output.WriteRawTag(26);
         output.WriteString(Password);
       }
-      characterIds_.WriteTo(ref output, _repeated_characterIds_codec);
+      if (Email.Length != 0) {
+        output.WriteRawTag(34);
+        output.WriteString(Email);
+      }
+      if (IsEmailVerified != false) {
+        output.WriteRawTag(40);
+        output.WriteBool(IsEmailVerified);
+      }
+      if (CreationTimestamp != 0L) {
+        output.WriteRawTag(48);
+        output.WriteInt64(CreationTimestamp);
+      }
+      if (LastLoginTimestamp != 0L) {
+        output.WriteRawTag(56);
+        output.WriteInt64(LastLoginTimestamp);
+      }
+      if (LastPasswordChangeTimestamp != 0L) {
+        output.WriteRawTag(64);
+        output.WriteInt64(LastPasswordChangeTimestamp);
+      }
+      if (LockedUntilTimesTamp != 0L) {
+        output.WriteRawTag(72);
+        output.WriteInt64(LockedUntilTimesTamp);
+      }
+      if (AccessLevel.Length != 0) {
+        output.WriteRawTag(82);
+        output.WriteString(AccessLevel);
+      }
+      if (AccountStatus.Length != 0) {
+        output.WriteRawTag(90);
+        output.WriteString(AccountStatus);
+      }
+      activityLogs_.WriteTo(ref output, _repeated_activityLogs_codec);
+      linkedAccounts_.WriteTo(ref output, _map_linkedAccounts_codec);
+      preferences_.WriteTo(ref output, _map_preferences_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -302,7 +560,33 @@ namespace HS.Protobuf.DBProxy.DBUser {
       if (Password.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Password);
       }
-      size += characterIds_.CalculateSize(_repeated_characterIds_codec);
+      if (Email.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Email);
+      }
+      if (IsEmailVerified != false) {
+        size += 1 + 1;
+      }
+      if (CreationTimestamp != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(CreationTimestamp);
+      }
+      if (LastLoginTimestamp != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(LastLoginTimestamp);
+      }
+      if (LastPasswordChangeTimestamp != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(LastPasswordChangeTimestamp);
+      }
+      if (LockedUntilTimesTamp != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(LockedUntilTimesTamp);
+      }
+      if (AccessLevel.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(AccessLevel);
+      }
+      if (AccountStatus.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(AccountStatus);
+      }
+      size += activityLogs_.CalculateSize(_repeated_activityLogs_codec);
+      size += linkedAccounts_.CalculateSize(_map_linkedAccounts_codec);
+      size += preferences_.CalculateSize(_map_preferences_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -324,7 +608,33 @@ namespace HS.Protobuf.DBProxy.DBUser {
       if (other.Password.Length != 0) {
         Password = other.Password;
       }
-      characterIds_.Add(other.characterIds_);
+      if (other.Email.Length != 0) {
+        Email = other.Email;
+      }
+      if (other.IsEmailVerified != false) {
+        IsEmailVerified = other.IsEmailVerified;
+      }
+      if (other.CreationTimestamp != 0L) {
+        CreationTimestamp = other.CreationTimestamp;
+      }
+      if (other.LastLoginTimestamp != 0L) {
+        LastLoginTimestamp = other.LastLoginTimestamp;
+      }
+      if (other.LastPasswordChangeTimestamp != 0L) {
+        LastPasswordChangeTimestamp = other.LastPasswordChangeTimestamp;
+      }
+      if (other.LockedUntilTimesTamp != 0L) {
+        LockedUntilTimesTamp = other.LockedUntilTimesTamp;
+      }
+      if (other.AccessLevel.Length != 0) {
+        AccessLevel = other.AccessLevel;
+      }
+      if (other.AccountStatus.Length != 0) {
+        AccountStatus = other.AccountStatus;
+      }
+      activityLogs_.Add(other.activityLogs_);
+      linkedAccounts_.Add(other.linkedAccounts_);
+      preferences_.Add(other.preferences_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -353,7 +663,47 @@ namespace HS.Protobuf.DBProxy.DBUser {
             break;
           }
           case 34: {
-            characterIds_.AddEntriesFrom(input, _repeated_characterIds_codec);
+            Email = input.ReadString();
+            break;
+          }
+          case 40: {
+            IsEmailVerified = input.ReadBool();
+            break;
+          }
+          case 48: {
+            CreationTimestamp = input.ReadInt64();
+            break;
+          }
+          case 56: {
+            LastLoginTimestamp = input.ReadInt64();
+            break;
+          }
+          case 64: {
+            LastPasswordChangeTimestamp = input.ReadInt64();
+            break;
+          }
+          case 72: {
+            LockedUntilTimesTamp = input.ReadInt64();
+            break;
+          }
+          case 82: {
+            AccessLevel = input.ReadString();
+            break;
+          }
+          case 90: {
+            AccountStatus = input.ReadString();
+            break;
+          }
+          case 98: {
+            activityLogs_.AddEntriesFrom(input, _repeated_activityLogs_codec);
+            break;
+          }
+          case 106: {
+            linkedAccounts_.AddEntriesFrom(input, _map_linkedAccounts_codec);
+            break;
+          }
+          case 114: {
+            preferences_.AddEntriesFrom(input, _map_preferences_codec);
             break;
           }
         }
@@ -384,7 +734,47 @@ namespace HS.Protobuf.DBProxy.DBUser {
             break;
           }
           case 34: {
-            characterIds_.AddEntriesFrom(ref input, _repeated_characterIds_codec);
+            Email = input.ReadString();
+            break;
+          }
+          case 40: {
+            IsEmailVerified = input.ReadBool();
+            break;
+          }
+          case 48: {
+            CreationTimestamp = input.ReadInt64();
+            break;
+          }
+          case 56: {
+            LastLoginTimestamp = input.ReadInt64();
+            break;
+          }
+          case 64: {
+            LastPasswordChangeTimestamp = input.ReadInt64();
+            break;
+          }
+          case 72: {
+            LockedUntilTimesTamp = input.ReadInt64();
+            break;
+          }
+          case 82: {
+            AccessLevel = input.ReadString();
+            break;
+          }
+          case 90: {
+            AccountStatus = input.ReadString();
+            break;
+          }
+          case 98: {
+            activityLogs_.AddEntriesFrom(ref input, _repeated_activityLogs_codec);
+            break;
+          }
+          case 106: {
+            linkedAccounts_.AddEntriesFrom(ref input, _map_linkedAccounts_codec);
+            break;
+          }
+          case 114: {
+            preferences_.AddEntriesFrom(ref input, _map_preferences_codec);
             break;
           }
         }
@@ -963,8 +1353,8 @@ namespace HS.Protobuf.DBProxy.DBUser {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public AddDBUserRequset(AddDBUserRequset other) : this() {
-      userName_ = other.userName_;
-      password_ = other.password_;
+      taskId_ = other.taskId_;
+      dbUserNode_ = other.dbUserNode_ != null ? other.dbUserNode_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -974,27 +1364,27 @@ namespace HS.Protobuf.DBProxy.DBUser {
       return new AddDBUserRequset(this);
     }
 
-    /// <summary>Field number for the "userName" field.</summary>
-    public const int UserNameFieldNumber = 1;
-    private string userName_ = "";
+    /// <summary>Field number for the "taskId" field.</summary>
+    public const int TaskIdFieldNumber = 1;
+    private int taskId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string UserName {
-      get { return userName_; }
+    public int TaskId {
+      get { return taskId_; }
       set {
-        userName_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        taskId_ = value;
       }
     }
 
-    /// <summary>Field number for the "password" field.</summary>
-    public const int PasswordFieldNumber = 2;
-    private string password_ = "";
+    /// <summary>Field number for the "dbUserNode" field.</summary>
+    public const int DbUserNodeFieldNumber = 2;
+    private global::HS.Protobuf.DBProxy.DBUser.DBUserNode dbUserNode_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string Password {
-      get { return password_; }
+    public global::HS.Protobuf.DBProxy.DBUser.DBUserNode DbUserNode {
+      get { return dbUserNode_; }
       set {
-        password_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        dbUserNode_ = value;
       }
     }
 
@@ -1013,8 +1403,8 @@ namespace HS.Protobuf.DBProxy.DBUser {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (UserName != other.UserName) return false;
-      if (Password != other.Password) return false;
+      if (TaskId != other.TaskId) return false;
+      if (!object.Equals(DbUserNode, other.DbUserNode)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1022,8 +1412,8 @@ namespace HS.Protobuf.DBProxy.DBUser {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (UserName.Length != 0) hash ^= UserName.GetHashCode();
-      if (Password.Length != 0) hash ^= Password.GetHashCode();
+      if (TaskId != 0) hash ^= TaskId.GetHashCode();
+      if (dbUserNode_ != null) hash ^= DbUserNode.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1042,13 +1432,13 @@ namespace HS.Protobuf.DBProxy.DBUser {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (UserName.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(UserName);
+      if (TaskId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(TaskId);
       }
-      if (Password.Length != 0) {
+      if (dbUserNode_ != null) {
         output.WriteRawTag(18);
-        output.WriteString(Password);
+        output.WriteMessage(DbUserNode);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -1060,13 +1450,13 @@ namespace HS.Protobuf.DBProxy.DBUser {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (UserName.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(UserName);
+      if (TaskId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(TaskId);
       }
-      if (Password.Length != 0) {
+      if (dbUserNode_ != null) {
         output.WriteRawTag(18);
-        output.WriteString(Password);
+        output.WriteMessage(DbUserNode);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -1078,11 +1468,11 @@ namespace HS.Protobuf.DBProxy.DBUser {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (UserName.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(UserName);
+      if (TaskId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(TaskId);
       }
-      if (Password.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Password);
+      if (dbUserNode_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(DbUserNode);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1096,11 +1486,14 @@ namespace HS.Protobuf.DBProxy.DBUser {
       if (other == null) {
         return;
       }
-      if (other.UserName.Length != 0) {
-        UserName = other.UserName;
+      if (other.TaskId != 0) {
+        TaskId = other.TaskId;
       }
-      if (other.Password.Length != 0) {
-        Password = other.Password;
+      if (other.dbUserNode_ != null) {
+        if (dbUserNode_ == null) {
+          DbUserNode = new global::HS.Protobuf.DBProxy.DBUser.DBUserNode();
+        }
+        DbUserNode.MergeFrom(other.DbUserNode);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1117,12 +1510,15 @@ namespace HS.Protobuf.DBProxy.DBUser {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 10: {
-            UserName = input.ReadString();
+          case 8: {
+            TaskId = input.ReadInt32();
             break;
           }
           case 18: {
-            Password = input.ReadString();
+            if (dbUserNode_ == null) {
+              DbUserNode = new global::HS.Protobuf.DBProxy.DBUser.DBUserNode();
+            }
+            input.ReadMessage(DbUserNode);
             break;
           }
         }
@@ -1140,12 +1536,15 @@ namespace HS.Protobuf.DBProxy.DBUser {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 10: {
-            UserName = input.ReadString();
+          case 8: {
+            TaskId = input.ReadInt32();
             break;
           }
           case 18: {
-            Password = input.ReadString();
+            if (dbUserNode_ == null) {
+              DbUserNode = new global::HS.Protobuf.DBProxy.DBUser.DBUserNode();
+            }
+            input.ReadMessage(DbUserNode);
             break;
           }
         }
@@ -1189,6 +1588,7 @@ namespace HS.Protobuf.DBProxy.DBUser {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public AddDBUserResponse(AddDBUserResponse other) : this() {
+      taskId_ = other.taskId_;
       resultCode_ = other.resultCode_;
       resultMsg_ = other.resultMsg_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -1200,8 +1600,20 @@ namespace HS.Protobuf.DBProxy.DBUser {
       return new AddDBUserResponse(this);
     }
 
+    /// <summary>Field number for the "taskId" field.</summary>
+    public const int TaskIdFieldNumber = 1;
+    private int taskId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int TaskId {
+      get { return taskId_; }
+      set {
+        taskId_ = value;
+      }
+    }
+
     /// <summary>Field number for the "resultCode" field.</summary>
-    public const int ResultCodeFieldNumber = 1;
+    public const int ResultCodeFieldNumber = 2;
     private int resultCode_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1213,7 +1625,7 @@ namespace HS.Protobuf.DBProxy.DBUser {
     }
 
     /// <summary>Field number for the "resultMsg" field.</summary>
-    public const int ResultMsgFieldNumber = 2;
+    public const int ResultMsgFieldNumber = 3;
     private string resultMsg_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1239,6 +1651,7 @@ namespace HS.Protobuf.DBProxy.DBUser {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (TaskId != other.TaskId) return false;
       if (ResultCode != other.ResultCode) return false;
       if (ResultMsg != other.ResultMsg) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -1248,6 +1661,7 @@ namespace HS.Protobuf.DBProxy.DBUser {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
+      if (TaskId != 0) hash ^= TaskId.GetHashCode();
       if (ResultCode != 0) hash ^= ResultCode.GetHashCode();
       if (ResultMsg.Length != 0) hash ^= ResultMsg.GetHashCode();
       if (_unknownFields != null) {
@@ -1268,12 +1682,16 @@ namespace HS.Protobuf.DBProxy.DBUser {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (ResultCode != 0) {
+      if (TaskId != 0) {
         output.WriteRawTag(8);
+        output.WriteInt32(TaskId);
+      }
+      if (ResultCode != 0) {
+        output.WriteRawTag(16);
         output.WriteInt32(ResultCode);
       }
       if (ResultMsg.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(26);
         output.WriteString(ResultMsg);
       }
       if (_unknownFields != null) {
@@ -1286,12 +1704,16 @@ namespace HS.Protobuf.DBProxy.DBUser {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (ResultCode != 0) {
+      if (TaskId != 0) {
         output.WriteRawTag(8);
+        output.WriteInt32(TaskId);
+      }
+      if (ResultCode != 0) {
+        output.WriteRawTag(16);
         output.WriteInt32(ResultCode);
       }
       if (ResultMsg.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(26);
         output.WriteString(ResultMsg);
       }
       if (_unknownFields != null) {
@@ -1304,6 +1726,9 @@ namespace HS.Protobuf.DBProxy.DBUser {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
+      if (TaskId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(TaskId);
+      }
       if (ResultCode != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(ResultCode);
       }
@@ -1321,6 +1746,9 @@ namespace HS.Protobuf.DBProxy.DBUser {
     public void MergeFrom(AddDBUserResponse other) {
       if (other == null) {
         return;
+      }
+      if (other.TaskId != 0) {
+        TaskId = other.TaskId;
       }
       if (other.ResultCode != 0) {
         ResultCode = other.ResultCode;
@@ -1344,10 +1772,14 @@ namespace HS.Protobuf.DBProxy.DBUser {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
+            TaskId = input.ReadInt32();
+            break;
+          }
+          case 16: {
             ResultCode = input.ReadInt32();
             break;
           }
-          case 18: {
+          case 26: {
             ResultMsg = input.ReadString();
             break;
           }
@@ -1367,10 +1799,14 @@ namespace HS.Protobuf.DBProxy.DBUser {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
+            TaskId = input.ReadInt32();
+            break;
+          }
+          case 16: {
             ResultCode = input.ReadInt32();
             break;
           }
-          case 18: {
+          case 26: {
             ResultMsg = input.ReadString();
             break;
           }
@@ -2239,6 +2675,458 @@ namespace HS.Protobuf.DBProxy.DBUser {
           }
           case 18: {
             ResultMsg = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class VerifyUserNameExistenceRequest : pb::IMessage<VerifyUserNameExistenceRequest>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<VerifyUserNameExistenceRequest> _parser = new pb::MessageParser<VerifyUserNameExistenceRequest>(() => new VerifyUserNameExistenceRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<VerifyUserNameExistenceRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::HS.Protobuf.DBProxy.DBUser.DBUserReflection.Descriptor.MessageTypes[9]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public VerifyUserNameExistenceRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public VerifyUserNameExistenceRequest(VerifyUserNameExistenceRequest other) : this() {
+      taskId_ = other.taskId_;
+      userName_ = other.userName_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public VerifyUserNameExistenceRequest Clone() {
+      return new VerifyUserNameExistenceRequest(this);
+    }
+
+    /// <summary>Field number for the "taskId" field.</summary>
+    public const int TaskIdFieldNumber = 1;
+    private int taskId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int TaskId {
+      get { return taskId_; }
+      set {
+        taskId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "userName" field.</summary>
+    public const int UserNameFieldNumber = 2;
+    private string userName_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string UserName {
+      get { return userName_; }
+      set {
+        userName_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as VerifyUserNameExistenceRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(VerifyUserNameExistenceRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (TaskId != other.TaskId) return false;
+      if (UserName != other.UserName) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (TaskId != 0) hash ^= TaskId.GetHashCode();
+      if (UserName.Length != 0) hash ^= UserName.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (TaskId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(TaskId);
+      }
+      if (UserName.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(UserName);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (TaskId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(TaskId);
+      }
+      if (UserName.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(UserName);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (TaskId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(TaskId);
+      }
+      if (UserName.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(UserName);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(VerifyUserNameExistenceRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.TaskId != 0) {
+        TaskId = other.TaskId;
+      }
+      if (other.UserName.Length != 0) {
+        UserName = other.UserName;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            TaskId = input.ReadInt32();
+            break;
+          }
+          case 18: {
+            UserName = input.ReadString();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            TaskId = input.ReadInt32();
+            break;
+          }
+          case 18: {
+            UserName = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class VerifyUserNameExistenceResponse : pb::IMessage<VerifyUserNameExistenceResponse>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<VerifyUserNameExistenceResponse> _parser = new pb::MessageParser<VerifyUserNameExistenceResponse>(() => new VerifyUserNameExistenceResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<VerifyUserNameExistenceResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::HS.Protobuf.DBProxy.DBUser.DBUserReflection.Descriptor.MessageTypes[10]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public VerifyUserNameExistenceResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public VerifyUserNameExistenceResponse(VerifyUserNameExistenceResponse other) : this() {
+      taskId_ = other.taskId_;
+      resultCode_ = other.resultCode_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public VerifyUserNameExistenceResponse Clone() {
+      return new VerifyUserNameExistenceResponse(this);
+    }
+
+    /// <summary>Field number for the "taskId" field.</summary>
+    public const int TaskIdFieldNumber = 1;
+    private int taskId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int TaskId {
+      get { return taskId_; }
+      set {
+        taskId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "resultCode" field.</summary>
+    public const int ResultCodeFieldNumber = 2;
+    private int resultCode_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int ResultCode {
+      get { return resultCode_; }
+      set {
+        resultCode_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as VerifyUserNameExistenceResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(VerifyUserNameExistenceResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (TaskId != other.TaskId) return false;
+      if (ResultCode != other.ResultCode) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (TaskId != 0) hash ^= TaskId.GetHashCode();
+      if (ResultCode != 0) hash ^= ResultCode.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (TaskId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(TaskId);
+      }
+      if (ResultCode != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(ResultCode);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (TaskId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(TaskId);
+      }
+      if (ResultCode != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(ResultCode);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (TaskId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(TaskId);
+      }
+      if (ResultCode != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(ResultCode);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(VerifyUserNameExistenceResponse other) {
+      if (other == null) {
+        return;
+      }
+      if (other.TaskId != 0) {
+        TaskId = other.TaskId;
+      }
+      if (other.ResultCode != 0) {
+        ResultCode = other.ResultCode;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            TaskId = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            ResultCode = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            TaskId = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            ResultCode = input.ReadInt32();
             break;
           }
         }

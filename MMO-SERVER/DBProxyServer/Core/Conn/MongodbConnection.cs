@@ -14,6 +14,7 @@ namespace DBProxyServer.Core
             m_database = client.GetDatabase(databaseName);
             UserOperations.Instance.Init(this);
             CharacterOperations.Instance.Init(this);
+            WorldOperations.Instance.Init(this);
             Log.Information("Connected to MongoDB successfully.");
         }
 

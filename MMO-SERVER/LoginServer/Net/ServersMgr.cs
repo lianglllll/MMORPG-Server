@@ -102,7 +102,7 @@ namespace LoginServer.Net
         private void _CCConnectedCallback(NetClient tcpClient)
         {
             m_outgoingServerConnection.Add(SERVER_TYPE.Controlcenter, new ServerEntry { NetClient = tcpClient });
-            Log.Information("[Successfully connected to the control center server.]");
+            Log.Information("Successfully connected to the control center server.");
             //向cc注册自己
             ServerInfoRegisterRequest req = new();
             req.ServerInfoNode = m_curSin;
@@ -159,7 +159,7 @@ namespace LoginServer.Net
         }
         private void _DBConnectedCallback(NetClient tcpClient)
         {
-            Log.Information("Successfully connected to the DBProxy server.");
+            Log.Information($"Successfully connected to the DBProxy server[{m_outgoingServerConnection[SERVER_TYPE.Dbproxy].ServerInfoNode.ServerId}].");
             // 记录
             m_outgoingServerConnection[SERVER_TYPE.Dbproxy].NetClient = tcpClient;
             _ExecutePhase2();

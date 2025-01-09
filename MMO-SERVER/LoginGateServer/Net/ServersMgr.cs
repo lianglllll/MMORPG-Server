@@ -187,7 +187,7 @@ namespace LoginGateServer.Net
         }
         private void _LoginGateMgrConnectedCallback(NetClient tcpClient)
         {
-            Log.Information("Successfully connected to the LoginGateMgr server.");
+            Log.Information($"Successfully connected to the LoginGateMgr server[{m_outgoingServerConnection[SERVER_TYPE.Logingatemgr].ServerInfoNode.ServerId}].");
 
             // 记录
             m_outgoingServerConnection[SERVER_TYPE.Logingatemgr].NetClient = tcpClient;
@@ -300,7 +300,7 @@ namespace LoginGateServer.Net
         }
         private void _LoginConnectedCallback(NetClient tcpClient)
         {
-            Log.Information("Successfully connected to the Login server.");
+            Log.Information($"Successfully connected to the Login server[{m_outgoingServerConnection[SERVER_TYPE.Login].ServerInfoNode.ServerId}].");
             m_outgoingServerConnection[SERVER_TYPE.Login].NetClient = tcpClient;
         }
         private void _LoginConnectedFailedCallback(NetClient tcpClient, bool isEnd)

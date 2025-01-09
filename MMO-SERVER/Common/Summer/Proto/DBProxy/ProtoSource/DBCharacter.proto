@@ -13,6 +13,8 @@ enum DBCharacterProtocl{
 
 message DBCharacterStatisticsNode{
 	int32 killCount = 1;
+	int32 deathCount = 2; 
+    int32 taskCompleted = 3; 
 }
 message DBCharacterStatusNode{
 	int32 hp = 1;
@@ -27,7 +29,16 @@ message DBCharacterStatusNode{
 message DBCharacterAssetsNode{
 	bytes backpackData = 1;
 	bytes equipsData = 2;
+	map<string, int32> currency = 3;		// 新增字段：货币种类及数量
+    repeated string achievements = 4;	// 新增字段：成就列表
+    repeated string titles = 5;			// 新增字段：头衔列表
 }
+message DBCharacterSocialNode {
+    string guildId = 1; // 公会ID
+    string faction = 2; // 阵营
+    repeated string friendsList = 3; // 好友列表
+}
+
 message DBCharacterNode{
 	string cId = 1;
 	string uId = 2;
@@ -36,6 +47,8 @@ message DBCharacterNode{
 	DBCharacterStatisticsNode chrStatistics = 5;
 	DBCharacterStatusNode chrStatus = 6;
 	DBCharacterAssetsNode chrAssets = 7;
+	DBCharacterSocialNode chrSocial = 8; 
+	int64 creationTimestamp = 9; 
 }
 
 message GetDBCharacterRequest{

@@ -7,7 +7,7 @@ using HS.Protobuf.DBProxy.DBUser;
 
 namespace DBProxyServer.Handle
 {
-    public class HandleCharacter : Singleton<HandleCharacter>
+    public class CharacterHandler : Singleton<CharacterHandler>
     {
         public void Init()
         {
@@ -42,7 +42,6 @@ namespace DBProxyServer.Handle
 
         End:
             sender.Send(resp);
-
         }
         public async void _HandleAddDBCharacterRequset(Connection sender, AddDBCharacterRequset message)
         {

@@ -4,12 +4,8 @@ using Serilog.Sinks.SystemConsole.Themes;
 using DBProxyServer.Utils;
 using DBProxyServer.Net;
 using DBProxyServer.Core;
-using MongoDB.Bson;
-using HS.Protobuf.DBProxy.DBUser;
 using DBProxyServer.Handle;
-using HS.Protobuf.DBProxy.DBCharacter;
-using HS.Protobuf.Game.Backpack;
-using Google.Protobuf;
+using HS.Protobuf.DBProxy.DBWorld;
 
 namespace DBProxyServer
 {
@@ -62,10 +58,55 @@ namespace DBProxyServer
             // DB
             MongoDBConnection.Instance.Init(Config.MongodbServerConfig.connectionString, 
                 Config.MongodbServerConfig.databaseName);
+
+            //WorldOperations.Instance.AddWorldAsync(new HS.Protobuf.DBProxy.DBWorld.DBWorldNode
+            //{
+            //    WorldId = 1,
+            //    WorldName = "小南梁界",
+            //    WorldDesc = "环界？？",
+            //    IsActive = true
+            //});
+
+            var testNode = new DBWorldNode
+            {
+                WorldId = 1,
+                WorldName = "小南梁界",
+                WorldDesc = "领略修仙和科技的碰撞。",
+                Status = "active",
+                CreatedAt = Scheduler.UnixTime,
+                MaxPlayers = 1000,
+                CreatedBy = "天道"
+            };
+            var result =  WorldOperations.Instance.AddWorldAsync(testNode);
+
+            var testNode2 = new DBWorldNode
+            {
+                WorldId = 1,
+                WorldName = "小南梁界01",
+                WorldDesc = "什么飞升仙界，不过是大一点的牲畜圈养地。",
+                Status = "inActive",
+                CreatedAt = Scheduler.UnixTime,
+                MaxPlayers = 1000,
+                CreatedBy = "天道"
+            };
+            var result2 = WorldOperations.Instance.AddWorldAsync(testNode2);
+
+
+
+            //UserHandler.Instance._HandleAddDBUserRequset(null, new AddDBUserRequset
+            //{
+            //    DbUserNode = new DBUserNode
+            //    {
+            //        UserName = "xiaoliangba",
+            //        Password = "xiaoxiao",
+            //        AccessLevel = "admin"
+            //    }
+            //});
+
             //开启网络服务
             ServersMgr.Instance.Init();
-            HandleUser.Instance.Init();
-            HandleCharacter.Instance.Init();
+            UserHandler.Instance.Init();
+            CharacterHandler.Instance.Init();
             return true;
         }
         private static bool UnInit()

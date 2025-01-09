@@ -47,6 +47,7 @@ namespace LoginGateServer.Handle
             // 解密
             message.Username = conn.m_encryptionManager.AesDecrypt(message.Username);
             message.Password = conn.m_encryptionManager.AesDecrypt(message.Password);
+            message.LoginToken = ServersMgr.Instance.LoginToken;
 
             // 转发到loginServer
             ServersMgr.Instance.SentToLoginServer(message);
@@ -54,6 +55,7 @@ namespace LoginGateServer.Handle
         private void _HandleUserRegisterResponse(Connection conn, UserRegisterResponse message)
         {
             LoginGateToken token = LoginGateTokenManager.Instance.GetToken(message.LoginGateToken);
+            message.LoginGateToken = "";
             token.Send(message);
         }
     }
