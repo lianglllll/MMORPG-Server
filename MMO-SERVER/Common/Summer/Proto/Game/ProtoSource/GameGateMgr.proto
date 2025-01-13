@@ -10,8 +10,9 @@ enum GameGateMgrProtocl{
 	GAMEGATEMGR_PROTOCL_EXECUTE_GG_COMMAND_RESP = 32004;	//[ExecuteGGCommandResponse]
 	GAMEGATEMGR_PROTOCL_EXECUTE_S_COMMAND_REQ = 32005;		//[ExecuteSCommandRequest]
 	GAMEGATEMGR_PROTOCL_EXECUTE_S_COMMAND_RESP = 32006;		//[ExecuteSCommandResponse]
+	GAMEGATEMGR_PROTOCL_REGISTER_SESSOION_TO_GGM_REQ = 32007;		//[RegisterSessionToGGMRequest]
+	GAMEGATEMGR_PROTOCL_REGISTER_SESSOION_TO_GGM_RESP = 32008;		//[RegisterSessionToGGMResponse]
 }
-
 
 message RegisterToGGMRequest{
 	HS.Protobuf.Common.ServerInfoNode serverInfoNode = 1;
@@ -44,4 +45,16 @@ message ExecuteSCommandRequest{
 message ExecuteSCommandResponse{
 	int32  resultCode		= 1;	
 	HS.Protobuf.Common.GateCommand errCommand = 2;
+}
+
+message RegisterSessionToGGMRequest{
+	int32 taskId = 1;
+	int32 worldId = 2;
+	string session = 3;
+}
+message RegisterSessionToGGMResponse{
+	int32 taskId = 1;
+	int32 resultCode = 2;
+	string resultMsg = 3;
+	repeated HS.Protobuf.Common.ServerInfoNode gameGateInfos = 4;
 }

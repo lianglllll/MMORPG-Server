@@ -5,7 +5,6 @@ using Google.Protobuf;
 using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
 using LoginGateServer.Net;
-using LoginServer.Core;
 using LoginServer.Handle;
 using LoginServer.Utils;
 using Serilog;
@@ -41,6 +40,7 @@ namespace LoginServer.Net
             LoginTokenManager.Instance.Init();
             LoginServerHandler.Instance.Init();
             UserHandler.Instance.Init();
+            EnterGameWorldHanlder.Instance.Init();
 
             // 协议注册
             ProtoHelper.Instance.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
@@ -183,11 +183,21 @@ namespace LoginServer.Net
 
         }
 
+        // ggm
+
+
+
         // tools 
         public bool SendMsgToDBProxy(IMessage message)
         {
             m_outgoingServerConnection[SERVER_TYPE.Dbproxy].NetClient.Send(message);
             return true;
         }
+        public bool SendMsgToGGM(IMessage message)
+        {
+            m_outgoingServerConnection[SERVER_TYPE.Gamegatemgr].NetClient.Send(message);
+            return true;
+        }
+
     }
 }

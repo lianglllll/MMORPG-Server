@@ -1,15 +1,11 @@
 ﻿using Common.Summer.Core;
 using Common.Summer.Net;
 using Common.Summer.Tools;
-using Google.Protobuf;
-using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
-using HS.Protobuf.Login;
 using LoginServer.Net;
 using Serilog;
-using System.Collections;
 
-namespace LoginServer.Core
+namespace LoginServer.Handle
 {
     public class LoginServerHandler : Singleton<LoginServerHandler>
     {
@@ -35,7 +31,6 @@ namespace LoginServer.Core
                 ServersMgr.Instance.AddDBServerInfo(message.ClusterEventNode.ServerInfoNode);
             }
         }
-
 
     }
 }

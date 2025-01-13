@@ -6,33 +6,44 @@ namespace LoginServer.Net
     public class SessionManager : Singleton<SessionManager>
     {
         //session字典<sessionid,session>
-        private ConcurrentDictionary<string, Session> sessions = new ConcurrentDictionary<string, Session>();
+        private ConcurrentDictionary<string, Session> sessions1 = new ConcurrentDictionary<string, Session>();
+        // <uid, session>
+        private ConcurrentDictionary<string, Session> sessions2 = new ConcurrentDictionary<string, Session>();
 
         public void Init()
         {
         }
-        public Session NewSession()
+        public Session NewSession(string uId)
         {
             var session = new Session(Guid.NewGuid().ToString());
-            sessions[session.Id] = session;
+            sessions1[session.Id] = session;
+            sessions2[uId] = session;
             return session;
         }
-        public Session GetSessionByUid(string sessionId)
+        public Session GetSessionBySessionId(string sessionId)
         {
-            if (sessions.TryGetValue(sessionId, out var session))
+            if (sessions1.TryGetValue(sessionId, out var session))
             {
                 return session;
             }
             return null;
         }
-        public Session GetSession(string uID)
+        public Session GetSessionByUId(string uId)
         {
-
+            if (sessions2.TryGetValue(uId, out var session))
+            {
+                return session;
+            }
             return null;
         }
+
         public void RemoveSession(string sessionId)
         {
-            sessions.TryRemove(sessionId, out var session);
+            sessions1.TryRemove(sessionId, out var session);
+            if(session != null)
+            {
+                sessions2.TryRemove(session.dbUser.UId, out _);
+            }
         }
     }
 }

@@ -11,10 +11,10 @@ namespace LoginGateServer.Handle
         public bool Init()
         {
             // 协议注册
-            ProtoHelper.Instance.Register<UserLoginRequest>((int)LoginProtocl.UserLoginRequest);
-            ProtoHelper.Instance.Register<UserLoginResponse>((int)LoginProtocl.UserLoginResponse);
-            ProtoHelper.Instance.Register<UserRegisterRequest>((int)LoginProtocl.UserRegisterRequest);
-            ProtoHelper.Instance.Register<UserRegisterResponse>((int)LoginProtocl.UserRegisterResponse);
+            ProtoHelper.Instance.Register<UserLoginRequest>((int)LoginProtocl.UserLoginReq);
+            ProtoHelper.Instance.Register<UserLoginResponse>((int)LoginProtocl.UserLoginResp);
+            ProtoHelper.Instance.Register<UserRegisterRequest>((int)LoginProtocl.UserRegisterReq);
+            ProtoHelper.Instance.Register<UserRegisterResponse>((int)LoginProtocl.UserRegisterResp);
             // 消息的订阅
             MessageRouter.Instance.Subscribe<UserLoginRequest>(_HandleUserLoginRequest);
             MessageRouter.Instance.Subscribe<UserLoginResponse>(_HandleUserLoginResponse);

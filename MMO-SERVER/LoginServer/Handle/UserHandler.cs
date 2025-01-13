@@ -18,10 +18,10 @@ namespace LoginServer.Handle
         public bool Init()
         {
             // 协议注册
-            ProtoHelper.Instance.Register<UserLoginRequest>((int)LoginProtocl.UserLoginRequest);
-            ProtoHelper.Instance.Register<UserLoginResponse>((int)LoginProtocl.UserLoginResponse);
-            ProtoHelper.Instance.Register<UserRegisterRequest>((int)LoginProtocl.UserRegisterRequest);
-            ProtoHelper.Instance.Register<UserRegisterResponse>((int)LoginProtocl.UserRegisterResponse);
+            ProtoHelper.Instance.Register<UserLoginRequest>((int)LoginProtocl.UserLoginReq);
+            ProtoHelper.Instance.Register<UserLoginResponse>((int)LoginProtocl.UserLoginResp);
+            ProtoHelper.Instance.Register<UserRegisterRequest>((int)LoginProtocl.UserRegisterReq);
+            ProtoHelper.Instance.Register<UserRegisterResponse>((int)LoginProtocl.UserRegisterResp);
             ProtoHelper.Instance.Register<GetDBUserRequest>((int)DBUserProtocl.GetDbuserReq);
             ProtoHelper.Instance.Register<GetDBUserResponse>((int)DBUserProtocl.GetDbuserResp);
             ProtoHelper.Instance.Register<AddDBUserRequset>((int)DBUserProtocl.AddDbuserReq);
@@ -59,10 +59,10 @@ namespace LoginServer.Handle
                 goto End2;
             }
 
-            UserLoginRequest userLoginRequest = (UserLoginRequest)m_tasks[message.TaskId];
+            UserLoginRequest req = (UserLoginRequest)m_tasks[message.TaskId];
             UserLoginResponse resp = new();
-            resp.LoginGateToken = userLoginRequest.LoginGateToken;
-            Connection gateConn = LoginTokenManager.Instance.GetToken(userLoginRequest.LoginToken).Conn;
+            resp.LoginGateToken = req.LoginGateToken;
+            Connection gateConn = LoginTokenManager.Instance.GetToken(req.LoginToken).Conn;
             if(message.ResultCode == 1)
             {
                 resp.ResultCode = 1;
@@ -72,7 +72,7 @@ namespace LoginServer.Handle
 
             DBUserNode dBUserNode = message.User;
             // 验证用户名密码
-            if (PasswordHasher.Instance.VerifyPassword(userLoginRequest.Password, dBUserNode.Password) == false)
+            if (PasswordHasher.Instance.VerifyPassword(req.Password, dBUserNode.Password) == false)
             {
                 resp.ResultCode = 2;
                 resp.ResultMsg = "登录失败，密码错误";
@@ -88,7 +88,7 @@ namespace LoginServer.Handle
             }
 
             // 如果当前用户在线，将其踢出游戏，防止同一账号多次登录
-            Session session = SessionManager.Instance.GetSessionByUid(dBUserNode.UId);
+            Session session = SessionManager.Instance.GetSessionByUId(dBUserNode.UId);
             if(session != null)
             {
                 SessionManager.Instance.RemoveSession(session.Id);
@@ -96,7 +96,7 @@ namespace LoginServer.Handle
             }
 
             // 分配session
-            session = SessionManager.Instance.NewSession();
+            session = SessionManager.Instance.NewSession(dBUserNode.UId);
             session.dbUser = dBUserNode;
 
             // 响应

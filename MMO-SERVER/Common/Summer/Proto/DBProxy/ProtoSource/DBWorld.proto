@@ -5,8 +5,8 @@ enum DBWorldProtocl{
 	DBWORLD_PROTOCL_NONE = 0;
 	DBWORLD_PROTOCL_GET_DBWORLD_NODE_BY_WORLDID_REQ = 52001;	// [GetDBWorldNodeByWorldIdRequest]
 	DBWORLD_PROTOCL_GET_DBWORLD_NODE_BY_WORLDID_RESP = 52002;	// [GetDBWorldNodeByWorldIdResponse]
-	DBWORLD_PROTOCL_GET_ACTIVE_DBWORLD_NODE_REQ = 52003;		// [GetActiveWorldNodeRequest]
-	DBWORLD_PROTOCL_GET_ACTIVE_DBWORLD_NODE_RESP = 52004;		// [GetActiveWorldNodeResponse]
+	DBWORLD_PROTOCL_GET_ALL_DBWORLD_NODE_REQ = 52003;		// [GetAllDBWorldNodeRequest]
+	DBWORLD_PROTOCL_GET_ALL_DBWORLD_NODE_RESP = 52004;		// [GetAllDBWorldNodeResponse]
 }
 
 message DBWorldNode{
@@ -38,10 +38,10 @@ message GetDBWorldNodeByWorldIdResponse{
 	string resultMsg = 3;
 	DBWorldNode dbWorldNode = 4;
 }
-message GetActiveWorldNodeRequest{
+message GetAllDBWorldNodeRequest{
 	int32 taskId = 1;
 }
-message GetActiveWorldNodeResponse{
+message GetAllDBWorldNodeResponse{
 	int32 taskId = 1;
 	int32 resultCode = 2;
 	string resultMsg = 3;

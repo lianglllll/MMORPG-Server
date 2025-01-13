@@ -30,6 +30,7 @@ namespace LoginGateServer.Net
             NetService.Instance.Init();
             LoginGateHandler.Instance.Init();
             UserHandler.Instance.Init();
+            EnterGameWorldHanlder.Instance.Init();
             LoginGateTokenManager.Instance.Init();
             SecurityHandler.Instance.Init();
 

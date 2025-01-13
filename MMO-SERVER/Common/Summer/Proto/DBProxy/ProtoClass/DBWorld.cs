@@ -38,25 +38,25 @@ namespace HS.Protobuf.DBProxy.DBWorld {
             "ZBgCIAEoBSKXAQofR2V0REJXb3JsZE5vZGVCeVdvcmxkSWRSZXNwb25zZRIO",
             "CgZ0YXNrSWQYASABKAUSEgoKcmVzdWx0Q29kZRgCIAEoBRIRCglyZXN1bHRN",
             "c2cYAyABKAkSPQoLZGJXb3JsZE5vZGUYBCABKAsyKC5IUy5Qcm90b2J1Zi5E",
-            "QlByb3h5LkRCV29ybGQuREJXb3JsZE5vZGUiKwoZR2V0QWN0aXZlV29ybGRO",
-            "b2RlUmVxdWVzdBIOCgZ0YXNrSWQYASABKAUijAEKGkdldEFjdGl2ZVdvcmxk",
-            "Tm9kZVJlc3BvbnNlEg4KBnRhc2tJZBgBIAEoBRISCgpyZXN1bHRDb2RlGAIg",
-            "ASgFEhEKCXJlc3VsdE1zZxgDIAEoCRI3CgVub2RlcxgEIAMoCzIoLkhTLlBy",
-            "b3RvYnVmLkRCUHJveHkuREJXb3JsZC5EQldvcmxkTm9kZSqAAgoOREJXb3Js",
-            "ZFByb3RvY2wSGAoUREJXT1JMRF9QUk9UT0NMX05PTkUQABI1Ci9EQldPUkxE",
-            "X1BST1RPQ0xfR0VUX0RCV09STERfTk9ERV9CWV9XT1JMRElEX1JFURChlgMS",
-            "NgowREJXT1JMRF9QUk9UT0NMX0dFVF9EQldPUkxEX05PREVfQllfV09STERJ",
-            "RF9SRVNQEKKWAxIxCitEQldPUkxEX1BST1RPQ0xfR0VUX0FDVElWRV9EQldP",
-            "UkxEX05PREVfUkVREKOWAxIyCixEQldPUkxEX1BST1RPQ0xfR0VUX0FDVElW",
-            "RV9EQldPUkxEX05PREVfUkVTUBCklgNiBnByb3RvMw=="));
+            "QlByb3h5LkRCV29ybGQuREJXb3JsZE5vZGUiKgoYR2V0QWxsREJXb3JsZE5v",
+            "ZGVSZXF1ZXN0Eg4KBnRhc2tJZBgBIAEoBSKLAQoZR2V0QWxsREJXb3JsZE5v",
+            "ZGVSZXNwb25zZRIOCgZ0YXNrSWQYASABKAUSEgoKcmVzdWx0Q29kZRgCIAEo",
+            "BRIRCglyZXN1bHRNc2cYAyABKAkSNwoFbm9kZXMYBCADKAsyKC5IUy5Qcm90",
+            "b2J1Zi5EQlByb3h5LkRCV29ybGQuREJXb3JsZE5vZGUq+gEKDkRCV29ybGRQ",
+            "cm90b2NsEhgKFERCV09STERfUFJPVE9DTF9OT05FEAASNQovREJXT1JMRF9Q",
+            "Uk9UT0NMX0dFVF9EQldPUkxEX05PREVfQllfV09STERJRF9SRVEQoZYDEjYK",
+            "MERCV09STERfUFJPVE9DTF9HRVRfREJXT1JMRF9OT0RFX0JZX1dPUkxESURf",
+            "UkVTUBCilgMSLgooREJXT1JMRF9QUk9UT0NMX0dFVF9BTExfREJXT1JMRF9O",
+            "T0RFX1JFURCjlgMSLwopREJXT1JMRF9QUk9UT0NMX0dFVF9BTExfREJXT1JM",
+            "RF9OT0RFX1JFU1AQpJYDYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.DBProxy.DBWorld.DBWorldProtocl), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBWorld.DBWorldNode), global::HS.Protobuf.DBProxy.DBWorld.DBWorldNode.Parser, new[]{ "WorldId", "WorldName", "WorldDesc", "Status", "CreatedAt", "MaxPlayers", "CreatedBy", "Theme", "IsPublic", "UpdatedAt", "LastModifiedBy", "Metadata", "Region", "Version", "Tags" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBWorld.GetDBWorldNodeByWorldIdRequest), global::HS.Protobuf.DBProxy.DBWorld.GetDBWorldNodeByWorldIdRequest.Parser, new[]{ "TaskId", "WorldId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBWorld.GetDBWorldNodeByWorldIdResponse), global::HS.Protobuf.DBProxy.DBWorld.GetDBWorldNodeByWorldIdResponse.Parser, new[]{ "TaskId", "ResultCode", "ResultMsg", "DbWorldNode" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBWorld.GetActiveWorldNodeRequest), global::HS.Protobuf.DBProxy.DBWorld.GetActiveWorldNodeRequest.Parser, new[]{ "TaskId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBWorld.GetActiveWorldNodeResponse), global::HS.Protobuf.DBProxy.DBWorld.GetActiveWorldNodeResponse.Parser, new[]{ "TaskId", "ResultCode", "ResultMsg", "Nodes" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBWorld.GetAllDBWorldNodeRequest), global::HS.Protobuf.DBProxy.DBWorld.GetAllDBWorldNodeRequest.Parser, new[]{ "TaskId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBWorld.GetAllDBWorldNodeResponse), global::HS.Protobuf.DBProxy.DBWorld.GetAllDBWorldNodeResponse.Parser, new[]{ "TaskId", "ResultCode", "ResultMsg", "Nodes" }, null, null, null, null)
           }));
     }
     #endregion
@@ -74,13 +74,13 @@ namespace HS.Protobuf.DBProxy.DBWorld {
     /// </summary>
     [pbr::OriginalName("DBWORLD_PROTOCL_GET_DBWORLD_NODE_BY_WORLDID_RESP")] GetDbworldNodeByWorldidResp = 52002,
     /// <summary>
-    /// [GetActiveWorldNodeRequest]
+    /// [GetAllDBWorldNodeRequest]
     /// </summary>
-    [pbr::OriginalName("DBWORLD_PROTOCL_GET_ACTIVE_DBWORLD_NODE_REQ")] GetActiveDbworldNodeReq = 52003,
+    [pbr::OriginalName("DBWORLD_PROTOCL_GET_ALL_DBWORLD_NODE_REQ")] GetAllDbworldNodeReq = 52003,
     /// <summary>
-    /// [GetActiveWorldNodeResponse]
+    /// [GetAllDBWorldNodeResponse]
     /// </summary>
-    [pbr::OriginalName("DBWORLD_PROTOCL_GET_ACTIVE_DBWORLD_NODE_RESP")] GetActiveDbworldNodeResp = 52004,
+    [pbr::OriginalName("DBWORLD_PROTOCL_GET_ALL_DBWORLD_NODE_RESP")] GetAllDbworldNodeResp = 52004,
   }
 
   #endregion
@@ -1342,16 +1342,16 @@ namespace HS.Protobuf.DBProxy.DBWorld {
 
   }
 
-  public sealed partial class GetActiveWorldNodeRequest : pb::IMessage<GetActiveWorldNodeRequest>
+  public sealed partial class GetAllDBWorldNodeRequest : pb::IMessage<GetAllDBWorldNodeRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<GetActiveWorldNodeRequest> _parser = new pb::MessageParser<GetActiveWorldNodeRequest>(() => new GetActiveWorldNodeRequest());
+    private static readonly pb::MessageParser<GetAllDBWorldNodeRequest> _parser = new pb::MessageParser<GetAllDBWorldNodeRequest>(() => new GetAllDBWorldNodeRequest());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<GetActiveWorldNodeRequest> Parser { get { return _parser; } }
+    public static pb::MessageParser<GetAllDBWorldNodeRequest> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1367,7 +1367,7 @@ namespace HS.Protobuf.DBProxy.DBWorld {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public GetActiveWorldNodeRequest() {
+    public GetAllDBWorldNodeRequest() {
       OnConstruction();
     }
 
@@ -1375,15 +1375,15 @@ namespace HS.Protobuf.DBProxy.DBWorld {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public GetActiveWorldNodeRequest(GetActiveWorldNodeRequest other) : this() {
+    public GetAllDBWorldNodeRequest(GetAllDBWorldNodeRequest other) : this() {
       taskId_ = other.taskId_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public GetActiveWorldNodeRequest Clone() {
-      return new GetActiveWorldNodeRequest(this);
+    public GetAllDBWorldNodeRequest Clone() {
+      return new GetAllDBWorldNodeRequest(this);
     }
 
     /// <summary>Field number for the "taskId" field.</summary>
@@ -1401,12 +1401,12 @@ namespace HS.Protobuf.DBProxy.DBWorld {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as GetActiveWorldNodeRequest);
+      return Equals(other as GetAllDBWorldNodeRequest);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(GetActiveWorldNodeRequest other) {
+    public bool Equals(GetAllDBWorldNodeRequest other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -1479,7 +1479,7 @@ namespace HS.Protobuf.DBProxy.DBWorld {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(GetActiveWorldNodeRequest other) {
+    public void MergeFrom(GetAllDBWorldNodeRequest other) {
       if (other == null) {
         return;
       }
@@ -1531,16 +1531,16 @@ namespace HS.Protobuf.DBProxy.DBWorld {
 
   }
 
-  public sealed partial class GetActiveWorldNodeResponse : pb::IMessage<GetActiveWorldNodeResponse>
+  public sealed partial class GetAllDBWorldNodeResponse : pb::IMessage<GetAllDBWorldNodeResponse>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<GetActiveWorldNodeResponse> _parser = new pb::MessageParser<GetActiveWorldNodeResponse>(() => new GetActiveWorldNodeResponse());
+    private static readonly pb::MessageParser<GetAllDBWorldNodeResponse> _parser = new pb::MessageParser<GetAllDBWorldNodeResponse>(() => new GetAllDBWorldNodeResponse());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<GetActiveWorldNodeResponse> Parser { get { return _parser; } }
+    public static pb::MessageParser<GetAllDBWorldNodeResponse> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1556,7 +1556,7 @@ namespace HS.Protobuf.DBProxy.DBWorld {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public GetActiveWorldNodeResponse() {
+    public GetAllDBWorldNodeResponse() {
       OnConstruction();
     }
 
@@ -1564,7 +1564,7 @@ namespace HS.Protobuf.DBProxy.DBWorld {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public GetActiveWorldNodeResponse(GetActiveWorldNodeResponse other) : this() {
+    public GetAllDBWorldNodeResponse(GetAllDBWorldNodeResponse other) : this() {
       taskId_ = other.taskId_;
       resultCode_ = other.resultCode_;
       resultMsg_ = other.resultMsg_;
@@ -1574,8 +1574,8 @@ namespace HS.Protobuf.DBProxy.DBWorld {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public GetActiveWorldNodeResponse Clone() {
-      return new GetActiveWorldNodeResponse(this);
+    public GetAllDBWorldNodeResponse Clone() {
+      return new GetAllDBWorldNodeResponse(this);
     }
 
     /// <summary>Field number for the "taskId" field.</summary>
@@ -1628,12 +1628,12 @@ namespace HS.Protobuf.DBProxy.DBWorld {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as GetActiveWorldNodeResponse);
+      return Equals(other as GetAllDBWorldNodeResponse);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(GetActiveWorldNodeResponse other) {
+    public bool Equals(GetAllDBWorldNodeResponse other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -1737,7 +1737,7 @@ namespace HS.Protobuf.DBProxy.DBWorld {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(GetActiveWorldNodeResponse other) {
+    public void MergeFrom(GetAllDBWorldNodeResponse other) {
       if (other == null) {
         return;
       }

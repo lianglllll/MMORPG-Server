@@ -15,11 +15,11 @@ namespace DBProxyServer.Handle
             // 协议注册
             ProtoHelper.Instance.Register<GetDBWorldNodeByWorldIdRequest>((int)DBWorldProtocl.GetDbworldNodeByWorldidReq);
             ProtoHelper.Instance.Register<GetDBWorldNodeByWorldIdResponse>((int)DBWorldProtocl.GetDbworldNodeByWorldidResp);
-            ProtoHelper.Instance.Register<GetActiveWorldNodeRequest>((int)DBWorldProtocl.GetActiveDbworldNodeReq);
-            ProtoHelper.Instance.Register<GetActiveWorldNodeResponse>((int)DBWorldProtocl.GetActiveDbworldNodeResp);
+            ProtoHelper.Instance.Register<GetAllDBWorldNodeRequest>((int)DBWorldProtocl.GetAllDbworldNodeReq);
+            ProtoHelper.Instance.Register<GetAllDBWorldNodeResponse>((int)DBWorldProtocl.GetAllDbworldNodeResp);
             // 消息的订阅
             MessageRouter.Instance.Subscribe<GetDBWorldNodeByWorldIdRequest>(_HandleGetDBWorldNodeByWorldIdRequest);
-            MessageRouter.Instance.Subscribe<GetActiveWorldNodeRequest>(_HandleGetActiveWorldNodeRequest);
+            MessageRouter.Instance.Subscribe<GetAllDBWorldNodeRequest>(_HandleGetAllDBWorldNodeRequest);
         }
 
         public async void _HandleGetDBWorldNodeByWorldIdRequest(Connection sender, GetDBWorldNodeByWorldIdRequest message)
@@ -44,12 +44,12 @@ namespace DBProxyServer.Handle
             sender.Send(resp);
         }
 
-        private async void _HandleGetActiveWorldNodeRequest(Connection sender, GetActiveWorldNodeRequest message)
+        private async void _HandleGetAllDBWorldNodeRequest(Connection sender, GetAllDBWorldNodeRequest message)
         {
-            GetActiveWorldNodeResponse resp = new();
+            GetAllDBWorldNodeResponse resp = new();
             resp.TaskId = message.TaskId;
 
-            var worlds = await WorldOperations.Instance.GetActiveWorldNodeAsync();
+            var worlds = await WorldOperations.Instance.GetAllWorldNodeAsync();
             if (worlds == null)
             {
                 resp.ResultCode = 1;

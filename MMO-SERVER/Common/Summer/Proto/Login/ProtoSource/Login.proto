@@ -1,15 +1,34 @@
 syntax = "proto3";
 import "Scene/ProtoSource/SceneEntity.proto";
+import "Common/ProtoSource/Common.proto";
 package HS.Protobuf.Login;
 
 enum LoginProtocl{
 	LOGIN_PROTOCL_NONE = 0;
-	LOGIN_PROTOCL_GET_LOGIN_TOKEN_REQ = 20001;
-	LOGIN_PROTOCL_GET_LOGIN_TOKEN_RESP = 20002;
-	LOGIN_PROTOCL_USER_REGISTER_REQUEST = 20003;
-	LOGIN_PROTOCL_USER_REGISTER_RESPONSE = 20004;
-	LOGIN_PROTOCL_USER_LOGIN_REQUEST = 20005;
-	LOGIN_PROTOCL_USER_LOGIN_RESPONSE = 20006;
+	LOGIN_PROTOCL_GET_LOGIN_TOKEN_REQ = 20001;		// [GetLoginTokenRequest]
+	LOGIN_PROTOCL_GET_LOGIN_TOKEN_RESP = 20002;		// [GetLoginTokenResponse]
+	LOGIN_PROTOCL_USER_REGISTER_REQ = 20003;		// [UserRegisterRequest]
+	LOGIN_PROTOCL_USER_REGISTER_RESP = 20004;		// [UserRegisterResponse]
+	LOGIN_PROTOCL_USER_LOGIN_REQ = 20005;			// [UserLoginRequest]
+	LOGIN_PROTOCL_USER_LOGIN_RESP = 20006;			// [UserLoginResponse]
+	LOGIN_PROTOCL_GET_ALL_WORLD_INFO_NODE_REQ = 20007;		// [GetAllWorldInfosRequest]
+	LOGIN_PROTOCL_GET_ALL_WORLD_INFO_NODE_RESP = 20008;		// [GetAllWorldInfosResponse]
+	LOGIN_PROTOCL_GET_GAME_GATE_BY_WORLDID_REQ = 20009;		// [GetGameGateByWorldIdRequest]
+	LOGIN_PROTOCL_GET_GAME_GATE_BY_WORLDID_RESP = 20010;    // [GetGameGateByWorldIdResponse]
+}
+
+enum WORLD_LOAD_STATUS{
+	WORLD_LOAD_STATUS_IDLE = 0;
+	WORLD_LOAD_STATUS_CONGESTED = 1;
+	WORLD_LOAD_STATUS_OVERLOADED = 2;
+	WORLD_LOAD_STATUS_OFFLINE = 3;
+}
+
+message WorldInfoNode{
+	int32 worldId = 1;
+	string worldName = 2;
+	string worldDesc = 3;
+	WORLD_LOAD_STATUS status = 4;
 }
 
 message GetLoginTokenRequest{
@@ -18,7 +37,6 @@ message GetLoginTokenResponse{
 	string loginToken = 1;
 }
 
-//×¢²á
 message UserRegisterRequest{
 	string loginGateToken = 1;
 	string loginToken = 2;
@@ -32,7 +50,6 @@ message UserRegisterResponse{
 	string resultMsg = 4;
 }
 
-//µÇÂ¼
 message UserLoginRequest{
 	string loginGateToken = 1;
 	string loginToken = 2;
@@ -47,11 +64,32 @@ message UserLoginResponse{
 	string sessionId = 5;
 }
 
+message GetAllWorldInfosRequest{
+	string loginGateToken = 1;
+	string loginToken = 2;
+}
+message GetAllWorldInfosResponse{
+	string loginGateToken = 1;
+	string loginToken = 2;
+	repeated WorldInfoNode worldInfoNodes = 3;
+}
+
+message GetGameGateByWorldIdRequest{
+	string loginGateToken = 1;
+	string loginToken = 2;
+	int32 worldId = 3;
+	string sessionId = 4;
+}
+message GetGameGateByWorldIdResponse{
+	string loginGateToken = 1;
+	string loginToken = 2;
+	int32 resultCode = 3;
+	string resultMsg = 4;
+	repeated HS.Protobuf.Common.ServerInfoNode gameGateInfos = 5;
+}
 
 
-
-
-
+// ===================================
 //½ÇÉ«´´½¨
 message CharacterCreateRequest{
 	string name = 1;

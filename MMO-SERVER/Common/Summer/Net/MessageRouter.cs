@@ -31,7 +31,7 @@ namespace Common.Summer.Net
         private ConcurrentQueue<MessageHandlerArgs> messageQueue = new ConcurrentQueue<MessageHandlerArgs>();
 
         //消息处理委托
-        public delegate void MessageHandler<T>(Connection sender, T message);
+        public delegate void MessageHandler<T>(Connection conn, T message);
 
         //消息频道（技能频道，战斗频道，物品频道）（订阅记录）
         private ConcurrentDictionary<string, Delegate> delegateMap = new ConcurrentDictionary<string, Delegate>();
@@ -90,7 +90,7 @@ namespace Common.Summer.Net
         }
 
         // 添加消息到消息队列
-        public void AddMessage(Connection conn, Google.Protobuf.IMessage message)
+        public void AddMessage(Connection conn, IMessage message)
         {
             //加锁
             lock (messageQueue)

@@ -38,32 +38,33 @@ namespace DBProxyServer.Core
 
             return null;
         }
-        public async Task<List<DBWorldNode>> GetActiveWorldNodeAsync()
+        public async Task<List<DBWorldNode>> GetAllWorldNodeAsync()
         {
-            // 使用过滤器构建器创建查询条件
-            var filter = Builders<BsonDocument>.Filter.Eq("isActive", true);
-
-            // 查找满足条件的第一个文档
-            var worldDocs = await m_worldCollection.Find(filter).ToListAsync();
+            // 获取所有文档，不使用过滤器
+            var worldDocs = await m_worldCollection.Find(Builders<BsonDocument>.Filter.Empty).ToListAsync();
 
             if (worldDocs != null)
             {
                 List<DBWorldNode> worlds = new();
                 foreach (var worldDoc in worldDocs)
                 {
-                    var wNode = new DBWorldNode();
-                    wNode.WorldId = worldDoc["worldId"].ToInt32();
-                    wNode.WorldName = worldDoc["worldName"].ToString();
-                    wNode.WorldDesc = worldDoc["worldDesc"].ToString();
-                    wNode.Status = worldDoc["status"].ToString();
-                    wNode.CreatedAt = worldDoc["createdAt"].ToInt64();
-                    wNode.MaxPlayers = worldDoc["maxPlayers"].ToInt32();
-                    wNode.CreatedBy = worldDoc["createdBy"].ToString();
-                    return worlds;
+                    var wNode = new DBWorldNode
+                    {
+                        WorldId = worldDoc["worldId"].ToInt32(),
+                        WorldName = worldDoc["worldName"].ToString(),
+                        WorldDesc = worldDoc["worldDesc"].ToString(),
+                        Status = worldDoc["status"].ToString(),
+                        CreatedAt = worldDoc["createdAt"].ToInt64(),
+                        MaxPlayers = worldDoc["maxPlayers"].ToInt32(),
+                        CreatedBy = worldDoc["createdBy"].ToString()
+                    };
+                    worlds.Add(wNode);
                 }
+                return worlds;
             }
-            return null;
 
+            // 如果没有文档，返回空列表
+            return new List<DBWorldNode>();
         }
         public async Task<bool> AddWorldAsync(DBWorldNode node)
         {

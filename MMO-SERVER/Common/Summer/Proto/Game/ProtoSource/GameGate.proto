@@ -11,3 +11,11 @@ message GGEnvelope{
 	int32 encryptionLevel = 2;
 	bytes data = 3;
 }
+
+message RegisterSessionToGGRequest{
+	string session = 1;
+}
+message RegisterSessionToGGResponse{
+	int32 resultCode = 1;
+	string resultMsg = 2;
+}
