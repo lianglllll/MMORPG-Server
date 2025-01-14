@@ -3,13 +3,8 @@ package HS.Protobuf.GameGate;
 
 enum GameGateProtocl{
 	GAMEGATE_PROTOCL_NONE = 0;
-	GAMEGATE_PROTOCL_GGEnvelope = 31001;
-}
-
-message GGEnvelope{
-	int32 protocolCode = 1;
-	int32 encryptionLevel = 2;
-	bytes data = 3;
+	GAMEGATE_PROTOCL_REGISTER_SESSION_TO_GG_REQ = 31001;
+	GAMEGATE_PROTOCL_REGISTER_SESSION_TO_GG_RESP = 31002;
 }
 
 message RegisterSessionToGGRequest{

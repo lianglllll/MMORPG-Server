@@ -51,7 +51,7 @@ namespace GameServer.Net
             if (session != null)
             {
                 //让其conn连接失效
-                NetService.Instance.CloseUserConnection(session.Conn);
+                //NetService.Instance.CloseUserConnection(session.Conn);
                 session.Conn = null;
             }
         }

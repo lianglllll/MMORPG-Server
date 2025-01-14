@@ -29,8 +29,9 @@ namespace GameGateMgrServer.Net
 
             // 网络服务开启
             NetService.Instance.Init();
-            GameGateMonitor.Instance.Init();
+            Core.GGMMonitor.Instance.Init();
             GameGateMgrHandler.Instance.Init();
+
 
             // 协议注册
             ProtoHelper.Instance.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
@@ -64,7 +65,7 @@ namespace GameGateMgrServer.Net
 
         private bool _ExecutePhase1(Google.Protobuf.Collections.RepeatedField<ClusterEventNode> clusterEventNodes)
         {
-            GameGateMonitor.Instance.AddGameServerInfos(clusterEventNodes);
+            Core.GGMMonitor.Instance.AddGameServerInfos(clusterEventNodes);
 
             // 开始网络监听，预示着当前服务器的正式启动
             NetService.Instance.Start();

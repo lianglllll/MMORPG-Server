@@ -43,13 +43,17 @@ namespace LoginGateServer
                 )
                 .CreateLogger();
 
-            Config.Init();                      
+            Config.Init();
+
+            Log.Information("=============================================");
             Log.Information("[LoginGateServer]初始化,配置如下：");
             Log.Information($"ip：{Config.Server.ip}");
             Log.Information($"userPort：{Config.Server.userPort}");
             Log.Information($"serverPort：{Config.Server.serverPort}");
             Log.Information($"workerCount：{Config.Server.workerCount}");
             Log.Information($"updateHz：{Config.Server.updateHz}");
+            Log.Information("=============================================");
+
 
             Scheduler.Instance.Start(Config.Server.updateHz);
             ServersMgr.Instance.Init();

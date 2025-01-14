@@ -29,40 +29,40 @@ namespace HS.Protobuf.GameGateMgr {
             "b0dHTVJlcXVlc3QSOgoOc2VydmVySW5mb05vZGUYASABKAsyIi5IUy5Qcm90",
             "b2J1Zi5Db21tb24uU2VydmVySW5mb05vZGUiPgoVUmVnaXN0ZXJUb0dHTVJl",
             "c3BvbnNlEhIKCnJlc3VsdENvZGUYASABKAUSEQoJcmVzdWx0TXNnGAIgASgJ",
-            "IsEBChdFeGVjdXRlR0dDb21tYW5kUmVxdWVzdBIwCgdjb21tYW5kGAEgASgO",
-            "Mh8uSFMuUHJvdG9idWYuQ29tbW9uLkdhdGVDb21tYW5kEhQKDGdhdGVTZXJ2",
-            "ZXJJZBgCIAEoBRIRCgl0aW1lU3RhbXAYAyABKAMSQAoSZ2FtZVNlcnZlcklu",
-            "Zm9Ob2RlGAQgASgLMiIuSFMuUHJvdG9idWYuQ29tbW9uLlNlcnZlckluZm9O",
-            "b2RlSABCCQoHcGF5bG9hZCJjChhFeGVjdXRlR0dDb21tYW5kUmVzcG9uc2US",
-            "EgoKcmVzdWx0Q29kZRgBIAEoBRIzCgplcnJDb21tYW5kGAIgASgOMh8uSFMu",
-            "UHJvdG9idWYuQ29tbW9uLkdhdGVDb21tYW5kIo8BChZFeGVjdXRlU0NvbW1h",
-            "bmRSZXF1ZXN0EhUKDXNjZW5lU2VydmVySWQYAiABKAUSEQoJdGltZVN0YW1w",
-            "GAMgASgDEkAKEmdhbWVTZXJ2ZXJJbmZvTm9kZRgEIAEoCzIiLkhTLlByb3Rv",
-            "YnVmLkNvbW1vbi5TZXJ2ZXJJbmZvTm9kZUgAQgkKB3BheWxvYWQiYgoXRXhl",
-            "Y3V0ZVNDb21tYW5kUmVzcG9uc2USEgoKcmVzdWx0Q29kZRgBIAEoBRIzCgpl",
-            "cnJDb21tYW5kGAIgASgOMh8uSFMuUHJvdG9idWYuQ29tbW9uLkdhdGVDb21t",
-            "YW5kIk8KG1JlZ2lzdGVyU2Vzc2lvblRvR0dNUmVxdWVzdBIOCgZ0YXNrSWQY",
-            "ASABKAUSDwoHd29ybGRJZBgCIAEoBRIPCgdzZXNzaW9uGAMgASgJIpABChxS",
-            "ZWdpc3RlclNlc3Npb25Ub0dHTVJlc3BvbnNlEg4KBnRhc2tJZBgBIAEoBRIS",
-            "CgpyZXN1bHRDb2RlGAIgASgFEhEKCXJlc3VsdE1zZxgDIAEoCRI5Cg1nYW1l",
-            "R2F0ZUluZm9zGAQgAygLMiIuSFMuUHJvdG9idWYuQ29tbW9uLlNlcnZlcklu",
-            "Zm9Ob2RlKsoDChJHYW1lR2F0ZU1nclByb3RvY2wSHAoYR0FNRUdBVEVNR1Jf",
-            "UFJPVE9DTF9OT05FEAASLQonR0FNRUdBVEVNR1JfUFJPVE9DTF9SRUdJU1RF",
-            "Ul9UT19HR01fUkVREIH6ARIuCihHQU1FR0FURU1HUl9QUk9UT0NMX1JFR0lT",
-            "VEVSX1RPX0dHTV9SRVNQEIL6ARIwCipHQU1FR0FURU1HUl9QUk9UT0NMX0VY",
-            "RUNVVEVfR0dfQ09NTUFORF9SRVEQg/oBEjEKK0dBTUVHQVRFTUdSX1BST1RP",
-            "Q0xfRVhFQ1VURV9HR19DT01NQU5EX1JFU1AQhPoBEi8KKUdBTUVHQVRFTUdS",
-            "X1BST1RPQ0xfRVhFQ1VURV9TX0NPTU1BTkRfUkVREIX6ARIwCipHQU1FR0FU",
-            "RU1HUl9QUk9UT0NMX0VYRUNVVEVfU19DT01NQU5EX1JFU1AQhvoBEjYKMEdB",
-            "TUVHQVRFTUdSX1BST1RPQ0xfUkVHSVNURVJfU0VTU09JT05fVE9fR0dNX1JF",
-            "URCH+gESNwoxR0FNRUdBVEVNR1JfUFJPVE9DTF9SRUdJU1RFUl9TRVNTT0lP",
-            "Tl9UT19HR01fUkVTUBCI+gFiBnByb3RvMw=="));
+            "IsMBChdFeGVjdXRlR0dDb21tYW5kUmVxdWVzdBIwCgdjb21tYW5kGAEgASgO",
+            "Mh8uSFMuUHJvdG9idWYuQ29tbW9uLkdhdGVDb21tYW5kEhYKDnRhcmdldFNl",
+            "cnZlcklkGAIgASgFEhEKCXRpbWVTdGFtcBgDIAEoAxJAChJnYW1lU2VydmVy",
+            "SW5mb05vZGUYBCABKAsyIi5IUy5Qcm90b2J1Zi5Db21tb24uU2VydmVySW5m",
+            "b05vZGVIAEIJCgdwYXlsb2FkImMKGEV4ZWN1dGVHR0NvbW1hbmRSZXNwb25z",
+            "ZRISCgpyZXN1bHRDb2RlGAEgASgFEjMKCmVyckNvbW1hbmQYAiABKA4yHy5I",
+            "Uy5Qcm90b2J1Zi5Db21tb24uR2F0ZUNvbW1hbmQijwEKFkV4ZWN1dGVTQ29t",
+            "bWFuZFJlcXVlc3QSFQoNc2NlbmVTZXJ2ZXJJZBgCIAEoBRIRCgl0aW1lU3Rh",
+            "bXAYAyABKAMSQAoSZ2FtZVNlcnZlckluZm9Ob2RlGAQgASgLMiIuSFMuUHJv",
+            "dG9idWYuQ29tbW9uLlNlcnZlckluZm9Ob2RlSABCCQoHcGF5bG9hZCJiChdF",
+            "eGVjdXRlU0NvbW1hbmRSZXNwb25zZRISCgpyZXN1bHRDb2RlGAEgASgFEjMK",
+            "CmVyckNvbW1hbmQYAiABKA4yHy5IUy5Qcm90b2J1Zi5Db21tb24uR2F0ZUNv",
+            "bW1hbmQiTwobUmVnaXN0ZXJTZXNzaW9uVG9HR01SZXF1ZXN0Eg4KBnRhc2tJ",
+            "ZBgBIAEoBRIPCgd3b3JsZElkGAIgASgFEg8KB3Nlc3Npb24YAyABKAkikAEK",
+            "HFJlZ2lzdGVyU2Vzc2lvblRvR0dNUmVzcG9uc2USDgoGdGFza0lkGAEgASgF",
+            "EhIKCnJlc3VsdENvZGUYAiABKAUSEQoJcmVzdWx0TXNnGAMgASgJEjkKDWdh",
+            "bWVHYXRlSW5mb3MYBCADKAsyIi5IUy5Qcm90b2J1Zi5Db21tb24uU2VydmVy",
+            "SW5mb05vZGUqygMKEkdhbWVHYXRlTWdyUHJvdG9jbBIcChhHQU1FR0FURU1H",
+            "Ul9QUk9UT0NMX05PTkUQABItCidHQU1FR0FURU1HUl9QUk9UT0NMX1JFR0lT",
+            "VEVSX1RPX0dHTV9SRVEQgfoBEi4KKEdBTUVHQVRFTUdSX1BST1RPQ0xfUkVH",
+            "SVNURVJfVE9fR0dNX1JFU1AQgvoBEjAKKkdBTUVHQVRFTUdSX1BST1RPQ0xf",
+            "RVhFQ1VURV9HR19DT01NQU5EX1JFURCD+gESMQorR0FNRUdBVEVNR1JfUFJP",
+            "VE9DTF9FWEVDVVRFX0dHX0NPTU1BTkRfUkVTUBCE+gESLwopR0FNRUdBVEVN",
+            "R1JfUFJPVE9DTF9FWEVDVVRFX1NfQ09NTUFORF9SRVEQhfoBEjAKKkdBTUVH",
+            "QVRFTUdSX1BST1RPQ0xfRVhFQ1VURV9TX0NPTU1BTkRfUkVTUBCG+gESNgow",
+            "R0FNRUdBVEVNR1JfUFJPVE9DTF9SRUdJU1RFUl9TRVNTT0lPTl9UT19HR01f",
+            "UkVREIf6ARI3CjFHQU1FR0FURU1HUl9QUk9UT0NMX1JFR0lTVEVSX1NFU1NP",
+            "SU9OX1RPX0dHTV9SRVNQEIj6AWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::HS.Protobuf.Common.CommonReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.GameGateMgr.GameGateMgrProtocl), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameGateMgr.RegisterToGGMRequest), global::HS.Protobuf.GameGateMgr.RegisterToGGMRequest.Parser, new[]{ "ServerInfoNode" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameGateMgr.RegisterToGGMResponse), global::HS.Protobuf.GameGateMgr.RegisterToGGMResponse.Parser, new[]{ "ResultCode", "ResultMsg" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameGateMgr.ExecuteGGCommandRequest), global::HS.Protobuf.GameGateMgr.ExecuteGGCommandRequest.Parser, new[]{ "Command", "GateServerId", "TimeStamp", "GameServerInfoNode" }, new[]{ "Payload" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameGateMgr.ExecuteGGCommandRequest), global::HS.Protobuf.GameGateMgr.ExecuteGGCommandRequest.Parser, new[]{ "Command", "TargetServerId", "TimeStamp", "GameServerInfoNode" }, new[]{ "Payload" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameGateMgr.ExecuteGGCommandResponse), global::HS.Protobuf.GameGateMgr.ExecuteGGCommandResponse.Parser, new[]{ "ResultCode", "ErrCommand" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameGateMgr.ExecuteSCommandRequest), global::HS.Protobuf.GameGateMgr.ExecuteSCommandRequest.Parser, new[]{ "SceneServerId", "TimeStamp", "GameServerInfoNode" }, new[]{ "Payload" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameGateMgr.ExecuteSCommandResponse), global::HS.Protobuf.GameGateMgr.ExecuteSCommandResponse.Parser, new[]{ "ResultCode", "ErrCommand" }, null, null, null, null),
@@ -575,7 +575,7 @@ namespace HS.Protobuf.GameGateMgr {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ExecuteGGCommandRequest(ExecuteGGCommandRequest other) : this() {
       command_ = other.command_;
-      gateServerId_ = other.gateServerId_;
+      targetServerId_ = other.targetServerId_;
       timeStamp_ = other.timeStamp_;
       switch (other.PayloadCase) {
         case PayloadOneofCase.GameServerInfoNode:
@@ -604,15 +604,15 @@ namespace HS.Protobuf.GameGateMgr {
       }
     }
 
-    /// <summary>Field number for the "gateServerId" field.</summary>
-    public const int GateServerIdFieldNumber = 2;
-    private int gateServerId_;
+    /// <summary>Field number for the "targetServerId" field.</summary>
+    public const int TargetServerIdFieldNumber = 2;
+    private int targetServerId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int GateServerId {
-      get { return gateServerId_; }
+    public int TargetServerId {
+      get { return targetServerId_; }
       set {
-        gateServerId_ = value;
+        targetServerId_ = value;
       }
     }
 
@@ -676,7 +676,7 @@ namespace HS.Protobuf.GameGateMgr {
         return true;
       }
       if (Command != other.Command) return false;
-      if (GateServerId != other.GateServerId) return false;
+      if (TargetServerId != other.TargetServerId) return false;
       if (TimeStamp != other.TimeStamp) return false;
       if (!object.Equals(GameServerInfoNode, other.GameServerInfoNode)) return false;
       if (PayloadCase != other.PayloadCase) return false;
@@ -688,7 +688,7 @@ namespace HS.Protobuf.GameGateMgr {
     public override int GetHashCode() {
       int hash = 1;
       if (Command != global::HS.Protobuf.Common.GateCommand.None) hash ^= Command.GetHashCode();
-      if (GateServerId != 0) hash ^= GateServerId.GetHashCode();
+      if (TargetServerId != 0) hash ^= TargetServerId.GetHashCode();
       if (TimeStamp != 0L) hash ^= TimeStamp.GetHashCode();
       if (payloadCase_ == PayloadOneofCase.GameServerInfoNode) hash ^= GameServerInfoNode.GetHashCode();
       hash ^= (int) payloadCase_;
@@ -714,9 +714,9 @@ namespace HS.Protobuf.GameGateMgr {
         output.WriteRawTag(8);
         output.WriteEnum((int) Command);
       }
-      if (GateServerId != 0) {
+      if (TargetServerId != 0) {
         output.WriteRawTag(16);
-        output.WriteInt32(GateServerId);
+        output.WriteInt32(TargetServerId);
       }
       if (TimeStamp != 0L) {
         output.WriteRawTag(24);
@@ -740,9 +740,9 @@ namespace HS.Protobuf.GameGateMgr {
         output.WriteRawTag(8);
         output.WriteEnum((int) Command);
       }
-      if (GateServerId != 0) {
+      if (TargetServerId != 0) {
         output.WriteRawTag(16);
-        output.WriteInt32(GateServerId);
+        output.WriteInt32(TargetServerId);
       }
       if (TimeStamp != 0L) {
         output.WriteRawTag(24);
@@ -765,8 +765,8 @@ namespace HS.Protobuf.GameGateMgr {
       if (Command != global::HS.Protobuf.Common.GateCommand.None) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Command);
       }
-      if (GateServerId != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(GateServerId);
+      if (TargetServerId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(TargetServerId);
       }
       if (TimeStamp != 0L) {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(TimeStamp);
@@ -789,8 +789,8 @@ namespace HS.Protobuf.GameGateMgr {
       if (other.Command != global::HS.Protobuf.Common.GateCommand.None) {
         Command = other.Command;
       }
-      if (other.GateServerId != 0) {
-        GateServerId = other.GateServerId;
+      if (other.TargetServerId != 0) {
+        TargetServerId = other.TargetServerId;
       }
       if (other.TimeStamp != 0L) {
         TimeStamp = other.TimeStamp;
@@ -824,7 +824,7 @@ namespace HS.Protobuf.GameGateMgr {
             break;
           }
           case 16: {
-            GateServerId = input.ReadInt32();
+            TargetServerId = input.ReadInt32();
             break;
           }
           case 24: {
@@ -860,7 +860,7 @@ namespace HS.Protobuf.GameGateMgr {
             break;
           }
           case 16: {
-            GateServerId = input.ReadInt32();
+            TargetServerId = input.ReadInt32();
             break;
           }
           case 24: {

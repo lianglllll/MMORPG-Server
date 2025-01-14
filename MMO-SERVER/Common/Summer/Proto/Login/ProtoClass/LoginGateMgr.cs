@@ -42,14 +42,10 @@ namespace HS.Protobuf.LoginGateMgr {
             "R0lOR0FURU1HUl9QUk9UT0NMX1JFR0lTVEVSX0xPR0lOR0FURV9JTlNUQU5D",
             "RV9SRVNQEPKrARIxCitMT0dJTkdBVEVNR1JfUFJPVE9DTF9FWEVDVVRFX0xH",
             "X0NPTU1BTkRfUkVREPOrARIyCixMT0dJTkdBVEVNR1JfUFJPVE9DTF9FWEVD",
-            "VVRFX0xHX0NPTU1BTkRfUkVTUBD0qwEqpQEKEExvZ2luR2F0ZUNvbW1hbmQS",
-            "GwoXTE9HSU5fR0FURV9DT01NQU5EX05PTkUQABIcChhMT0dJTl9HQVRFX0NP",
-            "TU1BTkRfU1RBUlQQARIbChdMT0dJTl9HQVRFX0NPTU1BTkRfU1RPUBACEh0K",
-            "GUxPR0lOX0dBVEVfQ09NTUFORF9SRVNVTUUQAxIaChZMT0dJTl9HQVRFX0NP",
-            "TU1BTkRfRU5EEARiBnByb3RvMw=="));
+            "VVRFX0xHX0NPTU1BTkRfUkVTUBD0qwFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::HS.Protobuf.Common.CommonReflection.Descriptor, },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.LoginGateMgr.LoginGateMgrProtocl), typeof(global::HS.Protobuf.LoginGateMgr.LoginGateCommand), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.LoginGateMgr.LoginGateMgrProtocl), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.LoginGateMgr.ExecuteLGCommandRequest), global::HS.Protobuf.LoginGateMgr.ExecuteLGCommandRequest.Parser, new[]{ "Command", "LoginGateServerId", "TimeStamp", "LoginServerInfoNode" }, new[]{ "Payload" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.LoginGateMgr.ExecuteLGCommandResponse), global::HS.Protobuf.LoginGateMgr.ExecuteLGCommandResponse.Parser, new[]{ "ResultCode", "ErrCommand" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.LoginGateMgr.RegisterLoginGateInstanceRequest), global::HS.Protobuf.LoginGateMgr.RegisterLoginGateInstanceRequest.Parser, new[]{ "ServerInfoNode" }, null, null, null, null),
@@ -78,14 +74,6 @@ namespace HS.Protobuf.LoginGateMgr {
     ///[ExecuteLGCommandResponse]
     /// </summary>
     [pbr::OriginalName("LOGINGATEMGR_PROTOCL_EXECUTE_LG_COMMAND_RESP")] ExecuteLgCommandResp = 22004,
-  }
-
-  public enum LoginGateCommand {
-    [pbr::OriginalName("LOGIN_GATE_COMMAND_NONE")] None = 0,
-    [pbr::OriginalName("LOGIN_GATE_COMMAND_START")] Start = 1,
-    [pbr::OriginalName("LOGIN_GATE_COMMAND_STOP")] Stop = 2,
-    [pbr::OriginalName("LOGIN_GATE_COMMAND_RESUME")] Resume = 3,
-    [pbr::OriginalName("LOGIN_GATE_COMMAND_END")] End = 4,
   }
 
   #endregion

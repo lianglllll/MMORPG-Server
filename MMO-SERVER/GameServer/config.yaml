@@ -1,7 +1,6 @@
 server:
   gameWorldId: 1
   ip: 127.0.0.1
-  userPort: 10500
   serverPort: 10501
   # 工作线程数
   workerCount: 1

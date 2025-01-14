@@ -21,15 +21,19 @@ namespace GameServer.Net
             GameServerInfoNode gNode = new GameServerInfoNode();
             m_curServerInfoNode.ServerType = SERVER_TYPE.Game;
             m_curServerInfoNode.Ip = Config.Server.ip;
-            m_curServerInfoNode.Port = Config.Server.userPort;
+            m_curServerInfoNode.Port = Config.Server.serverPort;
             m_curServerInfoNode.ServerId = 0;
             gNode.GameWorldId = Config.Server.gameWorldId;
             m_curServerInfoNode.GameServerInfo = gNode;
             // 网络服务开启
             NetService.Instance.Init();
+            SessionManager.Instance.Init();
+            GameTokenManager.Instance.Init();
+
             // 协议注册
             ProtoHelper.Instance.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
             ProtoHelper.Instance.Register<ServerInfoRegisterResponse>((int)ControlCenterProtocl.ServerinfoRegisterResp);
+
             // 消息的订阅
             MessageRouter.Instance.Subscribe<ServerInfoRegisterResponse>(_RegisterServerInfo2ControlCenterResponse);
 

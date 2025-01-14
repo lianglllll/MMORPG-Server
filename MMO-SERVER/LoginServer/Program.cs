@@ -46,11 +46,13 @@ namespace LoginServer
             Config.Init();                      
             Scheduler.Instance.Start(Config.Server.updateHz);
 
+            Log.Information("=============================================");
             Log.Information("[LoginServer]初始化,配置如下：");
             Log.Information($"ip：{Config.Server.ip}");
             Log.Information($"port：{Config.Server.port}");
             Log.Information($"workerCount：{Config.Server.workerCount}");
             Log.Information($"updateHz：{Config.Server.updateHz}");
+            Log.Information("=============================================");
 
             //开启网络服务
             ServersMgr.Instance.Init();

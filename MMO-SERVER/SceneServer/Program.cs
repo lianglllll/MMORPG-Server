@@ -48,13 +48,14 @@ namespace SceneServer
             //中心计时器任务加载(使用了Timer)
             Scheduler.Instance.Start(Config.Server.updateHz);
 
-
+            Log.Information("=============================================");
             Log.Information("[SceneServer]初始化,配置如下：");
             Log.Information($"ip：{Config.Server.ip}");
             Log.Information($"port：{Config.Server.serverPort}");
             Log.Information($"workerCount：{Config.Server.workerCount}");
             Log.Information($"updateHz：{Config.Server.updateHz}");
             Log.Information($"aoiViewArea：{Config.Server.aoiViewArea}");
+            Log.Information("=============================================");
 
             //开启网络服务
             ServersMgr.Instance.Init();

@@ -4,6 +4,7 @@ using GameGateMgrServer.Net;
 using Google.Protobuf.Collections;
 using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
+using HS.Protobuf.GameGate;
 using HS.Protobuf.GameGateMgr;
 using HS.Protobuf.LoginGate;
 using HS.Protobuf.LoginGateMgr;
@@ -11,6 +12,41 @@ using Serilog;
 
 namespace GameGateMgrServer.Core
 {
+    class GameEntry
+    {
+        public ServerInfoNode ServerInfo { get; set; }
+
+        public int AssignGatePriority
+        {
+            // 数值越大优先级越高
+            get
+            {
+                if (curGate.Count == 0)
+                {
+                    return Int32.MaxValue;
+                }
+                return NeedGameGateCount - curGate.Count;
+            }
+        }
+        public int NeedGameGateCount { get; set; }
+        public List<int> curGate = new();
+        public int assignSessionIndex { get; set; }
+
+        public int AssignScenePriority
+        {
+            get
+            {
+                if (curGate.Count == 0)
+                {
+                    return Int32.MaxValue;
+                }
+                return NeedGameGateCount - curGate.Count;
+            }
+        }
+        public int NeedSceneCount { get; set; }
+        public List<int> curScene = new();
+    }
+
     class GameGateEntry
     {
         public Connection Connection { get; set; }
@@ -25,39 +61,8 @@ namespace GameGateMgrServer.Core
         public int curGameServerId { get; set; }
         public ServerStatus Status { get; set; }
     }
-    class GameEntry
-    {
-        public ServerInfoNode ServerInfo { get; set; }
-        public int AssignGatePriority
-        {
-            // 数值越大优先级越高
-            get
-            {
-                if(curGate.Count == 0)
-                {
-                    return Int32.MaxValue;
-                }
-                return NeedLoginGateCount - curGate.Count;
-            }
-        }
-        public int NeedLoginGateCount { get; set; }
-        public List<int> curGate = new();
 
-        public int AssignScenePriority { 
-            get
-            {
-                if (curGate.Count == 0)
-                {
-                    return Int32.MaxValue;
-                }
-                return NeedLoginGateCount - curGate.Count;
-            }
-        }
-        public int NeedSceneCount { get; set; }
-        public List<int> curScene = new();
-    }
-
-    public class GameGateMonitor:Singleton<GameGateMonitor>
+    public class GGMMonitor:Singleton<GGMMonitor>
     {
         private Dictionary<int, GameEntry> m_gameInstances = new();
         private Dictionary<int, GameGateEntry> m_gameGateInstances = new();
@@ -68,7 +73,6 @@ namespace GameGateMgrServer.Core
         private int m_healthCheckInterval;                                        // 控制健康检查的时间间隔（以秒为单位）。
         private Dictionary<string, int> m_alertThresholds = new();                // 性能指标阈值
         private Dictionary<int, List<Dictionary<string, int>>> m_metrics = new(); // 保存每个实例的历史性能指标
-
         public bool Init()
         {
             m_healthCheckInterval = 60;
@@ -83,6 +87,7 @@ namespace GameGateMgrServer.Core
             return true;
         }
 
+        // game
         public bool AddGameServerInfos(RepeatedField<ClusterEventNode> clusterEventNodes)
         {
             foreach (var node in clusterEventNodes)
@@ -101,7 +106,9 @@ namespace GameGateMgrServer.Core
             var entry = new GameEntry
             {
                 ServerInfo = serverInfoNode,
-                NeedLoginGateCount = 1
+                NeedGameGateCount = 1,
+                NeedSceneCount = 1,
+                assignSessionIndex = 0,
             };
             m_gameInstances[serverInfoNode.ServerId] = entry;
             ProcessIdleQueue(serverInfoNode.ServerId);
@@ -128,7 +135,8 @@ namespace GameGateMgrServer.Core
             return true;
         }
 
-        // gate && scene
+
+        // gameGate && scene
         public bool RegisterToGGMInstance(Connection conn, ServerInfoNode serverInfoNode)
         {
             if (m_gameGateInstances.ContainsKey(serverInfoNode.ServerId))
@@ -137,7 +145,7 @@ namespace GameGateMgrServer.Core
                 return false;
             }
 
-            if (serverInfoNode.ServerType == SERVER_TYPE.Game)
+            if (serverInfoNode.ServerType == SERVER_TYPE.Gamegate)
             {
                 var entry = new GameGateEntry
                 {
@@ -147,6 +155,7 @@ namespace GameGateMgrServer.Core
                     Status = ServerStatus.Inactive,
                 };
                 m_gameGateInstances.Add(serverInfoNode.ServerId, entry);
+                _AssignTaskToGameGate(serverInfoNode.ServerId);
             }
             else if (serverInfoNode.ServerType == SERVER_TYPE.Scene)
             {
@@ -158,50 +167,17 @@ namespace GameGateMgrServer.Core
                     Status = ServerStatus.Inactive,
                 };
                 m_sceneInstances.Add(serverInfoNode.ServerId, entry);
+                _AssignTaskToScene(serverInfoNode.ServerId);
             }
 
-            _AssignTaskToGameGate(serverInfoNode.ServerId);
             return true;
         }
-        public bool EntryDisconnection(int serverId)
-        {
-            if (m_gameGateInstances.ContainsKey(serverId))
-            {
-                return _GameGateDisconnection(serverId);
-            }
-            else if (m_sceneInstances.ContainsKey(serverId))
-            {
-                return _SceneDisconnection(serverId);
-            }
-            return false;
-        }
-        private bool _GameGateDisconnection(int serverId)
-        {
-            int relativeLoginServerId = m_gameGateInstances[serverId].curGameServerId;
-            if (relativeLoginServerId != -1)
-            {
-                m_gameInstances[relativeLoginServerId].curGate.Remove(serverId);
-            }
-            m_gameGateInstances.Remove(serverId);
-            return true;
-        }
-        private bool _SceneDisconnection(int serverId)
-        {
-            int relativeLoginServerId = m_gameGateInstances[serverId].curGameServerId;
-            if (relativeLoginServerId != -1)
-            {
-                m_gameInstances[relativeLoginServerId].curScene.Remove(serverId);
-            }
-            m_sceneInstances.Remove(serverId);
-            return true;
-        }
-
         public void _AssignTaskToGameGate(int gameGateServerId)
         {
             int gameServerId = -1;
 
             // 校验
-            if (!m_gameGateInstances.ContainsKey(gameGateServerId) 
+            if (!m_gameGateInstances.ContainsKey(gameGateServerId)
                 || m_gameGateInstances[gameGateServerId].Status != ServerStatus.Inactive)
             {
                 goto End;
@@ -212,11 +188,11 @@ namespace GameGateMgrServer.Core
             int maxPriority = Int32.MinValue;
             foreach (var item in m_gameInstances)
             {
-                if(item.Value.AssignGatePriority > maxPriority)
+                if (item.Value.AssignGatePriority > maxPriority)
                 {
                     maxPriority = item.Value.AssignGatePriority;
                     gameServerId = item.Key;
-                    if(maxPriority == Int32.MaxValue)
+                    if (maxPriority == Int32.MaxValue)
                     {
                         break;
                     }
@@ -224,14 +200,14 @@ namespace GameGateMgrServer.Core
             }
 
             // 发命令包
-            ExecuteLGCommandRequest req = new();
+            ExecuteGGCommandRequest req = new();
             req.TimeStamp = Scheduler.UnixTime;
             var ggEntry = m_gameGateInstances[gameGateServerId];
             if (gameServerId == -1)
             {
                 ggEntry.Status = ServerStatus.Inactive;
                 req.Command = GateCommand.End;
-                req.LoginGateServerId = ServersMgr.Instance.ServerId;
+                req.TargetServerId = ServersMgr.Instance.ServerId;
                 gameGateIdleQueue.Enqueue(gameGateServerId);
             }
             else
@@ -241,8 +217,8 @@ namespace GameGateMgrServer.Core
                 ggEntry.curGameServerId = gameServerId;
                 ggEntry.Status = ServerStatus.Active;
                 req.Command = GateCommand.Start;
-                req.LoginGateServerId = ServersMgr.Instance.ServerId;
-                req.LoginServerInfoNode = m_gameInstances[gameServerId].ServerInfo;
+                req.TargetServerId = ServersMgr.Instance.ServerId;
+                req.GameServerInfoNode = m_gameInstances[gameServerId].ServerInfo;
             }
             ggEntry.Connection.Send(req);
 
@@ -276,13 +252,13 @@ namespace GameGateMgrServer.Core
             }
 
             // 发命令包
-            ExecuteSCommandRequest req = new();
+            ExecuteGGCommandRequest req = new();
             req.TimeStamp = Scheduler.UnixTime;
             var sEntry = m_gameGateInstances[sceneServerId];
             if (gameServerId == -1)
             {
                 sEntry.Status = ServerStatus.Inactive;
-                req.SceneServerId = ServersMgr.Instance.ServerId;
+                req.TargetServerId = ServersMgr.Instance.ServerId;
                 sceneIdleQueue.Enqueue(sceneServerId);
             }
             else
@@ -291,7 +267,7 @@ namespace GameGateMgrServer.Core
                 m_gameInstances[gameServerId].curScene.Add(sceneServerId);
                 sEntry.curGameServerId = gameServerId;
                 sEntry.Status = ServerStatus.Active;
-                req.SceneServerId = ServersMgr.Instance.ServerId;
+                req.TargetServerId = ServersMgr.Instance.ServerId;
                 req.GameServerInfoNode = m_sceneInstances[gameServerId].ServerInfo;
             }
             sEntry.Connection.Send(req);
@@ -299,12 +275,13 @@ namespace GameGateMgrServer.Core
         End:
             return;
         }
+
         private void ProcessIdleQueue(int gameServerId)
         {
             if(gameGateIdleQueue.Count != 0)
             {
                 GameEntry entry = m_gameInstances[gameServerId];
-                for (int i = 0; i < entry.NeedLoginGateCount - entry.curGate.Count; i++)
+                for (int i = 0; i < entry.NeedGameGateCount - entry.curGate.Count; i++)
                 {
                     int gateId = gameGateIdleQueue.Dequeue();
                     ActiveGate(gateId, gameServerId);
@@ -329,7 +306,8 @@ namespace GameGateMgrServer.Core
             }
 
         }
-        private void ActiveGate(int gameGateServerId, int gameServerId) {
+        private void ActiveGate(int gameGateServerId, int gameServerId)
+        {
             GameEntry gEntry = m_gameInstances[gameServerId];
             GameGateEntry ggEntry = m_gameGateInstances[gameGateServerId];
             gEntry.curGate.Add(gameGateServerId);
@@ -337,11 +315,11 @@ namespace GameGateMgrServer.Core
             ggEntry.Status = ServerStatus.Active;
 
             // 发包
-            ExecuteLGCommandRequest req = new();
+            ExecuteGGCommandRequest req = new();
             req.TimeStamp = Scheduler.UnixTime;
             req.Command = GateCommand.Start;
-            req.LoginGateServerId = ServersMgr.Instance.ServerId;
-            req.LoginServerInfoNode = gEntry.ServerInfo;
+            req.TargetServerId = ServersMgr.Instance.ServerId;
+            req.GameServerInfoNode = gEntry.ServerInfo;
             ggEntry.Connection.Send(req);
         }
         private void ActiveScene(int sceneServerId, int gameServerId)
@@ -360,6 +338,100 @@ namespace GameGateMgrServer.Core
             sEntry.Connection.Send(req);
         }
 
+        public bool EntryDisconnection(int serverId)
+        {
+            if (m_gameGateInstances.ContainsKey(serverId))
+            {
+                return _GameGateDisconnection(serverId);
+            }
+            else if (m_sceneInstances.ContainsKey(serverId))
+            {
+                return _SceneDisconnection(serverId);
+            }
+            return false;
+        }
+        private bool _GameGateDisconnection(int serverId)
+        {
+            int relativeLoginServerId = m_gameGateInstances[serverId].curGameServerId;
+            if (relativeLoginServerId != -1)
+            {
+                m_gameInstances[relativeLoginServerId].curGate.Remove(serverId);
+            }
+            m_gameGateInstances.Remove(serverId);
+            return true;
+        }
+        private bool _SceneDisconnection(int serverId)
+        {
+            int relativeLoginServerId = m_gameGateInstances[serverId].curGameServerId;
+            if (relativeLoginServerId != -1)
+            {
+                m_gameInstances[relativeLoginServerId].curScene.Remove(serverId);
+            }
+            m_sceneInstances.Remove(serverId);
+            return true;
+        }
+
+        // tools
+        private GameEntry GetGameEntryByWorldId(int worldId)
+        {
+            foreach(var entry in m_gameInstances.Values){
+                if (entry.ServerInfo.GameServerInfo.GameWorldId == worldId) { 
+                    return entry;
+                }
+            }
+            return null;
+        }
+        public List<ServerInfoNode> RegisterSession(int worldId, string sessionId)
+        {
+            List<ServerInfoNode> result = new();
+
+            // 找对应的game对应轻松的gameGate返回回去,策略：
+            // 1.随机选择：从可用的网关列表中随机选择一个。虽然简单，但能在一定程度上分摊负载。
+            // 2.轮询（Round Robin）：按顺序循环选择下一个网关。这是一种经典的负载均衡方法，确保各个网关得到相等的请求量。
+            // 3.最优选择：根据每个网关的当前负载或网络延迟情况选择最佳的网关。这需要对各个网关的状态进行监控，并可能需要额外的计算开销。
+            // 4.权重轮询（Weighted Round Robin）：为每个网关设置一个权重，根据权重大小来分配连接请求。例如，性能更强的网关可以获得更高的权重。
+            // 5.健康检查：定期检测各个网关的状态，仅选择那些健康的网关进行分发。
+            GameEntry gameEntry = GetGameEntryByWorldId(worldId);
+            if(gameEntry == null)
+            {
+                goto End;
+            }
+            // 这里暂时使用轮询策略,并且直接分配两个gate
+            int assignGateCnt = 2;
+            List<GameGateEntry> list = new();
+            if (gameEntry.curGate.Count <= assignGateCnt)
+            {
+                foreach(var gateServerId in gameEntry.curGate)
+                {
+                    list.Add(m_gameGateInstances[gateServerId]);
+                }
+                gameEntry.assignSessionIndex = 0;
+            }
+            else
+            {
+                int index = gameEntry.assignSessionIndex;
+                for (int i = 0;i <assignGateCnt; ++i)
+                {
+                    list.Add(m_gameGateInstances[index]);
+                    index = index % gameEntry.curGate.Count;
+                }
+                gameEntry.assignSessionIndex = index;
+            }
+            if(list.Count == 0)
+            {
+                goto End;
+            }
+
+            // 并且通知对应的gameGate设置session
+            RegisterSessionToGGRequest req = new();
+            req.Session = sessionId;
+            foreach (var gateGateEntry in list) {
+                gateGateEntry.Connection.Send(req);
+                result.Add(gameEntry.ServerInfo);
+            }
+        End:
+            return result;
+        }
 
 
         // 性能监测相关

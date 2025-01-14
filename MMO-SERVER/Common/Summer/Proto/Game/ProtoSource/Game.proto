@@ -1,2 +1,14 @@
 syntax = "proto3";
 package HS.Protobuf.Game;
+
+enum GameProtocl{
+	GAME_PROTOCL_NONE = 0;
+	GAME_PROTOCL_GET_GAME_TOKEN_REQ = 30001;		// [GetGameTokenRequest]
+	GAME_PROTOCL_GET_GAME_TOKEN_RESP = 30002;		// [GetGameTokenResponse]
+}
+
+message GetGameTokenRequest{
+}
+message GetGameTokenResponse{
+	string gameToken = 1;
+}

@@ -1,14 +1,15 @@
 ﻿using Common.Summer.Core;
 using Common.Summer.Net;
 using Common.Summer.Tools;
-using Google.Protobuf;
 using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
 using HS.Protobuf.LoginGateMgr;
-using GameGateServer.Core;
 using Serilog;
 using GameGateServer.Utils;
 using HS.Protobuf.GameGateMgr;
+using GameGateServer.Handle;
+using HS.Protobuf.Login;
+using HS.Protobuf.Game;
 
 namespace GameGateServer.Net
 {
@@ -22,6 +23,8 @@ namespace GameGateServer.Net
     {
         private ServerInfoNode? m_curSin;
         private Dictionary<SERVER_TYPE, ServerEntry> m_outgoingServerConnection = new();
+        public string GameToken { get; private set; }
+
 
         public void Init()
         {
@@ -37,7 +40,9 @@ namespace GameGateServer.Net
 
             // 网络服务初始化
             NetService.Instance.Init();
+            SessionManager.Instance.Init();
             GameGateHandler.Instance.Init();
+            EnterGameWorldHanlder.Instance.Init();
 
             // 协议注册
             ProtoHelper.Instance.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
@@ -46,10 +51,14 @@ namespace GameGateServer.Net
             ProtoHelper.Instance.Register<RegisterToGGMResponse>((int)GameGateMgrProtocl.RegisterToGgmResp);
             ProtoHelper.Instance.Register<ExecuteGGCommandRequest>((int)GameGateMgrProtocl.ExecuteGgCommandReq);
             ProtoHelper.Instance.Register<ExecuteGGCommandResponse>((int)GameGateMgrProtocl.ExecuteGgCommandResp);
+            ProtoHelper.Instance.Register<GetGameTokenRequest>((int)GameProtocl.GetGameTokenReq);
+            ProtoHelper.Instance.Register<GetGameTokenResponse>((int)GameProtocl.GetGameTokenResp);
+
             // 消息的订阅
             MessageRouter.Instance.Subscribe<ServerInfoRegisterResponse>(_RegisterServerInfo2ControlCenterResponse);
             MessageRouter.Instance.Subscribe<RegisterToGGMResponse>(_HandleRegisterToGGMResponse);
             MessageRouter.Instance.Subscribe<ExecuteGGCommandRequest>(_ExecuteGGCommandRequest);
+            MessageRouter.Instance.Subscribe<GetGameTokenResponse>(_HandleGetGameTokenResponse);
 
             // 开始流程
             _ExecutePhase0();
@@ -108,7 +117,6 @@ namespace GameGateServer.Net
         {
             // 开始网络监听，预示着当前服务器的正式启动
             NetService.Instance.Start();
-            ClientMessageDispatcher.Instance.Init();
             return true;
         }
 
@@ -121,7 +129,7 @@ namespace GameGateServer.Net
         {
             Log.Information("Successfully connected to the control center server.");
             // 记录
-            m_outgoingServerConnection[SERVER_TYPE.Controlcenter].NetClient = tcpClient;
+            m_outgoingServerConnection.Add(SERVER_TYPE.Controlcenter, new ServerEntry { NetClient = tcpClient });
 
             // 向cc注册自己
             ServerInfoRegisterRequest req = new();
@@ -184,8 +192,8 @@ namespace GameGateServer.Net
             // 记录
             m_outgoingServerConnection[SERVER_TYPE.Gamegatemgr].NetClient = tcpClient;
 
-            // 向lgm注册自己
-            RegisterLoginGateInstanceRequest req = new();
+            // 向ggm注册自己
+            RegisterToGGMRequest req = new();
             req.ServerInfoNode = m_curSin;
             tcpClient.Send(req);
         }
@@ -244,7 +252,7 @@ namespace GameGateServer.Net
                     break;
             }
 
-            ExecuteLGCommandResponse resp = new();
+            ExecuteGGCommandResponse resp = new();
             resp.ResultCode = resultCode;
             resp.ErrCommand = message.Command;
             conn.Send(resp);
@@ -295,8 +303,6 @@ namespace GameGateServer.Net
 
             // 记录
             m_outgoingServerConnection[SERVER_TYPE.Game].NetClient = tcpClient;
-
-            _ExecutePhase3();
         }
         private void _GameConnectedFailedCallback(NetClient tcpClient, bool isEnd)
         {
@@ -315,6 +321,11 @@ namespace GameGateServer.Net
         private void _GameDisconnectedCallback(NetClient tcpClient)
         {
 
+        }
+        private void _HandleGetGameTokenResponse(Connection sender, GetGameTokenResponse message)
+        {
+            GameToken = message.GameToken;
+            _ExecutePhase3();
         }
 
     }

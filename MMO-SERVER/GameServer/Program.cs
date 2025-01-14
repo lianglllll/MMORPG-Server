@@ -50,32 +50,33 @@ namespace GameServer
                 .CreateLogger();
 
             Config.Init();                      // 加载服务器配置
-            DataManager.Instance.Init();        // 加载json配置文件
-            SkillSanner.Start();                // 加载自定义技能类
-            DbManager.Init();                   
-            UserService.Instance.Start();       
-            SpaceService.Instance.Start();      
-            CombatService.Instance.Start();
-            ChatService.Instance.Start();
-            ItemService.Instance.Start();
+            //DataManager.Instance.Init();        // 加载json配置文件
+            //SkillSanner.Start();                // 加载自定义技能类
+            //DbManager.Init();                   
+            //UserService.Instance.Start();       
+            //SpaceService.Instance.Start();      
+            //CombatService.Instance.Start();
+            //ChatService.Instance.Start();
+            //ItemService.Instance.Start();
 
             //中心计时器任务加载(使用了Timer)
             Scheduler.Instance.Start(Config.Server.updateHz);
-            //添加中心计时器任务：
-            Scheduler.Instance.AddTask(() => {
-                EntityManager.Instance.Update();
-                SpaceManager.Instance.Update();
-            }, Config.Server.updateHz);
+            ////添加中心计时器任务：
+            //Scheduler.Instance.AddTask(() => {
+            //    EntityManager.Instance.Update();
+            //    SpaceManager.Instance.Update();
+            //}, Config.Server.updateHz);
 
+            Log.Information("=============================================");
             Log.Information("[LoginServer]初始化,配置如下：");
             Log.Information($"ip：{Config.Server.ip}");
-            Log.Information($"port：{Config.Server.userPort}");
+            Log.Information($"port：{Config.Server.serverPort}");
             Log.Information($"workerCount：{Config.Server.workerCount}");
             Log.Information($"updateHz：{Config.Server.updateHz}");
             Log.Information($"aoiViewArea：{Config.Server.aoiViewArea}");
+            Log.Information("=============================================");
 
             //开启网络服务
-            SessionManager.Instance.Init();
             ServersMgr.Instance.Init();
             return true;
         } 

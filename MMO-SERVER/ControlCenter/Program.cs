@@ -48,11 +48,14 @@ namespace ControlCenter
             Scheduler.Instance.Start(Config.Server.updateHz);
             ServersMgr.Instance.Init();
 
+            Log.Information("=============================================");
             Log.Information("[ControlCenter]初始化成功,配置如下：");
             Log.Information($"ip：{Config.Server.ip}");
             Log.Information($"port：{Config.Server.port}");
             Log.Information($"workerCount：{Config.Server.workerCount}");
             Log.Information($"updateHz：{Config.Server.updateHz}");
+            Log.Information("=============================================");
+
             return true;
         }
         private static bool UnInit()

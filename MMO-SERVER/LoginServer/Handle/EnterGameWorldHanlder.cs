@@ -37,9 +37,6 @@ namespace LoginServer.Handle
 
             return true;
         }
-
-
-
         public bool UnInit()
         {
             return true;
@@ -97,6 +94,17 @@ namespace LoginServer.Handle
         
         private void _HandleGetGameGateByWorldIdRequest(Connection conn, GetGameGateByWorldIdRequest message)
         {
+            // 校验一下有没有这个session
+            var session = SessionManager.Instance.GetSessionBySessionId(message.SessionId);
+            GetGameGateByWorldIdResponse resp = new();
+            if(session == null)
+            {
+                resp.ResultCode = 1;
+                resp.ResultMsg = "越权操作,请登录!";
+                resp.LoginGateToken = message.LoginGateToken;
+                goto End1;
+            }
+
             int taskId = m_idGenerator.GetId();
             m_tasks.Add(taskId, message);
             RegisterSessionToGGMRequest req = new();
@@ -104,6 +112,13 @@ namespace LoginServer.Handle
             req.WorldId = message.WorldId;
             req.Session = message.SessionId;
             ServersMgr.Instance.SendMsgToGGM(req);
+            goto End2;
+
+        End1:
+            conn.Send(resp);
+            return;
+        End2:
+            return;
         }
         private void _HandleRegisterSessionToGGMResponse(Connection conn, RegisterSessionToGGMResponse message)
         {

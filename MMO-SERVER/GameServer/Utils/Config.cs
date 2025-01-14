@@ -29,9 +29,6 @@ namespace GameServer.Utils
         [YamlMember(Alias = "ip")]
         public string ip { get; set; }
 
-        [YamlMember(Alias = "userPort")]
-        public int userPort { get; set; }
-
         [YamlMember(Alias = "serverPort")]
         public int serverPort { get; set; }
 

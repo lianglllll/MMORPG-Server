@@ -2,6 +2,7 @@
 using Common.Summer.Net;
 using Common.Summer.Tools;
 using Google.Protobuf;
+using Google.Protobuf.Collections;
 using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
 using LoginGateServer.Net;
@@ -62,6 +63,7 @@ namespace LoginServer.Net
             List<ClusterEventType> events = new List<ClusterEventType>
             {
                 ClusterEventType.DbproxyEnter,
+                ClusterEventType.GamegatemgrEnter,
             };
             foreach (var e in events)
             {
@@ -76,22 +78,34 @@ namespace LoginServer.Net
             _CCConnectToControlCenter();
             return true;
         }
-        private bool _ExecutePhase1(Google.Protobuf.Collections.RepeatedField<ClusterEventNode> clusterEventNodes)
+        private bool _ExecutePhase1(RepeatedField<ClusterEventNode> clusterEventNodes)
         {
             foreach (var node in clusterEventNodes)
             {
                 if (node.EventType == ClusterEventType.DbproxyEnter)
                 {
                     AddDBServerInfo(node.ServerInfoNode);
+                }else if(node.EventType == ClusterEventType.GamegatemgrEnter)
+                {
+                    AddGGMServerInfo(node.ServerInfoNode);
                 }
             }
             return true;
         }
         private bool _ExecutePhase2()
         {
-            // 开始网络监听，预示着当前服务器的正式启动
-            NetService.Instance.Init2();
-            return true;
+            bool result = false;
+            if(m_outgoingServerConnection.TryGetValue(SERVER_TYPE.Dbproxy,out var db) && db.NetClient !=null &&
+                m_outgoingServerConnection.TryGetValue(SERVER_TYPE.Gamegatemgr, out var ggm) && ggm.NetClient != null)
+            {
+                // 开始网络监听，预示着当前服务器的正式启动
+                NetService.Instance.Init2();
+                result = true;
+                goto End;
+            }
+            result = false;
+        End:
+            return result;
         }
 
         // cc
@@ -184,7 +198,47 @@ namespace LoginServer.Net
         }
 
         // ggm
+        public void AddGGMServerInfo(ServerInfoNode sin)
+        {
+            if (!m_outgoingServerConnection.ContainsKey(SERVER_TYPE.Gamegatemgr))
+            {
+                var entry = new ServerEntry();
+                entry.ServerInfoNode = sin;
+                m_outgoingServerConnection[SERVER_TYPE.Gamegatemgr] = entry;
+                _ConnectToGGM();
+            }
+        }
+        private void _ConnectToGGM()
+        {
+            ServerInfoNode node = m_outgoingServerConnection[SERVER_TYPE.Gamegatemgr].ServerInfoNode;
+            NetService.Instance.ConnctToServer(node.Ip, node.Port,
+                _GGMConnectedCallback, _GGMConnectedFailedCallback, _GGMDisconnectedCallback);
+        }
+        private void _GGMConnectedCallback(NetClient tcpClient)
+        {
+            Log.Information($"Successfully connected to the GGM server[{m_outgoingServerConnection[SERVER_TYPE.Gamegatemgr].ServerInfoNode.ServerId}].");
+            // 记录
+            m_outgoingServerConnection[SERVER_TYPE.Gamegatemgr].NetClient = tcpClient;
+            _ExecutePhase2();
+        }
+        private void _GGMConnectedFailedCallback(NetClient tcpClient, bool isEnd)
+        {
+            if (isEnd)
+            {
+                Log.Error("Connect to GGM server failed, the server may not be turned on");
+            }
+            else
+            {
+                //做一下重新连接
+                Log.Error("Connect to GGM server failed, attempting to reconnect GGM server");
+                Log.Error("重连还没写");
+            }
 
+        }
+        private void _GGMDisconnectedCallback(NetClient tcpClient)
+        {
+
+        }
 
 
         // tools 

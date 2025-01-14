@@ -24,7 +24,7 @@ message RegisterToGGMResponse{
 
 message ExecuteGGCommandRequest{
 	HS.Protobuf.Common.GateCommand command = 1;
-	int32 gateServerId = 2;
+	int32 targetServerId = 2;
 	int64 timeStamp = 3;
 	oneof payload{
 		HS.Protobuf.Common.ServerInfoNode gameServerInfoNode = 4;	
