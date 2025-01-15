@@ -25,7 +25,6 @@ namespace GameGateServer.Net
         private Dictionary<SERVER_TYPE, ServerEntry> m_outgoingServerConnection = new();
         public string GameToken { get; private set; }
 
-
         public void Init()
         {
             // 本服务器的信息
@@ -37,10 +36,12 @@ namespace GameGateServer.Net
             m_curSin.ServerId = 0;
             m_curSin.GameGateServerInfo = ggNode;
             m_curSin.EventBitmap = SetEventBitmap();
+            ggNode.UserPort = Config.Server.userPort;
 
             // 网络服务初始化
             NetService.Instance.Init();
             SessionManager.Instance.Init();
+            SecurityHandler.Instance.Init();
             GameGateHandler.Instance.Init();
             EnterGameWorldHanlder.Instance.Init();
 

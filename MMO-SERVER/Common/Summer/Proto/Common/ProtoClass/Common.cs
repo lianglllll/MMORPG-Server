@@ -46,41 +46,41 @@ namespace HS.Protobuf.Common {
             "b2xDZW50ZXJTZXJ2ZXJJbmZvTm9kZSIVChNMb2dpblNlcnZlckluZm9Ob2Rl",
             "IjYKF0xvZ2luR2F0ZVNlcnZlckluZm9Ob2RlEhsKE3RhcmdldExvZ2luU2Vy",
             "dmVySWQYASABKAUiHAoaTG9naW5HYXRlTWdyU2VydmVySW5mb05vZGUiKQoS",
-            "R2FtZVNlcnZlckluZm9Ob2RlEhMKC2dhbWVXb3JsZElkGAEgASgFIhgKFkdh",
-            "bWVHYXRlU2VydmVySW5mb05vZGUiGwoZR2FtZUdhdGVNZ3JTZXJ2ZXJJbmZv",
-            "Tm9kZSImChNTY2VuZVNlcnZlckluZm9Ob2RlEg8KB3NjZW5lSWQYASABKAUi",
-            "FwoVREJQcm94eVNlcnZlckluZm9Ob2RlIicKBFZlYzMSCQoBeBgBIAEoBRIJ",
-            "CgF5GAIgASgFEgkKAXoYAyABKAUiFAoSQ1NIZWFydEJlYXRSZXF1ZXN0IhUK",
-            "E0NTSGVhcnRCZWF0UmVzcG9uc2UiFAoSU1NIZWFydEJlYXRSZXF1ZXN0IhUK",
-            "E1NTSGVhcnRCZWF0UmVzcG9uc2UiMwoYRXhjaGFuZ2VQdWJsaWNLZXlSZXF1",
-            "ZXN0EhcKD2NsaWVudFB1YmxpY0tleRgBIAEoCSI1ChlFeGNoYW5nZVB1Ymxp",
-            "Y0tleVJlc3BvbnNlEhgKEHNlcnZlclB1YmxpbGNLZXkYASABKAkiQwolRXhj",
-            "aGFuZ2VDb21tdW5pY2F0aW9uU2VjcmV0S2V5UmVxdWVzdBIMCgRrZXkxGAEg",
-            "ASgJEgwKBGtleTIYAiABKAkiTgomRXhjaGFuZ2VDb21tdW5pY2F0aW9uU2Vj",
-            "cmV0S2V5UmVzcG9uc2USEgoKcmVzdWx0Q29kZRgBIAEoBRIQCghyZXN1bE1z",
-            "ZxgCIAEoBSqUAwoNQ29tbW9uUHJvdG9jbBIXChNDT01NT05fUFJPVE9DTF9O",
-            "T05FEAASJAofQ09NTU9OX1BST1RPQ0xfQ1NfSEVBUlRCRUFUX1JFURDpBxIl",
-            "CiBDT01NT05fUFJPVE9DTF9DU19IRUFSVEJFQVRfUkVTUBDqBxIkCh9DT01N",
-            "T05fUFJPVE9DTF9TU19IRUFSVEJFQVRfUkVREOsHEiUKIENPTU1PTl9QUk9U",
-            "T0NMX1NTX0hFQVJUQkVBVF9SRVNQEOwHEisKJkNPTU1PTl9QUk9UT0NMX0VY",
-            "Q0hBTkdFX1BVQkxJQ19LRVlfUkVREO0HEiwKJ0NPTU1PTl9QUk9UT0NMX0VY",
-            "Q0hBTkdFX1BVQkxJQ19LRVlfUkVTUBDuBxI5CjRDT01NT05fUFJPVE9DTF9F",
-            "eGNoYW5nZV9DT01NVU5JQ0FUSU9OX1NFQ1JFVF9LRVlfUkVREO8HEjoKNUNP",
-            "TU1PTl9QUk9UT0NMX0V4Y2hhbmdlX0NPTU1VTklDQVRJT05fU0VDUkVUX0tF",
-            "WV9SRVNQEPAHKo8CCgtTRVJWRVJfVFlQRRIUChBTRVJWRVJfVFlQRV9OT05F",
-            "EAASHQoZU0VSVkVSX1RZUEVfQ09OVFJPTENFTlRFUhABEhUKEVNFUlZFUl9U",
-            "WVBFX0xPR0lOEAISGQoVU0VSVkVSX1RZUEVfTE9HSU5HQVRFEAMSHAoYU0VS",
-            "VkVSX1RZUEVfTE9HSU5HQVRFTUdSEAQSFAoQU0VSVkVSX1RZUEVfR0FNRRAF",
-            "EhgKFFNFUlZFUl9UWVBFX0dBTUVHQVRFEAYSGwoXU0VSVkVSX1RZUEVfR0FN",
-            "RUdBVEVNR1IQBxIVChFTRVJWRVJfVFlQRV9TQ0VORRAIEhcKE1NFUlZFUl9U",
-            "WVBFX0RCUFJPWFkQCSpYCg1QUk9UT0NBTF9DT0RFEhYKElBST1RPQ0FMX0NP",
-            "REVfTk9ORRAAEhcKE1BST1RPQ0FMX0NPREVfTE9HSU4QAhIWChJQUk9UT0NB",
-            "TF9DT0RFX0dBTUUQBSqCAQoLR2F0ZUNvbW1hbmQSFQoRR0FURV9DT01NQU5E",
-            "X05PTkUQABIWChJHQVRFX0NPTU1BTkRfU1RBUlQQARIVChFHQVRFX0NPTU1B",
-            "TkRfU1RPUBACEhcKE0dBVEVfQ09NTUFORF9SRVNVTUUQAxIUChBHQVRFX0NP",
-            "TU1BTkRfRU5EEAQqXgoMU2VydmVyU3RhdHVzEhgKFFNFUlZFUl9TVEFUVVNf",
-            "QUNUSVZFEAASGAoUU0VSVkVSX1NUQVRVU19QQVVTRUQQARIaChZTRVJWRVJf",
-            "U1RBVFVTX0lOQUNUSVZFEAJiBnByb3RvMw=="));
+            "R2FtZVNlcnZlckluZm9Ob2RlEhMKC2dhbWVXb3JsZElkGAEgASgFIioKFkdh",
+            "bWVHYXRlU2VydmVySW5mb05vZGUSEAoIdXNlclBvcnQYASABKAUiGwoZR2Ft",
+            "ZUdhdGVNZ3JTZXJ2ZXJJbmZvTm9kZSImChNTY2VuZVNlcnZlckluZm9Ob2Rl",
+            "Eg8KB3NjZW5lSWQYASABKAUiFwoVREJQcm94eVNlcnZlckluZm9Ob2RlIicK",
+            "BFZlYzMSCQoBeBgBIAEoBRIJCgF5GAIgASgFEgkKAXoYAyABKAUiFAoSQ1NI",
+            "ZWFydEJlYXRSZXF1ZXN0IhUKE0NTSGVhcnRCZWF0UmVzcG9uc2UiFAoSU1NI",
+            "ZWFydEJlYXRSZXF1ZXN0IhUKE1NTSGVhcnRCZWF0UmVzcG9uc2UiMwoYRXhj",
+            "aGFuZ2VQdWJsaWNLZXlSZXF1ZXN0EhcKD2NsaWVudFB1YmxpY0tleRgBIAEo",
+            "CSI1ChlFeGNoYW5nZVB1YmxpY0tleVJlc3BvbnNlEhgKEHNlcnZlclB1Ymxp",
+            "bGNLZXkYASABKAkiQwolRXhjaGFuZ2VDb21tdW5pY2F0aW9uU2VjcmV0S2V5",
+            "UmVxdWVzdBIMCgRrZXkxGAEgASgJEgwKBGtleTIYAiABKAkiTgomRXhjaGFu",
+            "Z2VDb21tdW5pY2F0aW9uU2VjcmV0S2V5UmVzcG9uc2USEgoKcmVzdWx0Q29k",
+            "ZRgBIAEoBRIQCghyZXN1bE1zZxgCIAEoBSqUAwoNQ29tbW9uUHJvdG9jbBIX",
+            "ChNDT01NT05fUFJPVE9DTF9OT05FEAASJAofQ09NTU9OX1BST1RPQ0xfQ1Nf",
+            "SEVBUlRCRUFUX1JFURDpBxIlCiBDT01NT05fUFJPVE9DTF9DU19IRUFSVEJF",
+            "QVRfUkVTUBDqBxIkCh9DT01NT05fUFJPVE9DTF9TU19IRUFSVEJFQVRfUkVR",
+            "EOsHEiUKIENPTU1PTl9QUk9UT0NMX1NTX0hFQVJUQkVBVF9SRVNQEOwHEisK",
+            "JkNPTU1PTl9QUk9UT0NMX0VYQ0hBTkdFX1BVQkxJQ19LRVlfUkVREO0HEiwK",
+            "J0NPTU1PTl9QUk9UT0NMX0VYQ0hBTkdFX1BVQkxJQ19LRVlfUkVTUBDuBxI5",
+            "CjRDT01NT05fUFJPVE9DTF9FeGNoYW5nZV9DT01NVU5JQ0FUSU9OX1NFQ1JF",
+            "VF9LRVlfUkVREO8HEjoKNUNPTU1PTl9QUk9UT0NMX0V4Y2hhbmdlX0NPTU1V",
+            "TklDQVRJT05fU0VDUkVUX0tFWV9SRVNQEPAHKo8CCgtTRVJWRVJfVFlQRRIU",
+            "ChBTRVJWRVJfVFlQRV9OT05FEAASHQoZU0VSVkVSX1RZUEVfQ09OVFJPTENF",
+            "TlRFUhABEhUKEVNFUlZFUl9UWVBFX0xPR0lOEAISGQoVU0VSVkVSX1RZUEVf",
+            "TE9HSU5HQVRFEAMSHAoYU0VSVkVSX1RZUEVfTE9HSU5HQVRFTUdSEAQSFAoQ",
+            "U0VSVkVSX1RZUEVfR0FNRRAFEhgKFFNFUlZFUl9UWVBFX0dBTUVHQVRFEAYS",
+            "GwoXU0VSVkVSX1RZUEVfR0FNRUdBVEVNR1IQBxIVChFTRVJWRVJfVFlQRV9T",
+            "Q0VORRAIEhcKE1NFUlZFUl9UWVBFX0RCUFJPWFkQCSpYCg1QUk9UT0NBTF9D",
+            "T0RFEhYKElBST1RPQ0FMX0NPREVfTk9ORRAAEhcKE1BST1RPQ0FMX0NPREVf",
+            "TE9HSU4QAhIWChJQUk9UT0NBTF9DT0RFX0dBTUUQBSqCAQoLR2F0ZUNvbW1h",
+            "bmQSFQoRR0FURV9DT01NQU5EX05PTkUQABIWChJHQVRFX0NPTU1BTkRfU1RB",
+            "UlQQARIVChFHQVRFX0NPTU1BTkRfU1RPUBACEhcKE0dBVEVfQ09NTUFORF9S",
+            "RVNVTUUQAxIUChBHQVRFX0NPTU1BTkRfRU5EEAQqXgoMU2VydmVyU3RhdHVz",
+            "EhgKFFNFUlZFUl9TVEFUVVNfQUNUSVZFEAASGAoUU0VSVkVSX1NUQVRVU19Q",
+            "QVVTRUQQARIaChZTRVJWRVJfU1RBVFVTX0lOQUNUSVZFEAJiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.Common.CommonProtocl), typeof(global::HS.Protobuf.Common.SERVER_TYPE), typeof(global::HS.Protobuf.Common.PROTOCAL_CODE), typeof(global::HS.Protobuf.Common.GateCommand), typeof(global::HS.Protobuf.Common.ServerStatus), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -90,7 +90,7 @@ namespace HS.Protobuf.Common {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Common.LoginGateServerInfoNode), global::HS.Protobuf.Common.LoginGateServerInfoNode.Parser, new[]{ "TargetLoginServerId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Common.LoginGateMgrServerInfoNode), global::HS.Protobuf.Common.LoginGateMgrServerInfoNode.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Common.GameServerInfoNode), global::HS.Protobuf.Common.GameServerInfoNode.Parser, new[]{ "GameWorldId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Common.GameGateServerInfoNode), global::HS.Protobuf.Common.GameGateServerInfoNode.Parser, null, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Common.GameGateServerInfoNode), global::HS.Protobuf.Common.GameGateServerInfoNode.Parser, new[]{ "UserPort" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Common.GameGateMgrServerInfoNode), global::HS.Protobuf.Common.GameGateMgrServerInfoNode.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Common.SceneServerInfoNode), global::HS.Protobuf.Common.SceneServerInfoNode.Parser, new[]{ "SceneId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Common.DBProxyServerInfoNode), global::HS.Protobuf.Common.DBProxyServerInfoNode.Parser, null, null, null, null, null),
@@ -1883,6 +1883,7 @@ namespace HS.Protobuf.Common {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public GameGateServerInfoNode(GameGateServerInfoNode other) : this() {
+      userPort_ = other.userPort_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1890,6 +1891,18 @@ namespace HS.Protobuf.Common {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public GameGateServerInfoNode Clone() {
       return new GameGateServerInfoNode(this);
+    }
+
+    /// <summary>Field number for the "userPort" field.</summary>
+    public const int UserPortFieldNumber = 1;
+    private int userPort_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int UserPort {
+      get { return userPort_; }
+      set {
+        userPort_ = value;
+      }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1907,6 +1920,7 @@ namespace HS.Protobuf.Common {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (UserPort != other.UserPort) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1914,6 +1928,7 @@ namespace HS.Protobuf.Common {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
+      if (UserPort != 0) hash ^= UserPort.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1932,6 +1947,10 @@ namespace HS.Protobuf.Common {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
+      if (UserPort != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(UserPort);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1942,6 +1961,10 @@ namespace HS.Protobuf.Common {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (UserPort != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(UserPort);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -1952,6 +1975,9 @@ namespace HS.Protobuf.Common {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
+      if (UserPort != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(UserPort);
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -1963,6 +1989,9 @@ namespace HS.Protobuf.Common {
     public void MergeFrom(GameGateServerInfoNode other) {
       if (other == null) {
         return;
+      }
+      if (other.UserPort != 0) {
+        UserPort = other.UserPort;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1979,6 +2008,10 @@ namespace HS.Protobuf.Common {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
+          case 8: {
+            UserPort = input.ReadInt32();
+            break;
+          }
         }
       }
     #endif
@@ -1994,6 +2027,10 @@ namespace HS.Protobuf.Common {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
+          case 8: {
+            UserPort = input.ReadInt32();
+            break;
+          }
         }
       }
     }

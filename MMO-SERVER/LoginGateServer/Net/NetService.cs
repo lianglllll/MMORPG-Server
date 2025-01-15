@@ -60,10 +60,10 @@ namespace LoginGateServer.Net
         // 用户连接过来的
         private void _StartListeningForUserConnections()
         {
-            Log.Information("Starting to listen for userConnections.");
+            Log.Information($"Starting to listen for userConnections.[{Config.Server.ip}:{Config.Server.userPort}]");
             // 启动网络监听
             m_acceptUser = new TcpServer();
-            m_acceptUser.Init(Config.Server.ip, Config.Server.userPort, 100, _HandleUserConnected, _HandleClientDisconnected);
+            m_acceptUser.Init(Config.Server.ip, Config.Server.userPort, 100, _HandleUserConnected, _HandleUserDisconnected);
         }
         private void _HandleUserConnected(Connection conn)
         {
@@ -88,8 +88,9 @@ namespace LoginGateServer.Net
 
 
         }
-        private void _HandleClientDisconnected(Connection conn)
+        private void _HandleUserDisconnected(Connection conn)
         {
+            Log.Debug("断开连接...");
             CleanConnectionResource(conn);
         }
         public void CloseUserConnection(Connection conn)
@@ -119,7 +120,6 @@ namespace LoginGateServer.Net
 
             // token回收
             LoginGateTokenManager.Instance.RemoveToken(conn.Get<LoginGateToken>().Id);
-
         }
         private void _HandleCSHeartBeatRequest(Connection conn, CSHeartBeatRequest message)
         {

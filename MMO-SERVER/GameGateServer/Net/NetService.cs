@@ -6,6 +6,7 @@ using Common.Summer.Tools;
 using System.Collections.Concurrent;
 using HS.Protobuf.Common;
 using static Common.Summer.Net.NetClient;
+using System.Net;
 
 namespace GameGateServer.Net
 {
@@ -33,7 +34,6 @@ namespace GameGateServer.Net
             // 定时发送ss心跳包
             Scheduler.Instance.AddTask(_SendSSHeatBeatReq, Config.Server.heartBeatSendInterval, 0);
         }
-
         public void UnInit()
         {
             m_acceptUser?.UnInit();
@@ -60,10 +60,10 @@ namespace GameGateServer.Net
         // 1.用户连接过来的
         private void _StartListeningForUserConnections()
         {
-            Log.Information("Starting to listen for userConnections.");
+            Log.Information($"Starting to listen for userConnections.[{Config.Server.ip}:{Config.Server.userPort}]");
             // 启动网络监听
             m_acceptUser = new TcpServer();
-            m_acceptUser.Init(Config.Server.ip, Config.Server.userPort, 100, _HandleUserConnected, _HandleClientDisconnected);
+            m_acceptUser.Init(Config.Server.ip, Config.Server.userPort, 100, _HandleUserConnected, _HandleUserDisconnected);
         }
         private void _HandleUserConnected(Connection conn)
         {
@@ -71,9 +71,9 @@ namespace GameGateServer.Net
             {
                 if (conn.Socket != null && conn.Socket.Connected)
                 {
-                    //var ipe = conn.Socket.RemoteEndPoint;
-                    //Log.Information("[连接成功]" + IPAddress.Parse(((IPEndPoint)ipe).Address.ToString()) + " : " + ((IPEndPoint)ipe).Port.ToString());
-                    
+                    var ipe = conn.Socket.RemoteEndPoint;
+                    Log.Information("[连接成功]" + IPAddress.Parse(((IPEndPoint)ipe).Address.ToString()) + " : " + ((IPEndPoint)ipe).Port.ToString());
+
                     // 给conn添加心跳时间
                     m_userConnHeartbeatTimestamps[conn] = DateTime.Now;
                 }
@@ -89,12 +89,20 @@ namespace GameGateServer.Net
 
 
         }
-        private void _HandleClientDisconnected(Connection conn)
+        private void _HandleUserDisconnected(Connection conn)
         {
+            Log.Debug("断开连接...");
             //从心跳字典中删除连接
             if (m_userConnHeartbeatTimestamps.ContainsKey(conn))
             {
                 m_userConnHeartbeatTimestamps.TryRemove(conn,out _);
+            }
+
+            // session中移除他
+            string sessionId = conn.Get<string>();
+            if (sessionId != null)
+            {
+                SessionManager.Instance.RemoveSessionById(sessionId);
             }
         }
         public void CloseUserConnection(Connection conn)
@@ -115,6 +123,14 @@ namespace GameGateServer.Net
             //更新心跳时间
             m_userConnHeartbeatTimestamps[conn] = DateTime.Now;
 
+            // 更新session里面的
+            var session = conn.Get<Session>();
+            if (session != null)
+            {
+                session.LastHeartTime = MyTime.time;
+            }
+
+
             //响应
             CSHeartBeatResponse resp = new CSHeartBeatResponse();
             conn.Send(resp);
@@ -131,14 +147,19 @@ namespace GameGateServer.Net
                 {
                     //关闭超时的客户端连接
                     Connection conn = kv.Key;
-                    //Log.Information("[心跳检查]心跳超时==>");//移除相关的资源
                     CloseUserConnection(conn);
+
+                    // session中移除他
+                    string sessionId = conn.Get<string>();
+                    if (sessionId != null)
+                    {
+                        SessionManager.Instance.RemoveSessionById(sessionId);
+                    }
                 }
             }
         }
 
-
-        // 3.服务器主动连接其他的服务器
+        // 2.服务器主动连接其他的服务器
         public NetClient ConnctToServer(string ip, int port,
             TcpClientConnectedCallback connected, TcpClientConnectedFailedCallback connectFailed,
             TcpClientDisconnectedCallback disconnected)

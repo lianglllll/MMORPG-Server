@@ -424,10 +424,10 @@ namespace GameGateMgrServer.Core
 
             // 并且通知对应的gameGate设置session
             RegisterSessionToGGRequest req = new();
-            req.Session = sessionId;
+            req.SessionId = sessionId;
             foreach (var gateGateEntry in list) {
                 gateGateEntry.Connection.Send(req);
-                result.Add(gameEntry.ServerInfo);
+                result.Add(gateGateEntry.ServerInfo);
             }
         End:
             return result;

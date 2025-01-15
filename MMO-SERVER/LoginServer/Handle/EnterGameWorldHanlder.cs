@@ -3,6 +3,7 @@ using Common.Summer.Net;
 using Common.Summer.Security;
 using Common.Summer.Tools;
 using Google.Protobuf;
+using HS.Protobuf.Common;
 using HS.Protobuf.DBProxy.DBUser;
 using HS.Protobuf.DBProxy.DBWorld;
 using HS.Protobuf.GameGateMgr;
@@ -139,9 +140,14 @@ namespace LoginServer.Handle
             }
 
             // 处理.....
-
-
-
+            resp.ResultCode = 0;
+            foreach(var item in message.GameGateInfos)
+            {
+                ServerInfoNode node = new();
+                node.Ip = item.Ip;
+                node.Port = item.GameGateServerInfo.UserPort;
+                resp.GameGateInfos.Add(node);
+            }
 
         End1:
             gateConn.Send(resp);

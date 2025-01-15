@@ -11,6 +11,7 @@ using Common.Summer.Core;
 using HS.Protobuf.Login;
 using HS.Protobuf.Scene;
 using HS.Protobuf.SceneEntity;
+using HS.Protobuf.Game;
 
 namespace GameServer.Service
 {
@@ -29,9 +30,9 @@ namespace GameServer.Service
         public void Start()
         {
             MessageRouter.Instance.Subscribe<GameEnterRequest>(_GameEnterRequest);
-            MessageRouter.Instance.Subscribe<CharacterCreateRequest>(_CharacterCreateRequest);
-            MessageRouter.Instance.Subscribe<CharacterListRequest>(_CharacterListRequest);
-            MessageRouter.Instance.Subscribe<CharacterDeleteRequest>(_CharacterDeleteRequest);
+            MessageRouter.Instance.Subscribe<CreateCharacterRequest>(_CharacterCreateRequest);
+            MessageRouter.Instance.Subscribe<GetCharacterListRequest>(_CharacterListRequest);
+            MessageRouter.Instance.Subscribe<DeleteCharacterRequest>(_CharacterDeleteRequest);
             MessageRouter.Instance.Subscribe<UserRegisterRequest>(_UserRegisterRequest);
             MessageRouter.Instance.Subscribe<ReconnectRequest>(_ReconnectRequest);
             MessageRouter.Instance.Subscribe<ServerInfoRequest>(_ServerInfoRequest);
@@ -75,9 +76,9 @@ namespace GameServer.Service
         /// </summary>
         /// <param name="conn"></param>
         /// <param name="message"></param>
-        private void _CharacterCreateRequest(Connection conn, CharacterCreateRequest message)
+        private void _CharacterCreateRequest(Connection conn, CreateCharacterRequest message)
         {
-            CharacterCreateResponse resp = new CharacterCreateResponse();
+            CreateCharacterResponse resp = new ();
             
             //这里需要安全校验
             DbUser dbUser = conn.Get<Session>().dbUser;
@@ -85,8 +86,8 @@ namespace GameServer.Service
             if (dbUser == null)
             {//未登录的用户，有人试图跳过创建
                 Log.Information("未登录的用户，有人试图跳过创建");
-                resp.Success = false;
-                resp.Message = "未登录,不能创建角色";
+                resp.ResultCode = 1;
+                resp.ResultMsg = "未登录,不能创建角色";
                 conn.Send(resp);
                 return;
             }
@@ -98,8 +99,8 @@ namespace GameServer.Service
             {
                 //角色上限了
                 Log.Information("角色上限了");
-                resp.Success = false;
-                resp.Message = "角色数量最多为4";
+                resp.ResultCode = 2;
+                resp.ResultMsg = "角色数量最多为4";
                 conn.Send(resp);
                 return;
             }
@@ -109,8 +110,8 @@ namespace GameServer.Service
             if (string.IsNullOrWhiteSpace(message.Name))
             {
                 Log.Information("角色名为空");
-                resp.Success = false;
-                resp.Message = "角色名不能为空";
+                resp.ResultCode = 3;
+                resp.ResultMsg = "角色名不能为空";
                 conn.Send(resp);
                 return;
             }
@@ -120,8 +121,8 @@ namespace GameServer.Service
             if (name.Length > 7)
             {
                 Log.Information("角色名最大长度为7");
-                resp.Success = false;
-                resp.Message = "角色名最大长度为7";
+                resp.ResultCode = 4;
+                resp.ResultMsg = "角色名最大长度为7";
                 conn.Send(resp);
                 return;
             }
@@ -130,29 +131,29 @@ namespace GameServer.Service
             if (DbManager.fsql.Select<DbCharacter>().Where(t => t.Name.Equals(name)).Count() > 0)
             {
                 Log.Information("角色名已存在");
-                resp.Success = false;
-                resp.Message = "角色名已存在";
+                resp.ResultCode = 5;
+                resp.ResultMsg = "角色名已存在";
                 conn.Send(resp);
                 return;
             }
 
             //角色类型有误
-            if(message.JobType>=5 || message.JobType < 0)
+            if(message.VocationId >= 5 || message.VocationId < 0)
             {
-                Log.Information("角色类型有误："+message.JobType);
-                resp.Success = false;
-                resp.Message = "请选择角色";
+                Log.Information("角色类型有误："+message.VocationId);
+                resp.ResultCode = 6;
+                resp.ResultMsg = "请选择角色";
                 conn.Send(resp);
                 return;
             }
 
             //存放入数据库中
             var pointDef = DataManager.Instance.revivalPointDefindeDict[0];
-            var unitDef = DataManager.Instance.unitDefineDict[message.JobType];
+            var unitDef = DataManager.Instance.unitDefineDict[message.VocationId];
             DbCharacter dbCharacter = new DbCharacter()
             {
                 Name = message.Name,
-                JobId = message.JobType,
+                JobId = message.VocationId,
                 Hp = (int)unitDef.HPMax,
                 Mp = (int)unitDef.MPMax,
                 Level = 1,
@@ -171,14 +172,14 @@ namespace GameServer.Service
             if (aff > 0)
             {
                 //创建成功向客户端返回响应
-                resp.Success = true;
-                resp.Message = "创建成功";
+                resp.ResultCode = 0;
+                resp.ResultMsg = "创建成功";
                 conn.Send(resp);
             }
             else
             {
-                resp.Success = false;
-                resp.Message = "创建失败";
+                resp.ResultCode = 7;
+                resp.ResultMsg = "创建失败";
                 conn.Send(resp);
             }
 
@@ -189,9 +190,9 @@ namespace GameServer.Service
         /// </summary>
         /// <param name="conn"></param>
         /// <param name="message"></param>
-        private void _CharacterDeleteRequest(Connection conn, CharacterDeleteRequest message)
+        private void _CharacterDeleteRequest(Connection conn, DeleteCharacterRequest message)
         {
-            CharacterDeleteResponse resp = new CharacterDeleteResponse();
+            DeleteCharacterResponse resp = new ();
 
             //获取当前用户id
             DbUser dbUser = conn.Get<Session>().dbUser;
@@ -205,8 +206,8 @@ namespace GameServer.Service
             int affCount = DbManager.fsql.Delete<DbCharacter>().Where(t => t.Id == message.CharacterId).Where(t => t.PlayerId == dbUser.Id).ExecuteAffrows();
             if (affCount > 0)
             {//返回
-                resp.Success = true;
-                resp.Message = "删除成功";
+                resp.ResultCode = 0;
+                resp.ResultMsg = "删除成功";
                 conn.Send(resp);
             }
         }
@@ -216,7 +217,7 @@ namespace GameServer.Service
         /// </summary>
         /// <param name="conn"></param>
         /// <param name="message"></param>
-        private void _CharacterListRequest(Connection conn, CharacterListRequest message)
+        private void _CharacterListRequest(Connection conn, GetCharacterListRequest message)
         {
 
             //获取当前登录的用户id
@@ -233,7 +234,7 @@ namespace GameServer.Service
             List<DbCharacter> dbCharacterlist =  DbManager.fsql.Select<DbCharacter>().Where(t => t.PlayerId == dbUser.Id).ToList();
 
             //返回
-            CharacterListResponse resp = new CharacterListResponse();
+            GetCharacterListResponse resp = new ();
             foreach(var item in dbCharacterlist)
             {
                 resp.CharacterList.Add(new NetActor()
@@ -344,8 +345,6 @@ namespace GameServer.Service
             sender.Send(response);
 
         }
-
-
 
     }
 }

@@ -1,14 +1,52 @@
 syntax = "proto3";
+import "Scene/ProtoSource/SceneEntity.proto";
 package HS.Protobuf.Game;
 
 enum GameProtocl{
 	GAME_PROTOCL_NONE = 0;
 	GAME_PROTOCL_GET_GAME_TOKEN_REQ = 30001;		// [GetGameTokenRequest]
 	GAME_PROTOCL_GET_GAME_TOKEN_RESP = 30002;		// [GetGameTokenResponse]
+	GAME_PROTOCL_GET_CHARACTER_LIST_REQ = 30003;	// [GetCharacterListRequest]
+	GAME_PROTOCL_GET_CHARACTER_LIST_RESP = 30004;	// [GetCharacterListResponse]
+	GAME_PROTOCL_CREATE_CHARACTER_REQ = 30005;		// [CreateCharacterRequest]
+	GAME_PROTOCL_CREATE_CHARACTER_RESP = 30006;		// [CreateCharacterResponse]
+	GAME_PROTOCL_DELETE_CHARACTER_REQ = 30007;		// [DeleteCharacterRequest]
+	GAME_PROTOCL_DELETE_CHARACTER_RESP = 30008;		// [DeleteCharacterResponse]
 }
 
 message GetGameTokenRequest{
 }
 message GetGameTokenResponse{
 	string gameToken = 1;
+}
+
+message GetCharacterListRequest{
+	string sessionId = 1;
+}
+message GetCharacterListResponse{
+	string sessionId = 1;
+	string gameToken = 2;
+	repeated HS.Protobuf.SceneEntity.NetActor characterList = 3;
+}
+
+message CreateCharacterRequest{
+	string name = 1;
+	int32 VocationId = 2;
+}
+message CreateCharacterResponse{
+	int32 resultCode = 1;
+	string resultMsg = 2;
+	HS.Protobuf.SceneEntity.NetActor character = 3;
+}
+
+message DeleteCharacterRequest{
+	string sessionId = 1;
+	string gameToken = 2;
+	int32 characterId = 3;
+}
+message DeleteCharacterResponse{
+	string sessionId = 1;
+	string gameToken = 2;
+	int32 resultCode = 3;
+	string resultMsg = 4;
 }

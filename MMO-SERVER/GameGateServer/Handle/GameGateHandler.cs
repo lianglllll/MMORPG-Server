@@ -4,6 +4,7 @@ using Common.Summer.Tools;
 using HS.Protobuf.ControlCenter;
 using GameGateServer.Net;
 using Serilog;
+using HS.Protobuf.GameGate;
 
 namespace GameGateServer.Handle
 {

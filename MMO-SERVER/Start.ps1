@@ -62,4 +62,4 @@ Start-AndRecordPID -targetDirectory $loginServerDir -executableName "LoginServer
 Start-AndRecordPID -targetDirectory $gameGateMgrServerDir -executableName "GameGateMgrServer.exe" -displayName "GameGateMgrServer"
 Start-AndRecordPID -targetDirectory $gameGateServerDir -executableName "GameGateServer.exe" -displayName "GameGateServer"
 Start-AndRecordPID -targetDirectory $gameServerDir -executableName "GameServer.exe" -displayName "GameServer"
-Start-AndRecordPID -targetDirectory $spaceServerDir -executableName "SceneServer.exe" -displayName "SceneServer"
+# Start-AndRecordPID -targetDirectory $spaceServerDir -executableName "SceneServer.exe" -displayName "SceneServer"

@@ -34,7 +34,7 @@ namespace GameGateServer
                 .MinimumLevel.Debug()
                 .WriteTo.Console(
                     theme: customTheme,
-                    outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}"
+                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}"
                 )
                 .WriteTo.File(
                     "logs\\server-log.txt",

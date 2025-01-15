@@ -1,6 +1,5 @@
 ﻿using Common.Summer.Core;
 using Google.Protobuf;
-using HS.Protobuf.DBProxy.DBUser;
 using Serilog;
 using System.Collections.Concurrent;
 
@@ -13,12 +12,13 @@ namespace GameGateServer.Net
     {
         public string Id { get; private set; }
         public Connection Conn;                                             
-        public float LastHeartTime;                        
+        public float LastHeartTime;        // 用myTime                
         private ConcurrentQueue<IMessage> msgBuffer = new ConcurrentQueue<IMessage>();
 
         public Session(string sessionId)
         {
             Id = sessionId;
+            LastHeartTime = Scheduler.UnixTime;
         }
         public void Send(IMessage message)
         {

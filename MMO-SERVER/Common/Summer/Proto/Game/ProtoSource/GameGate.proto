@@ -3,14 +3,24 @@ package HS.Protobuf.GameGate;
 
 enum GameGateProtocl{
 	GAMEGATE_PROTOCL_NONE = 0;
-	GAMEGATE_PROTOCL_REGISTER_SESSION_TO_GG_REQ = 31001;
-	GAMEGATE_PROTOCL_REGISTER_SESSION_TO_GG_RESP = 31002;
+	GAMEGATE_PROTOCL_REGISTER_SESSION_TO_GG_REQ = 31001;	// [RegisterSessionToGGRequest]
+	GAMEGATE_PROTOCL_REGISTER_SESSION_TO_GG_RESP = 31002;	// [RegisterSessionToGGResponse]
+	GAMEGATE_PROTOCL_VERIFY_SESSION_REQ = 31003;			// [VerifySessionRequeest]
+	GAMEGATE_PROTOCL_VERIFY_SESSION_RESP = 31004;			// [VerifySessionResponse]
 }
 
 message RegisterSessionToGGRequest{
-	string session = 1;
+	string sessionId = 1;
 }
 message RegisterSessionToGGResponse{
+	int32 resultCode = 1;
+	string resultMsg = 2;
+}
+
+message VerifySessionRequeest{
+	string sessionId = 1;
+}
+message VerifySessionResponse{
 	int32 resultCode = 1;
 	string resultMsg = 2;
 }

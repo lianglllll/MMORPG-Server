@@ -1,5 +1,4 @@
 syntax = "proto3";
-import "Scene/ProtoSource/SceneEntity.proto";
 import "Common/ProtoSource/Common.proto";
 package HS.Protobuf.Login;
 
@@ -23,7 +22,6 @@ enum WORLD_LOAD_STATUS{
 	WORLD_LOAD_STATUS_OVERLOADED = 2;
 	WORLD_LOAD_STATUS_OFFLINE = 3;
 }
-
 message WorldInfoNode{
 	int32 worldId = 1;
 	string worldName = 2;
@@ -89,34 +87,8 @@ message GetGameGateByWorldIdResponse{
 }
 
 
-// ===================================
-//角色创建
-message CharacterCreateRequest{
-	string name = 1;
-	int32 jobType = 2;
-}
-message CharacterCreateResponse{
-	bool success = 1;
-	string message = 2;
-	HS.Protobuf.SceneEntity.NetActor character = 3;
-}
 
-// 查询角色列表的请求
-message CharacterListRequest{
-}
-message CharacterListResponse{
-	repeated HS.Protobuf.SceneEntity.NetActor characterList = 1;
-}
-// 删除角色的请求
-message CharacterDeleteRequest{
-	int32 characterId = 1;
-}
-message CharacterDeleteResponse{
-	bool success = 1;
-	string message = 2;
-}
 
-//重连请求
 message ReconnectRequest{
 	string sessionId = 1;
 }

@@ -68,6 +68,7 @@ message GameServerInfoNode{
 	int32 gameWorldId = 1;
 }
 message GameGateServerInfoNode{
+	int32 userPort = 1;
 }
 message GameGateMgrServerInfoNode{
 }
