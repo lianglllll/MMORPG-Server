@@ -29,45 +29,11 @@ namespace GameServer.Service
         /// </summary>
         public void Start()
         {
-            MessageRouter.Instance.Subscribe<GameEnterRequest>(_GameEnterRequest);
             MessageRouter.Instance.Subscribe<CreateCharacterRequest>(_CharacterCreateRequest);
-            MessageRouter.Instance.Subscribe<GetCharacterListRequest>(_CharacterListRequest);
             MessageRouter.Instance.Subscribe<DeleteCharacterRequest>(_CharacterDeleteRequest);
-            MessageRouter.Instance.Subscribe<UserRegisterRequest>(_UserRegisterRequest);
+            MessageRouter.Instance.Subscribe<EnterGameRequest>(_GameEnterRequest);
             MessageRouter.Instance.Subscribe<ReconnectRequest>(_ReconnectRequest);
             MessageRouter.Instance.Subscribe<ServerInfoRequest>(_ServerInfoRequest);
-        }
-
-        /// <summary>
-        /// 用户创建请求
-        /// </summary>
-        /// <param name="conn"></param>
-        /// <param name="message"></param>
-        private void _UserRegisterRequest(Connection conn, UserRegisterRequest message)
-        {
-            //查询用户是否存在
-            long count = DbManager.fsql.Select<DbUser>().Where(p => p.Username == message.Username).Count();
-
-            UserRegisterResponse resp = new UserRegisterResponse();
-
-            //if(count > 0)
-            //{
-            //    resp.Code = 1;
-            //    resp.Message = "用户名已存在";
-            //}
-            //else
-            //{
-            //    DbUser dbUser = new DbUser()
-            //    {
-            //        Username = message.Username,
-            //        Password = message.Password
-            //    };
-            //    int affRows = DbManager.fsql.Insert(dbUser).ExecuteAffrows();
-            //    resp.Code = 0;
-            //    resp.Message = "注册成功";
-            //}
-
-            conn.Send(resp);
         }
 
 
@@ -212,52 +178,13 @@ namespace GameServer.Service
             }
         }
 
-        /// <summary>
-        /// 角色列表请求
-        /// </summary>
-        /// <param name="conn"></param>
-        /// <param name="message"></param>
-        private void _CharacterListRequest(Connection conn, GetCharacterListRequest message)
-        {
-
-            //获取当前登录的用户id
-            DbUser dbUser = conn.Get<Session>().dbUser;
-
-            //防止没登陆
-            if (dbUser == null)
-            {
-                Log.Information("有人尝试未登录访问角色列表");
-                return;
-            }
-
-            //通过用户id查询角色
-            List<DbCharacter> dbCharacterlist =  DbManager.fsql.Select<DbCharacter>().Where(t => t.PlayerId == dbUser.Id).ToList();
-
-            //返回
-            GetCharacterListResponse resp = new ();
-            foreach(var item in dbCharacterlist)
-            {
-                resp.CharacterList.Add(new NetActor()
-                {
-                    Id = item.Id,
-                    Name = item.Name,
-                    Tid = item.JobId,
-                    Level = item.Level,
-                    Exp = item.Exp,
-                    SpaceId = item.SpaceId,
-                    Gold = item.Gold,
-                    // NetEntity Entity
-                });
-            }
-            conn.Send(resp);
-        }
 
         /// <summary>
         /// 进入游戏请求
         /// </summary>
         /// <param name="conn"></param>
         /// <param name="msg"></param>
-        private void _GameEnterRequest(Connection conn, GameEnterRequest msg)
+        private void _GameEnterRequest(Connection conn, EnterGameRequest msg)
         {
             //Log.Information($"有玩家进入游戏,角色id={msg.CharacterId}");
 

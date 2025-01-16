@@ -86,9 +86,6 @@ message GetGameGateByWorldIdResponse{
 	repeated HS.Protobuf.Common.ServerInfoNode gameGateInfos = 5;
 }
 
-
-
-
 message ReconnectRequest{
 	string sessionId = 1;
 }

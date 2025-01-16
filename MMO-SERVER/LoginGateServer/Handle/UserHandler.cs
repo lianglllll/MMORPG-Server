@@ -34,7 +34,7 @@ namespace LoginGateServer.Handle
             message.Password = conn.m_encryptionManager.AesDecrypt(message.Password);
             // 转发到loginServer
             message.LoginToken = ServersMgr.Instance.LoginToken;
-            ServersMgr.Instance.SentToLoginServer(message);
+            ServersMgr.Instance.SendToLoginServer(message);
         }
         private void _HandleUserLoginResponse(Connection conn, UserLoginResponse message)
         {
@@ -50,7 +50,7 @@ namespace LoginGateServer.Handle
             message.LoginToken = ServersMgr.Instance.LoginToken;
 
             // 转发到loginServer
-            ServersMgr.Instance.SentToLoginServer(message);
+            ServersMgr.Instance.SendToLoginServer(message);
         }
         private void _HandleUserRegisterResponse(Connection conn, UserRegisterResponse message)
         {

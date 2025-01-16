@@ -11,6 +11,7 @@ enum GameGateProtocl{
 
 message RegisterSessionToGGRequest{
 	string sessionId = 1;
+	string uId = 2;
 }
 message RegisterSessionToGGResponse{
 	int32 resultCode = 1;

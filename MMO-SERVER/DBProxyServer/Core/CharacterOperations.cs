@@ -3,19 +3,20 @@ using MongoDB.Driver;
 using Common.Summer.Tools;
 using HS.Protobuf.DBProxy.DBCharacter;
 using Google.Protobuf;
+using Google.Protobuf.WellKnownTypes;
 
 namespace DBProxyServer.Core
 {
     public class CharacterOperations:Singleton<CharacterOperations>
     {
-        private  IMongoCollection<BsonDocument> _characterCollection;
+        private  IMongoCollection<BsonDocument>? _characterCollection;
 
         public void Init(MongoDBConnection dbConnection)
         {
             _characterCollection = dbConnection.GetCollection<BsonDocument>("character");
         }
 
-        public async Task<DBCharacterNode> GetCharacterByCidAsync(string cId)
+        public async Task<DBCharacterNode> GetCharacterByCidAsync(string cId, FieldMask readMask)
         {
             try
             {
@@ -24,70 +25,173 @@ namespace DBProxyServer.Core
                 var chr = await _characterCollection.Find(filter).FirstOrDefaultAsync();
                 if (chr == null)
                 {
-                    return null;
+                    goto End;
                 }
 
                 DBCharacterNode cNode = new();
-                DBCharacterStatisticsNode characterStatisticsNode = new();
-                DBCharacterStatusNode characterStatusNode = new();
-                DBCharacterAssetsNode characterAssetsNode = new();
-
-                // Assign nodes to cNode
-                cNode.ChrStatistics = characterStatisticsNode;
-                cNode.ChrStatus = characterStatusNode;
-                cNode.ChrAssets = characterAssetsNode;
 
                 // Map basic fields
-                cNode.CId = cId;
+                cNode.CId = chr["_id"].AsObjectId.ToString(); ;
                 cNode.UId = chr["uId"].ToString();
                 cNode.ProfessionId = chr["professionId"].ToInt32();
                 cNode.ChrName = chr["chrName"].ToString();
+                cNode.Level = chr["level"].ToInt32();
+                cNode.CreationTimestamp = chr["creationTimestamp"].ToInt64();
 
-                // Map statistics
-                characterStatisticsNode.KillCount = chr["chrStatistics"]["killCount"].ToInt32();
-
-                // Map status
-                characterStatusNode.Hp = chr["chrStatus"]["hp"].ToInt32();
-                characterStatusNode.Mp = chr["chrStatus"]["mp"].ToInt32();
-                characterStatusNode.Level = chr["chrStatus"]["level"].ToInt32();
-                characterStatusNode.Exp = chr["chrStatus"]["exp"].ToInt32();
-                characterStatusNode.CurSpaceId = chr["chrStatus"]["curSpaceId"].ToInt32();
-                characterStatusNode.X = chr["chrStatus"]["x"].ToInt32();
-                characterStatusNode.Y = chr["chrStatus"]["y"].ToInt32();
-                characterStatusNode.Z = chr["chrStatus"]["z"].ToInt32();
-
-                // Map assets
-                characterAssetsNode.BackpackData = ByteString.CopyFrom(chr["chrAssets"]["backpackData"].AsBsonBinaryData.Bytes);
-                characterAssetsNode.EquipsData = ByteString.CopyFrom(chr["chrAssets"]["equipsData"].AsBsonBinaryData.Bytes);
-
-                // Assuming Currency, Achievements, and Titles are collections in the chr document:
-                var currencyData = chr["chrAssets"]["currency"].AsBsonDocument.ToDictionary(k => k.Name, v => v.Value.ToInt32());
-                var achievementsData = chr["chrAssets"]["achievements"].AsBsonArray.Select(x => x.ToString()).ToList();
-                var titlesData = chr["chrAssets"]["titles"].AsBsonArray.Select(x => x.ToString()).ToList();
-
-                // 为 map 类型字段赋值
-                foreach (var entry in currencyData)
+                if (readMask != null)
                 {
-                    characterAssetsNode.Currency.Add(entry.Key, entry.Value);
+                    foreach (var path in readMask.Paths)
+                    {
+                        switch (path)
+                        {
+                            case "chrStatistics":
+                                DBCharacterStatisticsNode characterStatisticsNode = new();
+                                cNode.ChrStatistics = characterStatisticsNode;
+                                characterStatisticsNode.KillCount = chr["chrStatistics"]["killCount"].ToInt32();
+                                break;
+                            case "chrStatus":
+                                DBCharacterStatusNode characterStatusNode = new();
+                                cNode.ChrStatus = characterStatusNode;
+                                characterStatusNode.Hp = chr["chrStatus"]["hp"].ToInt32();
+                                characterStatusNode.Mp = chr["chrStatus"]["mp"].ToInt32();
+                                characterStatusNode.Exp = chr["chrStatus"]["exp"].ToInt32();
+                                characterStatusNode.CurSpaceId = chr["chrStatus"]["curSpaceId"].ToInt32();
+                                characterStatusNode.X = chr["chrStatus"]["x"].ToInt32();
+                                characterStatusNode.Y = chr["chrStatus"]["y"].ToInt32();
+                                characterStatusNode.Z = chr["chrStatus"]["z"].ToInt32();
+                                break;
+                            case "chrAssets":
+                                DBCharacterAssetsNode characterAssetsNode = new();
+                                cNode.ChrAssets = characterAssetsNode;
+                                characterAssetsNode.BackpackData = ByteString.CopyFrom(chr["chrAssets"]["backpackData"].AsBsonBinaryData.Bytes);
+                                characterAssetsNode.EquipsData = ByteString.CopyFrom(chr["chrAssets"]["equipsData"].AsBsonBinaryData.Bytes);
+                                var currencyData = chr["chrAssets"]["currency"].AsBsonDocument.ToDictionary(k => k.Name, v => v.Value.ToInt32());
+                                foreach (var entry in currencyData)
+                                {
+                                    characterAssetsNode.Currency.Add(entry.Key, entry.Value);
+                                }
+                                var achievementsData = chr["chrAssets"]["achievements"].AsBsonArray.Select(x => x.ToString()).ToList();
+                                characterAssetsNode.Achievements.AddRange(achievementsData);
+                                var titlesData = chr["chrAssets"]["titles"].AsBsonArray.Select(x => x.ToString()).ToList();
+                                characterAssetsNode.Titles.AddRange(titlesData);
+                                break;
+                            case "chrSocial":
+                                DBCharacterSocialNode characterSocialNode = new();
+                                cNode.ChrSocial = characterSocialNode;
+                                characterSocialNode.GuildId = chr["chrSocial"]["guildId"].ToString();
+                                characterSocialNode.Faction = chr["chrSocial"]["faction"].ToString();
+                                var friendsData = chr["chrSocial"]["friendsList"].AsBsonArray.Select(x => x.ToString()).ToList();
+                                characterSocialNode.FriendsList.AddRange(friendsData);
+                                break;
+                            default:
+                                throw new InvalidOperationException($"Unknown field: {path}");
+                        }
+                    }
                 }
-
-                // 为 repeated 类型字段赋值
-                characterAssetsNode.Achievements.AddRange(achievementsData);
-                characterAssetsNode.Titles.AddRange(titlesData);
 
                 return cNode;
             }
             catch (FormatException ex)
             {
                 Console.WriteLine($"Invalid ObjectId format: {ex.Message}");
-                return null;
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Error retrieving document: {ex.Message}");
-                return null;
             }
+         End:
+            return null;
         }
+        public async Task<List<DBCharacterNode>> GetCharactersByUidAsync(string UId, FieldMask readMask)
+        {
+            try
+            {
+                var filter = Builders<BsonDocument>.Filter.Eq("uId", UId);
+                var chrs = await _characterCollection.Find(filter).ToListAsync();
+                if (chrs.Count == 0)
+                {
+                    goto End;
+                }
+
+                List<DBCharacterNode> cNodes = new();
+                foreach(var chr in chrs)
+                {
+                    DBCharacterNode cNode = new();
+
+                    // Map basic fields
+                    cNode.CId = chr["_id"].AsObjectId.ToString(); ;
+                    cNode.UId = chr["uId"].ToString();
+                    cNode.ProfessionId = chr["professionId"].ToInt32();
+                    cNode.ChrName = chr["chrName"].ToString();
+                    cNode.Level = chr["level"].ToInt32();
+                    cNode.CreationTimestamp = chr["creationTimestamp"].ToInt64();
+
+                    if(readMask != null)
+                    {
+                        foreach (var path in readMask.Paths)
+                        {
+                            switch (path)
+                            {
+                                case "chrStatistics":
+                                    DBCharacterStatisticsNode characterStatisticsNode = new();
+                                    cNode.ChrStatistics = characterStatisticsNode;
+                                    characterStatisticsNode.KillCount = chr["chrStatistics"]["killCount"].ToInt32();
+                                    break;
+                                case "chrStatus":
+                                    DBCharacterStatusNode characterStatusNode = new();
+                                    cNode.ChrStatus = characterStatusNode;
+                                    characterStatusNode.Hp = chr["chrStatus"]["hp"].ToInt32();
+                                    characterStatusNode.Mp = chr["chrStatus"]["mp"].ToInt32();
+                                    characterStatusNode.Exp = chr["chrStatus"]["exp"].ToInt32();
+                                    characterStatusNode.CurSpaceId = chr["chrStatus"]["curSpaceId"].ToInt32();
+                                    characterStatusNode.X = chr["chrStatus"]["x"].ToInt32();
+                                    characterStatusNode.Y = chr["chrStatus"]["y"].ToInt32();
+                                    characterStatusNode.Z = chr["chrStatus"]["z"].ToInt32();
+                                    break;
+                                case "chrAssets":
+                                    DBCharacterAssetsNode characterAssetsNode = new();
+                                    cNode.ChrAssets = characterAssetsNode;
+                                    characterAssetsNode.BackpackData = ByteString.CopyFrom(chr["chrAssets"]["backpackData"].AsBsonBinaryData.Bytes);
+                                    characterAssetsNode.EquipsData = ByteString.CopyFrom(chr["chrAssets"]["equipsData"].AsBsonBinaryData.Bytes);
+                                    var currencyData = chr["chrAssets"]["currency"].AsBsonDocument.ToDictionary(k => k.Name, v => v.Value.ToInt32());
+                                    foreach (var entry in currencyData)
+                                    {
+                                        characterAssetsNode.Currency.Add(entry.Key, entry.Value);
+                                    }
+                                    var achievementsData = chr["chrAssets"]["achievements"].AsBsonArray.Select(x => x.ToString()).ToList();
+                                    characterAssetsNode.Achievements.AddRange(achievementsData);
+                                    var titlesData = chr["chrAssets"]["titles"].AsBsonArray.Select(x => x.ToString()).ToList();
+                                    characterAssetsNode.Titles.AddRange(titlesData);
+                                    break;
+                                case "chrSocial":
+                                    DBCharacterSocialNode characterSocialNode = new();
+                                    cNode.ChrSocial = characterSocialNode;
+                                    characterSocialNode.GuildId = chr["chrSocial"]["guildId"].ToString();
+                                    characterSocialNode.Faction = chr["chrSocial"]["faction"].ToString();
+                                    var friendsData = chr["chrSocial"]["friendsList"].AsBsonArray.Select(x => x.ToString()).ToList();
+                                    characterSocialNode.FriendsList.AddRange(friendsData);
+                                    break;
+                                default:
+                                    throw new InvalidOperationException($"Unknown field: {path}");
+                            }
+                        }
+                    }
+                    cNodes.Add(cNode);
+                }
+                return cNodes;
+            }
+            catch (FormatException ex)
+            {
+                Console.WriteLine($"Invalid ObjectId format: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error retrieving document: {ex.Message}");
+            }
+        End:
+            return null;
+        }
+
         public async Task<string> AddCharacterAsync(DBCharacterNode chrNode)
         {
             try
@@ -105,7 +209,6 @@ namespace DBProxyServer.Core
                 {
                     { "hp", chrNode.ChrStatus.Hp },
                     { "mp", chrNode.ChrStatus.Mp },
-                    { "level", chrNode.ChrStatus.Level },
                     { "exp", chrNode.ChrStatus.Exp },
                     { "curSpaceId", chrNode.ChrStatus.CurSpaceId },
                     { "x", chrNode.ChrStatus.X },
@@ -136,15 +239,15 @@ namespace DBProxyServer.Core
                 BsonDocument characterDocument = new BsonDocument
                 {
                     { "_id", objectId },
-                    { "cId", chrNode.CId },  // 新增
                     { "uId", chrNode.UId },
                     { "professionId", chrNode.ProfessionId },
                     { "chrName", chrNode.ChrName },
+                    { "level", chrNode.Level },
+                    { "creationTimestamp", chrNode.CreationTimestamp },
                     { "chrStatistics", characterStatistics },
                     { "chrStatus", characterStatus },
                     { "chrAssets", characterAssets },
-                    { "chrSocial", characterSocial },  // 新增
-                    { "creationTimestamp", chrNode.CreationTimestamp } // 新增
+                    { "chrSocial", characterSocial },  
                 };
 
                 await _characterCollection.InsertOneAsync(characterDocument);

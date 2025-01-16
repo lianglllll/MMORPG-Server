@@ -1,14 +1,17 @@
 syntax = "proto3";
+import "google/protobuf/field_mask.proto";
 package HS.Protobuf.DBProxy.DBCharacter;
 
 enum DBCharacterProtocl{
 	DBCHARACTER_PROTOCL_NONE = 0;
-	DBCHARACTER_PROTOCL_GET_DBCHARACTER_REQ = 51001;	// [GetDBCharacterRequest]
-	DBCHARACTER_PROTOCL_GET_DBCHARACTER_RESP = 51002;	// [GetDBCharacterReponse]
-	DBCHARACTER_PROTOCL_ADD_DBCHARACTER_REQ = 51003;	// [AddDBCharacterRequset]
-	DBCHARACTER_PROTOCL_ADD_DBCHARACTER_RESP = 51004;	// [AddDBCharacterResponse]
-	DBCHARACTER_PROTOCL_DELETE_DBCHARACTER_REQ = 51005;		// [DeleteDBCharacterRequest]
-	DBCHARACTER_PROTOCL_DELETE_DBCHARACTER_RESP = 51006;	// [DeleteDBCharacterResponse]
+	DBCHARACTER_PROTOCL_GET_DBCHARACTER_BY_CID_REQ = 51001;		// [GetDBCharacterByCidRequest]
+	DBCHARACTER_PROTOCL_GET_DBCHARACTER_BY_CID_RESP = 51002;	// [GetDBCharacterByCidReponse]
+	DBCHARACTER_PROTOCL_ADD_DBCHARACTER_REQ = 51003;			// [AddDBCharacterRequset]
+	DBCHARACTER_PROTOCL_ADD_DBCHARACTER_RESP = 51004;			// [AddDBCharacterResponse]
+	DBCHARACTER_PROTOCL_DELETE_DBCHARACTER_BY_CID_REQ = 51005;	// [DeleteDBCharacterByCidRequest]
+	DBCHARACTER_PROTOCL_DELETE_DBCHARACTER_BY_CID_RESP = 51006;	// [DeleteDBCharacterByCidResponse]
+	DBCHARACTER_PROTOCL_GET_DBCHARACTERS_BY_UID_REQ = 51007;	// [GetDBCharactersByUidRequest]
+	DBCHARACTER_PROTOCL_GET_DBCHARACTERS_BY_UID_RESP = 51008;	// [GetDBCharactersByUidResponse]
 }
 
 message DBCharacterStatisticsNode{
@@ -19,7 +22,6 @@ message DBCharacterStatisticsNode{
 message DBCharacterStatusNode{
 	int32 hp = 1;
 	int32 mp = 2;
-	int32 level = 3;
 	int32 exp = 4;
 	int32 curSpaceId = 5;
 	int32 x = 6;
@@ -38,39 +40,60 @@ message DBCharacterSocialNode {
     string faction = 2; // 阵营
     repeated string friendsList = 3; // 好友列表
 }
-
 message DBCharacterNode{
 	string cId = 1;
 	string uId = 2;
 	int32 professionId = 3;
 	string chrName = 4;
-	DBCharacterStatisticsNode chrStatistics = 5;
-	DBCharacterStatusNode chrStatus = 6;
-	DBCharacterAssetsNode chrAssets = 7;
-	DBCharacterSocialNode chrSocial = 8; 
-	int64 creationTimestamp = 9; 
+	int32 level = 5;
+	int64 creationTimestamp = 6; 
+	DBCharacterStatisticsNode chrStatistics = 7;
+	DBCharacterStatusNode chrStatus = 8;
+	DBCharacterAssetsNode chrAssets = 9;
+	DBCharacterSocialNode chrSocial = 10; 
 }
 
-message GetDBCharacterRequest{
-	string cId = 1;
+message GetDBCharacterByCidRequest{
+	int32 taskId = 1;
+	string cId = 2;
+	google.protobuf.FieldMask read_mask = 3;	// 不包含顶层的基础信息
 }
-message GetDBCharacterReponse{
-	int32 resultCode = 1;
-	string resultMsg = 2;
-	DBCharacterNode chrNode = 3;
+message GetDBCharacterByCidReponse{
+	int32 taskId = 1;
+	int32 resultCode = 2;
+	string resultMsg = 3;
+	DBCharacterNode chrNode = 4;
+
 }
 message AddDBCharacterRequset{
-	DBCharacterNode chrNode = 1;
+	int32 taskId = 1;
+	DBCharacterNode chrNode = 2;
 }
 message AddDBCharacterResponse{
-	int32 resultCode = 1;
-	string resultMsg = 2;
-	string cId = 3;
+	int32 taskId = 1;
+	int32 resultCode = 2;
+	string resultMsg = 3;
+	string cId = 4;
 }
-message DeleteDBCharacterRequest{
-	string cId = 1;
+
+message DeleteDBCharacterByCidRequest{
+	int32 taskId = 1;
+	string cId = 2;
 }
-message DeleteDBCharacterResponse{
-	int32 resultCode = 1;
-	string resultMsg = 2;
+message DeleteDBCharacterByCidResponse{
+	int32 taskId = 1;
+	int32 resultCode = 2;
+	string resultMsg = 3;
+}
+
+message GetDBCharactersByUidRequest{
+	int32 taskId = 1;
+	string uId = 2;
+	google.protobuf.FieldMask read_mask = 3;	
+}
+message GetDBCharactersByUidResponse{
+	int32 taskId = 1;
+	int32 resultCode = 2;
+	string resultMsg = 3;
+	repeated DBCharacterNode cNodes = 4;
 }

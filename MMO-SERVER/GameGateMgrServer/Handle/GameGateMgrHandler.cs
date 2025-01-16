@@ -83,7 +83,7 @@ namespace GameGateMgrServer.Handle
         {
             RegisterSessionToGGMResponse resp = new();
             resp.TaskId = message.TaskId;
-            List<ServerInfoNode> gameGateSIN = GGMMonitor.Instance.RegisterSession(message.WorldId, message.Session);
+            List<ServerInfoNode> gameGateSIN = GGMMonitor.Instance.RegisterSession(message);
             if (gameGateSIN.Count == 0)
             {
                 resp.ResultCode = 1;

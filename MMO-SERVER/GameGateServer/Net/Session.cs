@@ -11,13 +11,15 @@ namespace GameGateServer.Net
     public class Session
     {
         public string Id { get; private set; }
+        public string m_uId;
         public Connection Conn;                                             
         public float LastHeartTime;        // 用myTime                
         private ConcurrentQueue<IMessage> msgBuffer = new ConcurrentQueue<IMessage>();
 
-        public Session(string sessionId)
+        public Session(string sessionId, string Uid)
         {
             Id = sessionId;
+            m_uId = Uid;
             LastHeartTime = Scheduler.UnixTime;
         }
         public void Send(IMessage message)

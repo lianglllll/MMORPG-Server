@@ -104,8 +104,9 @@ namespace ControlCenter.Net
                     Log.Debug("心跳超时");
                     Connection conn = kv.Key;
                     _OnDisconnected(conn);
+
                     // 转交给下一层的connection去进行关闭
-                    conn.CloseConnection();
+                    conn?.CloseConnection();
                 }
             }
         }

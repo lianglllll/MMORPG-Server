@@ -50,7 +50,8 @@ message ExecuteSCommandResponse{
 message RegisterSessionToGGMRequest{
 	int32 taskId = 1;
 	int32 worldId = 2;
-	string session = 3;
+	string sessionId = 3;
+	string uId = 4;
 }
 message RegisterSessionToGGMResponse{
 	int32 taskId = 1;

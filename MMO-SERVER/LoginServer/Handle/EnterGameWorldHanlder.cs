@@ -111,7 +111,8 @@ namespace LoginServer.Handle
             RegisterSessionToGGMRequest req = new();
             req.TaskId = taskId;
             req.WorldId = message.WorldId;
-            req.Session = message.SessionId;
+            req.SessionId = message.SessionId;
+            req.UId = session.dbUser.UId;
             ServersMgr.Instance.SendMsgToGGM(req);
             goto End2;
 

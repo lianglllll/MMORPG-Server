@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using Common.Summer.Core;
 using Common.Summer.Tools;
+using HS.Protobuf.GameGate;
 using Serilog;
 
 namespace GameGateServer.Net
@@ -17,11 +18,15 @@ namespace GameGateServer.Net
             Scheduler.Instance.AddTask(_CheckSession, 1000, 0);
         }
 
-        public Session NewSession(string sessionId)
+        public Session NewSession(RegisterSessionToGGRequest message)
         {
-            var session = new Session(sessionId);
-            sessions[sessionId] = session;
+            var session = new Session(message.SessionId, message.UId);
+            sessions[message.SessionId] = session;
             return session;
+        }
+        public void RemoveSessionById(string sessionId)
+        {
+            sessions.TryRemove(sessionId, out var session);
         }
         public Session GetSessionBySessionId(string sessionId)
         {
@@ -31,11 +36,6 @@ namespace GameGateServer.Net
             }
             return null;
         }
-        public void RemoveSessionById(string sessionId)
-        {
-            sessions.TryRemove(sessionId, out var session);
-        }
-
         private void _CheckSession()
         {
             foreach (var session in sessions.Values) { 

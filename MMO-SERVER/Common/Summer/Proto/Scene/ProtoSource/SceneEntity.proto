@@ -60,7 +60,7 @@ message NetActor{
 	float hp=9;
 	float mp=10;
 	ActorType actorType = 11; 
-	repeated HS.Protobuf.Combat.Skill.SkillInfo skills = 12;			//技能列表
+	repeated HS.Protobuf.Combat.Skill.SkillInfo skills = 12;		//技能列表
 	repeated HS.Protobuf.Game.Backpack.ItemInfo equipList = 13;	 	//穿戴装备
 	float hpMax = 14;
 	float mpMax = 15;

@@ -24,22 +24,22 @@ namespace HS.Protobuf.GameGate {
     static GameGateReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cg5HYW1lR2F0ZS5wcm90bxIUSFMuUHJvdG9idWYuR2FtZUdhdGUiLwoaUmVn",
-            "aXN0ZXJTZXNzaW9uVG9HR1JlcXVlc3QSEQoJc2Vzc2lvbklkGAEgASgJIkQK",
-            "G1JlZ2lzdGVyU2Vzc2lvblRvR0dSZXNwb25zZRISCgpyZXN1bHRDb2RlGAEg",
-            "ASgFEhEKCXJlc3VsdE1zZxgCIAEoCSIqChVWZXJpZnlTZXNzaW9uUmVxdWVl",
-            "c3QSEQoJc2Vzc2lvbklkGAEgASgJIj4KFVZlcmlmeVNlc3Npb25SZXNwb25z",
-            "ZRISCgpyZXN1bHRDb2RlGAEgASgFEhEKCXJlc3VsdE1zZxgCIAEoCSrqAQoP",
-            "R2FtZUdhdGVQcm90b2NsEhkKFUdBTUVHQVRFX1BST1RPQ0xfTk9ORRAAEjEK",
-            "K0dBTUVHQVRFX1BST1RPQ0xfUkVHSVNURVJfU0VTU0lPTl9UT19HR19SRVEQ",
-            "mfIBEjIKLEdBTUVHQVRFX1BST1RPQ0xfUkVHSVNURVJfU0VTU0lPTl9UT19H",
-            "R19SRVNQEJryARIpCiNHQU1FR0FURV9QUk9UT0NMX1ZFUklGWV9TRVNTSU9O",
-            "X1JFURCb8gESKgokR0FNRUdBVEVfUFJPVE9DTF9WRVJJRllfU0VTU0lPTl9S",
-            "RVNQEJzyAWIGcHJvdG8z"));
+            "Cg5HYW1lR2F0ZS5wcm90bxIUSFMuUHJvdG9idWYuR2FtZUdhdGUiPAoaUmVn",
+            "aXN0ZXJTZXNzaW9uVG9HR1JlcXVlc3QSEQoJc2Vzc2lvbklkGAEgASgJEgsK",
+            "A3VJZBgCIAEoCSJEChtSZWdpc3RlclNlc3Npb25Ub0dHUmVzcG9uc2USEgoK",
+            "cmVzdWx0Q29kZRgBIAEoBRIRCglyZXN1bHRNc2cYAiABKAkiKgoVVmVyaWZ5",
+            "U2Vzc2lvblJlcXVlZXN0EhEKCXNlc3Npb25JZBgBIAEoCSI+ChVWZXJpZnlT",
+            "ZXNzaW9uUmVzcG9uc2USEgoKcmVzdWx0Q29kZRgBIAEoBRIRCglyZXN1bHRN",
+            "c2cYAiABKAkq6gEKD0dhbWVHYXRlUHJvdG9jbBIZChVHQU1FR0FURV9QUk9U",
+            "T0NMX05PTkUQABIxCitHQU1FR0FURV9QUk9UT0NMX1JFR0lTVEVSX1NFU1NJ",
+            "T05fVE9fR0dfUkVREJnyARIyCixHQU1FR0FURV9QUk9UT0NMX1JFR0lTVEVS",
+            "X1NFU1NJT05fVE9fR0dfUkVTUBCa8gESKQojR0FNRUdBVEVfUFJPVE9DTF9W",
+            "RVJJRllfU0VTU0lPTl9SRVEQm/IBEioKJEdBTUVHQVRFX1BST1RPQ0xfVkVS",
+            "SUZZX1NFU1NJT05fUkVTUBCc8gFiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.GameGate.GameGateProtocl), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameGate.RegisterSessionToGGRequest), global::HS.Protobuf.GameGate.RegisterSessionToGGRequest.Parser, new[]{ "SessionId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameGate.RegisterSessionToGGRequest), global::HS.Protobuf.GameGate.RegisterSessionToGGRequest.Parser, new[]{ "SessionId", "UId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameGate.RegisterSessionToGGResponse), global::HS.Protobuf.GameGate.RegisterSessionToGGResponse.Parser, new[]{ "ResultCode", "ResultMsg" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameGate.VerifySessionRequeest), global::HS.Protobuf.GameGate.VerifySessionRequeest.Parser, new[]{ "SessionId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameGate.VerifySessionResponse), global::HS.Protobuf.GameGate.VerifySessionResponse.Parser, new[]{ "ResultCode", "ResultMsg" }, null, null, null, null)
@@ -107,6 +107,7 @@ namespace HS.Protobuf.GameGate {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public RegisterSessionToGGRequest(RegisterSessionToGGRequest other) : this() {
       sessionId_ = other.sessionId_;
+      uId_ = other.uId_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -128,6 +129,18 @@ namespace HS.Protobuf.GameGate {
       }
     }
 
+    /// <summary>Field number for the "uId" field.</summary>
+    public const int UIdFieldNumber = 2;
+    private string uId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string UId {
+      get { return uId_; }
+      set {
+        uId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -144,6 +157,7 @@ namespace HS.Protobuf.GameGate {
         return true;
       }
       if (SessionId != other.SessionId) return false;
+      if (UId != other.UId) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -152,6 +166,7 @@ namespace HS.Protobuf.GameGate {
     public override int GetHashCode() {
       int hash = 1;
       if (SessionId.Length != 0) hash ^= SessionId.GetHashCode();
+      if (UId.Length != 0) hash ^= UId.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -174,6 +189,10 @@ namespace HS.Protobuf.GameGate {
         output.WriteRawTag(10);
         output.WriteString(SessionId);
       }
+      if (UId.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(UId);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -188,6 +207,10 @@ namespace HS.Protobuf.GameGate {
         output.WriteRawTag(10);
         output.WriteString(SessionId);
       }
+      if (UId.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(UId);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -200,6 +223,9 @@ namespace HS.Protobuf.GameGate {
       int size = 0;
       if (SessionId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(SessionId);
+      }
+      if (UId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(UId);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -215,6 +241,9 @@ namespace HS.Protobuf.GameGate {
       }
       if (other.SessionId.Length != 0) {
         SessionId = other.SessionId;
+      }
+      if (other.UId.Length != 0) {
+        UId = other.UId;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -235,6 +264,10 @@ namespace HS.Protobuf.GameGate {
             SessionId = input.ReadString();
             break;
           }
+          case 18: {
+            UId = input.ReadString();
+            break;
+          }
         }
       }
     #endif
@@ -252,6 +285,10 @@ namespace HS.Protobuf.GameGate {
             break;
           case 10: {
             SessionId = input.ReadString();
+            break;
+          }
+          case 18: {
+            UId = input.ReadString();
             break;
           }
         }

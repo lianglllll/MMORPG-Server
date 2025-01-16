@@ -11,9 +11,6 @@ namespace LoginGateServer.Handle
 {
     public class EnterGameWorldHanlder : Singleton<EnterGameWorldHanlder>
     {
-        private IdGenerator m_idGenerator = new IdGenerator();
-        private Dictionary<int, IMessage> m_tasks = new Dictionary<int, IMessage>();
-
         public bool Init()
         {
             // 协议注册
@@ -38,7 +35,7 @@ namespace LoginGateServer.Handle
         {
             // 转发到loginServer
             message.LoginToken = ServersMgr.Instance.LoginToken;
-            ServersMgr.Instance.SentToLoginServer(message);
+            ServersMgr.Instance.SendToLoginServer(message);
         }
         private void _HandleGetAllWorldInfosResponse(Connection conn, GetAllWorldInfosResponse message)
         {
@@ -51,7 +48,7 @@ namespace LoginGateServer.Handle
         {
             // 转发到loginServer
             message.LoginToken = ServersMgr.Instance.LoginToken;
-            ServersMgr.Instance.SentToLoginServer(message);
+            ServersMgr.Instance.SendToLoginServer(message);
         }
         private void _HandleGetGameGateByWorldIdResponse(Connection conn, GetGameGateByWorldIdResponse message)
         {

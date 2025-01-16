@@ -2,15 +2,6 @@ syntax = "proto3";
 import "Scene/ProtoSource/SceneEntity.proto";
 package HS.Protobuf.Scene;
 
-//进入游戏请求
-message GameEnterRequest{
-	int32 characterId = 1;
-}
-message GameEnterResponse{
-	int32  resultCode		= 1;
-	string resultMsg		= 2;
-}
-
 //有其他角色进入场景响应
 message SpaceCharactersEnterResponse{
 	int32 spaceId = 1;

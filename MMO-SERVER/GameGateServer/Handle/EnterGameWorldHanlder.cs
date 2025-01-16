@@ -10,9 +10,6 @@ namespace GameGateServer.Handle
 {
     public class EnterGameWorldHanlder : Singleton<EnterGameWorldHanlder>
     {
-        private IdGenerator m_idGenerator = new IdGenerator();
-        private Dictionary<int, IMessage> m_tasks = new Dictionary<int, IMessage>();
-
         public bool Init()
         {
             // 协议注册
@@ -20,32 +17,33 @@ namespace GameGateServer.Handle
             ProtoHelper.Instance.Register<RegisterSessionToGGResponse>((int)GameGateProtocl.RegisterSessionToGgResp);
             ProtoHelper.Instance.Register<VerifySessionRequeest>((int)GameGateProtocl.VerifySessionReq);
             ProtoHelper.Instance.Register<VerifySessionResponse>((int)GameGateProtocl.VerifySessionResp);
-
             ProtoHelper.Instance.Register<GetCharacterListRequest>((int)GameProtocl.GetCharacterListReq);
             ProtoHelper.Instance.Register<GetCharacterListResponse>((int)GameProtocl.GetCharacterListResp);
             ProtoHelper.Instance.Register<CreateCharacterRequest>((int)GameProtocl.CreateCharacterReq);
             ProtoHelper.Instance.Register<CreateCharacterResponse>((int)GameProtocl.CreateCharacterResp);
             ProtoHelper.Instance.Register<DeleteCharacterRequest>((int)GameProtocl.DeleteCharacterReq);
             ProtoHelper.Instance.Register<DeleteCharacterResponse>((int)GameProtocl.DeleteCharacterResp);
+            ProtoHelper.Instance.Register<EnterGameRequest>((int)GameProtocl.EnterGameReq);
+            ProtoHelper.Instance.Register<EnterGameResponse>((int)GameProtocl.EnterGameResp);
 
             // 消息的订阅
             MessageRouter.Instance.Subscribe<RegisterSessionToGGRequest>(_HandleRegisterSessionToGGRequest);
             MessageRouter.Instance.Subscribe<VerifySessionRequeest>(_HandleVerifySessionRequeest);
-
             MessageRouter.Instance.Subscribe<GetCharacterListRequest>(_HandleGetCharacterListRequest);
             MessageRouter.Instance.Subscribe<GetCharacterListResponse>(_HandleGetCharacterListResponse);
             MessageRouter.Instance.Subscribe<CreateCharacterRequest>(_HandleCreateCharacterRequest);
             MessageRouter.Instance.Subscribe<CreateCharacterResponse>(_HandleCreateCharacterResponse);
             MessageRouter.Instance.Subscribe<DeleteCharacterRequest>(_HandleDeleteCharacterRequest);
             MessageRouter.Instance.Subscribe<DeleteCharacterResponse>(_HandleDeleteCharacterResponse);
+            MessageRouter.Instance.Subscribe<EnterGameRequest>(_HandleEnterGameRequest);
+            MessageRouter.Instance.Subscribe<EnterGameResponse>(_HandleEnterGameResponse);
 
             return true;
         }
 
-
         private void _HandleRegisterSessionToGGRequest(Connection conn, RegisterSessionToGGRequest message)
         {
-            SessionManager.Instance.NewSession(message.SessionId);
+            SessionManager.Instance.NewSession(message);
         }
         private void _HandleVerifySessionRequeest(Connection conn, VerifySessionRequeest message)
         {
@@ -73,31 +71,67 @@ namespace GameGateServer.Handle
             return;
         }
 
-
         private void _HandleGetCharacterListRequest(Connection conn, GetCharacterListRequest message)
         {
+            GetCharacterListResponse resp = new();
+            var session = conn.Get<Session>();
+            if (session == null)
+            {
+                resp.ResultCode = 1;
+                resp.ResultMsg = "未登录，越权访问";
+                goto End1;
+            }
+            message.SessionId = session.Id;
+            message.GameToken = ServersMgr.Instance.GameToken;
+            message.UId = session.m_uId;
+            ServersMgr.Instance.SendToGameServer(message);
+            goto End2;
+        End1:
+            conn.Send(resp);
+        End2:
+            return;
         }
         private void _HandleGetCharacterListResponse(Connection conn, GetCharacterListResponse message)
         {
-            throw new NotImplementedException();
+            var session = SessionManager.Instance.GetSessionBySessionId(message.SessionId);
+            message.SessionId = "";
+            session.Send(message);
         }
 
         private void _HandleCreateCharacterRequest(Connection conn, CreateCharacterRequest message)
         {
-            throw new NotImplementedException();
+            message.GameToken = ServersMgr.Instance.GameToken;
+            ServersMgr.Instance.SendToGameServer(message);
         }
         private void _HandleCreateCharacterResponse(Connection conn, CreateCharacterResponse message)
         {
-            throw new NotImplementedException();
+            var session = SessionManager.Instance.GetSessionBySessionId(message.SessionId);
+            message.SessionId = "";
+            session.Send(message);
         }
+
         private void _HandleDeleteCharacterRequest(Connection conn, DeleteCharacterRequest message)
         {
-            throw new NotImplementedException();
+            message.GameToken = ServersMgr.Instance.GameToken;
+            ServersMgr.Instance.SendToGameServer(message);
         }
         private void _HandleDeleteCharacterResponse(Connection conn, DeleteCharacterResponse message)
         {
-            throw new NotImplementedException();
+            var session = SessionManager.Instance.GetSessionBySessionId(message.SessionId);
+            message.SessionId = "";
+            session.Send(message);
         }
 
+        private void _HandleEnterGameRequest(Connection conn, EnterGameRequest message)
+        {
+            message.GameToken = ServersMgr.Instance.GameToken;
+            ServersMgr.Instance.SendToGameServer(message);
+        }
+        private void _HandleEnterGameResponse(Connection conn, EnterGameResponse message)
+        {
+            var session = SessionManager.Instance.GetSessionBySessionId(message.SessionId);
+            message.SessionId = "";
+            session.Send(message);
+        }
     }
 }

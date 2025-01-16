@@ -381,7 +381,7 @@ namespace GameGateMgrServer.Core
             }
             return null;
         }
-        public List<ServerInfoNode> RegisterSession(int worldId, string sessionId)
+        public List<ServerInfoNode> RegisterSession(RegisterSessionToGGMRequest message)
         {
             List<ServerInfoNode> result = new();
 
@@ -391,7 +391,7 @@ namespace GameGateMgrServer.Core
             // 3.最优选择：根据每个网关的当前负载或网络延迟情况选择最佳的网关。这需要对各个网关的状态进行监控，并可能需要额外的计算开销。
             // 4.权重轮询（Weighted Round Robin）：为每个网关设置一个权重，根据权重大小来分配连接请求。例如，性能更强的网关可以获得更高的权重。
             // 5.健康检查：定期检测各个网关的状态，仅选择那些健康的网关进行分发。
-            GameEntry gameEntry = GetGameEntryByWorldId(worldId);
+            GameEntry gameEntry = GetGameEntryByWorldId(message.WorldId);
             if(gameEntry == null)
             {
                 goto End;
@@ -424,7 +424,8 @@ namespace GameGateMgrServer.Core
 
             // 并且通知对应的gameGate设置session
             RegisterSessionToGGRequest req = new();
-            req.SessionId = sessionId;
+            req.SessionId = message.SessionId;
+            req.UId = message.UId;
             foreach (var gateGateEntry in list) {
                 gateGateEntry.Connection.Send(req);
                 result.Add(gateGateEntry.ServerInfo);

@@ -20,8 +20,8 @@ namespace Common.Summer.Core
     {
         public delegate void DisconnectedHandler(Connection sender);
         private Socket m_socket;                            // 连接客户端的socket
-        private LengthFieldDecoder m_lfd;                   //消息接受器
-        private DisconnectedHandler m_onDisconnected;       //关闭连接的委托
+        private LengthFieldDecoder m_lfd;                   // 消息接受器
+        private DisconnectedHandler m_onDisconnected;       // 关闭连接的委托
         public EncryptionManager m_encryptionManager;       // 安全相关
         public Socket Socket
         {

@@ -332,7 +332,7 @@ namespace LoginGateServer.Net
 
 
         // tools
-        public void SentToLoginServer(IMessage message)
+        public void SendToLoginServer(IMessage message)
         {
             m_outgoingServerConnection[SERVER_TYPE.Login].NetClient.Send(message);
         }

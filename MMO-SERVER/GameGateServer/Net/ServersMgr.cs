@@ -10,6 +10,7 @@ using HS.Protobuf.GameGateMgr;
 using GameGateServer.Handle;
 using HS.Protobuf.Login;
 using HS.Protobuf.Game;
+using Google.Protobuf;
 
 namespace GameGateServer.Net
 {
@@ -328,6 +329,11 @@ namespace GameGateServer.Net
             GameToken = message.GameToken;
             _ExecutePhase3();
         }
+        public bool SendToGameServer(IMessage message)
+        {
+            return m_outgoingServerConnection[SERVER_TYPE.Game].NetClient.Send(message);
+        }
+
 
     }
 }
