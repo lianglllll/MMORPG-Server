@@ -93,6 +93,9 @@ namespace LoginServer.Handle
             {
                 SessionManager.Instance.RemoveSession(session.Id);
                 // 如果当前session已经连接到GateGate，通知当前这个session对应的Gate，让其t玩家下线。
+                // todo...
+
+
             }
 
             // 分配session
@@ -104,11 +107,11 @@ namespace LoginServer.Handle
             resp.ResultMsg = "登录成功";
             resp.SessionId = session.Id;
 
+        End1:
             // 清理资源
             m_tasks.Remove(message.TaskId);
             m_idGenerator.ReturnId(message.TaskId);
 
-        End1:
             gateConn.Send(resp);
         End2:
             return;
@@ -207,6 +210,9 @@ namespace LoginServer.Handle
             }
 
         End1:
+            // 清理资源
+            m_tasks.Remove(message.TaskId);
+            m_idGenerator.ReturnId(message.TaskId);
             gateConn.Send(resp);
         End2:
             return;

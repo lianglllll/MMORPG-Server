@@ -4,16 +4,17 @@ using Common.Summer.Tools;
 using HS.Protobuf.DBProxy.DBCharacter;
 using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
+using System.Linq;
 
 namespace DBProxyServer.Core
 {
     public class CharacterOperations:Singleton<CharacterOperations>
     {
-        private  IMongoCollection<BsonDocument>? _characterCollection;
+        private  IMongoCollection<BsonDocument>? m_characterCollection;
 
         public void Init(MongoDBConnection dbConnection)
         {
-            _characterCollection = dbConnection.GetCollection<BsonDocument>("character");
+            m_characterCollection = dbConnection.GetCollection<BsonDocument>("character");
         }
 
         public async Task<DBCharacterNode> GetCharacterByCidAsync(string cId, FieldMask readMask)
@@ -22,7 +23,7 @@ namespace DBProxyServer.Core
             {
                 ObjectId objectId = new ObjectId(cId);
                 var filter = Builders<BsonDocument>.Filter.Eq("_id", objectId);
-                var chr = await _characterCollection.Find(filter).FirstOrDefaultAsync();
+                var chr = await m_characterCollection.Find(filter).FirstOrDefaultAsync();
                 if (chr == null)
                 {
                     goto End;
@@ -102,16 +103,30 @@ namespace DBProxyServer.Core
          End:
             return null;
         }
-        public async Task<List<DBCharacterNode>> GetCharactersByUidAsync(string UId, FieldMask readMask)
+        public async Task<List<DBCharacterNode>> GetCharactersByUWidAsync(string uId, int worldId,FieldMask readMask)
         {
             try
             {
-                var filter = Builders<BsonDocument>.Filter.Eq("uId", UId);
-                var chrs = await _characterCollection.Find(filter).ToListAsync();
-                if (chrs.Count == 0)
+                // 获取角色的 ObjectId 列表
+                var chrIds = await UserOperations.Instance.GetCharacterIdsAsync(uId, worldId);
+                if (chrIds.Count == 0)
                 {
                     goto End;
                 }
+
+                // 将字符串ID转换为ObjectId列表
+                var objectIdList = chrIds.Select(id => new ObjectId(id)).ToList();
+
+                // 使用 $in 操作符创建过滤器
+                var filter = Builders<BsonDocument>.Filter.In("_id", objectIdList);
+
+                // 可以根据具体需求使用 readMask 定制投影
+                // var projection = Builders<BsonDocument>.Projection.Include(readMask.Paths);
+                // var projection = projectionBuilder.Exclude("_id"); // 假设你不想返回 _id
+
+                // 查询角色集合
+                //var characterDocuments = await m_characterCollection.Find(filter).Project<DBCharacterNode>(projection).ToListAsync();
+                var chrs = await m_characterCollection.Find(filter).ToListAsync();
 
                 List<DBCharacterNode> cNodes = new();
                 foreach(var chr in chrs)
@@ -191,68 +206,81 @@ namespace DBProxyServer.Core
         End:
             return null;
         }
-
         public async Task<string> AddCharacterAsync(DBCharacterNode chrNode)
         {
             try
             {
-                // Character Statistics
-                BsonDocument characterStatistics = new BsonDocument
-                {
-                    { "killCount", chrNode.ChrStatistics.KillCount },
-                    { "deathCount", chrNode.ChrStatistics.DeathCount },   // 新增
-                    { "taskCompleted", chrNode.ChrStatistics.TaskCompleted } // 新增
-                };
-
-                // Character Status
-                BsonDocument characterStatus = new BsonDocument
-                {
-                    { "hp", chrNode.ChrStatus.Hp },
-                    { "mp", chrNode.ChrStatus.Mp },
-                    { "exp", chrNode.ChrStatus.Exp },
-                    { "curSpaceId", chrNode.ChrStatus.CurSpaceId },
-                    { "x", chrNode.ChrStatus.X },
-                    { "y", chrNode.ChrStatus.Y },
-                    { "z", chrNode.ChrStatus.Z }
-                };
-
-                // Character Assets
-                BsonDocument characterAssets = new BsonDocument
-                {
-                    { "backpackData", new BsonBinaryData(chrNode.ChrAssets.BackpackData.ToByteArray()) },
-                    { "equipsData", new BsonBinaryData(chrNode.ChrAssets.EquipsData.ToByteArray()) },
-                    { "currency", new BsonDocument(chrNode.ChrAssets.Currency) },       // 将货币映射为BsonDocument
-                    { "achievements", new BsonArray(chrNode.ChrAssets.Achievements) },  // 将成就列表转为BsonArray
-                    { "titles", new BsonArray(chrNode.ChrAssets.Titles) }               // 将头衔列表转为BsonArray
-                };
-
-                // Character Social
-                BsonDocument characterSocial = new BsonDocument
-                {
-                    { "guildId", chrNode.ChrSocial.GuildId },
-                    { "faction", chrNode.ChrSocial.Faction },
-                    { "friendsList", new BsonArray(chrNode.ChrSocial.FriendsList) } // 将好友列表转为BsonArray
-                };
-
                 // Main Character Document
                 ObjectId objectId = ObjectId.GenerateNewId();
+                string objectIdStr = objectId.ToString();
                 BsonDocument characterDocument = new BsonDocument
                 {
                     { "_id", objectId },
                     { "uId", chrNode.UId },
+                    { "worldId", chrNode.WorldId},
                     { "professionId", chrNode.ProfessionId },
                     { "chrName", chrNode.ChrName },
                     { "level", chrNode.Level },
                     { "creationTimestamp", chrNode.CreationTimestamp },
-                    { "chrStatistics", characterStatistics },
-                    { "chrStatus", characterStatus },
-                    { "chrAssets", characterAssets },
-                    { "chrSocial", characterSocial },  
                 };
 
-                await _characterCollection.InsertOneAsync(characterDocument);
+                // Character Statistics
+                if (chrNode.ChrStatistics != null)
+                {
+                    BsonDocument characterStatistics = new BsonDocument
+                    {
+                        { "killCount", chrNode.ChrStatistics.KillCount },
+                        { "deathCount", chrNode.ChrStatistics.DeathCount },   // 新增
+                        { "taskCompleted", chrNode.ChrStatistics.TaskCompleted } // 新增
+                    };
+                    characterDocument.Add("chrStatistics", characterStatistics);
+                }
 
-                return objectId.ToString();
+                // Character Status
+                if(chrNode.ChrStatus != null)
+                {
+                    BsonDocument characterStatus = new BsonDocument
+                    {
+                        { "hp", chrNode.ChrStatus.Hp },
+                        { "mp", chrNode.ChrStatus.Mp },
+                        { "exp", chrNode.ChrStatus.Exp },
+                        { "curSpaceId", chrNode.ChrStatus.CurSpaceId },
+                        { "x", chrNode.ChrStatus.X },
+                        { "y", chrNode.ChrStatus.Y },
+                        { "z", chrNode.ChrStatus.Z }
+                    };
+                    characterDocument.Add("chrStatus", characterStatus);
+                }
+
+                // Character Assets
+                if (chrNode.ChrAssets != null)
+                {
+                    BsonDocument characterAssets = new BsonDocument
+                    {
+                        { "backpackData", new BsonBinaryData(chrNode.ChrAssets.BackpackData.ToByteArray()) },
+                        { "equipsData", new BsonBinaryData(chrNode.ChrAssets.EquipsData.ToByteArray()) },
+                        { "currency", new BsonDocument(chrNode.ChrAssets.Currency) },       // 将货币映射为BsonDocument
+                        { "achievements", new BsonArray(chrNode.ChrAssets.Achievements) },  // 将成就列表转为BsonArray
+                        { "titles", new BsonArray(chrNode.ChrAssets.Titles) }               // 将头衔列表转为BsonArray
+                    };
+                    characterDocument.Add("chrAssets", characterAssets);
+                }
+
+                // Character Social
+                if (chrNode.ChrSocial != null)
+                {
+                    BsonDocument characterSocial = new BsonDocument
+                    {
+                        { "guildId", chrNode.ChrSocial.GuildId },
+                        { "faction", chrNode.ChrSocial.Faction },
+                        { "friendsList", new BsonArray(chrNode.ChrSocial.FriendsList) } // 将好友列表转为BsonArray
+                    };
+                    characterDocument.Add("chrSocial", characterSocial);
+                }
+
+                await m_characterCollection.InsertOneAsync(characterDocument);
+                await UserOperations.Instance.AddCharacterIdAsync(chrNode.UId, chrNode.WorldId, objectIdStr);
+                return objectIdStr;
             }
             catch (Exception ex)
             {
@@ -260,7 +288,7 @@ namespace DBProxyServer.Core
                 return null;
             }
         }
-        public async Task<bool> DeleteCharacterByCidAsync(string cId)
+        public async Task<bool> RemoveCharacterByCidAsync(string cId)
         {
             // 定义过滤器以查找包含该cid的文档
             var objectId = new ObjectId(cId);
@@ -268,11 +296,11 @@ namespace DBProxyServer.Core
             try
             {
                 // 删除user终的cid
-                var chr = await _characterCollection.Find(filter).FirstOrDefaultAsync();
-                await UserOperations.Instance.DeleteCharacterIdAsync(chr["uId"].ToString(),cId);
+                var chr = await m_characterCollection.Find(filter).FirstOrDefaultAsync();
+                await UserOperations.Instance.RemoveCharacterIdAsync(chr["uId"].ToString(), chr["worldId"].ToInt32(), cId);
                 
                 // 执行删除操作
-                var deleteResult = await _characterCollection.DeleteOneAsync(filter);
+                var deleteResult = await m_characterCollection.DeleteOneAsync(filter);
                 // 返回是否成功删除一条文档
                 return deleteResult.DeletedCount > 0;
             }
@@ -288,7 +316,7 @@ namespace DBProxyServer.Core
             }
 
         }
-        public async Task<bool> DeleteCharactersByUidAsync(string uId)
+        public async Task<bool> RemoveCharactersByUidAsync(string uId)
         {
             try
             {
@@ -296,7 +324,7 @@ namespace DBProxyServer.Core
                 var filter = Builders<BsonDocument>.Filter.Eq("uId", uId);
 
                 // 执行批量删除操作
-                var deleteResult = await _characterCollection.DeleteManyAsync(filter);
+                var deleteResult = await m_characterCollection.DeleteManyAsync(filter);
 
                 // 返回是否成功删除至少一条文档
                 return deleteResult.DeletedCount > 0;
@@ -307,6 +335,22 @@ namespace DBProxyServer.Core
                 return false;
             }
 
+        }
+
+        public async Task<bool> CheckCharacterNameExistenceAsync(string cName)
+        {
+            try
+            {
+                var filter = Builders<BsonDocument>.Filter.Eq("chrName", cName);
+                var count = await m_characterCollection.CountDocumentsAsync(filter);
+                return count > 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error checking character name existence: {ex.Message}");
+                // 在发生异常时，返回 false 或根据需求处理错误逻辑
+                return false;
+            }
         }
 
     }

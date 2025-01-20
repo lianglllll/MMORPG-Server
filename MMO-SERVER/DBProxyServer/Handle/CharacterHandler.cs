@@ -41,7 +41,29 @@ namespace DBProxyServer.Handle
         public async void _HandleAddDBCharacterRequset(Connection sender, AddDBCharacterRequset message)
         {
             AddDBCharacterResponse resp = new();
-            string cId = await CharacterOperations.Instance.AddCharacterAsync(message.ChrNode);
+            resp.TaskId = message.TaskId;
+
+            // chr数量上限
+            var existIds = await UserOperations.Instance.GetCharacterIdsAsync(message.ChrNode.UId, message.ChrNode.WorldId);
+            if (existIds.Count >= 4)
+            {
+                resp.ResultCode = 1;
+                goto End;
+            }
+
+            // 名字是否重复
+            var isExist = await CharacterOperations.Instance.CheckCharacterNameExistenceAsync(message.ChrNode.ChrName);
+            if (isExist)
+            {
+                resp.ResultCode = 2;
+                goto End;
+            }
+
+            var Node = message.ChrNode;
+            Node.Level = 1;
+            Node.CreationTimestamp = Scheduler.UnixTime;
+
+            string cId = await CharacterOperations.Instance.AddCharacterAsync(Node);
             if (cId != null)
             {
                 resp.CId = cId;
@@ -49,16 +71,17 @@ namespace DBProxyServer.Handle
             }
             else
             {
-                resp.ResultCode = 1;
+                resp.ResultCode = 3;
             }
-
+        End:
             sender.Send(resp);
         }
         private async void _HandleDeleteDBCharacterRequest(Connection sender, DeleteDBCharacterByCidRequest message)
         {
-            DeleteDBUserResponse resp = new();
+            DeleteDBCharacterByCidResponse resp = new();
+            resp.TaskId = message.TaskId;
 
-            bool successs = await CharacterOperations.Instance.DeleteCharacterByCidAsync(message.CId);
+            bool successs = await CharacterOperations.Instance.RemoveCharacterByCidAsync(message.CId);
             if (successs)
             {
                 resp.ResultCode = 0;
@@ -74,7 +97,7 @@ namespace DBProxyServer.Handle
         {
             GetDBCharactersByUidResponse resp = new();
             resp.TaskId = message.TaskId;
-            var list = await CharacterOperations.Instance.GetCharactersByUidAsync(message.UId, message.ReadMask);
+            var list = await CharacterOperations.Instance.GetCharactersByUWidAsync(message.UId, message.WorldId,message.ReadMask);
             if(list != null)
             {
                 resp.CNodes.AddRange(list);

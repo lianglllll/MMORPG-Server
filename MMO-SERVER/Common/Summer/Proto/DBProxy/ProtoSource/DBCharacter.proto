@@ -43,14 +43,15 @@ message DBCharacterSocialNode {
 message DBCharacterNode{
 	string cId = 1;
 	string uId = 2;
-	int32 professionId = 3;
-	string chrName = 4;
-	int32 level = 5;
-	int64 creationTimestamp = 6; 
-	DBCharacterStatisticsNode chrStatistics = 7;
-	DBCharacterStatusNode chrStatus = 8;
-	DBCharacterAssetsNode chrAssets = 9;
-	DBCharacterSocialNode chrSocial = 10; 
+	int32 worldId = 3;
+	int32 professionId = 4;
+	string chrName = 5;
+	int32 level = 6;
+	int64 creationTimestamp = 7;				// 这个字段自动填的
+	DBCharacterStatisticsNode chrStatistics = 8;
+	DBCharacterStatusNode chrStatus = 9;
+	DBCharacterAssetsNode chrAssets = 10;
+	DBCharacterSocialNode chrSocial = 11; 
 }
 
 message GetDBCharacterByCidRequest{
@@ -63,8 +64,8 @@ message GetDBCharacterByCidReponse{
 	int32 resultCode = 2;
 	string resultMsg = 3;
 	DBCharacterNode chrNode = 4;
-
 }
+
 message AddDBCharacterRequset{
 	int32 taskId = 1;
 	DBCharacterNode chrNode = 2;
@@ -89,7 +90,8 @@ message DeleteDBCharacterByCidResponse{
 message GetDBCharactersByUidRequest{
 	int32 taskId = 1;
 	string uId = 2;
-	google.protobuf.FieldMask read_mask = 3;	
+	int32 worldId = 3;
+	google.protobuf.FieldMask read_mask = 4;	
 }
 message GetDBCharactersByUidResponse{
 	int32 taskId = 1;

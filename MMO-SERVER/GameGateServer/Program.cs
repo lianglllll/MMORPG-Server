@@ -45,7 +45,7 @@ namespace GameGateServer
 
             Config.Init();                      
             Log.Information("=============================================");
-            Log.Information("[LoginGateServer]初始化,配置如下：");
+            Log.Information("[GameGateServer]初始化,配置如下：");
             Log.Information($"ip：{Config.Server.ip}");
             Log.Information($"userPort：{Config.Server.userPort}");
             Log.Information($"serverPort：{Config.Server.serverPort}");

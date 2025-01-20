@@ -1,9 +1,5 @@
 ﻿using System;
 using Serilog;
-using GameServer.Service;
-using GameServer.Database;
-using GameServer.Manager;
-using GameServer.Skills;
 using GameServer.Net;
 using GameServer.Utils;
 using Common.Summer.Core;
@@ -68,7 +64,7 @@ namespace GameServer
             //}, Config.Server.updateHz);
 
             Log.Information("=============================================");
-            Log.Information("[LoginServer]初始化,配置如下：");
+            Log.Information("[GameServer]初始化,配置如下：");
             Log.Information($"ip：{Config.Server.ip}");
             Log.Information($"port：{Config.Server.serverPort}");
             Log.Information($"workerCount：{Config.Server.workerCount}");

@@ -85,10 +85,10 @@ namespace LoginServer.Handle
             }
 
         End1:
-            gateConn.Send(resp);
             // 清理资源
             m_tasks.Remove(message.TaskId);
             m_idGenerator.ReturnId(message.TaskId);
+            gateConn.Send(resp);
         End2:
             return;
         }
@@ -151,10 +151,10 @@ namespace LoginServer.Handle
             }
 
         End1:
-            gateConn.Send(resp);
             // 清理资源
             m_tasks.Remove(message.TaskId);
             m_idGenerator.ReturnId(message.TaskId);
+            gateConn.Send(resp);
         End2:
             return;
         }

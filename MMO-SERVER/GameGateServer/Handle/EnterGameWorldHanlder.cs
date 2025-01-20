@@ -100,8 +100,23 @@ namespace GameGateServer.Handle
 
         private void _HandleCreateCharacterRequest(Connection conn, CreateCharacterRequest message)
         {
+            CreateCharacterResponse resp = new();
+            var session = conn.Get<Session>();
+            if (session == null)
+            {
+                resp.ResultCode = 1;
+                resp.ResultMsg = "未登录，越权访问";
+                goto End1;
+            }
+            message.SessionId = session.Id;
             message.GameToken = ServersMgr.Instance.GameToken;
+            message.UId = session.m_uId;
             ServersMgr.Instance.SendToGameServer(message);
+            goto End2;
+        End1:
+            conn.Send(resp);
+        End2:
+            return;
         }
         private void _HandleCreateCharacterResponse(Connection conn, CreateCharacterResponse message)
         {
@@ -112,8 +127,24 @@ namespace GameGateServer.Handle
 
         private void _HandleDeleteCharacterRequest(Connection conn, DeleteCharacterRequest message)
         {
+            DeleteCharacterResponse resp = new();
+            var session = conn.Get<Session>();
+            if (session == null)
+            {
+                resp.ResultCode = 1;
+                resp.ResultMsg = "未登录，越权访问";
+                goto End1;
+            }
+            message.SessionId = session.Id;
             message.GameToken = ServersMgr.Instance.GameToken;
+            message.UId = session.m_uId;
+            message.Password = conn.m_encryptionManager.AesDecrypt(message.Password);
             ServersMgr.Instance.SendToGameServer(message);
+            goto End2;
+        End1:
+            conn.Send(resp);
+        End2:
+            return;
         }
         private void _HandleDeleteCharacterResponse(Connection conn, DeleteCharacterResponse message)
         {

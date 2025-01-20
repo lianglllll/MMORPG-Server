@@ -43,8 +43,10 @@ message GetCharacterListResponse{
 message CreateCharacterRequest{
 	string sessionId = 1;
 	string gameToken = 2;
-	string name = 3;
-	int32 VocationId = 4;
+	string uId = 3;
+
+	string cName = 4;
+	int32 professionId = 5;
 }
 message CreateCharacterResponse{
 	string sessionId = 1;
@@ -56,7 +58,9 @@ message CreateCharacterResponse{
 message DeleteCharacterRequest{
 	string sessionId = 1;
 	string gameToken = 2;
-	int32 characterId = 3;
+	string uId = 3;
+	string password = 4;
+	string cId = 5;
 }
 message DeleteCharacterResponse{
 	string sessionId = 1;

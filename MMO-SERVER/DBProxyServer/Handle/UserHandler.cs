@@ -30,7 +30,17 @@ namespace DBProxyServer.Handle
         {
             GetDBUserResponse resp = new();
             resp.TaskId = message.TaskId;
-            DBUserNode dBUserNode = await UserOperations.Instance.GetDBUserByNameAsync(message.UserName);
+
+            DBUserNode dBUserNode = null;
+            if (!string.IsNullOrEmpty(message.UId))
+            {
+                dBUserNode = await UserOperations.Instance.GetDBUserByUidAsync(message.UId);
+            }
+            else if(!string.IsNullOrEmpty(message.UserName))
+            {
+                dBUserNode = await UserOperations.Instance.GetDBUserByNameAsync(message.UserName);
+            }
+
             if (dBUserNode == null)
             {
                 resp.ResultCode = 1;
@@ -59,11 +69,11 @@ namespace DBProxyServer.Handle
                 goto End;
             }
 
-            // 填一些字段
+            // 填一些默认字段
             DBUserNode dBUserNode = message.DbUserNode;
-            dBUserNode.CreationTimestamp = Scheduler.UnixTime;
             dBUserNode.AccountStatus = "active";
             dBUserNode.AccessLevel = "user";
+            dBUserNode.CreationTimestamp = Scheduler.UnixTime;
 
             bool success = await UserOperations.Instance.AddUserAsync(dBUserNode);
             if (success)
@@ -72,6 +82,7 @@ namespace DBProxyServer.Handle
             }
             else
             {
+                resp.ResultMsg = "未知错误，请联系管理员";
                 resp.ResultCode = 2;
             }
 
@@ -99,7 +110,7 @@ namespace DBProxyServer.Handle
         {
             DeleteDBUserResponse resp = new();
 
-            bool successs = await UserOperations.Instance.DeleteUserByUidAsync(message.UId);
+            bool successs = await CharacterOperations.Instance.RemoveCharactersByUidAsync(message.UId);
             if (successs)
             {
                 resp.ResultCode = 0;

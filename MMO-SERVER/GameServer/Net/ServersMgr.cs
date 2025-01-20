@@ -40,7 +40,7 @@ namespace GameServer.Net
             NetService.Instance.Init();
             SessionManager.Instance.Init();
             GameTokenManager.Instance.Init();
-            EnterGameWorldHanlder.Instance.Init();
+            EnterGameWorldHanlder.Instance.Init(m_curSin.GameServerInfo.GameWorldId);
 
             // 协议注册
             ProtoHelper.Instance.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);

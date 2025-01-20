@@ -37,47 +37,48 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
             "CgxhY2hpZXZlbWVudHMYBCADKAkSDgoGdGl0bGVzGAUgAygJGi8KDUN1cnJl",
             "bmN5RW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgFOgI4ASJOChVE",
             "QkNoYXJhY3RlclNvY2lhbE5vZGUSDwoHZ3VpbGRJZBgBIAEoCRIPCgdmYWN0",
-            "aW9uGAIgASgJEhMKC2ZyaWVuZHNMaXN0GAMgAygJIrADCg9EQkNoYXJhY3Rl",
-            "ck5vZGUSCwoDY0lkGAEgASgJEgsKA3VJZBgCIAEoCRIUCgxwcm9mZXNzaW9u",
-            "SWQYAyABKAUSDwoHY2hyTmFtZRgEIAEoCRINCgVsZXZlbBgFIAEoBRIZChFj",
-            "cmVhdGlvblRpbWVzdGFtcBgGIAEoAxJRCg1jaHJTdGF0aXN0aWNzGAcgASgL",
-            "MjouSFMuUHJvdG9idWYuREJQcm94eS5EQkNoYXJhY3Rlci5EQkNoYXJhY3Rl",
-            "clN0YXRpc3RpY3NOb2RlEkkKCWNoclN0YXR1cxgIIAEoCzI2LkhTLlByb3Rv",
-            "YnVmLkRCUHJveHkuREJDaGFyYWN0ZXIuREJDaGFyYWN0ZXJTdGF0dXNOb2Rl",
-            "EkkKCWNockFzc2V0cxgJIAEoCzI2LkhTLlByb3RvYnVmLkRCUHJveHkuREJD",
-            "aGFyYWN0ZXIuREJDaGFyYWN0ZXJBc3NldHNOb2RlEkkKCWNoclNvY2lhbBgK",
-            "IAEoCzI2LkhTLlByb3RvYnVmLkRCUHJveHkuREJDaGFyYWN0ZXIuREJDaGFy",
-            "YWN0ZXJTb2NpYWxOb2RlImgKGkdldERCQ2hhcmFjdGVyQnlDaWRSZXF1ZXN0",
-            "Eg4KBnRhc2tJZBgBIAEoBRILCgNjSWQYAiABKAkSLQoJcmVhZF9tYXNrGAMg",
-            "ASgLMhouZ29vZ2xlLnByb3RvYnVmLkZpZWxkTWFzayKWAQoaR2V0REJDaGFy",
-            "YWN0ZXJCeUNpZFJlcG9uc2USDgoGdGFza0lkGAEgASgFEhIKCnJlc3VsdENv",
-            "ZGUYAiABKAUSEQoJcmVzdWx0TXNnGAMgASgJEkEKB2Nock5vZGUYBCABKAsy",
-            "MC5IUy5Qcm90b2J1Zi5EQlByb3h5LkRCQ2hhcmFjdGVyLkRCQ2hhcmFjdGVy",
-            "Tm9kZSJqChVBZGREQkNoYXJhY3RlclJlcXVzZXQSDgoGdGFza0lkGAEgASgF",
-            "EkEKB2Nock5vZGUYAiABKAsyMC5IUy5Qcm90b2J1Zi5EQlByb3h5LkRCQ2hh",
-            "cmFjdGVyLkRCQ2hhcmFjdGVyTm9kZSJcChZBZGREQkNoYXJhY3RlclJlc3Bv",
-            "bnNlEg4KBnRhc2tJZBgBIAEoBRISCgpyZXN1bHRDb2RlGAIgASgFEhEKCXJl",
-            "c3VsdE1zZxgDIAEoCRILCgNjSWQYBCABKAkiPAodRGVsZXRlREJDaGFyYWN0",
-            "ZXJCeUNpZFJlcXVlc3QSDgoGdGFza0lkGAEgASgFEgsKA2NJZBgCIAEoCSJX",
-            "Ch5EZWxldGVEQkNoYXJhY3RlckJ5Q2lkUmVzcG9uc2USDgoGdGFza0lkGAEg",
-            "ASgFEhIKCnJlc3VsdENvZGUYAiABKAUSEQoJcmVzdWx0TXNnGAMgASgJImkK",
-            "G0dldERCQ2hhcmFjdGVyc0J5VWlkUmVxdWVzdBIOCgZ0YXNrSWQYASABKAUS",
-            "CwoDdUlkGAIgASgJEi0KCXJlYWRfbWFzaxgDIAEoCzIaLmdvb2dsZS5wcm90",
-            "b2J1Zi5GaWVsZE1hc2silwEKHEdldERCQ2hhcmFjdGVyc0J5VWlkUmVzcG9u",
-            "c2USDgoGdGFza0lkGAEgASgFEhIKCnJlc3VsdENvZGUYAiABKAUSEQoJcmVz",
-            "dWx0TXNnGAMgASgJEkAKBmNOb2RlcxgEIAMoCzIwLkhTLlByb3RvYnVmLkRC",
-            "UHJveHkuREJDaGFyYWN0ZXIuREJDaGFyYWN0ZXJOb2RlKuADChJEQkNoYXJh",
-            "Y3RlclByb3RvY2wSHAoYREJDSEFSQUNURVJfUFJPVE9DTF9OT05FEAASNAou",
-            "REJDSEFSQUNURVJfUFJPVE9DTF9HRVRfREJDSEFSQUNURVJfQllfQ0lEX1JF",
-            "URC5jgMSNQovREJDSEFSQUNURVJfUFJPVE9DTF9HRVRfREJDSEFSQUNURVJf",
-            "QllfQ0lEX1JFU1AQuo4DEi0KJ0RCQ0hBUkFDVEVSX1BST1RPQ0xfQUREX0RC",
-            "Q0hBUkFDVEVSX1JFURC7jgMSLgooREJDSEFSQUNURVJfUFJPVE9DTF9BRERf",
-            "REJDSEFSQUNURVJfUkVTUBC8jgMSNwoxREJDSEFSQUNURVJfUFJPVE9DTF9E",
-            "RUxFVEVfREJDSEFSQUNURVJfQllfQ0lEX1JFURC9jgMSOAoyREJDSEFSQUNU",
-            "RVJfUFJPVE9DTF9ERUxFVEVfREJDSEFSQUNURVJfQllfQ0lEX1JFU1AQvo4D",
-            "EjUKL0RCQ0hBUkFDVEVSX1BST1RPQ0xfR0VUX0RCQ0hBUkFDVEVSU19CWV9V",
-            "SURfUkVREL+OAxI2CjBEQkNIQVJBQ1RFUl9QUk9UT0NMX0dFVF9EQkNIQVJB",
-            "Q1RFUlNfQllfVUlEX1JFU1AQwI4DYgZwcm90bzM="));
+            "aW9uGAIgASgJEhMKC2ZyaWVuZHNMaXN0GAMgAygJIsEDCg9EQkNoYXJhY3Rl",
+            "ck5vZGUSCwoDY0lkGAEgASgJEgsKA3VJZBgCIAEoCRIPCgd3b3JsZElkGAMg",
+            "ASgFEhQKDHByb2Zlc3Npb25JZBgEIAEoBRIPCgdjaHJOYW1lGAUgASgJEg0K",
+            "BWxldmVsGAYgASgFEhkKEWNyZWF0aW9uVGltZXN0YW1wGAcgASgDElEKDWNo",
+            "clN0YXRpc3RpY3MYCCABKAsyOi5IUy5Qcm90b2J1Zi5EQlByb3h5LkRCQ2hh",
+            "cmFjdGVyLkRCQ2hhcmFjdGVyU3RhdGlzdGljc05vZGUSSQoJY2hyU3RhdHVz",
+            "GAkgASgLMjYuSFMuUHJvdG9idWYuREJQcm94eS5EQkNoYXJhY3Rlci5EQkNo",
+            "YXJhY3RlclN0YXR1c05vZGUSSQoJY2hyQXNzZXRzGAogASgLMjYuSFMuUHJv",
+            "dG9idWYuREJQcm94eS5EQkNoYXJhY3Rlci5EQkNoYXJhY3RlckFzc2V0c05v",
+            "ZGUSSQoJY2hyU29jaWFsGAsgASgLMjYuSFMuUHJvdG9idWYuREJQcm94eS5E",
+            "QkNoYXJhY3Rlci5EQkNoYXJhY3RlclNvY2lhbE5vZGUiaAoaR2V0REJDaGFy",
+            "YWN0ZXJCeUNpZFJlcXVlc3QSDgoGdGFza0lkGAEgASgFEgsKA2NJZBgCIAEo",
+            "CRItCglyZWFkX21hc2sYAyABKAsyGi5nb29nbGUucHJvdG9idWYuRmllbGRN",
+            "YXNrIpYBChpHZXREQkNoYXJhY3RlckJ5Q2lkUmVwb25zZRIOCgZ0YXNrSWQY",
+            "ASABKAUSEgoKcmVzdWx0Q29kZRgCIAEoBRIRCglyZXN1bHRNc2cYAyABKAkS",
+            "QQoHY2hyTm9kZRgEIAEoCzIwLkhTLlByb3RvYnVmLkRCUHJveHkuREJDaGFy",
+            "YWN0ZXIuREJDaGFyYWN0ZXJOb2RlImoKFUFkZERCQ2hhcmFjdGVyUmVxdXNl",
+            "dBIOCgZ0YXNrSWQYASABKAUSQQoHY2hyTm9kZRgCIAEoCzIwLkhTLlByb3Rv",
+            "YnVmLkRCUHJveHkuREJDaGFyYWN0ZXIuREJDaGFyYWN0ZXJOb2RlIlwKFkFk",
+            "ZERCQ2hhcmFjdGVyUmVzcG9uc2USDgoGdGFza0lkGAEgASgFEhIKCnJlc3Vs",
+            "dENvZGUYAiABKAUSEQoJcmVzdWx0TXNnGAMgASgJEgsKA2NJZBgEIAEoCSI8",
+            "Ch1EZWxldGVEQkNoYXJhY3RlckJ5Q2lkUmVxdWVzdBIOCgZ0YXNrSWQYASAB",
+            "KAUSCwoDY0lkGAIgASgJIlcKHkRlbGV0ZURCQ2hhcmFjdGVyQnlDaWRSZXNw",
+            "b25zZRIOCgZ0YXNrSWQYASABKAUSEgoKcmVzdWx0Q29kZRgCIAEoBRIRCgly",
+            "ZXN1bHRNc2cYAyABKAkiegobR2V0REJDaGFyYWN0ZXJzQnlVaWRSZXF1ZXN0",
+            "Eg4KBnRhc2tJZBgBIAEoBRILCgN1SWQYAiABKAkSDwoHd29ybGRJZBgDIAEo",
+            "BRItCglyZWFkX21hc2sYBCABKAsyGi5nb29nbGUucHJvdG9idWYuRmllbGRN",
+            "YXNrIpcBChxHZXREQkNoYXJhY3RlcnNCeVVpZFJlc3BvbnNlEg4KBnRhc2tJ",
+            "ZBgBIAEoBRISCgpyZXN1bHRDb2RlGAIgASgFEhEKCXJlc3VsdE1zZxgDIAEo",
+            "CRJACgZjTm9kZXMYBCADKAsyMC5IUy5Qcm90b2J1Zi5EQlByb3h5LkRCQ2hh",
+            "cmFjdGVyLkRCQ2hhcmFjdGVyTm9kZSrgAwoSREJDaGFyYWN0ZXJQcm90b2Ns",
+            "EhwKGERCQ0hBUkFDVEVSX1BST1RPQ0xfTk9ORRAAEjQKLkRCQ0hBUkFDVEVS",
+            "X1BST1RPQ0xfR0VUX0RCQ0hBUkFDVEVSX0JZX0NJRF9SRVEQuY4DEjUKL0RC",
+            "Q0hBUkFDVEVSX1BST1RPQ0xfR0VUX0RCQ0hBUkFDVEVSX0JZX0NJRF9SRVNQ",
+            "ELqOAxItCidEQkNIQVJBQ1RFUl9QUk9UT0NMX0FERF9EQkNIQVJBQ1RFUl9S",
+            "RVEQu44DEi4KKERCQ0hBUkFDVEVSX1BST1RPQ0xfQUREX0RCQ0hBUkFDVEVS",
+            "X1JFU1AQvI4DEjcKMURCQ0hBUkFDVEVSX1BST1RPQ0xfREVMRVRFX0RCQ0hB",
+            "UkFDVEVSX0JZX0NJRF9SRVEQvY4DEjgKMkRCQ0hBUkFDVEVSX1BST1RPQ0xf",
+            "REVMRVRFX0RCQ0hBUkFDVEVSX0JZX0NJRF9SRVNQEL6OAxI1Ci9EQkNIQVJB",
+            "Q1RFUl9QUk9UT0NMX0dFVF9EQkNIQVJBQ1RFUlNfQllfVUlEX1JFURC/jgMS",
+            "NgowREJDSEFSQUNURVJfUFJPVE9DTF9HRVRfREJDSEFSQUNURVJTX0JZX1VJ",
+            "RF9SRVNQEMCOA2IGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.FieldMaskReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterProtocl), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -85,14 +86,14 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterStatusNode), global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterStatusNode.Parser, new[]{ "Hp", "Mp", "Exp", "CurSpaceId", "X", "Y", "Z" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterAssetsNode), global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterAssetsNode.Parser, new[]{ "BackpackData", "EquipsData", "Currency", "Achievements", "Titles" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterSocialNode), global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterSocialNode.Parser, new[]{ "GuildId", "Faction", "FriendsList" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterNode), global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterNode.Parser, new[]{ "CId", "UId", "ProfessionId", "ChrName", "Level", "CreationTimestamp", "ChrStatistics", "ChrStatus", "ChrAssets", "ChrSocial" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterNode), global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterNode.Parser, new[]{ "CId", "UId", "WorldId", "ProfessionId", "ChrName", "Level", "CreationTimestamp", "ChrStatistics", "ChrStatus", "ChrAssets", "ChrSocial" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.GetDBCharacterByCidRequest), global::HS.Protobuf.DBProxy.DBCharacter.GetDBCharacterByCidRequest.Parser, new[]{ "TaskId", "CId", "ReadMask" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.GetDBCharacterByCidReponse), global::HS.Protobuf.DBProxy.DBCharacter.GetDBCharacterByCidReponse.Parser, new[]{ "TaskId", "ResultCode", "ResultMsg", "ChrNode" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.AddDBCharacterRequset), global::HS.Protobuf.DBProxy.DBCharacter.AddDBCharacterRequset.Parser, new[]{ "TaskId", "ChrNode" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.AddDBCharacterResponse), global::HS.Protobuf.DBProxy.DBCharacter.AddDBCharacterResponse.Parser, new[]{ "TaskId", "ResultCode", "ResultMsg", "CId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.DeleteDBCharacterByCidRequest), global::HS.Protobuf.DBProxy.DBCharacter.DeleteDBCharacterByCidRequest.Parser, new[]{ "TaskId", "CId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.DeleteDBCharacterByCidResponse), global::HS.Protobuf.DBProxy.DBCharacter.DeleteDBCharacterByCidResponse.Parser, new[]{ "TaskId", "ResultCode", "ResultMsg" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.GetDBCharactersByUidRequest), global::HS.Protobuf.DBProxy.DBCharacter.GetDBCharactersByUidRequest.Parser, new[]{ "TaskId", "UId", "ReadMask" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.GetDBCharactersByUidRequest), global::HS.Protobuf.DBProxy.DBCharacter.GetDBCharactersByUidRequest.Parser, new[]{ "TaskId", "UId", "WorldId", "ReadMask" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.GetDBCharactersByUidResponse), global::HS.Protobuf.DBProxy.DBCharacter.GetDBCharactersByUidResponse.Parser, new[]{ "TaskId", "ResultCode", "ResultMsg", "CNodes" }, null, null, null, null)
           }));
     }
@@ -1423,6 +1424,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     public DBCharacterNode(DBCharacterNode other) : this() {
       cId_ = other.cId_;
       uId_ = other.uId_;
+      worldId_ = other.worldId_;
       professionId_ = other.professionId_;
       chrName_ = other.chrName_;
       level_ = other.level_;
@@ -1464,8 +1466,20 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
       }
     }
 
+    /// <summary>Field number for the "worldId" field.</summary>
+    public const int WorldIdFieldNumber = 3;
+    private int worldId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int WorldId {
+      get { return worldId_; }
+      set {
+        worldId_ = value;
+      }
+    }
+
     /// <summary>Field number for the "professionId" field.</summary>
-    public const int ProfessionIdFieldNumber = 3;
+    public const int ProfessionIdFieldNumber = 4;
     private int professionId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1477,7 +1491,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     }
 
     /// <summary>Field number for the "chrName" field.</summary>
-    public const int ChrNameFieldNumber = 4;
+    public const int ChrNameFieldNumber = 5;
     private string chrName_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1489,7 +1503,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     }
 
     /// <summary>Field number for the "level" field.</summary>
-    public const int LevelFieldNumber = 5;
+    public const int LevelFieldNumber = 6;
     private int level_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1501,8 +1515,11 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     }
 
     /// <summary>Field number for the "creationTimestamp" field.</summary>
-    public const int CreationTimestampFieldNumber = 6;
+    public const int CreationTimestampFieldNumber = 7;
     private long creationTimestamp_;
+    /// <summary>
+    /// 这个字段自动填的
+    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public long CreationTimestamp {
@@ -1513,7 +1530,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     }
 
     /// <summary>Field number for the "chrStatistics" field.</summary>
-    public const int ChrStatisticsFieldNumber = 7;
+    public const int ChrStatisticsFieldNumber = 8;
     private global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterStatisticsNode chrStatistics_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1525,7 +1542,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     }
 
     /// <summary>Field number for the "chrStatus" field.</summary>
-    public const int ChrStatusFieldNumber = 8;
+    public const int ChrStatusFieldNumber = 9;
     private global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterStatusNode chrStatus_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1537,7 +1554,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     }
 
     /// <summary>Field number for the "chrAssets" field.</summary>
-    public const int ChrAssetsFieldNumber = 9;
+    public const int ChrAssetsFieldNumber = 10;
     private global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterAssetsNode chrAssets_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1549,7 +1566,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     }
 
     /// <summary>Field number for the "chrSocial" field.</summary>
-    public const int ChrSocialFieldNumber = 10;
+    public const int ChrSocialFieldNumber = 11;
     private global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterSocialNode chrSocial_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1577,6 +1594,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
       }
       if (CId != other.CId) return false;
       if (UId != other.UId) return false;
+      if (WorldId != other.WorldId) return false;
       if (ProfessionId != other.ProfessionId) return false;
       if (ChrName != other.ChrName) return false;
       if (Level != other.Level) return false;
@@ -1594,6 +1612,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
       int hash = 1;
       if (CId.Length != 0) hash ^= CId.GetHashCode();
       if (UId.Length != 0) hash ^= UId.GetHashCode();
+      if (WorldId != 0) hash ^= WorldId.GetHashCode();
       if (ProfessionId != 0) hash ^= ProfessionId.GetHashCode();
       if (ChrName.Length != 0) hash ^= ChrName.GetHashCode();
       if (Level != 0) hash ^= Level.GetHashCode();
@@ -1628,36 +1647,40 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
         output.WriteRawTag(18);
         output.WriteString(UId);
       }
-      if (ProfessionId != 0) {
+      if (WorldId != 0) {
         output.WriteRawTag(24);
+        output.WriteInt32(WorldId);
+      }
+      if (ProfessionId != 0) {
+        output.WriteRawTag(32);
         output.WriteInt32(ProfessionId);
       }
       if (ChrName.Length != 0) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(42);
         output.WriteString(ChrName);
       }
       if (Level != 0) {
-        output.WriteRawTag(40);
+        output.WriteRawTag(48);
         output.WriteInt32(Level);
       }
       if (CreationTimestamp != 0L) {
-        output.WriteRawTag(48);
+        output.WriteRawTag(56);
         output.WriteInt64(CreationTimestamp);
       }
       if (chrStatistics_ != null) {
-        output.WriteRawTag(58);
+        output.WriteRawTag(66);
         output.WriteMessage(ChrStatistics);
       }
       if (chrStatus_ != null) {
-        output.WriteRawTag(66);
+        output.WriteRawTag(74);
         output.WriteMessage(ChrStatus);
       }
       if (chrAssets_ != null) {
-        output.WriteRawTag(74);
+        output.WriteRawTag(82);
         output.WriteMessage(ChrAssets);
       }
       if (chrSocial_ != null) {
-        output.WriteRawTag(82);
+        output.WriteRawTag(90);
         output.WriteMessage(ChrSocial);
       }
       if (_unknownFields != null) {
@@ -1678,36 +1701,40 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
         output.WriteRawTag(18);
         output.WriteString(UId);
       }
-      if (ProfessionId != 0) {
+      if (WorldId != 0) {
         output.WriteRawTag(24);
+        output.WriteInt32(WorldId);
+      }
+      if (ProfessionId != 0) {
+        output.WriteRawTag(32);
         output.WriteInt32(ProfessionId);
       }
       if (ChrName.Length != 0) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(42);
         output.WriteString(ChrName);
       }
       if (Level != 0) {
-        output.WriteRawTag(40);
+        output.WriteRawTag(48);
         output.WriteInt32(Level);
       }
       if (CreationTimestamp != 0L) {
-        output.WriteRawTag(48);
+        output.WriteRawTag(56);
         output.WriteInt64(CreationTimestamp);
       }
       if (chrStatistics_ != null) {
-        output.WriteRawTag(58);
+        output.WriteRawTag(66);
         output.WriteMessage(ChrStatistics);
       }
       if (chrStatus_ != null) {
-        output.WriteRawTag(66);
+        output.WriteRawTag(74);
         output.WriteMessage(ChrStatus);
       }
       if (chrAssets_ != null) {
-        output.WriteRawTag(74);
+        output.WriteRawTag(82);
         output.WriteMessage(ChrAssets);
       }
       if (chrSocial_ != null) {
-        output.WriteRawTag(82);
+        output.WriteRawTag(90);
         output.WriteMessage(ChrSocial);
       }
       if (_unknownFields != null) {
@@ -1725,6 +1752,9 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
       }
       if (UId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(UId);
+      }
+      if (WorldId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(WorldId);
       }
       if (ProfessionId != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(ProfessionId);
@@ -1767,6 +1797,9 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
       }
       if (other.UId.Length != 0) {
         UId = other.UId;
+      }
+      if (other.WorldId != 0) {
+        WorldId = other.WorldId;
       }
       if (other.ProfessionId != 0) {
         ProfessionId = other.ProfessionId;
@@ -1828,43 +1861,47 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
             break;
           }
           case 24: {
+            WorldId = input.ReadInt32();
+            break;
+          }
+          case 32: {
             ProfessionId = input.ReadInt32();
             break;
           }
-          case 34: {
+          case 42: {
             ChrName = input.ReadString();
             break;
           }
-          case 40: {
+          case 48: {
             Level = input.ReadInt32();
             break;
           }
-          case 48: {
+          case 56: {
             CreationTimestamp = input.ReadInt64();
             break;
           }
-          case 58: {
+          case 66: {
             if (chrStatistics_ == null) {
               ChrStatistics = new global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterStatisticsNode();
             }
             input.ReadMessage(ChrStatistics);
             break;
           }
-          case 66: {
+          case 74: {
             if (chrStatus_ == null) {
               ChrStatus = new global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterStatusNode();
             }
             input.ReadMessage(ChrStatus);
             break;
           }
-          case 74: {
+          case 82: {
             if (chrAssets_ == null) {
               ChrAssets = new global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterAssetsNode();
             }
             input.ReadMessage(ChrAssets);
             break;
           }
-          case 82: {
+          case 90: {
             if (chrSocial_ == null) {
               ChrSocial = new global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterSocialNode();
             }
@@ -1895,43 +1932,47 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
             break;
           }
           case 24: {
+            WorldId = input.ReadInt32();
+            break;
+          }
+          case 32: {
             ProfessionId = input.ReadInt32();
             break;
           }
-          case 34: {
+          case 42: {
             ChrName = input.ReadString();
             break;
           }
-          case 40: {
+          case 48: {
             Level = input.ReadInt32();
             break;
           }
-          case 48: {
+          case 56: {
             CreationTimestamp = input.ReadInt64();
             break;
           }
-          case 58: {
+          case 66: {
             if (chrStatistics_ == null) {
               ChrStatistics = new global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterStatisticsNode();
             }
             input.ReadMessage(ChrStatistics);
             break;
           }
-          case 66: {
+          case 74: {
             if (chrStatus_ == null) {
               ChrStatus = new global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterStatusNode();
             }
             input.ReadMessage(ChrStatus);
             break;
           }
-          case 74: {
+          case 82: {
             if (chrAssets_ == null) {
               ChrAssets = new global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterAssetsNode();
             }
             input.ReadMessage(ChrAssets);
             break;
           }
-          case 82: {
+          case 90: {
             if (chrSocial_ == null) {
               ChrSocial = new global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterSocialNode();
             }
@@ -3589,6 +3630,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     public GetDBCharactersByUidRequest(GetDBCharactersByUidRequest other) : this() {
       taskId_ = other.taskId_;
       uId_ = other.uId_;
+      worldId_ = other.worldId_;
       readMask_ = other.readMask_ != null ? other.readMask_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -3623,8 +3665,20 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
       }
     }
 
+    /// <summary>Field number for the "worldId" field.</summary>
+    public const int WorldIdFieldNumber = 3;
+    private int worldId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int WorldId {
+      get { return worldId_; }
+      set {
+        worldId_ = value;
+      }
+    }
+
     /// <summary>Field number for the "read_mask" field.</summary>
-    public const int ReadMaskFieldNumber = 3;
+    public const int ReadMaskFieldNumber = 4;
     private global::Google.Protobuf.WellKnownTypes.FieldMask readMask_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -3652,6 +3706,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
       }
       if (TaskId != other.TaskId) return false;
       if (UId != other.UId) return false;
+      if (WorldId != other.WorldId) return false;
       if (!object.Equals(ReadMask, other.ReadMask)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -3662,6 +3717,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
       int hash = 1;
       if (TaskId != 0) hash ^= TaskId.GetHashCode();
       if (UId.Length != 0) hash ^= UId.GetHashCode();
+      if (WorldId != 0) hash ^= WorldId.GetHashCode();
       if (readMask_ != null) hash ^= ReadMask.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -3689,8 +3745,12 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
         output.WriteRawTag(18);
         output.WriteString(UId);
       }
+      if (WorldId != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(WorldId);
+      }
       if (readMask_ != null) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(34);
         output.WriteMessage(ReadMask);
       }
       if (_unknownFields != null) {
@@ -3711,8 +3771,12 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
         output.WriteRawTag(18);
         output.WriteString(UId);
       }
+      if (WorldId != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(WorldId);
+      }
       if (readMask_ != null) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(34);
         output.WriteMessage(ReadMask);
       }
       if (_unknownFields != null) {
@@ -3730,6 +3794,9 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
       }
       if (UId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(UId);
+      }
+      if (WorldId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(WorldId);
       }
       if (readMask_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(ReadMask);
@@ -3751,6 +3818,9 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
       }
       if (other.UId.Length != 0) {
         UId = other.UId;
+      }
+      if (other.WorldId != 0) {
+        WorldId = other.WorldId;
       }
       if (other.readMask_ != null) {
         if (readMask_ == null) {
@@ -3781,7 +3851,11 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
             UId = input.ReadString();
             break;
           }
-          case 26: {
+          case 24: {
+            WorldId = input.ReadInt32();
+            break;
+          }
+          case 34: {
             if (readMask_ == null) {
               ReadMask = new global::Google.Protobuf.WellKnownTypes.FieldMask();
             }
@@ -3811,7 +3885,11 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
             UId = input.ReadString();
             break;
           }
-          case 26: {
+          case 24: {
+            WorldId = input.ReadInt32();
+            break;
+          }
+          case 34: {
             if (readMask_ == null) {
               ReadMask = new global::Google.Protobuf.WellKnownTypes.FieldMask();
             }

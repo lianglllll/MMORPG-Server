@@ -33,30 +33,31 @@ namespace HS.Protobuf.Game {
             "AQoYR2V0Q2hhcmFjdGVyTGlzdFJlc3BvbnNlEhEKCXNlc3Npb25JZBgBIAEo",
             "CRISCgpyZXN1bHRDb2RlGAIgASgFEhEKCXJlc3VsdE1zZxgDIAEoCRJBCg5j",
             "aGFyYWN0ZXJOb2RlcxgEIAMoCzIpLkhTLlByb3RvYnVmLkdhbWUuU2ltcGxl",
-            "Q2hhcmFjdGVySW5mb05vZGUiYAoWQ3JlYXRlQ2hhcmFjdGVyUmVxdWVzdBIR",
-            "CglzZXNzaW9uSWQYASABKAkSEQoJZ2FtZVRva2VuGAIgASgJEgwKBG5hbWUY",
-            "AyABKAkSEgoKVm9jYXRpb25JZBgEIAEoBSKVAQoXQ3JlYXRlQ2hhcmFjdGVy",
-            "UmVzcG9uc2USEQoJc2Vzc2lvbklkGAEgASgJEhIKCnJlc3VsdENvZGUYAiAB",
-            "KAUSEQoJcmVzdWx0TXNnGAMgASgJEkAKDWNoYXJhY3Rlck5vZGUYBCABKAsy",
-            "KS5IUy5Qcm90b2J1Zi5HYW1lLlNpbXBsZUNoYXJhY3RlckluZm9Ob2RlIlMK",
-            "FkRlbGV0ZUNoYXJhY3RlclJlcXVlc3QSEQoJc2Vzc2lvbklkGAEgASgJEhEK",
-            "CWdhbWVUb2tlbhgCIAEoCRITCgtjaGFyYWN0ZXJJZBgDIAEoBSJTChdEZWxl",
-            "dGVDaGFyYWN0ZXJSZXNwb25zZRIRCglzZXNzaW9uSWQYASABKAkSEgoKcmVz",
-            "dWx0Q29kZRgCIAEoBRIRCglyZXN1bHRNc2cYAyABKAkiTQoQRW50ZXJHYW1l",
-            "UmVxdWVzdBIRCglzZXNzaW9uSWQYASABKAkSEQoJZ2FtZVRva2VuGAIgASgJ",
-            "EhMKC2NoYXJhY3RlcklkGAMgASgFIk0KEUVudGVyR2FtZVJlc3BvbnNlEhEK",
-            "CXNlc3Npb25JZBgBIAEoCRISCgpyZXN1bHRDb2RlGAIgASgFEhEKCXJlc3Vs",
-            "dE1zZxgDIAEoCSq3AwoLR2FtZVByb3RvY2wSFQoRR0FNRV9QUk9UT0NMX05P",
-            "TkUQABIlCh9HQU1FX1BST1RPQ0xfR0VUX0dBTUVfVE9LRU5fUkVRELHqARIm",
-            "CiBHQU1FX1BST1RPQ0xfR0VUX0dBTUVfVE9LRU5fUkVTUBCy6gESKQojR0FN",
-            "RV9QUk9UT0NMX0dFVF9DSEFSQUNURVJfTElTVF9SRVEQs+oBEioKJEdBTUVf",
-            "UFJPVE9DTF9HRVRfQ0hBUkFDVEVSX0xJU1RfUkVTUBC06gESJwohR0FNRV9Q",
-            "Uk9UT0NMX0NSRUFURV9DSEFSQUNURVJfUkVRELXqARIoCiJHQU1FX1BST1RP",
-            "Q0xfQ1JFQVRFX0NIQVJBQ1RFUl9SRVNQELbqARInCiFHQU1FX1BST1RPQ0xf",
-            "REVMRVRFX0NIQVJBQ1RFUl9SRVEQt+oBEigKIkdBTUVfUFJPVE9DTF9ERUxF",
-            "VEVfQ0hBUkFDVEVSX1JFU1AQuOoBEiEKG0dBTUVfUFJPVE9DTF9FTlRFUl9H",
-            "QU1FX1JFURC56gESIgocR0FNRV9QUk9UT0NMX0VOVEVSX0dBTUVfUkVTUBC6",
-            "6gFiBnByb3RvMw=="));
+            "Q2hhcmFjdGVySW5mb05vZGUicAoWQ3JlYXRlQ2hhcmFjdGVyUmVxdWVzdBIR",
+            "CglzZXNzaW9uSWQYASABKAkSEQoJZ2FtZVRva2VuGAIgASgJEgsKA3VJZBgD",
+            "IAEoCRINCgVjTmFtZRgEIAEoCRIUCgxwcm9mZXNzaW9uSWQYBSABKAUilQEK",
+            "F0NyZWF0ZUNoYXJhY3RlclJlc3BvbnNlEhEKCXNlc3Npb25JZBgBIAEoCRIS",
+            "CgpyZXN1bHRDb2RlGAIgASgFEhEKCXJlc3VsdE1zZxgDIAEoCRJACg1jaGFy",
+            "YWN0ZXJOb2RlGAQgASgLMikuSFMuUHJvdG9idWYuR2FtZS5TaW1wbGVDaGFy",
+            "YWN0ZXJJbmZvTm9kZSJqChZEZWxldGVDaGFyYWN0ZXJSZXF1ZXN0EhEKCXNl",
+            "c3Npb25JZBgBIAEoCRIRCglnYW1lVG9rZW4YAiABKAkSCwoDdUlkGAMgASgJ",
+            "EhAKCHBhc3N3b3JkGAQgASgJEgsKA2NJZBgFIAEoCSJTChdEZWxldGVDaGFy",
+            "YWN0ZXJSZXNwb25zZRIRCglzZXNzaW9uSWQYASABKAkSEgoKcmVzdWx0Q29k",
+            "ZRgCIAEoBRIRCglyZXN1bHRNc2cYAyABKAkiTQoQRW50ZXJHYW1lUmVxdWVz",
+            "dBIRCglzZXNzaW9uSWQYASABKAkSEQoJZ2FtZVRva2VuGAIgASgJEhMKC2No",
+            "YXJhY3RlcklkGAMgASgFIk0KEUVudGVyR2FtZVJlc3BvbnNlEhEKCXNlc3Np",
+            "b25JZBgBIAEoCRISCgpyZXN1bHRDb2RlGAIgASgFEhEKCXJlc3VsdE1zZxgD",
+            "IAEoCSq3AwoLR2FtZVByb3RvY2wSFQoRR0FNRV9QUk9UT0NMX05PTkUQABIl",
+            "Ch9HQU1FX1BST1RPQ0xfR0VUX0dBTUVfVE9LRU5fUkVRELHqARImCiBHQU1F",
+            "X1BST1RPQ0xfR0VUX0dBTUVfVE9LRU5fUkVTUBCy6gESKQojR0FNRV9QUk9U",
+            "T0NMX0dFVF9DSEFSQUNURVJfTElTVF9SRVEQs+oBEioKJEdBTUVfUFJPVE9D",
+            "TF9HRVRfQ0hBUkFDVEVSX0xJU1RfUkVTUBC06gESJwohR0FNRV9QUk9UT0NM",
+            "X0NSRUFURV9DSEFSQUNURVJfUkVRELXqARIoCiJHQU1FX1BST1RPQ0xfQ1JF",
+            "QVRFX0NIQVJBQ1RFUl9SRVNQELbqARInCiFHQU1FX1BST1RPQ0xfREVMRVRF",
+            "X0NIQVJBQ1RFUl9SRVEQt+oBEigKIkdBTUVfUFJPVE9DTF9ERUxFVEVfQ0hB",
+            "UkFDVEVSX1JFU1AQuOoBEiEKG0dBTUVfUFJPVE9DTF9FTlRFUl9HQU1FX1JF",
+            "URC56gESIgocR0FNRV9QUk9UT0NMX0VOVEVSX0dBTUVfUkVTUBC66gFiBnBy",
+            "b3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.Game.GameProtocl), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -65,9 +66,9 @@ namespace HS.Protobuf.Game {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.GetGameTokenResponse), global::HS.Protobuf.Game.GetGameTokenResponse.Parser, new[]{ "GameToken" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.GetCharacterListRequest), global::HS.Protobuf.Game.GetCharacterListRequest.Parser, new[]{ "SessionId", "GameToken", "UId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.GetCharacterListResponse), global::HS.Protobuf.Game.GetCharacterListResponse.Parser, new[]{ "SessionId", "ResultCode", "ResultMsg", "CharacterNodes" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.CreateCharacterRequest), global::HS.Protobuf.Game.CreateCharacterRequest.Parser, new[]{ "SessionId", "GameToken", "Name", "VocationId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.CreateCharacterRequest), global::HS.Protobuf.Game.CreateCharacterRequest.Parser, new[]{ "SessionId", "GameToken", "UId", "CName", "ProfessionId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.CreateCharacterResponse), global::HS.Protobuf.Game.CreateCharacterResponse.Parser, new[]{ "SessionId", "ResultCode", "ResultMsg", "CharacterNode" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.DeleteCharacterRequest), global::HS.Protobuf.Game.DeleteCharacterRequest.Parser, new[]{ "SessionId", "GameToken", "CharacterId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.DeleteCharacterRequest), global::HS.Protobuf.Game.DeleteCharacterRequest.Parser, new[]{ "SessionId", "GameToken", "UId", "Password", "CId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.DeleteCharacterResponse), global::HS.Protobuf.Game.DeleteCharacterResponse.Parser, new[]{ "SessionId", "ResultCode", "ResultMsg" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.EnterGameRequest), global::HS.Protobuf.Game.EnterGameRequest.Parser, new[]{ "SessionId", "GameToken", "CharacterId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.EnterGameResponse), global::HS.Protobuf.Game.EnterGameResponse.Parser, new[]{ "SessionId", "ResultCode", "ResultMsg" }, null, null, null, null)
@@ -1353,8 +1354,9 @@ namespace HS.Protobuf.Game {
     public CreateCharacterRequest(CreateCharacterRequest other) : this() {
       sessionId_ = other.sessionId_;
       gameToken_ = other.gameToken_;
-      name_ = other.name_;
-      vocationId_ = other.vocationId_;
+      uId_ = other.uId_;
+      cName_ = other.cName_;
+      professionId_ = other.professionId_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1388,27 +1390,39 @@ namespace HS.Protobuf.Game {
       }
     }
 
-    /// <summary>Field number for the "name" field.</summary>
-    public const int NameFieldNumber = 3;
-    private string name_ = "";
+    /// <summary>Field number for the "uId" field.</summary>
+    public const int UIdFieldNumber = 3;
+    private string uId_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string Name {
-      get { return name_; }
+    public string UId {
+      get { return uId_; }
       set {
-        name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        uId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
-    /// <summary>Field number for the "VocationId" field.</summary>
-    public const int VocationIdFieldNumber = 4;
-    private int vocationId_;
+    /// <summary>Field number for the "cName" field.</summary>
+    public const int CNameFieldNumber = 4;
+    private string cName_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int VocationId {
-      get { return vocationId_; }
+    public string CName {
+      get { return cName_; }
       set {
-        vocationId_ = value;
+        cName_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "professionId" field.</summary>
+    public const int ProfessionIdFieldNumber = 5;
+    private int professionId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int ProfessionId {
+      get { return professionId_; }
+      set {
+        professionId_ = value;
       }
     }
 
@@ -1429,8 +1443,9 @@ namespace HS.Protobuf.Game {
       }
       if (SessionId != other.SessionId) return false;
       if (GameToken != other.GameToken) return false;
-      if (Name != other.Name) return false;
-      if (VocationId != other.VocationId) return false;
+      if (UId != other.UId) return false;
+      if (CName != other.CName) return false;
+      if (ProfessionId != other.ProfessionId) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1440,8 +1455,9 @@ namespace HS.Protobuf.Game {
       int hash = 1;
       if (SessionId.Length != 0) hash ^= SessionId.GetHashCode();
       if (GameToken.Length != 0) hash ^= GameToken.GetHashCode();
-      if (Name.Length != 0) hash ^= Name.GetHashCode();
-      if (VocationId != 0) hash ^= VocationId.GetHashCode();
+      if (UId.Length != 0) hash ^= UId.GetHashCode();
+      if (CName.Length != 0) hash ^= CName.GetHashCode();
+      if (ProfessionId != 0) hash ^= ProfessionId.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1468,13 +1484,17 @@ namespace HS.Protobuf.Game {
         output.WriteRawTag(18);
         output.WriteString(GameToken);
       }
-      if (Name.Length != 0) {
+      if (UId.Length != 0) {
         output.WriteRawTag(26);
-        output.WriteString(Name);
+        output.WriteString(UId);
       }
-      if (VocationId != 0) {
-        output.WriteRawTag(32);
-        output.WriteInt32(VocationId);
+      if (CName.Length != 0) {
+        output.WriteRawTag(34);
+        output.WriteString(CName);
+      }
+      if (ProfessionId != 0) {
+        output.WriteRawTag(40);
+        output.WriteInt32(ProfessionId);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -1494,13 +1514,17 @@ namespace HS.Protobuf.Game {
         output.WriteRawTag(18);
         output.WriteString(GameToken);
       }
-      if (Name.Length != 0) {
+      if (UId.Length != 0) {
         output.WriteRawTag(26);
-        output.WriteString(Name);
+        output.WriteString(UId);
       }
-      if (VocationId != 0) {
-        output.WriteRawTag(32);
-        output.WriteInt32(VocationId);
+      if (CName.Length != 0) {
+        output.WriteRawTag(34);
+        output.WriteString(CName);
+      }
+      if (ProfessionId != 0) {
+        output.WriteRawTag(40);
+        output.WriteInt32(ProfessionId);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -1518,11 +1542,14 @@ namespace HS.Protobuf.Game {
       if (GameToken.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(GameToken);
       }
-      if (Name.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
+      if (UId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(UId);
       }
-      if (VocationId != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(VocationId);
+      if (CName.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(CName);
+      }
+      if (ProfessionId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(ProfessionId);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1542,11 +1569,14 @@ namespace HS.Protobuf.Game {
       if (other.GameToken.Length != 0) {
         GameToken = other.GameToken;
       }
-      if (other.Name.Length != 0) {
-        Name = other.Name;
+      if (other.UId.Length != 0) {
+        UId = other.UId;
       }
-      if (other.VocationId != 0) {
-        VocationId = other.VocationId;
+      if (other.CName.Length != 0) {
+        CName = other.CName;
+      }
+      if (other.ProfessionId != 0) {
+        ProfessionId = other.ProfessionId;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1572,11 +1602,15 @@ namespace HS.Protobuf.Game {
             break;
           }
           case 26: {
-            Name = input.ReadString();
+            UId = input.ReadString();
             break;
           }
-          case 32: {
-            VocationId = input.ReadInt32();
+          case 34: {
+            CName = input.ReadString();
+            break;
+          }
+          case 40: {
+            ProfessionId = input.ReadInt32();
             break;
           }
         }
@@ -1603,11 +1637,15 @@ namespace HS.Protobuf.Game {
             break;
           }
           case 26: {
-            Name = input.ReadString();
+            UId = input.ReadString();
             break;
           }
-          case 32: {
-            VocationId = input.ReadInt32();
+          case 34: {
+            CName = input.ReadString();
+            break;
+          }
+          case 40: {
+            ProfessionId = input.ReadInt32();
             break;
           }
         }
@@ -1962,7 +2000,9 @@ namespace HS.Protobuf.Game {
     public DeleteCharacterRequest(DeleteCharacterRequest other) : this() {
       sessionId_ = other.sessionId_;
       gameToken_ = other.gameToken_;
-      characterId_ = other.characterId_;
+      uId_ = other.uId_;
+      password_ = other.password_;
+      cId_ = other.cId_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1996,15 +2036,39 @@ namespace HS.Protobuf.Game {
       }
     }
 
-    /// <summary>Field number for the "characterId" field.</summary>
-    public const int CharacterIdFieldNumber = 3;
-    private int characterId_;
+    /// <summary>Field number for the "uId" field.</summary>
+    public const int UIdFieldNumber = 3;
+    private string uId_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CharacterId {
-      get { return characterId_; }
+    public string UId {
+      get { return uId_; }
       set {
-        characterId_ = value;
+        uId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "password" field.</summary>
+    public const int PasswordFieldNumber = 4;
+    private string password_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Password {
+      get { return password_; }
+      set {
+        password_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "cId" field.</summary>
+    public const int CIdFieldNumber = 5;
+    private string cId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string CId {
+      get { return cId_; }
+      set {
+        cId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -2025,7 +2089,9 @@ namespace HS.Protobuf.Game {
       }
       if (SessionId != other.SessionId) return false;
       if (GameToken != other.GameToken) return false;
-      if (CharacterId != other.CharacterId) return false;
+      if (UId != other.UId) return false;
+      if (Password != other.Password) return false;
+      if (CId != other.CId) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -2035,7 +2101,9 @@ namespace HS.Protobuf.Game {
       int hash = 1;
       if (SessionId.Length != 0) hash ^= SessionId.GetHashCode();
       if (GameToken.Length != 0) hash ^= GameToken.GetHashCode();
-      if (CharacterId != 0) hash ^= CharacterId.GetHashCode();
+      if (UId.Length != 0) hash ^= UId.GetHashCode();
+      if (Password.Length != 0) hash ^= Password.GetHashCode();
+      if (CId.Length != 0) hash ^= CId.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2062,9 +2130,17 @@ namespace HS.Protobuf.Game {
         output.WriteRawTag(18);
         output.WriteString(GameToken);
       }
-      if (CharacterId != 0) {
-        output.WriteRawTag(24);
-        output.WriteInt32(CharacterId);
+      if (UId.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(UId);
+      }
+      if (Password.Length != 0) {
+        output.WriteRawTag(34);
+        output.WriteString(Password);
+      }
+      if (CId.Length != 0) {
+        output.WriteRawTag(42);
+        output.WriteString(CId);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -2084,9 +2160,17 @@ namespace HS.Protobuf.Game {
         output.WriteRawTag(18);
         output.WriteString(GameToken);
       }
-      if (CharacterId != 0) {
-        output.WriteRawTag(24);
-        output.WriteInt32(CharacterId);
+      if (UId.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(UId);
+      }
+      if (Password.Length != 0) {
+        output.WriteRawTag(34);
+        output.WriteString(Password);
+      }
+      if (CId.Length != 0) {
+        output.WriteRawTag(42);
+        output.WriteString(CId);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -2104,8 +2188,14 @@ namespace HS.Protobuf.Game {
       if (GameToken.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(GameToken);
       }
-      if (CharacterId != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(CharacterId);
+      if (UId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(UId);
+      }
+      if (Password.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Password);
+      }
+      if (CId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(CId);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -2125,8 +2215,14 @@ namespace HS.Protobuf.Game {
       if (other.GameToken.Length != 0) {
         GameToken = other.GameToken;
       }
-      if (other.CharacterId != 0) {
-        CharacterId = other.CharacterId;
+      if (other.UId.Length != 0) {
+        UId = other.UId;
+      }
+      if (other.Password.Length != 0) {
+        Password = other.Password;
+      }
+      if (other.CId.Length != 0) {
+        CId = other.CId;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -2151,8 +2247,16 @@ namespace HS.Protobuf.Game {
             GameToken = input.ReadString();
             break;
           }
-          case 24: {
-            CharacterId = input.ReadInt32();
+          case 26: {
+            UId = input.ReadString();
+            break;
+          }
+          case 34: {
+            Password = input.ReadString();
+            break;
+          }
+          case 42: {
+            CId = input.ReadString();
             break;
           }
         }
@@ -2178,8 +2282,16 @@ namespace HS.Protobuf.Game {
             GameToken = input.ReadString();
             break;
           }
-          case 24: {
-            CharacterId = input.ReadInt32();
+          case 26: {
+            UId = input.ReadString();
+            break;
+          }
+          case 34: {
+            Password = input.ReadString();
+            break;
+          }
+          case 42: {
+            CId = input.ReadString();
             break;
           }
         }
