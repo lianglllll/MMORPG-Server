@@ -5,7 +5,7 @@ using HS.Protobuf.ControlCenter;
 using SceneServer.Net;
 using Serilog;
 
-namespace SceneServer.Core
+namespace SceneServer.Handle
 {
     public class SceneServerHandler : Singleton<SceneServerHandler>
     {
@@ -25,12 +25,12 @@ namespace SceneServer.Core
             {
                 Log.Debug("A new DBProxy Server has joined the cluster.");
                 ServersMgr.Instance.AddDBServerInfo(message.ClusterEventNode.ServerInfoNode);
-            }else if(message.ClusterEventNode.EventType == ClusterEventType.GamegatemgrEnter)
+            }
+            else if (message.ClusterEventNode.EventType == ClusterEventType.GamegatemgrEnter)
             {
                 Log.Debug("A new GameGateMgr Server has joined the cluster.");
                 ServersMgr.Instance.AddGGMServerInfo(message.ClusterEventNode.ServerInfoNode);
             }
         }
-
     }
 }

@@ -1,18 +1,22 @@
 syntax = "proto3";
+import "Common/ProtoSource/Common.proto";
 package HS.Protobuf.Game;
 
 enum GameProtocl{
 	GAME_PROTOCL_NONE = 0;
-	GAME_PROTOCL_GET_GAME_TOKEN_REQ = 30001;		// [GetGameTokenRequest]
-	GAME_PROTOCL_GET_GAME_TOKEN_RESP = 30002;		// [GetGameTokenResponse]
-	GAME_PROTOCL_GET_CHARACTER_LIST_REQ = 30003;	// [GetCharacterListRequest]
-	GAME_PROTOCL_GET_CHARACTER_LIST_RESP = 30004;	// [GetCharacterListResponse]
-	GAME_PROTOCL_CREATE_CHARACTER_REQ = 30005;		// [CreateCharacterRequest]
-	GAME_PROTOCL_CREATE_CHARACTER_RESP = 30006;		// [CreateCharacterResponse]
-	GAME_PROTOCL_DELETE_CHARACTER_REQ = 30007;		// [DeleteCharacterRequest]
-	GAME_PROTOCL_DELETE_CHARACTER_RESP = 30008;		// [DeleteCharacterResponse]
-	GAME_PROTOCL_ENTER_GAME_REQ = 30009;			// [EnterGameRequest]
-	GAME_PROTOCL_ENTER_GAME_RESP = 30010;			// [EnterGameResponse]
+	GAME_PROTOCL_REGISTER_TO_G_REQ = 30001;
+	GAME_PROTOCL_REGISTER_TO_G_RESP =30002;
+	GAME_PROTOCL_GET_GAME_TOKEN_REQ = 30003;		// [GetGameTokenRequest]
+	GAME_PROTOCL_GET_GAME_TOKEN_RESP = 30004;		// [GetGameTokenResponse]
+	GAME_PROTOCL_GET_CHARACTER_LIST_REQ = 30005;	// [GetCharacterListRequest]
+	GAME_PROTOCL_GET_CHARACTER_LIST_RESP = 30006;	// [GetCharacterListResponse]
+	GAME_PROTOCL_CREATE_CHARACTER_REQ = 30007;		// [CreateCharacterRequest]
+	GAME_PROTOCL_CREATE_CHARACTER_RESP = 30008;		// [CreateCharacterResponse]
+	GAME_PROTOCL_DELETE_CHARACTER_REQ = 30009;		// [DeleteCharacterRequest]
+	GAME_PROTOCL_DELETE_CHARACTER_RESP = 30010;		// [DeleteCharacterResponse]
+	GAME_PROTOCL_ENTER_GAME_REQ = 30011;			// [EnterGameRequest]
+	GAME_PROTOCL_ENTER_GAME_RESP = 30012;			// [EnterGameResponse]
+
 }
 
 message SimpleCharacterInfoNode{
@@ -20,6 +24,16 @@ message SimpleCharacterInfoNode{
 	string chrName = 2;
 	int32 professionId = 3;
 	int32 level = 4;
+}
+
+message RegisterToGRequest{
+	HS.Protobuf.Common.ServerInfoNode serverInfoNode = 1;
+}
+message RegisterToGResponse{
+	int32  resultCode		= 1;	//0 成功 小于0正常流程  大于0异常流程
+	string resultMsg		= 2;
+	repeated HS.Protobuf.Common.ServerInfoNode sceneInfoNodes = 3;
+	int32 AllocateSceneId = 4;
 }
 
 message GetGameTokenRequest{
@@ -71,10 +85,13 @@ message DeleteCharacterResponse{
 message EnterGameRequest{
 	string sessionId = 1;
 	string gameToken = 2;
-	int32 characterId = 3;
+	string characterId = 3;
 }
 message EnterGameResponse{
 	string sessionId = 1;
-	int32  resultCode		= 2;
-	string resultMsg		= 3;
+	int32  resultCode = 2;
+	string resultMsg = 3;
+	// 其他的信息
+
+
 }

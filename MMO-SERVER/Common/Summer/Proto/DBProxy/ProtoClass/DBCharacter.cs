@@ -29,7 +29,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
             "REJDaGFyYWN0ZXJTdGF0aXN0aWNzTm9kZRIRCglraWxsQ291bnQYASABKAUS",
             "EgoKZGVhdGhDb3VudBgCIAEoBRIVCg10YXNrQ29tcGxldGVkGAMgASgFInEK",
             "FURCQ2hhcmFjdGVyU3RhdHVzTm9kZRIKCgJocBgBIAEoBRIKCgJtcBgCIAEo",
-            "BRILCgNleHAYBCABKAUSEgoKY3VyU3BhY2VJZBgFIAEoBRIJCgF4GAYgASgF",
+            "BRILCgNleHAYBCABKAUSEgoKY3VyU2NlbmVJZBgFIAEoBRIJCgF4GAYgASgF",
             "EgkKAXkYByABKAUSCQoBehgIIAEoBSLwAQoVREJDaGFyYWN0ZXJBc3NldHNO",
             "b2RlEhQKDGJhY2twYWNrRGF0YRgBIAEoDBISCgplcXVpcHNEYXRhGAIgASgM",
             "ElYKCGN1cnJlbmN5GAMgAygLMkQuSFMuUHJvdG9idWYuREJQcm94eS5EQkNo",
@@ -83,7 +83,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.FieldMaskReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterProtocl), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterStatisticsNode), global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterStatisticsNode.Parser, new[]{ "KillCount", "DeathCount", "TaskCompleted" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterStatusNode), global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterStatusNode.Parser, new[]{ "Hp", "Mp", "Exp", "CurSpaceId", "X", "Y", "Z" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterStatusNode), global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterStatusNode.Parser, new[]{ "Hp", "Mp", "Exp", "CurSceneId", "X", "Y", "Z" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterAssetsNode), global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterAssetsNode.Parser, new[]{ "BackpackData", "EquipsData", "Currency", "Achievements", "Titles" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterSocialNode), global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterSocialNode.Parser, new[]{ "GuildId", "Faction", "FriendsList" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterNode), global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterNode.Parser, new[]{ "CId", "UId", "WorldId", "ProfessionId", "ChrName", "Level", "CreationTimestamp", "ChrStatistics", "ChrStatus", "ChrAssets", "ChrSocial" }, null, null, null, null),
@@ -440,7 +440,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
       hp_ = other.hp_;
       mp_ = other.mp_;
       exp_ = other.exp_;
-      curSpaceId_ = other.curSpaceId_;
+      curSceneId_ = other.curSceneId_;
       x_ = other.x_;
       y_ = other.y_;
       z_ = other.z_;
@@ -489,15 +489,15 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
       }
     }
 
-    /// <summary>Field number for the "curSpaceId" field.</summary>
-    public const int CurSpaceIdFieldNumber = 5;
-    private int curSpaceId_;
+    /// <summary>Field number for the "curSceneId" field.</summary>
+    public const int CurSceneIdFieldNumber = 5;
+    private int curSceneId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CurSpaceId {
-      get { return curSpaceId_; }
+    public int CurSceneId {
+      get { return curSceneId_; }
       set {
-        curSpaceId_ = value;
+        curSceneId_ = value;
       }
     }
 
@@ -555,7 +555,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
       if (Hp != other.Hp) return false;
       if (Mp != other.Mp) return false;
       if (Exp != other.Exp) return false;
-      if (CurSpaceId != other.CurSpaceId) return false;
+      if (CurSceneId != other.CurSceneId) return false;
       if (X != other.X) return false;
       if (Y != other.Y) return false;
       if (Z != other.Z) return false;
@@ -569,7 +569,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
       if (Hp != 0) hash ^= Hp.GetHashCode();
       if (Mp != 0) hash ^= Mp.GetHashCode();
       if (Exp != 0) hash ^= Exp.GetHashCode();
-      if (CurSpaceId != 0) hash ^= CurSpaceId.GetHashCode();
+      if (CurSceneId != 0) hash ^= CurSceneId.GetHashCode();
       if (X != 0) hash ^= X.GetHashCode();
       if (Y != 0) hash ^= Y.GetHashCode();
       if (Z != 0) hash ^= Z.GetHashCode();
@@ -603,9 +603,9 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
         output.WriteRawTag(32);
         output.WriteInt32(Exp);
       }
-      if (CurSpaceId != 0) {
+      if (CurSceneId != 0) {
         output.WriteRawTag(40);
-        output.WriteInt32(CurSpaceId);
+        output.WriteInt32(CurSceneId);
       }
       if (X != 0) {
         output.WriteRawTag(48);
@@ -641,9 +641,9 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
         output.WriteRawTag(32);
         output.WriteInt32(Exp);
       }
-      if (CurSpaceId != 0) {
+      if (CurSceneId != 0) {
         output.WriteRawTag(40);
-        output.WriteInt32(CurSpaceId);
+        output.WriteInt32(CurSceneId);
       }
       if (X != 0) {
         output.WriteRawTag(48);
@@ -676,8 +676,8 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
       if (Exp != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Exp);
       }
-      if (CurSpaceId != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(CurSpaceId);
+      if (CurSceneId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(CurSceneId);
       }
       if (X != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(X);
@@ -709,8 +709,8 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
       if (other.Exp != 0) {
         Exp = other.Exp;
       }
-      if (other.CurSpaceId != 0) {
-        CurSpaceId = other.CurSpaceId;
+      if (other.CurSceneId != 0) {
+        CurSceneId = other.CurSceneId;
       }
       if (other.X != 0) {
         X = other.X;
@@ -749,7 +749,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
             break;
           }
           case 40: {
-            CurSpaceId = input.ReadInt32();
+            CurSceneId = input.ReadInt32();
             break;
           }
           case 48: {
@@ -792,7 +792,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
             break;
           }
           case 40: {
-            CurSpaceId = input.ReadInt32();
+            CurSceneId = input.ReadInt32();
             break;
           }
           case 48: {

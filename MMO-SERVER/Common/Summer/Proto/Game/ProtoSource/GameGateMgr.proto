@@ -36,7 +36,8 @@ message ExecuteGGCommandResponse{
 }
 
 message ExecuteSCommandRequest{
-	int32 sceneServerId = 2;
+	HS.Protobuf.Common.GateCommand command = 1;
+	int32 targetServerId = 2;
 	int64 timeStamp = 3;
 	oneof payload{
 		HS.Protobuf.Common.ServerInfoNode gameServerInfoNode = 4;	

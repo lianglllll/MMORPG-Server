@@ -23,7 +23,7 @@ message DBCharacterStatusNode{
 	int32 hp = 1;
 	int32 mp = 2;
 	int32 exp = 4;
-	int32 curSpaceId = 5;
+	int32 curSceneId = 5;
 	int32 x = 6;
 	int32 y = 7;
 	int32 z = 8;

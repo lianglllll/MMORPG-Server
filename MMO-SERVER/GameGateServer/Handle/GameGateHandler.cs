@@ -5,6 +5,7 @@ using HS.Protobuf.ControlCenter;
 using GameGateServer.Net;
 using Serilog;
 using HS.Protobuf.GameGate;
+using System.Xml.Linq;
 
 namespace GameGateServer.Handle
 {
@@ -14,9 +15,14 @@ namespace GameGateServer.Handle
         {
             // 协议注册
             ProtoHelper.Instance.Register<ClusterEventResponse>((int)ControlCenterProtocl.ClusterEventResp);
+            ProtoHelper.Instance.Register<RegisterSceneToGGRequest>((int)GameGateProtocl.RegisterScenesToGgReq);
+            ProtoHelper.Instance.Register<RegisterSceneToGGResponse>((int)GameGateProtocl.RegisterScenesToGgResp);
+
             // 消息的订阅
             MessageRouter.Instance.Subscribe<ClusterEventResponse>(_HandleClusterEventResponse);
+            MessageRouter.Instance.Subscribe<RegisterSceneToGGRequest>(_HandleRegisterSceneToGGRequest);
         }
+
         public void UnInit()
         {
         }
@@ -28,5 +34,14 @@ namespace GameGateServer.Handle
                 ServersMgr.Instance.AddGGMServerInfo(message.ClusterEventNode.ServerInfoNode);
             }
         }
+
+        private void _HandleRegisterSceneToGGRequest(Connection conn, RegisterSceneToGGRequest message)
+        {
+            foreach(var node in message.SceneInfos)
+            {
+                ServersMgr.Instance.AddSServerInfo(node);
+            }
+        }
+
     }
 }

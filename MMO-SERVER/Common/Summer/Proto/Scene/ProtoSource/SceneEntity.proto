@@ -5,6 +5,117 @@ import "Combat/ProtoSource/Buff.proto";
 import "Game/ProtoSource/Backpack.proto";
 package HS.Protobuf.SceneEntity;
 
+message NetVector3{
+	int32 x = 1; //这里的数值是unity中数值*1000得到的整数值
+	int32 y = 2;
+	int32 z = 3;
+}
+message NetTransform{
+	NetVector3 position = 1;
+	NetVector3 rotation = 2;
+	NetVector3 scale = 3;
+}
+enum EntityType{
+	ENTITY_TYPE_NONE = 0;
+	ENTITY_TYPE_ACTOR = 1;
+	ENTITY_TYPE_ITEM = 2;
+	ENTITY_TYPE_INTERACTIVO = 3;
+}
+
+enum NetActorMode {
+    NET_ACTOR_MODE_NONE = 0;
+    NET_ACTOR_MODE_UNARMED = 1;
+    NET_ACTOR_MODE_ARMED = 2;
+    NET_ACTOR_MODE_SWORD_FLY = 3;
+}
+enum NetActorState {
+    NET_ACTOR_STATE_NONE = 0;
+    NET_ACTOR_STATE_IDEL = 1;
+    NET_ACTOR_STATE_MOTION = 2;
+    NET_ACTOR_STATE_JUMP = 3;
+    NET_ACTOR_STATE_FALLING = 4;
+    NET_ACTOR_STATE_CROUCH = 5;
+    NET_ACTOR_STATE_PRONE = 6;
+    NET_ACTOR_STATE_DEATH = 7;
+    NET_ACTOR_STATE_HIT = 8;
+    NET_ACTOR_STATE_DIZZY = 9;
+    NET_ACTOR_STATE_KNOCK = 10;
+    NET_ACTOR_STATE_CUSTOM = 11;  // 自定义状态
+}
+enum NetActorSmallState {
+    NET_ACTOR_STATE_SAMLL_NONE = 0;
+
+    NET_ACTOR_STATE_SAMLL_MOTION_SLOW_WALK = 1;
+    NET_ACTOR_STATE_SAMLL_MOTION_NORMAL_WALK = 2;
+    NET_ACTOR_STATE_SAMLL_MOTION_RUN = 3;
+    NET_ACTOR_STATE_SAMLL_MOTION_RUN_STOP = 4;
+    NET_ACTOR_STATE_SAMLL_MOTION_NORMAL_WALK_STOP = 5;
+
+    NET_ACTOR_STATE_SAMLL_JUMP_UP = 6;
+
+    NET_ACTOR_STATE_SAMLL_FALLING_SUSTAINED = 7;
+    NET_ACTOR_STATE_SAMLL_FALLING_END = 8;
+
+    NET_ACTOR_STATE_SAMLL_CROUCH_SUSTAINED = 9;
+    NET_ACTOR_STATE_SAMLL_CROUCH_MOVE = 10;
+
+    NET_ACTOR_STATE_SAMLL_PRONE_SUSTAINED = 11;
+    NET_ACTOR_STATE_SAMLL_PRONE_MOVE = 12;
+
+    NET_ACTOR_STATE_SAMLL_DEATH_SUSTAINED = 13;
+    NET_ACTOR_STATE_SAMLL_DEATH_UP = 14;
+
+    NET_ACTOR_STATE_SAMLL_HIT_UP = 15;
+    NET_ACTOR_STATE_SAMLL_HIT_DOWN = 16;
+    NET_ACTOR_STATE_SAMLL_HIT_LEFT = 17;
+    NET_ACTOR_STATE_SAMLL_HIT_RIGHT = 18;
+    NET_ACTOR_STATE_SAMLL_HIT_FRONT = 19;
+    NET_ACTOR_STATE_SAMLL_HIT_BACK = 20;
+
+    NET_ACTOR_STATE_SAMLL_DIZZY_SUSTAINED = 21;
+
+    NET_ACTOR_STATE_SAMLL_KNOCK_BACK = 22;
+    NET_ACTOR_STATE_SAMLL_KNOCK_UP = 23;
+}
+
+message NetActorNode {
+    int32 entityId = 1;
+    int32 professionId = 2;
+    NetTransform transform = 3;
+    string actorName = 4;
+    int32 level = 5;
+    int64 exp = 6;
+    int32 sceneId = 7; 
+    int32 hp = 8;
+    int32 mp = 9;
+    int32 hpMax = 10;
+    int32 mpMax = 11;
+    int32 speed = 12;
+	NetActorMode netActorMode = 13;
+    NetActorState netActorState = 14;
+    NetActorSmallState netActorSmallState = 15;
+    repeated HS.Protobuf.Combat.Skill.SkillInfo equippedSkills = 16;
+    repeated HS.Protobuf.Game.Backpack.ItemInfo wornEquipments = 17;
+    repeated HS.Protobuf.Combat.Buff.BuffInfo buffs = 18;
+}
+
+message NetItemNode{
+	int32 entityId = 1;
+	int32 sceneId  = 2;
+	NetTransform transform = 3;
+	HS.Protobuf.Game.Backpack.ItemInfo ItemInfo = 4;
+}
+
+
+
+
+
+
+
+
+
+
+
 //entity位置信息
 message NetEntity {
 	int32 id = 1;
@@ -50,7 +161,7 @@ enum ActorType
 //actor信息
 message NetActor{
 	int32 id = 1;
-	int32 tid = 2;//单位类型
+	int32 tid = 2;
 	NetEntity entity = 3;
 	string name = 4;
 	int32 level = 5;

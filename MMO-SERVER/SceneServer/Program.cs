@@ -44,8 +44,7 @@ namespace SceneServer
                 .CreateLogger();
 
             Config.Init();                      // 加载服务器配置
-
-            //中心计时器任务加载(使用了Timer)
+            StaticDataManager.Instance.Init();
             Scheduler.Instance.Start(Config.Server.updateHz);
 
             Log.Information("=============================================");

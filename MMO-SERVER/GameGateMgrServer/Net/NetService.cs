@@ -7,7 +7,6 @@ using HS.Protobuf.Common;
 using static Common.Summer.Net.NetClient;
 using System.Net;
 using GameGateMgrServer.Utils;
-using GameGateMgrServer.Core;
 
 namespace GameGateMgrServer.Net
 {

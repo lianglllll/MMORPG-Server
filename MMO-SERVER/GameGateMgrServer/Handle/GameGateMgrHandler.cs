@@ -20,6 +20,8 @@ namespace GameGateMgrServer.Handle
             ProtoHelper.Instance.Register<RegisterToGGMResponse>((int)GameGateMgrProtocl.RegisterToGgmResp);
             ProtoHelper.Instance.Register<ExecuteGGCommandRequest>((int)GameGateMgrProtocl.ExecuteGgCommandReq);
             ProtoHelper.Instance.Register<ExecuteGGCommandResponse>((int)GameGateMgrProtocl.ExecuteGgCommandResp);
+            ProtoHelper.Instance.Register<ExecuteSCommandRequest>((int)GameGateMgrProtocl.ExecuteSCommandReq);
+            ProtoHelper.Instance.Register<ExecuteSCommandResponse>((int)GameGateMgrProtocl.ExecuteSCommandResp);
             ProtoHelper.Instance.Register<ClusterEventResponse>((int)ControlCenterProtocl.ClusterEventResp);
             ProtoHelper.Instance.Register<RegisterSessionToGGMRequest>((int)GameGateMgrProtocl.RegisterSessoionToGgmReq);
             ProtoHelper.Instance.Register<RegisterSessionToGGMResponse>((int)GameGateMgrProtocl.RegisterSessoionToGgmResp);

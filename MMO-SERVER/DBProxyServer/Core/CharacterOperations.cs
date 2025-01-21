@@ -56,7 +56,7 @@ namespace DBProxyServer.Core
                                 characterStatusNode.Hp = chr["chrStatus"]["hp"].ToInt32();
                                 characterStatusNode.Mp = chr["chrStatus"]["mp"].ToInt32();
                                 characterStatusNode.Exp = chr["chrStatus"]["exp"].ToInt32();
-                                characterStatusNode.CurSpaceId = chr["chrStatus"]["curSpaceId"].ToInt32();
+                                characterStatusNode.CurSceneId = chr["chrStatus"]["curSceneId"].ToInt32();
                                 characterStatusNode.X = chr["chrStatus"]["x"].ToInt32();
                                 characterStatusNode.Y = chr["chrStatus"]["y"].ToInt32();
                                 characterStatusNode.Z = chr["chrStatus"]["z"].ToInt32();
@@ -158,7 +158,7 @@ namespace DBProxyServer.Core
                                     characterStatusNode.Hp = chr["chrStatus"]["hp"].ToInt32();
                                     characterStatusNode.Mp = chr["chrStatus"]["mp"].ToInt32();
                                     characterStatusNode.Exp = chr["chrStatus"]["exp"].ToInt32();
-                                    characterStatusNode.CurSpaceId = chr["chrStatus"]["curSpaceId"].ToInt32();
+                                    characterStatusNode.CurSceneId = chr["chrStatus"]["curSceneId"].ToInt32();
                                     characterStatusNode.X = chr["chrStatus"]["x"].ToInt32();
                                     characterStatusNode.Y = chr["chrStatus"]["y"].ToInt32();
                                     characterStatusNode.Z = chr["chrStatus"]["z"].ToInt32();
@@ -244,7 +244,7 @@ namespace DBProxyServer.Core
                         { "hp", chrNode.ChrStatus.Hp },
                         { "mp", chrNode.ChrStatus.Mp },
                         { "exp", chrNode.ChrStatus.Exp },
-                        { "curSpaceId", chrNode.ChrStatus.CurSpaceId },
+                        { "curSceneId", chrNode.ChrStatus.CurSceneId },
                         { "x", chrNode.ChrStatus.X },
                         { "y", chrNode.ChrStatus.Y },
                         { "z", chrNode.ChrStatus.Z }
@@ -336,7 +336,6 @@ namespace DBProxyServer.Core
             }
 
         }
-
         public async Task<bool> CheckCharacterNameExistenceAsync(string cName)
         {
             try
@@ -352,6 +351,5 @@ namespace DBProxyServer.Core
                 return false;
             }
         }
-
     }
 }

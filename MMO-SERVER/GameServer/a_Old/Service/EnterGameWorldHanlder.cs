@@ -2,12 +2,16 @@
 using Common.Summer.Net;
 using Common.Summer.Security;
 using Common.Summer.Tools;
+using GameServer.Core;
+using GameServer.Core.Model;
 using GameServer.Net;
 using Google.Protobuf;
+using Google.Protobuf.WellKnownTypes;
 using HS.Protobuf.DBProxy.DBCharacter;
 using HS.Protobuf.DBProxy.DBUser;
 using HS.Protobuf.Game;
 using HS.Protobuf.Login;
+using HS.Protobuf.Scene;
 using System;
 using System.Collections.Generic;
 
@@ -38,9 +42,14 @@ namespace GameServer.Handle
             ProtoHelper.Instance.Register<GetDBUserResponse>((int)DBUserProtocl.GetDbuserResp);
             ProtoHelper.Instance.Register<DeleteDBCharacterByCidRequest>((int)DBCharacterProtocl.DeleteDbcharacterByCidReq);
             ProtoHelper.Instance.Register<DeleteDBCharacterByCidResponse>((int)DBCharacterProtocl.DeleteDbcharacterByCidResp);
-
             ProtoHelper.Instance.Register<EnterGameRequest>((int)GameProtocl.EnterGameReq);
             ProtoHelper.Instance.Register<EnterGameResponse>((int)GameProtocl.EnterGameResp);
+            ProtoHelper.Instance.Register<GetDBCharacterByCidRequest>((int)DBCharacterProtocl.GetDbcharacterByCidReq);
+            ProtoHelper.Instance.Register<GetDBCharacterByCidReponse>((int)DBCharacterProtocl.GetDbcharacterByCidResp);
+            ProtoHelper.Instance.Register<CharacterEnterSceneRequest>((int)SceneProtocl.CharacterEnterSceneReq);
+            ProtoHelper.Instance.Register<SelfCharacterEnterSceneResponse>((int)SceneProtocl.SlefCharacterEnterSceneResp);
+
+
 
             // 消息的订阅
             MessageRouter.Instance.Subscribe<GetCharacterListRequest>(_HandleGetCharacterListRequest);
@@ -54,6 +63,8 @@ namespace GameServer.Handle
             MessageRouter.Instance.Subscribe<DeleteDBCharacterByCidResponse>(_HandleDeleteDBCharacterByCidResponse);
 
             MessageRouter.Instance.Subscribe<EnterGameRequest>(_HandleEnterGameRequest);
+            MessageRouter.Instance.Subscribe<GetDBCharacterByCidReponse>(_HandleGetDBCharacterByCidReponse);
+            MessageRouter.Instance.Subscribe<SelfCharacterEnterSceneResponse>(_HandleSelfCharacterEnterSceneResponse);
 
             return true;
         }
@@ -295,6 +306,88 @@ namespace GameServer.Handle
 
         private void _HandleEnterGameRequest(Connection conn, EnterGameRequest message)
         {
+            // 获取dbCharacter
+            GetDBCharacterByCidRequest req = new();
+            int taskId = m_idGenerator.GetId();
+            m_tasks.Add(taskId, message);
+            req.TaskId = taskId;
+            req.CId = message.CharacterId;
+            req.ReadMask = new FieldMask { Paths = { "chrStatistics", "chrStatus", "chrAssets", "chrSocial" } };
+            ServersMgr.Instance.SendMsgToDBProxy(req);
         }
+        private void _HandleGetDBCharacterByCidReponse(Connection conn, GetDBCharacterByCidReponse message)
+        {
+            if (!m_tasks.ContainsKey(message.TaskId))
+            {
+                goto End2;
+            }
+
+            EnterGameRequest req = (EnterGameRequest)m_tasks[message.TaskId];
+            EnterGameResponse resp = new();
+            resp.SessionId = req.SessionId;
+            Connection gateConn = GameTokenManager.Instance.GetToken(req.GameToken).Conn;
+            // 验证该dbCharacter是否存在
+            if(message.ChrNode == null)
+            {
+                resp.ResultCode = 2;
+                resp.ResultMsg = "没有你选择的角色信息。";
+                goto End1;
+            }
+            // 保存一下与场景无关的character信息
+            DBCharacterNode dbChrNode = message.ChrNode;
+            var gChr = GameCharacterManager.Instance.CreateGameCharacter(dbChrNode);
+
+            // 将与场景相关的character移交scene进行初始化
+            int curSceneId = dbChrNode.ChrStatus.CurSceneId;
+            var sceneConn = GameMonitor.Instance.GetSceneConnBySceneId(curSceneId);
+            CharacterEnterSceneRequest characterEnterSceneRequest = new();
+            characterEnterSceneRequest.DbChrNode = dbChrNode;
+            characterEnterSceneRequest.TaskId = message.TaskId;
+            sceneConn.Send(characterEnterSceneRequest);
+            goto End2;
+
+        End1:
+            // 清理资源
+            m_tasks.Remove(message.TaskId);
+            m_idGenerator.ReturnId(message.TaskId);
+            gateConn.Send(resp);
+        End2:
+            return;
+        }
+        private void _HandleSelfCharacterEnterSceneResponse(Connection conn, SelfCharacterEnterSceneResponse message)
+        {
+            if (!m_tasks.ContainsKey(message.TaskId))
+            {
+                goto End2;
+            }
+
+            EnterGameRequest req = (EnterGameRequest)m_tasks[message.TaskId];
+            EnterGameResponse resp = new();
+            resp.SessionId = req.SessionId;
+            Connection gateConn = GameTokenManager.Instance.GetToken(req.GameToken).Conn;
+
+            if(message.ResultCode != 0)
+            {
+                resp.ResultCode = 3;
+                resp.ResultMsg = message.ResultMsg;
+                goto End1;
+            }
+
+            // 拆message中的数据放到resp中
+
+
+
+
+
+        End1:
+            // 清理资源
+            m_tasks.Remove(message.TaskId);
+            m_idGenerator.ReturnId(message.TaskId);
+            gateConn.Send(resp);
+        End2:
+            return;
+        }
+
+
     }
 }

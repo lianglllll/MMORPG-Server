@@ -1,22 +1,19 @@
-﻿using GameServer.core;
-using GameServer.Manager;
-using GameServer.Model;
-using HS.Protobuf.Combat.Skill;
+﻿using HS.Protobuf.Combat.Skill;
 using HS.Protobuf.Scene;
 using HS.Protobuf.SceneEntity;
+using SceneServer.Core.Model.Actor;
+using SceneServer.Core.Scene;
+using SceneServer.Manager;
 using Serilog;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace GameServer.Combat
+namespace SceneServer.Combat
 {
     /// <summary>
     /// 战斗管理器
     /// </summary>
     public class FightManager
     {
-        private Space space;
         public List<Missile> missiles = new List<Missile>();        //当前场景下的投射物列表 todo
 
         //待处理的技能施法队列：收集来自各个客户端的施法请求,线性处理，避免多线程并发问题。
@@ -33,9 +30,8 @@ namespace GameServer.Combat
         public ConcurrentQueue<PropertyUpdate> propertyUpdateQueue = new ConcurrentQueue<PropertyUpdate>();
         private PropertyUpdateRsponse propertyUpdateRsponse = new PropertyUpdateRsponse();
         
-        public void Init(Space space)
+        public void Init()
         {
-            this.space = space;
         }
         public void OnUpdate(float deltaTime)
         {
@@ -61,14 +57,14 @@ namespace GameServer.Combat
         private void RunCast(CastInfo cast)
         {
             //1.判断施法者是否存在
-            var caster = EntityManager.Instance.GetEntityById(cast.CasterId) as Actor;
+            var caster = SceneEntityManager.Instance.GetSceneEntityById(cast.CasterId) as SceneActor;
             if (caster == null)
             {
                 Log.Error("RunCast: Caster is null {0}", cast.CasterId);
                 return;
             }
             //2.施法技能
-            caster.spell.RunCast(cast);
+            caster.SkillSpell.RunCast(cast);
         }
         private void BroadcastSpellInfo()
         {
@@ -81,16 +77,16 @@ namespace GameServer.Combat
             {
                 //找出所有受影响的玩家们,这里使用set是保证唯一性
                 //谁需要看到这个施法的过程，当然是施法者aoi范围内的玩家。
-                var hashSet = new HashSet<Character>();
+                var hashSet = new HashSet<SceneCharacter>();
                 foreach (var item in spellCastResponse.List)
                 {
                     //当事人
-                    var entity = GameTools.GetActorByEntityId(item.CasterId);
+                    var entity = SceneEntityManager.Instance.GetSceneEntityById(item.CasterId);
                     if (entity == null) continue;
-                    var li = space?.aoiZone.FindViewEntity(entity.EntityId, true);
+                    var li = SceneManager.Instance.AoiZone.FindViewEntity(entity.EntityId, true);
                     if (li != null)
                     {
-                        foreach (Character cc in li.OfType<Character>())
+                        foreach (var cc in li.OfType<SceneCharacter>())
                         {
                             hashSet.Add(cc);
                         }
@@ -101,7 +97,8 @@ namespace GameServer.Combat
                 //space.Broadcast(spellCastResponse);
                 foreach (var cc in hashSet)
                 {
-                    cc.session.Send(spellCastResponse);
+                    // todo
+                    // cc.session.Send(spellCastResponse);
                 }
 
                 spellCastResponse.List.Clear();
@@ -118,16 +115,16 @@ namespace GameServer.Combat
             {
                 //找出所有受影响的玩家们,这里使用set是保证唯一性
                 //谁需要看到这个伤害信息，当然是受伤害目标九宫格范围内的玩家。
-                var hashSet = new HashSet<Character>();
+                var hashSet = new HashSet<SceneCharacter>();
                 foreach (var item in damageResponse.List)
                 {
                     //当事人,你需要让这个给
-                    var entity = GameTools.GetActorByEntityId(item.TargetId);
+                    var entity = SceneEntityManager.Instance.GetSceneEntityById(item.TargetId);
                     if (entity == null) continue;
-                    var li = space?.aoiZone.FindViewEntity(entity.EntityId, true);
+                    var li = SceneManager.Instance.AoiZone.FindViewEntity(entity.EntityId, true);
                     if (li != null)
                     {
-                        foreach (Character cc in li.OfType<Character>())
+                        foreach (var cc in li.OfType<SceneCharacter>())
                         {
                             hashSet.Add(cc);
                         }
@@ -138,7 +135,8 @@ namespace GameServer.Combat
                 //space.Broadcast(damageResponse);
                 foreach (var cc in hashSet)
                 {
-                    cc.session.Send(damageResponse);
+                    // todo
+                    // cc.session.Send(damageResponse);
                 }
 
                 damageResponse.List.Clear();
@@ -155,16 +153,16 @@ namespace GameServer.Combat
             {
                 //找出所有受影响的玩家们,这里使用set是保证唯一性
                 //谁需要看到这个属性变换的过程，当然是属性变化者view范围内的玩家。
-                var hashSet = new HashSet<Character>();
+                var hashSet = new HashSet<SceneCharacter>();
                 foreach(var item in propertyUpdateRsponse.List)
                 {
                     //当事人
-                    var entity = GameTools.GetActorByEntityId(item.EntityId);
+                    var entity = SceneEntityManager.Instance.GetSceneEntityById(item.EntityId);
                     if (entity == null) continue;
-                    var li = space?.aoiZone.FindViewEntity(entity.EntityId, true);
+                    var li = SceneManager.Instance.AoiZone.FindViewEntity(entity.EntityId, true);
                     if (li != null)
                     {
-                        foreach(Character cc in li.OfType<Character>())
+                        foreach(var cc in li.OfType<SceneCharacter>())
                         {
                             hashSet.Add(cc);
                         }
@@ -174,7 +172,8 @@ namespace GameServer.Combat
                 //广播
                 foreach (var cc in hashSet)
                 {
-                    cc.session.Send(propertyUpdateRsponse);
+
+                    // cc.session.Send(propertyUpdateRsponse);
                 }
 
                 propertyUpdateRsponse.List.Clear();

@@ -35,28 +35,30 @@ namespace HS.Protobuf.GameGateMgr {
             "SW5mb05vZGUYBCABKAsyIi5IUy5Qcm90b2J1Zi5Db21tb24uU2VydmVySW5m",
             "b05vZGVIAEIJCgdwYXlsb2FkImMKGEV4ZWN1dGVHR0NvbW1hbmRSZXNwb25z",
             "ZRISCgpyZXN1bHRDb2RlGAEgASgFEjMKCmVyckNvbW1hbmQYAiABKA4yHy5I",
-            "Uy5Qcm90b2J1Zi5Db21tb24uR2F0ZUNvbW1hbmQijwEKFkV4ZWN1dGVTQ29t",
-            "bWFuZFJlcXVlc3QSFQoNc2NlbmVTZXJ2ZXJJZBgCIAEoBRIRCgl0aW1lU3Rh",
-            "bXAYAyABKAMSQAoSZ2FtZVNlcnZlckluZm9Ob2RlGAQgASgLMiIuSFMuUHJv",
-            "dG9idWYuQ29tbW9uLlNlcnZlckluZm9Ob2RlSABCCQoHcGF5bG9hZCJiChdF",
-            "eGVjdXRlU0NvbW1hbmRSZXNwb25zZRISCgpyZXN1bHRDb2RlGAEgASgFEjMK",
-            "CmVyckNvbW1hbmQYAiABKA4yHy5IUy5Qcm90b2J1Zi5Db21tb24uR2F0ZUNv",
-            "bW1hbmQiXgobUmVnaXN0ZXJTZXNzaW9uVG9HR01SZXF1ZXN0Eg4KBnRhc2tJ",
-            "ZBgBIAEoBRIPCgd3b3JsZElkGAIgASgFEhEKCXNlc3Npb25JZBgDIAEoCRIL",
-            "CgN1SWQYBCABKAkikAEKHFJlZ2lzdGVyU2Vzc2lvblRvR0dNUmVzcG9uc2US",
-            "DgoGdGFza0lkGAEgASgFEhIKCnJlc3VsdENvZGUYAiABKAUSEQoJcmVzdWx0",
-            "TXNnGAMgASgJEjkKDWdhbWVHYXRlSW5mb3MYBCADKAsyIi5IUy5Qcm90b2J1",
-            "Zi5Db21tb24uU2VydmVySW5mb05vZGUqygMKEkdhbWVHYXRlTWdyUHJvdG9j",
-            "bBIcChhHQU1FR0FURU1HUl9QUk9UT0NMX05PTkUQABItCidHQU1FR0FURU1H",
-            "Ul9QUk9UT0NMX1JFR0lTVEVSX1RPX0dHTV9SRVEQgfoBEi4KKEdBTUVHQVRF",
-            "TUdSX1BST1RPQ0xfUkVHSVNURVJfVE9fR0dNX1JFU1AQgvoBEjAKKkdBTUVH",
-            "QVRFTUdSX1BST1RPQ0xfRVhFQ1VURV9HR19DT01NQU5EX1JFURCD+gESMQor",
-            "R0FNRUdBVEVNR1JfUFJPVE9DTF9FWEVDVVRFX0dHX0NPTU1BTkRfUkVTUBCE",
-            "+gESLwopR0FNRUdBVEVNR1JfUFJPVE9DTF9FWEVDVVRFX1NfQ09NTUFORF9S",
-            "RVEQhfoBEjAKKkdBTUVHQVRFTUdSX1BST1RPQ0xfRVhFQ1VURV9TX0NPTU1B",
-            "TkRfUkVTUBCG+gESNgowR0FNRUdBVEVNR1JfUFJPVE9DTF9SRUdJU1RFUl9T",
-            "RVNTT0lPTl9UT19HR01fUkVREIf6ARI3CjFHQU1FR0FURU1HUl9QUk9UT0NM",
-            "X1JFR0lTVEVSX1NFU1NPSU9OX1RPX0dHTV9SRVNQEIj6AWIGcHJvdG8z"));
+            "Uy5Qcm90b2J1Zi5Db21tb24uR2F0ZUNvbW1hbmQiwgEKFkV4ZWN1dGVTQ29t",
+            "bWFuZFJlcXVlc3QSMAoHY29tbWFuZBgBIAEoDjIfLkhTLlByb3RvYnVmLkNv",
+            "bW1vbi5HYXRlQ29tbWFuZBIWCg50YXJnZXRTZXJ2ZXJJZBgCIAEoBRIRCgl0",
+            "aW1lU3RhbXAYAyABKAMSQAoSZ2FtZVNlcnZlckluZm9Ob2RlGAQgASgLMiIu",
+            "SFMuUHJvdG9idWYuQ29tbW9uLlNlcnZlckluZm9Ob2RlSABCCQoHcGF5bG9h",
+            "ZCJiChdFeGVjdXRlU0NvbW1hbmRSZXNwb25zZRISCgpyZXN1bHRDb2RlGAEg",
+            "ASgFEjMKCmVyckNvbW1hbmQYAiABKA4yHy5IUy5Qcm90b2J1Zi5Db21tb24u",
+            "R2F0ZUNvbW1hbmQiXgobUmVnaXN0ZXJTZXNzaW9uVG9HR01SZXF1ZXN0Eg4K",
+            "BnRhc2tJZBgBIAEoBRIPCgd3b3JsZElkGAIgASgFEhEKCXNlc3Npb25JZBgD",
+            "IAEoCRILCgN1SWQYBCABKAkikAEKHFJlZ2lzdGVyU2Vzc2lvblRvR0dNUmVz",
+            "cG9uc2USDgoGdGFza0lkGAEgASgFEhIKCnJlc3VsdENvZGUYAiABKAUSEQoJ",
+            "cmVzdWx0TXNnGAMgASgJEjkKDWdhbWVHYXRlSW5mb3MYBCADKAsyIi5IUy5Q",
+            "cm90b2J1Zi5Db21tb24uU2VydmVySW5mb05vZGUqygMKEkdhbWVHYXRlTWdy",
+            "UHJvdG9jbBIcChhHQU1FR0FURU1HUl9QUk9UT0NMX05PTkUQABItCidHQU1F",
+            "R0FURU1HUl9QUk9UT0NMX1JFR0lTVEVSX1RPX0dHTV9SRVEQgfoBEi4KKEdB",
+            "TUVHQVRFTUdSX1BST1RPQ0xfUkVHSVNURVJfVE9fR0dNX1JFU1AQgvoBEjAK",
+            "KkdBTUVHQVRFTUdSX1BST1RPQ0xfRVhFQ1VURV9HR19DT01NQU5EX1JFURCD",
+            "+gESMQorR0FNRUdBVEVNR1JfUFJPVE9DTF9FWEVDVVRFX0dHX0NPTU1BTkRf",
+            "UkVTUBCE+gESLwopR0FNRUdBVEVNR1JfUFJPVE9DTF9FWEVDVVRFX1NfQ09N",
+            "TUFORF9SRVEQhfoBEjAKKkdBTUVHQVRFTUdSX1BST1RPQ0xfRVhFQ1VURV9T",
+            "X0NPTU1BTkRfUkVTUBCG+gESNgowR0FNRUdBVEVNR1JfUFJPVE9DTF9SRUdJ",
+            "U1RFUl9TRVNTT0lPTl9UT19HR01fUkVREIf6ARI3CjFHQU1FR0FURU1HUl9Q",
+            "Uk9UT0NMX1JFR0lTVEVSX1NFU1NPSU9OX1RPX0dHTV9SRVNQEIj6AWIGcHJv",
+            "dG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::HS.Protobuf.Common.CommonReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.GameGateMgr.GameGateMgrProtocl), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -64,7 +66,7 @@ namespace HS.Protobuf.GameGateMgr {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameGateMgr.RegisterToGGMResponse), global::HS.Protobuf.GameGateMgr.RegisterToGGMResponse.Parser, new[]{ "ResultCode", "ResultMsg" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameGateMgr.ExecuteGGCommandRequest), global::HS.Protobuf.GameGateMgr.ExecuteGGCommandRequest.Parser, new[]{ "Command", "TargetServerId", "TimeStamp", "GameServerInfoNode" }, new[]{ "Payload" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameGateMgr.ExecuteGGCommandResponse), global::HS.Protobuf.GameGateMgr.ExecuteGGCommandResponse.Parser, new[]{ "ResultCode", "ErrCommand" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameGateMgr.ExecuteSCommandRequest), global::HS.Protobuf.GameGateMgr.ExecuteSCommandRequest.Parser, new[]{ "SceneServerId", "TimeStamp", "GameServerInfoNode" }, new[]{ "Payload" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameGateMgr.ExecuteSCommandRequest), global::HS.Protobuf.GameGateMgr.ExecuteSCommandRequest.Parser, new[]{ "Command", "TargetServerId", "TimeStamp", "GameServerInfoNode" }, new[]{ "Payload" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameGateMgr.ExecuteSCommandResponse), global::HS.Protobuf.GameGateMgr.ExecuteSCommandResponse.Parser, new[]{ "ResultCode", "ErrCommand" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameGateMgr.RegisterSessionToGGMRequest), global::HS.Protobuf.GameGateMgr.RegisterSessionToGGMRequest.Parser, new[]{ "TaskId", "WorldId", "SessionId", "UId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameGateMgr.RegisterSessionToGGMResponse), global::HS.Protobuf.GameGateMgr.RegisterSessionToGGMResponse.Parser, new[]{ "TaskId", "ResultCode", "ResultMsg", "GameGateInfos" }, null, null, null, null)
@@ -1143,7 +1145,8 @@ namespace HS.Protobuf.GameGateMgr {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ExecuteSCommandRequest(ExecuteSCommandRequest other) : this() {
-      sceneServerId_ = other.sceneServerId_;
+      command_ = other.command_;
+      targetServerId_ = other.targetServerId_;
       timeStamp_ = other.timeStamp_;
       switch (other.PayloadCase) {
         case PayloadOneofCase.GameServerInfoNode:
@@ -1160,15 +1163,27 @@ namespace HS.Protobuf.GameGateMgr {
       return new ExecuteSCommandRequest(this);
     }
 
-    /// <summary>Field number for the "sceneServerId" field.</summary>
-    public const int SceneServerIdFieldNumber = 2;
-    private int sceneServerId_;
+    /// <summary>Field number for the "command" field.</summary>
+    public const int CommandFieldNumber = 1;
+    private global::HS.Protobuf.Common.GateCommand command_ = global::HS.Protobuf.Common.GateCommand.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int SceneServerId {
-      get { return sceneServerId_; }
+    public global::HS.Protobuf.Common.GateCommand Command {
+      get { return command_; }
       set {
-        sceneServerId_ = value;
+        command_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "targetServerId" field.</summary>
+    public const int TargetServerIdFieldNumber = 2;
+    private int targetServerId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int TargetServerId {
+      get { return targetServerId_; }
+      set {
+        targetServerId_ = value;
       }
     }
 
@@ -1231,7 +1246,8 @@ namespace HS.Protobuf.GameGateMgr {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (SceneServerId != other.SceneServerId) return false;
+      if (Command != other.Command) return false;
+      if (TargetServerId != other.TargetServerId) return false;
       if (TimeStamp != other.TimeStamp) return false;
       if (!object.Equals(GameServerInfoNode, other.GameServerInfoNode)) return false;
       if (PayloadCase != other.PayloadCase) return false;
@@ -1242,7 +1258,8 @@ namespace HS.Protobuf.GameGateMgr {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (SceneServerId != 0) hash ^= SceneServerId.GetHashCode();
+      if (Command != global::HS.Protobuf.Common.GateCommand.None) hash ^= Command.GetHashCode();
+      if (TargetServerId != 0) hash ^= TargetServerId.GetHashCode();
       if (TimeStamp != 0L) hash ^= TimeStamp.GetHashCode();
       if (payloadCase_ == PayloadOneofCase.GameServerInfoNode) hash ^= GameServerInfoNode.GetHashCode();
       hash ^= (int) payloadCase_;
@@ -1264,9 +1281,13 @@ namespace HS.Protobuf.GameGateMgr {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (SceneServerId != 0) {
+      if (Command != global::HS.Protobuf.Common.GateCommand.None) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) Command);
+      }
+      if (TargetServerId != 0) {
         output.WriteRawTag(16);
-        output.WriteInt32(SceneServerId);
+        output.WriteInt32(TargetServerId);
       }
       if (TimeStamp != 0L) {
         output.WriteRawTag(24);
@@ -1286,9 +1307,13 @@ namespace HS.Protobuf.GameGateMgr {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (SceneServerId != 0) {
+      if (Command != global::HS.Protobuf.Common.GateCommand.None) {
+        output.WriteRawTag(8);
+        output.WriteEnum((int) Command);
+      }
+      if (TargetServerId != 0) {
         output.WriteRawTag(16);
-        output.WriteInt32(SceneServerId);
+        output.WriteInt32(TargetServerId);
       }
       if (TimeStamp != 0L) {
         output.WriteRawTag(24);
@@ -1308,8 +1333,11 @@ namespace HS.Protobuf.GameGateMgr {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (SceneServerId != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(SceneServerId);
+      if (Command != global::HS.Protobuf.Common.GateCommand.None) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) Command);
+      }
+      if (TargetServerId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(TargetServerId);
       }
       if (TimeStamp != 0L) {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(TimeStamp);
@@ -1329,8 +1357,11 @@ namespace HS.Protobuf.GameGateMgr {
       if (other == null) {
         return;
       }
-      if (other.SceneServerId != 0) {
-        SceneServerId = other.SceneServerId;
+      if (other.Command != global::HS.Protobuf.Common.GateCommand.None) {
+        Command = other.Command;
+      }
+      if (other.TargetServerId != 0) {
+        TargetServerId = other.TargetServerId;
       }
       if (other.TimeStamp != 0L) {
         TimeStamp = other.TimeStamp;
@@ -1359,8 +1390,12 @@ namespace HS.Protobuf.GameGateMgr {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
+          case 8: {
+            Command = (global::HS.Protobuf.Common.GateCommand) input.ReadEnum();
+            break;
+          }
           case 16: {
-            SceneServerId = input.ReadInt32();
+            TargetServerId = input.ReadInt32();
             break;
           }
           case 24: {
@@ -1391,8 +1426,12 @@ namespace HS.Protobuf.GameGateMgr {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
+          case 8: {
+            Command = (global::HS.Protobuf.Common.GateCommand) input.ReadEnum();
+            break;
+          }
           case 16: {
-            SceneServerId = input.ReadInt32();
+            TargetServerId = input.ReadInt32();
             break;
           }
           case 24: {

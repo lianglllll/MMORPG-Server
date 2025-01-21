@@ -1,12 +1,15 @@
 syntax = "proto3";
+import "Common/ProtoSource/Common.proto";
 package HS.Protobuf.GameGate;
 
 enum GameGateProtocl{
 	GAMEGATE_PROTOCL_NONE = 0;
 	GAMEGATE_PROTOCL_REGISTER_SESSION_TO_GG_REQ = 31001;	// [RegisterSessionToGGRequest]
 	GAMEGATE_PROTOCL_REGISTER_SESSION_TO_GG_RESP = 31002;	// [RegisterSessionToGGResponse]
-	GAMEGATE_PROTOCL_VERIFY_SESSION_REQ = 31003;			// [VerifySessionRequeest]
-	GAMEGATE_PROTOCL_VERIFY_SESSION_RESP = 31004;			// [VerifySessionResponse]
+	GAMEGATE_PROTOCL_REGISTER_SCENES_TO_GG_REQ = 31003;		// [RegisterSceneToGGRequest]
+	GAMEGATE_PROTOCL_REGISTER_SCENES_TO_GG_RESP = 31004;	// [RegisterSceneToGGResponse]
+	GAMEGATE_PROTOCL_VERIFY_SESSION_REQ = 31005;			// [VerifySessionRequeest]
+	GAMEGATE_PROTOCL_VERIFY_SESSION_RESP = 31006;			// [VerifySessionResponse]
 }
 
 message RegisterSessionToGGRequest{
@@ -16,6 +19,15 @@ message RegisterSessionToGGRequest{
 message RegisterSessionToGGResponse{
 	int32 resultCode = 1;
 	string resultMsg = 2;
+}
+
+message RegisterSceneToGGRequest{
+	repeated HS.Protobuf.Common.ServerInfoNode sceneInfos = 1;
+}
+message RegisterSceneToGGResponse{
+	int32 resultCode = 1;
+	string resultMsg = 2;
+	int32 serverId = 3;
 }
 
 message VerifySessionRequeest{

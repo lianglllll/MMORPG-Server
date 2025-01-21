@@ -174,7 +174,6 @@ namespace GameGateMgrServer.Core
         }
         public void _AssignTaskToGameGate(int gameGateServerId)
         {
-            int gameServerId = -1;
 
             // 校验
             if (!m_gameGateInstances.ContainsKey(gameGateServerId)
@@ -185,13 +184,14 @@ namespace GameGateMgrServer.Core
 
             // 找一个loginServer
             // 优先处理为0的，在处理需求不满的
+            GameEntry gameEntry = null;
             int maxPriority = Int32.MinValue;
             foreach (var item in m_gameInstances)
             {
                 if (item.Value.AssignGatePriority > maxPriority)
                 {
                     maxPriority = item.Value.AssignGatePriority;
-                    gameServerId = item.Key;
+                    gameEntry = item.Value;
                     if (maxPriority == Int32.MaxValue)
                     {
                         break;
@@ -203,22 +203,22 @@ namespace GameGateMgrServer.Core
             ExecuteGGCommandRequest req = new();
             req.TimeStamp = Scheduler.UnixTime;
             var ggEntry = m_gameGateInstances[gameGateServerId];
-            if (gameServerId == -1)
+            if (gameEntry == null)
             {
                 ggEntry.Status = ServerStatus.Inactive;
                 req.Command = GateCommand.End;
-                req.TargetServerId = ServersMgr.Instance.ServerId;
+                //req.TargetServerId = ServersMgr.Instance.ServerId;
                 gameGateIdleQueue.Enqueue(gameGateServerId);
             }
             else
             {
                 // 分配任务
-                m_gameInstances[gameServerId].curGate.Add(gameGateServerId);
-                ggEntry.curGameServerId = gameServerId;
+                gameEntry.curGate.Add(gameGateServerId);
+                ggEntry.curGameServerId = gameEntry.ServerInfo.ServerId;
                 ggEntry.Status = ServerStatus.Active;
                 req.Command = GateCommand.Start;
-                req.TargetServerId = ServersMgr.Instance.ServerId;
-                req.GameServerInfoNode = m_gameInstances[gameServerId].ServerInfo;
+                //req.TargetServerId = ServersMgr.Instance.ServerId;
+                req.GameServerInfoNode = gameEntry.ServerInfo;
             }
             ggEntry.Connection.Send(req);
 
@@ -236,14 +236,14 @@ namespace GameGateMgrServer.Core
 
             // 找一个loginServer
             // 优先处理为0的，在处理需求不满的
-            int gameServerId = -1;
             int maxPriority = Int32.MinValue;
+            GameEntry gameEntry = null;
             foreach (var item in m_gameInstances)
             {
                 if (item.Value.AssignScenePriority > maxPriority)
                 {
                     maxPriority = item.Value.AssignScenePriority;
-                    gameServerId = item.Key;
+                    gameEntry = item.Value;
                     if (maxPriority == Int32.MaxValue)
                     {
                         break;
@@ -252,23 +252,23 @@ namespace GameGateMgrServer.Core
             }
 
             // 发命令包
-            ExecuteGGCommandRequest req = new();
+            ExecuteSCommandRequest req = new();
             req.TimeStamp = Scheduler.UnixTime;
-            var sEntry = m_gameGateInstances[sceneServerId];
-            if (gameServerId == -1)
+            var sEntry = m_sceneInstances[sceneServerId];
+            if (gameEntry == null)
             {
                 sEntry.Status = ServerStatus.Inactive;
-                req.TargetServerId = ServersMgr.Instance.ServerId;
                 sceneIdleQueue.Enqueue(sceneServerId);
+                req.Command = GateCommand.End;
             }
             else
             {
                 // 分配任务
-                m_gameInstances[gameServerId].curScene.Add(sceneServerId);
-                sEntry.curGameServerId = gameServerId;
+                gameEntry.curScene.Add(sceneServerId);
+                sEntry.curGameServerId = gameEntry.ServerInfo.ServerId;
                 sEntry.Status = ServerStatus.Active;
-                req.TargetServerId = ServersMgr.Instance.ServerId;
-                req.GameServerInfoNode = m_sceneInstances[gameServerId].ServerInfo;
+                req.Command = GateCommand.Start;
+                req.GameServerInfoNode = gameEntry.ServerInfo;
             }
             sEntry.Connection.Send(req);
 
@@ -318,7 +318,7 @@ namespace GameGateMgrServer.Core
             ExecuteGGCommandRequest req = new();
             req.TimeStamp = Scheduler.UnixTime;
             req.Command = GateCommand.Start;
-            req.TargetServerId = ServersMgr.Instance.ServerId;
+            //req.TargetServerId = ServersMgr.Instance.ServerId;
             req.GameServerInfoNode = gEntry.ServerInfo;
             ggEntry.Connection.Send(req);
         }
@@ -333,7 +333,8 @@ namespace GameGateMgrServer.Core
             // 发包
             ExecuteSCommandRequest req = new();
             req.TimeStamp = Scheduler.UnixTime;
-            req.SceneServerId = ServersMgr.Instance.ServerId;
+            req.Command = GateCommand.Start;
+            //req.TargetServerId = ServersMgr.Instance.ServerId;
             req.GameServerInfoNode = gEntry.ServerInfo;
             sEntry.Connection.Send(req);
         }

@@ -1,6 +1,43 @@
 syntax = "proto3";
 import "Scene/ProtoSource/SceneEntity.proto";
+import "DBProxy/ProtoSource/DBCharacter.proto";
 package HS.Protobuf.Scene;
+
+
+enum SceneProtocl{
+	SCENE_PROTOCL_NONE = 0;
+	SCENE_PROTOCL_CHARACTER_ENTER_SCENE_REQ = 40001;
+	SCENE_PROTOCL_SLEF_CHARACTER_ENTER_SCENE_RESP = 40002;
+	SCENE_PROTOCL_OTHER_CHARACTER_ENTER_SCENE_RESP = 40003;
+}
+
+enum SceneType {
+    SCENE_TYPE_NULL             = 0;
+    SCENE_TYPE_CITY             = 1; // 主城
+    SCENE_TYPE_FIELD            = 2; // 野外    
+    SCENE_TYPE_SINGLE_MISSION   = 3; // 单人副本
+    SCENE_TYPE_MULTI_MISSION    = 4; // 多人副本
+    SCENE_TYPE_LOGIN            = 5; // 登陆界面场景
+    SCENE_TYPE_KIN_LAND         = 6; // 家族领地 
+    SCENE_TYPE_ALL              = 8; // 注意：最大值255，新增类型找空位即可
+};
+
+message CharacterEnterSceneRequest{
+	int32 taskId = 1;
+	HS.Protobuf.DBProxy.DBCharacter.DBCharacterNode dbChrNode = 2;
+}
+message SelfCharacterEnterSceneResponse{
+	int32 taskId = 1;
+	int32 resultCode = 2;
+	string resultMsg = 3;
+	// 自己的信息
+	// 场景中的角色、怪物、物品信息也要返回
+}
+message OtherCharacterEnterSceneResponse{
+	int32 taskId = 1;
+	int32 sceneId = 2;		// 防止因为时序问题，client已经切换场景了，这个包才过来。
+	// 怪物、角色、物品
+}
 
 //有其他角色进入场景响应
 message SpaceCharactersEnterResponse{

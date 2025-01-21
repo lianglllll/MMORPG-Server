@@ -1,6 +1,7 @@
 ﻿using Common.Summer.Core;
 using Common.Summer.Net;
 using Common.Summer.Tools;
+using GameServer.Core;
 using GameServer.Handle;
 using GameServer.Utils;
 using Google.Protobuf;
@@ -38,6 +39,8 @@ namespace GameServer.Net
 
             // 网络服务开启
             NetService.Instance.Init();
+            GameMonitor.Instance.Init();
+            GameServerHandler.Instance.Init();
             SessionManager.Instance.Init();
             GameTokenManager.Instance.Init();
             EnterGameWorldHanlder.Instance.Init(m_curSin.GameServerInfo.GameWorldId);

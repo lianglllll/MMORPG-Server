@@ -1,7 +1,7 @@
 ﻿using GameServer.Manager;
 using GameServer.Model;
 
-namespace GameServer.core
+namespace GameServer.Core
 {
     public class GameTools
     {

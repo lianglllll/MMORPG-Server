@@ -1,8 +1,7 @@
-﻿using HS.Protobuf.Game.Backpack;
-using GameServer.Combat;
+﻿using GameServer.Combat;
 using GameServer.Manager;
 using GameServer.Buffs;
-using GameServer.core;
+using GameServer.Core;
 using Common.Summer.Core;
 using HS.Protobuf.SceneEntity;
 using HS.Protobuf.Combat.Skill;
@@ -16,9 +15,11 @@ namespace GameServer.Model
         public UnitDefine Define;                                                                   //actor的define数据    (静态数据)
         private NetActor _info  = new NetActor();                                                   //actor的NetActor数据  (动态数据)
         public Attributes Attr = new Attributes();                                                  //actor属性
+
         public ActorMode actorMode;                                                                 //actor模式：用于描述角色在某一段时间内的大范围，通常包括：空闲、战斗
         public ActorCombatMode actorCombatMode;                                                     //actor战斗模式:空手、武器、御剑飞行
         public ActorState State;                                                                    //actor动作状态：用于描述角色在特定时刻所执行的具体动作或行为。通常包括：Idle、Run、Walk、Jump、Attack 等。
+
         public SkillManager skillManager;                                                           //actor技能管理器
         public Spell spell;                                                                         //actor技能释放器
         public Skill curentSkill;                                                                   //actor当前正在使用的技能
@@ -90,7 +91,7 @@ namespace GameServer.Model
             
             //更新NetActor网络对象的信息
             this._info.Tid = TID;                                        //TID:区分相同实体类型，不同身份。可以通过tid去找define
-            this._info.ActorType = type;                                //unit类型
+            this._info.ActorType = type;                                 //unit类型
             this._info.Entity = this.EntityData;                         //entity的基本数据：pos dir speed entityId
             this._info.Name = Define.Name;                               //defind中的角色默认名字，可以给子类进行覆盖
             this._info.Hp = (int)this.Define.HPMax;                      //hp

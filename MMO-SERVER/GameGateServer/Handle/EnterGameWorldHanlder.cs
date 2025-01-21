@@ -155,8 +155,20 @@ namespace GameGateServer.Handle
 
         private void _HandleEnterGameRequest(Connection conn, EnterGameRequest message)
         {
+            EnterGameResponse resp = new();
+            var session = conn.Get<Session>();
+            if (session == null)
+            {
+                resp.ResultCode = 1;
+                resp.ResultMsg = "未登录，越权访问";
+                goto End1;
+            }
             message.GameToken = ServersMgr.Instance.GameToken;
             ServersMgr.Instance.SendToGameServer(message);
+        End1:
+            conn.Send(resp);
+        End2:
+            return;
         }
         private void _HandleEnterGameResponse(Connection conn, EnterGameResponse message)
         {

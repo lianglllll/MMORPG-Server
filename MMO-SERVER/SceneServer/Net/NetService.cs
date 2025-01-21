@@ -6,6 +6,7 @@ using System.Collections.Concurrent;
 using HS.Protobuf.Common;
 using SceneServer.Utils;
 using static Common.Summer.Net.NetClient;
+using System.Net;
 
 namespace SceneServer.Net
 {
@@ -30,6 +31,12 @@ namespace SceneServer.Net
             // 定时发送ss心跳包
             Scheduler.Instance.AddTask(_SendSSHeatBeatReq, Config.Server.heartBeatSendInterval, 0);
         }
+        public void UnInit()
+        {
+            m_acceptServer?.UnInit();
+            m_acceptServer = null;
+            m_serverConnHeartbeatTimestamps.Clear();
+        }
         public void Start()
         {
             _StartListeningForServerConnections();
@@ -37,12 +44,16 @@ namespace SceneServer.Net
             m_heartBeatTimeOut = Config.Server.heartBeatTimeOut;
             Scheduler.Instance.AddTask(_CheckHeatBeat, Config.Server.heartBeatCheckInterval, 0);
         }
-        public void UnInit()
+        public void Stop()
         {
-            m_acceptServer?.UnInit();
-            m_acceptServer = null;
-            m_serverConnHeartbeatTimestamps.Clear();
+            m_acceptServer?.Stop();
         }
+        public void Resume()
+        {
+            m_acceptServer?.Resume();
+        }
+
+
 
         // gameGate服务器连接过来的
         private void _StartListeningForServerConnections()
@@ -58,6 +69,8 @@ namespace SceneServer.Net
             {
                 if (conn.Socket != null && conn.Socket.Connected)
                 {
+                    var ipe = conn.Socket.RemoteEndPoint;
+                    Log.Debug("[连接成功]" + IPAddress.Parse(((IPEndPoint)ipe).Address.ToString()) + " : " + ((IPEndPoint)ipe).Port.ToString());
                     // 给conn添加心跳时间
                     m_serverConnHeartbeatTimestamps[conn] = DateTime.Now;
                 }

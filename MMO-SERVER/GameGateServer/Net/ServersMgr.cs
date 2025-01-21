@@ -3,14 +3,13 @@ using Common.Summer.Net;
 using Common.Summer.Tools;
 using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
-using HS.Protobuf.LoginGateMgr;
 using Serilog;
 using GameGateServer.Utils;
 using HS.Protobuf.GameGateMgr;
 using GameGateServer.Handle;
-using HS.Protobuf.Login;
 using HS.Protobuf.Game;
 using Google.Protobuf;
+using System.Xml.Linq;
 
 namespace GameGateServer.Net
 {
@@ -18,12 +17,16 @@ namespace GameGateServer.Net
     {
         public ServerInfoNode ServerInfoNode { get; set; }
         public NetClient NetClient { get; set; }
+        public string Token { get; set; }
     }
 
     public class ServersMgr : Singleton<ServersMgr>
     {
         private ServerInfoNode? m_curSin;
         private Dictionary<SERVER_TYPE, ServerEntry> m_outgoingServerConnection = new();
+        private Dictionary<int, ServerEntry> m_outgoingSceneServerConnection = new();// <sceneId, scene>
+        private int connectedSceneCnt;
+
         public string GameToken { get; private set; }
 
         public void Init()
@@ -55,16 +58,20 @@ namespace GameGateServer.Net
             ProtoHelper.Instance.Register<ExecuteGGCommandResponse>((int)GameGateMgrProtocl.ExecuteGgCommandResp);
             ProtoHelper.Instance.Register<GetGameTokenRequest>((int)GameProtocl.GetGameTokenReq);
             ProtoHelper.Instance.Register<GetGameTokenResponse>((int)GameProtocl.GetGameTokenResp);
+            ProtoHelper.Instance.Register<RegisterToGRequest>((int)GameProtocl.RegisterToGReq);
+            ProtoHelper.Instance.Register<RegisterToGResponse>((int)GameProtocl.RegisterToGResp);
 
             // 消息的订阅
             MessageRouter.Instance.Subscribe<ServerInfoRegisterResponse>(_RegisterServerInfo2ControlCenterResponse);
             MessageRouter.Instance.Subscribe<RegisterToGGMResponse>(_HandleRegisterToGGMResponse);
             MessageRouter.Instance.Subscribe<ExecuteGGCommandRequest>(_ExecuteGGCommandRequest);
             MessageRouter.Instance.Subscribe<GetGameTokenResponse>(_HandleGetGameTokenResponse);
+            MessageRouter.Instance.Subscribe<RegisterToGResponse>(_HandleRegisterToGResponse);
 
             // 开始流程
             _ExecutePhase0();
         }
+
         public void UnInit()
         {
 
@@ -82,7 +89,7 @@ namespace GameGateServer.Net
             }
             return bitmap;
         }
-
+        
         private bool _ExecutePhase0()
         {
             // 连接到控制中心cc
@@ -111,11 +118,6 @@ namespace GameGateServer.Net
             return true;
         }
         private bool _ExecutePhase2()
-        {
-            Log.Information("waiting for the GameGateMgr server to assign tasks.");
-            return true;
-        }
-        private bool _ExecutePhase3()
         {
             // 开始网络监听，预示着当前服务器的正式启动
             NetService.Instance.Start();
@@ -223,7 +225,7 @@ namespace GameGateServer.Net
             {
                 // 注册成功我们等待分配任务。
                 Log.Information("Successfully registered this server information with the GameGateMgr.");
-                _ExecutePhase2();
+                Log.Information("waiting for the GameGateMgr server to assign tasks.");
             }
             else
             {
@@ -305,6 +307,11 @@ namespace GameGateServer.Net
 
             // 记录
             m_outgoingServerConnection[SERVER_TYPE.Game].NetClient = tcpClient;
+
+            //注册
+            RegisterToGRequest req = new();
+            req.ServerInfoNode = m_curSin;
+            tcpClient.Send(req);
         }
         private void _GameConnectedFailedCallback(NetClient tcpClient, bool isEnd)
         {
@@ -315,7 +322,7 @@ namespace GameGateServer.Net
             else
             {
                 //做一下重新连接
-                Log.Error("Connect to GameServer failed, attempting to reconnect login");
+                Log.Error("Connect to GameServer failed, attempting to reconnect game");
                 Log.Error("重连还没写");
             }
 
@@ -327,13 +334,69 @@ namespace GameGateServer.Net
         private void _HandleGetGameTokenResponse(Connection sender, GetGameTokenResponse message)
         {
             GameToken = message.GameToken;
-            _ExecutePhase3();
         }
+        private void _HandleRegisterToGResponse(Connection conn, RegisterToGResponse message)
+        {
+            Log.Information("Successfully registered to the game server.");
+            
+            // 去连接scene
+            foreach(var node in message.SceneInfoNodes)
+            {
+                ServerEntry sEntry = new ServerEntry
+                {
+                    ServerInfoNode = node,
+                };
+                m_outgoingSceneServerConnection.Add(node.SceneServerInfo.SceneId, sEntry);
+                sEntry.NetClient = _ConnectToS(node);
+            }
+            _ExecutePhase2();
+        }
+
+        // SCENE
+        public void AddSServerInfo(ServerInfoNode node)
+        {
+            if (!m_outgoingSceneServerConnection.ContainsKey(node.SceneServerInfo.SceneId))
+            {
+                ServerEntry sEntry = new ServerEntry
+                {
+                    ServerInfoNode = node,
+                };
+                m_outgoingSceneServerConnection.Add(node.SceneServerInfo.SceneId, sEntry);
+                sEntry.NetClient = _ConnectToS(node);
+            }
+        }
+        private NetClient _ConnectToS(ServerInfoNode node)
+        {
+            return NetService.Instance.ConnctToServer(node.Ip, node.Port,
+                _SceneConnectedCallback, _SceneConnectedFailedCallback, _SceneDisconnectedCallback);
+        }
+        private void _SceneConnectedCallback(NetClient tcpClient)
+        {
+            Log.Information($"Successfully connected to the Scene server.");
+        }
+        private void _SceneConnectedFailedCallback(NetClient tcpClient, bool isEnd)
+        {
+            if (isEnd)
+            {
+                Log.Error("Connect to SceneServer failed, the server may not be turned on");
+            }
+            else
+            {
+                //做一下重新连接
+                Log.Error("Connect to SceneServer failed, attempting to reconnect secene");
+                Log.Error("重连还没写");
+            }
+
+        }
+        private void _SceneDisconnectedCallback(NetClient tcpClient)
+        {
+
+        }
+
+        // tools
         public bool SendToGameServer(IMessage message)
         {
             return m_outgoingServerConnection[SERVER_TYPE.Game].NetClient.Send(message);
         }
-
-
     }
 }

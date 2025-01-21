@@ -98,7 +98,6 @@ namespace Common.Summer.Core
         private Stopwatch stopwatch = new Stopwatch();      //用于测量时间间隔
         private int _updataHz;
 
-
         public Scheduler() { }
 
         public void Start(int updateHz, bool newThread = true)
@@ -248,5 +247,14 @@ namespace Common.Summer.Core
             }
         }
 
+        public void AddTask(object v, int updateHz)
+        {
+            throw new NotImplementedException();
+        }
+
+        //public void AddTask(object v, int updateHz)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

@@ -44,28 +44,28 @@ namespace GameServer.Service
             //Log.Information($"有玩家进入游戏,角色id={msg.CharacterId}");
 
             //获取当前用户，通过userid寻找有无这个角色
-            DbUser dbUser = conn.Get<Session>().dbUser;
-            if (dbUser == null)
-            {
-                return;
-            }
-            //查询数据库中角色的信息
-            DbCharacter dbCharacter = DbManager.fsql.Select<DbCharacter>()
-                .Where(t => t.Id == msg.CharacterId)
-                .Where(t => t.PlayerId == dbUser.Id)
-                .First();
+            //DbUser dbUser = conn.Get<Session>().dbUser;
+            //if (dbUser == null)
+            //{
+            //    return;
+            //}
+            ////查询数据库中角色的信息
+            //DbCharacter dbCharacter = DbManager.fsql.Select<DbCharacter>()
+            //    .Where(t => t.Id == msg.CharacterId)
+            //    .Where(t => t.PlayerId == dbUser.Id)
+            //    .First();
 
-            //将数据库角色类转为游戏角色类，添加进管理器管理
-            Character character = CharacterManager.Instance.CreateCharacter(dbCharacter);
+            ////将数据库角色类转为游戏角色类，添加进管理器管理
+            //Character character = CharacterManager.Instance.CreateCharacter(dbCharacter);
 
-            //将character 与 session 进行关联
-            character.session = conn.Get<Session>();
-            //将角色引用放入conn连接当中
-            character.session.character = character;
+            ////将character 与 session 进行关联
+            //character.session = conn.Get<Session>();
+            ////将角色引用放入conn连接当中
+            //character.session.character = character;
 
-            //告知场景新加入了一个entity,进行广播
-            Space space = SpaceService.Instance.GetSpaceById(dbCharacter.SpaceId);
-            space?.EntityJoin(character);
+            ////告知场景新加入了一个entity,进行广播
+            //Space space = SpaceService.Instance.GetSpaceById(dbCharacter.SpaceId);
+            //space?.EntityJoin(character);
 
         }
 
