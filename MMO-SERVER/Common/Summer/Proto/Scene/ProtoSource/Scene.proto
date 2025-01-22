@@ -3,12 +3,13 @@ import "Scene/ProtoSource/SceneEntity.proto";
 import "DBProxy/ProtoSource/DBCharacter.proto";
 package HS.Protobuf.Scene;
 
-
 enum SceneProtocl{
 	SCENE_PROTOCL_NONE = 0;
-	SCENE_PROTOCL_CHARACTER_ENTER_SCENE_REQ = 40001;
-	SCENE_PROTOCL_SLEF_CHARACTER_ENTER_SCENE_RESP = 40002;
-	SCENE_PROTOCL_OTHER_CHARACTER_ENTER_SCENE_RESP = 40003;
+	SCENE_PROTOCL_REGISTER_TO_SCENE_REQ = 40001;			// [RegisterToSceneRequest]
+	SCENE_PROTOCL_REGISTER_TO_SCENE_RESP = 40002;			// [RegisterToSceneResponse]
+	SCENE_PROTOCL_CHARACTER_ENTER_SCENE_REQ = 40003;		// [CharacterEnterSceneRequest]
+	SCENE_PROTOCL_SELF_CHARACTER_ENTER_SCENE_RESP = 40004;	// [SelfCharacterEnterSceneResponse]
+	SCENE_PROTOCL_OTHER_ENTITY_ENTER_SCENE_RESP = 40005;	// [OtherEntityEnterSceneResponse]
 }
 
 enum SceneType {
@@ -22,22 +23,39 @@ enum SceneType {
     SCENE_TYPE_ALL              = 8; // 注意：最大值255，新增类型找空位即可
 };
 
+message RegisterToSceneRequest{
+	int32 gameGateServerId  = 1;
+}
+message RegisterToSceneResponse{
+	int32 resultCode = 1;
+	string resultMsg = 2;
+}
+
 message CharacterEnterSceneRequest{
 	int32 taskId = 1;
-	HS.Protobuf.DBProxy.DBCharacter.DBCharacterNode dbChrNode = 2;
+	string sessionId = 2;
+	int32 gameGateServerId = 3;
+	HS.Protobuf.DBProxy.DBCharacter.DBCharacterNode dbChrNode = 4;
 }
 message SelfCharacterEnterSceneResponse{
 	int32 taskId = 1;
 	int32 resultCode = 2;
 	string resultMsg = 3;
-	// 自己的信息
+	HS.Protobuf.SceneEntity.NetActorNode selfNetActorNode	= 4;
 	// 场景中的角色、怪物、物品信息也要返回
+	repeated HS.Protobuf.SceneEntity.NetActorNode otherNetActorNodeList	= 5;
+	repeated HS.Protobuf.SceneEntity.NetItemNode  otherNetItemNodeList	= 6;
 }
-message OtherCharacterEnterSceneResponse{
-	int32 taskId = 1;
-	int32 sceneId = 2;		// 防止因为时序问题，client已经切换场景了，这个包才过来。
-	// 怪物、角色、物品
+message OtherEntityEnterSceneResponse{
+	int32 sceneId = 1;		// 防止因为时序问题，client已经切换场景了，这个包才过来。
+	HS.Protobuf.SceneEntity.SceneEntityType entityType = 2;
+	HS.Protobuf.SceneEntity.NetActorNode actorNode = 3;
+	HS.Protobuf.SceneEntity.NetItemNode  itemNode  = 4;
 }
+
+
+
+// === 下面是无用的====================================================
 
 //有其他角色进入场景响应
 message SpaceCharactersEnterResponse{

@@ -5,6 +5,7 @@ using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
 using HS.Protobuf.Game;
 using HS.Protobuf.GameGateMgr;
+using HS.Protobuf.Scene;
 using SceneServer.Core.Scene;
 using SceneServer.Handle;
 using SceneServer.Utils;
@@ -21,6 +22,8 @@ namespace SceneServer.Net
     {
         private ServerInfoNode? m_curSin;
         private Dictionary<SERVER_TYPE, ServerEntry> m_outgoingServerConnection = new();
+        private Dictionary<int, Connection> m_gameGateConn = new();
+
         public string GameToken { get; private set; }
 
         public void Init()
@@ -47,17 +50,17 @@ namespace SceneServer.Net
             ProtoHelper.Instance.Register<RegisterToGGMResponse>((int)GameGateMgrProtocl.RegisterToGgmResp);
             ProtoHelper.Instance.Register<ExecuteSCommandRequest>((int)GameGateMgrProtocl.ExecuteSCommandReq);
             ProtoHelper.Instance.Register<ExecuteSCommandResponse>((int)GameGateMgrProtocl.ExecuteSCommandResp);
-            ProtoHelper.Instance.Register<GetGameTokenRequest>((int)GameProtocl.GetGameTokenReq);
-            ProtoHelper.Instance.Register<GetGameTokenResponse>((int)GameProtocl.GetGameTokenResp);
             ProtoHelper.Instance.Register<RegisterToGRequest>((int)GameProtocl.RegisterToGReq);
             ProtoHelper.Instance.Register<RegisterToGResponse>((int)GameProtocl.RegisterToGResp);
+            ProtoHelper.Instance.Register<RegisterToSceneRequest>((int)SceneProtocl.RegisterToSceneReq);
+            ProtoHelper.Instance.Register<RegisterToSceneResponse>((int)SceneProtocl.RegisterToSceneResp);
 
             // 消息的订阅
             MessageRouter.Instance.Subscribe<ServerInfoRegisterResponse>(_RegisterServerInfo2ControlCenterResponse);
             MessageRouter.Instance.Subscribe<RegisterToGGMResponse>(_HandleRegisterToGGMResponse);
             MessageRouter.Instance.Subscribe<ExecuteSCommandRequest>(_HandleExecuteSCommandRequest);
-            MessageRouter.Instance.Subscribe<GetGameTokenResponse>(_HandleGetGameTokenResponse);
             MessageRouter.Instance.Subscribe<RegisterToGResponse>(_HandleRegisterToGResponse);
+            MessageRouter.Instance.Subscribe<RegisterToSceneRequest>(_HandleRegisterToSceneRequest);
 
             // 流程开始
             _ExecutePhase0();
@@ -375,15 +378,28 @@ namespace SceneServer.Net
         {
 
         }
-        private void _HandleGetGameTokenResponse(Connection sender, GetGameTokenResponse message)
-        {
-            GameToken = message.GameToken;
-        }
         private void _HandleRegisterToGResponse(Connection conn, RegisterToGResponse message)
         {
             Log.Information("Successfully registered to the game server.");
+            GameToken = message.GameToken;
             m_curSin.SceneServerInfo.SceneId = message.AllocateSceneId;
             _ExecutePhase2();
         }
+
+        // gameGate
+        private void _HandleRegisterToSceneRequest(Connection conn, RegisterToSceneRequest message)
+        {
+            m_gameGateConn.Add(message.GameGateServerId, conn);
+            RegisterToSceneResponse resp = new();
+            resp.ResultCode = 0;
+            conn.Send(resp);
+        }
+        public Connection GetGameGateConnByServerId(int gameGateServerId)
+        {
+            m_gameGateConn.TryGetValue(gameGateServerId, out var conn);
+            return conn;
+        }
+
+
     }
 }

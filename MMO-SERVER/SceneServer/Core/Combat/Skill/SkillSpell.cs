@@ -2,10 +2,9 @@
 using Common.Summer.Core;
 using HS.Protobuf.Combat.Skill;
 using SceneServer.Core.Model.Actor;
-using SceneServer.Manager;
+using SceneServer.Core.Scene;
 
-
-namespace SceneServer.Combat
+namespace SceneServer.Core.Combat.Skills
 {
     /// <summary>
     /// 技能施法器
@@ -13,13 +12,13 @@ namespace SceneServer.Combat
     /// </summary>
     public class SkillSpell
     {
-        public SceneActor Owner { get; private set; }               
+        public SceneActor Owner { get; private set; }
 
-        public SkillSpell(SceneActor Owner)
+        public bool Init(SceneActor Owner)
         {
             this.Owner = Owner;
+            return true;
         }
-
 
         /// <summary>
         /// 同一施法，处理各种类型的施法请求
@@ -31,7 +30,8 @@ namespace SceneServer.Combat
             if (Owner.CurUseSkill != null) return;
             //判断owner是否拥有这个技能
             var skill = Owner.GetSkillById(castInfo.SkillId);
-            if (skill == null) { 
+            if (skill == null)
+            {
                 Log.Warning("Spell::SpellTarget():Owner[{0}]:Skill[{1}] not found", Owner.EntityId, castInfo.SkillId);
                 return;
             }
@@ -39,10 +39,12 @@ namespace SceneServer.Combat
             if (skill.IsNoTarget)                           //释放无目标技能
             {
                 SpellNoTarget(skill);
-            }else if (skill.IsTarget)                       //释放单体目标技能
+            }
+            else if (skill.IsTarget)                       //释放单体目标技能
             {
                 SpellTarget(skill, castInfo.TargetId);
-            }else if (skill.IsPointTarget)                  //释放点目标技能
+            }
+            else if (skill.IsPointTarget)                  //释放点目标技能
             {
                 SpellPosition(skill, castInfo.Point);
             }
@@ -77,7 +79,7 @@ namespace SceneServer.Combat
         {
             //检测目标
             var target = SceneEntityManager.Instance.GetSceneEntityById(target_id) as SceneActor;
-            if(target == null)
+            if (target == null)
             {
                 Log.Warning("Spell::SpellTarget():Owner[{0}]:target[{1}] not found", Owner.EntityId, target_id);
                 return;
@@ -140,7 +142,7 @@ namespace SceneServer.Combat
         /// </summary>
         /// <param name="skill_id"></param>
         /// <param name="reason"></param>
-        public void OnSpellFailure(int skill_id,CastResult reason)
+        public void OnSpellFailure(int skill_id, CastResult reason)
         {
             Log.Warning("Cast Fail Skill {0} {1}", skill_id, reason);
 

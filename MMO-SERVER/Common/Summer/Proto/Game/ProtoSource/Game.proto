@@ -1,13 +1,12 @@
 syntax = "proto3";
 import "Common/ProtoSource/Common.proto";
+import "Scene/ProtoSource/SceneEntity.proto";
 package HS.Protobuf.Game;
 
 enum GameProtocl{
 	GAME_PROTOCL_NONE = 0;
 	GAME_PROTOCL_REGISTER_TO_G_REQ = 30001;
 	GAME_PROTOCL_REGISTER_TO_G_RESP =30002;
-	GAME_PROTOCL_GET_GAME_TOKEN_REQ = 30003;		// [GetGameTokenRequest]
-	GAME_PROTOCL_GET_GAME_TOKEN_RESP = 30004;		// [GetGameTokenResponse]
 	GAME_PROTOCL_GET_CHARACTER_LIST_REQ = 30005;	// [GetCharacterListRequest]
 	GAME_PROTOCL_GET_CHARACTER_LIST_RESP = 30006;	// [GetCharacterListResponse]
 	GAME_PROTOCL_CREATE_CHARACTER_REQ = 30007;		// [CreateCharacterRequest]
@@ -34,12 +33,7 @@ message RegisterToGResponse{
 	string resultMsg		= 2;
 	repeated HS.Protobuf.Common.ServerInfoNode sceneInfoNodes = 3;
 	int32 AllocateSceneId = 4;
-}
-
-message GetGameTokenRequest{
-}
-message GetGameTokenResponse{
-	string gameToken = 1;
+	string gameToken = 5;
 }
 
 message GetCharacterListRequest{
@@ -91,7 +85,7 @@ message EnterGameResponse{
 	string sessionId = 1;
 	int32  resultCode = 2;
 	string resultMsg = 3;
-	// 其他的信息
-
-
+	HS.Protobuf.SceneEntity.NetActorNode selfNetActorNode	= 4;
+	repeated HS.Protobuf.SceneEntity.NetActorNode otherNetActorNodeList	= 5;
+	repeated HS.Protobuf.SceneEntity.NetItemNode  otherNetItemNodeList	= 6;
 }

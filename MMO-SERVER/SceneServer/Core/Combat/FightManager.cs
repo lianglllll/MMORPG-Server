@@ -1,13 +1,13 @@
 ﻿using HS.Protobuf.Combat.Skill;
 using HS.Protobuf.Scene;
 using HS.Protobuf.SceneEntity;
+using SceneServer.Core.Combat.Skills;
 using SceneServer.Core.Model.Actor;
 using SceneServer.Core.Scene;
-using SceneServer.Manager;
 using Serilog;
 using System.Collections.Concurrent;
 
-namespace SceneServer.Combat
+namespace SceneServer.Core.Combat
 {
     /// <summary>
     /// 战斗管理器

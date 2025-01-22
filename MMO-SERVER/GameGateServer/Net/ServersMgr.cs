@@ -10,6 +10,7 @@ using GameGateServer.Handle;
 using HS.Protobuf.Game;
 using Google.Protobuf;
 using System.Xml.Linq;
+using HS.Protobuf.Scene;
 
 namespace GameGateServer.Net
 {
@@ -56,17 +57,17 @@ namespace GameGateServer.Net
             ProtoHelper.Instance.Register<RegisterToGGMResponse>((int)GameGateMgrProtocl.RegisterToGgmResp);
             ProtoHelper.Instance.Register<ExecuteGGCommandRequest>((int)GameGateMgrProtocl.ExecuteGgCommandReq);
             ProtoHelper.Instance.Register<ExecuteGGCommandResponse>((int)GameGateMgrProtocl.ExecuteGgCommandResp);
-            ProtoHelper.Instance.Register<GetGameTokenRequest>((int)GameProtocl.GetGameTokenReq);
-            ProtoHelper.Instance.Register<GetGameTokenResponse>((int)GameProtocl.GetGameTokenResp);
             ProtoHelper.Instance.Register<RegisterToGRequest>((int)GameProtocl.RegisterToGReq);
             ProtoHelper.Instance.Register<RegisterToGResponse>((int)GameProtocl.RegisterToGResp);
+            ProtoHelper.Instance.Register<RegisterToSceneRequest>((int)SceneProtocl.RegisterToSceneReq);
+            ProtoHelper.Instance.Register<RegisterToSceneResponse>((int)SceneProtocl.RegisterToSceneResp);
 
             // 消息的订阅
             MessageRouter.Instance.Subscribe<ServerInfoRegisterResponse>(_RegisterServerInfo2ControlCenterResponse);
             MessageRouter.Instance.Subscribe<RegisterToGGMResponse>(_HandleRegisterToGGMResponse);
             MessageRouter.Instance.Subscribe<ExecuteGGCommandRequest>(_ExecuteGGCommandRequest);
-            MessageRouter.Instance.Subscribe<GetGameTokenResponse>(_HandleGetGameTokenResponse);
             MessageRouter.Instance.Subscribe<RegisterToGResponse>(_HandleRegisterToGResponse);
+            // MessageRouter.Instance.Subscribe<RegisterToSceneResponse>(_HandleRegisterToSceneResponse);
 
             // 开始流程
             _ExecutePhase0();
@@ -312,6 +313,7 @@ namespace GameGateServer.Net
             RegisterToGRequest req = new();
             req.ServerInfoNode = m_curSin;
             tcpClient.Send(req);
+
         }
         private void _GameConnectedFailedCallback(NetClient tcpClient, bool isEnd)
         {
@@ -331,14 +333,12 @@ namespace GameGateServer.Net
         {
 
         }
-        private void _HandleGetGameTokenResponse(Connection sender, GetGameTokenResponse message)
-        {
-            GameToken = message.GameToken;
-        }
         private void _HandleRegisterToGResponse(Connection conn, RegisterToGResponse message)
         {
             Log.Information("Successfully registered to the game server.");
-            
+
+            GameToken = message.GameToken;
+
             // 去连接scene
             foreach(var node in message.SceneInfoNodes)
             {
@@ -349,6 +349,7 @@ namespace GameGateServer.Net
                 m_outgoingSceneServerConnection.Add(node.SceneServerInfo.SceneId, sEntry);
                 sEntry.NetClient = _ConnectToS(node);
             }
+
             _ExecutePhase2();
         }
 
@@ -372,7 +373,16 @@ namespace GameGateServer.Net
         }
         private void _SceneConnectedCallback(NetClient tcpClient)
         {
-            Log.Information($"Successfully connected to the Scene server.");
+            foreach (var entry in m_outgoingSceneServerConnection.Values) { 
+                if(entry.NetClient == tcpClient)
+                {
+                    Log.Information($"Successfully connected to the Scene server[sceneId = {entry.ServerInfoNode.SceneServerInfo.SceneId}].");
+                    break;
+                }
+            }
+            RegisterToSceneRequest req = new();
+            req.GameGateServerId = m_curSin.ServerId;
+            tcpClient.Send(req);
         }
         private void _SceneConnectedFailedCallback(NetClient tcpClient, bool isEnd)
         {

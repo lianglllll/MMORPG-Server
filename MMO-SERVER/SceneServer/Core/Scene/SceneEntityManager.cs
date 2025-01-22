@@ -3,21 +3,20 @@ using Common.Summer.Tools;
 using Common.Summer.Core;
 using SceneServer.Core.Model;
 
-namespace SceneServer.Manager
+namespace SceneServer.Core.Scene
 {
     public class SceneEntityManager : Singleton<SceneEntityManager>
     {
-        private  IdGenerator _idGenerator = new IdGenerator();
+        private IdGenerator _idGenerator = new IdGenerator();
         private ConcurrentDictionary<int, SceneEntity> allEntitiesDict = new(); // <entityId, SceneEntity>
 
-        public void Update()
+        public void Update(float deltaTime)
         {
             foreach (var entity in allEntitiesDict)
             {
-                entity.Value.Update();
+                entity.Value.Update(deltaTime);
             }
         }
-
         public void AddSceneEntity(SceneEntity entity)
         {
             lock (this)
@@ -31,7 +30,7 @@ namespace SceneServer.Manager
         {
             if (!allEntitiesDict.ContainsKey(entityId)) return;
             allEntitiesDict.TryRemove(entityId, out var entity);
-            if(entity != null)
+            if (entity != null)
             {
                 _idGenerator.ReturnId(entityId);
             }
@@ -42,10 +41,10 @@ namespace SceneServer.Manager
         }
         public List<SceneEntity> GetSceneEntitiesByIds(IEnumerable<long> ids)
         {
-            List<SceneEntity> res = new(); 
+            List<SceneEntity> res = new();
             foreach (var id in ids)
             {
-                if(allEntitiesDict.TryGetValue((int)id,out var entity))
+                if (allEntitiesDict.TryGetValue((int)id, out var entity))
                 {
                     res.Add(entity);
                 }

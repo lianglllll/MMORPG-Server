@@ -32,7 +32,7 @@ namespace DBProxyServer.Core
                 DBCharacterNode cNode = new();
 
                 // Map basic fields
-                cNode.CId = chr["_id"].AsObjectId.ToString(); ;
+                cNode.CId = chr["_id"].AsObjectId.ToString(); 
                 cNode.UId = chr["uId"].ToString();
                 cNode.ProfessionId = chr["professionId"].ToInt32();
                 cNode.ChrName = chr["chrName"].ToString();
@@ -46,11 +46,15 @@ namespace DBProxyServer.Core
                         switch (path)
                         {
                             case "chrStatistics":
+                                if (!chr.Contains("chrStatistics")) break;
                                 DBCharacterStatisticsNode characterStatisticsNode = new();
                                 cNode.ChrStatistics = characterStatisticsNode;
                                 characterStatisticsNode.KillCount = chr["chrStatistics"]["killCount"].ToInt32();
+                                characterStatisticsNode.DeathCount = chr["chrStatistics"]["deathCount"].ToInt32();
+                                characterStatisticsNode.TaskCompleted = chr["chrStatistics"]["taskCompleted"].ToInt32();
                                 break;
                             case "chrStatus":
+                                if (!chr.Contains("chrStatus")) break;
                                 DBCharacterStatusNode characterStatusNode = new();
                                 cNode.ChrStatus = characterStatusNode;
                                 characterStatusNode.Hp = chr["chrStatus"]["hp"].ToInt32();
@@ -62,6 +66,7 @@ namespace DBProxyServer.Core
                                 characterStatusNode.Z = chr["chrStatus"]["z"].ToInt32();
                                 break;
                             case "chrAssets":
+                                if (!chr.Contains("chrAssets")) break;
                                 DBCharacterAssetsNode characterAssetsNode = new();
                                 cNode.ChrAssets = characterAssetsNode;
                                 characterAssetsNode.BackpackData = ByteString.CopyFrom(chr["chrAssets"]["backpackData"].AsBsonBinaryData.Bytes);
@@ -77,12 +82,38 @@ namespace DBProxyServer.Core
                                 characterAssetsNode.Titles.AddRange(titlesData);
                                 break;
                             case "chrSocial":
+                                if (!chr.Contains("chrSocial")) break;
                                 DBCharacterSocialNode characterSocialNode = new();
                                 cNode.ChrSocial = characterSocialNode;
                                 characterSocialNode.GuildId = chr["chrSocial"]["guildId"].ToString();
                                 characterSocialNode.Faction = chr["chrSocial"]["faction"].ToString();
                                 var friendsData = chr["chrSocial"]["friendsList"].AsBsonArray.Select(x => x.ToString()).ToList();
                                 characterSocialNode.FriendsList.AddRange(friendsData);
+                                break;
+                            case "chrCombat":
+                                if (!chr.Contains("chrCombat")) break;
+                                var characterCombatNode = new DBCharacterCombatNode();
+                                cNode.ChrCombat = characterCombatNode;
+
+                                var chrCombat = chr["chrCombat"].AsBsonDocument;
+
+                                var skills = chrCombat["skills"].AsBsonArray;
+                                foreach (var skill in skills)
+                                {
+                                    var skillDoc = skill.AsBsonDocument;
+                                    var skillNode = new DBCharacterSkillNode
+                                    {
+                                        SkillId = skillDoc["skillId"].AsInt32,
+                                        Level = skillDoc["level"].AsInt32
+                                    };
+                                    characterCombatNode.Skills.Add(skillNode);
+                                }
+
+                                var equippedSkills = chrCombat["equippedSkills"].AsBsonArray;
+                                foreach (var skillId in equippedSkills)
+                                {
+                                    characterCombatNode.EquippedSkills.Add(skillId.AsInt32);
+                                }
                                 break;
                             default:
                                 throw new InvalidOperationException($"Unknown field: {path}");
@@ -186,6 +217,31 @@ namespace DBProxyServer.Core
                                     var friendsData = chr["chrSocial"]["friendsList"].AsBsonArray.Select(x => x.ToString()).ToList();
                                     characterSocialNode.FriendsList.AddRange(friendsData);
                                     break;
+                                case "chrCombat":
+                                    var characterCombatNode = new DBCharacterCombatNode();
+                                    cNode.ChrCombat = characterCombatNode;
+
+                                    var chrCombat = chr["chrCombat"].AsBsonDocument;
+
+                                    var skills = chrCombat["skills"].AsBsonArray;
+                                    foreach (var skill in skills)
+                                    {
+                                        var skillDoc = skill.AsBsonDocument;
+                                        var skillNode = new DBCharacterSkillNode
+                                        {
+                                            SkillId = skillDoc["skillId"].AsInt32,
+                                            Level = skillDoc["level"].AsInt32
+                                        };
+                                        characterCombatNode.Skills.Add(skillNode);
+                                    }
+
+                                    var equippedSkills = chrCombat["equippedSkills"].AsBsonArray;
+                                    foreach (var skillId in equippedSkills)
+                                    {
+                                        characterCombatNode.EquippedSkills.Add(skillId.AsInt32);
+                                    }
+
+                                    break;
                                 default:
                                     throw new InvalidOperationException($"Unknown field: {path}");
                             }
@@ -276,6 +332,34 @@ namespace DBProxyServer.Core
                         { "friendsList", new BsonArray(chrNode.ChrSocial.FriendsList) } // 将好友列表转为BsonArray
                     };
                     characterDocument.Add("chrSocial", characterSocial);
+                }
+
+                if (chrNode.ChrCombat != null)
+                {
+                    // 将技能列表转换为 BsonArray
+                    BsonArray skillsArray = new BsonArray();
+                    foreach (var skill in chrNode.ChrCombat.Skills)
+                    {
+                        BsonDocument skillDocument = new BsonDocument
+                        {
+                            { "skillId", skill.SkillId },
+                            { "level", skill.Level }
+                        };
+                        skillsArray.Add(skillDocument);
+                    }
+
+                    // 将装备技能ID列表转换为 BsonArray
+                    BsonArray equippedSkillsArray = new BsonArray(chrNode.ChrCombat.EquippedSkills);
+
+                    // 创建 characterCombatNode BsonDocument
+                    BsonDocument characterCombatNode = new BsonDocument
+                    {
+                        { "skills", skillsArray },
+                        { "equippedSkills", equippedSkillsArray }
+                    };
+
+                    // 将 characterCombatNode 添加到 characterDocument
+                    characterDocument.Add("chrCombat", characterCombatNode);
                 }
 
                 await m_characterCollection.InsertOneAsync(characterDocument);

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using Common.Summer.Tools;
 using Common.Summer.Core;
-using HS.Protobuf.Login;
 using Common.Summer.Net;
 using System;
 using HS.Protobuf.Game;
@@ -14,19 +13,12 @@ namespace GameServer.Net
 
         public void Init()
         {
-            // 协议注册
-            ProtoHelper.Instance.Register<GetGameTokenResponse>((int)GameProtocl.GetGameTokenResp);
         }
 
-        public GameToken NewToken(Connection connection)
+        public GameToken NewToken(Connection connection, int serverId)
         {
-            var token = new GameToken(Guid.NewGuid().ToString(), connection);
+            var token = new GameToken(Guid.NewGuid().ToString(), connection, serverId);
             m_tokens[token.Id] = token;
-
-            GetGameTokenResponse resp = new();
-            resp.GameToken = token.Id;
-            connection.Send(resp);
-
             return token;
         }
         public void RemoveToken(string tokenId)

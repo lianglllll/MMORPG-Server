@@ -100,9 +100,7 @@ namespace GameServer.Net
         {
             // 给conn添加心跳时间
             m_serverConnHeartbeatTimestamps[conn] = DateTime.Now;
-            // 分配一下连接token
-            GameToken token = GameTokenManager.Instance.NewToken(conn);
-            conn.Set<GameToken>(token);
+
         }
         private void CleanConnectionResource(Connection conn)
         {
@@ -111,10 +109,6 @@ namespace GameServer.Net
             {
                 m_serverConnHeartbeatTimestamps.TryRemove(conn, out _);
             }
-
-            // token回收
-            GameTokenManager.Instance.RemoveToken(conn.Get<GameToken>().Id);
-
         }
         private void _HandleSSHeartBeatRequest(Connection conn, SSHeartBeatRequest message)
         {

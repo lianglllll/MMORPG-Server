@@ -4,7 +4,7 @@ using HS.Protobuf.SceneEntity;
 using SceneServer.Core.Model.Actor;
 using SceneServer.Utils;
 
-namespace SceneServer.Combat
+namespace SceneServer.Core.Combat.Skills
 {
     //技能施法的过程：
     //开始 - 前摇 - 激活 - 结束
@@ -45,10 +45,10 @@ namespace SceneServer.Combat
             }
         }
 
-        public virtual void Update()
+        public virtual void Update(float deltaTime)
         {
             if (curSkillState == SkillStage.None) return;
-            RunTime += MyTime.deltaTime;
+            RunTime += deltaTime;
 
             //蓄气=>激活
             if (curSkillState == SkillStage.Intonate && RunTime >= Define.IntonateTime)

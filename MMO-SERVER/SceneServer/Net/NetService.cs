@@ -73,6 +73,10 @@ namespace SceneServer.Net
                     Log.Debug("[连接成功]" + IPAddress.Parse(((IPEndPoint)ipe).Address.ToString()) + " : " + ((IPEndPoint)ipe).Port.ToString());
                     // 给conn添加心跳时间
                     m_serverConnHeartbeatTimestamps[conn] = DateTime.Now;
+
+                    // 记录网关信息
+
+
                 }
                 else
                 {

@@ -2,6 +2,7 @@
 using Common.Summer.Core;
 using SceneServer.Core.Model;
 using SceneServer.Utils;
+using SceneServer.Core.Scene;
 
 namespace SceneServer.Core.AOI
 {
@@ -250,17 +251,16 @@ namespace SceneServer.Core.AOI
         /// <returns></returns>
         public IEnumerable<SceneEntity> FindViewEntity(int key,bool includeSelf=false)
         {
-            //var area = Config.Server.aoiViewArea;
-            //var handle = Refresh(key, new Vector2(area, area));
-            ////handle有可能为空
-            //if (handle == null) return new HashSet<SceneEntity>();
-            //var units = EntityManager.Instance.GetEntitiesByIds(handle.ViewEntity);
-            //if (includeSelf)
-            //{
-            //    units.Add(EntityManager.Instance.GetEntityById(key));
-            //}
-            //return units;
-            return null;
+            var area = Config.Server.aoiViewArea;
+            var handle = Refresh(key, new Vector2(area, area));
+            //handle有可能为空
+            if (handle == null) return new HashSet<SceneEntity>();
+            var units = SceneEntityManager.Instance.GetSceneEntitiesByIds(handle.ViewEntity);
+            if (includeSelf)
+            {
+                units.Add(SceneEntityManager.Instance.GetSceneEntityById(key));
+            }
+            return units;
         }
 
         private double Distance(Vector2 a, Vector2 b)

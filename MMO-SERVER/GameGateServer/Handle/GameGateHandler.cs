@@ -34,14 +34,13 @@ namespace GameGateServer.Handle
                 ServersMgr.Instance.AddGGMServerInfo(message.ClusterEventNode.ServerInfoNode);
             }
         }
-
         private void _HandleRegisterSceneToGGRequest(Connection conn, RegisterSceneToGGRequest message)
         {
             foreach(var node in message.SceneInfos)
             {
+                Log.Information("A new scene regigster...");
                 ServersMgr.Instance.AddSServerInfo(node);
             }
         }
-
     }
 }

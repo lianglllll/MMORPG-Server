@@ -1,4 +1,5 @@
 ﻿using HS.Protobuf.Common;
+using HS.Protobuf.SceneEntity;
 using System;
 
 namespace Common.Summer.Core
@@ -524,5 +525,15 @@ namespace Common.Summer.Core
         {
             return new Vec3() { X = v.x, Y = v.y, Z = v.z };
         }
+
+        public static implicit operator Vector3Int(NetVector3 v)
+        {
+            return new Vector3Int() { x = v.X, y = v.Y, z = v.Z };
+        }
+        public static implicit operator NetVector3(Vector3Int v)
+        {
+            return new NetVector3() { X = v.x, Y = v.y, Z = v.z };
+        }
+
     }
 }

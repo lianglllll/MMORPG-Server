@@ -37,48 +37,53 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
             "CgxhY2hpZXZlbWVudHMYBCADKAkSDgoGdGl0bGVzGAUgAygJGi8KDUN1cnJl",
             "bmN5RW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgFOgI4ASJOChVE",
             "QkNoYXJhY3RlclNvY2lhbE5vZGUSDwoHZ3VpbGRJZBgBIAEoCRIPCgdmYWN0",
-            "aW9uGAIgASgJEhMKC2ZyaWVuZHNMaXN0GAMgAygJIsEDCg9EQkNoYXJhY3Rl",
-            "ck5vZGUSCwoDY0lkGAEgASgJEgsKA3VJZBgCIAEoCRIPCgd3b3JsZElkGAMg",
-            "ASgFEhQKDHByb2Zlc3Npb25JZBgEIAEoBRIPCgdjaHJOYW1lGAUgASgJEg0K",
-            "BWxldmVsGAYgASgFEhkKEWNyZWF0aW9uVGltZXN0YW1wGAcgASgDElEKDWNo",
-            "clN0YXRpc3RpY3MYCCABKAsyOi5IUy5Qcm90b2J1Zi5EQlByb3h5LkRCQ2hh",
-            "cmFjdGVyLkRCQ2hhcmFjdGVyU3RhdGlzdGljc05vZGUSSQoJY2hyU3RhdHVz",
-            "GAkgASgLMjYuSFMuUHJvdG9idWYuREJQcm94eS5EQkNoYXJhY3Rlci5EQkNo",
-            "YXJhY3RlclN0YXR1c05vZGUSSQoJY2hyQXNzZXRzGAogASgLMjYuSFMuUHJv",
-            "dG9idWYuREJQcm94eS5EQkNoYXJhY3Rlci5EQkNoYXJhY3RlckFzc2V0c05v",
-            "ZGUSSQoJY2hyU29jaWFsGAsgASgLMjYuSFMuUHJvdG9idWYuREJQcm94eS5E",
-            "QkNoYXJhY3Rlci5EQkNoYXJhY3RlclNvY2lhbE5vZGUiaAoaR2V0REJDaGFy",
-            "YWN0ZXJCeUNpZFJlcXVlc3QSDgoGdGFza0lkGAEgASgFEgsKA2NJZBgCIAEo",
-            "CRItCglyZWFkX21hc2sYAyABKAsyGi5nb29nbGUucHJvdG9idWYuRmllbGRN",
-            "YXNrIpYBChpHZXREQkNoYXJhY3RlckJ5Q2lkUmVwb25zZRIOCgZ0YXNrSWQY",
-            "ASABKAUSEgoKcmVzdWx0Q29kZRgCIAEoBRIRCglyZXN1bHRNc2cYAyABKAkS",
-            "QQoHY2hyTm9kZRgEIAEoCzIwLkhTLlByb3RvYnVmLkRCUHJveHkuREJDaGFy",
-            "YWN0ZXIuREJDaGFyYWN0ZXJOb2RlImoKFUFkZERCQ2hhcmFjdGVyUmVxdXNl",
-            "dBIOCgZ0YXNrSWQYASABKAUSQQoHY2hyTm9kZRgCIAEoCzIwLkhTLlByb3Rv",
-            "YnVmLkRCUHJveHkuREJDaGFyYWN0ZXIuREJDaGFyYWN0ZXJOb2RlIlwKFkFk",
-            "ZERCQ2hhcmFjdGVyUmVzcG9uc2USDgoGdGFza0lkGAEgASgFEhIKCnJlc3Vs",
-            "dENvZGUYAiABKAUSEQoJcmVzdWx0TXNnGAMgASgJEgsKA2NJZBgEIAEoCSI8",
-            "Ch1EZWxldGVEQkNoYXJhY3RlckJ5Q2lkUmVxdWVzdBIOCgZ0YXNrSWQYASAB",
-            "KAUSCwoDY0lkGAIgASgJIlcKHkRlbGV0ZURCQ2hhcmFjdGVyQnlDaWRSZXNw",
-            "b25zZRIOCgZ0YXNrSWQYASABKAUSEgoKcmVzdWx0Q29kZRgCIAEoBRIRCgly",
-            "ZXN1bHRNc2cYAyABKAkiegobR2V0REJDaGFyYWN0ZXJzQnlVaWRSZXF1ZXN0",
-            "Eg4KBnRhc2tJZBgBIAEoBRILCgN1SWQYAiABKAkSDwoHd29ybGRJZBgDIAEo",
-            "BRItCglyZWFkX21hc2sYBCABKAsyGi5nb29nbGUucHJvdG9idWYuRmllbGRN",
-            "YXNrIpcBChxHZXREQkNoYXJhY3RlcnNCeVVpZFJlc3BvbnNlEg4KBnRhc2tJ",
-            "ZBgBIAEoBRISCgpyZXN1bHRDb2RlGAIgASgFEhEKCXJlc3VsdE1zZxgDIAEo",
-            "CRJACgZjTm9kZXMYBCADKAsyMC5IUy5Qcm90b2J1Zi5EQlByb3h5LkRCQ2hh",
-            "cmFjdGVyLkRCQ2hhcmFjdGVyTm9kZSrgAwoSREJDaGFyYWN0ZXJQcm90b2Ns",
-            "EhwKGERCQ0hBUkFDVEVSX1BST1RPQ0xfTk9ORRAAEjQKLkRCQ0hBUkFDVEVS",
-            "X1BST1RPQ0xfR0VUX0RCQ0hBUkFDVEVSX0JZX0NJRF9SRVEQuY4DEjUKL0RC",
-            "Q0hBUkFDVEVSX1BST1RPQ0xfR0VUX0RCQ0hBUkFDVEVSX0JZX0NJRF9SRVNQ",
-            "ELqOAxItCidEQkNIQVJBQ1RFUl9QUk9UT0NMX0FERF9EQkNIQVJBQ1RFUl9S",
-            "RVEQu44DEi4KKERCQ0hBUkFDVEVSX1BST1RPQ0xfQUREX0RCQ0hBUkFDVEVS",
-            "X1JFU1AQvI4DEjcKMURCQ0hBUkFDVEVSX1BST1RPQ0xfREVMRVRFX0RCQ0hB",
-            "UkFDVEVSX0JZX0NJRF9SRVEQvY4DEjgKMkRCQ0hBUkFDVEVSX1BST1RPQ0xf",
-            "REVMRVRFX0RCQ0hBUkFDVEVSX0JZX0NJRF9SRVNQEL6OAxI1Ci9EQkNIQVJB",
-            "Q1RFUl9QUk9UT0NMX0dFVF9EQkNIQVJBQ1RFUlNfQllfVUlEX1JFURC/jgMS",
-            "NgowREJDSEFSQUNURVJfUFJPVE9DTF9HRVRfREJDSEFSQUNURVJTX0JZX1VJ",
-            "RF9SRVNQEMCOA2IGcHJvdG8z"));
+            "aW9uGAIgASgJEhMKC2ZyaWVuZHNMaXN0GAMgAygJIjYKFERCQ2hhcmFjdGVy",
+            "U2tpbGxOb2RlEg8KB3NraWxsSWQYASABKAUSDQoFbGV2ZWwYAiABKAUidgoV",
+            "REJDaGFyYWN0ZXJDb21iYXROb2RlEkUKBnNraWxscxgBIAMoCzI1LkhTLlBy",
+            "b3RvYnVmLkRCUHJveHkuREJDaGFyYWN0ZXIuREJDaGFyYWN0ZXJTa2lsbE5v",
+            "ZGUSFgoOZXF1aXBwZWRTa2lsbHMYAiADKAUijAQKD0RCQ2hhcmFjdGVyTm9k",
+            "ZRILCgNjSWQYASABKAkSCwoDdUlkGAIgASgJEg8KB3dvcmxkSWQYAyABKAUS",
+            "FAoMcHJvZmVzc2lvbklkGAQgASgFEg8KB2Nock5hbWUYBSABKAkSDQoFbGV2",
+            "ZWwYBiABKAUSGQoRY3JlYXRpb25UaW1lc3RhbXAYByABKAMSUQoNY2hyU3Rh",
+            "dGlzdGljcxgIIAEoCzI6LkhTLlByb3RvYnVmLkRCUHJveHkuREJDaGFyYWN0",
+            "ZXIuREJDaGFyYWN0ZXJTdGF0aXN0aWNzTm9kZRJJCgljaHJTdGF0dXMYCSAB",
+            "KAsyNi5IUy5Qcm90b2J1Zi5EQlByb3h5LkRCQ2hhcmFjdGVyLkRCQ2hhcmFj",
+            "dGVyU3RhdHVzTm9kZRJJCgljaHJBc3NldHMYCiABKAsyNi5IUy5Qcm90b2J1",
+            "Zi5EQlByb3h5LkRCQ2hhcmFjdGVyLkRCQ2hhcmFjdGVyQXNzZXRzTm9kZRJJ",
+            "CgljaHJTb2NpYWwYCyABKAsyNi5IUy5Qcm90b2J1Zi5EQlByb3h5LkRCQ2hh",
+            "cmFjdGVyLkRCQ2hhcmFjdGVyU29jaWFsTm9kZRJJCgljaHJDb21iYXQYDCAB",
+            "KAsyNi5IUy5Qcm90b2J1Zi5EQlByb3h5LkRCQ2hhcmFjdGVyLkRCQ2hhcmFj",
+            "dGVyQ29tYmF0Tm9kZSJoChpHZXREQkNoYXJhY3RlckJ5Q2lkUmVxdWVzdBIO",
+            "CgZ0YXNrSWQYASABKAUSCwoDY0lkGAIgASgJEi0KCXJlYWRfbWFzaxgDIAEo",
+            "CzIaLmdvb2dsZS5wcm90b2J1Zi5GaWVsZE1hc2silgEKGkdldERCQ2hhcmFj",
+            "dGVyQnlDaWRSZXBvbnNlEg4KBnRhc2tJZBgBIAEoBRISCgpyZXN1bHRDb2Rl",
+            "GAIgASgFEhEKCXJlc3VsdE1zZxgDIAEoCRJBCgdjaHJOb2RlGAQgASgLMjAu",
+            "SFMuUHJvdG9idWYuREJQcm94eS5EQkNoYXJhY3Rlci5EQkNoYXJhY3Rlck5v",
+            "ZGUiagoVQWRkREJDaGFyYWN0ZXJSZXF1c2V0Eg4KBnRhc2tJZBgBIAEoBRJB",
+            "CgdjaHJOb2RlGAIgASgLMjAuSFMuUHJvdG9idWYuREJQcm94eS5EQkNoYXJh",
+            "Y3Rlci5EQkNoYXJhY3Rlck5vZGUiXAoWQWRkREJDaGFyYWN0ZXJSZXNwb25z",
+            "ZRIOCgZ0YXNrSWQYASABKAUSEgoKcmVzdWx0Q29kZRgCIAEoBRIRCglyZXN1",
+            "bHRNc2cYAyABKAkSCwoDY0lkGAQgASgJIjwKHURlbGV0ZURCQ2hhcmFjdGVy",
+            "QnlDaWRSZXF1ZXN0Eg4KBnRhc2tJZBgBIAEoBRILCgNjSWQYAiABKAkiVwoe",
+            "RGVsZXRlREJDaGFyYWN0ZXJCeUNpZFJlc3BvbnNlEg4KBnRhc2tJZBgBIAEo",
+            "BRISCgpyZXN1bHRDb2RlGAIgASgFEhEKCXJlc3VsdE1zZxgDIAEoCSJ6ChtH",
+            "ZXREQkNoYXJhY3RlcnNCeVVpZFJlcXVlc3QSDgoGdGFza0lkGAEgASgFEgsK",
+            "A3VJZBgCIAEoCRIPCgd3b3JsZElkGAMgASgFEi0KCXJlYWRfbWFzaxgEIAEo",
+            "CzIaLmdvb2dsZS5wcm90b2J1Zi5GaWVsZE1hc2silwEKHEdldERCQ2hhcmFj",
+            "dGVyc0J5VWlkUmVzcG9uc2USDgoGdGFza0lkGAEgASgFEhIKCnJlc3VsdENv",
+            "ZGUYAiABKAUSEQoJcmVzdWx0TXNnGAMgASgJEkAKBmNOb2RlcxgEIAMoCzIw",
+            "LkhTLlByb3RvYnVmLkRCUHJveHkuREJDaGFyYWN0ZXIuREJDaGFyYWN0ZXJO",
+            "b2RlKuADChJEQkNoYXJhY3RlclByb3RvY2wSHAoYREJDSEFSQUNURVJfUFJP",
+            "VE9DTF9OT05FEAASNAouREJDSEFSQUNURVJfUFJPVE9DTF9HRVRfREJDSEFS",
+            "QUNURVJfQllfQ0lEX1JFURC5jgMSNQovREJDSEFSQUNURVJfUFJPVE9DTF9H",
+            "RVRfREJDSEFSQUNURVJfQllfQ0lEX1JFU1AQuo4DEi0KJ0RCQ0hBUkFDVEVS",
+            "X1BST1RPQ0xfQUREX0RCQ0hBUkFDVEVSX1JFURC7jgMSLgooREJDSEFSQUNU",
+            "RVJfUFJPVE9DTF9BRERfREJDSEFSQUNURVJfUkVTUBC8jgMSNwoxREJDSEFS",
+            "QUNURVJfUFJPVE9DTF9ERUxFVEVfREJDSEFSQUNURVJfQllfQ0lEX1JFURC9",
+            "jgMSOAoyREJDSEFSQUNURVJfUFJPVE9DTF9ERUxFVEVfREJDSEFSQUNURVJf",
+            "QllfQ0lEX1JFU1AQvo4DEjUKL0RCQ0hBUkFDVEVSX1BST1RPQ0xfR0VUX0RC",
+            "Q0hBUkFDVEVSU19CWV9VSURfUkVREL+OAxI2CjBEQkNIQVJBQ1RFUl9QUk9U",
+            "T0NMX0dFVF9EQkNIQVJBQ1RFUlNfQllfVUlEX1JFU1AQwI4DYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.FieldMaskReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterProtocl), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -86,7 +91,9 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterStatusNode), global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterStatusNode.Parser, new[]{ "Hp", "Mp", "Exp", "CurSceneId", "X", "Y", "Z" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterAssetsNode), global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterAssetsNode.Parser, new[]{ "BackpackData", "EquipsData", "Currency", "Achievements", "Titles" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterSocialNode), global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterSocialNode.Parser, new[]{ "GuildId", "Faction", "FriendsList" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterNode), global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterNode.Parser, new[]{ "CId", "UId", "WorldId", "ProfessionId", "ChrName", "Level", "CreationTimestamp", "ChrStatistics", "ChrStatus", "ChrAssets", "ChrSocial" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterSkillNode), global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterSkillNode.Parser, new[]{ "SkillId", "Level" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterCombatNode), global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterCombatNode.Parser, new[]{ "Skills", "EquippedSkills" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterNode), global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterNode.Parser, new[]{ "CId", "UId", "WorldId", "ProfessionId", "ChrName", "Level", "CreationTimestamp", "ChrStatistics", "ChrStatus", "ChrAssets", "ChrSocial", "ChrCombat" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.GetDBCharacterByCidRequest), global::HS.Protobuf.DBProxy.DBCharacter.GetDBCharacterByCidRequest.Parser, new[]{ "TaskId", "CId", "ReadMask" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.GetDBCharacterByCidReponse), global::HS.Protobuf.DBProxy.DBCharacter.GetDBCharacterByCidReponse.Parser, new[]{ "TaskId", "ResultCode", "ResultMsg", "ChrNode" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.AddDBCharacterRequset), global::HS.Protobuf.DBProxy.DBCharacter.AddDBCharacterRequset.Parser, new[]{ "TaskId", "ChrNode" }, null, null, null, null),
@@ -1388,6 +1395,450 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
 
   }
 
+  public sealed partial class DBCharacterSkillNode : pb::IMessage<DBCharacterSkillNode>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<DBCharacterSkillNode> _parser = new pb::MessageParser<DBCharacterSkillNode>(() => new DBCharacterSkillNode());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<DBCharacterSkillNode> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterReflection.Descriptor.MessageTypes[4]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DBCharacterSkillNode() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DBCharacterSkillNode(DBCharacterSkillNode other) : this() {
+      skillId_ = other.skillId_;
+      level_ = other.level_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DBCharacterSkillNode Clone() {
+      return new DBCharacterSkillNode(this);
+    }
+
+    /// <summary>Field number for the "skillId" field.</summary>
+    public const int SkillIdFieldNumber = 1;
+    private int skillId_;
+    /// <summary>
+    /// 技能ID
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int SkillId {
+      get { return skillId_; }
+      set {
+        skillId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "level" field.</summary>
+    public const int LevelFieldNumber = 2;
+    private int level_;
+    /// <summary>
+    /// 技能等级
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int Level {
+      get { return level_; }
+      set {
+        level_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as DBCharacterSkillNode);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(DBCharacterSkillNode other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (SkillId != other.SkillId) return false;
+      if (Level != other.Level) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (SkillId != 0) hash ^= SkillId.GetHashCode();
+      if (Level != 0) hash ^= Level.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (SkillId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(SkillId);
+      }
+      if (Level != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(Level);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (SkillId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(SkillId);
+      }
+      if (Level != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(Level);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (SkillId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(SkillId);
+      }
+      if (Level != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Level);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(DBCharacterSkillNode other) {
+      if (other == null) {
+        return;
+      }
+      if (other.SkillId != 0) {
+        SkillId = other.SkillId;
+      }
+      if (other.Level != 0) {
+        Level = other.Level;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            SkillId = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            Level = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            SkillId = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            Level = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class DBCharacterCombatNode : pb::IMessage<DBCharacterCombatNode>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<DBCharacterCombatNode> _parser = new pb::MessageParser<DBCharacterCombatNode>(() => new DBCharacterCombatNode());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<DBCharacterCombatNode> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterReflection.Descriptor.MessageTypes[5]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DBCharacterCombatNode() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DBCharacterCombatNode(DBCharacterCombatNode other) : this() {
+      skills_ = other.skills_.Clone();
+      equippedSkills_ = other.equippedSkills_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DBCharacterCombatNode Clone() {
+      return new DBCharacterCombatNode(this);
+    }
+
+    /// <summary>Field number for the "skills" field.</summary>
+    public const int SkillsFieldNumber = 1;
+    private static readonly pb::FieldCodec<global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterSkillNode> _repeated_skills_codec
+        = pb::FieldCodec.ForMessage(10, global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterSkillNode.Parser);
+    private readonly pbc::RepeatedField<global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterSkillNode> skills_ = new pbc::RepeatedField<global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterSkillNode>();
+    /// <summary>
+    /// 技能列表
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterSkillNode> Skills {
+      get { return skills_; }
+    }
+
+    /// <summary>Field number for the "equippedSkills" field.</summary>
+    public const int EquippedSkillsFieldNumber = 2;
+    private static readonly pb::FieldCodec<int> _repeated_equippedSkills_codec
+        = pb::FieldCodec.ForInt32(18);
+    private readonly pbc::RepeatedField<int> equippedSkills_ = new pbc::RepeatedField<int>();
+    /// <summary>
+    /// 装备技能列表 (存储已装备技能的ID)
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<int> EquippedSkills {
+      get { return equippedSkills_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as DBCharacterCombatNode);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(DBCharacterCombatNode other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if(!skills_.Equals(other.skills_)) return false;
+      if(!equippedSkills_.Equals(other.equippedSkills_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      hash ^= skills_.GetHashCode();
+      hash ^= equippedSkills_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      skills_.WriteTo(output, _repeated_skills_codec);
+      equippedSkills_.WriteTo(output, _repeated_equippedSkills_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      skills_.WriteTo(ref output, _repeated_skills_codec);
+      equippedSkills_.WriteTo(ref output, _repeated_equippedSkills_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      size += skills_.CalculateSize(_repeated_skills_codec);
+      size += equippedSkills_.CalculateSize(_repeated_equippedSkills_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(DBCharacterCombatNode other) {
+      if (other == null) {
+        return;
+      }
+      skills_.Add(other.skills_);
+      equippedSkills_.Add(other.equippedSkills_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            skills_.AddEntriesFrom(input, _repeated_skills_codec);
+            break;
+          }
+          case 18:
+          case 16: {
+            equippedSkills_.AddEntriesFrom(input, _repeated_equippedSkills_codec);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            skills_.AddEntriesFrom(ref input, _repeated_skills_codec);
+            break;
+          }
+          case 18:
+          case 16: {
+            equippedSkills_.AddEntriesFrom(ref input, _repeated_equippedSkills_codec);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
   public sealed partial class DBCharacterNode : pb::IMessage<DBCharacterNode>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1402,7 +1853,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterReflection.Descriptor.MessageTypes[4]; }
+      get { return global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterReflection.Descriptor.MessageTypes[6]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1433,6 +1884,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
       chrStatus_ = other.chrStatus_ != null ? other.chrStatus_.Clone() : null;
       chrAssets_ = other.chrAssets_ != null ? other.chrAssets_.Clone() : null;
       chrSocial_ = other.chrSocial_ != null ? other.chrSocial_.Clone() : null;
+      chrCombat_ = other.chrCombat_ != null ? other.chrCombat_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1577,6 +2029,18 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
       }
     }
 
+    /// <summary>Field number for the "chrCombat" field.</summary>
+    public const int ChrCombatFieldNumber = 12;
+    private global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterCombatNode chrCombat_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterCombatNode ChrCombat {
+      get { return chrCombat_; }
+      set {
+        chrCombat_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -1603,6 +2067,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
       if (!object.Equals(ChrStatus, other.ChrStatus)) return false;
       if (!object.Equals(ChrAssets, other.ChrAssets)) return false;
       if (!object.Equals(ChrSocial, other.ChrSocial)) return false;
+      if (!object.Equals(ChrCombat, other.ChrCombat)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1621,6 +2086,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
       if (chrStatus_ != null) hash ^= ChrStatus.GetHashCode();
       if (chrAssets_ != null) hash ^= ChrAssets.GetHashCode();
       if (chrSocial_ != null) hash ^= ChrSocial.GetHashCode();
+      if (chrCombat_ != null) hash ^= ChrCombat.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1683,6 +2149,10 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
         output.WriteRawTag(90);
         output.WriteMessage(ChrSocial);
       }
+      if (chrCombat_ != null) {
+        output.WriteRawTag(98);
+        output.WriteMessage(ChrCombat);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1737,6 +2207,10 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
         output.WriteRawTag(90);
         output.WriteMessage(ChrSocial);
       }
+      if (chrCombat_ != null) {
+        output.WriteRawTag(98);
+        output.WriteMessage(ChrCombat);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -1779,6 +2253,9 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
       }
       if (chrSocial_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(ChrSocial);
+      }
+      if (chrCombat_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ChrCombat);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1836,6 +2313,12 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
           ChrSocial = new global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterSocialNode();
         }
         ChrSocial.MergeFrom(other.ChrSocial);
+      }
+      if (other.chrCombat_ != null) {
+        if (chrCombat_ == null) {
+          ChrCombat = new global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterCombatNode();
+        }
+        ChrCombat.MergeFrom(other.ChrCombat);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1906,6 +2389,13 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
               ChrSocial = new global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterSocialNode();
             }
             input.ReadMessage(ChrSocial);
+            break;
+          }
+          case 98: {
+            if (chrCombat_ == null) {
+              ChrCombat = new global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterCombatNode();
+            }
+            input.ReadMessage(ChrCombat);
             break;
           }
         }
@@ -1979,6 +2469,13 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
             input.ReadMessage(ChrSocial);
             break;
           }
+          case 98: {
+            if (chrCombat_ == null) {
+              ChrCombat = new global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterCombatNode();
+            }
+            input.ReadMessage(ChrCombat);
+            break;
+          }
         }
       }
     }
@@ -2000,7 +2497,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterReflection.Descriptor.MessageTypes[5]; }
+      get { return global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterReflection.Descriptor.MessageTypes[7]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2275,7 +2772,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterReflection.Descriptor.MessageTypes[6]; }
+      get { return global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterReflection.Descriptor.MessageTypes[8]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2584,7 +3081,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterReflection.Descriptor.MessageTypes[7]; }
+      get { return global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterReflection.Descriptor.MessageTypes[9]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2819,7 +3316,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterReflection.Descriptor.MessageTypes[8]; }
+      get { return global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterReflection.Descriptor.MessageTypes[10]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3119,7 +3616,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterReflection.Descriptor.MessageTypes[9]; }
+      get { return global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterReflection.Descriptor.MessageTypes[11]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3345,7 +3842,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterReflection.Descriptor.MessageTypes[10]; }
+      get { return global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterReflection.Descriptor.MessageTypes[12]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3608,7 +4105,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterReflection.Descriptor.MessageTypes[11]; }
+      get { return global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterReflection.Descriptor.MessageTypes[13]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3917,7 +4414,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterReflection.Descriptor.MessageTypes[12]; }
+      get { return global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterReflection.Descriptor.MessageTypes[14]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

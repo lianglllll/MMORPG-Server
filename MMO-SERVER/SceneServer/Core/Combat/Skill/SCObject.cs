@@ -1,7 +1,7 @@
 ﻿using Common.Summer.Core;
 using SceneServer.Core.Model;
 
-namespace SceneServer.Combat
+namespace SceneServer.Core.Combat.Skills
 {
     /// <summary>
     /// Server-Client-Object,用于代理（一个人和一个坐标）
@@ -11,7 +11,7 @@ namespace SceneServer.Combat
         protected object realObj;
         public SCObject(object realobj)
         {
-            this.realObj = realobj;
+            realObj = realobj;
         }
 
         public int Id => GetId();
@@ -36,7 +36,7 @@ namespace SceneServer.Combat
         }
 
         protected override int GetId() => Obj.EntityId;
-        protected override Vector3 GetDirection() => Obj.Direction;
+        protected override Vector3 GetDirection() => Obj.Rotation;
         protected override Vector3 GetPosition() => Obj.Position;
 
     }

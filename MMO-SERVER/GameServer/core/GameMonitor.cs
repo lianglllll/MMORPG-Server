@@ -1,6 +1,7 @@
 ﻿using Common.Summer.Core;
 using Common.Summer.Net;
 using Common.Summer.Tools;
+using GameServer.Net;
 using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
 using HS.Protobuf.Game;
@@ -55,8 +56,13 @@ namespace GameServer.Core
                     Connection = conn
                 };
                 m_gameGateInstances.Add(serverInfoNode.ServerId, gEntry);
+
+                // 分配一下连接token
+                GameToken token = GameTokenManager.Instance.NewToken(conn,serverInfoNode.ServerId);
+                // conn.Set<GameToken>(token);
+
                 // 抓取全部scene给gate
-                SendAllSceneToGameGate(conn);
+                SendAllSceneToGameGate(conn,token);
             }
             else if(serverInfoNode.ServerType == SERVER_TYPE.Scene)
             {
@@ -66,6 +72,11 @@ namespace GameServer.Core
                     Connection = conn
                 };
                 m_sceneInstances.Add(serverInfoNode.ServerId, sEntry);
+
+                // 分配一下连接token
+                GameToken token = GameTokenManager.Instance.NewToken(conn, serverInfoNode.ServerId);
+                conn.Set<GameToken>(token);
+                resp.GameToken = token.Id;
                 // 分配sceneId
                 // 我们假设是足够分配的
                 int sceneId = waitDispatchSceneId.Peek();
@@ -85,14 +96,15 @@ namespace GameServer.Core
             }
             return true;
         }
-        private bool SendAllSceneToGameGate(Connection conn)
+        private bool SendAllSceneToGameGate(Connection conn, GameToken token)
         {
-            RegisterSceneToGGRequest req = new();
+            RegisterToGResponse resp = new();
+            resp.GameToken = token.Id;
             foreach (var sEntry in m_sceneInstances.Values)
             {
-                req.SceneInfos.Add(sEntry.ServerInfo);
+                resp.SceneInfoNodes.Add(sEntry.ServerInfo);
             }
-            conn.Send(req);
+            conn.Send(resp);
             return true;
         }
         private bool TellNewSceneToGameGate(ServerInfoNode serverInfoNode)
@@ -105,7 +117,6 @@ namespace GameServer.Core
             }
             return true;
         }
-
         public Connection GetSceneConnBySceneId(int sceneId) { 
             if(m_sceneConn.TryGetValue(sceneId, out var conn))
             {

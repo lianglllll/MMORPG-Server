@@ -21,12 +21,12 @@ namespace DBProxyServer.Handle
             ProtoHelper.Instance.Register<GetDBCharactersByUidRequest>((int)DBCharacterProtocl.GetDbcharactersByUidReq);
             ProtoHelper.Instance.Register<GetDBCharactersByUidResponse>((int)DBCharacterProtocl.GetDbcharactersByUidResp);
             // 消息的订阅
-            MessageRouter.Instance.Subscribe<GetDBCharacterByCidRequest>(_HandleGetDBCharacterRequest);
+            MessageRouter.Instance.Subscribe<GetDBCharacterByCidRequest>(_HandleGetDBCharacterByCidRequest);
             MessageRouter.Instance.Subscribe<AddDBCharacterRequset>(_HandleAddDBCharacterRequset);
             MessageRouter.Instance.Subscribe<DeleteDBCharacterByCidRequest>(_HandleDeleteDBCharacterRequest);
             MessageRouter.Instance.Subscribe<GetDBCharactersByUidRequest>(_HandleGetDBCharactersByUidRequest);
         }
-        public async void _HandleGetDBCharacterRequest(Connection sender, GetDBCharacterByCidRequest message)
+        public async void _HandleGetDBCharacterByCidRequest(Connection sender, GetDBCharacterByCidRequest message)
         {
             GetDBCharacterByCidReponse resp = new();
             resp.TaskId = message.TaskId;
@@ -37,6 +37,18 @@ namespace DBProxyServer.Handle
             }
             resp.ResultCode = 0;
             sender.Send(resp);
+        }
+        private async void _HandleGetDBCharactersByUidRequest(Connection conn, GetDBCharactersByUidRequest message)
+        {
+            GetDBCharactersByUidResponse resp = new();
+            resp.TaskId = message.TaskId;
+            var list = await CharacterOperations.Instance.GetCharactersByUWidAsync(message.UId, message.WorldId, message.ReadMask);
+            if (list != null)
+            {
+                resp.CNodes.AddRange(list);
+            }
+            resp.ResultCode = 0;
+            conn.Send(resp);
         }
         public async void _HandleAddDBCharacterRequset(Connection sender, AddDBCharacterRequset message)
         {
@@ -92,18 +104,6 @@ namespace DBProxyServer.Handle
             }
 
             sender.Send(resp);
-        }
-        private async void _HandleGetDBCharactersByUidRequest(Connection conn, GetDBCharactersByUidRequest message)
-        {
-            GetDBCharactersByUidResponse resp = new();
-            resp.TaskId = message.TaskId;
-            var list = await CharacterOperations.Instance.GetCharactersByUWidAsync(message.UId, message.WorldId,message.ReadMask);
-            if(list != null)
-            {
-                resp.CNodes.AddRange(list);
-            }
-            resp.ResultCode = 0;
-            conn.Send(resp);
         }
     }
 }

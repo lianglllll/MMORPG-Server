@@ -3,6 +3,7 @@ using Common.Summer.Net;
 using Common.Summer.Tools;
 using GameServer.Core;
 using GameServer.Net;
+using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
 using HS.Protobuf.Game;
 using Serilog;
@@ -23,12 +24,12 @@ namespace GameServer.Handle
             MessageRouter.Instance.Subscribe<ClusterEventResponse>(_HandleClusterEventResponse);
             MessageRouter.Instance.Subscribe<RegisterToGRequest>(_HandleRegisterToGRequest);
         
-        
         }
 
         public void UnInit()
         {
         }
+
         private void _HandleClusterEventResponse(Connection sender, ClusterEventResponse message)
         {
             if (message.ClusterEventNode.EventType == ClusterEventType.DbproxyEnter)
@@ -37,11 +38,31 @@ namespace GameServer.Handle
                 ServersMgr.Instance.AddDBServerInfo(message.ClusterEventNode.ServerInfoNode);
             }
         }
-
         private void _HandleRegisterToGRequest(Connection conn, RegisterToGRequest message)
         {
-            GameMonitor.Instance.RegisterInstance(conn, message.ServerInfoNode);
+            bool success = GameMonitor.Instance.RegisterInstance(conn, message.ServerInfoNode);
+            if (success)
+            {
+                if (message.ServerInfoNode.ServerType == SERVER_TYPE.Gamegate)
+                {
+                    Log.Information("GameGate rigister success...");
+                }
+                else if(message.ServerInfoNode.ServerType == SERVER_TYPE.Scene)
+                {
+                    Log.Information("Scene rigister success...");
+                }
+            }
+            else
+            {
+                if (message.ServerInfoNode.ServerType == SERVER_TYPE.Gamegate)
+                {
+                    Log.Information("GameGate rigister fail...");
+                }
+                else if (message.ServerInfoNode.ServerType == SERVER_TYPE.Scene)
+                {
+                    Log.Information("Scene rigister fail...");
+                }
+            }
         }
-
     }
 }

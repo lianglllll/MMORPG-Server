@@ -1,4 +1,5 @@
 ﻿using Common.Summer.Core;
+using HS.Protobuf.SceneEntity;
 
 namespace SceneServer.Core.Model
 {
@@ -25,7 +26,7 @@ namespace SceneServer.Core.Model
                 m_position = value;
             }
         }
-        public Vector3Int Direction
+        public Vector3Int Rotation
         {
             get { return m_rotation; }
             set
@@ -43,14 +44,13 @@ namespace SceneServer.Core.Model
         }
         public Vector2 AoiPos => new Vector2(m_position.x, m_position.z) / 1000;
 
-
-        protected void Init(Vector3Int pos, Vector3Int rotation ,Vector3 scale)
+        protected void Init(NetVector3 pos, Vector3Int rotation ,Vector3 scale)
         {
             m_position = pos;
             m_rotation = rotation;
             m_scale = scale;
         }
-        public virtual void Update()
+        public virtual void Update(float deltaTime)
         {
 
         }

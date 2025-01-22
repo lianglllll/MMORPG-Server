@@ -1,4 +1,4 @@
-﻿namespace SceneServer.Combat
+﻿namespace SceneServer.Combat.Skills
 {
     public class AreaEntitiesFinder
     {

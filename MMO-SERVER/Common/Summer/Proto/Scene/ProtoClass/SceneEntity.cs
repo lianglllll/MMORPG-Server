@@ -32,102 +32,105 @@ namespace HS.Protobuf.SceneEntity {
             "TmV0VHJhbnNmb3JtEjUKCHBvc2l0aW9uGAEgASgLMiMuSFMuUHJvdG9idWYu",
             "U2NlbmVFbnRpdHkuTmV0VmVjdG9yMxI1Cghyb3RhdGlvbhgCIAEoCzIjLkhT",
             "LlByb3RvYnVmLlNjZW5lRW50aXR5Lk5ldFZlY3RvcjMSMgoFc2NhbGUYAyAB",
-            "KAsyIy5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRWZWN0b3IzIuYECgxO",
-            "ZXRBY3Rvck5vZGUSEAoIZW50aXR5SWQYASABKAUSFAoMcHJvZmVzc2lvbklk",
-            "GAIgASgFEjgKCXRyYW5zZm9ybRgDIAEoCzIlLkhTLlByb3RvYnVmLlNjZW5l",
-            "RW50aXR5Lk5ldFRyYW5zZm9ybRIRCglhY3Rvck5hbWUYBCABKAkSDQoFbGV2",
+            "KAsyIy5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRWZWN0b3IzIv4ECgxO",
+            "ZXRBY3Rvck5vZGUSEAoIZW50aXR5SWQYASABKAUSOAoJdHJhbnNmb3JtGAIg",
+            "ASgLMiUuSFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuTmV0VHJhbnNmb3JtEhQK",
+            "DHByb2Zlc3Npb25JZBgDIAEoBRIRCglhY3Rvck5hbWUYBCABKAkSDQoFbGV2",
             "ZWwYBSABKAUSCwoDZXhwGAYgASgDEg8KB3NjZW5lSWQYByABKAUSCgoCaHAY",
-            "CCABKAUSCgoCbXAYCSABKAUSDQoFaHBNYXgYCiABKAUSDQoFbXBNYXgYCyAB",
-            "KAUSDQoFc3BlZWQYDCABKAUSOwoMbmV0QWN0b3JNb2RlGA0gASgOMiUuSFMu",
-            "UHJvdG9idWYuU2NlbmVFbnRpdHkuTmV0QWN0b3JNb2RlEj0KDW5ldEFjdG9y",
-            "U3RhdGUYDiABKA4yJi5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRBY3Rv",
-            "clN0YXRlEkcKEm5ldEFjdG9yU21hbGxTdGF0ZRgPIAEoDjIrLkhTLlByb3Rv",
-            "YnVmLlNjZW5lRW50aXR5Lk5ldEFjdG9yU21hbGxTdGF0ZRI7Cg5lcXVpcHBl",
-            "ZFNraWxscxgQIAMoCzIjLkhTLlByb3RvYnVmLkNvbWJhdC5Ta2lsbC5Ta2ls",
-            "bEluZm8SOwoOd29ybkVxdWlwbWVudHMYESADKAsyIy5IUy5Qcm90b2J1Zi5H",
-            "YW1lLkJhY2twYWNrLkl0ZW1JbmZvEjAKBWJ1ZmZzGBIgAygLMiEuSFMuUHJv",
-            "dG9idWYuQ29tYmF0LkJ1ZmYuQnVmZkluZm8ioQEKC05ldEl0ZW1Ob2RlEhAK",
-            "CGVudGl0eUlkGAEgASgFEg8KB3NjZW5lSWQYAiABKAUSOAoJdHJhbnNmb3Jt",
-            "GAMgASgLMiUuSFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuTmV0VHJhbnNmb3Jt",
-            "EjUKCEl0ZW1JbmZvGAQgASgLMiMuSFMuUHJvdG9idWYuR2FtZS5CYWNrcGFj",
-            "ay5JdGVtSW5mbyJwCglOZXRFbnRpdHkSCgoCaWQYASABKAUSKgoIcG9zaXRp",
-            "b24YAiABKAsyGC5IUy5Qcm90b2J1Zi5Db21tb24uVmVjMxIrCglkaXJlY3Rp",
-            "b24YAyABKAsyGC5IUy5Qcm90b2J1Zi5Db21tb24uVmVjMyK/AwoITmV0QWN0",
-            "b3ISCgoCaWQYASABKAUSCwoDdGlkGAIgASgFEjIKBmVudGl0eRgDIAEoCzIi",
-            "LkhTLlByb3RvYnVmLlNjZW5lRW50aXR5Lk5ldEVudGl0eRIMCgRuYW1lGAQg",
-            "ASgJEg0KBWxldmVsGAUgASgFEgsKA2V4cBgGIAEoAxIPCgdzcGFjZUlkGAcg",
-            "ASgFEgwKBGdvbGQYCCABKAMSCgoCaHAYCSABKAISCgoCbXAYCiABKAISNQoJ",
-            "YWN0b3JUeXBlGAsgASgOMiIuSFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuQWN0",
-            "b3JUeXBlEjMKBnNraWxscxgMIAMoCzIjLkhTLlByb3RvYnVmLkNvbWJhdC5T",
-            "a2lsbC5Ta2lsbEluZm8SNgoJZXF1aXBMaXN0GA0gAygLMiMuSFMuUHJvdG9i",
-            "dWYuR2FtZS5CYWNrcGFjay5JdGVtSW5mbxINCgVocE1heBgOIAEoAhINCgVt",
-            "cE1heBgPIAEoAhINCgVzcGVlZBgQIAEoBRI0CglidWZmc0xpc3QYESADKAsy",
-            "IS5IUy5Qcm90b2J1Zi5Db21iYXQuQnVmZi5CdWZmSW5mbyLzBAoOUHJvcGVy",
-            "dHlVcGRhdGUSEQoJZW50aXR5X2lkGAEgASgFEj4KCHByb3BlcnR5GAIgASgO",
-            "MiwuSFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuUHJvcGVydHlVcGRhdGUuUHJv",
-            "cBJHCghvbGRWYWx1ZRgDIAEoCzI1LkhTLlByb3RvYnVmLlNjZW5lRW50aXR5",
-            "LlByb3BlcnR5VXBkYXRlLlByb3BlcnR5VmFsdWUSRwoIbmV3VmFsdWUYBCAB",
-            "KAsyNS5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5Qcm9wZXJ0eVVwZGF0ZS5Q",
-            "cm9wZXJ0eVZhbHVlGvIBCg1Qcm9wZXJ0eVZhbHVlEhMKCWludF92YWx1ZRgB",
-            "IAEoBUgAEhUKC2Zsb2F0X3ZhbHVlGAIgASgCSAASFgoMc3RyaW5nX3ZhbHVl",
-            "GAMgASgJSAASOAoKbW9kZV92YWx1ZRgEIAEoDjIiLkhTLlByb3RvYnVmLlNj",
-            "ZW5lRW50aXR5LkFjdG9yTW9kZUgAEhQKCmxvbmdfdmFsdWUYBSABKANIABJE",
-            "ChBjb21iYXRNb2RlX3ZhbHVlGAYgASgOMiguSFMuUHJvdG9idWYuU2NlbmVF",
-            "bnRpdHkuQWN0b3JDb21iYXRNb2RlSABCBwoFdmFsdWUihgEKBFByb3ASBgoC",
-            "SFAQABIGCgJNUBABEgkKBUhQTWF4EAISCQoFTVBNYXgQAxIICgRNb2RlEAQS",
-            "CQoFTGV2ZWwQBRIICgROYW1lEAYSCQoFR29sZHMQBxIHCgNFeHAQCBIKCgZF",
-            "bmVyZ3kQCRIJCgVTcGVlZBAKEg4KCkNvbWJhdE1vZGUQCyKGAQoITmV0RUl0",
-            "ZW0SNQoISXRlbUluZm8YASABKAsyIy5IUy5Qcm90b2J1Zi5HYW1lLkJhY2tw",
-            "YWNrLkl0ZW1JbmZvEg8KB3NwYWNlSWQYAiABKAUSMgoGZW50aXR5GAMgASgL",
-            "MiIuSFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuTmV0RW50aXR5KmwKCkVudGl0",
-            "eVR5cGUSFAoQRU5USVRZX1RZUEVfTk9ORRAAEhUKEUVOVElUWV9UWVBFX0FD",
-            "VE9SEAESFAoQRU5USVRZX1RZUEVfSVRFTRACEhsKF0VOVElUWV9UWVBFX0lO",
-            "VEVSQUNUSVZPEAMqewoMTmV0QWN0b3JNb2RlEhcKE05FVF9BQ1RPUl9NT0RF",
-            "X05PTkUQABIaChZORVRfQUNUT1JfTU9ERV9VTkFSTUVEEAESGAoUTkVUX0FD",
-            "VE9SX01PREVfQVJNRUQQAhIcChhORVRfQUNUT1JfTU9ERV9TV09SRF9GTFkQ",
-            "AyrTAgoNTmV0QWN0b3JTdGF0ZRIYChRORVRfQUNUT1JfU1RBVEVfTk9ORRAA",
-            "EhgKFE5FVF9BQ1RPUl9TVEFURV9JREVMEAESGgoWTkVUX0FDVE9SX1NUQVRF",
-            "X01PVElPThACEhgKFE5FVF9BQ1RPUl9TVEFURV9KVU1QEAMSGwoXTkVUX0FD",
-            "VE9SX1NUQVRFX0ZBTExJTkcQBBIaChZORVRfQUNUT1JfU1RBVEVfQ1JPVUNI",
-            "EAUSGQoVTkVUX0FDVE9SX1NUQVRFX1BST05FEAYSGQoVTkVUX0FDVE9SX1NU",
-            "QVRFX0RFQVRIEAcSFwoTTkVUX0FDVE9SX1NUQVRFX0hJVBAIEhkKFU5FVF9B",
-            "Q1RPUl9TVEFURV9ESVpaWRAJEhkKFU5FVF9BQ1RPUl9TVEFURV9LTk9DSxAK",
-            "EhoKFk5FVF9BQ1RPUl9TVEFURV9DVVNUT00QCyrJBwoSTmV0QWN0b3JTbWFs",
-            "bFN0YXRlEh4KGk5FVF9BQ1RPUl9TVEFURV9TQU1MTF9OT05FEAASKgomTkVU",
-            "X0FDVE9SX1NUQVRFX1NBTUxMX01PVElPTl9TTE9XX1dBTEsQARIsCihORVRf",
-            "QUNUT1JfU1RBVEVfU0FNTExfTU9USU9OX05PUk1BTF9XQUxLEAISJAogTkVU",
-            "X0FDVE9SX1NUQVRFX1NBTUxMX01PVElPTl9SVU4QAxIpCiVORVRfQUNUT1Jf",
-            "U1RBVEVfU0FNTExfTU9USU9OX1JVTl9TVE9QEAQSMQotTkVUX0FDVE9SX1NU",
-            "QVRFX1NBTUxMX01PVElPTl9OT1JNQUxfV0FMS19TVE9QEAUSIQodTkVUX0FD",
-            "VE9SX1NUQVRFX1NBTUxMX0pVTVBfVVAQBhIrCidORVRfQUNUT1JfU1RBVEVf",
-            "U0FNTExfRkFMTElOR19TVVNUQUlORUQQBxIlCiFORVRfQUNUT1JfU1RBVEVf",
-            "U0FNTExfRkFMTElOR19FTkQQCBIqCiZORVRfQUNUT1JfU1RBVEVfU0FNTExf",
-            "Q1JPVUNIX1NVU1RBSU5FRBAJEiUKIU5FVF9BQ1RPUl9TVEFURV9TQU1MTF9D",
-            "Uk9VQ0hfTU9WRRAKEikKJU5FVF9BQ1RPUl9TVEFURV9TQU1MTF9QUk9ORV9T",
-            "VVNUQUlORUQQCxIkCiBORVRfQUNUT1JfU1RBVEVfU0FNTExfUFJPTkVfTU9W",
-            "RRAMEikKJU5FVF9BQ1RPUl9TVEFURV9TQU1MTF9ERUFUSF9TVVNUQUlORUQQ",
-            "DRIiCh5ORVRfQUNUT1JfU1RBVEVfU0FNTExfREVBVEhfVVAQDhIgChxORVRf",
-            "QUNUT1JfU1RBVEVfU0FNTExfSElUX1VQEA8SIgoeTkVUX0FDVE9SX1NUQVRF",
-            "X1NBTUxMX0hJVF9ET1dOEBASIgoeTkVUX0FDVE9SX1NUQVRFX1NBTUxMX0hJ",
-            "VF9MRUZUEBESIwofTkVUX0FDVE9SX1NUQVRFX1NBTUxMX0hJVF9SSUdIVBAS",
-            "EiMKH05FVF9BQ1RPUl9TVEFURV9TQU1MTF9ISVRfRlJPTlQQExIiCh5ORVRf",
-            "QUNUT1JfU1RBVEVfU0FNTExfSElUX0JBQ0sQFBIpCiVORVRfQUNUT1JfU1RB",
-            "VEVfU0FNTExfRElaWllfU1VTVEFJTkVEEBUSJAogTkVUX0FDVE9SX1NUQVRF",
-            "X1NBTUxMX0tOT0NLX0JBQ0sQFhIiCh5ORVRfQUNUT1JfU1RBVEVfU0FNTExf",
-            "S05PQ0tfVVAQFyo0CglBY3Rvck1vZGUSCAoERlJFRRAAEggKBERFQUQQARII",
-            "CgRSRVNUEAISCQoFRklHSFQQAyo4Cg9BY3RvckNvbWJhdE1vZGUSCQoFU3Rh",
-            "bmQQABIJCgVFcXVpcBABEg8KC1N3b3JkRmxpZ2h0EAIqigEKCkFjdG9yU3Rh",
-            "dGUSCwoHQWlyRG93bhAAEgkKBURlYXRoEAESCwoHRGVmZW5zZRACEgkKBURp",
-            "enp5EAMSCQoFRXZhZGUQBBIICgRIdXJ0EAUSCAoESWRsZRAGEgoKBkp1bXBV",
-            "cBAHEggKBE1vdmUQCBIJCgVTa2lsbBAJEgwKCENvbnN0YW50EAoqMAoJQWN0",
-            "b3JUeXBlEg0KCUNoYXJhY3RlchAAEgsKB01vbnN0ZXIQARIHCgNOUEMQAmIG",
-            "cHJvdG8z"));
+            "CCABKAUSCgoCbXAYCSABKAUSDQoFbWF4SHAYCiABKAUSDQoFbWF4TXAYCyAB",
+            "KAUSDQoFc3BlZWQYDCABKAUSOwoMbmV0QWN0b3JUeXBlGA0gASgOMiUuSFMu",
+            "UHJvdG9idWYuU2NlbmVFbnRpdHkuTmV0QWN0b3JUeXBlEjsKDG5ldEFjdG9y",
+            "TW9kZRgOIAEoDjIlLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5Lk5ldEFjdG9y",
+            "TW9kZRI9Cg1uZXRBY3RvclN0YXRlGA8gASgOMiYuSFMuUHJvdG9idWYuU2Nl",
+            "bmVFbnRpdHkuTmV0QWN0b3JTdGF0ZRJHChJuZXRBY3RvclNtYWxsU3RhdGUY",
+            "ECABKA4yKy5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRBY3RvclNtYWxs",
+            "U3RhdGUSFgoOZXF1aXBwZWRTa2lsbHMYESADKAUSOwoOd29ybkVxdWlwbWVu",
+            "dHMYEiADKAsyIy5IUy5Qcm90b2J1Zi5HYW1lLkJhY2twYWNrLkl0ZW1JbmZv",
+            "EjAKBWJ1ZmZzGBMgAygLMiEuSFMuUHJvdG9idWYuQ29tYmF0LkJ1ZmYuQnVm",
+            "ZkluZm8ioQEKC05ldEl0ZW1Ob2RlEhAKCGVudGl0eUlkGAEgASgFEg8KB3Nj",
+            "ZW5lSWQYAiABKAUSOAoJdHJhbnNmb3JtGAMgASgLMiUuSFMuUHJvdG9idWYu",
+            "U2NlbmVFbnRpdHkuTmV0VHJhbnNmb3JtEjUKCEl0ZW1JbmZvGAQgASgLMiMu",
+            "SFMuUHJvdG9idWYuR2FtZS5CYWNrcGFjay5JdGVtSW5mbyJwCglOZXRFbnRp",
+            "dHkSCgoCaWQYASABKAUSKgoIcG9zaXRpb24YAiABKAsyGC5IUy5Qcm90b2J1",
+            "Zi5Db21tb24uVmVjMxIrCglkaXJlY3Rpb24YAyABKAsyGC5IUy5Qcm90b2J1",
+            "Zi5Db21tb24uVmVjMyK/AwoITmV0QWN0b3ISCgoCaWQYASABKAUSCwoDdGlk",
+            "GAIgASgFEjIKBmVudGl0eRgDIAEoCzIiLkhTLlByb3RvYnVmLlNjZW5lRW50",
+            "aXR5Lk5ldEVudGl0eRIMCgRuYW1lGAQgASgJEg0KBWxldmVsGAUgASgFEgsK",
+            "A2V4cBgGIAEoAxIPCgdzcGFjZUlkGAcgASgFEgwKBGdvbGQYCCABKAMSCgoC",
+            "aHAYCSABKAISCgoCbXAYCiABKAISNQoJYWN0b3JUeXBlGAsgASgOMiIuSFMu",
+            "UHJvdG9idWYuU2NlbmVFbnRpdHkuQWN0b3JUeXBlEjMKBnNraWxscxgMIAMo",
+            "CzIjLkhTLlByb3RvYnVmLkNvbWJhdC5Ta2lsbC5Ta2lsbEluZm8SNgoJZXF1",
+            "aXBMaXN0GA0gAygLMiMuSFMuUHJvdG9idWYuR2FtZS5CYWNrcGFjay5JdGVt",
+            "SW5mbxINCgVocE1heBgOIAEoAhINCgVtcE1heBgPIAEoAhINCgVzcGVlZBgQ",
+            "IAEoBRI0CglidWZmc0xpc3QYESADKAsyIS5IUy5Qcm90b2J1Zi5Db21iYXQu",
+            "QnVmZi5CdWZmSW5mbyLzBAoOUHJvcGVydHlVcGRhdGUSEQoJZW50aXR5X2lk",
+            "GAEgASgFEj4KCHByb3BlcnR5GAIgASgOMiwuSFMuUHJvdG9idWYuU2NlbmVF",
+            "bnRpdHkuUHJvcGVydHlVcGRhdGUuUHJvcBJHCghvbGRWYWx1ZRgDIAEoCzI1",
+            "LkhTLlByb3RvYnVmLlNjZW5lRW50aXR5LlByb3BlcnR5VXBkYXRlLlByb3Bl",
+            "cnR5VmFsdWUSRwoIbmV3VmFsdWUYBCABKAsyNS5IUy5Qcm90b2J1Zi5TY2Vu",
+            "ZUVudGl0eS5Qcm9wZXJ0eVVwZGF0ZS5Qcm9wZXJ0eVZhbHVlGvIBCg1Qcm9w",
+            "ZXJ0eVZhbHVlEhMKCWludF92YWx1ZRgBIAEoBUgAEhUKC2Zsb2F0X3ZhbHVl",
+            "GAIgASgCSAASFgoMc3RyaW5nX3ZhbHVlGAMgASgJSAASOAoKbW9kZV92YWx1",
+            "ZRgEIAEoDjIiLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5LkFjdG9yTW9kZUgA",
+            "EhQKCmxvbmdfdmFsdWUYBSABKANIABJEChBjb21iYXRNb2RlX3ZhbHVlGAYg",
+            "ASgOMiguSFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuQWN0b3JDb21iYXRNb2Rl",
+            "SABCBwoFdmFsdWUihgEKBFByb3ASBgoCSFAQABIGCgJNUBABEgkKBUhQTWF4",
+            "EAISCQoFTVBNYXgQAxIICgRNb2RlEAQSCQoFTGV2ZWwQBRIICgROYW1lEAYS",
+            "CQoFR29sZHMQBxIHCgNFeHAQCBIKCgZFbmVyZ3kQCRIJCgVTcGVlZBAKEg4K",
+            "CkNvbWJhdE1vZGUQCyKGAQoITmV0RUl0ZW0SNQoISXRlbUluZm8YASABKAsy",
+            "Iy5IUy5Qcm90b2J1Zi5HYW1lLkJhY2twYWNrLkl0ZW1JbmZvEg8KB3NwYWNl",
+            "SWQYAiABKAUSMgoGZW50aXR5GAMgASgLMiIuSFMuUHJvdG9idWYuU2NlbmVF",
+            "bnRpdHkuTmV0RW50aXR5KnsKDE5ldEFjdG9yTW9kZRIXChNORVRfQUNUT1Jf",
+            "TU9ERV9OT05FEAASGgoWTkVUX0FDVE9SX01PREVfVU5BUk1FRBABEhgKFE5F",
+            "VF9BQ1RPUl9NT0RFX0FSTUVEEAISHAoYTkVUX0FDVE9SX01PREVfU1dPUkRf",
+            "RkxZEAMq0wIKDU5ldEFjdG9yU3RhdGUSGAoUTkVUX0FDVE9SX1NUQVRFX05P",
+            "TkUQABIYChRORVRfQUNUT1JfU1RBVEVfSURFTBABEhoKFk5FVF9BQ1RPUl9T",
+            "VEFURV9NT1RJT04QAhIYChRORVRfQUNUT1JfU1RBVEVfSlVNUBADEhsKF05F",
+            "VF9BQ1RPUl9TVEFURV9GQUxMSU5HEAQSGgoWTkVUX0FDVE9SX1NUQVRFX0NS",
+            "T1VDSBAFEhkKFU5FVF9BQ1RPUl9TVEFURV9QUk9ORRAGEhkKFU5FVF9BQ1RP",
+            "Ul9TVEFURV9ERUFUSBAHEhcKE05FVF9BQ1RPUl9TVEFURV9ISVQQCBIZChVO",
+            "RVRfQUNUT1JfU1RBVEVfRElaWlkQCRIZChVORVRfQUNUT1JfU1RBVEVfS05P",
+            "Q0sQChIaChZORVRfQUNUT1JfU1RBVEVfQ1VTVE9NEAsqyQcKEk5ldEFjdG9y",
+            "U21hbGxTdGF0ZRIeChpORVRfQUNUT1JfU01BTExfU1RBVEVfTk9ORRAAEioK",
+            "Jk5FVF9BQ1RPUl9TVEFURV9TQU1MTF9NT1RJT05fU0xPV19XQUxLEAESLAoo",
+            "TkVUX0FDVE9SX1NUQVRFX1NBTUxMX01PVElPTl9OT1JNQUxfV0FMSxACEiQK",
+            "IE5FVF9BQ1RPUl9TVEFURV9TQU1MTF9NT1RJT05fUlVOEAMSKQolTkVUX0FD",
+            "VE9SX1NUQVRFX1NBTUxMX01PVElPTl9SVU5fU1RPUBAEEjEKLU5FVF9BQ1RP",
+            "Ul9TVEFURV9TQU1MTF9NT1RJT05fTk9STUFMX1dBTEtfU1RPUBAFEiEKHU5F",
+            "VF9BQ1RPUl9TVEFURV9TQU1MTF9KVU1QX1VQEAYSKwonTkVUX0FDVE9SX1NU",
+            "QVRFX1NBTUxMX0ZBTExJTkdfU1VTVEFJTkVEEAcSJQohTkVUX0FDVE9SX1NU",
+            "QVRFX1NBTUxMX0ZBTExJTkdfRU5EEAgSKgomTkVUX0FDVE9SX1NUQVRFX1NB",
+            "TUxMX0NST1VDSF9TVVNUQUlORUQQCRIlCiFORVRfQUNUT1JfU1RBVEVfU0FN",
+            "TExfQ1JPVUNIX01PVkUQChIpCiVORVRfQUNUT1JfU1RBVEVfU0FNTExfUFJP",
+            "TkVfU1VTVEFJTkVEEAsSJAogTkVUX0FDVE9SX1NUQVRFX1NBTUxMX1BST05F",
+            "X01PVkUQDBIpCiVORVRfQUNUT1JfU1RBVEVfU0FNTExfREVBVEhfU1VTVEFJ",
+            "TkVEEA0SIgoeTkVUX0FDVE9SX1NUQVRFX1NBTUxMX0RFQVRIX1VQEA4SIAoc",
+            "TkVUX0FDVE9SX1NUQVRFX1NBTUxMX0hJVF9VUBAPEiIKHk5FVF9BQ1RPUl9T",
+            "VEFURV9TQU1MTF9ISVRfRE9XThAQEiIKHk5FVF9BQ1RPUl9TVEFURV9TQU1M",
+            "TF9ISVRfTEVGVBAREiMKH05FVF9BQ1RPUl9TVEFURV9TQU1MTF9ISVRfUklH",
+            "SFQQEhIjCh9ORVRfQUNUT1JfU1RBVEVfU0FNTExfSElUX0ZST05UEBMSIgoe",
+            "TkVUX0FDVE9SX1NUQVRFX1NBTUxMX0hJVF9CQUNLEBQSKQolTkVUX0FDVE9S",
+            "X1NUQVRFX1NBTUxMX0RJWlpZX1NVU1RBSU5FRBAVEiQKIE5FVF9BQ1RPUl9T",
+            "VEFURV9TQU1MTF9LTk9DS19CQUNLEBYSIgoeTkVUX0FDVE9SX1NUQVRFX1NB",
+            "TUxMX0tOT0NLX1VQEBcqYAoMTmV0QWN0b3JUeXBlEhwKGE5FVF9BQ1RPUl9U",
+            "WVBFX0NIQVJBQ1RFUhAAEhoKFk5FVF9BQ1RPUl9UWVBFX01PTlNURVIQARIW",
+            "ChJORVRfQUNUT1JfVFlQRV9OUEMQAiqJAQoPU2NlbmVFbnRpdHlUeXBlEhoK",
+            "FlNDRU5FX0VOVElUWV9UWVBFX05PTkUQABIbChdTQ0VORV9FTlRJVFlfVFlQ",
+            "RV9BQ1RPUhABEhoKFlNDRU5FX0VOVElUWV9UWVBFX0lURU0QAhIhCh1TQ0VO",
+            "RV9FTlRJVFlfVFlQRV9JTlRFUkFDVElWTxADKjQKCUFjdG9yTW9kZRIICgRG",
+            "UkVFEAASCAoEREVBRBABEggKBFJFU1QQAhIJCgVGSUdIVBADKjgKD0FjdG9y",
+            "Q29tYmF0TW9kZRIJCgVTdGFuZBAAEgkKBUVxdWlwEAESDwoLU3dvcmRGbGln",
+            "aHQQAiqKAQoKQWN0b3JTdGF0ZRILCgdBaXJEb3duEAASCQoFRGVhdGgQARIL",
+            "CgdEZWZlbnNlEAISCQoFRGl6enkQAxIJCgVFdmFkZRAEEggKBEh1cnQQBRII",
+            "CgRJZGxlEAYSCgoGSnVtcFVwEAcSCAoETW92ZRAIEgkKBVNraWxsEAkSDAoI",
+            "Q29uc3RhbnQQCiowCglBY3RvclR5cGUSDQoJQ2hhcmFjdGVyEAASCwoHTW9u",
+            "c3RlchABEgcKA05QQxACYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::HS.Protobuf.Common.CommonReflection.Descriptor, global::HS.Protobuf.Combat.Skill.SkillReflection.Descriptor, global::HS.Protobuf.Combat.Buff.BuffReflection.Descriptor, global::HS.Protobuf.Game.Backpack.BackpackReflection.Descriptor, },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.SceneEntity.EntityType), typeof(global::HS.Protobuf.SceneEntity.NetActorMode), typeof(global::HS.Protobuf.SceneEntity.NetActorState), typeof(global::HS.Protobuf.SceneEntity.NetActorSmallState), typeof(global::HS.Protobuf.SceneEntity.ActorMode), typeof(global::HS.Protobuf.SceneEntity.ActorCombatMode), typeof(global::HS.Protobuf.SceneEntity.ActorState), typeof(global::HS.Protobuf.SceneEntity.ActorType), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.SceneEntity.NetActorMode), typeof(global::HS.Protobuf.SceneEntity.NetActorState), typeof(global::HS.Protobuf.SceneEntity.NetActorSmallState), typeof(global::HS.Protobuf.SceneEntity.NetActorType), typeof(global::HS.Protobuf.SceneEntity.SceneEntityType), typeof(global::HS.Protobuf.SceneEntity.ActorMode), typeof(global::HS.Protobuf.SceneEntity.ActorCombatMode), typeof(global::HS.Protobuf.SceneEntity.ActorState), typeof(global::HS.Protobuf.SceneEntity.ActorType), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.SceneEntity.NetVector3), global::HS.Protobuf.SceneEntity.NetVector3.Parser, new[]{ "X", "Y", "Z" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.SceneEntity.NetTransform), global::HS.Protobuf.SceneEntity.NetTransform.Parser, new[]{ "Position", "Rotation", "Scale" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.SceneEntity.NetActorNode), global::HS.Protobuf.SceneEntity.NetActorNode.Parser, new[]{ "EntityId", "ProfessionId", "Transform", "ActorName", "Level", "Exp", "SceneId", "Hp", "Mp", "HpMax", "MpMax", "Speed", "NetActorMode", "NetActorState", "NetActorSmallState", "EquippedSkills", "WornEquipments", "Buffs" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.SceneEntity.NetActorNode), global::HS.Protobuf.SceneEntity.NetActorNode.Parser, new[]{ "EntityId", "Transform", "ProfessionId", "ActorName", "Level", "Exp", "SceneId", "Hp", "Mp", "MaxHp", "MaxMp", "Speed", "NetActorType", "NetActorMode", "NetActorState", "NetActorSmallState", "EquippedSkills", "WornEquipments", "Buffs" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.SceneEntity.NetItemNode), global::HS.Protobuf.SceneEntity.NetItemNode.Parser, new[]{ "EntityId", "SceneId", "Transform", "ItemInfo" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.SceneEntity.NetEntity), global::HS.Protobuf.SceneEntity.NetEntity.Parser, new[]{ "Id", "Position", "Direction" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.SceneEntity.NetActor), global::HS.Protobuf.SceneEntity.NetActor.Parser, new[]{ "Id", "Tid", "Entity", "Name", "Level", "Exp", "SpaceId", "Gold", "Hp", "Mp", "ActorType", "Skills", "EquipList", "HpMax", "MpMax", "Speed", "BuffsList" }, null, null, null, null),
@@ -139,13 +142,6 @@ namespace HS.Protobuf.SceneEntity {
 
   }
   #region Enums
-  public enum EntityType {
-    [pbr::OriginalName("ENTITY_TYPE_NONE")] None = 0,
-    [pbr::OriginalName("ENTITY_TYPE_ACTOR")] Actor = 1,
-    [pbr::OriginalName("ENTITY_TYPE_ITEM")] Item = 2,
-    [pbr::OriginalName("ENTITY_TYPE_INTERACTIVO")] Interactivo = 3,
-  }
-
   public enum NetActorMode {
     [pbr::OriginalName("NET_ACTOR_MODE_NONE")] None = 0,
     [pbr::OriginalName("NET_ACTOR_MODE_UNARMED")] Unarmed = 1,
@@ -172,7 +168,7 @@ namespace HS.Protobuf.SceneEntity {
   }
 
   public enum NetActorSmallState {
-    [pbr::OriginalName("NET_ACTOR_STATE_SAMLL_NONE")] NetActorStateSamllNone = 0,
+    [pbr::OriginalName("NET_ACTOR_SMALL_STATE_NONE")] None = 0,
     [pbr::OriginalName("NET_ACTOR_STATE_SAMLL_MOTION_SLOW_WALK")] NetActorStateSamllMotionSlowWalk = 1,
     [pbr::OriginalName("NET_ACTOR_STATE_SAMLL_MOTION_NORMAL_WALK")] NetActorStateSamllMotionNormalWalk = 2,
     [pbr::OriginalName("NET_ACTOR_STATE_SAMLL_MOTION_RUN")] NetActorStateSamllMotionRun = 3,
@@ -196,6 +192,19 @@ namespace HS.Protobuf.SceneEntity {
     [pbr::OriginalName("NET_ACTOR_STATE_SAMLL_DIZZY_SUSTAINED")] NetActorStateSamllDizzySustained = 21,
     [pbr::OriginalName("NET_ACTOR_STATE_SAMLL_KNOCK_BACK")] NetActorStateSamllKnockBack = 22,
     [pbr::OriginalName("NET_ACTOR_STATE_SAMLL_KNOCK_UP")] NetActorStateSamllKnockUp = 23,
+  }
+
+  public enum NetActorType {
+    [pbr::OriginalName("NET_ACTOR_TYPE_CHARACTER")] Character = 0,
+    [pbr::OriginalName("NET_ACTOR_TYPE_MONSTER")] Monster = 1,
+    [pbr::OriginalName("NET_ACTOR_TYPE_NPC")] Npc = 2,
+  }
+
+  public enum SceneEntityType {
+    [pbr::OriginalName("SCENE_ENTITY_TYPE_NONE")] None = 0,
+    [pbr::OriginalName("SCENE_ENTITY_TYPE_ACTOR")] Actor = 1,
+    [pbr::OriginalName("SCENE_ENTITY_TYPE_ITEM")] Item = 2,
+    [pbr::OriginalName("SCENE_ENTITY_TYPE_INTERACTIVO")] Interactivo = 3,
   }
 
   /// <summary>
@@ -846,17 +855,18 @@ namespace HS.Protobuf.SceneEntity {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public NetActorNode(NetActorNode other) : this() {
       entityId_ = other.entityId_;
-      professionId_ = other.professionId_;
       transform_ = other.transform_ != null ? other.transform_.Clone() : null;
+      professionId_ = other.professionId_;
       actorName_ = other.actorName_;
       level_ = other.level_;
       exp_ = other.exp_;
       sceneId_ = other.sceneId_;
       hp_ = other.hp_;
       mp_ = other.mp_;
-      hpMax_ = other.hpMax_;
-      mpMax_ = other.mpMax_;
+      maxHp_ = other.maxHp_;
+      maxMp_ = other.maxMp_;
       speed_ = other.speed_;
+      netActorType_ = other.netActorType_;
       netActorMode_ = other.netActorMode_;
       netActorState_ = other.netActorState_;
       netActorSmallState_ = other.netActorSmallState_;
@@ -884,20 +894,8 @@ namespace HS.Protobuf.SceneEntity {
       }
     }
 
-    /// <summary>Field number for the "professionId" field.</summary>
-    public const int ProfessionIdFieldNumber = 2;
-    private int professionId_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int ProfessionId {
-      get { return professionId_; }
-      set {
-        professionId_ = value;
-      }
-    }
-
     /// <summary>Field number for the "transform" field.</summary>
-    public const int TransformFieldNumber = 3;
+    public const int TransformFieldNumber = 2;
     private global::HS.Protobuf.SceneEntity.NetTransform transform_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -905,6 +903,18 @@ namespace HS.Protobuf.SceneEntity {
       get { return transform_; }
       set {
         transform_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "professionId" field.</summary>
+    public const int ProfessionIdFieldNumber = 3;
+    private int professionId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int ProfessionId {
+      get { return professionId_; }
+      set {
+        professionId_ = value;
       }
     }
 
@@ -980,27 +990,27 @@ namespace HS.Protobuf.SceneEntity {
       }
     }
 
-    /// <summary>Field number for the "hpMax" field.</summary>
-    public const int HpMaxFieldNumber = 10;
-    private int hpMax_;
+    /// <summary>Field number for the "maxHp" field.</summary>
+    public const int MaxHpFieldNumber = 10;
+    private int maxHp_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int HpMax {
-      get { return hpMax_; }
+    public int MaxHp {
+      get { return maxHp_; }
       set {
-        hpMax_ = value;
+        maxHp_ = value;
       }
     }
 
-    /// <summary>Field number for the "mpMax" field.</summary>
-    public const int MpMaxFieldNumber = 11;
-    private int mpMax_;
+    /// <summary>Field number for the "maxMp" field.</summary>
+    public const int MaxMpFieldNumber = 11;
+    private int maxMp_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int MpMax {
-      get { return mpMax_; }
+    public int MaxMp {
+      get { return maxMp_; }
       set {
-        mpMax_ = value;
+        maxMp_ = value;
       }
     }
 
@@ -1016,8 +1026,20 @@ namespace HS.Protobuf.SceneEntity {
       }
     }
 
+    /// <summary>Field number for the "netActorType" field.</summary>
+    public const int NetActorTypeFieldNumber = 13;
+    private global::HS.Protobuf.SceneEntity.NetActorType netActorType_ = global::HS.Protobuf.SceneEntity.NetActorType.Character;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::HS.Protobuf.SceneEntity.NetActorType NetActorType {
+      get { return netActorType_; }
+      set {
+        netActorType_ = value;
+      }
+    }
+
     /// <summary>Field number for the "netActorMode" field.</summary>
-    public const int NetActorModeFieldNumber = 13;
+    public const int NetActorModeFieldNumber = 14;
     private global::HS.Protobuf.SceneEntity.NetActorMode netActorMode_ = global::HS.Protobuf.SceneEntity.NetActorMode.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1029,7 +1051,7 @@ namespace HS.Protobuf.SceneEntity {
     }
 
     /// <summary>Field number for the "netActorState" field.</summary>
-    public const int NetActorStateFieldNumber = 14;
+    public const int NetActorStateFieldNumber = 15;
     private global::HS.Protobuf.SceneEntity.NetActorState netActorState_ = global::HS.Protobuf.SceneEntity.NetActorState.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1041,8 +1063,8 @@ namespace HS.Protobuf.SceneEntity {
     }
 
     /// <summary>Field number for the "netActorSmallState" field.</summary>
-    public const int NetActorSmallStateFieldNumber = 15;
-    private global::HS.Protobuf.SceneEntity.NetActorSmallState netActorSmallState_ = global::HS.Protobuf.SceneEntity.NetActorSmallState.NetActorStateSamllNone;
+    public const int NetActorSmallStateFieldNumber = 16;
+    private global::HS.Protobuf.SceneEntity.NetActorSmallState netActorSmallState_ = global::HS.Protobuf.SceneEntity.NetActorSmallState.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public global::HS.Protobuf.SceneEntity.NetActorSmallState NetActorSmallState {
@@ -1053,20 +1075,20 @@ namespace HS.Protobuf.SceneEntity {
     }
 
     /// <summary>Field number for the "equippedSkills" field.</summary>
-    public const int EquippedSkillsFieldNumber = 16;
-    private static readonly pb::FieldCodec<global::HS.Protobuf.Combat.Skill.SkillInfo> _repeated_equippedSkills_codec
-        = pb::FieldCodec.ForMessage(130, global::HS.Protobuf.Combat.Skill.SkillInfo.Parser);
-    private readonly pbc::RepeatedField<global::HS.Protobuf.Combat.Skill.SkillInfo> equippedSkills_ = new pbc::RepeatedField<global::HS.Protobuf.Combat.Skill.SkillInfo>();
+    public const int EquippedSkillsFieldNumber = 17;
+    private static readonly pb::FieldCodec<int> _repeated_equippedSkills_codec
+        = pb::FieldCodec.ForInt32(138);
+    private readonly pbc::RepeatedField<int> equippedSkills_ = new pbc::RepeatedField<int>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::HS.Protobuf.Combat.Skill.SkillInfo> EquippedSkills {
+    public pbc::RepeatedField<int> EquippedSkills {
       get { return equippedSkills_; }
     }
 
     /// <summary>Field number for the "wornEquipments" field.</summary>
-    public const int WornEquipmentsFieldNumber = 17;
+    public const int WornEquipmentsFieldNumber = 18;
     private static readonly pb::FieldCodec<global::HS.Protobuf.Game.Backpack.ItemInfo> _repeated_wornEquipments_codec
-        = pb::FieldCodec.ForMessage(138, global::HS.Protobuf.Game.Backpack.ItemInfo.Parser);
+        = pb::FieldCodec.ForMessage(146, global::HS.Protobuf.Game.Backpack.ItemInfo.Parser);
     private readonly pbc::RepeatedField<global::HS.Protobuf.Game.Backpack.ItemInfo> wornEquipments_ = new pbc::RepeatedField<global::HS.Protobuf.Game.Backpack.ItemInfo>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1075,9 +1097,9 @@ namespace HS.Protobuf.SceneEntity {
     }
 
     /// <summary>Field number for the "buffs" field.</summary>
-    public const int BuffsFieldNumber = 18;
+    public const int BuffsFieldNumber = 19;
     private static readonly pb::FieldCodec<global::HS.Protobuf.Combat.Buff.BuffInfo> _repeated_buffs_codec
-        = pb::FieldCodec.ForMessage(146, global::HS.Protobuf.Combat.Buff.BuffInfo.Parser);
+        = pb::FieldCodec.ForMessage(154, global::HS.Protobuf.Combat.Buff.BuffInfo.Parser);
     private readonly pbc::RepeatedField<global::HS.Protobuf.Combat.Buff.BuffInfo> buffs_ = new pbc::RepeatedField<global::HS.Protobuf.Combat.Buff.BuffInfo>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1101,17 +1123,18 @@ namespace HS.Protobuf.SceneEntity {
         return true;
       }
       if (EntityId != other.EntityId) return false;
-      if (ProfessionId != other.ProfessionId) return false;
       if (!object.Equals(Transform, other.Transform)) return false;
+      if (ProfessionId != other.ProfessionId) return false;
       if (ActorName != other.ActorName) return false;
       if (Level != other.Level) return false;
       if (Exp != other.Exp) return false;
       if (SceneId != other.SceneId) return false;
       if (Hp != other.Hp) return false;
       if (Mp != other.Mp) return false;
-      if (HpMax != other.HpMax) return false;
-      if (MpMax != other.MpMax) return false;
+      if (MaxHp != other.MaxHp) return false;
+      if (MaxMp != other.MaxMp) return false;
       if (Speed != other.Speed) return false;
+      if (NetActorType != other.NetActorType) return false;
       if (NetActorMode != other.NetActorMode) return false;
       if (NetActorState != other.NetActorState) return false;
       if (NetActorSmallState != other.NetActorSmallState) return false;
@@ -1126,20 +1149,21 @@ namespace HS.Protobuf.SceneEntity {
     public override int GetHashCode() {
       int hash = 1;
       if (EntityId != 0) hash ^= EntityId.GetHashCode();
-      if (ProfessionId != 0) hash ^= ProfessionId.GetHashCode();
       if (transform_ != null) hash ^= Transform.GetHashCode();
+      if (ProfessionId != 0) hash ^= ProfessionId.GetHashCode();
       if (ActorName.Length != 0) hash ^= ActorName.GetHashCode();
       if (Level != 0) hash ^= Level.GetHashCode();
       if (Exp != 0L) hash ^= Exp.GetHashCode();
       if (SceneId != 0) hash ^= SceneId.GetHashCode();
       if (Hp != 0) hash ^= Hp.GetHashCode();
       if (Mp != 0) hash ^= Mp.GetHashCode();
-      if (HpMax != 0) hash ^= HpMax.GetHashCode();
-      if (MpMax != 0) hash ^= MpMax.GetHashCode();
+      if (MaxHp != 0) hash ^= MaxHp.GetHashCode();
+      if (MaxMp != 0) hash ^= MaxMp.GetHashCode();
       if (Speed != 0) hash ^= Speed.GetHashCode();
+      if (NetActorType != global::HS.Protobuf.SceneEntity.NetActorType.Character) hash ^= NetActorType.GetHashCode();
       if (NetActorMode != global::HS.Protobuf.SceneEntity.NetActorMode.None) hash ^= NetActorMode.GetHashCode();
       if (NetActorState != global::HS.Protobuf.SceneEntity.NetActorState.None) hash ^= NetActorState.GetHashCode();
-      if (NetActorSmallState != global::HS.Protobuf.SceneEntity.NetActorSmallState.NetActorStateSamllNone) hash ^= NetActorSmallState.GetHashCode();
+      if (NetActorSmallState != global::HS.Protobuf.SceneEntity.NetActorSmallState.None) hash ^= NetActorSmallState.GetHashCode();
       hash ^= equippedSkills_.GetHashCode();
       hash ^= wornEquipments_.GetHashCode();
       hash ^= buffs_.GetHashCode();
@@ -1165,13 +1189,13 @@ namespace HS.Protobuf.SceneEntity {
         output.WriteRawTag(8);
         output.WriteInt32(EntityId);
       }
-      if (ProfessionId != 0) {
-        output.WriteRawTag(16);
-        output.WriteInt32(ProfessionId);
-      }
       if (transform_ != null) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(18);
         output.WriteMessage(Transform);
+      }
+      if (ProfessionId != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(ProfessionId);
       }
       if (ActorName.Length != 0) {
         output.WriteRawTag(34);
@@ -1197,28 +1221,32 @@ namespace HS.Protobuf.SceneEntity {
         output.WriteRawTag(72);
         output.WriteInt32(Mp);
       }
-      if (HpMax != 0) {
+      if (MaxHp != 0) {
         output.WriteRawTag(80);
-        output.WriteInt32(HpMax);
+        output.WriteInt32(MaxHp);
       }
-      if (MpMax != 0) {
+      if (MaxMp != 0) {
         output.WriteRawTag(88);
-        output.WriteInt32(MpMax);
+        output.WriteInt32(MaxMp);
       }
       if (Speed != 0) {
         output.WriteRawTag(96);
         output.WriteInt32(Speed);
       }
-      if (NetActorMode != global::HS.Protobuf.SceneEntity.NetActorMode.None) {
+      if (NetActorType != global::HS.Protobuf.SceneEntity.NetActorType.Character) {
         output.WriteRawTag(104);
+        output.WriteEnum((int) NetActorType);
+      }
+      if (NetActorMode != global::HS.Protobuf.SceneEntity.NetActorMode.None) {
+        output.WriteRawTag(112);
         output.WriteEnum((int) NetActorMode);
       }
       if (NetActorState != global::HS.Protobuf.SceneEntity.NetActorState.None) {
-        output.WriteRawTag(112);
+        output.WriteRawTag(120);
         output.WriteEnum((int) NetActorState);
       }
-      if (NetActorSmallState != global::HS.Protobuf.SceneEntity.NetActorSmallState.NetActorStateSamllNone) {
-        output.WriteRawTag(120);
+      if (NetActorSmallState != global::HS.Protobuf.SceneEntity.NetActorSmallState.None) {
+        output.WriteRawTag(128, 1);
         output.WriteEnum((int) NetActorSmallState);
       }
       equippedSkills_.WriteTo(output, _repeated_equippedSkills_codec);
@@ -1238,13 +1266,13 @@ namespace HS.Protobuf.SceneEntity {
         output.WriteRawTag(8);
         output.WriteInt32(EntityId);
       }
-      if (ProfessionId != 0) {
-        output.WriteRawTag(16);
-        output.WriteInt32(ProfessionId);
-      }
       if (transform_ != null) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(18);
         output.WriteMessage(Transform);
+      }
+      if (ProfessionId != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(ProfessionId);
       }
       if (ActorName.Length != 0) {
         output.WriteRawTag(34);
@@ -1270,28 +1298,32 @@ namespace HS.Protobuf.SceneEntity {
         output.WriteRawTag(72);
         output.WriteInt32(Mp);
       }
-      if (HpMax != 0) {
+      if (MaxHp != 0) {
         output.WriteRawTag(80);
-        output.WriteInt32(HpMax);
+        output.WriteInt32(MaxHp);
       }
-      if (MpMax != 0) {
+      if (MaxMp != 0) {
         output.WriteRawTag(88);
-        output.WriteInt32(MpMax);
+        output.WriteInt32(MaxMp);
       }
       if (Speed != 0) {
         output.WriteRawTag(96);
         output.WriteInt32(Speed);
       }
-      if (NetActorMode != global::HS.Protobuf.SceneEntity.NetActorMode.None) {
+      if (NetActorType != global::HS.Protobuf.SceneEntity.NetActorType.Character) {
         output.WriteRawTag(104);
+        output.WriteEnum((int) NetActorType);
+      }
+      if (NetActorMode != global::HS.Protobuf.SceneEntity.NetActorMode.None) {
+        output.WriteRawTag(112);
         output.WriteEnum((int) NetActorMode);
       }
       if (NetActorState != global::HS.Protobuf.SceneEntity.NetActorState.None) {
-        output.WriteRawTag(112);
+        output.WriteRawTag(120);
         output.WriteEnum((int) NetActorState);
       }
-      if (NetActorSmallState != global::HS.Protobuf.SceneEntity.NetActorSmallState.NetActorStateSamllNone) {
-        output.WriteRawTag(120);
+      if (NetActorSmallState != global::HS.Protobuf.SceneEntity.NetActorSmallState.None) {
+        output.WriteRawTag(128, 1);
         output.WriteEnum((int) NetActorSmallState);
       }
       equippedSkills_.WriteTo(ref output, _repeated_equippedSkills_codec);
@@ -1310,11 +1342,11 @@ namespace HS.Protobuf.SceneEntity {
       if (EntityId != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(EntityId);
       }
-      if (ProfessionId != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(ProfessionId);
-      }
       if (transform_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Transform);
+      }
+      if (ProfessionId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(ProfessionId);
       }
       if (ActorName.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(ActorName);
@@ -1334,14 +1366,17 @@ namespace HS.Protobuf.SceneEntity {
       if (Mp != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Mp);
       }
-      if (HpMax != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(HpMax);
+      if (MaxHp != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MaxHp);
       }
-      if (MpMax != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MpMax);
+      if (MaxMp != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MaxMp);
       }
       if (Speed != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(Speed);
+      }
+      if (NetActorType != global::HS.Protobuf.SceneEntity.NetActorType.Character) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) NetActorType);
       }
       if (NetActorMode != global::HS.Protobuf.SceneEntity.NetActorMode.None) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) NetActorMode);
@@ -1349,8 +1384,8 @@ namespace HS.Protobuf.SceneEntity {
       if (NetActorState != global::HS.Protobuf.SceneEntity.NetActorState.None) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) NetActorState);
       }
-      if (NetActorSmallState != global::HS.Protobuf.SceneEntity.NetActorSmallState.NetActorStateSamllNone) {
-        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) NetActorSmallState);
+      if (NetActorSmallState != global::HS.Protobuf.SceneEntity.NetActorSmallState.None) {
+        size += 2 + pb::CodedOutputStream.ComputeEnumSize((int) NetActorSmallState);
       }
       size += equippedSkills_.CalculateSize(_repeated_equippedSkills_codec);
       size += wornEquipments_.CalculateSize(_repeated_wornEquipments_codec);
@@ -1370,14 +1405,14 @@ namespace HS.Protobuf.SceneEntity {
       if (other.EntityId != 0) {
         EntityId = other.EntityId;
       }
-      if (other.ProfessionId != 0) {
-        ProfessionId = other.ProfessionId;
-      }
       if (other.transform_ != null) {
         if (transform_ == null) {
           Transform = new global::HS.Protobuf.SceneEntity.NetTransform();
         }
         Transform.MergeFrom(other.Transform);
+      }
+      if (other.ProfessionId != 0) {
+        ProfessionId = other.ProfessionId;
       }
       if (other.ActorName.Length != 0) {
         ActorName = other.ActorName;
@@ -1397,14 +1432,17 @@ namespace HS.Protobuf.SceneEntity {
       if (other.Mp != 0) {
         Mp = other.Mp;
       }
-      if (other.HpMax != 0) {
-        HpMax = other.HpMax;
+      if (other.MaxHp != 0) {
+        MaxHp = other.MaxHp;
       }
-      if (other.MpMax != 0) {
-        MpMax = other.MpMax;
+      if (other.MaxMp != 0) {
+        MaxMp = other.MaxMp;
       }
       if (other.Speed != 0) {
         Speed = other.Speed;
+      }
+      if (other.NetActorType != global::HS.Protobuf.SceneEntity.NetActorType.Character) {
+        NetActorType = other.NetActorType;
       }
       if (other.NetActorMode != global::HS.Protobuf.SceneEntity.NetActorMode.None) {
         NetActorMode = other.NetActorMode;
@@ -1412,7 +1450,7 @@ namespace HS.Protobuf.SceneEntity {
       if (other.NetActorState != global::HS.Protobuf.SceneEntity.NetActorState.None) {
         NetActorState = other.NetActorState;
       }
-      if (other.NetActorSmallState != global::HS.Protobuf.SceneEntity.NetActorSmallState.NetActorStateSamllNone) {
+      if (other.NetActorSmallState != global::HS.Protobuf.SceneEntity.NetActorSmallState.None) {
         NetActorSmallState = other.NetActorSmallState;
       }
       equippedSkills_.Add(other.equippedSkills_);
@@ -1437,15 +1475,15 @@ namespace HS.Protobuf.SceneEntity {
             EntityId = input.ReadInt32();
             break;
           }
-          case 16: {
-            ProfessionId = input.ReadInt32();
-            break;
-          }
-          case 26: {
+          case 18: {
             if (transform_ == null) {
               Transform = new global::HS.Protobuf.SceneEntity.NetTransform();
             }
             input.ReadMessage(Transform);
+            break;
+          }
+          case 24: {
+            ProfessionId = input.ReadInt32();
             break;
           }
           case 34: {
@@ -1473,11 +1511,11 @@ namespace HS.Protobuf.SceneEntity {
             break;
           }
           case 80: {
-            HpMax = input.ReadInt32();
+            MaxHp = input.ReadInt32();
             break;
           }
           case 88: {
-            MpMax = input.ReadInt32();
+            MaxMp = input.ReadInt32();
             break;
           }
           case 96: {
@@ -1485,26 +1523,31 @@ namespace HS.Protobuf.SceneEntity {
             break;
           }
           case 104: {
-            NetActorMode = (global::HS.Protobuf.SceneEntity.NetActorMode) input.ReadEnum();
+            NetActorType = (global::HS.Protobuf.SceneEntity.NetActorType) input.ReadEnum();
             break;
           }
           case 112: {
-            NetActorState = (global::HS.Protobuf.SceneEntity.NetActorState) input.ReadEnum();
+            NetActorMode = (global::HS.Protobuf.SceneEntity.NetActorMode) input.ReadEnum();
             break;
           }
           case 120: {
+            NetActorState = (global::HS.Protobuf.SceneEntity.NetActorState) input.ReadEnum();
+            break;
+          }
+          case 128: {
             NetActorSmallState = (global::HS.Protobuf.SceneEntity.NetActorSmallState) input.ReadEnum();
             break;
           }
-          case 130: {
+          case 138:
+          case 136: {
             equippedSkills_.AddEntriesFrom(input, _repeated_equippedSkills_codec);
             break;
           }
-          case 138: {
+          case 146: {
             wornEquipments_.AddEntriesFrom(input, _repeated_wornEquipments_codec);
             break;
           }
-          case 146: {
+          case 154: {
             buffs_.AddEntriesFrom(input, _repeated_buffs_codec);
             break;
           }
@@ -1527,15 +1570,15 @@ namespace HS.Protobuf.SceneEntity {
             EntityId = input.ReadInt32();
             break;
           }
-          case 16: {
-            ProfessionId = input.ReadInt32();
-            break;
-          }
-          case 26: {
+          case 18: {
             if (transform_ == null) {
               Transform = new global::HS.Protobuf.SceneEntity.NetTransform();
             }
             input.ReadMessage(Transform);
+            break;
+          }
+          case 24: {
+            ProfessionId = input.ReadInt32();
             break;
           }
           case 34: {
@@ -1563,11 +1606,11 @@ namespace HS.Protobuf.SceneEntity {
             break;
           }
           case 80: {
-            HpMax = input.ReadInt32();
+            MaxHp = input.ReadInt32();
             break;
           }
           case 88: {
-            MpMax = input.ReadInt32();
+            MaxMp = input.ReadInt32();
             break;
           }
           case 96: {
@@ -1575,26 +1618,31 @@ namespace HS.Protobuf.SceneEntity {
             break;
           }
           case 104: {
-            NetActorMode = (global::HS.Protobuf.SceneEntity.NetActorMode) input.ReadEnum();
+            NetActorType = (global::HS.Protobuf.SceneEntity.NetActorType) input.ReadEnum();
             break;
           }
           case 112: {
-            NetActorState = (global::HS.Protobuf.SceneEntity.NetActorState) input.ReadEnum();
+            NetActorMode = (global::HS.Protobuf.SceneEntity.NetActorMode) input.ReadEnum();
             break;
           }
           case 120: {
+            NetActorState = (global::HS.Protobuf.SceneEntity.NetActorState) input.ReadEnum();
+            break;
+          }
+          case 128: {
             NetActorSmallState = (global::HS.Protobuf.SceneEntity.NetActorSmallState) input.ReadEnum();
             break;
           }
-          case 130: {
+          case 138:
+          case 136: {
             equippedSkills_.AddEntriesFrom(ref input, _repeated_equippedSkills_codec);
             break;
           }
-          case 138: {
+          case 146: {
             wornEquipments_.AddEntriesFrom(ref input, _repeated_wornEquipments_codec);
             break;
           }
-          case 146: {
+          case 154: {
             buffs_.AddEntriesFrom(ref input, _repeated_buffs_codec);
             break;
           }

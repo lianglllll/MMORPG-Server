@@ -1,12 +1,11 @@
-﻿namespace GameServer.Skills
-{
-    using SceneServer.Combat;
-    using SceneServer.Core.Model.Actor;
-    using Serilog;
-    using System;
-    using System.Collections.Concurrent;
-    using System.Reflection;
+﻿using SceneServer.Core.Model.Actor;
+using Serilog;
+using System.Collections.Concurrent;
+using System.Reflection;
 
+
+namespace SceneServer.Core.Combat.Skills
+{
     //描述了一个只能应用在类上的特性
     [AttributeUsage(AttributeTargets.Class)]
     public class SkillAttribute : Attribute

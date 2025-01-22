@@ -10,12 +10,11 @@ using Google.Protobuf.WellKnownTypes;
 using HS.Protobuf.DBProxy.DBCharacter;
 using HS.Protobuf.DBProxy.DBUser;
 using HS.Protobuf.Game;
-using HS.Protobuf.Login;
 using HS.Protobuf.Scene;
-using System;
 using System.Collections.Generic;
+using Ubiety.Dns.Core.Records;
 
-namespace GameServer.Handle
+namespace GameServer.Hanle
 {
     public class EnterGameWorldHanlder : Singleton<EnterGameWorldHanlder>
     {
@@ -47,9 +46,7 @@ namespace GameServer.Handle
             ProtoHelper.Instance.Register<GetDBCharacterByCidRequest>((int)DBCharacterProtocl.GetDbcharacterByCidReq);
             ProtoHelper.Instance.Register<GetDBCharacterByCidReponse>((int)DBCharacterProtocl.GetDbcharacterByCidResp);
             ProtoHelper.Instance.Register<CharacterEnterSceneRequest>((int)SceneProtocl.CharacterEnterSceneReq);
-            ProtoHelper.Instance.Register<SelfCharacterEnterSceneResponse>((int)SceneProtocl.SlefCharacterEnterSceneResp);
-
-
+            ProtoHelper.Instance.Register<SelfCharacterEnterSceneResponse>((int)SceneProtocl.SelfCharacterEnterSceneResp);
 
             // 消息的订阅
             MessageRouter.Instance.Subscribe<GetCharacterListRequest>(_HandleGetCharacterListRequest);
@@ -156,6 +153,24 @@ namespace GameServer.Handle
             cNode.ProfessionId = message.ProfessionId;
             cNode.ChrName = message.CName;
             cNode.WorldId = m_curWorldId;
+            // level  默认
+            // creationTimestamp  默认
+
+            DBCharacterStatusNode chrStatus = new();
+            cNode.ChrStatus = chrStatus;
+            chrStatus.Hp = 0;
+            chrStatus.Mp = 0;
+            chrStatus.Exp = 0;
+            chrStatus.CurSceneId = 1; // 起始之地
+            chrStatus.X = 0;
+            chrStatus.Y = 0;
+            chrStatus.Z = 0;
+
+            DBCharacterStatisticsNode chrStatistics = new();
+            cNode.ChrStatistics = chrStatistics;
+            chrStatistics.KillCount = 0;
+            chrStatistics.DeathCount = 0;
+            chrStatistics.TaskCompleted = 0;
 
             ServersMgr.Instance.SendMsgToDBProxy(req);
             goto End2;
@@ -176,19 +191,19 @@ namespace GameServer.Handle
             resp.SessionId = req.SessionId;
             var gateConn = GameTokenManager.Instance.GetToken(req.GameToken).Conn;
 
-            if(message.ResultCode == 1)
+            if (message.ResultCode == 1)
             {
                 resp.ResultCode = 4;
                 resp.ResultMsg = "最大角色数量为4.";
                 goto End1;
             }
-            else if(message.ResultCode == 2)
+            else if (message.ResultCode == 2)
             {
                 resp.ResultCode = 5;
                 resp.ResultMsg = "角色名已存在.";
                 goto End1;
             }
-            else if(message.ResultCode == 3)
+            else if (message.ResultCode == 3)
             {
                 resp.ResultCode = 6;
                 resp.ResultMsg = "未知错误!";
@@ -285,7 +300,7 @@ namespace GameServer.Handle
             resp.SessionId = req.SessionId;
             Connection gateConn = GameTokenManager.Instance.GetToken(req.GameToken).Conn;
 
-            if(message.ResultCode == 1)
+            if (message.ResultCode == 1)
             {
                 resp.ResultCode = 1;
                 resp.ResultMsg = "删除失败，未知错误，请联系管理员";
@@ -312,7 +327,7 @@ namespace GameServer.Handle
             m_tasks.Add(taskId, message);
             req.TaskId = taskId;
             req.CId = message.CharacterId;
-            req.ReadMask = new FieldMask { Paths = { "chrStatistics", "chrStatus", "chrAssets", "chrSocial" } };
+            req.ReadMask = new FieldMask { Paths = { "chrStatistics", "chrStatus", "chrAssets", "chrSocial", "chrCombat" } };
             ServersMgr.Instance.SendMsgToDBProxy(req);
         }
         private void _HandleGetDBCharacterByCidReponse(Connection conn, GetDBCharacterByCidReponse message)
@@ -327,7 +342,7 @@ namespace GameServer.Handle
             resp.SessionId = req.SessionId;
             Connection gateConn = GameTokenManager.Instance.GetToken(req.GameToken).Conn;
             // 验证该dbCharacter是否存在
-            if(message.ChrNode == null)
+            if (message.ChrNode == null)
             {
                 resp.ResultCode = 2;
                 resp.ResultMsg = "没有你选择的角色信息。";
@@ -336,16 +351,18 @@ namespace GameServer.Handle
             // 保存一下与场景无关的character信息
             DBCharacterNode dbChrNode = message.ChrNode;
             var gChr = GameCharacterManager.Instance.CreateGameCharacter(dbChrNode);
-
             // 将与场景相关的character移交scene进行初始化
             int curSceneId = dbChrNode.ChrStatus.CurSceneId;
             var sceneConn = GameMonitor.Instance.GetSceneConnBySceneId(curSceneId);
             CharacterEnterSceneRequest characterEnterSceneRequest = new();
-            characterEnterSceneRequest.DbChrNode = dbChrNode;
             characterEnterSceneRequest.TaskId = message.TaskId;
+            characterEnterSceneRequest.SessionId = req.SessionId;
+            GameToken gameToken = GameTokenManager.Instance.GetToken(req.GameToken);
+            characterEnterSceneRequest.GameGateServerId = gameToken.ServerId;
+            characterEnterSceneRequest.DbChrNode = dbChrNode;
+
             sceneConn.Send(characterEnterSceneRequest);
             goto End2;
-
         End1:
             // 清理资源
             m_tasks.Remove(message.TaskId);
@@ -366,7 +383,7 @@ namespace GameServer.Handle
             resp.SessionId = req.SessionId;
             Connection gateConn = GameTokenManager.Instance.GetToken(req.GameToken).Conn;
 
-            if(message.ResultCode != 0)
+            if (message.ResultCode != 0)
             {
                 resp.ResultCode = 3;
                 resp.ResultMsg = message.ResultMsg;
@@ -374,10 +391,16 @@ namespace GameServer.Handle
             }
 
             // 拆message中的数据放到resp中
-
-
-
-
+            resp.ResultCode = 0;
+            resp.SelfNetActorNode = message.SelfNetActorNode;
+            if(message.OtherNetActorNodeList != null && message.OtherNetActorNodeList.Count > 0)
+            {
+                resp.OtherNetActorNodeList.AddRange(message.OtherNetActorNodeList);
+            }
+            if (message.OtherNetItemNodeList != null && message.OtherNetItemNodeList.Count > 0)
+            {
+                resp.OtherNetItemNodeList.AddRange(message.OtherNetItemNodeList);
+            }
 
         End1:
             // 清理资源

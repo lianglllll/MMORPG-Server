@@ -1,4 +1,4 @@
-﻿using GameServer.Skills;
+﻿using SceneServer.Core.Combat.Skills;
 using SceneServer.Core.Model.Actor;
 
 namespace SceneServer.Combat.Skills.SkillImpl

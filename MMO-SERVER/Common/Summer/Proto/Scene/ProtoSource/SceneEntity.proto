@@ -15,12 +15,6 @@ message NetTransform{
 	NetVector3 rotation = 2;
 	NetVector3 scale = 3;
 }
-enum EntityType{
-	ENTITY_TYPE_NONE = 0;
-	ENTITY_TYPE_ACTOR = 1;
-	ENTITY_TYPE_ITEM = 2;
-	ENTITY_TYPE_INTERACTIVO = 3;
-}
 
 enum NetActorMode {
     NET_ACTOR_MODE_NONE = 0;
@@ -43,7 +37,7 @@ enum NetActorState {
     NET_ACTOR_STATE_CUSTOM = 11;  // ×Ô¶¨Òå×´Ì¬
 }
 enum NetActorSmallState {
-    NET_ACTOR_STATE_SAMLL_NONE = 0;
+    NET_ACTOR_SMALL_STATE_NONE = 0;
 
     NET_ACTOR_STATE_SAMLL_MOTION_SLOW_WALK = 1;
     NET_ACTOR_STATE_SAMLL_MOTION_NORMAL_WALK = 2;
@@ -77,28 +71,36 @@ enum NetActorSmallState {
     NET_ACTOR_STATE_SAMLL_KNOCK_BACK = 22;
     NET_ACTOR_STATE_SAMLL_KNOCK_UP = 23;
 }
-
+enum NetActorType{
+    NET_ACTOR_TYPE_CHARACTER = 0;
+    NET_ACTOR_TYPE_MONSTER = 1;
+    NET_ACTOR_TYPE_NPC = 2;
+}
 message NetActorNode {
     int32 entityId = 1;
-    int32 professionId = 2;
-    NetTransform transform = 3;
+    NetTransform transform = 2;
+
+    int32 professionId = 3;
     string actorName = 4;
     int32 level = 5;
     int64 exp = 6;
     int32 sceneId = 7; 
+
     int32 hp = 8;
     int32 mp = 9;
-    int32 hpMax = 10;
-    int32 mpMax = 11;
+    int32 maxHp = 10;
+    int32 maxMp = 11;
     int32 speed = 12;
-	NetActorMode netActorMode = 13;
-    NetActorState netActorState = 14;
-    NetActorSmallState netActorSmallState = 15;
-    repeated HS.Protobuf.Combat.Skill.SkillInfo equippedSkills = 16;
-    repeated HS.Protobuf.Game.Backpack.ItemInfo wornEquipments = 17;
-    repeated HS.Protobuf.Combat.Buff.BuffInfo buffs = 18;
-}
 
+	NetActorType netActorType = 13;
+	NetActorMode netActorMode = 14;
+    NetActorState netActorState = 15;
+    NetActorSmallState netActorSmallState = 16;
+
+    repeated int32 equippedSkills = 17;
+    repeated HS.Protobuf.Game.Backpack.ItemInfo wornEquipments = 18;
+    repeated HS.Protobuf.Combat.Buff.BuffInfo buffs = 19;
+}
 message NetItemNode{
 	int32 entityId = 1;
 	int32 sceneId  = 2;
@@ -106,6 +108,12 @@ message NetItemNode{
 	HS.Protobuf.Game.Backpack.ItemInfo ItemInfo = 4;
 }
 
+enum SceneEntityType{
+	SCENE_ENTITY_TYPE_NONE = 0;
+	SCENE_ENTITY_TYPE_ACTOR = 1;
+	SCENE_ENTITY_TYPE_ITEM = 2;
+	SCENE_ENTITY_TYPE_INTERACTIVO = 3;
+}
 
 
 

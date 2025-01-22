@@ -40,6 +40,14 @@ message DBCharacterSocialNode {
     string faction = 2; // 阵营
     repeated string friendsList = 3; // 好友列表
 }
+message DBCharacterSkillNode {
+    int32 skillId = 1;       // 技能ID
+    int32 level = 2;          // 技能等级
+}
+message DBCharacterCombatNode {
+    repeated DBCharacterSkillNode skills = 1;      // 技能列表
+    repeated int32 equippedSkills = 2;            // 装备技能列表 (存储已装备技能的ID)
+}
 message DBCharacterNode{
 	string cId = 1;
 	string uId = 2;
@@ -52,6 +60,7 @@ message DBCharacterNode{
 	DBCharacterStatusNode chrStatus = 9;
 	DBCharacterAssetsNode chrAssets = 10;
 	DBCharacterSocialNode chrSocial = 11; 
+	DBCharacterCombatNode chrCombat = 12;
 }
 
 message GetDBCharacterByCidRequest{
