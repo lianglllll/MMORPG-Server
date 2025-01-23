@@ -15,7 +15,7 @@ enum BuffConflict{
 }
 
 message BuffInfo{
-	int32 id = 1;	//实例id
+	int32 id = 1;	//实例id,因为同一个buff可能有很多个，需要区分
 	int32 bid = 2;
 	int32 ownerId = 3;
 	int32 providerId = 4;

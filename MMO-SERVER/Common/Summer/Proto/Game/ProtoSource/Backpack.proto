@@ -9,7 +9,6 @@ enum ItemType{
     Consumable=1;     //消耗品
     Equipment=2;      //武器&装备
 }
-
 // 品质
 enum Quality {
     Common=0;     // 普通
@@ -19,7 +18,6 @@ enum Quality {
     Legendary=4;  // 传说
     Artifact=5;   // 神器
 }
-
 // 装备类型
 enum EquipsType{
 	UNSET = 0;      	//无
@@ -36,7 +34,6 @@ enum EquipsType{
     Boots = 11;     	//鞋子
     Wings = 12;    		//翅膀
 }
-
 // 物品信息
 message ItemInfo{
 	int32 itemId = 1;			//物品id
@@ -44,7 +41,6 @@ message ItemInfo{
 	int32 position = 3;			//物品所处位置,在哪个格子
 	EquipData equipdata = 4; 	//装备信息，物品有这个属性，说明是武器。
 }
-
 // 装备数据
 message EquipData{
 	//打孔、镶嵌、强化
@@ -61,12 +57,6 @@ message ItemUpdate{
 	ItemInfo itme = 2;
 }
 
-// 库存对象信息:背包/仓库
-message InventoryInfo{
-	int32 capacity = 1;//格子数量
-	repeated ItemInfo list = 2;
-}
-
 // 获取角色的Inventory信息请求
 // 这样设计可以自由定制想查询什么就置为true
 message InventoryInfoRequest{
@@ -75,7 +65,6 @@ message InventoryInfoRequest{
 	bool queryWarehouse = 3;
 	bool queryEquipment = 4;
 }
-
 // 获取角色的Inventory信息响应
 message InventoryInfoResponse{
 	int32 entityId = 1;
@@ -83,13 +72,17 @@ message InventoryInfoResponse{
 	InventoryInfo WarehouseInfo = 3;
 	InventoryInfo EquipmentInfo = 4;
 }
-
 // 仓库类型
 enum InventoryType{
 	Knapsack = 0;
 	Warehouse = 1;
 	EquipmentColumn = 2;
 	CurrentScene = 3;
+}
+// 库存对象信息:背包/仓库
+message InventoryInfo{
+	int32 capacity = 1;//格子数量
+	repeated ItemInfo list = 2;
 }
 
 // 背包物品放置请求
@@ -106,8 +99,6 @@ message ItemUseRequest{
 	int32 slotIndex = 2;
 	int32 count = 3;
 }
-
-// 使用物品响应
 message ItemUseResponse{
 	bool result = 1;
 	int32 slotIndex = 2;
@@ -125,13 +116,12 @@ message ItemDiscardResponse{
 	string resultMsg		= 2;
 	int32 itemId			= 3;
 	int32 amount			= 4;
-}
 
+}
 // 物品拾起
 message ItemPickUpRequest{
 	int32 entityId = 1;
 }
-
 message ItemPickupResponse{
 	int32  resultCode		= 1;
 	string resultMsg		= 2;
@@ -142,8 +132,6 @@ message ItemPickupResponse{
 // 拉取全部装备信息请求
 message EquipsRequest{
 }
-
-// 拉取全部装备信息响应
 message EquipsResponse{
 	int32 entityId = 1;
 	repeated ItemInfo equipsList = 2;
@@ -159,7 +147,6 @@ message EquipsUpdateResponse{
 message WearEquipmentRequest{
 	int32 slotIndex = 1;
 }
-
 // 装备栏中的装备卸载请求
 message UnloadEquipmentRequest{
 	EquipsType type = 1;

@@ -27,8 +27,8 @@ namespace SceneServer.Core.Combat.Attrubute
 
             //初始化属性
             basic.Speed = m_unitDefine.Speed;
-            basic.HPMax = m_unitDefine.HPMax;
-            basic.MPMax = m_unitDefine.MPMax;
+            basic.MaxHP = m_unitDefine.HPMax;
+            basic.MaxMP = m_unitDefine.MPMax;
             basic.AD = m_unitDefine.AD;
             basic.AP = m_unitDefine.AP;
             basic.DEF = m_unitDefine.DEF;
@@ -69,7 +69,7 @@ namespace SceneServer.Core.Combat.Attrubute
             // 附加属性后合并
             //1点力量 = 5 点生命值
             //1点智力 = 2 点魔攻
-            extra.HPMax = final.STR * 5;
+            extra.MaxHP = (int)final.STR * 5;
             extra.AP = final.INT * 5;
             final.Merge(extra);
 

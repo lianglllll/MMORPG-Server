@@ -107,7 +107,6 @@ message NetItemNode{
 	NetTransform transform = 3;
 	HS.Protobuf.Game.Backpack.ItemInfo ItemInfo = 4;
 }
-
 enum SceneEntityType{
 	SCENE_ENTITY_TYPE_NONE = 0;
 	SCENE_ENTITY_TYPE_ACTOR = 1;

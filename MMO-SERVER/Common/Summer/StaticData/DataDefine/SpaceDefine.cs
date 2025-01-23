@@ -14,7 +14,6 @@ public class SpaceDefine
 	public string Kind; // 类型
 	public int AllowPK; // 允许PK（1允许，0不允许）
 	public int[] RevivalPointS; // 场景中全部的复活点id
-	public int[] Area; // 场景的范围
 }
 
 

@@ -1,12 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using HS.Protobuf.SceneEntity;
 
 namespace SceneServer.Core.Model.Item
 {
-    internal class SceneItem
+    public class SceneItem : SceneEntity
     {
+        private NetItemNode? m_netItemNode;
+
+        public NetItemNode NetItemNode
+        {
+            get
+            {
+                return m_netItemNode;
+            }
+        }
+
     }
 }

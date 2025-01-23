@@ -166,6 +166,7 @@ namespace GameGateServer.Handle
             message.GameToken = ServersMgr.Instance.GameToken;
             message.SessionId = session.Id;
             ServersMgr.Instance.SendToGameServer(message);
+            goto End2;
         End1:
             conn.Send(resp);
         End2:

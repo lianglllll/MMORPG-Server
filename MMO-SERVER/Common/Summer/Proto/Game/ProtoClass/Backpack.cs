@@ -31,17 +31,17 @@ namespace HS.Protobuf.Game.Backpack {
             "SXRlbVVwZGF0ZRI+CgR0eXBlGAEgASgOMjAuSFMuUHJvdG9idWYuR2FtZS5C",
             "YWNrcGFjay5JdGVtVXBkYXRlLlVwZGF0ZVR5cGUSMQoEaXRtZRgCIAEoCzIj",
             "LkhTLlByb3RvYnVmLkdhbWUuQmFja3BhY2suSXRlbUluZm8iLQoKVXBkYXRl",
-            "VHlwZRIHCgNBREQQABIKCgZERUxFVEUQARIKCgZVUERBVEUQAiJUCg1JbnZl",
-            "bnRvcnlJbmZvEhAKCGNhcGFjaXR5GAEgASgFEjEKBGxpc3QYAiADKAsyIy5I",
-            "Uy5Qcm90b2J1Zi5HYW1lLkJhY2twYWNrLkl0ZW1JbmZvIm8KFEludmVudG9y",
-            "eUluZm9SZXF1ZXN0EhAKCGVudGl0eUlkGAEgASgFEhUKDXF1ZXJ5S25hcHNh",
-            "Y2sYAiABKAgSFgoOcXVlcnlXYXJlaG91c2UYAyABKAgSFgoOcXVlcnlFcXVp",
-            "cG1lbnQYBCABKAgi6wEKFUludmVudG9yeUluZm9SZXNwb25zZRIQCghlbnRp",
-            "dHlJZBgBIAEoBRI+CgxLbmFwc2Fja0luZm8YAiABKAsyKC5IUy5Qcm90b2J1",
-            "Zi5HYW1lLkJhY2twYWNrLkludmVudG9yeUluZm8SPwoNV2FyZWhvdXNlSW5m",
-            "bxgDIAEoCzIoLkhTLlByb3RvYnVmLkdhbWUuQmFja3BhY2suSW52ZW50b3J5",
-            "SW5mbxI/Cg1FcXVpcG1lbnRJbmZvGAQgASgLMiguSFMuUHJvdG9idWYuR2Ft",
-            "ZS5CYWNrcGFjay5JbnZlbnRvcnlJbmZvIpkBChRJdGVtUGxhY2VtZW50UmVx",
+            "VHlwZRIHCgNBREQQABIKCgZERUxFVEUQARIKCgZVUERBVEUQAiJvChRJbnZl",
+            "bnRvcnlJbmZvUmVxdWVzdBIQCghlbnRpdHlJZBgBIAEoBRIVCg1xdWVyeUtu",
+            "YXBzYWNrGAIgASgIEhYKDnF1ZXJ5V2FyZWhvdXNlGAMgASgIEhYKDnF1ZXJ5",
+            "RXF1aXBtZW50GAQgASgIIusBChVJbnZlbnRvcnlJbmZvUmVzcG9uc2USEAoI",
+            "ZW50aXR5SWQYASABKAUSPgoMS25hcHNhY2tJbmZvGAIgASgLMiguSFMuUHJv",
+            "dG9idWYuR2FtZS5CYWNrcGFjay5JbnZlbnRvcnlJbmZvEj8KDVdhcmVob3Vz",
+            "ZUluZm8YAyABKAsyKC5IUy5Qcm90b2J1Zi5HYW1lLkJhY2twYWNrLkludmVu",
+            "dG9yeUluZm8SPwoNRXF1aXBtZW50SW5mbxgEIAEoCzIoLkhTLlByb3RvYnVm",
+            "LkdhbWUuQmFja3BhY2suSW52ZW50b3J5SW5mbyJUCg1JbnZlbnRvcnlJbmZv",
+            "EhAKCGNhcGFjaXR5GAEgASgFEjEKBGxpc3QYAiADKAsyIy5IUy5Qcm90b2J1",
+            "Zi5HYW1lLkJhY2twYWNrLkl0ZW1JbmZvIpkBChRJdGVtUGxhY2VtZW50UmVx",
             "dWVzdBIQCghlbnRpdHlJZBgBIAEoBRJFChNvcmlnaW5JbnZlbnRvcnlUcGV5",
             "GAIgASgOMiguSFMuUHJvdG9idWYuR2FtZS5CYWNrcGFjay5JbnZlbnRvcnlU",
             "eXBlEhMKC29yaWdpbkluZGV4GAMgASgFEhMKC3RhcmdldEluZGV4GAQgASgF",
@@ -78,9 +78,9 @@ namespace HS.Protobuf.Game.Backpack {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.Backpack.ItemInfo), global::HS.Protobuf.Game.Backpack.ItemInfo.Parser, new[]{ "ItemId", "Amount", "Position", "Equipdata" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.Backpack.EquipData), global::HS.Protobuf.Game.Backpack.EquipData.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.Backpack.ItemUpdate), global::HS.Protobuf.Game.Backpack.ItemUpdate.Parser, new[]{ "Type", "Itme" }, null, new[]{ typeof(global::HS.Protobuf.Game.Backpack.ItemUpdate.Types.UpdateType) }, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.Backpack.InventoryInfo), global::HS.Protobuf.Game.Backpack.InventoryInfo.Parser, new[]{ "Capacity", "List" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.Backpack.InventoryInfoRequest), global::HS.Protobuf.Game.Backpack.InventoryInfoRequest.Parser, new[]{ "EntityId", "QueryKnapsack", "QueryWarehouse", "QueryEquipment" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.Backpack.InventoryInfoResponse), global::HS.Protobuf.Game.Backpack.InventoryInfoResponse.Parser, new[]{ "EntityId", "KnapsackInfo", "WarehouseInfo", "EquipmentInfo" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.Backpack.InventoryInfo), global::HS.Protobuf.Game.Backpack.InventoryInfo.Parser, new[]{ "Capacity", "List" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.Backpack.ItemPlacementRequest), global::HS.Protobuf.Game.Backpack.ItemPlacementRequest.Parser, new[]{ "EntityId", "OriginInventoryTpey", "OriginIndex", "TargetIndex" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.Backpack.ItemUseRequest), global::HS.Protobuf.Game.Backpack.ItemUseRequest.Parser, new[]{ "EntityId", "SlotIndex", "Count" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Game.Backpack.ItemUseResponse), global::HS.Protobuf.Game.Backpack.ItemUseResponse.Parser, new[]{ "Result", "SlotIndex", "Count" }, null, null, null, null),
@@ -950,227 +950,6 @@ namespace HS.Protobuf.Game.Backpack {
   }
 
   /// <summary>
-  /// 库存对象信息:背包/仓库
-  /// </summary>
-  public sealed partial class InventoryInfo : pb::IMessage<InventoryInfo>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
-    private static readonly pb::MessageParser<InventoryInfo> _parser = new pb::MessageParser<InventoryInfo>(() => new InventoryInfo());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<InventoryInfo> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Game.Backpack.BackpackReflection.Descriptor.MessageTypes[3]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public InventoryInfo() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public InventoryInfo(InventoryInfo other) : this() {
-      capacity_ = other.capacity_;
-      list_ = other.list_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public InventoryInfo Clone() {
-      return new InventoryInfo(this);
-    }
-
-    /// <summary>Field number for the "capacity" field.</summary>
-    public const int CapacityFieldNumber = 1;
-    private int capacity_;
-    /// <summary>
-    ///格子数量
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int Capacity {
-      get { return capacity_; }
-      set {
-        capacity_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "list" field.</summary>
-    public const int ListFieldNumber = 2;
-    private static readonly pb::FieldCodec<global::HS.Protobuf.Game.Backpack.ItemInfo> _repeated_list_codec
-        = pb::FieldCodec.ForMessage(18, global::HS.Protobuf.Game.Backpack.ItemInfo.Parser);
-    private readonly pbc::RepeatedField<global::HS.Protobuf.Game.Backpack.ItemInfo> list_ = new pbc::RepeatedField<global::HS.Protobuf.Game.Backpack.ItemInfo>();
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::HS.Protobuf.Game.Backpack.ItemInfo> List {
-      get { return list_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override bool Equals(object other) {
-      return Equals(other as InventoryInfo);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(InventoryInfo other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (Capacity != other.Capacity) return false;
-      if(!list_.Equals(other.list_)) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (Capacity != 0) hash ^= Capacity.GetHashCode();
-      hash ^= list_.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
-      if (Capacity != 0) {
-        output.WriteRawTag(8);
-        output.WriteInt32(Capacity);
-      }
-      list_.WriteTo(output, _repeated_list_codec);
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Capacity != 0) {
-        output.WriteRawTag(8);
-        output.WriteInt32(Capacity);
-      }
-      list_.WriteTo(ref output, _repeated_list_codec);
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CalculateSize() {
-      int size = 0;
-      if (Capacity != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Capacity);
-      }
-      size += list_.CalculateSize(_repeated_list_codec);
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(InventoryInfo other) {
-      if (other == null) {
-        return;
-      }
-      if (other.Capacity != 0) {
-        Capacity = other.Capacity;
-      }
-      list_.Add(other.list_);
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 8: {
-            Capacity = input.ReadInt32();
-            break;
-          }
-          case 18: {
-            list_.AddEntriesFrom(input, _repeated_list_codec);
-            break;
-          }
-        }
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 8: {
-            Capacity = input.ReadInt32();
-            break;
-          }
-          case 18: {
-            list_.AddEntriesFrom(ref input, _repeated_list_codec);
-            break;
-          }
-        }
-      }
-    }
-    #endif
-
-  }
-
-  /// <summary>
   /// 获取角色的Inventory信息请求
   /// 这样设计可以自由定制想查询什么就置为true
   /// </summary>
@@ -1188,7 +967,7 @@ namespace HS.Protobuf.Game.Backpack {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Game.Backpack.BackpackReflection.Descriptor.MessageTypes[4]; }
+      get { return global::HS.Protobuf.Game.Backpack.BackpackReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1491,7 +1270,7 @@ namespace HS.Protobuf.Game.Backpack {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Game.Backpack.BackpackReflection.Descriptor.MessageTypes[5]; }
+      get { return global::HS.Protobuf.Game.Backpack.BackpackReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1795,6 +1574,227 @@ namespace HS.Protobuf.Game.Backpack {
               EquipmentInfo = new global::HS.Protobuf.Game.Backpack.InventoryInfo();
             }
             input.ReadMessage(EquipmentInfo);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  /// <summary>
+  /// 库存对象信息:背包/仓库
+  /// </summary>
+  public sealed partial class InventoryInfo : pb::IMessage<InventoryInfo>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<InventoryInfo> _parser = new pb::MessageParser<InventoryInfo>(() => new InventoryInfo());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<InventoryInfo> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::HS.Protobuf.Game.Backpack.BackpackReflection.Descriptor.MessageTypes[5]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public InventoryInfo() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public InventoryInfo(InventoryInfo other) : this() {
+      capacity_ = other.capacity_;
+      list_ = other.list_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public InventoryInfo Clone() {
+      return new InventoryInfo(this);
+    }
+
+    /// <summary>Field number for the "capacity" field.</summary>
+    public const int CapacityFieldNumber = 1;
+    private int capacity_;
+    /// <summary>
+    ///格子数量
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int Capacity {
+      get { return capacity_; }
+      set {
+        capacity_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "list" field.</summary>
+    public const int ListFieldNumber = 2;
+    private static readonly pb::FieldCodec<global::HS.Protobuf.Game.Backpack.ItemInfo> _repeated_list_codec
+        = pb::FieldCodec.ForMessage(18, global::HS.Protobuf.Game.Backpack.ItemInfo.Parser);
+    private readonly pbc::RepeatedField<global::HS.Protobuf.Game.Backpack.ItemInfo> list_ = new pbc::RepeatedField<global::HS.Protobuf.Game.Backpack.ItemInfo>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<global::HS.Protobuf.Game.Backpack.ItemInfo> List {
+      get { return list_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as InventoryInfo);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(InventoryInfo other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Capacity != other.Capacity) return false;
+      if(!list_.Equals(other.list_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Capacity != 0) hash ^= Capacity.GetHashCode();
+      hash ^= list_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (Capacity != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(Capacity);
+      }
+      list_.WriteTo(output, _repeated_list_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Capacity != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(Capacity);
+      }
+      list_.WriteTo(ref output, _repeated_list_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (Capacity != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Capacity);
+      }
+      size += list_.CalculateSize(_repeated_list_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(InventoryInfo other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Capacity != 0) {
+        Capacity = other.Capacity;
+      }
+      list_.Add(other.list_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Capacity = input.ReadInt32();
+            break;
+          }
+          case 18: {
+            list_.AddEntriesFrom(input, _repeated_list_codec);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            Capacity = input.ReadInt32();
+            break;
+          }
+          case 18: {
+            list_.AddEntriesFrom(ref input, _repeated_list_codec);
             break;
           }
         }
@@ -2373,9 +2373,6 @@ namespace HS.Protobuf.Game.Backpack {
 
   }
 
-  /// <summary>
-  /// 使用物品响应
-  /// </summary>
   public sealed partial class ItemUseResponse : pb::IMessage<ItemUseResponse>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -3852,9 +3849,6 @@ namespace HS.Protobuf.Game.Backpack {
 
   }
 
-  /// <summary>
-  /// 拉取全部装备信息响应
-  /// </summary>
   public sealed partial class EquipsResponse : pb::IMessage<EquipsResponse>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

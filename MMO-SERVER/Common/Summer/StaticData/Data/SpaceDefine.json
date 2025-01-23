@@ -1,24 +1,24 @@
 {
-  "1": {
-    "SID": 1,
+  "0": {
+    "SID": 0,
     "Name": "入口",
     "Resource": "Game",
     "Kind": "场景",
     "AllowPK": 0,
     "RevivalPointS": "[0]"
   },
-  "2": {
-    "SID": 2,
+  "1": {
+    "SID": 1,
     "Name": "起始之地",
-    "Resource": "Scene0",
+    "Resource": "Scene1",
     "Kind": "场景",
     "AllowPK": 0,
     "RevivalPointS": "[0,1]"
   },
-  "3": {
-    "SID": 3,
+  "2": {
+    "SID": 2,
     "Name": "迷雾森林",
-    "Resource": "Scene1",
+    "Resource": "Scene2",
     "Kind": "场景",
     "AllowPK": 0,
     "RevivalPointS": "[1000]"

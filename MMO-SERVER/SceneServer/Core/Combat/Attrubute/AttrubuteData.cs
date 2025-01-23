@@ -11,9 +11,9 @@ namespace SceneServer.Core.Combat.Attrubute
         //速度
         public int Speed;
         //最大生命值
-        public float HPMax;
+        public int MaxHP;
         //最大魔法值
-        public float MPMax;
+        public int MaxMP;
         //物理攻击
         public float AD;
         //魔法攻击
@@ -46,8 +46,8 @@ namespace SceneServer.Core.Combat.Attrubute
         public void Merge(AttrubuteData attrubuteData)
         {
             Speed += attrubuteData.Speed;
-            HPMax += attrubuteData.HPMax;
-            MPMax += attrubuteData.MPMax;
+            MaxHP += attrubuteData.MaxHP;
+            MaxMP += attrubuteData.MaxMP;
             AD += attrubuteData.AD;
             AP += attrubuteData.AP;
             DEF += attrubuteData.DEF;
@@ -68,8 +68,8 @@ namespace SceneServer.Core.Combat.Attrubute
         public void Sub(AttrubuteData attrubuteData)
         {
             Speed -= attrubuteData.Speed;
-            HPMax -= attrubuteData.HPMax;
-            MPMax -= attrubuteData.MPMax;
+            MaxHP -= attrubuteData.MaxHP;
+            MaxMP -= attrubuteData.MaxMP;
             AD -= attrubuteData.AD;
             AP -= attrubuteData.AP;
             DEF -= attrubuteData.DEF;
@@ -90,8 +90,8 @@ namespace SceneServer.Core.Combat.Attrubute
         public void Reset()
         {
             Speed = 0;
-            HPMax = 0;
-            MPMax = 0;
+            MaxHP = 0;
+            MaxMP = 0;
             AD = 0;
             AP = 0;
             DEF = 0;

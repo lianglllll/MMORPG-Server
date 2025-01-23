@@ -16,8 +16,8 @@ public class UnitDefine
 	public string Desc; // 介绍
 	public int[] DefaultSkills; // 默认技能组,这里其实就是普通攻击
 	public int Speed; // 速度
-	public float HPMax; // 生命值
-	public float MPMax; // 法力值
+	public int HPMax; // 生命值
+	public int MPMax; // 法力值
 	public int InitLevel; // 初始等级
 	public float AD; // 物攻
 	public float AP; // 魔攻

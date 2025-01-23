@@ -12,7 +12,6 @@ using HS.Protobuf.DBProxy.DBUser;
 using HS.Protobuf.Game;
 using HS.Protobuf.Scene;
 using System.Collections.Generic;
-using Ubiety.Dns.Core.Records;
 
 namespace GameServer.Hanle
 {
@@ -350,7 +349,14 @@ namespace GameServer.Hanle
             }
             // 保存一下与场景无关的character信息
             DBCharacterNode dbChrNode = message.ChrNode;
+            if(GameCharacterManager.Instance.GetGameCharacterByCid(dbChrNode.CId) != null)
+            {
+                resp.ResultCode = 3;
+                resp.ResultMsg = "角色已经在线...";
+                goto End1;
+            }
             var gChr = GameCharacterManager.Instance.CreateGameCharacter(dbChrNode);
+
             // 将与场景相关的character移交scene进行初始化
             int curSceneId = dbChrNode.ChrStatus.CurSceneId;
             var sceneConn = GameMonitor.Instance.GetSceneConnBySceneId(curSceneId);
@@ -385,7 +391,7 @@ namespace GameServer.Hanle
 
             if (message.ResultCode != 0)
             {
-                resp.ResultCode = 3;
+                resp.ResultCode = 4;
                 resp.ResultMsg = message.ResultMsg;
                 goto End1;
             }
@@ -410,7 +416,5 @@ namespace GameServer.Hanle
         End2:
             return;
         }
-
-
     }
 }

@@ -29,11 +29,11 @@ namespace SceneServer.Core.Model.Actor
             m_define = StaticDataManager.Instance.unitDefineDict[netActorNode.ProfessionId];
             m_netActorNode = netActorNode;
             m_attributeManager.Init(m_define, m_netActorNode.Level);
-            netActorNode.Hp = CurHP;
-            netActorNode.Mp = CurMP;
-            netActorNode.MaxHp = MaxHP;
-            netActorNode.MaxMp = MaxMP;
-            netActorNode.Speed = CurSpeed;
+            netActorNode.MaxHp = m_attributeManager.final.MaxHP;
+            netActorNode.MaxMp = m_attributeManager.final.MaxMP;
+            netActorNode.Hp = MaxHP;
+            netActorNode.Mp = MaxMP;
+            netActorNode.Speed = m_attributeManager.final.Speed;
             netActorNode.NetActorMode = NetActorMode.None;
             netActorNode.NetActorState = NetActorState.None;
             netActorNode.NetActorSmallState = NetActorSmallState.None;

@@ -54,12 +54,16 @@ namespace SceneServer.Core.Scene
             SelfCharacterEnterSceneResponse sResp = new();
             sResp.TaskId = message.TaskId;
             sResp.ResultCode = 0;
+            sResp.SelfNetActorNode = chr.NetActorNode;
             var nearbyEntity = m_aoiZone.FindViewEntity(chr.EntityId);
             foreach (var ent in nearbyEntity)
             {
                 if (ent is SceneActor acotr)
                 {
                     sResp.OtherNetActorNodeList.Add(acotr.NetActorNode);
+                }else if(ent is SceneItem item)
+                {
+                    sResp.OtherNetItemNodeList.Add(item.NetItemNode);
                 }
             }
             conn.Send(sResp);
@@ -72,7 +76,7 @@ namespace SceneServer.Core.Scene
             var views = nearbyEntity.ToList();
             foreach (var oChr in views.OfType<SceneCharacter>())
             {
-                oChr.Send(message);
+                oChr.Send(oResp);
             }
         }
         public void CharacterExitScene()
