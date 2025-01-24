@@ -7,6 +7,7 @@ using HS.Protobuf.Common;
 using SceneServer.Utils;
 using static Common.Summer.Net.NetClient;
 using System.Net;
+using System.Net.Sockets;
 
 namespace SceneServer.Net
 {
@@ -52,8 +53,6 @@ namespace SceneServer.Net
         {
             m_acceptServer?.Resume();
         }
-
-
 
         // gameGate服务器连接过来的
         private void _StartListeningForServerConnections()
@@ -162,6 +161,7 @@ namespace SceneServer.Net
         {
             m_outgoingServerConnection.Remove(tcpClient);
         }
+
         private void _SendSSHeatBeatReq()
         {
             foreach (var v in m_outgoingServerConnection)
@@ -173,6 +173,11 @@ namespace SceneServer.Net
         private void _SSHeartBeatResponse(Connection conn, SSHeartBeatResponse message)
         {
             // 知道对端也活着，嘻嘻。
+        }
+        public void CloseOutgoingServerConnection(NetClient netClient)
+        {
+            m_outgoingServerConnection.Remove(netClient);
+            netClient.CloseConnection();
         }
     }
 }

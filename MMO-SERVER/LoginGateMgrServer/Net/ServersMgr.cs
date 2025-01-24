@@ -14,9 +14,13 @@ namespace LoginGateMgrServer.Net
     {
         private ServerInfoNode? m_curServerInfoNode;
         public NetClient ccClient;
+        private bool ccIsFirstConn;
+
         public int ServerId { get { return m_curServerInfoNode.ServerId; } }
         public void Init()
         {
+            ccIsFirstConn = true;
+
             // 本服务器的信息
             m_curServerInfoNode = new ServerInfoNode();
             LoginGateMgrServerInfoNode lNode = new LoginGateMgrServerInfoNode();
@@ -102,16 +106,21 @@ namespace LoginGateMgrServer.Net
         }
         private void _CCDisconnectedCallback(NetClient tcpClient)
         {
-            
+            Log.Error("Disconnect from the ControlCenter server, attempting to reconnect controlCenter");
+            ccClient = null;
+            _CCConnectToControlCenter();
         }
         private void _RegisterServerInfo2ControlCenterResponse(Connection conn, ServerInfoRegisterResponse message)
         {
             if (message.ResultCode == 0)
             {
                 m_curServerInfoNode.ServerId = message.ServerId;
-                Log.Information("[Successfully registered this server information with the ControlCenter.]");
-                Log.Information($"The server ID of this server is [{message.ServerId}]");
-                _ExecutePhase1(message.ClusterEventNodes);
+                Log.Information($"Successfully registered to ControlCenter, get serverId = [{message.ServerId}]");
+                if (ccIsFirstConn == true)
+                {
+                    ccIsFirstConn = false;
+                    _ExecutePhase1(message.ClusterEventNodes);
+                }
             }
             else
             {

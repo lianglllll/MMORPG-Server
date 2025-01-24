@@ -5,6 +5,7 @@ using ControlCenter.Net;
 using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
 using Serilog;
+using System.Xml.Linq;
 
 namespace ControlCenter.Core
 {
@@ -42,6 +43,19 @@ namespace ControlCenter.Core
             // 消息订阅
             MessageRouter.Instance.Subscribe<ServerInfoRegisterRequest>(_HandleServerInfoRegisterRequest);
 
+            // 获取持久化的serverinfo,因为本次启动可能是宕机之后起来的。
+            //StaticDataManager.Instance.Init();
+            //var node = new ServerInfoNode();
+            //node.Ip = "123123";
+            //node.Port = 1234;
+            //node.ServerType = SERVER_TYPE.Game;
+            //node.GameServerInfo = new GameServerInfoNode
+            //{
+            //    GameWorldId = 1
+            //};
+            //StaticDataManager.Instance.serverInfoNodeDict.Add(1, node);
+            //StaticDataManager.Instance.Save("test.json");
+
             return true;
         }
         public bool UnInit()
@@ -49,12 +63,53 @@ namespace ControlCenter.Core
             return true;
         }
 
-        public bool OnDisconnected(int serverId)
+        public bool HaveInstanceDisconnected(int serverId)
         {
             if (m_servers.ContainsKey(serverId))
             {
+                Log.Error($"[{serverId}] Instance Disconnect...");
+                var serverInfoNode = m_servers[serverId].ServerInfoNode;
+
+                ClusterEventResponse cEventResp = new();
+                ClusterEventNode ceNode = new();
+                cEventResp.ClusterEventNode = ceNode;
+                switch (serverInfoNode.ServerType)
+                {
+                    case SERVER_TYPE.Login:
+                        ceNode.EventType = ClusterEventType.LoginExit;
+                        break;
+                    case SERVER_TYPE.Logingate:
+                        ceNode.EventType = ClusterEventType.LogingateExit;
+                        break;
+                    case SERVER_TYPE.Logingatemgr:
+                        ceNode.EventType = ClusterEventType.LogingatemgrExit;
+                        break;
+                    case SERVER_TYPE.Game:
+                        ceNode.EventType = ClusterEventType.GameExit;
+                        break;
+                    case SERVER_TYPE.Gamegate:
+                        ceNode.EventType = ClusterEventType.GamegateExit;
+                        break;
+                    case SERVER_TYPE.Gamegatemgr:
+                        ceNode.EventType = ClusterEventType.GamegatemgrExit;
+                        break;
+                    case SERVER_TYPE.Scene:
+                        ceNode.EventType = ClusterEventType.SceneExit;
+                        break;
+                    case SERVER_TYPE.Dbproxy:
+                        ceNode.EventType = ClusterEventType.DbproxyExit;
+                        break;
+                    default:
+                        Log.Error("NetService._ServerInfoRegisterRequest 错误的断开类型");
+                        break;
+                }
+
+                m_serversByType[serverInfoNode.ServerType].Remove(serverId);
                 m_servers.Remove(serverId);
                 idGenerator.ReturnId(serverId);
+
+                _DispatchEvent(cEventResp);
+            End:
                 return true;
             }
             return false;
@@ -115,7 +170,7 @@ namespace ControlCenter.Core
             resp.ServerId = serverId;
             List<ClusterEventNode> clusterEventNodes = _DispatchMissedEvents(serverId);
             resp.ClusterEventNodes.AddRange(clusterEventNodes);
-            Log.Information($"[ServerInfoRegister] 注册成功，{node.ToString()}");
+            Log.Information($"successfully registered, {node.ToString()}");
         End:
             conn.Send(resp);
         }

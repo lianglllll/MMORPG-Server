@@ -27,6 +27,8 @@ namespace Common.Summer.Net
         private int m_maxReConnectionCount = 10;
         private float m_reConnectionInterval = 2f;
 
+        // public Connection Connection => m_connection;
+
         public void Init(string ip, int port, int maxReconnectionCount,
             TcpClientConnectedCallback connected, TcpClientConnectedFailedCallback connectFailed, 
             TcpClientDisconnectedCallback disconnected)
@@ -53,27 +55,11 @@ namespace Common.Summer.Net
             m_connectFailed = null;
             m_disconnected = null;
         }
-        public Connection CloseConnection()
-        {
-            var conn = m_connection;
-            m_connection = null;
-            return conn;
-        }
         private void _ConnectToServer()
         {
             if (m_connection != null && m_connection.Socket.Connected) return;
             // 异步连接
             m_clientSocket.ConnectAsync(m_connectArgs);
-        }
-        public bool ReConnectToServer()
-        {
-            if(m_clientSocket == null)
-            {
-                Log.Error("[NetClient]未初始化，紧张重连。");
-                return false;
-            }
-            _ConnectToServer();
-            return true;
         }
         private  void _ConnectCallback(object sender, SocketAsyncEventArgs e)
         {
@@ -97,12 +83,26 @@ namespace Common.Summer.Net
                     m_connectFailed?.Invoke(this, true);
                 }
             }
-
         }
         private  void _OnDisconnected(Connection conn)
         {
             m_connection = null;
             m_disconnected?.Invoke(this);
+        }
+        public void CloseConnection()
+        {
+            m_connection.CloseConnection();
+            m_connection = null;
+        }
+        public bool ReConnectToServer()
+        {
+            if (m_clientSocket == null)
+            {
+                Log.Error("[NetClient]未初始化，紧张重连。");
+                return false;
+            }
+            _ConnectToServer();
+            return true;
         }
         public bool Send(IMessage message)
         {

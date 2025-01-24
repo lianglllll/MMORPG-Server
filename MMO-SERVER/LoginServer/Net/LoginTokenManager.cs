@@ -14,19 +14,13 @@ namespace LoginGateServer.Net
 
         public void Init()
         {
-            // 协议注册
-            ProtoHelper.Instance.Register<GetLoginTokenResponse>((int)LoginProtocl.GetLoginTokenResp);
+
         }
 
-        public LoginToken NewToken(Connection connection)
+        public LoginToken NewToken(Connection connection, ServerInfoNode serverInfoNode)
         {
-            var token = new LoginToken(Guid.NewGuid().ToString(), connection);
+            var token = new LoginToken(Guid.NewGuid().ToString(), connection, serverInfoNode);
             m_tokens[token.Id] = token;
-
-            GetLoginTokenResponse resp = new GetLoginTokenResponse();
-            resp.LoginToken = token.Id;
-            connection.Send(resp);
-
             return token;
         }
         public void RemoveToken(string tokenId)

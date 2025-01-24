@@ -52,8 +52,8 @@ namespace ControlCenter.Net
             {
                 if (conn.Socket != null && conn.Socket.Connected)
                 {
-                    var ipe = conn.Socket.RemoteEndPoint;
-                    Log.Debug("[连接成功]" + IPAddress.Parse(((IPEndPoint)ipe).Address.ToString()) + " : " + ((IPEndPoint)ipe).Port.ToString());
+                    //var ipe = conn.Socket.RemoteEndPoint;
+                    //Log.Debug("[连接成功]" + IPAddress.Parse(((IPEndPoint)ipe).Address.ToString()) + " : " + ((IPEndPoint)ipe).Port.ToString());
                     // 给conn添加心跳时间
                     m_lastHeartbeatTimes[conn] = DateTime.Now;
                 }
@@ -79,7 +79,7 @@ namespace ControlCenter.Net
 
             int serverId = conn.Get<int>();
             if (serverId > 0) { 
-                ServersMgr.Instance.OnDisconnected(serverId);
+                ServersMgr.Instance.HaveInstanceDisconnected(serverId);
             }
         }
         private void _SSHeartBeatRequest(Connection conn, SSHeartBeatRequest message)

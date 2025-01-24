@@ -4,8 +4,8 @@ package HS.Protobuf.Login;
 
 enum LoginProtocl{
 	LOGIN_PROTOCL_NONE = 0;
-	LOGIN_PROTOCL_GET_LOGIN_TOKEN_REQ = 20001;		// [GetLoginTokenRequest]
-	LOGIN_PROTOCL_GET_LOGIN_TOKEN_RESP = 20002;		// [GetLoginTokenResponse]
+	LOGIN_PROTOCL_REGISTER_TO_L_REQ = 20001;		// [RegisterToLRequest]
+	LOGIN_PROTOCL_REGISTER_TO_L_RESP = 20002;		// [RegisterToLResponse]
 	LOGIN_PROTOCL_USER_REGISTER_REQ = 20003;		// [UserRegisterRequest]
 	LOGIN_PROTOCL_USER_REGISTER_RESP = 20004;		// [UserRegisterResponse]
 	LOGIN_PROTOCL_USER_LOGIN_REQ = 20005;			// [UserLoginRequest]
@@ -29,10 +29,13 @@ message WorldInfoNode{
 	WORLD_LOAD_STATUS status = 4;
 }
 
-message GetLoginTokenRequest{
+message RegisterToLRequest{
+	HS.Protobuf.Common.ServerInfoNode serverInfoNode = 1;
 }
-message GetLoginTokenResponse{
-	string loginToken = 1;
+message RegisterToLResponse{
+	int32  resultCode		= 1;	//0 成功 小于0正常流程  大于0异常流程
+	string resultMsg		= 2;
+	string loginToken = 3;
 }
 
 message UserRegisterRequest{
@@ -94,6 +97,13 @@ message  ReconnectResponse{
 	int32 entityId = 2;//重连的角色，0代表为选择角色
 }
 
+
+
+
+
+
+//============================================公告==========================================
+
 //退出游戏
 message ExitRequest{
 
@@ -108,10 +118,6 @@ message ExitResponse{
 //重新登录
 
 
-
-
-
-//============================================公告==========================================
 message KillRankingListItem{
 	string chrName = 1;
 	int64 killCount = 2;

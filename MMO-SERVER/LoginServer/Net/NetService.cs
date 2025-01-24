@@ -1,5 +1,4 @@
-﻿using System.Net;
-using Serilog;
+﻿using Serilog;
 using Common.Summer.Core;
 using Common.Summer.Net;
 using Common.Summer.Tools;
@@ -7,7 +6,7 @@ using System.Collections.Concurrent;
 using HS.Protobuf.Common;
 using LoginServer.Utils;
 using static Common.Summer.Net.NetClient;
-using LoginGateServer.Net;
+using LoginServer.Core;
 
 namespace LoginServer.Net
 {
@@ -60,8 +59,8 @@ namespace LoginServer.Net
             {
                 if (conn.Socket != null && conn.Socket.Connected)
                 {
-                    var ipe = conn.Socket.RemoteEndPoint;
-                    Log.Debug("[连接成功]" + IPAddress.Parse(((IPEndPoint)ipe).Address.ToString()) + " : " + ((IPEndPoint)ipe).Port.ToString());
+                    //var ipe = conn.Socket.RemoteEndPoint;
+                    //Log.Debug("[连接成功]" + IPAddress.Parse(((IPEndPoint)ipe).Address.ToString()) + " : " + ((IPEndPoint)ipe).Port.ToString());
                     AllocateConnectionResource(conn);
                 }
                 else
@@ -78,11 +77,7 @@ namespace LoginServer.Net
         }
         private void _HandleServerDisconnected(Connection conn)
         {
-            //从心跳字典中删除连接
-            if (m_serverConnHeartbeatTimestamps.ContainsKey(conn))
-            {
-                m_serverConnHeartbeatTimestamps.TryRemove(conn, out _);
-            }
+            CleanConnectionResource(conn);
         }
         public void CloseServerConnection(Connection conn)
         {
@@ -95,9 +90,6 @@ namespace LoginServer.Net
         {
             // 给conn添加心跳时间
             m_serverConnHeartbeatTimestamps[conn] = DateTime.Now;
-            // 分配一下连接token
-            LoginToken token = LoginTokenManager.Instance.NewToken(conn);
-            conn.Set<LoginToken>(token);
         }
         private void CleanConnectionResource(Connection conn)
         {
@@ -106,10 +98,7 @@ namespace LoginServer.Net
             {
                 m_serverConnHeartbeatTimestamps.TryRemove(conn, out _);
             }
-
-            // token回收
-            LoginTokenManager.Instance.RemoveToken(conn.Get<LoginToken>().Id);
-
+            LoginServerMonitor.Instance.HaveLoginGateInstanceDisconnect(conn);
         }
         private void _HandleSSHeartBeatRequest(Connection conn, SSHeartBeatRequest message)
         {

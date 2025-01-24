@@ -18,6 +18,7 @@ namespace GameServer.Net
     {
         public ServerInfoNode ServerInfoNode { get; set; }
         public NetClient NetClient { get; set; }
+        public bool IsFirstConn { get; set; }
     }
 
     public class ServersMgr : Singleton<ServersMgr>
@@ -112,12 +113,22 @@ namespace GameServer.Net
         }
         private void _CCConnectedCallback(NetClient tcpClient)
         {
-            m_outgoingServerConnection.Add(SERVER_TYPE.Controlcenter, new ServerEntry { NetClient = tcpClient });
             Log.Information("Successfully connected to the control center server.");
-            //向cc注册自己
+
+            var ccEntry = m_outgoingServerConnection.GetValueOrDefault(SERVER_TYPE.Controlcenter, null);
+            if (ccEntry != null)
+            {
+                ccEntry.NetClient = tcpClient;
+            }
+            else
+            {
+                m_outgoingServerConnection.Add(SERVER_TYPE.Controlcenter, new ServerEntry { NetClient = tcpClient, IsFirstConn = true });
+            }
+
+            // 向cc注册自己
             ServerInfoRegisterRequest req = new();
             req.ServerInfoNode = m_curSin;
-            tcpClient?.Send(req);
+            tcpClient.Send(req);
         }
         private void _CCConnectedFailedCallback(NetClient tcpClient, bool isEnd)
         {
@@ -134,16 +145,22 @@ namespace GameServer.Net
         }
         private void _CCDisconnectedCallback(NetClient tcpClient)
         {
-
+            Log.Error("Disconnect from the ControlCenter server, attempting to reconnect controlCenter");
+            var ccEntry = m_outgoingServerConnection.GetValueOrDefault(SERVER_TYPE.Controlcenter, null);
+            ccEntry.NetClient = null;
+            _CCConnectToControlCenter();
         }
         private void _RegisterServerInfo2ControlCenterResponse(Connection conn, ServerInfoRegisterResponse message)
         {
             if (message.ResultCode == 0)
             {
                 m_curSin.ServerId = message.ServerId;
-                Log.Information("[Successfully registered this server information with the ControlCenter.]");
-                Log.Information($"The server ID of this server is [{message.ServerId}]");
-                _ExecutePhase1(message.ClusterEventNodes);
+                Log.Information($"Successfully registered to ControlCenter, get serverId = [{message.ServerId}]");
+                if (m_outgoingServerConnection[SERVER_TYPE.Controlcenter].IsFirstConn)
+                {
+                    _ExecutePhase1(message.ClusterEventNodes);
+                    m_outgoingServerConnection[SERVER_TYPE.Controlcenter].IsFirstConn = false;
+                }
             }
             else
             {

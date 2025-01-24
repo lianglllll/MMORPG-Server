@@ -6,7 +6,6 @@ using HS.Protobuf.ControlCenter;
 using HS.Protobuf.LoginGateMgr;
 using LoginGateMgrServer.Net;
 using Serilog;
-using System.Collections.Concurrent;
 
 namespace LoginGateMgrServer.Core
 {
@@ -106,11 +105,18 @@ namespace LoginGateMgrServer.Core
 
         public bool RegisterLoginGateInstance(Connection conn, ServerInfoNode serverInfoNode)
         {
+            bool result = false;
+
             if (m_logingateInstances.ContainsKey(serverInfoNode.ServerId))
             {
                 Log.Error("RegisterLoginGateInstance failed, serverId already exists.");
-                return false;
+                goto End;
             }
+
+            Log.Information($"[serverId = {serverInfoNode.ServerId}],a LoginGateServer register...");
+
+            conn.Set<int>(serverInfoNode.ServerId);
+            
             // todo 有效性判断？
             var entry = new LoginGateEntry
             {
@@ -121,10 +127,13 @@ namespace LoginGateMgrServer.Core
             };
             m_logingateInstances.Add(serverInfoNode.ServerId, entry);
             AssignTaskToLogingate(serverInfoNode.ServerId);
-            return true;
+            result = true;
+        End:
+            return result;
         }
         public bool LoginGateDisconnection(int serverId)
         {
+            Log.Error($"[serverId = {serverId}],a LoginGateServer disconnect...");
             int relativeLoginServerId = m_logingateInstances[serverId].curLoginServerId;
             if (relativeLoginServerId != -1)
             {

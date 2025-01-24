@@ -10,11 +10,15 @@ namespace DBProxyServer.Net
 {
     public class ServersMgr : Singleton<ServersMgr>
     {
+        private bool isFirstStart;
         private ServerInfoNode? m_curServerInfoNode;
-        public NetClient ccClient;
+        public NetClient? ccClient;
+
         public int ServerId { get { return m_curServerInfoNode.ServerId; } }
         public void Init()
         {
+            isFirstStart = true;
+
             // 本服务器的信息
             m_curServerInfoNode = new ServerInfoNode();
             DBProxyServerInfoNode dbpNode = new();
@@ -58,7 +62,7 @@ namespace DBProxyServer.Net
         private void _CCConnectedCallback(NetClient tcpClient)
         {
             ccClient = tcpClient;
-            Log.Information("[Successfully connected to the ControlCenter server.]");
+            Log.Information("Successfully connected to the ControlCenter server.");
             //向cc注册自己
             ServerInfoRegisterRequest req = new();
             req.ServerInfoNode = m_curServerInfoNode;
@@ -79,16 +83,21 @@ namespace DBProxyServer.Net
         }
         private void _CCDisconnectedCallback(NetClient tcpClient)
         {
-            
+            Log.Error("Disconnect from the ControlCenter server, attempting to reconnect controlCenter");
+            ccClient = null;
+            _CCConnectToControlCenter();
         }
         private void _RegisterServerInfo2ControlCenterResponse(Connection conn, ServerInfoRegisterResponse message)
         {
             if (message.ResultCode == 0)
             {
                 m_curServerInfoNode.ServerId = message.ServerId;
-                Log.Information("[Successfully registered this server information with the ControlCenter.]");
-                Log.Information($"The server ID of this server is [{message.ServerId}]");
-                _ExecutePhase1();
+                Log.Information($"Successfully registered to ControlCenter, get serverId = [{message.ServerId}]");
+                if(isFirstStart == true)
+                {
+                    isFirstStart = false;
+                    _ExecutePhase1();
+                }
             }
             else
             {

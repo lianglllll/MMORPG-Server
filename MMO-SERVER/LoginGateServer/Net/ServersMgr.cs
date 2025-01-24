@@ -4,12 +4,12 @@ using Common.Summer.Tools;
 using Google.Protobuf;
 using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
+using HS.Protobuf.Game;
 using HS.Protobuf.Login;
 using HS.Protobuf.LoginGateMgr;
 using LoginGateServer.Handle;
 using LoginGateServer.Utils;
 using Serilog;
-using System.Net.Sockets;
 
 namespace LoginGateServer.Net
 {
@@ -17,6 +17,7 @@ namespace LoginGateServer.Net
     {
         public ServerInfoNode ServerInfoNode { get; set; }
         public NetClient NetClient { get; set; }
+        public bool IsFirstConn { get; set; }
     }
 
     public class ServersMgr : Singleton<ServersMgr>
@@ -51,19 +52,18 @@ namespace LoginGateServer.Net
             ProtoHelper.Instance.Register<RegisterLoginGateInstanceResponse>((int)LoginGateMgrProtocl.RegisterLogingateInstanceResp);
             ProtoHelper.Instance.Register<ExecuteLGCommandRequest>((int)LoginGateMgrProtocl.ExecuteLgCommandReq);
             ProtoHelper.Instance.Register<ExecuteLGCommandResponse>((int)LoginGateMgrProtocl.ExecuteLgCommandResp);
-            ProtoHelper.Instance.Register<GetLoginTokenRequest>((int)LoginProtocl.GetLoginTokenReq);
-            ProtoHelper.Instance.Register<GetLoginTokenResponse>((int)LoginProtocl.GetLoginTokenResp);
+            ProtoHelper.Instance.Register<RegisterToLRequest>((int)LoginProtocl.RegisterToLReq);
+            ProtoHelper.Instance.Register<RegisterToLResponse>((int)LoginProtocl.RegisterToLResp);
 
             // 消息的订阅
             MessageRouter.Instance.Subscribe<ServerInfoRegisterResponse>(_RegisterServerInfo2ControlCenterResponse);
             MessageRouter.Instance.Subscribe<RegisterLoginGateInstanceResponse>(_RegisterLoginGateInstanceResponse);
             MessageRouter.Instance.Subscribe<ExecuteLGCommandRequest>(_ExecuteLGCommandRequest);
-            MessageRouter.Instance.Subscribe<GetLoginTokenResponse>(_HandleGetLoginTokenResponse);
+            MessageRouter.Instance.Subscribe<RegisterToLResponse>(_HandleRegisterToLResponse);
 
             // 开始流程
             _ExecutePhase0();
         }
-
         public void UnInit()
         {
 
@@ -85,7 +85,7 @@ namespace LoginGateServer.Net
         private bool _ExecutePhase0()
         {
             // 连接到控制中心cc
-            _ConnectToCC();
+            _CCConnectToControlCenter();
             return true;
         }
         private bool _ExecutePhase1(Google.Protobuf.Collections.RepeatedField<ClusterEventNode> clusterEventNodes)
@@ -122,15 +122,23 @@ namespace LoginGateServer.Net
         }
 
         // cc
-        private void _ConnectToCC()
+        private void _CCConnectToControlCenter()
         {
             NetService.Instance.ConnctToServer(Config.CCConfig.ip, Config.CCConfig.port, _CCConnectedCallback, _CCConnectedFailedCallback, _CCDisconnectedCallback);
         }
         private void _CCConnectedCallback(NetClient tcpClient)
         {
             Log.Information("Successfully connected to the control center server.");
-            // 记录
-            m_outgoingServerConnection.Add(SERVER_TYPE.Controlcenter, new ServerEntry { NetClient = tcpClient});
+
+            var ccEntry = m_outgoingServerConnection.GetValueOrDefault(SERVER_TYPE.Controlcenter, null);
+            if (ccEntry != null)
+            {
+                ccEntry.NetClient = tcpClient;
+            }
+            else
+            {
+                m_outgoingServerConnection.Add(SERVER_TYPE.Controlcenter, new ServerEntry { NetClient = tcpClient, IsFirstConn = true });
+            }
 
             // 向cc注册自己
             ServerInfoRegisterRequest req = new();
@@ -152,16 +160,22 @@ namespace LoginGateServer.Net
         }
         private void _CCDisconnectedCallback(NetClient tcpClient)
         {
-            
+            Log.Error("Disconnect from the ControlCenter server, attempting to reconnect controlCenter");
+            var ccEntry = m_outgoingServerConnection.GetValueOrDefault(SERVER_TYPE.Controlcenter, null);
+            ccEntry.NetClient = null;
+            _CCConnectToControlCenter();
         }
         private void _RegisterServerInfo2ControlCenterResponse(Connection conn, ServerInfoRegisterResponse message)
         {
             if (message.ResultCode == 0)
             {
                 m_curSin.ServerId = message.ServerId;
-                Log.Information("Successfully registered this server information with the ControlCenter.");
-                Log.Information($"The server ID of this server is [{message.ServerId}]");
-                _ExecutePhase1(message.ClusterEventNodes);
+                Log.Information($"Successfully registered to ControlCenter, get serverId = [{message.ServerId}]");
+                if (m_outgoingServerConnection[SERVER_TYPE.Controlcenter].IsFirstConn)
+                {
+                    _ExecutePhase1(message.ClusterEventNodes);
+                    m_outgoingServerConnection[SERVER_TYPE.Controlcenter].IsFirstConn = false;
+                }
             }
             else
             {
@@ -285,7 +299,7 @@ namespace LoginGateServer.Net
         {
             if (m_outgoingServerConnection.ContainsKey(SERVER_TYPE.Login))
             {
-                NetService.Instance.CloseServerConnection(m_outgoingServerConnection[SERVER_TYPE.Login].NetClient);
+                NetService.Instance.CloseOutgoingServerConnection(m_outgoingServerConnection[SERVER_TYPE.Login].NetClient);
                 m_outgoingServerConnection.Remove(SERVER_TYPE.Login);
                 return true;
             }
@@ -303,6 +317,11 @@ namespace LoginGateServer.Net
         {
             Log.Information($"Successfully connected to the Login server[{m_outgoingServerConnection[SERVER_TYPE.Login].ServerInfoNode.ServerId}].");
             m_outgoingServerConnection[SERVER_TYPE.Login].NetClient = tcpClient;
+
+            //注册
+            RegisterToLRequest req = new();
+            req.ServerInfoNode = m_curSin;
+            tcpClient.Send(req);
         }
         private void _LoginConnectedFailedCallback(NetClient tcpClient, bool isEnd)
         {
@@ -324,8 +343,9 @@ namespace LoginGateServer.Net
         {
 
         }
-        private void _HandleGetLoginTokenResponse(Connection sender, GetLoginTokenResponse message)
+        private void _HandleRegisterToLResponse(Connection sender, RegisterToLResponse message)
         {
+            Log.Information("Successfully registered to the login server.");
             LoginToken = message.LoginToken;
             _ExecutePhase3();
         }

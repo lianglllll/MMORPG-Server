@@ -100,7 +100,6 @@ namespace GameServer.Net
         {
             // 给conn添加心跳时间
             m_serverConnHeartbeatTimestamps[conn] = DateTime.Now;
-
         }
         private void CleanConnectionResource(Connection conn)
         {

@@ -9,8 +9,9 @@ using HS.Protobuf.GameGateMgr;
 using GameGateServer.Handle;
 using HS.Protobuf.Game;
 using Google.Protobuf;
-using System.Xml.Linq;
 using HS.Protobuf.Scene;
+using System.Linq;
+using System.Net.Sockets;
 
 namespace GameGateServer.Net
 {
@@ -18,7 +19,7 @@ namespace GameGateServer.Net
     {
         public ServerInfoNode ServerInfoNode { get; set; }
         public NetClient NetClient { get; set; }
-        public string Token { get; set; }
+        public bool IsFirstConn { get; set; }
     }
 
     public class ServersMgr : Singleton<ServersMgr>
@@ -72,7 +73,6 @@ namespace GameGateServer.Net
             // 开始流程
             _ExecutePhase0();
         }
-
         public void UnInit()
         {
 
@@ -94,7 +94,7 @@ namespace GameGateServer.Net
         private bool _ExecutePhase0()
         {
             // 连接到控制中心cc
-            _ConnectToCC();
+            _CCConnectToControlCenter();
             return true;
         }
         private bool _ExecutePhase1(Google.Protobuf.Collections.RepeatedField<ClusterEventNode> clusterEventNodes)
@@ -126,15 +126,23 @@ namespace GameGateServer.Net
         }
 
         // cc
-        private void _ConnectToCC()
+        private void _CCConnectToControlCenter()
         {
             NetService.Instance.ConnctToServer(Config.CCConfig.ip, Config.CCConfig.port, _CCConnectedCallback, _CCConnectedFailedCallback, _CCDisconnectedCallback);
         }
         private void _CCConnectedCallback(NetClient tcpClient)
         {
             Log.Information("Successfully connected to the control center server.");
-            // 记录
-            m_outgoingServerConnection.Add(SERVER_TYPE.Controlcenter, new ServerEntry { NetClient = tcpClient });
+
+            var ccEntry = m_outgoingServerConnection.GetValueOrDefault(SERVER_TYPE.Controlcenter, null);
+            if (ccEntry != null)
+            {
+                ccEntry.NetClient = tcpClient;
+            }
+            else
+            {
+                m_outgoingServerConnection.Add(SERVER_TYPE.Controlcenter, new ServerEntry { NetClient = tcpClient, IsFirstConn = true });
+            }
 
             // 向cc注册自己
             ServerInfoRegisterRequest req = new();
@@ -156,16 +164,22 @@ namespace GameGateServer.Net
         }
         private void _CCDisconnectedCallback(NetClient tcpClient)
         {
-            
+            Log.Error("Disconnect from the ControlCenter server, attempting to reconnect controlCenter");
+            var ccEntry = m_outgoingServerConnection.GetValueOrDefault(SERVER_TYPE.Controlcenter, null);
+            ccEntry.NetClient = null;
+            _CCConnectToControlCenter();
         }
         private void _RegisterServerInfo2ControlCenterResponse(Connection conn, ServerInfoRegisterResponse message)
         {
             if (message.ResultCode == 0)
             {
                 m_curSin.ServerId = message.ServerId;
-                Log.Information("Successfully registered this server information with the ControlCenter.");
-                Log.Information($"The server ID of this server is [{message.ServerId}]");
-                _ExecutePhase1(message.ClusterEventNodes);
+                Log.Information($"Successfully registered to ControlCenter, get serverId = [{message.ServerId}]");
+                if (m_outgoingServerConnection[SERVER_TYPE.Controlcenter].IsFirstConn)
+                {
+                    _ExecutePhase1(message.ClusterEventNodes);
+                    m_outgoingServerConnection[SERVER_TYPE.Controlcenter].IsFirstConn = false;
+                }
             }
             else
             {
@@ -288,7 +302,7 @@ namespace GameGateServer.Net
         {
             if(m_outgoingServerConnection.ContainsKey(SERVER_TYPE.Game))
             {
-                NetService.Instance.CloseServerConnection(m_outgoingServerConnection[SERVER_TYPE.Game].NetClient);
+                NetService.Instance.CloseOutgoingServerConnection(m_outgoingServerConnection[SERVER_TYPE.Game].NetClient);
                 m_outgoingServerConnection.Remove(SERVER_TYPE.Game);
                 return true;
             }

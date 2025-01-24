@@ -190,10 +190,10 @@ namespace GameGateServer.Net
         {
             // 知道对端也活着，嘻嘻。
         }
-        public void CloseServerConnection(NetClient nc)
+        public void CloseOutgoingServerConnection(NetClient nc)
         {
-            var conn = nc.CloseConnection();
-            m_serverConnHeartbeatTimestamps.TryRemove(conn,out _);
+            m_outgoingServerConnection.Remove(nc);
+            nc.CloseConnection();
         }
     }
 }

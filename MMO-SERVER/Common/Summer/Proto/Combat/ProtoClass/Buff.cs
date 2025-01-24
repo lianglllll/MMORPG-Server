@@ -130,7 +130,7 @@ namespace HS.Protobuf.Combat.Buff {
     public const int IdFieldNumber = 1;
     private int id_;
     /// <summary>
-    ///实例id
+    ///实例id,因为同一个buff可能有很多个，需要区分
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]

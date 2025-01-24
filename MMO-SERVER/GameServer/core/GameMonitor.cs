@@ -46,8 +46,8 @@ namespace GameServer.Core
 
         public bool RegisterInstance(Connection conn, ServerInfoNode serverInfoNode)
         {
-            conn.Set<int>(serverInfoNode.ServerId);
 
+            conn.Set<int>(serverInfoNode.ServerId);
             RegisterToGResponse resp = new();
             if (serverInfoNode.ServerType == SERVER_TYPE.Gamegate)
             {
