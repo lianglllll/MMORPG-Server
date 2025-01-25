@@ -37,6 +37,7 @@
 
 **服务器角色简要说明：**
 
+```
 中心服务器(ControlCenterServer)			   :保存其他服务器的信息，不做逻辑处理。
 数据库服务器(DBProxyServer)				   :作为mognodb和其他server之间沟通的代理服务器。
 登录服务器(LoginServer)					   :完成登录、注册功能
@@ -47,8 +48,9 @@
 游戏网关管理服务器(GameGateServerMgrServer)   :监控GameGate和Scene,给Game和GameGate和Scene之间建立联系，扩容和收缩为Game服务的GameGate的数量。
 场景服务器(SceneServer)                       :处理玩家的移动、战斗相关的逻辑。
 日志服务器(LogServer)						 :收集各个服务器的运行log，保存到数据库中。//todo
-游戏管理员服务器(GmServer)					:接受来自web后台的命令，控制其他服务器。  //todo
+游戏管理员服务器(GmServer)					   :接受来自web后台的命令，控制其他服务器。  //todo
 web代理服务器(HttpProxyServer)				:处理来自网页的请求，主要是可以查看其他服务器的负载情况，也可以发命令。 //todo 
+```
 
 
 
