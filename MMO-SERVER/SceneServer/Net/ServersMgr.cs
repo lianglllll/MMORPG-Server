@@ -19,11 +19,19 @@ namespace SceneServer.Net
         public NetClient NetClient { get; set; }
         public bool IsFirstConn { get; set; }
     }
+
+    class GameGateEntry
+    {
+        public ServerInfoNode ServerInfoNode { get; set; }
+        public Connection Connection { get; set; }    
+    }
+
+
     public class ServersMgr : Singleton<ServersMgr>
     {
         private ServerInfoNode? m_curSin;
         private Dictionary<SERVER_TYPE, ServerEntry> m_outgoingServerConnection = new();
-        private Dictionary<int, Connection> m_gameGateConn = new();
+        private Dictionary<int, GameGateEntry> m_gameGateConn = new();
 
         public string GameToken { get; private set; }
 
@@ -89,8 +97,6 @@ namespace SceneServer.Net
         private bool _ExecutePhase0()
         {
             // 连接到控制中心cc
-            var cEntry = new ServerEntry();
-            m_outgoingServerConnection.Add(SERVER_TYPE.Controlcenter, cEntry);
             _CCConnectToControlCenter();
             return true;
         }
@@ -186,8 +192,8 @@ namespace SceneServer.Net
                 Log.Information("Get Subscription events: {0}", message.ClusterEventNodes);
                 if (m_outgoingServerConnection[SERVER_TYPE.Controlcenter].IsFirstConn)
                 {
-                    _ExecutePhase1(message.ClusterEventNodes);
                     m_outgoingServerConnection[SERVER_TYPE.Controlcenter].IsFirstConn = false;
+                    _ExecutePhase1(message.ClusterEventNodes);
                 }
             }
             else
@@ -215,7 +221,8 @@ namespace SceneServer.Net
         }
         private void _GameGateMgrConnectedCallback(NetClient tcpClient)
         {
-            Log.Information("Successfully connected to the GameGateMgr server.");
+            Log.Information("Successfully connected to the GameGateMgr server[{0}].", 
+                m_outgoingServerConnection[SERVER_TYPE.Gamegatemgr].ServerInfoNode.ServerId);
 
             // 记录
             m_outgoingServerConnection[SERVER_TYPE.Gamegatemgr].NetClient = tcpClient;
@@ -275,7 +282,8 @@ namespace SceneServer.Net
         }
         private void _DBConnectedCallback(NetClient tcpClient)
         {
-            Log.Information("Successfully connected to the DBProxy server.");
+            Log.Information("Successfully connected to the DBProxy server[{0}].",
+                m_outgoingServerConnection[SERVER_TYPE.Dbproxy].ServerInfoNode.ServerId);
             // 记录
             m_outgoingServerConnection[SERVER_TYPE.Dbproxy].NetClient = tcpClient;
             _ExecutePhase2();
@@ -302,6 +310,7 @@ namespace SceneServer.Net
         // command
         private void _HandleExecuteSCommandRequest(Connection conn, ExecuteSCommandRequest message)
         {
+            Log.Information("Recive GGM's Command = {0}", message);
             int resultCode = 0;
             switch (message.Command)
             {
@@ -331,7 +340,6 @@ namespace SceneServer.Net
         {
             if (message.GameServerInfoNode != null)
             {
-                Log.Information("Command:Start......");
                 m_outgoingServerConnection[SERVER_TYPE.Game] = new ServerEntry { ServerInfoNode = message.GameServerInfoNode };
                 _ConnectToG();
                 return true;
@@ -369,7 +377,8 @@ namespace SceneServer.Net
         }
         private void _GameConnectedCallback(NetClient tcpClient)
         {
-            Log.Information("Successfully connected to the Game server.");
+            Log.Information("Successfully connected to the Game server[{0}].",
+                m_outgoingServerConnection[SERVER_TYPE.Game].ServerInfoNode.ServerId);
 
             // 记录
             m_outgoingServerConnection[SERVER_TYPE.Game].NetClient = tcpClient;
@@ -399,7 +408,8 @@ namespace SceneServer.Net
         }
         private void _HandleRegisterToGResponse(Connection conn, RegisterToGResponse message)
         {
-            Log.Information("Successfully registered to the game server.");
+            Log.Information("Successfully registered to the game server, Get GameToken = {0}",
+                message.GameToken);
             GameToken = message.GameToken;
             m_curSin.SceneServerInfo.SceneId = message.AllocateSceneId;
             _ExecutePhase2();
@@ -408,15 +418,28 @@ namespace SceneServer.Net
         // gameGate
         private void _HandleRegisterToSceneRequest(Connection conn, RegisterToSceneRequest message)
         {
-            m_gameGateConn.Add(message.GameGateServerId, conn);
+            Log.Information("GameGateInstance Register , {0}", message.ServerInfoNode);
+            var entry = new GameGateEntry
+            {
+                ServerInfoNode = message.ServerInfoNode,
+                Connection = conn,
+            };
+            m_gameGateConn.Add(message.ServerInfoNode.ServerId, entry);
+            conn.Set<int>(message.ServerInfoNode.ServerId);
             RegisterToSceneResponse resp = new();
             resp.ResultCode = 0;
             conn.Send(resp);
         }
+        public void HaveGameGateDisconnect(int gameGateServerId)
+        {
+            Log.Error("GameGateInstance Disconnection, serverId = {0}", gameGateServerId);
+            m_gameGateConn.Remove(gameGateServerId);
+        }   
+
         public Connection GetGameGateConnByServerId(int gameGateServerId)
         {
-            m_gameGateConn.TryGetValue(gameGateServerId, out var conn);
-            return conn;
+            m_gameGateConn.TryGetValue(gameGateServerId, out var entry);
+            return entry.Connection;
         }
     }
 }

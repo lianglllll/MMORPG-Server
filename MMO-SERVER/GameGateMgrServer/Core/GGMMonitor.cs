@@ -29,7 +29,7 @@ namespace GameGateMgrServer.Core
         }
         public int NeedGameGateCount { get; set; }
         public List<int> curGate = new();
-        public int assignSessionIndex { get; set; }
+        public int assignSessionIndex { get; set; }         // 用来均匀分配给多台gameGate用的
         public int AssignScenePriority
         {
             get
@@ -108,6 +108,8 @@ namespace GameGateMgrServer.Core
                 assignSessionIndex = 0,
             };
             m_gameInstances[serverInfoNode.ServerId] = entry;
+
+            // 已经有game资源了，可以分配给空闲的gameGate和secene
             ProcessIdleQueue(serverInfoNode.ServerId);
             return true;
         }
@@ -132,7 +134,6 @@ namespace GameGateMgrServer.Core
             return true;
         }
 
-
         // gameGate && scene
         public bool RegisterToGGMInstance(Connection conn, ServerInfoNode serverInfoNode)
         {
@@ -142,6 +143,7 @@ namespace GameGateMgrServer.Core
                 return false;
             }
 
+            conn.Set<int>(serverInfoNode.ServerId);
             if (serverInfoNode.ServerType == SERVER_TYPE.Gamegate)
             {
                 Log.Information("Register GameGateInstance , {0}", serverInfoNode);
@@ -153,7 +155,9 @@ namespace GameGateMgrServer.Core
                     Status = ServerStatus.Inactive,
                 };
                 m_gameGateInstances.Add(serverInfoNode.ServerId, entry);
-                _AssignTaskToGameGate(serverInfoNode.ServerId);
+
+                // 任务分配
+                Scheduler.Instance.AddTask(() => _AssignTaskToGameGate(serverInfoNode.ServerId), 1,1,1);
             }
             else if (serverInfoNode.ServerType == SERVER_TYPE.Scene)
             {
@@ -166,7 +170,9 @@ namespace GameGateMgrServer.Core
                     Status = ServerStatus.Inactive,
                 };
                 m_sceneInstances.Add(serverInfoNode.ServerId, entry);
-                _AssignTaskToScene(serverInfoNode.ServerId);
+
+                // 任务分配
+                Scheduler.Instance.AddTask(() => _AssignTaskToScene(serverInfoNode.ServerId), 1, 1, 1);
             }
 
             return true;
@@ -342,32 +348,32 @@ namespace GameGateMgrServer.Core
         {
             if (m_gameGateInstances.ContainsKey(serverId))
             {
-                Log.Information("a GameGateInstance disconnection, serverId = [{0}]", serverId);
+                Log.Error("a GameGateInstance disconnection, serverId = [{0}]", serverId);
                 return _GameGateDisconnection(serverId);
             }
             else if (m_sceneInstances.ContainsKey(serverId))
             {
-                Log.Information("a ScemeInstance disconnection, serverId = [{0}]", serverId);
+                Log.Error("a ScemeInstance disconnection, serverId = [{0}]", serverId);
                 return _SceneDisconnection(serverId);
             }
             return false;
         }
         private bool _GameGateDisconnection(int serverId)
         {
-            int relativeLoginServerId = m_gameGateInstances[serverId].curGameServerId;
-            if (relativeLoginServerId != -1)
+            int relativeGameServerId = m_gameGateInstances[serverId].curGameServerId;
+            if (relativeGameServerId != -1)
             {
-                m_gameInstances[relativeLoginServerId].curGate.Remove(serverId);
+                m_gameInstances[relativeGameServerId].curGate.Remove(serverId);
             }
             m_gameGateInstances.Remove(serverId);
             return true;
         }
         private bool _SceneDisconnection(int serverId)
         {
-            int relativeLoginServerId = m_gameGateInstances[serverId].curGameServerId;
-            if (relativeLoginServerId != -1)
+            int relativeGameServerId = m_sceneInstances[serverId].curGameServerId;
+            if (relativeGameServerId != -1)
             {
-                m_gameInstances[relativeLoginServerId].curScene.Remove(serverId);
+                m_gameInstances[relativeGameServerId].curScene.Remove(serverId);
             }
             m_sceneInstances.Remove(serverId);
             return true;

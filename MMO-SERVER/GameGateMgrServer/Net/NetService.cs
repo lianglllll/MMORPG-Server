@@ -88,20 +88,6 @@ namespace GameGateMgrServer.Net
             {
                 Core.GGMMonitor.Instance.EntryDisconnection(serverId);
             }
-
-        }
-        public void CloseServerConnection(Connection conn)
-        {
-            if (conn == null) return;
-
-            //从心跳字典中删除连接
-            if (m_serverConnHeartbeatTimestamps.ContainsKey(conn))
-            {
-                m_serverConnHeartbeatTimestamps.TryRemove(conn, out _);
-            }
-
-            //转交给下一层的connection去进行关闭
-            conn.CloseConnection();
         }
         private void _SSHeartBeatRequest(Connection conn, SSHeartBeatRequest message)
         {
@@ -126,11 +112,25 @@ namespace GameGateMgrServer.Net
                     //关闭超时的客户端连接
                     Connection conn = kv.Key;
                     //Log.Information("[心跳检查]心跳超时==>");//移除相关的资源
-                    CloseServerConnection(conn);
+                    _CloseServerConnection(conn);
                 }
             }
 
         }
+        private void _CloseServerConnection(Connection conn)
+        {
+            if (conn == null) return;
+
+            //从心跳字典中删除连接
+            if (m_serverConnHeartbeatTimestamps.ContainsKey(conn))
+            {
+                m_serverConnHeartbeatTimestamps.TryRemove(conn, out _);
+            }
+
+            //转交给下一层的connection去进行关闭
+            conn.CloseConnection();
+        }
+
 
         // GameGateMgrServer连接到其他服务器
         public NetClient ConnctToServer(string ip, int port,

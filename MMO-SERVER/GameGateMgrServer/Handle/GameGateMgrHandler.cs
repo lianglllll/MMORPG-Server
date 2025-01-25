@@ -41,7 +41,7 @@ namespace GameGateMgrServer.Handle
 
         private void _HandleRegisterToGGMRequest(Connection conn, RegisterToGGMRequest message)
         {
-            bool success = Core.GGMMonitor.Instance.RegisterToGGMInstance(conn, message.ServerInfoNode);
+            bool success = GGMMonitor.Instance.RegisterToGGMInstance(conn, message.ServerInfoNode);
             RegisterToGGMResponse resp = new();
             if (success)
             {
@@ -73,7 +73,7 @@ namespace GameGateMgrServer.Handle
             }
             else if (message.ClusterEventNode.EventType == ClusterEventType.GameExit)
             {
-                Log.Information("A Game server has left the cluster, {0}", message.ClusterEventNode.ServerId);
+                Log.Error("A Game server has left the cluster, {0}", message.ClusterEventNode.ServerId);
                 GGMMonitor.Instance.RemoveGameServerInfo(message.ClusterEventNode.ServerId);
             }
             else

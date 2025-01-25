@@ -10,6 +10,7 @@ using System.Collections.Concurrent;
 using HS.Protobuf.Common;
 using static Common.Summer.Net.NetClient;
 using System.Collections.Generic;
+using GameServer.Core;
 
 namespace GameServer.Net
 {
@@ -88,13 +89,13 @@ namespace GameServer.Net
             {
                 m_serverConnHeartbeatTimestamps.TryRemove(conn, out _);
             }
-        }
-        public void CloseServerConnection(Connection conn)
-        {
-            // 清理资源
-            CleanConnectionResource(conn);
-            // 转交给下一层的connection去进行关闭
-            conn.CloseConnection();
+
+            // 通知上层删除
+            int serverId = conn.Get<int>();
+            if(serverId != 0)
+            {
+                GameMonitor.Instance.HaveInstanceDisconnection(serverId);
+            }
         }
         private void AllocateConnectionResource(Connection conn)
         {
@@ -135,6 +136,13 @@ namespace GameServer.Net
                 }
             }
 
+        }
+        public void CloseServerConnection(Connection conn)
+        {
+            // 清理资源
+            CleanConnectionResource(conn);
+            // 转交给下一层的connection去进行关闭
+            conn.CloseConnection();
         }
 
 

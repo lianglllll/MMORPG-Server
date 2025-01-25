@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using Google.Protobuf;
 using Common.Summer.Core;
 using Serilog;
+using System.ComponentModel;
 
 
 namespace Common.Summer.Net
@@ -11,6 +12,8 @@ namespace Common.Summer.Net
     //主要功能是从当一个client去连接其他服务
     public class NetClient
     {
+        public int m_id;
+
         private Socket m_clientSocket;
         private SocketAsyncEventArgs m_connectArgs;
         private Connection m_connection;
@@ -27,7 +30,24 @@ namespace Common.Summer.Net
         private int m_maxReConnectionCount = 10;
         private float m_reConnectionInterval = 2f;
 
-        // public Connection Connection => m_connection;
+        public int ServerId
+        {
+            get
+            {
+                return m_id;
+            }
+            set
+            {
+                m_id = value;
+            }
+        }
+        public Connection Connection
+        {
+            get
+            {
+                return m_connection;
+            }
+        }
 
         public void Init(string ip, int port, int maxReconnectionCount,
             TcpClientConnectedCallback connected, TcpClientConnectedFailedCallback connectFailed, 

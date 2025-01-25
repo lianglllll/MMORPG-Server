@@ -141,6 +141,7 @@ namespace Common.Summer.Core
         }
         public void AddTask(Action taskMethod, float delay, float interval, int repeatCount = 0)
         {
+            // 延迟delay时间后会立即执行，不会加上interval再开始第一次执行的
             int _interval = (int)(interval * 1000);
             long startTime = UnixTime + (long)(delay * 1000);
             MyTask task = new MyTask(taskMethod, startTime, _interval, repeatCount);

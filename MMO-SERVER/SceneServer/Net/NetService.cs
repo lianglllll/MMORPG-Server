@@ -96,22 +96,13 @@ namespace SceneServer.Net
             {
                 m_serverConnHeartbeatTimestamps.TryRemove(conn, out _);
             }
-
             // 通知上层删除
-            // 暂时没有需求
-        }
-        public void CloseServerConnection(Connection conn)
-        {
-            if (conn == null) return;
-
-            //从心跳字典中删除连接
-            if (m_serverConnHeartbeatTimestamps.ContainsKey(conn))
+            int serverId = conn.Get<int>();
+            if(serverId != 0)
             {
-                m_serverConnHeartbeatTimestamps.TryRemove(conn, out _);
+                ServersMgr.Instance.HaveGameGateDisconnect(serverId);
             }
 
-            //转交给下一层的connection去进行关闭
-            conn.CloseConnection();
         }
         private void _SSHeartBeatRequest(Connection conn, SSHeartBeatRequest message)
         {
@@ -141,6 +132,20 @@ namespace SceneServer.Net
             }
 
         }
+        public void CloseServerConnection(Connection conn)
+        {
+            if (conn == null) return;
+
+            //从心跳字典中删除连接
+            if (m_serverConnHeartbeatTimestamps.ContainsKey(conn))
+            {
+                m_serverConnHeartbeatTimestamps.TryRemove(conn, out _);
+            }
+
+            //转交给下一层的connection去进行关闭
+            conn.CloseConnection();
+        }
+
 
         // 连接到其他服务器
         public NetClient ConnctToServer(string ip, int port,

@@ -38,7 +38,6 @@ namespace GameGateServer.Handle
         {
             foreach(var node in message.SceneInfos)
             {
-                Log.Information("A new scene regigster , {0}", node);
                 ServersMgr.Instance.AddSServerInfo(node);
             }
         }

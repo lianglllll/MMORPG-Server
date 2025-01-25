@@ -26,7 +26,7 @@ namespace GameServer.Core
     {
         private Dictionary<int, GameGateEntry> m_gameGateInstances = new(); // <serverId, GameGate>
         private Dictionary<int, SceneEntry> m_sceneInstances = new();       // <serverId, scene>
-        private Dictionary<int, Connection> m_sceneConn = new();       // <sceneId, conn>
+        private Dictionary<int, Connection> m_sceneConn = new();            // <sceneId, conn>
         private Queue<int> waitDispatchSceneId = new();
 
         public bool Init()
@@ -60,7 +60,6 @@ namespace GameServer.Core
 
                 // 分配一下连接token
                 GameToken token = GameTokenManager.Instance.NewToken(conn,serverInfoNode.ServerId);
-                // conn.Set<GameToken>(token);
 
                 // 抓取全部scene给gate
                 SendAllSceneToGameGate(conn,token);
@@ -100,6 +99,7 @@ namespace GameServer.Core
         private bool SendAllSceneToGameGate(Connection conn, GameToken token)
         {
             RegisterToGResponse resp = new();
+            resp.ResultCode = 0;
             resp.GameToken = token.Id;
             foreach (var sEntry in m_sceneInstances.Values)
             {
@@ -118,6 +118,29 @@ namespace GameServer.Core
             }
             return true;
         }
+
+        public bool HaveInstanceDisconnection(int serverId)
+        {
+            // gate
+            if (m_gameGateInstances.TryGetValue(serverId, out var ggEntry))
+            {
+                Log.Error("GameGateInstance Disconnection, serverId = {0}", serverId);
+                // 移除想相关联的信息
+                m_gameGateInstances.Remove(serverId);
+            }
+            else if (m_sceneInstances.TryGetValue(serverId, out var sEntry))
+            {
+                Log.Error("SceneInstance Disconnection, serverId = {0}", serverId);
+                m_sceneInstances.Remove(serverId);
+                // 回收SceneId
+                int secneId = sEntry.ServerInfo.SceneServerInfo.SceneId;
+                m_sceneConn.Remove(secneId);
+                waitDispatchSceneId.Enqueue(secneId);
+            }
+            return true;
+        }
+
+        // tools
         public Connection GetSceneConnBySceneId(int sceneId) { 
             if(m_sceneConn.TryGetValue(sceneId, out var conn))
             {
