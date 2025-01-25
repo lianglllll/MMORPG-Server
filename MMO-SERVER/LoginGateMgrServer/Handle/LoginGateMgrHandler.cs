@@ -4,12 +4,13 @@ using Common.Summer.Tools;
 using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
 using HS.Protobuf.LoginGateMgr;
+using LoginGateMgrServer.Core;
 using LoginGateMgrServer.Net;
 using Serilog;
 
-namespace LoginGateMgrServer.Core
+namespace LoginGateMgrServer.Handle
 {
-    public class LoginGateMgrHandler:Singleton<LoginGateMgrHandler>
+    public class LoginGateMgrHandler : Singleton<LoginGateMgrHandler>
     {
         public void Init()
         {
@@ -33,7 +34,7 @@ namespace LoginGateMgrServer.Core
 
         private void _HandleRegisterLoginGateInstanceRequest(Connection conn, RegisterLoginGateInstanceRequest message)
         {
-            bool success = LogingateMonitor.Instance.RegisterLoginGateInstance(conn ,message.ServerInfoNode);
+            bool success = LogingateMonitor.Instance.RegisterLoginGateInstance(conn, message.ServerInfoNode);
             RegisterLoginGateInstanceResponse resp = new();
             if (success)
             {
@@ -48,7 +49,7 @@ namespace LoginGateMgrServer.Core
         }
         private void _HandleExecuteLGCommandResponse(Connection sender, ExecuteLGCommandResponse message)
         {
-            if(message.ResultCode == 0)
+            if (message.ResultCode == 0)
             {
             }
             else
@@ -58,19 +59,19 @@ namespace LoginGateMgrServer.Core
         }
         private void _HandleClusterEventResponse(Connection sender, ClusterEventResponse message)
         {
-            if(message.ClusterEventNode.EventType == ClusterEventType.LoginEnter)
+            if (message.ClusterEventNode.EventType == ClusterEventType.LoginEnter)
             {
-                Log.Debug("A new Login server has joined the cluster.");
+                Log.Information("A new Login server has joined the cluster, {0}",message.ClusterEventNode.ServerInfoNode);
                 LogingateMonitor.Instance.AddLoginServerInfo(message.ClusterEventNode.ServerInfoNode);
             }
             else if (message.ClusterEventNode.EventType == ClusterEventType.LoginExit)
             {
-                Log.Debug("A Login server has left the cluster.");
+                Log.Error("A Login server has left the cluster, [{0}]", message.ClusterEventNode.ServerId);
                 LogingateMonitor.Instance.RemoveLoginServerInfo(message.ClusterEventNode.ServerId);
             }
             else
             {
-                Log.Debug("Unknown ccEvent");
+                Log.Error("Unknown ccEvent");
             }
         }
     }

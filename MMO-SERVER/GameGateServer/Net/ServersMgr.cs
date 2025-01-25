@@ -91,6 +91,7 @@ namespace GameGateServer.Net
             return bitmap;
         }
         
+        // phase
         private bool _ExecutePhase0()
         {
             // 连接到控制中心cc
@@ -101,8 +102,7 @@ namespace GameGateServer.Net
         {
             if (clusterEventNodes.Count == 0)
             {
-                Log.Error("No GameGateMgr server information was obtained.");
-                Log.Error("The GameGateMgr server may not be start.");
+                Log.Error("No GameGateMgr server information was obtained, the GameGateMgr server may not be start");
                 return false;
             }
 
@@ -122,6 +122,8 @@ namespace GameGateServer.Net
         {
             // 开始网络监听，预示着当前服务器的正式启动
             NetService.Instance.Start();
+
+            Log.Information("\x1b[32m" + "Initialization complete, server is now operational." + "\x1b[0m");
             return true;
         }
 
@@ -174,7 +176,8 @@ namespace GameGateServer.Net
             if (message.ResultCode == 0)
             {
                 m_curSin.ServerId = message.ServerId;
-                Log.Information($"Successfully registered to ControlCenter, get serverId = [{message.ServerId}]");
+                Log.Information("Successfully registered to ControlCenter, Get serverId = [{0}]", message.ServerId);
+                Log.Information("Get Subscription events: {0}", message.ClusterEventNodes);
                 if (m_outgoingServerConnection[SERVER_TYPE.Controlcenter].IsFirstConn)
                 {
                     _ExecutePhase1(message.ClusterEventNodes);
@@ -239,8 +242,7 @@ namespace GameGateServer.Net
             if (message.ResultCode == 0)
             {
                 // 注册成功我们等待分配任务。
-                Log.Information("Successfully registered this server information with the GameGateMgr.");
-                Log.Information("waiting for the GameGateMgr server to assign tasks.");
+                Log.Information("Successfully registered to GameGateMgr,waiting for the GameGateMgr server to assign tasks.");
             }
             else
             {
@@ -251,6 +253,7 @@ namespace GameGateServer.Net
         // command
         private void _ExecuteGGCommandRequest(Connection conn, ExecuteGGCommandRequest message)
         {
+            Log.Information("Recive GGM's Command = {0}", message);
             int resultCode = 0;
             switch (message.Command)
             {
@@ -280,7 +283,6 @@ namespace GameGateServer.Net
         {
             if(message.GameServerInfoNode != null)
             {
-                Log.Information("Command:Start......");
                 m_outgoingServerConnection[SERVER_TYPE.Game] = new ServerEntry { ServerInfoNode = message.GameServerInfoNode };
                 _ConnectToG();
                 return true;
@@ -349,7 +351,7 @@ namespace GameGateServer.Net
         }
         private void _HandleRegisterToGResponse(Connection conn, RegisterToGResponse message)
         {
-            Log.Information("Successfully registered to the game server.");
+            Log.Information("Successfully registered to the game server, GateToken = {0}", message.GameToken);
 
             GameToken = message.GameToken;
 

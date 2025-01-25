@@ -9,6 +9,7 @@ using Google.Protobuf;
 using Google.Protobuf.Collections;
 using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
+using MySqlX.XDevAPI.Common;
 using Serilog;
 using System.Collections.Generic;
 
@@ -74,6 +75,7 @@ namespace GameServer.Net
             return bitmap;
         }
 
+        // phase
         private bool _ExecutePhase0()
         {
             // 连接到控制中心cc
@@ -96,15 +98,21 @@ namespace GameServer.Net
             bool result = false;
             if (m_outgoingServerConnection.TryGetValue(SERVER_TYPE.Dbproxy, out var db) && db.NetClient != null )
             {
-                // 开始网络监听，预示着当前服务器的正式启动
-                NetService.Instance.Init2();
+                _ExecutePhase3();
                 result = true;
                 goto End;
             }
-            result = false;
         End:
             return result;
         }
+        private bool _ExecutePhase3()
+        {
+            // 开始网络监听，预示着当前服务器的正式启动
+            NetService.Instance.Init2();
+            Log.Information("\x1b[32m" + "Initialization complete, server is now operational." + "\x1b[0m");
+            return true;
+        }
+
 
         // cc
         private void _CCConnectToControlCenter()
@@ -155,7 +163,8 @@ namespace GameServer.Net
             if (message.ResultCode == 0)
             {
                 m_curSin.ServerId = message.ServerId;
-                Log.Information($"Successfully registered to ControlCenter, get serverId = [{message.ServerId}]");
+                Log.Information("Successfully registered to ControlCenter, Get serverId = [{0}]", message.ServerId);
+                Log.Information("Get Subscription events: {0}", message.ClusterEventNodes);
                 if (m_outgoingServerConnection[SERVER_TYPE.Controlcenter].IsFirstConn)
                 {
                     _ExecutePhase1(message.ClusterEventNodes);
@@ -187,7 +196,7 @@ namespace GameServer.Net
         }
         private void _DBConnectedCallback(NetClient tcpClient)
         {
-            Log.Information($"Successfully connected to the DBProxy server[{m_outgoingServerConnection[SERVER_TYPE.Dbproxy].ServerInfoNode.ServerId}].");
+            Log.Information("Successfully connected to the DBProxy server[{0}].", m_outgoingServerConnection[SERVER_TYPE.Dbproxy].ServerInfoNode.ServerId);
             // 记录
             m_outgoingServerConnection[SERVER_TYPE.Dbproxy].NetClient = tcpClient;
             _ExecutePhase2();

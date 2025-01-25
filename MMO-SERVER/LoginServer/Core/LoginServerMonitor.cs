@@ -1,6 +1,4 @@
-﻿
-
-using Common.Summer.Core;
+﻿using Common.Summer.Core;
 using Common.Summer.Tools;
 using HS.Protobuf.Common;
 using LoginGateServer.Net;
@@ -17,7 +15,7 @@ namespace LoginServer.Core
 
         public string RegisterLoginGateInstance(Connection conn, ServerInfoNode serverInfoNode)
         {
-            Log.Information($"[serverId = {serverInfoNode.ServerId}], LoginGate Register...");
+            Log.Information("Register LoginGateInstance , {0}", serverInfoNode);
             // 分配一下连接token
             LoginToken token = LoginTokenManager.Instance.NewToken(conn, serverInfoNode);
             conn.Set<LoginToken>(token);
@@ -29,7 +27,7 @@ namespace LoginServer.Core
             var token = conn.Get<LoginToken>();
             if (token != null)
             {
-                Log.Error($"[serverId = {token.ServerInfoNode.ServerId}], LoginGate Disaconnet...");
+                Log.Error("disconnection LoginGateInstance , serverId = [{0}]", token.ServerInfoNode.ServerId);
                 LoginTokenManager.Instance.RemoveToken(conn.Get<LoginToken>().Id);
             }
         }

@@ -6,6 +6,7 @@ using DBProxyServer.Net;
 using DBProxyServer.Core;
 using DBProxyServer.Handle;
 using HS.Protobuf.DBProxy.DBWorld;
+using Common.Summer.MyLog;
 
 namespace DBProxyServer
 {
@@ -13,98 +14,43 @@ namespace DBProxyServer
     {
         private static bool Init()
         {
-            //初始化日志环境
-            var customTheme = new AnsiConsoleTheme(new Dictionary<ConsoleThemeStyle, string>
-            {
-                [ConsoleThemeStyle.Text] = "\x1b[37m", // White
-                [ConsoleThemeStyle.SecondaryText] = "\x1b[37m", // Gray
-                [ConsoleThemeStyle.TertiaryText] = "\x1b[90m", // Dark gray
-                [ConsoleThemeStyle.Invalid] = "\x1b[33m", // Yellow
-                [ConsoleThemeStyle.Null] = "\x1b[34m", // Blue
-                [ConsoleThemeStyle.Name] = "\x1b[32m", // Green
-                [ConsoleThemeStyle.String] = "\x1b[36m", // Cyan
-                [ConsoleThemeStyle.Number] = "\x1b[35m", // Magenta
-                [ConsoleThemeStyle.Boolean] = "\x1b[34m", // Blue
-                [ConsoleThemeStyle.Scalar] = "\x1b[32m", // Green
-                [ConsoleThemeStyle.LevelVerbose] = "\x1b[90m", // Dark gray
-                [ConsoleThemeStyle.LevelDebug] = "\x1b[37m", // White
-                [ConsoleThemeStyle.LevelInformation] = "\x1b[32m", // Green
-                [ConsoleThemeStyle.LevelWarning] = "\x1b[33m", // Yellow
-                [ConsoleThemeStyle.LevelError] = "\x1b[31m", // Red
-                [ConsoleThemeStyle.LevelFatal] = "\x1b[41m\x1b[37m" // Red background, white text
-            });
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .WriteTo.Console(
-                    theme: customTheme,
-                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}"
-                )
-                .WriteTo.File(
-                    "logs\\server-log.txt",
-                    rollingInterval: RollingInterval.Day,
-                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level:u3}] {Message:lj}{NewLine}{Exception}"
-                )
-                .CreateLogger();
-
+            SerilogManager.Instance.Init();
             Config.Init();                      
             Scheduler.Instance.Start(Config.Server.updateHz);
 
-            Log.Information("=============================================");
+            Log.Information("\x1b[32m" + @"
+                      _____                    _____          
+                     /\    \                  /\    \         
+                    /::\    \                /::\    \        
+                   /::::\    \              /::::\    \       
+                  /::::::\    \            /::::::\    \      
+                 /:::/\:::\    \          /:::/\:::\    \     
+                /:::/  \:::\    \        /:::/__\:::\    \    
+               /:::/    \:::\    \      /::::\   \:::\    \   
+              /:::/    / \:::\    \    /::::::\   \:::\    \  
+             /:::/    /   \:::\ ___\  /:::/\:::\   \:::\ ___\ 
+            /:::/____/     \:::|    |/:::/__\:::\   \:::|    |
+            \:::\    \     /:::|____|\:::\   \:::\  /:::|____|
+             \:::\    \   /:::/    /  \:::\   \:::\/:::/    / 
+              \:::\    \ /:::/    /    \:::\   \::::::/    /  
+               \:::\    /:::/    /      \:::\   \::::/    /   
+                \:::\  /:::/    /        \:::\  /:::/    /    
+                 \:::\/:::/    /          \:::\/:::/    /     
+                  \::::::/    /            \::::::/    /      
+                   \::::/    /              \::::/    /       
+                    \::/____/                \::/____/        
+                     ~~                       ~~              
+            ");
             Log.Information("[DBProxyServer]初始化,配置如下：");
-            Log.Information($"ip：{Config.Server.ip}");
-            Log.Information($"port：{Config.Server.port}");
-            Log.Information($"workerCount：{Config.Server.workerCount}");
-            Log.Information($"updateHz：{Config.Server.updateHz}");
-            Log.Information("=============================================");
+            Log.Information("Ip：{0}", Config.Server.ip);
+            Log.Information("ServerPort：{0}", Config.Server.port);
+            Log.Information("WorkerCount：{0}", Config.Server.workerCount);
+            Log.Information("UpdateHz：{0}", Config.Server.updateHz);
+            Log.Information("\x1b[32m" + "=============================================" + "\x1b[0m");
 
             // DB
             MongoDBConnection.Instance.Init(Config.MongodbServerConfig.connectionString, 
                 Config.MongodbServerConfig.databaseName);
-
-            //WorldOperations.Instance.AddWorldAsync(new HS.Protobuf.DBProxy.DBWorld.DBWorldNode
-            //{
-            //    WorldId = 1,
-            //    WorldName = "小南梁界",
-            //    WorldDesc = "环界？？",
-            //    IsActive = true
-            //});
-
-            //var testNode = new DBWorldNode
-            //{
-            //    WorldId = 1,
-            //    WorldName = "小南梁界",
-            //    WorldDesc = "领略修仙和科技的碰撞。",
-            //    Status = "active",
-            //    CreatedAt = Scheduler.UnixTime,
-            //    MaxPlayers = 1000,
-            //    CreatedBy = "天道"
-            //};
-            //var result =  WorldOperations.Instance.AddWorldAsync(testNode);
-
-            //var testNode2 = new DBWorldNode
-            //{
-            //    WorldId = 1,
-            //    WorldName = "小南梁界01",
-            //    WorldDesc = "什么飞升仙界，不过是大一点的牲畜圈养地。",
-            //    Status = "inActive",
-            //    CreatedAt = Scheduler.UnixTime,
-            //    MaxPlayers = 1000,
-            //    CreatedBy = "天道"
-            //};
-            //var result2 = WorldOperations.Instance.AddWorldAsync(testNode2);
-
-
-
-            //UserHandler.Instance._HandleAddDBUserRequset(null, new AddDBUserRequset
-            //{
-            //    DbUserNode = new DBUserNode
-            //    {
-            //        UserName = "xiaoliangba",
-            //        Password = "xiaoxiao",
-            //        AccessLevel = "admin"
-            //    }
-            //});
-
             //开启网络服务
             ServersMgr.Instance.Init();
             UserHandler.Instance.Init();
@@ -185,6 +131,52 @@ namespace DBProxyServer
             // UserOperations.Instance.DeleteUserByUidAsync("67736c9f466dcc4edfb62a56");
 
             // CharacterOperations.Instance.DeleteCharacterByCidAsync("6773c0b050083e9841698d37");
+            /*
+            //WorldOperations.Instance.AddWorldAsync(new HS.Protobuf.DBProxy.DBWorld.DBWorldNode
+            //{
+            //    WorldId = 1,
+            //    WorldName = "小南梁界",
+            //    WorldDesc = "环界？？",
+            //    IsActive = true
+            //});
+
+            //var testNode = new DBWorldNode
+            //{
+            //    WorldId = 1,
+            //    WorldName = "小南梁界",
+            //    WorldDesc = "领略修仙和科技的碰撞。",
+            //    Status = "active",
+            //    CreatedAt = Scheduler.UnixTime,
+            //    MaxPlayers = 1000,
+            //    CreatedBy = "天道"
+            //};
+            //var result =  WorldOperations.Instance.AddWorldAsync(testNode);
+
+            //var testNode2 = new DBWorldNode
+            //{
+            //    WorldId = 1,
+            //    WorldName = "小南梁界01",
+            //    WorldDesc = "什么飞升仙界，不过是大一点的牲畜圈养地。",
+            //    Status = "inActive",
+            //    CreatedAt = Scheduler.UnixTime,
+            //    MaxPlayers = 1000,
+            //    CreatedBy = "天道"
+            //};
+            //var result2 = WorldOperations.Instance.AddWorldAsync(testNode2);
+
+
+
+            //UserHandler.Instance._HandleAddDBUserRequset(null, new AddDBUserRequset
+            //{
+            //    DbUserNode = new DBUserNode
+            //    {
+            //        UserName = "xiaoliangba",
+            //        Password = "xiaoxiao",
+            //        AccessLevel = "admin"
+            //    }
+            //});
+
+            */
 
 
             return true;

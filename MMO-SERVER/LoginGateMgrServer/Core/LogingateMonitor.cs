@@ -113,7 +113,7 @@ namespace LoginGateMgrServer.Core
                 goto End;
             }
 
-            Log.Information($"[serverId = {serverInfoNode.ServerId}],a LoginGateServer register...");
+            Log.Information("Register LoginGateInstance , {0}", serverInfoNode);
 
             conn.Set<int>(serverInfoNode.ServerId);
             
@@ -133,7 +133,7 @@ namespace LoginGateMgrServer.Core
         }
         public bool LoginGateDisconnection(int serverId)
         {
-            Log.Error($"[serverId = {serverId}],a LoginGateServer disconnect...");
+            Log.Error("a LoginGateServer disconnect, serverid = [{0}]", serverId);
             int relativeLoginServerId = m_logingateInstances[serverId].curLoginServerId;
             if (relativeLoginServerId != -1)
             {

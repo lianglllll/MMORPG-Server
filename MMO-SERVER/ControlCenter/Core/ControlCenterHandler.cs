@@ -13,18 +13,15 @@ namespace ControlCenter.Core
             // 协议注册
             ProtoHelper.Instance.Register<GetAllServerInfoRequest>((int)ControlCenterProtocl.GetAllserverinfoReq);
             ProtoHelper.Instance.Register<GetAllServerInfoResponse>((int)ControlCenterProtocl.GetAllserverinfoResp);
-
             // 消息订阅
             MessageRouter.Instance.Subscribe<GetAllServerInfoRequest>(_HandleGetAllServerInfoRequest);
 
             return true;
         }
-
         public bool UnInit()
         {
             return true;
         }
-
         private void _HandleGetAllServerInfoRequest(Connection conn, GetAllServerInfoRequest message)
         {
             var resp = new GetAllServerInfoResponse();
@@ -33,6 +30,5 @@ namespace ControlCenter.Core
             resp.ServerInfoNodes.AddRange(list);
             conn.Send(resp);
         }
-
     }
 }

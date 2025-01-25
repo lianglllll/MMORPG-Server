@@ -30,7 +30,7 @@ namespace GameGateServer.Handle
         {
             if (message.ClusterEventNode.EventType == ClusterEventType.GamegatemgrEnter)
             {
-                Log.Debug("A new GameGateMgr server has joined the cluster.");
+                Log.Information("A new GameGateMgr server has joined the cluster, {0}", message.ClusterEventNode.ServerInfoNode);
                 ServersMgr.Instance.AddGGMServerInfo(message.ClusterEventNode.ServerInfoNode);
             }
         }
@@ -38,7 +38,7 @@ namespace GameGateServer.Handle
         {
             foreach(var node in message.SceneInfos)
             {
-                Log.Information("A new scene regigster...");
+                Log.Information("A new scene regigster , {0}", node);
                 ServersMgr.Instance.AddSServerInfo(node);
             }
         }

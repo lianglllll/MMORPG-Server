@@ -85,6 +85,7 @@ namespace SceneServer.Net
             return bitmap;
         }
 
+        // phase
         private bool _ExecutePhase0()
         {
             // 连接到控制中心cc
@@ -128,6 +129,7 @@ namespace SceneServer.Net
         {
             // 开始网络监听，预示着当前服务器的正式启动
             NetService.Instance.Start();
+            Log.Information("\x1b[32m" + "Initialization complete, server is now operational." + "\x1b[0m");
             return true;
         }
 
@@ -180,7 +182,8 @@ namespace SceneServer.Net
             if (message.ResultCode == 0)
             {
                 m_curSin.ServerId = message.ServerId;
-                Log.Information($"Successfully registered to ControlCenter, get serverId = [{message.ServerId}]");
+                Log.Information("Successfully registered to ControlCenter, Get serverId = [{0}]", message.ServerId);
+                Log.Information("Get Subscription events: {0}", message.ClusterEventNodes);
                 if (m_outgoingServerConnection[SERVER_TYPE.Controlcenter].IsFirstConn)
                 {
                     _ExecutePhase1(message.ClusterEventNodes);

@@ -12,6 +12,7 @@ using Google.Protobuf;
 using Common.Summer.Core;
 using HS.Protobuf.LoginGate;
 using HS.Protobuf.Common;
+using Common.Summer.MyLog;
 
 namespace ClientTest
 {
@@ -124,34 +125,7 @@ namespace ClientTest
 
         static void Main(string[] args)
         {
-            //初始化日志环境
-            // 定义自定义控制台主题
-            var customTheme = new AnsiConsoleTheme(new Dictionary<ConsoleThemeStyle, string>
-            {
-                [ConsoleThemeStyle.Text] = "\x1b[37m", // 白色
-                [ConsoleThemeStyle.SecondaryText] = "\x1b[37m", // 灰色
-                [ConsoleThemeStyle.TertiaryText] = "\x1b[90m", // 深灰色
-                [ConsoleThemeStyle.Invalid] = "\x1b[33m", // 黄色
-                [ConsoleThemeStyle.Null] = "\x1b[34m", // 蓝色
-                [ConsoleThemeStyle.Name] = "\x1b[32m", // 绿色
-                [ConsoleThemeStyle.String] = "\x1b[36m", // 青色
-                [ConsoleThemeStyle.Number] = "\x1b[35m", // 洋红色
-                [ConsoleThemeStyle.Boolean] = "\x1b[34m", // 蓝色
-                [ConsoleThemeStyle.Scalar] = "\x1b[32m", // 绿色
-                [ConsoleThemeStyle.LevelVerbose] = "\x1b[90m", // 深灰色
-                [ConsoleThemeStyle.LevelDebug] = "\x1b[37m", // 白色
-                [ConsoleThemeStyle.LevelInformation] = "\x1b[32m", // 绿色
-                [ConsoleThemeStyle.LevelWarning] = "\x1b[33m", // 黄色
-                [ConsoleThemeStyle.LevelError] = "\x1b[31m", // 红色
-                [ConsoleThemeStyle.LevelFatal] = "\x1b[41m\x1b[37m" // 红色背景，白色文本
-            });
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .WriteTo.Console(
-                    theme: customTheme,
-                    outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
-                .CreateLogger();
-
+            SerilogManager.Instance.Init();
             Thread.Sleep(2000);
 
             //ProtoHelper.Register<UserLoginRequest>((int)LoginProtocl.UserLoginRequest);

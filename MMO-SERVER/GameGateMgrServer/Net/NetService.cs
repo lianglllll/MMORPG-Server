@@ -48,7 +48,7 @@ namespace GameGateMgrServer.Net
         // GameGate 或者 login 服务器连接过来的
         private void _StartListeningForServerConnections()
         {
-            Log.Information("Starting to listen for serverConnections.");
+            Log.Information("Starting to listen for serverConnections.{0}:{1}", Config.Server.ip, Config.Server.port);
             // 启动网络监听
             m_acceptServer = new TcpServer();
             m_acceptServer.Init(Config.Server.ip, Config.Server.port, 100, _HandleServerConnected, _HandleServerDisconnected);

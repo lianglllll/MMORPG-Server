@@ -28,7 +28,7 @@ namespace LoginGateServer.Handle
         {
             if (message.ClusterEventNode.EventType == ClusterEventType.LogingatemgrEnter)
             {
-                Log.Debug("A new LoginGateMgr server has joined the cluster.");
+                Log.Information("A new LoginGateMgr server has joined the cluster, {0}", message.ClusterEventNode.ServerInfoNode);
                 ServersMgr.Instance.AddLGMServerInfo(message.ClusterEventNode.ServerInfoNode);
             }
         }

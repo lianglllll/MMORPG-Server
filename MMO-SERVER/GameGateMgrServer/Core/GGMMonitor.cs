@@ -15,7 +15,6 @@ namespace GameGateMgrServer.Core
     class GameEntry
     {
         public ServerInfoNode ServerInfo { get; set; }
-
         public int AssignGatePriority
         {
             // 数值越大优先级越高
@@ -31,7 +30,6 @@ namespace GameGateMgrServer.Core
         public int NeedGameGateCount { get; set; }
         public List<int> curGate = new();
         public int assignSessionIndex { get; set; }
-
         public int AssignScenePriority
         {
             get
@@ -46,7 +44,6 @@ namespace GameGateMgrServer.Core
         public int NeedSceneCount { get; set; }
         public List<int> curScene = new();
     }
-
     class GameGateEntry
     {
         public Connection Connection { get; set; }
@@ -141,12 +138,13 @@ namespace GameGateMgrServer.Core
         {
             if (m_gameGateInstances.ContainsKey(serverInfoNode.ServerId))
             {
-                Log.Error("RegisterGameGateInstance failed, serverId already exists.");
+                Log.Error("Register GameGateInstance failed, serverId already exists.");
                 return false;
             }
 
             if (serverInfoNode.ServerType == SERVER_TYPE.Gamegate)
             {
+                Log.Information("Register GameGateInstance , {0}", serverInfoNode);
                 var entry = new GameGateEntry
                 {
                     Connection = conn,
@@ -159,6 +157,7 @@ namespace GameGateMgrServer.Core
             }
             else if (serverInfoNode.ServerType == SERVER_TYPE.Scene)
             {
+                Log.Information("Register SceneInstance , {0}", serverInfoNode);
                 var entry = new SceneEntry
                 {
                     Connection = conn,
@@ -343,10 +342,12 @@ namespace GameGateMgrServer.Core
         {
             if (m_gameGateInstances.ContainsKey(serverId))
             {
+                Log.Information("a GameGateInstance disconnection, serverId = [{0}]", serverId);
                 return _GameGateDisconnection(serverId);
             }
             else if (m_sceneInstances.ContainsKey(serverId))
             {
+                Log.Information("a ScemeInstance disconnection, serverId = [{0}]", serverId);
                 return _SceneDisconnection(serverId);
             }
             return false;

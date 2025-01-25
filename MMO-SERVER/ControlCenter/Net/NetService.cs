@@ -1,11 +1,11 @@
-﻿using System.Net;
-using Serilog;
+﻿using Serilog;
 using Common.Summer.Tools;
 using Common.Summer.Net;
 using Common.Summer.Core;
 using ControlCenter.Utils;
 using HS.Protobuf.Common;
 using ControlCenter.Core;
+using System.Net;
 
 namespace ControlCenter.Net
 {
@@ -52,8 +52,8 @@ namespace ControlCenter.Net
             {
                 if (conn.Socket != null && conn.Socket.Connected)
                 {
-                    //var ipe = conn.Socket.RemoteEndPoint;
-                    //Log.Debug("[连接成功]" + IPAddress.Parse(((IPEndPoint)ipe).Address.ToString()) + " : " + ((IPEndPoint)ipe).Port.ToString());
+                    var ipe = conn.Socket.RemoteEndPoint;
+                    Log.Debug("[连接成功]{0}:{1}", IPAddress.Parse(((IPEndPoint)ipe).Address.ToString()),((IPEndPoint)ipe).Port.ToString());
                     // 给conn添加心跳时间
                     m_lastHeartbeatTimes[conn] = DateTime.Now;
                 }

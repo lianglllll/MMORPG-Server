@@ -43,8 +43,8 @@ namespace GameGateMgrServer.Net
             // 消息的订阅
             MessageRouter.Instance.Subscribe<ServerInfoRegisterResponse>(_RegisterServerInfo2ControlCenterResponse);
 
-            // 连接到控制中心cc
-            _CCConnectToControlCenter();
+            // 开始流程
+            _ExecutePhase0();
         }
         public void UnInit()
         {
@@ -65,12 +65,20 @@ namespace GameGateMgrServer.Net
             return bitmap;
         }
 
+        // phase
+        private bool _ExecutePhase0()
+        {
+            _CCConnectToControlCenter();
+            return true;
+        }
         private bool _ExecutePhase1(Google.Protobuf.Collections.RepeatedField<ClusterEventNode> clusterEventNodes)
         {
-            Core.GGMMonitor.Instance.AddGameServerInfos(clusterEventNodes);
+            GGMMonitor.Instance.AddGameServerInfos(clusterEventNodes);
 
             // 开始网络监听，预示着当前服务器的正式启动
             NetService.Instance.Start();
+
+            Log.Information("\x1b[32m" + "Initialization complete, server is now operational." + "\x1b[0m");
             return true;
         }
 
@@ -82,7 +90,7 @@ namespace GameGateMgrServer.Net
         private void _CCConnectedCallback(NetClient tcpClient)
         {
             ccClient = tcpClient;
-            Log.Information("[Successfully connected to the control center server.]");
+            Log.Information("Successfully connect to the ControlCenter server.");
             //向cc注册自己
             ServerInfoRegisterRequest req = new();
             req.ServerInfoNode = m_curServerInfoNode;
@@ -112,7 +120,8 @@ namespace GameGateMgrServer.Net
             if (message.ResultCode == 0)
             {
                 m_curServerInfoNode.ServerId = message.ServerId;
-                Log.Information($"Successfully registered to ControlCenter, get serverId = [{message.ServerId}]");
+                Log.Information("Successfully registered to ControlCenter, Get serverId = [{0}]", message.ServerId);
+                Log.Information("Get Subscription events: {0}", message.ClusterEventNodes);
                 if (ccIsFirstConn == true)
                 {
                     ccIsFirstConn = false;

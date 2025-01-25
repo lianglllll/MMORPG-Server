@@ -5,6 +5,7 @@ using Google.Protobuf.Collections;
 using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
 using LoginGateMgrServer.Core;
+using LoginGateMgrServer.Handle;
 using LoginServer.Utils;
 using Serilog;
 
@@ -47,8 +48,8 @@ namespace LoginGateMgrServer.Net
             // 消息的订阅
             MessageRouter.Instance.Subscribe<ServerInfoRegisterResponse>(_RegisterServerInfo2ControlCenterResponse);
 
-            // 连接到控制中心cc
-            _CCConnectToControlCenter();
+            // 开始流程
+            _ExecutePhase0();
         }
         public void UnInit()
         {
@@ -68,12 +69,25 @@ namespace LoginGateMgrServer.Net
             }
             return bitmap;
         }
+
+        // phase
+        private bool _ExecutePhase0()
+        {
+            // 连接到控制中心cc
+            _CCConnectToControlCenter();
+            return true;
+        }
         private bool _ExecutePhase1(RepeatedField<ClusterEventNode> clusterEventNodes)
         {
-            Log.Information($"The initial number of loginServer obtained is {clusterEventNodes.Count}");
             LogingateMonitor.Instance.AddLoginServerInfos(clusterEventNodes);
+            _ExecutePhase2();
+            return true;
+        }
+        private bool _ExecutePhase2()
+        {
             // 开始网络监听，预示着当前服务器的正式启动
             NetService.Instance.Start();
+            Log.Information("\x1b[32m" + "Initialization complete, server is now operational." + "\x1b[0m");
             return true;
         }
 
@@ -85,7 +99,7 @@ namespace LoginGateMgrServer.Net
         private void _CCConnectedCallback(NetClient tcpClient)
         {
             ccClient = tcpClient;
-            Log.Information("[Successfully connected to the control center server.]");
+            Log.Information("Successfully connected to the control center server.");
             //向cc注册自己
             ServerInfoRegisterRequest req = new();
             req.ServerInfoNode = m_curServerInfoNode;
@@ -115,7 +129,8 @@ namespace LoginGateMgrServer.Net
             if (message.ResultCode == 0)
             {
                 m_curServerInfoNode.ServerId = message.ServerId;
-                Log.Information($"Successfully registered to ControlCenter, get serverId = [{message.ServerId}]");
+                Log.Information("Successfully registered to ControlCenter, Get serverId = [{0}]", message.ServerId);
+                Log.Information("Get Subscription events: {0}", message.ClusterEventNodes);
                 if (ccIsFirstConn == true)
                 {
                     ccIsFirstConn = false;

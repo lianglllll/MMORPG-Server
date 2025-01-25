@@ -82,6 +82,7 @@ namespace LoginGateServer.Net
             return bitmap;
         }
 
+        // phase
         private bool _ExecutePhase0()
         {
             // 连接到控制中心cc
@@ -110,14 +111,9 @@ namespace LoginGateServer.Net
         }
         private bool _ExecutePhase2()
         {
-            Log.Information("waiting for the LoginGateMgr server to assign tasks.");
-            return true;
-        }
-        private bool _ExecutePhase3()
-        {
             // 开始网络监听，预示着当前服务器的正式启动
             NetService.Instance.Start();
-            
+            Log.Information("\x1b[32m" + "Initialization complete, server is now operational." + "\x1b[0m");
             return true;
         }
 
@@ -170,7 +166,8 @@ namespace LoginGateServer.Net
             if (message.ResultCode == 0)
             {
                 m_curSin.ServerId = message.ServerId;
-                Log.Information($"Successfully registered to ControlCenter, get serverId = [{message.ServerId}]");
+                Log.Information("Successfully registered to ControlCenter, Get serverId = [{0}]", message.ServerId);
+                Log.Information("Get Subscription events: {0}", message.ClusterEventNodes);
                 if (m_outgoingServerConnection[SERVER_TYPE.Controlcenter].IsFirstConn)
                 {
                     _ExecutePhase1(message.ClusterEventNodes);
@@ -202,7 +199,7 @@ namespace LoginGateServer.Net
         }
         private void _LoginGateMgrConnectedCallback(NetClient tcpClient)
         {
-            Log.Information($"Successfully connected to the LoginGateMgr server[{m_outgoingServerConnection[SERVER_TYPE.Logingatemgr].ServerInfoNode.ServerId}].");
+            Log.Information("Successfully connected to the LoginGateMgr server[{0}].", m_outgoingServerConnection[SERVER_TYPE.Logingatemgr].ServerInfoNode.ServerId);
 
             // 记录
             m_outgoingServerConnection[SERVER_TYPE.Logingatemgr].NetClient = tcpClient;
@@ -234,8 +231,7 @@ namespace LoginGateServer.Net
             if (message.ResultCode == 0)
             {
                 // 注册成功我们等待分配任务。
-                Log.Information("Successfully registered this server information with the LoginGateMgr.");
-                _ExecutePhase2();
+                Log.Information("Successfully registered this server information with the LoginGateMgr, waiting LoginGateMgr's task");
             }
             else
             {
@@ -246,6 +242,7 @@ namespace LoginGateServer.Net
         // command
         private void _ExecuteLGCommandRequest(Connection conn, ExecuteLGCommandRequest message)
         {
+            Log.Information("Recive LGM's Command = {0}", message);
             int resultCode = 0;
             switch (message.Command)
             {
@@ -275,7 +272,6 @@ namespace LoginGateServer.Net
         {
             if (message.LoginServerInfoNode != null)
             {
-                Log.Information("Command:Start......");
                 var entry = new ServerEntry();
                 entry.ServerInfoNode = message.LoginServerInfoNode;
                 m_outgoingServerConnection[SERVER_TYPE.Login] = entry;
@@ -315,7 +311,7 @@ namespace LoginGateServer.Net
         }
         private void _LoginConnectedCallback(NetClient tcpClient)
         {
-            Log.Information($"Successfully connected to the Login server[{m_outgoingServerConnection[SERVER_TYPE.Login].ServerInfoNode.ServerId}].");
+            Log.Information("Successfully connected to the Login server[{0}].", m_outgoingServerConnection[SERVER_TYPE.Login].ServerInfoNode.ServerId);
             m_outgoingServerConnection[SERVER_TYPE.Login].NetClient = tcpClient;
 
             //注册
@@ -347,7 +343,7 @@ namespace LoginGateServer.Net
         {
             Log.Information("Successfully registered to the login server.");
             LoginToken = message.LoginToken;
-            _ExecutePhase3();
+            _ExecutePhase2();
         }
 
 

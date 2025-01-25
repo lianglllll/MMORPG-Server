@@ -34,35 +34,21 @@ namespace GameServer.Handle
         {
             if (message.ClusterEventNode.EventType == ClusterEventType.DbproxyEnter)
             {
-                Log.Debug("A new DBPorxy server has joined the cluster.");
+                Log.Debug("A new DBPorxy server has joined the cluster, {0}", message.ClusterEventNode.ServerInfoNode);
                 ServersMgr.Instance.AddDBServerInfo(message.ClusterEventNode.ServerInfoNode);
             }
         }
         private void _HandleRegisterToGRequest(Connection conn, RegisterToGRequest message)
         {
+            if (message.ServerInfoNode.ServerType == SERVER_TYPE.Gamegate)
+            {
+                Log.Information("GameGate rigister {0}", message.ServerInfoNode);
+            }
+            else if (message.ServerInfoNode.ServerType == SERVER_TYPE.Scene)
+            {
+                Log.Information("Scene rigister {0}", message.ServerInfoNode);
+            }
             bool success = GameMonitor.Instance.RegisterInstance(conn, message.ServerInfoNode);
-            if (success)
-            {
-                if (message.ServerInfoNode.ServerType == SERVER_TYPE.Gamegate)
-                {
-                    Log.Information("GameGate rigister success...");
-                }
-                else if(message.ServerInfoNode.ServerType == SERVER_TYPE.Scene)
-                {
-                    Log.Information("Scene rigister success...");
-                }
-            }
-            else
-            {
-                if (message.ServerInfoNode.ServerType == SERVER_TYPE.Gamegate)
-                {
-                    Log.Information("GameGate rigister fail...");
-                }
-                else if (message.ServerInfoNode.ServerType == SERVER_TYPE.Scene)
-                {
-                    Log.Information("Scene rigister fail...");
-                }
-            }
         }
     }
 }
