@@ -21,6 +21,7 @@
 
 - 因为还在将服务器架构从单体机构重构为分布式架构，所以目前的最新提交是无法正常运行的。
 - 如果需要能正常运行的请回滚到这个版本：[[优化\]entity体系优化](https://github.com/lianglllll/MMORPG/commit/f6ffd16b4dfb8d5f54ca9adc12fae552add90e5e)，这个版本server是单体架构的。
+- 目前还没有添加修仙元素...
 
 
 
@@ -34,24 +35,20 @@
 
 ![小南梁界Server架构](README.assets/小南梁界Server架构.png)
 
-服务器角色简要说明：
+**服务器角色简要说明：**
 
-
-
-```
-中心服务器(ControlCenterServer)			 .保存其他服务器的信息，不做逻辑处理。
-数据库服务器(DBProxyServer)				 .作为mognodb和其他server之间沟通的代理服务器。
-登录服务器(LoginServer)					  .完成登录、注册功能
-登录网关服务器(LoginGateServer)			 .隔绝内外网、加解密信息、转发信息到login。
-登录网关管理服务器(LoginGateMgrServer)       .监控全部LoginGate,给Login和LoginGate建立关联，扩容和收缩为login服务的loginGate数量。
-游戏服务器(GameServer)					   .处理与场景无关的游戏逻辑，如聊天、背包、组队、商店、任务、邮件...
-游戏网关服务器(GameGateServer)               .隔绝内外网、加解密信息、转发信息到Game或者Scene。
-游戏网关管理服务器(GameGateServerMgrServer)   .监控GameGate和Scene,给Game和GameGate和Scene之间建立联系，扩容和收缩为Game服务的GameGate的数量。
-场景服务器(SceneServer)                      .处理玩家的移动、战斗相关的逻辑。
-日志服务器(LogServer)                        .收集各个服务器的运行log，保存到数据库中。//todo
-游戏管理员服务器(GmServer)                    .接受来自web后台的命令，控制其他服务器。  //todo
-web代理服务器(HttpProxyServer)		        .处理来自网页的请求，主要是可以查看其他服务器的负载情况，也可以发命令。 //todo 预计会使用webServer
-```
+中心服务器(ControlCenterServer)			   :保存其他服务器的信息，不做逻辑处理。
+数据库服务器(DBProxyServer)				   :作为mognodb和其他server之间沟通的代理服务器。
+登录服务器(LoginServer)					   :完成登录、注册功能
+登录网关服务器(LoginGateServer)			   :隔绝内外网、加解密信息、转发信息到login。
+登录网关管理服务器(LoginGateMgrServer)        :监控全部LoginGate,给Login和LoginGate建立关联，扩容和收缩为login服务的loginGate数量。
+游戏服务器(GameServer)					    :处理与场景无关的游戏逻辑，如聊天、背包、组队、商店、任务、邮件...
+游戏网关服务器(GameGateServer)                :隔绝内外网、加解密信息、转发信息到Game或者Scene。
+游戏网关管理服务器(GameGateServerMgrServer)   :监控GameGate和Scene,给Game和GameGate和Scene之间建立联系，扩容和收缩为Game服务的GameGate的数量。
+场景服务器(SceneServer)                       :处理玩家的移动、战斗相关的逻辑。
+日志服务器(LogServer)						 :收集各个服务器的运行log，保存到数据库中。//todo
+游戏管理员服务器(GmServer)					:接受来自web后台的命令，控制其他服务器。  //todo
+web代理服务器(HttpProxyServer)				:处理来自网页的请求，主要是可以查看其他服务器的负载情况，也可以发命令。 //todo 
 
 
 
