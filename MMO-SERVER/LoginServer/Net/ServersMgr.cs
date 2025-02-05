@@ -38,7 +38,10 @@ namespace LoginServer.Net
             m_curSin.EventBitmap = SetEventBitmap();
 
             // 网络服务开启
-            NetService.Instance.Init();
+            ConnManager.Instance.Init(Config.Server.workerCount, Config.Server.heartBeatSendInterval, Config.Server.heartBeatCheckInterval, Config.Server.heartBeatTimeOut,
+                false, true, true,
+                null, 0, null, null,
+                Config.Server.ip, Config.Server.port, null, ClusterServerDisconnected);
             SessionManager.Instance.Init();
             LoginServerMonitor.Instance.Init();
             LoginTokenManager.Instance.Init();
@@ -79,7 +82,7 @@ namespace LoginServer.Net
         private bool _ExecutePhase0()
         {
             // 连接到控制中心cc
-            _CCConnectToControlCenter();
+            _ConnectToCC();
             return true;
         }
         private bool _ExecutePhase1(RepeatedField<ClusterEventNode> clusterEventNodes)
@@ -113,15 +116,21 @@ namespace LoginServer.Net
         private bool _ExecutePhase3()
         {
             // 开始网络监听，预示着当前服务器的正式启动
-            NetService.Instance.Init2();
+            ConnManager.Instance.Start();
             Log.Information("\x1b[32m" + "Initialization complete, server is now operational." + "\x1b[0m");
             return true;
         }
 
-        // cc
-        private void _CCConnectToControlCenter()
+        // net
+        private void ClusterServerDisconnected(Connection conn)
         {
-            NetService.Instance.ConnctToServer(Config.CCConfig.ip, Config.CCConfig.port, _CCConnectedCallback, _CCConnectedFailedCallback, _CCDisconnectedCallback);
+            LoginServerMonitor.Instance.HaveLoginGateInstanceDisconnect(conn);
+        }
+
+        // cc
+        private void _ConnectToCC()
+        {
+            ConnManager.Instance.ConnctToServer(Config.CCConfig.ip, Config.CCConfig.port, _CCConnectedCallback, _CCConnectedFailedCallback, _CCDisconnectedCallback);
         }
         private void _CCConnectedCallback(NetClient tcpClient)
         {
@@ -160,7 +169,7 @@ namespace LoginServer.Net
             Log.Error("Disconnect from the ControlCenter server, attempting to reconnect controlCenter");
             var ccEntry = m_outgoingServerConnection.GetValueOrDefault(SERVER_TYPE.Controlcenter, null);
             ccEntry.NetClient = null;
-            _CCConnectToControlCenter();
+            _ConnectToCC();
         }
         private void _RegisterServerInfo2ControlCenterResponse(Connection conn, ServerInfoRegisterResponse message)
         {
@@ -195,7 +204,7 @@ namespace LoginServer.Net
         private void _ConnectToDB()
         {
             ServerInfoNode node = m_outgoingServerConnection[SERVER_TYPE.Dbproxy].ServerInfoNode;
-            NetService.Instance.ConnctToServer(node.Ip, node.Port,
+            ConnManager.Instance.ConnctToServer(node.Ip, node.Port,
                 _DBConnectedCallback, _DBConnectedFailedCallback, _DBDisconnectedCallback);
         }
         private void _DBConnectedCallback(NetClient tcpClient)
@@ -238,7 +247,7 @@ namespace LoginServer.Net
         private void _ConnectToGGM()
         {
             ServerInfoNode node = m_outgoingServerConnection[SERVER_TYPE.Gamegatemgr].ServerInfoNode;
-            NetService.Instance.ConnctToServer(node.Ip, node.Port,
+            ConnManager.Instance.ConnctToServer(node.Ip, node.Port,
                 _GGMConnectedCallback, _GGMConnectedFailedCallback, _GGMDisconnectedCallback);
         }
         private void _GGMConnectedCallback(NetClient tcpClient)
@@ -266,7 +275,6 @@ namespace LoginServer.Net
         {
 
         }
-
 
         // tools 
         public bool SendMsgToDBProxy(IMessage message)

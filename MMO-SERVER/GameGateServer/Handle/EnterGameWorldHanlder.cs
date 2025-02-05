@@ -57,7 +57,7 @@ namespace GameGateServer.Handle
                 resp.ResultMsg = "未登录访问!";
                 conn.Send(resp);
                 Scheduler.Instance.AddTask(() => {
-                    NetService.Instance.CloseUserConnection(conn);
+                    ConnManager.Instance.CloseUserConnection(conn);
                 },1,1,1);
                 goto End;
             }

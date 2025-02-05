@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Diagnostics;
 using Common.Summer.Core;
+using Common.Summer.Net;
 using Common.Summer.Tools;
 using HS.Protobuf.GameGate;
 using Serilog;
@@ -42,7 +43,7 @@ namespace GameGateServer.Net
                 if(MyTime.time - session.LastHeartTime > SESSIONTIMEOUT)
                 {
                     Log.Debug("session超时");
-                    NetService.Instance.CloseUserConnection(session.Conn);
+                    ConnManager.Instance.CloseUserConnection(session.Conn);
                     RemoveSessionById(session.Id);
                 }
             }

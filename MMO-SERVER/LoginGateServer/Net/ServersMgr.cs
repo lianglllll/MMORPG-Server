@@ -28,8 +28,10 @@ namespace LoginGateServer.Net
         public void Init()
         {
             // 网络服务初始化
-            NetService.Instance.Init();
-            LoginGateHandler.Instance.Init();
+            ConnManager.Instance.Init(Config.Server.workerCount, 0, Config.Server.heartBeatCheckInterval, Config.Server.heartBeatTimeOut,
+                true, false, true,
+                Config.Server.ip, Config.Server.userPort, UserConnected, UserDisconnected,
+                null, 0, null, null); LoginGateHandler.Instance.Init();
             UserHandler.Instance.Init();
             EnterGameWorldHanlder.Instance.Init();
             LoginGateTokenManager.Instance.Init();
@@ -86,7 +88,7 @@ namespace LoginGateServer.Net
         private bool _ExecutePhase0()
         {
             // 连接到控制中心cc
-            _CCConnectToControlCenter();
+            _ConnectToCC();
             return true;
         }
         private bool _ExecutePhase1(Google.Protobuf.Collections.RepeatedField<ClusterEventNode> clusterEventNodes)
@@ -112,15 +114,28 @@ namespace LoginGateServer.Net
         private bool _ExecutePhase2()
         {
             // 开始网络监听，预示着当前服务器的正式启动
-            NetService.Instance.UserStart();
+            ConnManager.Instance.Start();
             Log.Information("\x1b[32m" + "Initialization complete, server is now operational." + "\x1b[0m");
             return true;
         }
 
-        // cc
-        private void _CCConnectToControlCenter()
+        // net
+        private void UserConnected(Connection conn)
         {
-            NetService.Instance.ConnctToServer(Config.CCConfig.ip, Config.CCConfig.port, _CCConnectedCallback, _CCConnectedFailedCallback, _CCDisconnectedCallback);
+            // 分配一下连接token
+            LoginGateToken token = LoginGateTokenManager.Instance.NewToken(conn);
+            conn.Set<LoginGateToken>(token);
+        }
+        private void UserDisconnected(Connection conn)
+        {
+            // token回收
+            LoginGateTokenManager.Instance.RemoveToken(conn.Get<LoginGateToken>().Id);
+        }
+
+        // cc
+        private void _ConnectToCC()
+        {
+            ConnManager.Instance.ConnctToServer(Config.CCConfig.ip, Config.CCConfig.port, _CCConnectedCallback, _CCConnectedFailedCallback, _CCDisconnectedCallback);
         }
         private void _CCConnectedCallback(NetClient tcpClient)
         {
@@ -159,7 +174,7 @@ namespace LoginGateServer.Net
             Log.Error("Disconnect from the ControlCenter server, attempting to reconnect controlCenter");
             var ccEntry = m_outgoingServerConnection.GetValueOrDefault(SERVER_TYPE.Controlcenter, null);
             ccEntry.NetClient = null;
-            _CCConnectToControlCenter();
+            _ConnectToCC();
         }
         private void _RegisterServerInfo2ControlCenterResponse(Connection conn, ServerInfoRegisterResponse message)
         {
@@ -194,7 +209,7 @@ namespace LoginGateServer.Net
         private void _ConnectToLGM()
         {
             ServerInfoNode node = m_outgoingServerConnection[SERVER_TYPE.Logingatemgr].ServerInfoNode;
-            NetService.Instance.ConnctToServer(node.Ip, node.Port,
+            ConnManager.Instance.ConnctToServer(node.Ip, node.Port,
                 _LoginGateMgrConnectedCallback, _LoginGateMgrConnectedFailedCallback, _LoginGateMgrDisconnectedCallback);
         }
         private void _LoginGateMgrConnectedCallback(NetClient tcpClient)
@@ -279,12 +294,12 @@ namespace LoginGateServer.Net
             // 断开和l的连接
             if (m_outgoingServerConnection.ContainsKey(SERVER_TYPE.Login))
             {
-                NetService.Instance.CloseOutgoingServerConnection(m_outgoingServerConnection[SERVER_TYPE.Login].NetClient);
+                ConnManager.Instance.CloseOutgoingServerConnection(m_outgoingServerConnection[SERVER_TYPE.Login].NetClient);
                 m_outgoingServerConnection.Remove(SERVER_TYPE.Login);
             }
             LoginToken = "";
 
-            NetService.Instance.UserEnd();
+            ConnManager.Instance.UserEnd();
             return true;
         }
 
@@ -292,7 +307,7 @@ namespace LoginGateServer.Net
         private void _ConnectToL()
         {
             ServerInfoNode node = m_outgoingServerConnection[SERVER_TYPE.Login].ServerInfoNode;
-            NetService.Instance.ConnctToServer(node.Ip, node.Port,
+            ConnManager.Instance.ConnctToServer(node.Ip, node.Port,
                 _LoginConnectedCallback, _LoginConnectedFailedCallback, _LoginDisconnectedCallback);
         }
         private void _LoginConnectedCallback(NetClient tcpClient)

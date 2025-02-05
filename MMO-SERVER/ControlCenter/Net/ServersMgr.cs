@@ -1,7 +1,7 @@
 ﻿using Common.Summer.Core;
 using Common.Summer.Net;
 using Common.Summer.Tools;
-using ControlCenter.Net;
+using ControlCenter.Utils;
 using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
 using Serilog;
@@ -31,9 +31,10 @@ namespace ControlCenter.Core
             m_serversByType[SERVER_TYPE.Gamegatemgr]    = new();
             m_serversByType[SERVER_TYPE.Dbproxy]        = new();
 
-
-
-            NetService.Instance.Init();
+            ConnManager.Instance.Init(Config.Server.workerCount, 0, Config.Server.heartBeatCheckInterval, Config.Server.heartBeatTimeOut,
+                false, true, false,
+                null, 0, null, null,
+                Config.Server.ip, Config.Server.port, ClusterServerConnected, ClusterServerDisconnected);
             ControlCenterHandler.Instance.Init();
 
             // proto注册
@@ -56,11 +57,26 @@ namespace ControlCenter.Core
             //};
             //StaticDataManager.Instance.serverInfoNodeDict.Add(1, node);
             //StaticDataManager.Instance.Save("test.json");
+
+            ConnManager.Instance.Start();
             return true;
         }
         public bool UnInit()
         {
             return true;
+        }
+
+        private void ClusterServerConnected(Connection conn)
+        {
+
+        }
+        private void ClusterServerDisconnected(Connection conn)
+        {
+            int serverId = conn.Get<int>();
+            if (serverId > 0)
+            {
+                HaveInstanceDisconnected(serverId);
+            }
         }
 
         // register || unregister

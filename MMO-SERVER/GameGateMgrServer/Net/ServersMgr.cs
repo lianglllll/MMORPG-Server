@@ -31,7 +31,10 @@ namespace GameGateMgrServer.Net
             m_curServerInfoNode.EventBitmap = SetEventBitmap();
 
             // 网络服务开启
-            NetService.Instance.Init();
+            ConnManager.Instance.Init(Config.Server.workerCount, Config.Server.heartBeatSendInterval, Config.Server.heartBeatCheckInterval, Config.Server.heartBeatTimeOut,
+                false, true, true,
+                null, 0, null, null,
+                Config.Server.ip, Config.Server.port, null, ClusterServerDisconnected); 
             GGMMonitor.Instance.Init();
             GameGateMgrHandler.Instance.Init();
 
@@ -68,7 +71,7 @@ namespace GameGateMgrServer.Net
         // phase
         private bool _ExecutePhase0()
         {
-            _CCConnectToControlCenter();
+            _ConnectToCC();
             return true;
         }
         private bool _ExecutePhase1(Google.Protobuf.Collections.RepeatedField<ClusterEventNode> clusterEventNodes)
@@ -76,16 +79,26 @@ namespace GameGateMgrServer.Net
             GGMMonitor.Instance.AddGameServerInfos(clusterEventNodes);
 
             // 开始网络监听，预示着当前服务器的正式启动
-            NetService.Instance.Start();
+            ConnManager.Instance.Start();
 
             Log.Information("\x1b[32m" + "Initialization complete, server is now operational." + "\x1b[0m");
             return true;
         }
 
-        // cc
-        private void _CCConnectToControlCenter()
+        // net
+        private void ClusterServerDisconnected(Connection conn)
         {
-            NetService.Instance.ConnctToServer(Config.CCConfig.ip, Config.CCConfig.port, _CCConnectedCallback, _CCConnectedFailedCallback, _CCDisconnectedCallback);
+            int serverId = conn.Get<int>();
+            if (serverId != 0)
+            {
+                GGMMonitor.Instance.EntryDisconnection(serverId);
+            }
+        }
+
+        // cc
+        private void _ConnectToCC()
+        {
+            ConnManager.Instance.ConnctToServer(Config.CCConfig.ip, Config.CCConfig.port, _CCConnectedCallback, _CCConnectedFailedCallback, _CCDisconnectedCallback);
         }
         private void _CCConnectedCallback(NetClient tcpClient)
         {
@@ -113,7 +126,7 @@ namespace GameGateMgrServer.Net
         {
             Log.Error("Disconnect from the ControlCenter server, attempting to reconnect controlCenter");
             ccClient = null;
-            _CCConnectToControlCenter();
+            _ConnectToCC();
         }
         private void _RegisterServerInfo2ControlCenterResponse(Connection conn, ServerInfoRegisterResponse message)
         {

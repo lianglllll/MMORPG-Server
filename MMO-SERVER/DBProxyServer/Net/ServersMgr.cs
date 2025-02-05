@@ -29,7 +29,10 @@ namespace DBProxyServer.Net
             m_curServerInfoNode.EventBitmap = 0;
 
             // 网络服务开启
-            NetService.Instance.Init();
+            ConnManager.Instance.Init(Config.Server.workerCount, Config.Server.heartBeatSendInterval, Config.Server.heartBeatCheckInterval, Config.Server.heartBeatTimeOut,
+                false, true, true,
+                null, 0, null, null,
+                Config.Server.ip, Config.Server.port, null, null);
 
             // 协议注册
             ProtoHelper.Instance.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
@@ -49,21 +52,21 @@ namespace DBProxyServer.Net
 
         private bool _ExecutePhase0()
         {
-            _CCConnectToControlCenter();
+            _ConnectToCC();
             return true;
         }
         private bool _ExecutePhase1()
         {
             // 开始网络监听，预示着当前服务器的正式启动
-            NetService.Instance.Start();
+            ConnManager.Instance.Start();
             Log.Information("\x1b[32m" + "Initialization complete, server is now operational." + "\x1b[0m");
             return true;
         }
 
         // cc
-        private void _CCConnectToControlCenter()
+        private void _ConnectToCC()
         {
-            NetService.Instance.ConnctToServer(Config.CCConfig.ip, Config.CCConfig.port, _CCConnectedCallback, _CCConnectedFailedCallback, _CCDisconnectedCallback);
+            ConnManager.Instance.ConnctToServer(Config.CCConfig.ip, Config.CCConfig.port, _CCConnectedCallback, _CCConnectedFailedCallback, _CCDisconnectedCallback);
         }
         private void _CCConnectedCallback(NetClient tcpClient)
         {
@@ -91,7 +94,7 @@ namespace DBProxyServer.Net
         {
             Log.Error("Disconnect from the ControlCenter server, attempting to reconnect controlCenter");
             ccClient = null;
-            _CCConnectToControlCenter();
+            _ConnectToCC();
         }
         private void _RegisterServerInfo2ControlCenterResponse(Connection conn, ServerInfoRegisterResponse message)
         {
