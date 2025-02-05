@@ -33,6 +33,9 @@ namespace LoginGateServer.Net
             MessageRouter.Instance.Subscribe<SSHeartBeatResponse>(_HandleSSHeartBeatResponse);
             // 定时发送ss心跳包
             Scheduler.Instance.AddTask(_SendSSHeatBeatReq, Config.Server.heartBeatSendInterval, 0);
+            // 定时检查user心跳包的情况
+            m_heartBeatTimeOut = Config.Server.heartBeatTimeOut;
+            Scheduler.Instance.AddTask(_CheckHeatBeat, Config.Server.heartBeatCheckInterval, 0);
         }
         public void UnInit()
         {
@@ -41,20 +44,22 @@ namespace LoginGateServer.Net
             m_userConnHeartbeatTimestamps.Clear();
             m_serverConnHeartbeatTimestamps.Clear();
         }
-        public void Start()
+
+        public void UserStart()
         {
             _StartListeningForUserConnections();
-            // 定时检查心跳包的情况
-            m_heartBeatTimeOut = Config.Server.heartBeatTimeOut;
-            Scheduler.Instance.AddTask(_CheckHeatBeat, Config.Server.heartBeatCheckInterval, 0);
         }
-        public void Stop()
+        public void UserEnd()
         {
-            m_acceptUser?.Stop();
-        }
-        public void Resume()
-        {
-            m_acceptUser?.Resume();
+            // 移除全部的user连接
+            foreach (var kv in m_userConnHeartbeatTimestamps)
+            {
+                Connection conn = kv.Key;
+                CloseUserConnection(conn);
+            }
+            m_userConnHeartbeatTimestamps.Clear();
+            m_acceptUser.UnInit();
+            m_acceptUser = null;
         }
 
         // 用户连接过来的

@@ -45,7 +45,7 @@ namespace GameGateMgrServer.Net
             m_serverConnHeartbeatTimestamps.Clear();
         }
 
-        // GameGate 或者 login 服务器连接过来的
+        // GameGate、scene 或者 login 服务器连接过来的
         private void _StartListeningForServerConnections()
         {
             Log.Information("Starting to listen for serverConnections.{0}:{1}", Config.Server.ip, Config.Server.port);

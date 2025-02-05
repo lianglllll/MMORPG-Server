@@ -89,17 +89,18 @@ namespace LoginGateMgrServer.Core
                 return false;
             }
             var lEntry = m_loginInstances[serverId];
-            foreach(var lgId in lEntry.curGate)
+            m_loginInstances.Remove(serverId);
+
+            // 处理一下关联的gate
+            foreach (var lgId in lEntry.curGate)
             {
                 var lgEntry = m_logingateInstances[lgId];
                 lgEntry.curLoginServerId = -1;
                 lgEntry.Status = ServerStatus.Inactive;
-                ExecuteLGCommandRequest req = new();
-                req.TimeStamp = Scheduler.UnixTime;
-                req.Command = GateCommand.End;
-                lgEntry.Connection.Send(req);
+
+                AssignTaskToLogingate(lgId);
             }
-            m_loginInstances.Remove(serverId);
+
             return true;
         }
 
@@ -222,9 +223,7 @@ namespace LoginGateMgrServer.Core
             req.LoginGateServerId = ServersMgr.Instance.ServerId;
             req.LoginServerInfoNode = lEntry.ServerInfo;
             gEntry.Connection.Send(req);
-
         }
-
 
         // 性能监测相关
         private void PerformHealthCheck()

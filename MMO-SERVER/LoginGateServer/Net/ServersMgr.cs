@@ -112,7 +112,7 @@ namespace LoginGateServer.Net
         private bool _ExecutePhase2()
         {
             // 开始网络监听，预示着当前服务器的正式启动
-            NetService.Instance.Start();
+            NetService.Instance.UserStart();
             Log.Information("\x1b[32m" + "Initialization complete, server is now operational." + "\x1b[0m");
             return true;
         }
@@ -249,12 +249,6 @@ namespace LoginGateServer.Net
                 case GateCommand.Start:
                     _ExecuteStart(message);
                     break;
-                case GateCommand.Stop:
-                    _ExecuteStop();
-                    break;
-                case GateCommand.Resume:
-                    _ExecuteResume();
-                    break;
                 case GateCommand.End:
                     _ExecuteEnd();
                     break;
@@ -280,26 +274,18 @@ namespace LoginGateServer.Net
             }
             return false;
         }
-        private bool _ExecuteStop()
-        {
-            // 停止当前的accept即可
-            NetService.Instance.Stop();
-            return true;
-        }
-        private bool _ExecuteResume()
-        {
-            NetService.Instance.Resume();
-            return true;
-        }
         private bool _ExecuteEnd()
         {
+            // 断开和l的连接
             if (m_outgoingServerConnection.ContainsKey(SERVER_TYPE.Login))
             {
                 NetService.Instance.CloseOutgoingServerConnection(m_outgoingServerConnection[SERVER_TYPE.Login].NetClient);
                 m_outgoingServerConnection.Remove(SERVER_TYPE.Login);
-                return true;
             }
-            return false;
+            LoginToken = "";
+
+            NetService.Instance.UserEnd();
+            return true;
         }
 
         // l
@@ -337,6 +323,11 @@ namespace LoginGateServer.Net
         }
         private void _LoginDisconnectedCallback(NetClient tcpClient)
         {
+            // 暂时 目前lg只连接一个l
+            Log.Error("Disconnect from the Login server[{0}]", m_outgoingServerConnection[SERVER_TYPE.Login].ServerInfoNode.ServerId);
+            // 暂时 清理当前的l信息
+            m_outgoingServerConnection.Remove(SERVER_TYPE.Login);
+            // lgm是否能感知到？
 
         }
         private void _HandleRegisterToLResponse(Connection sender, RegisterToLResponse message)
@@ -346,11 +337,19 @@ namespace LoginGateServer.Net
             _ExecutePhase2();
         }
 
-
         // tools
-        public void SendToLoginServer(IMessage message)
+        public bool SendToLoginServer(IMessage message)
         {
+            bool result = false;
+            if (!m_outgoingServerConnection.ContainsKey(SERVER_TYPE.Login))
+            {
+                result = false;
+                goto End;
+            }
             m_outgoingServerConnection[SERVER_TYPE.Login].NetClient.Send(message);
+            result = true;
+        End:
+            return result;
         }
     }
 }

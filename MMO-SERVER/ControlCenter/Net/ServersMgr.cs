@@ -63,9 +63,6 @@ namespace ControlCenter.Core
             return true;
         }
 
-
-
-
         // register || unregister
         private void _HandleServerInfoRegisterRequest(Connection conn, ServerInfoRegisterRequest message)
         {
@@ -140,6 +137,7 @@ namespace ControlCenter.Core
                 ClusterEventResponse cEventResp = new();
                 ClusterEventNode ceNode = new();
                 cEventResp.ClusterEventNode = ceNode;
+                ceNode.ServerId = serverId;
                 switch (serverInfoNode.ServerType)
                 {
                     case SERVER_TYPE.Login:

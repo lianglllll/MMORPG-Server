@@ -279,6 +279,5 @@ namespace LoginServer.Net
             m_outgoingServerConnection[SERVER_TYPE.Gamegatemgr].NetClient.Send(message);
             return true;
         }
-
     }
 }

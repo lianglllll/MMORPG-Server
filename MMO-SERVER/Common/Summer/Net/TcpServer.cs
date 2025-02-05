@@ -18,6 +18,7 @@ namespace Common.Summer.Net
     /// </summary>
     public class TcpServer
     {
+        private bool m_isInit = false;
         private bool m_isRunning = false;   //是否正在运行
 
         //网络连接的属性
@@ -34,34 +35,36 @@ namespace Common.Summer.Net
         public void Init(string host, int port, int backlog , 
             ConnectedCallback connected, DisconnectedCallback disconnected)
         {
-            if (!m_isRunning)
+            if (m_isInit)
             {
-                m_isRunning = true;
-
-                //事件注册
-                m_connected += connected;
-                m_disconnected += disconnected;
-
-                //构造网络终结点
-                m_endPoint = new IPEndPoint(IPAddress.Parse(host), port);
-                this.m_backlog = backlog;
-
-                m_listenerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                m_listenerSocket.Bind(m_endPoint);                                      //绑定一个IPEndPoint
-                m_listenerSocket.Listen(backlog);                                       //开始监听，并设置等待队列长度 
-
-                SocketAsyncEventArgs args = new SocketAsyncEventArgs();                //可以复用,当前监听连接socket复用
-                args.Completed += _OnAccepted;                                         //当有用户的连接时触发回调函数
-
-                m_listenerSocket.AcceptAsync(args);                                   //异步接收
+                Log.Error("TcpServer already init");
+                return;
             }
-            else
-            {
-                Log.Information("TcpServer already running");
-            }
+            m_isInit = true;
+
+            // 事件注册
+            m_connected += connected;
+            m_disconnected += disconnected;
+            // 构造网络终结点
+            m_endPoint = new IPEndPoint(IPAddress.Parse(host), port);
+            this.m_backlog = backlog;
+            // 监听socekt构建
+            m_listenerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            m_listenerSocket.Bind(m_endPoint);                                      //绑定一个IPEndPoint
+            m_listenerSocket.Listen(backlog);                                       //开始监听，并设置等待队列长度 
+            // 开启异步监听
+            SocketAsyncEventArgs args = new SocketAsyncEventArgs();                //可以复用,当前监听连接socket复用
+            args.Completed += _OnAccepted;                                         //当有用户的连接时触发回调函数
+            m_listenerSocket.AcceptAsync(args);                                   //异步接收
+
+            m_isRunning = true;
         }
         public void UnInit()
         {
+            if (m_isInit == false)
+            {
+                return;
+            }
             if (m_listenerSocket != null)
             {
                 m_listenerSocket.Close();
@@ -69,6 +72,8 @@ namespace Common.Summer.Net
             }
             m_connected = null;
             m_disconnected = null;
+            m_isInit = false;
+            m_isRunning = false;
         }
         public void Stop()
         {
@@ -89,17 +94,17 @@ namespace Common.Summer.Net
                 return;
             }
 
-            //连入的客户端
-            Socket clientSocket = e.AcceptSocket;
-            SocketError flag = e.SocketError;
-
-            //继续接收下一位(异步操作)
-            e.AcceptSocket = null;
-            m_listenerSocket.AcceptAsync(e);
-
             //有人连接进来
             try
             {
+                //连入的客户端
+                Socket clientSocket = e.AcceptSocket;
+                SocketError flag = e.SocketError;
+
+                //继续接收下一位(异步操作)
+                e.AcceptSocket = null;
+                m_listenerSocket?.AcceptAsync(e);
+
                 if (flag == SocketError.Success && clientSocket != null && clientSocket.Connected)
                 {
                     // 为连接成功的 client 构造一个 connection 对象
@@ -116,7 +121,7 @@ namespace Common.Summer.Net
             }
             catch (ObjectDisposedException ex)
             {
-                Log.Error("[TcpServer]Socket 已被释放: " + ex.Message);
+                Log.Error("[TcpServer]m_listenerSocket已被释放: " + ex.Message);
             }
 
         }
