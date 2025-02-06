@@ -64,6 +64,7 @@ namespace GameGateServer.Net
             ProtoHelper.Instance.Register<RegisterToGResponse>((int)GameProtocl.RegisterToGResp);
             ProtoHelper.Instance.Register<RegisterToSceneRequest>((int)SceneProtocl.RegisterToSceneReq);
             ProtoHelper.Instance.Register<RegisterToSceneResponse>((int)SceneProtocl.RegisterToSceneResp);
+            ProtoHelper.Instance.Register<ExitGameRequest>((int)GameProtocl.ExitGameReq);
 
             // 消息的订阅
             MessageRouter.Instance.Subscribe<ServerInfoRegisterResponse>(_RegisterServerInfo2ControlCenterResponse);
@@ -142,10 +143,19 @@ namespace GameGateServer.Net
         private void UserDisconnected(Connection connection)
         {
             // session中移除他
-            string sessionId = connection.Get<string>();
-            if (sessionId != null)
+            var session = connection.Get<Session>();
+            if (session != null)
             {
-                SessionManager.Instance.RemoveSessionById(sessionId);
+                SessionManager.Instance.RemoveSessionById(session.Id);
+                if (!string.IsNullOrEmpty(session.m_cId))
+                {
+                    // 通知game删除
+                    var req = new ExitGameRequest();
+                    req.GameToken = GameToken;
+                    req.CharacterId = session.m_cId;
+                    SendToGameServer(req);
+                }
+
             }
         }
 

@@ -70,6 +70,7 @@ enum NetActorSmallState {
 
     NET_ACTOR_STATE_SAMLL_KNOCK_BACK = 22;
     NET_ACTOR_STATE_SAMLL_KNOCK_UP = 23;
+
 }
 enum NetActorType{
     NET_ACTOR_TYPE_CHARACTER = 0;

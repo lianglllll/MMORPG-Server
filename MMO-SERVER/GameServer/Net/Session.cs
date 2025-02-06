@@ -21,8 +21,6 @@ namespace GameServer.Net
         //如果网络连接断开，就把消息临时缓存在这里
         private ConcurrentQueue<IMessage> msgBuffer = new ConcurrentQueue<IMessage>();
 
-        public Space Space => character?.currentSpace;                      //当前所在地图
-
         public float LastHeartTime { get; set; }                            //心跳时间
 
 

@@ -11,6 +11,8 @@ enum SceneProtocl{
 	SCENE_PROTOCL_CHARACTER_ENTER_SCENE_REQ = 40003;		// [CharacterEnterSceneRequest]
 	SCENE_PROTOCL_SELF_CHARACTER_ENTER_SCENE_RESP = 40004;	// [SelfCharacterEnterSceneResponse]
 	SCENE_PROTOCL_OTHER_ENTITY_ENTER_SCENE_RESP = 40005;	// [OtherEntityEnterSceneResponse]
+	SCENE_PROTOCL_CHARACTER_LEAVE_SCENE_REQ = 40006;		// [CharacterLeaveSceneRequest]
+	SCENE_PROTOCL_OTHER_ENTITY_LEAVE_SCENE_RESP = 40007;	// [OtherEntityLeaveSceneResponse]
 }
 
 enum SceneType {
@@ -54,6 +56,13 @@ message OtherEntityEnterSceneResponse{
 	HS.Protobuf.SceneEntity.NetItemNode  itemNode  = 4;
 }
 
+message CharacterLeaveSceneRequest{
+	int32 entityId = 1;
+}
+message OtherEntityLeaveSceneResponse{
+	int32 sceneId = 1;		
+	int32 entityId = 2;
+}
 
 
 // === 下面是无用的====================================================

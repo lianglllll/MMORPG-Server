@@ -2,7 +2,6 @@
 using Common.Summer.Net;
 using Common.Summer.Tools;
 using GameGateServer.Net;
-using Google.Protobuf;
 using HS.Protobuf.Game;
 using HS.Protobuf.GameGate;
 
@@ -58,7 +57,7 @@ namespace GameGateServer.Handle
                 conn.Send(resp);
                 Scheduler.Instance.AddTask(() => {
                     ConnManager.Instance.CloseUserConnection(conn);
-                },1,1,1);
+                }, 1, 1, 1);
                 goto End;
             }
 
@@ -175,6 +174,14 @@ namespace GameGateServer.Handle
         private void _HandleEnterGameResponse(Connection conn, EnterGameResponse message)
         {
             var session = SessionManager.Instance.GetSessionBySessionId(message.SessionId);
+
+            if(message.ResultCode == 0)
+            {
+                // 标志进入游戏
+                session.m_cId = message.CharacterId;
+                session.curSceneId = message.SelfNetActorNode.SceneId;
+            }
+
             message.SessionId = "";
             session.Send(message);
         }

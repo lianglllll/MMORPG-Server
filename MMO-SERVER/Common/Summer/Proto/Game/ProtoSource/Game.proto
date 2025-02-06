@@ -15,6 +15,7 @@ enum GameProtocl{
 	GAME_PROTOCL_DELETE_CHARACTER_RESP = 30010;		// [DeleteCharacterResponse]
 	GAME_PROTOCL_ENTER_GAME_REQ = 30011;			// [EnterGameRequest]
 	GAME_PROTOCL_ENTER_GAME_RESP = 30012;			// [EnterGameResponse]
+	GAME_PROTOCL_EXIT_GAME_REQ = 30013;				// [ExitGameRequest]
 
 }
 
@@ -85,7 +86,13 @@ message EnterGameResponse{
 	string sessionId = 1;
 	int32  resultCode = 2;
 	string resultMsg = 3;
-	HS.Protobuf.SceneEntity.NetActorNode selfNetActorNode	= 4;
-	repeated HS.Protobuf.SceneEntity.NetActorNode otherNetActorNodeList	= 5;
-	repeated HS.Protobuf.SceneEntity.NetItemNode  otherNetItemNodeList	= 6;
+	string characterId = 4;
+	HS.Protobuf.SceneEntity.NetActorNode selfNetActorNode	= 5;
+	repeated HS.Protobuf.SceneEntity.NetActorNode otherNetActorNodeList	= 6;
+	repeated HS.Protobuf.SceneEntity.NetItemNode  otherNetItemNodeList	= 7;
+}
+
+message ExitGameRequest{
+	string gameToken = 1;
+	string characterId = 2;
 }

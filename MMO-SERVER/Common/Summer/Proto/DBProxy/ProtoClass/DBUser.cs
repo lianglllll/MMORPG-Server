@@ -25,7 +25,7 @@ namespace HS.Protobuf.DBProxy.DBUser {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "CgxEQlVzZXIucHJvdG8SGkhTLlByb3RvYnVmLkRCUHJveHkuREJVc2VyIiUK",
-            "DUNoYXJhY3Rlckxpc3QSFAoMY2hhcmFjdGVySWRzGAEgAygJIucFCgpEQlVz",
+            "DUNoYXJhY3Rlckxpc3QSFAoMY2hhcmFjdGVySWRzGAEgAygJIvkFCgpEQlVz",
             "ZXJOb2RlEgsKA3VJZBgBIAEoCRIQCgh1c2VyTmFtZRgCIAEoCRIQCghwYXNz",
             "d29yZBgDIAEoCRINCgVlbWFpbBgEIAEoCRIXCg9pc0VtYWlsVmVyaWZpZWQY",
             "BSABKAgSGQoRY3JlYXRpb25UaW1lc3RhbXAYBiABKAMSGgoSbGFzdExvZ2lu",
@@ -37,44 +37,45 @@ namespace HS.Protobuf.DBProxy.DBUser {
             "b2dzGA0gAygJElIKDmxpbmtlZEFjY291bnRzGA4gAygLMjouSFMuUHJvdG9i",
             "dWYuREJQcm94eS5EQlVzZXIuREJVc2VyTm9kZS5MaW5rZWRBY2NvdW50c0Vu",
             "dHJ5EkwKC3ByZWZlcmVuY2VzGA8gAygLMjcuSFMuUHJvdG9idWYuREJQcm94",
-            "eS5EQlVzZXIuREJVc2VyTm9kZS5QcmVmZXJlbmNlc0VudHJ5GmEKFFdvcmxk",
-            "Q2hhcmFjdGVyc0VudHJ5EgsKA2tleRgBIAEoCRI4CgV2YWx1ZRgCIAEoCzIp",
-            "LkhTLlByb3RvYnVmLkRCUHJveHkuREJVc2VyLkNoYXJhY3Rlckxpc3Q6AjgB",
-            "GjUKE0xpbmtlZEFjY291bnRzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVl",
-            "GAIgASgJOgI4ARoyChBQcmVmZXJlbmNlc0VudHJ5EgsKA2tleRgBIAEoCRIN",
-            "CgV2YWx1ZRgCIAEoCToCOAEiQQoQR2V0REJVc2VyUmVxdWVzdBIOCgZ0YXNr",
-            "SWQYASABKAUSEAoIdXNlck5hbWUYAiABKAkSCwoDdUlkGAMgASgJIoABChFH",
-            "ZXREQlVzZXJSZXNwb25zZRIOCgZ0YXNrSWQYASABKAUSEgoKcmVzdWx0Q29k",
-            "ZRgCIAEoBRIRCglyZXN1bHRNc2cYAyABKAkSNAoEdXNlchgEIAEoCzImLkhT",
-            "LlByb3RvYnVmLkRCUHJveHkuREJVc2VyLkRCVXNlck5vZGUiXgoQQWRkREJV",
-            "c2VyUmVxdXNldBIOCgZ0YXNrSWQYASABKAUSOgoKZGJVc2VyTm9kZRgCIAEo",
-            "CzImLkhTLlByb3RvYnVmLkRCUHJveHkuREJVc2VyLkRCVXNlck5vZGUiSgoR",
-            "QWRkREJVc2VyUmVzcG9uc2USDgoGdGFza0lkGAEgASgFEhIKCnJlc3VsdENv",
-            "ZGUYAiABKAUSEQoJcmVzdWx0TXNnGAMgASgJIj8KG1VwZGF0ZURCVXNlclBh",
-            "c3N3b3JkUmVxdWVzdBILCgN1SWQYASABKAkSEwoLbmV3UGFzc3dvcmQYAiAB",
-            "KAkiRQocVXBkYXRlREJVc2VyUGFzc3dvcmRSZXNwb25zZRISCgpyZXN1bHRD",
-            "b2RlGAEgASgFEhEKCXJlc3VsdE1zZxgCIAEoCSIiChNEZWxldGVEQlVzZXJS",
-            "ZXF1ZXN0EgsKA3VJZBgBIAEoCSI9ChREZWxldGVEQlVzZXJSZXNwb25zZRIS",
-            "CgpyZXN1bHRDb2RlGAEgASgFEhEKCXJlc3VsdE1zZxgCIAEoCSJCCh5WZXJp",
-            "ZnlVc2VyTmFtZUV4aXN0ZW5jZVJlcXVlc3QSDgoGdGFza0lkGAEgASgFEhAK",
-            "CHVzZXJOYW1lGAIgASgJIkUKH1ZlcmlmeVVzZXJOYW1lRXhpc3RlbmNlUmVz",
-            "cG9uc2USDgoGdGFza0lkGAEgASgFEhIKCnJlc3VsdENvZGUYAiABKAUq4QMK",
-            "DURCVXNlclByb3RvY2wSFwoTREJVU0VSX1BST1RPQ0xfTk9ORRAAEiMKHURC",
-            "VVNFUl9QUk9UT0NMX0dFVF9EQlVTRVJfUkVRENGGAxIkCh5EQlVTRVJfUFJP",
-            "VE9DTF9HRVRfREJVU0VSX1JFU1AQ0oYDEiMKHURCVVNFUl9QUk9UT0NMX0FE",
-            "RF9EQlVTRVJfUkVRENOGAxIkCh5EQlVTRVJfUFJPVE9DTF9BRERfREJVU0VS",
-            "X1JFU1AQ1IYDEi8KKURCVVNFUl9QUk9UT0NMX1VQREFURV9EQlVTRVJfUEFT",
-            "U1dPUkRfUkVRENWGAxIwCipEQlVTRVJfUFJPVE9DTF9VUERBVEVfREJVU0VS",
-            "X1BBU1NXT1JEX1JFU1AQ1oYDEiYKIERCVVNFUl9QUk9UT0NMX0RFTEVURV9E",
-            "QlVTRVJfUkVRENeGAxInCiFEQlVTRVJfUFJPVE9DTF9ERUxFVEVfREJVU0VS",
-            "X1JFU1AQ2IYDEjUKL0RCVVNFUl9QUk9UT0NMX1ZFUklGWV9EQlVTRVJfTkFN",
-            "RV9FWElTVEVOQ0VfUkVRENmGAxI2CjBEQlVTRVJfUFJPVE9DTF9WRVJJRllf",
-            "REJVU0VSX05BTUVfRVhJU1RFTkNFX1JFU1AQ2oYDYgZwcm90bzM="));
+            "eS5EQlVzZXIuREJVc2VyTm9kZS5QcmVmZXJlbmNlc0VudHJ5EhAKCGlzT25s",
+            "aW5lGBAgASgIGmEKFFdvcmxkQ2hhcmFjdGVyc0VudHJ5EgsKA2tleRgBIAEo",
+            "CRI4CgV2YWx1ZRgCIAEoCzIpLkhTLlByb3RvYnVmLkRCUHJveHkuREJVc2Vy",
+            "LkNoYXJhY3Rlckxpc3Q6AjgBGjUKE0xpbmtlZEFjY291bnRzRW50cnkSCwoD",
+            "a2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ARoyChBQcmVmZXJlbmNlc0Vu",
+            "dHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEiQQoQR2V0REJV",
+            "c2VyUmVxdWVzdBIOCgZ0YXNrSWQYASABKAUSEAoIdXNlck5hbWUYAiABKAkS",
+            "CwoDdUlkGAMgASgJIoABChFHZXREQlVzZXJSZXNwb25zZRIOCgZ0YXNrSWQY",
+            "ASABKAUSEgoKcmVzdWx0Q29kZRgCIAEoBRIRCglyZXN1bHRNc2cYAyABKAkS",
+            "NAoEdXNlchgEIAEoCzImLkhTLlByb3RvYnVmLkRCUHJveHkuREJVc2VyLkRC",
+            "VXNlck5vZGUiXgoQQWRkREJVc2VyUmVxdXNldBIOCgZ0YXNrSWQYASABKAUS",
+            "OgoKZGJVc2VyTm9kZRgCIAEoCzImLkhTLlByb3RvYnVmLkRCUHJveHkuREJV",
+            "c2VyLkRCVXNlck5vZGUiSgoRQWRkREJVc2VyUmVzcG9uc2USDgoGdGFza0lk",
+            "GAEgASgFEhIKCnJlc3VsdENvZGUYAiABKAUSEQoJcmVzdWx0TXNnGAMgASgJ",
+            "Ij8KG1VwZGF0ZURCVXNlclBhc3N3b3JkUmVxdWVzdBILCgN1SWQYASABKAkS",
+            "EwoLbmV3UGFzc3dvcmQYAiABKAkiRQocVXBkYXRlREJVc2VyUGFzc3dvcmRS",
+            "ZXNwb25zZRISCgpyZXN1bHRDb2RlGAEgASgFEhEKCXJlc3VsdE1zZxgCIAEo",
+            "CSIiChNEZWxldGVEQlVzZXJSZXF1ZXN0EgsKA3VJZBgBIAEoCSI9ChREZWxl",
+            "dGVEQlVzZXJSZXNwb25zZRISCgpyZXN1bHRDb2RlGAEgASgFEhEKCXJlc3Vs",
+            "dE1zZxgCIAEoCSJCCh5WZXJpZnlVc2VyTmFtZUV4aXN0ZW5jZVJlcXVlc3QS",
+            "DgoGdGFza0lkGAEgASgFEhAKCHVzZXJOYW1lGAIgASgJIkUKH1ZlcmlmeVVz",
+            "ZXJOYW1lRXhpc3RlbmNlUmVzcG9uc2USDgoGdGFza0lkGAEgASgFEhIKCnJl",
+            "c3VsdENvZGUYAiABKAUq4QMKDURCVXNlclByb3RvY2wSFwoTREJVU0VSX1BS",
+            "T1RPQ0xfTk9ORRAAEiMKHURCVVNFUl9QUk9UT0NMX0dFVF9EQlVTRVJfUkVR",
+            "ENGGAxIkCh5EQlVTRVJfUFJPVE9DTF9HRVRfREJVU0VSX1JFU1AQ0oYDEiMK",
+            "HURCVVNFUl9QUk9UT0NMX0FERF9EQlVTRVJfUkVRENOGAxIkCh5EQlVTRVJf",
+            "UFJPVE9DTF9BRERfREJVU0VSX1JFU1AQ1IYDEi8KKURCVVNFUl9QUk9UT0NM",
+            "X1VQREFURV9EQlVTRVJfUEFTU1dPUkRfUkVRENWGAxIwCipEQlVTRVJfUFJP",
+            "VE9DTF9VUERBVEVfREJVU0VSX1BBU1NXT1JEX1JFU1AQ1oYDEiYKIERCVVNF",
+            "Ul9QUk9UT0NMX0RFTEVURV9EQlVTRVJfUkVRENeGAxInCiFEQlVTRVJfUFJP",
+            "VE9DTF9ERUxFVEVfREJVU0VSX1JFU1AQ2IYDEjUKL0RCVVNFUl9QUk9UT0NM",
+            "X1ZFUklGWV9EQlVTRVJfTkFNRV9FWElTVEVOQ0VfUkVRENmGAxI2CjBEQlVT",
+            "RVJfUFJPVE9DTF9WRVJJRllfREJVU0VSX05BTUVfRVhJU1RFTkNFX1JFU1AQ",
+            "2oYDYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.DBProxy.DBUser.DBUserProtocl), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.CharacterList), global::HS.Protobuf.DBProxy.DBUser.CharacterList.Parser, new[]{ "CharacterIds" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.DBUserNode), global::HS.Protobuf.DBProxy.DBUser.DBUserNode.Parser, new[]{ "UId", "UserName", "Password", "Email", "IsEmailVerified", "CreationTimestamp", "LastLoginTimestamp", "LastPasswordChangeTimestamp", "LockedUntilTimesTamp", "AccessLevel", "AccountStatus", "WorldCharacters", "ActivityLogs", "LinkedAccounts", "Preferences" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, null, null, }),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.DBUserNode), global::HS.Protobuf.DBProxy.DBUser.DBUserNode.Parser, new[]{ "UId", "UserName", "Password", "Email", "IsEmailVerified", "CreationTimestamp", "LastLoginTimestamp", "LastPasswordChangeTimestamp", "LockedUntilTimesTamp", "AccessLevel", "AccountStatus", "WorldCharacters", "ActivityLogs", "LinkedAccounts", "Preferences", "IsOnline" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, null, null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.GetDBUserRequest), global::HS.Protobuf.DBProxy.DBUser.GetDBUserRequest.Parser, new[]{ "TaskId", "UserName", "UId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.GetDBUserResponse), global::HS.Protobuf.DBProxy.DBUser.GetDBUserResponse.Parser, new[]{ "TaskId", "ResultCode", "ResultMsg", "User" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBUser.AddDBUserRequset), global::HS.Protobuf.DBProxy.DBUser.AddDBUserRequset.Parser, new[]{ "TaskId", "DbUserNode" }, null, null, null, null),
@@ -365,6 +366,7 @@ namespace HS.Protobuf.DBProxy.DBUser {
       activityLogs_ = other.activityLogs_.Clone();
       linkedAccounts_ = other.linkedAccounts_.Clone();
       preferences_ = other.preferences_.Clone();
+      isOnline_ = other.isOnline_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -568,6 +570,21 @@ namespace HS.Protobuf.DBProxy.DBUser {
       get { return preferences_; }
     }
 
+    /// <summary>Field number for the "isOnline" field.</summary>
+    public const int IsOnlineFieldNumber = 16;
+    private bool isOnline_;
+    /// <summary>
+    /// 在线标记
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool IsOnline {
+      get { return isOnline_; }
+      set {
+        isOnline_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -598,6 +615,7 @@ namespace HS.Protobuf.DBProxy.DBUser {
       if(!activityLogs_.Equals(other.activityLogs_)) return false;
       if (!LinkedAccounts.Equals(other.LinkedAccounts)) return false;
       if (!Preferences.Equals(other.Preferences)) return false;
+      if (IsOnline != other.IsOnline) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -620,6 +638,7 @@ namespace HS.Protobuf.DBProxy.DBUser {
       hash ^= activityLogs_.GetHashCode();
       hash ^= LinkedAccounts.GetHashCode();
       hash ^= Preferences.GetHashCode();
+      if (IsOnline != false) hash ^= IsOnline.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -686,6 +705,10 @@ namespace HS.Protobuf.DBProxy.DBUser {
       activityLogs_.WriteTo(output, _repeated_activityLogs_codec);
       linkedAccounts_.WriteTo(output, _map_linkedAccounts_codec);
       preferences_.WriteTo(output, _map_preferences_codec);
+      if (IsOnline != false) {
+        output.WriteRawTag(128, 1);
+        output.WriteBool(IsOnline);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -744,6 +767,10 @@ namespace HS.Protobuf.DBProxy.DBUser {
       activityLogs_.WriteTo(ref output, _repeated_activityLogs_codec);
       linkedAccounts_.WriteTo(ref output, _map_linkedAccounts_codec);
       preferences_.WriteTo(ref output, _map_preferences_codec);
+      if (IsOnline != false) {
+        output.WriteRawTag(128, 1);
+        output.WriteBool(IsOnline);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -791,6 +818,9 @@ namespace HS.Protobuf.DBProxy.DBUser {
       size += activityLogs_.CalculateSize(_repeated_activityLogs_codec);
       size += linkedAccounts_.CalculateSize(_map_linkedAccounts_codec);
       size += preferences_.CalculateSize(_map_preferences_codec);
+      if (IsOnline != false) {
+        size += 2 + 1;
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -840,6 +870,9 @@ namespace HS.Protobuf.DBProxy.DBUser {
       activityLogs_.Add(other.activityLogs_);
       linkedAccounts_.Add(other.linkedAccounts_);
       preferences_.Add(other.preferences_);
+      if (other.IsOnline != false) {
+        IsOnline = other.IsOnline;
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -915,6 +948,10 @@ namespace HS.Protobuf.DBProxy.DBUser {
             preferences_.AddEntriesFrom(input, _map_preferences_codec);
             break;
           }
+          case 128: {
+            IsOnline = input.ReadBool();
+            break;
+          }
         }
       }
     #endif
@@ -988,6 +1025,10 @@ namespace HS.Protobuf.DBProxy.DBUser {
           }
           case 122: {
             preferences_.AddEntriesFrom(ref input, _map_preferences_codec);
+            break;
+          }
+          case 128: {
+            IsOnline = input.ReadBool();
             break;
           }
         }

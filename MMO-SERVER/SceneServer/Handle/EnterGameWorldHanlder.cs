@@ -19,15 +19,24 @@ namespace SceneServer.Handle
             ProtoHelper.Instance.Register<CharacterEnterSceneRequest>((int)SceneProtocl.CharacterEnterSceneReq);
             ProtoHelper.Instance.Register<SelfCharacterEnterSceneResponse>((int)SceneProtocl.SelfCharacterEnterSceneResp);
             ProtoHelper.Instance.Register<OtherEntityEnterSceneResponse>((int)SceneProtocl.OtherEntityEnterSceneResp);
+            ProtoHelper.Instance.Register<CharacterLeaveSceneRequest>((int)SceneProtocl.CharacterLeaveSceneReq);
 
             // 消息的订阅
             MessageRouter.Instance.Subscribe<CharacterEnterSceneRequest>(_HandleCharacterEnterSceneRequest);
+            MessageRouter.Instance.Subscribe<CharacterLeaveSceneRequest>(_HandleCharacterLeaveSceneRequest);
 
             return true;
         }
+
         private void _HandleCharacterEnterSceneRequest(Connection conn, CharacterEnterSceneRequest message)
         {
             SceneManager.Instance.CharacterEnterScene(conn, message);
         }
+
+        private void _HandleCharacterLeaveSceneRequest(Connection conn, CharacterLeaveSceneRequest message)
+        {
+            SceneManager.Instance.CharacterLeaveScene(message.EntityId);
+        }
+
     }
 }

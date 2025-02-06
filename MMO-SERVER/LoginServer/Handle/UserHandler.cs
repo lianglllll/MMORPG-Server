@@ -15,6 +15,7 @@ namespace LoginServer.Handle
         private IdGenerator m_idGenerator = new IdGenerator();
         private Dictionary<int, IMessage> m_tasks = new Dictionary<int, IMessage>();
 
+
         public bool Init()
         {
             // 协议注册
@@ -44,6 +45,12 @@ namespace LoginServer.Handle
 
         private void _HandleUserLoginRequest(Connection conn, UserLoginRequest message)
         {
+            // 先找缓存
+
+
+
+
+
             //查询数据库
             GetDBUserRequest getDBUserRequest = new GetDBUserRequest();
             getDBUserRequest.UserName = message.Username;
@@ -82,7 +89,7 @@ namespace LoginServer.Handle
             // 1.要考虑到今天限制登录，2.被关小黑屋了  3.没实名认证
             if(dBUserNode.AccountStatus == "suspended")
             {
-                resp.ResultCode = 2;
+                resp.ResultCode = 3;
                 resp.ResultMsg = $"登录失败，当前账号正在小黑屋，预计解封时间{dBUserNode.LockedUntilTimesTamp}";
                 goto End1;
             }
@@ -217,6 +224,5 @@ namespace LoginServer.Handle
         End2:
             return;
         }
-
     }
 }

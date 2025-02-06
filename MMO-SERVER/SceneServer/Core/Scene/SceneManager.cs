@@ -9,6 +9,8 @@ using SceneServer.Core.Model.Actor;
 using SceneServer.Core.Model.Item;
 using SceneServer.Net;
 using SceneServer.Utils;
+using Serilog;
+using System.Diagnostics;
 
 namespace SceneServer.Core.Scene
 {
@@ -44,6 +46,8 @@ namespace SceneServer.Core.Scene
 
         public void CharacterEnterScene(Connection conn, CharacterEnterSceneRequest message)
         {
+            Log.Information("a character enter scene");
+
             // 1.创建chr实例
             var gateConn = ServersMgr.Instance.GetGameGateConnByServerId(message.GameGateServerId);
             var chr = m_sceneCharacterManager.CreateSceneCharacter(message.SessionId, gateConn, message.DbChrNode);
@@ -79,9 +83,9 @@ namespace SceneServer.Core.Scene
                 oChr.Send(oResp);
             }
         }
-        public void CharacterExitScene()
+        public void CharacterLeaveScene(int entityId)
         {
-
+            Log.Information("a character leave scene");
         }
         public void MonsterEnterScene()
         {

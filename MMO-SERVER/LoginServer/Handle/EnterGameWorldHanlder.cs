@@ -140,7 +140,7 @@ namespace LoginServer.Handle
                 goto End1;
             }
 
-            // 处理.....
+            // 找到进入的GameGates
             resp.ResultCode = 0;
             foreach(var item in message.GameGateInfos)
             {
@@ -149,6 +149,10 @@ namespace LoginServer.Handle
                 node.Port = item.GameGateServerInfo.UserPort;
                 resp.GameGateInfos.Add(node);
             }
+
+            // 保存当前账号的在线状态，清理session
+            // todo...
+
 
         End1:
             // 清理资源

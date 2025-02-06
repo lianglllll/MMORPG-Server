@@ -190,6 +190,7 @@ namespace DBProxyServer.Core
                         dBUserNode.Preferences.Add(key, value);
                     }
                 }
+                // dBUserNode.IsOnline = userDocument["isOnline"].ToBoolean();
                 return dBUserNode;
             }
 
@@ -247,6 +248,8 @@ namespace DBProxyServer.Core
                         dBUserNode.Preferences.Add(key, value);
                     }
                 }
+                //dBUserNode.IsOnline = userDocument["isOnline"].ToBoolean();
+
                 return dBUserNode;
             }
 

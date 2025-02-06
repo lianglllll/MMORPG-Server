@@ -40,7 +40,6 @@ namespace DBProxyServer.Handle
             {
                 dBUserNode = await UserOperations.Instance.GetDBUserByNameAsync(message.UserName);
             }
-
             if (dBUserNode == null)
             {
                 resp.ResultCode = 1;
