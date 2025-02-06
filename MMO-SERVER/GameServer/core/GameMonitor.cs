@@ -3,7 +3,6 @@ using Common.Summer.Net;
 using Common.Summer.Tools;
 using GameServer.Net;
 using HS.Protobuf.Common;
-using HS.Protobuf.ControlCenter;
 using HS.Protobuf.Game;
 using HS.Protobuf.GameGate;
 using Serilog;
@@ -46,7 +45,6 @@ namespace GameServer.Core
 
         public bool RegisterInstance(Connection conn, ServerInfoNode serverInfoNode)
         {
-
             conn.Set<int>(serverInfoNode.ServerId);
             RegisterToGResponse resp = new();
             if (serverInfoNode.ServerType == SERVER_TYPE.Gamegate)
@@ -130,10 +128,13 @@ namespace GameServer.Core
             else if (m_sceneInstances.TryGetValue(serverId, out var sEntry))
             {
                 Log.Error("SceneInstance Disconnection, serverId = {0}", serverId);
+
                 m_sceneInstances.Remove(serverId);
-                // 回收SceneId
+
                 int secneId = sEntry.ServerInfo.SceneServerInfo.SceneId;
                 m_sceneConn.Remove(secneId);
+
+                // 回收SceneId
                 waitDispatchSceneId.Enqueue(secneId);
             }
             return true;

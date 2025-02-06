@@ -379,8 +379,7 @@ namespace SceneServer.Net
             ConnManager.Instance.ServerEnd();
 
             // 3.清理场景资源
-            // 。。。
-
+            SceneManager.Instance.UnInit();
 
             return true;
         }
@@ -426,7 +425,7 @@ namespace SceneServer.Net
         }
         private void _HandleRegisterToGResponse(Connection conn, RegisterToGResponse message)
         {
-            Log.Information("Successfully registered to the game server, Get GameToken = {0}", message.GameToken);
+            Log.Information("Successfully registered to the game server, Get GameToken = {0}, SecneId = {1}", message.GameToken, message.AllocateSceneId);
             GameToken = message.GameToken;
             m_curSin.SceneServerInfo.SceneId = message.AllocateSceneId;
 

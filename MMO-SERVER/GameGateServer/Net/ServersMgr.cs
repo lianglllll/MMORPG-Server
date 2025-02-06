@@ -24,6 +24,7 @@ namespace GameGateServer.Net
     {
         private ServerInfoNode? m_curSin;
         private Dictionary<SERVER_TYPE, ServerEntry>    m_outgoingServerConnection          = new();
+
         private Dictionary<int, ServerEntry>            m_outgoing_SceneServerConnection     = new();    // <sceneId, scene>
         private Dictionary<int, int>                    m_outgoing_SceneServerConnection2    = new();    // <serverId, sceneId>
 
@@ -462,7 +463,10 @@ namespace GameGateServer.Net
         }
         private void _SceneDisconnectedCallback(NetClient tcpClient)
         {
-
+            Log.Error("Disconnect from the Scene server[{0}]", tcpClient.ServerId);
+            int sceneId = m_outgoing_SceneServerConnection2.GetValueOrDefault(tcpClient.ServerId, 0);
+            m_outgoing_SceneServerConnection.Remove(sceneId);
+            m_outgoing_SceneServerConnection2.Remove(tcpClient.ServerId);
         }
         private void _HandleRegisterToSceneResponse(Connection conn, RegisterToSceneResponse message)
         {
