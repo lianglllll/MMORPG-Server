@@ -10,8 +10,6 @@ using GameGateServer.Handle;
 using HS.Protobuf.Game;
 using Google.Protobuf;
 using HS.Protobuf.Scene;
-using System.Linq;
-using System.Net.Sockets;
 
 namespace GameGateServer.Net
 {
@@ -25,9 +23,9 @@ namespace GameGateServer.Net
     public class ServersMgr : Singleton<ServersMgr>
     {
         private ServerInfoNode? m_curSin;
-        private Dictionary<SERVER_TYPE, ServerEntry> m_outgoingServerConnection = new();
-        private Dictionary<int, ServerEntry> m_outgoingSceneServerConnection = new();// <sceneId, scene>
-        private Dictionary<int, int> m_outgoingSceneServerConnection2 = new();      // <serverId, sceneId>
+        private Dictionary<SERVER_TYPE, ServerEntry>    m_outgoingServerConnection          = new();
+        private Dictionary<int, ServerEntry>            m_outgoing_SceneServerConnection     = new();    // <sceneId, scene>
+        private Dictionary<int, int>                    m_outgoing_SceneServerConnection2    = new();    // <serverId, sceneId>
 
         public string GameToken { get; private set; }
 
@@ -129,6 +127,12 @@ namespace GameGateServer.Net
             Log.Information("\x1b[32m" + "Initialization complete, server is now operational." + "\x1b[0m");
             return true;
         }
+        private bool _ExecutePhase2_1()
+        {
+            ConnManager.Instance.UserStart();
+            Log.Information("\x1b[32m" + "Initialization complete, server is now operational." + "\x1b[0m");
+            return true;
+        }
 
         // net
         private void UserConnected(Connection connection)
@@ -214,6 +218,7 @@ namespace GameGateServer.Net
             {
                 var entry = new ServerEntry();
                 entry.ServerInfoNode = sin;
+                entry.IsFirstConn = true;
                 m_outgoingServerConnection[SERVER_TYPE.Gamegatemgr] = entry;
                 _ConnectToGGM();
             }
@@ -260,6 +265,11 @@ namespace GameGateServer.Net
             {
                 // 注册成功我们等待分配任务。
                 Log.Information("Successfully registered to GameGateMgr,waiting for the GameGateMgr server to assign tasks.");
+                // 这里标志一次连接的成功
+                if (m_outgoingServerConnection[SERVER_TYPE.Gamegatemgr].IsFirstConn == true)
+                {
+                    m_outgoingServerConnection[SERVER_TYPE.Gamegatemgr].IsFirstConn = false;
+                }
             }
             else
             {
@@ -292,23 +302,49 @@ namespace GameGateServer.Net
         }
         private bool _ExecuteStart(ExecuteGGCommandRequest message)
         {
-            if(message.GameServerInfoNode != null)
+            bool result = false;
+            if(message.GameServerInfoNode == null)
             {
-                m_outgoingServerConnection[SERVER_TYPE.Game] = new ServerEntry { ServerInfoNode = message.GameServerInfoNode };
-                _ConnectToG();
-                return true;
+                goto End;
             }
-            return false;
+
+            if (!m_outgoingServerConnection.ContainsKey(SERVER_TYPE.Game))
+            {
+                m_outgoingServerConnection[SERVER_TYPE.Game] = new ServerEntry { 
+                    ServerInfoNode = message.GameServerInfoNode, 
+                    IsFirstConn = true
+                };
+            }
+            else
+            {
+                m_outgoingServerConnection[SERVER_TYPE.Game].ServerInfoNode = message.GameServerInfoNode;
+            }
+            _ConnectToG();
+            result = true;
+        End:
+            return result;
         }
         private bool _ExecuteEnd()
         {
-            if(m_outgoingServerConnection.ContainsKey(SERVER_TYPE.Game))
+            // 1.移除game相关的连接
+            if(m_outgoingServerConnection.ContainsKey(SERVER_TYPE.Game) && m_outgoingServerConnection[SERVER_TYPE.Game].NetClient != null)
             {
                 ConnManager.Instance.CloseOutgoingServerConnection(m_outgoingServerConnection[SERVER_TYPE.Game].NetClient);
-                m_outgoingServerConnection.Remove(SERVER_TYPE.Game);
-                return true;
             }
-            return false;
+            GameToken = "";
+
+            // 2.清空当前的user连接
+            ConnManager.Instance.UserEnd();
+
+            // 3.清空当前的scene连接
+            foreach(var sEntry in m_outgoing_SceneServerConnection.Values)
+            {
+                ConnManager.Instance.CloseOutgoingServerConnection(sEntry.NetClient);
+            }
+            m_outgoing_SceneServerConnection.Clear();
+            m_outgoing_SceneServerConnection2.Clear();
+
+            return true;
         }
 
         // g
@@ -329,7 +365,6 @@ namespace GameGateServer.Net
             RegisterToGRequest req = new();
             req.ServerInfoNode = m_curSin;
             tcpClient.Send(req);
-
         }
         private void _GameConnectedFailedCallback(NetClient tcpClient, bool isEnd)
         {
@@ -347,34 +382,44 @@ namespace GameGateServer.Net
         }
         private void _GameDisconnectedCallback(NetClient tcpClient)
         {
-
+            Log.Error("Disconnect from the Game server");
+            m_outgoingServerConnection[SERVER_TYPE.Game].NetClient = null;
         }
         private void _HandleRegisterToGResponse(Connection conn, RegisterToGResponse message)
         {
             Log.Information("Successfully registered to the game server, {0}", message);
 
             GameToken = message.GameToken;
+            if (m_outgoingServerConnection[SERVER_TYPE.Game].IsFirstConn == true)
+            {
+                _ExecutePhase2();
+                m_outgoingServerConnection[SERVER_TYPE.Game].IsFirstConn = false;
+            }
+            else
+            {
+                _ExecutePhase2_1();
+            }
 
             // 去连接scene
-            foreach(var node in message.SceneInfoNodes)
+            foreach (var node in message.SceneInfoNodes)
             {
                 AddSServerInfo(node);
             }
-            _ExecutePhase2();
         }
 
-        // SCENE
+        // SCENEs                                                                                                 
         public void AddSServerInfo(ServerInfoNode node)
         {
             Log.Information("A new scene regigster , {0}", node);
-            if (!m_outgoingSceneServerConnection.ContainsKey(node.SceneServerInfo.SceneId))
+            if (!m_outgoing_SceneServerConnection.ContainsKey(node.SceneServerInfo.SceneId))
             {
                 ServerEntry sEntry = new ServerEntry
                 {
                     ServerInfoNode = node,
+                    IsFirstConn = true
                 };
-                m_outgoingSceneServerConnection.Add(node.SceneServerInfo.SceneId, sEntry);
-                m_outgoingSceneServerConnection2.Add(node.ServerId, node.SceneServerInfo.SceneId);
+                m_outgoing_SceneServerConnection.Add(node.SceneServerInfo.SceneId, sEntry);
+                m_outgoing_SceneServerConnection2.Add(node.ServerId, node.SceneServerInfo.SceneId);
                 sEntry.NetClient = _ConnectToS(node);
                 sEntry.NetClient.ServerId = node.ServerId;
             }
@@ -386,8 +431,8 @@ namespace GameGateServer.Net
         }
         private void _SceneConnectedCallback(NetClient tcpClient)
         {
-            int sceneId = m_outgoingSceneServerConnection2.GetValueOrDefault(tcpClient.ServerId, 0);
-            var entry = m_outgoingSceneServerConnection.GetValueOrDefault(sceneId, null);
+            int sceneId = m_outgoing_SceneServerConnection2.GetValueOrDefault(tcpClient.ServerId, 0);
+            var entry = m_outgoing_SceneServerConnection.GetValueOrDefault(sceneId, null);
             if (entry != null)
             {
                 Log.Information("Successfully connected to the Scene server,serverId = [{0}], sceneId = [{1}].",
@@ -422,8 +467,8 @@ namespace GameGateServer.Net
         private void _HandleRegisterToSceneResponse(Connection conn, RegisterToSceneResponse message)
         {
             int serverId = conn.Get<int>();
-            int sceneId = m_outgoingSceneServerConnection2.GetValueOrDefault(serverId, 0);
-            var entry = m_outgoingSceneServerConnection.GetValueOrDefault(sceneId, null);
+            int sceneId = m_outgoing_SceneServerConnection2.GetValueOrDefault(serverId, 0);
+            var entry = m_outgoing_SceneServerConnection.GetValueOrDefault(sceneId, null);
             if (entry != null)
             {
                 Log.Information("Successfully registered to the scene server[{0}]", serverId);

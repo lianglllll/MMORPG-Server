@@ -123,21 +123,30 @@ namespace SceneServer.Net
             if(m_outgoingServerConnection.ContainsKey(SERVER_TYPE.Dbproxy) 
                 && m_outgoingServerConnection.ContainsKey(SERVER_TYPE.Game))
             {
+                // 加载对应的场景资源
+                SceneManager.Instance.Init(m_curSin.SceneServerInfo.SceneId);
                 _ExecutePhase3();
             }
             return true;
         }
-        private bool _ExecutePhase3()
+        private bool _ExecutePhase2_1()
         {
             // 加载对应的场景资源
             SceneManager.Instance.Init(m_curSin.SceneServerInfo.SceneId);
-            _ExecutePhase4();
+            _ExecutePhase3_1();
             return true;
         }
-        private bool _ExecutePhase4()
+        private bool _ExecutePhase3()
         {
             // 开始网络监听，预示着当前服务器的正式启动
             ConnManager.Instance.Start();
+            Log.Information("\x1b[32m" + "Initialization complete, server is now operational." + "\x1b[0m");
+            return true;
+        }
+        private bool _ExecutePhase3_1()
+        {
+            // 开始网络监听，预示着当前服务器的正式启动
+            ConnManager.Instance.ServerStart();
             Log.Information("\x1b[32m" + "Initialization complete, server is now operational." + "\x1b[0m");
             return true;
         }
@@ -347,7 +356,11 @@ namespace SceneServer.Net
         {
             if (message.GameServerInfoNode != null)
             {
-                m_outgoingServerConnection[SERVER_TYPE.Game] = new ServerEntry { ServerInfoNode = message.GameServerInfoNode };
+                m_outgoingServerConnection[SERVER_TYPE.Game] = new ServerEntry
+                {
+                    ServerInfoNode = message.GameServerInfoNode,
+                    IsFirstConn = true
+                };
                 _ConnectToG();
                 return true;
             }
@@ -355,13 +368,21 @@ namespace SceneServer.Net
         }
         private bool _ExecuteEnd()
         {
-            if (m_outgoingServerConnection.ContainsKey(SERVER_TYPE.Game))
+            // 1.断开与GameServer的连接
+            if (m_outgoingServerConnection.ContainsKey(SERVER_TYPE.Game) && m_outgoingServerConnection[SERVER_TYPE.Game].NetClient != null)
             {
                 ConnManager.Instance.CloseOutgoingServerConnection(m_outgoingServerConnection[SERVER_TYPE.Game].NetClient);
-                m_outgoingServerConnection.Remove(SERVER_TYPE.Game);
-                return true;
             }
-            return false;
+
+            // 2.清理与网关的连接
+            m_gameGateConn.Clear();
+            ConnManager.Instance.ServerEnd();
+
+            // 3.清理场景资源
+            // 。。。
+
+
+            return true;
         }
 
         // g
@@ -400,15 +421,24 @@ namespace SceneServer.Net
         }
         private void _GameDisconnectedCallback(NetClient tcpClient)
         {
-
+            Log.Error("Disconnect from the Game server");
+            m_outgoingServerConnection[SERVER_TYPE.Game].NetClient = null;
         }
         private void _HandleRegisterToGResponse(Connection conn, RegisterToGResponse message)
         {
-            Log.Information("Successfully registered to the game server, Get GameToken = {0}",
-                message.GameToken);
+            Log.Information("Successfully registered to the game server, Get GameToken = {0}", message.GameToken);
             GameToken = message.GameToken;
             m_curSin.SceneServerInfo.SceneId = message.AllocateSceneId;
-            _ExecutePhase2();
+
+            if (m_outgoingServerConnection[SERVER_TYPE.Game].IsFirstConn == true)
+            {
+                _ExecutePhase2();
+                m_outgoingServerConnection[SERVER_TYPE.Game].IsFirstConn = false;
+            }
+            else
+            {
+                _ExecutePhase2_1();
+            }
         }
 
         // gameGate

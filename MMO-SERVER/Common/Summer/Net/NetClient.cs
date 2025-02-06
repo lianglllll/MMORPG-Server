@@ -111,7 +111,7 @@ namespace Common.Summer.Net
         }
         public void CloseConnection()
         {
-            m_connection.CloseConnection();
+            m_connection?.CloseConnection();
             m_connection = null;
         }
         public bool ReConnectToServer()

@@ -9,7 +9,6 @@ using Google.Protobuf;
 using Google.Protobuf.Collections;
 using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
-using MySqlX.XDevAPI.Common;
 using Serilog;
 using System.Collections.Generic;
 

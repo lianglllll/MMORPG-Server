@@ -6,7 +6,6 @@ using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
 using HS.Protobuf.GameGate;
 using HS.Protobuf.GameGateMgr;
-using HS.Protobuf.LoginGate;
 using HS.Protobuf.LoginGateMgr;
 using Serilog;
 
@@ -15,6 +14,7 @@ namespace GameGateMgrServer.Core
     class GameEntry
     {
         public ServerInfoNode ServerInfo { get; set; }
+
         public int AssignGatePriority
         {
             // 数值越大优先级越高
@@ -30,6 +30,7 @@ namespace GameGateMgrServer.Core
         public int NeedGameGateCount { get; set; }
         public List<int> curGate = new();
         public int assignSessionIndex { get; set; }         // 用来均匀分配给多台gameGate用的
+
         public int AssignScenePriority
         {
             get
@@ -58,14 +59,13 @@ namespace GameGateMgrServer.Core
         public int curGameServerId { get; set; }
         public ServerStatus Status { get; set; }
     }
-
     public class GGMMonitor:Singleton<GGMMonitor>
     {
-        private Dictionary<int, GameEntry> m_gameInstances = new();
-        private Dictionary<int, GameGateEntry> m_gameGateInstances = new();
-        private Dictionary<int, SceneEntry> m_sceneInstances = new();
-        private Queue<int> gameGateIdleQueue = new Queue<int>();
-        private Queue<int> sceneIdleQueue = new Queue<int>();
+        private Dictionary<int, GameEntry>      m_gameInstances     = new();
+        private Dictionary<int, GameGateEntry>  m_gameGateInstances = new();
+        private Dictionary<int, SceneEntry>     m_sceneInstances    = new();
+        private Queue<int> gameGateIdleQueue    = new Queue<int>();
+        private Queue<int> sceneIdleQueue       = new Queue<int>();
 
         private int m_healthCheckInterval;                                        // 控制健康检查的时间间隔（以秒为单位）。
         private Dictionary<string, int> m_alertThresholds = new();                // 性能指标阈值
@@ -119,18 +119,30 @@ namespace GameGateMgrServer.Core
             {
                 return false;
             }
+
             var gEntry = m_gameInstances[serverId];
-            foreach(var ggId in gEntry.curGate)
+            m_gameInstances.Remove(serverId);
+
+            // 通知对应的gameGate
+            foreach (var ggId in gEntry.curGate)
             {
                 var ggEntry = m_gameGateInstances[ggId];
                 ggEntry.curGameServerId = -1;
                 ggEntry.Status = ServerStatus.Inactive;
-                ExecuteLGCommandRequest req = new();
-                req.TimeStamp = Scheduler.UnixTime;
-                req.Command = GateCommand.End;
-                ggEntry.Connection.Send(req);
+
+                _AssignTaskToGameGate(ggId);
             }
-            m_gameInstances.Remove(serverId);
+
+            // 通知对应的scene
+            foreach(var sId in gEntry.curScene)
+            {
+                var sEntry = m_sceneInstances[sId];
+                sEntry.curGameServerId = -1;
+                sEntry.Status = ServerStatus.Inactive;
+
+                _AssignTaskToScene(sId);
+            }
+
             return true;
         }
 
@@ -179,7 +191,6 @@ namespace GameGateMgrServer.Core
         }
         public void _AssignTaskToGameGate(int gameGateServerId)
         {
-
             // 校验
             if (!m_gameGateInstances.ContainsKey(gameGateServerId)
                 || m_gameGateInstances[gameGateServerId].Status != ServerStatus.Inactive)
@@ -301,7 +312,7 @@ namespace GameGateMgrServer.Core
                 GameEntry entry = m_gameInstances[gameServerId];
                 for (int i = 0; i < entry.NeedSceneCount - entry.curScene.Count; i++)
                 {
-                    int sceneId = gameGateIdleQueue.Dequeue();
+                    int sceneId = sceneIdleQueue.Dequeue();
                     ActiveScene(sceneId, gameServerId);
                     if(sceneIdleQueue.Count == 0)
                     {

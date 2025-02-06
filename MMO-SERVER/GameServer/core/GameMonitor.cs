@@ -118,7 +118,6 @@ namespace GameServer.Core
             }
             return true;
         }
-
         public bool HaveInstanceDisconnection(int serverId)
         {
             // gate

@@ -118,6 +118,13 @@ namespace LoginGateServer.Net
             Log.Information("\x1b[32m" + "Initialization complete, server is now operational." + "\x1b[0m");
             return true;
         }
+        private bool _ExecutePhase2_1()
+        {
+            // 开始网络监听，预示着当前服务器的正式启动
+            ConnManager.Instance.UserStart();
+            Log.Information("\x1b[32m" + "Initialization complete, server is now operational." + "\x1b[0m");
+            return true;
+        }
 
         // net
         private void UserConnected(Connection conn)
@@ -202,6 +209,7 @@ namespace LoginGateServer.Net
             {
                 var entry = new ServerEntry();
                 entry.ServerInfoNode = sin;
+                entry.IsFirstConn = true;
                 m_outgoingServerConnection[SERVER_TYPE.Logingatemgr] = entry;
                 _ConnectToLGM();
             }
@@ -247,6 +255,11 @@ namespace LoginGateServer.Net
             {
                 // 注册成功我们等待分配任务。
                 Log.Information("Successfully registered this server information with the LoginGateMgr, waiting LoginGateMgr's task");
+                // 这里标志一次连接的成功
+                if(m_outgoingServerConnection[SERVER_TYPE.Logingatemgr].IsFirstConn == true)
+                {
+                    m_outgoingServerConnection[SERVER_TYPE.Logingatemgr].IsFirstConn = false;
+                }
             }
             else
             {
@@ -279,15 +292,30 @@ namespace LoginGateServer.Net
         }
         private bool _ExecuteStart(ExecuteLGCommandRequest message)
         {
-            if (message.LoginServerInfoNode != null)
+            bool result = false;
+            if (message.LoginServerInfoNode == null)
             {
-                var entry = new ServerEntry();
-                entry.ServerInfoNode = message.LoginServerInfoNode;
-                m_outgoingServerConnection[SERVER_TYPE.Login] = entry;
-                _ConnectToL();
-                return true;
+                goto End;
             }
-            return false;
+
+            if(!m_outgoingServerConnection.ContainsKey(SERVER_TYPE.Login))
+            {
+                m_outgoingServerConnection[SERVER_TYPE.Login] = new ServerEntry
+                {
+                    ServerInfoNode = message.LoginServerInfoNode,
+                    IsFirstConn = true
+                };
+            }
+            else
+            {
+                m_outgoingServerConnection[SERVER_TYPE.Login].ServerInfoNode = message.LoginServerInfoNode;
+            }
+            _ConnectToL();
+
+            result = true;
+
+        End:
+            return result;
         }
         private bool _ExecuteEnd()
         {
@@ -339,17 +367,27 @@ namespace LoginGateServer.Net
         private void _LoginDisconnectedCallback(NetClient tcpClient)
         {
             // 暂时 目前lg只连接一个l
-            Log.Error("Disconnect from the Login server[{0}]", m_outgoingServerConnection[SERVER_TYPE.Login].ServerInfoNode.ServerId);
-            // 暂时 清理当前的l信息
-            m_outgoingServerConnection.Remove(SERVER_TYPE.Login);
-            // lgm是否能感知到？
-
+            var lEntry = m_outgoingServerConnection.GetValueOrDefault(SERVER_TYPE.Login, null);
+            if(lEntry != null)
+            {
+                Log.Error("Disconnect from the Login server[{0}]", lEntry.ServerInfoNode.ServerId);
+                lEntry.NetClient.CloseConnection();
+                lEntry.NetClient = null;
+            }
         }
         private void _HandleRegisterToLResponse(Connection sender, RegisterToLResponse message)
         {
             Log.Information("Successfully registered to the login server.");
             LoginToken = message.LoginToken;
-            _ExecutePhase2();
+            if (m_outgoingServerConnection[SERVER_TYPE.Login].IsFirstConn == true)
+            {
+                _ExecutePhase2();
+                m_outgoingServerConnection[SERVER_TYPE.Login].IsFirstConn = false;
+            }
+            else
+            {
+                _ExecutePhase2_1();
+            }
         }
 
         // tools

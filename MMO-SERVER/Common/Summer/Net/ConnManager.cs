@@ -110,6 +110,25 @@ namespace Common.Summer.Net
             m_userAcceptServer?.UnInit();
             m_userAcceptServer = null;
         }
+        public void ServerStart()
+        {
+            _StartListeningForClusterServerConnections(m_acceptUserIp, m_acceptUserPort);
+        }
+        public void ServerEnd()
+        {
+            // 移除全部的user连接
+            foreach (var kv in m_serverConnHeartbeatTimestamps)
+            {
+                Connection conn = kv.Key;
+                CloseServerConnection(conn);
+            }
+            m_serverConnHeartbeatTimestamps.Clear();
+            m_serverAcceptServer?.UnInit();
+            m_serverAcceptServer = null;
+        }
+
+
+
 
         // 1.用户连接过来的
         private void _StartListeningForUserConnections(string ip, int port)

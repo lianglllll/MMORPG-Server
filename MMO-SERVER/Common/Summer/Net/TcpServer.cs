@@ -53,9 +53,9 @@ namespace Common.Summer.Net
             m_listenerSocket.Bind(m_endPoint);                                      //绑定一个IPEndPoint
             m_listenerSocket.Listen(backlog);                                       //开始监听，并设置等待队列长度 
             // 开启异步监听
-            SocketAsyncEventArgs args = new SocketAsyncEventArgs();                //可以复用,当前监听连接socket复用
-            args.Completed += _OnAccepted;                                         //当有用户的连接时触发回调函数
-            m_listenerSocket.AcceptAsync(args);                                   //异步接收
+            SocketAsyncEventArgs args = new SocketAsyncEventArgs();                 //可以复用,当前监听连接socket复用
+            args.Completed += _OnAccepted;                                          //当有用户的连接时触发回调函数
+            m_listenerSocket.AcceptAsync(args);                                     //异步接收
 
             m_isRunning = true;
         }
