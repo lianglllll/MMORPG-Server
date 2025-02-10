@@ -51,10 +51,12 @@ namespace SceneServer.Core.Scene
             // 1.创建chr实例
             var gateConn = ServersMgr.Instance.GetGameGateConnByServerId(message.GameGateServerId);
             var chr = m_sceneCharacterManager.CreateSceneCharacter(message.SessionId, gateConn, message.DbChrNode);
-            m_aoiZone.Enter(chr);
             chr.CurSceneId = SceneId;
 
-            //2.新上线的玩家需要获取场景中:全部的角色/怪物/物品的信息
+            // 2.加入aoi空间
+            m_aoiZone.Enter(chr);
+
+            // 3.新上线的玩家需要获取场景中:全部的角色/怪物/物品的信息
             SelfCharacterEnterSceneResponse sResp = new();
             sResp.TaskId = message.TaskId;
             sResp.ResultCode = 0;
@@ -72,7 +74,7 @@ namespace SceneServer.Core.Scene
             }
             conn.Send(sResp);
 
-            //3.通知附近玩家
+            // 4.通知附近玩家
             OtherEntityEnterSceneResponse oResp = new();
             oResp.SceneId = SceneId;
             oResp.EntityType = SceneEntityType.Actor;
@@ -85,7 +87,30 @@ namespace SceneServer.Core.Scene
         }
         public void CharacterLeaveScene(int entityId)
         {
+            var chr = m_sceneCharacterManager.GetSceneCharacterByEntityId(entityId);
+            if(chr == null)
+            {
+                goto End;
+            }
             Log.Information("a character leave scene");
+
+            // 广播通知其他玩家
+            var resp = new OtherEntityLeaveSceneResponse();
+            resp.SceneId = SceneId;
+            resp.EntityId = chr.EntityId;
+            var views = m_aoiZone.FindViewEntity(chr.EntityId, false);
+            foreach (var cc in views.OfType<SceneCharacter>())
+            {
+                cc.Send(resp);
+            }
+
+            // 回收
+            m_sceneCharacterManager.RemoveSceneCharacterByEntityId(entityId);
+
+            // 退出aoi空间
+            m_aoiZone.Exit(chr.EntityId);
+        End:
+            return;
         }
         public void MonsterEnterScene()
         {

@@ -5,7 +5,7 @@ namespace SceneServer.Core.Model
 {
     public class SceneEntity
     {
-        private int m_entityId;
+        protected int m_entityId;
         private Vector3Int m_position;
         private Vector3Int m_rotation;
         private Vector3Int m_scale;

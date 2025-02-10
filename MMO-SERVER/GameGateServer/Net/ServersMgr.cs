@@ -155,7 +155,6 @@ namespace GameGateServer.Net
                     req.CharacterId = session.m_cId;
                     SendToGameServer(req);
                 }
-
             }
         }
 

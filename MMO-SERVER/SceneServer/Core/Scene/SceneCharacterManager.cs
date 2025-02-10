@@ -26,9 +26,11 @@ namespace SceneServer.Core.Scene
             chr.Init(sessionId, gameGateConn, dbChrNode);
             SceneEntityManager.Instance.AddSceneEntity(chr);
             characterDict[chr.EntityId] = chr;
+            // todo 
+            chr.NetActorNode.EntityId = chr.EntityId;
             return chr;
         }
-        public bool RemoveSceneCharacter(int entityId)
+        public bool RemoveSceneCharacterByEntityId(int entityId)
         {
             //角色列表中删除
             if(characterDict.TryRemove(entityId, out SceneCharacter chr)){

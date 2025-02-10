@@ -11,7 +11,7 @@ $loginServerDir = Join-Path $baseDir "LoginServer\bin\Debug\net6.0"
 $gameGateMgrServerDir = Join-Path $baseDir "GameGateMgrServer\bin\Debug\net6.0"
 $gameGateServerDir = Join-Path $baseDir "GameGateServer\bin\Debug\net6.0"
 $gameServerDir = Join-Path $baseDir "GameServer\bin\Debug\net6.0"
-$spaceServerDir = Join-Path $baseDir "SpaceServer\bin\Debug\net6.0"
+$spaceServerDir = Join-Path $baseDir "SceneServer\bin\Debug\net6.0"
 
 # É¾³ý¾ÉµÄ pids.txt ÎÄ¼þ
 $pidsFile = Join-Path $baseDir "pids.txt"
@@ -62,4 +62,4 @@ Start-AndRecordPID -targetDirectory $loginServerDir -executableName "LoginServer
 Start-AndRecordPID -targetDirectory $gameGateMgrServerDir -executableName "GameGateMgrServer.exe" -displayName "GameGateMgrServer"
 Start-AndRecordPID -targetDirectory $gameGateServerDir -executableName "GameGateServer.exe" -displayName "GameGateServer"
 Start-AndRecordPID -targetDirectory $gameServerDir -executableName "GameServer.exe" -displayName "GameServer"
-# Start-AndRecordPID -targetDirectory $spaceServerDir -executableName "SceneServer.exe" -displayName "SceneServer"
+Start-AndRecordPID -targetDirectory $spaceServerDir -executableName "SceneServer.exe" -displayName "SceneServer"
