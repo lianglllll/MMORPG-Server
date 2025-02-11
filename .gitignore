@@ -16,6 +16,9 @@ UserSettings/
 #测试用的场景
 MMO-Client/MMOGame/Assets/aExample
 
+# 项目拷贝，用于多人开发用
+MMO-Client/MMOGame_Copy
+
 #美术资源-太大了
 MMO-Client/MMOGame/Assets/Art
 
