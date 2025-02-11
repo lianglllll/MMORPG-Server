@@ -38,7 +38,7 @@ namespace HS.Protobuf.SceneEntity {
             "DHByb2Zlc3Npb25JZBgDIAEoBRIRCglhY3Rvck5hbWUYBCABKAkSDQoFbGV2",
             "ZWwYBSABKAUSCwoDZXhwGAYgASgDEg8KB3NjZW5lSWQYByABKAUSCgoCaHAY",
             "CCABKAUSCgoCbXAYCSABKAUSDQoFbWF4SHAYCiABKAUSDQoFbWF4TXAYCyAB",
-            "KAUSDQoFc3BlZWQYDCABKAUSOwoMbmV0QWN0b3JUeXBlGA0gASgOMiUuSFMu",
+            "KAUSDQoFc3BlZWQYDCABKAISOwoMbmV0QWN0b3JUeXBlGA0gASgOMiUuSFMu",
             "UHJvdG9idWYuU2NlbmVFbnRpdHkuTmV0QWN0b3JUeXBlEjsKDG5ldEFjdG9y",
             "TW9kZRgOIAEoDjIlLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5Lk5ldEFjdG9y",
             "TW9kZRI9Cg1uZXRBY3RvclN0YXRlGA8gASgOMiYuSFMuUHJvdG9idWYuU2Nl",
@@ -87,12 +87,12 @@ namespace HS.Protobuf.SceneEntity {
             "TkUQABIYChRORVRfQUNUT1JfU1RBVEVfSURMRRABEhoKFk5FVF9BQ1RPUl9T",
             "VEFURV9NT1RJT04QAhIaChZORVRfQUNUT1JfU1RBVEVfSlVNUFVQEAMSGwoX",
             "TkVUX0FDVE9SX1NUQVRFX0ZBTExJTkcQBBIaChZORVRfQUNUT1JfU1RBVEVf",
-            "Q1JPVUNIEAUSGQoVTkVUX0FDVE9SX1NUQVRFX1BST05FEAYSGQoVTkVUX0FD",
-            "VE9SX1NUQVRFX0RFQVRIEAcSGAoUTkVUX0FDVE9SX1NUQVRFX0hVUlQQCBIZ",
-            "ChVORVRfQUNUT1JfU1RBVEVfRElaWlkQCRIZChVORVRfQUNUT1JfU1RBVEVf",
-            "S05PQ0sQChIaChZORVRfQUNUT1JfU1RBVEVfQ1VTVE9NEAsSGwoXTkVUX0FD",
-            "VE9SX1NUQVRFX0RFRkVOU0UQDBIZChVORVRfQUNUT1JfU1RBVEVfRVZBREUQ",
-            "DRIZChVORVRfQUNUT1JfU1RBVEVfU0tJTEwQDirJBwoSTmV0QWN0b3JTbWFs",
+            "Q1JPVUNIEAUSGQoVTkVUX0FDVE9SX1NUQVRFX1BST05FEAYSGAoUTkVUX0FD",
+            "VE9SX1NUQVRFX0hVUlQQBxIZChVORVRfQUNUT1JfU1RBVEVfRElaWlkQCBIZ",
+            "ChVORVRfQUNUT1JfU1RBVEVfS05PQ0sQCRIZChVORVRfQUNUT1JfU1RBVEVf",
+            "REVBVEgQChIbChdORVRfQUNUT1JfU1RBVEVfREVGRU5TRRALEhkKFU5FVF9B",
+            "Q1RPUl9TVEFURV9FVkFERRAMEhkKFU5FVF9BQ1RPUl9TVEFURV9TS0lMTBAN",
+            "EhoKFk5FVF9BQ1RPUl9TVEFURV9DVVNUT00QDirJBwoSTmV0QWN0b3JTbWFs",
             "bFN0YXRlEh4KGk5FVF9BQ1RPUl9TTUFMTF9TVEFURV9OT05FEAASKgomTkVU",
             "X0FDVE9SX1NUQVRFX1NBTUxMX01PVElPTl9TTE9XX1dBTEsQARIsCihORVRf",
             "QUNUT1JfU1RBVEVfU0FNTExfTU9USU9OX05PUk1BTF9XQUxLEAISJAogTkVU",
@@ -159,17 +159,17 @@ namespace HS.Protobuf.SceneEntity {
     [pbr::OriginalName("NET_ACTOR_STATE_FALLING")] Falling = 4,
     [pbr::OriginalName("NET_ACTOR_STATE_CROUCH")] Crouch = 5,
     [pbr::OriginalName("NET_ACTOR_STATE_PRONE")] Prone = 6,
-    [pbr::OriginalName("NET_ACTOR_STATE_DEATH")] Death = 7,
-    [pbr::OriginalName("NET_ACTOR_STATE_HURT")] Hurt = 8,
-    [pbr::OriginalName("NET_ACTOR_STATE_DIZZY")] Dizzy = 9,
-    [pbr::OriginalName("NET_ACTOR_STATE_KNOCK")] Knock = 10,
+    [pbr::OriginalName("NET_ACTOR_STATE_HURT")] Hurt = 7,
+    [pbr::OriginalName("NET_ACTOR_STATE_DIZZY")] Dizzy = 8,
+    [pbr::OriginalName("NET_ACTOR_STATE_KNOCK")] Knock = 9,
+    [pbr::OriginalName("NET_ACTOR_STATE_DEATH")] Death = 10,
+    [pbr::OriginalName("NET_ACTOR_STATE_DEFENSE")] Defense = 11,
+    [pbr::OriginalName("NET_ACTOR_STATE_EVADE")] Evade = 12,
+    [pbr::OriginalName("NET_ACTOR_STATE_SKILL")] Skill = 13,
     /// <summary>
     /// ×Ô¶¨Òå×´Ì¬
     /// </summary>
-    [pbr::OriginalName("NET_ACTOR_STATE_CUSTOM")] Custom = 11,
-    [pbr::OriginalName("NET_ACTOR_STATE_DEFENSE")] Defense = 12,
-    [pbr::OriginalName("NET_ACTOR_STATE_EVADE")] Evade = 13,
-    [pbr::OriginalName("NET_ACTOR_STATE_SKILL")] Skill = 14,
+    [pbr::OriginalName("NET_ACTOR_STATE_CUSTOM")] Custom = 14,
   }
 
   public enum NetActorSmallState {
@@ -1021,10 +1021,10 @@ namespace HS.Protobuf.SceneEntity {
 
     /// <summary>Field number for the "speed" field.</summary>
     public const int SpeedFieldNumber = 12;
-    private int speed_;
+    private float speed_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int Speed {
+    public float Speed {
       get { return speed_; }
       set {
         speed_ = value;
@@ -1138,7 +1138,7 @@ namespace HS.Protobuf.SceneEntity {
       if (Mp != other.Mp) return false;
       if (MaxHp != other.MaxHp) return false;
       if (MaxMp != other.MaxMp) return false;
-      if (Speed != other.Speed) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Speed, other.Speed)) return false;
       if (NetActorType != other.NetActorType) return false;
       if (NetActorMode != other.NetActorMode) return false;
       if (NetActorState != other.NetActorState) return false;
@@ -1164,7 +1164,7 @@ namespace HS.Protobuf.SceneEntity {
       if (Mp != 0) hash ^= Mp.GetHashCode();
       if (MaxHp != 0) hash ^= MaxHp.GetHashCode();
       if (MaxMp != 0) hash ^= MaxMp.GetHashCode();
-      if (Speed != 0) hash ^= Speed.GetHashCode();
+      if (Speed != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Speed);
       if (NetActorType != global::HS.Protobuf.SceneEntity.NetActorType.Character) hash ^= NetActorType.GetHashCode();
       if (NetActorMode != global::HS.Protobuf.SceneEntity.NetActorMode.None) hash ^= NetActorMode.GetHashCode();
       if (NetActorState != global::HS.Protobuf.SceneEntity.NetActorState.None) hash ^= NetActorState.GetHashCode();
@@ -1234,9 +1234,9 @@ namespace HS.Protobuf.SceneEntity {
         output.WriteRawTag(88);
         output.WriteInt32(MaxMp);
       }
-      if (Speed != 0) {
-        output.WriteRawTag(96);
-        output.WriteInt32(Speed);
+      if (Speed != 0F) {
+        output.WriteRawTag(101);
+        output.WriteFloat(Speed);
       }
       if (NetActorType != global::HS.Protobuf.SceneEntity.NetActorType.Character) {
         output.WriteRawTag(104);
@@ -1311,9 +1311,9 @@ namespace HS.Protobuf.SceneEntity {
         output.WriteRawTag(88);
         output.WriteInt32(MaxMp);
       }
-      if (Speed != 0) {
-        output.WriteRawTag(96);
-        output.WriteInt32(Speed);
+      if (Speed != 0F) {
+        output.WriteRawTag(101);
+        output.WriteFloat(Speed);
       }
       if (NetActorType != global::HS.Protobuf.SceneEntity.NetActorType.Character) {
         output.WriteRawTag(104);
@@ -1377,8 +1377,8 @@ namespace HS.Protobuf.SceneEntity {
       if (MaxMp != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(MaxMp);
       }
-      if (Speed != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Speed);
+      if (Speed != 0F) {
+        size += 1 + 4;
       }
       if (NetActorType != global::HS.Protobuf.SceneEntity.NetActorType.Character) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) NetActorType);
@@ -1443,7 +1443,7 @@ namespace HS.Protobuf.SceneEntity {
       if (other.MaxMp != 0) {
         MaxMp = other.MaxMp;
       }
-      if (other.Speed != 0) {
+      if (other.Speed != 0F) {
         Speed = other.Speed;
       }
       if (other.NetActorType != global::HS.Protobuf.SceneEntity.NetActorType.Character) {
@@ -1523,8 +1523,8 @@ namespace HS.Protobuf.SceneEntity {
             MaxMp = input.ReadInt32();
             break;
           }
-          case 96: {
-            Speed = input.ReadInt32();
+          case 101: {
+            Speed = input.ReadFloat();
             break;
           }
           case 104: {
@@ -1618,8 +1618,8 @@ namespace HS.Protobuf.SceneEntity {
             MaxMp = input.ReadInt32();
             break;
           }
-          case 96: {
-            Speed = input.ReadInt32();
+          case 101: {
+            Speed = input.ReadFloat();
             break;
           }
           case 104: {

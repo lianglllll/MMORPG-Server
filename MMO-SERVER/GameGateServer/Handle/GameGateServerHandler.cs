@@ -8,7 +8,7 @@ using HS.Protobuf.GameGate;
 
 namespace GameGateServer.Handle
 {
-    public class GameGateHandler : Singleton<GameGateHandler>
+    public class GameGateServerHandler : Singleton<GameGateServerHandler>
     {
         public void Init()
         {

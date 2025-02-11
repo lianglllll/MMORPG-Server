@@ -63,7 +63,14 @@ namespace SceneServer.Core.Model.Actor
         public int CurMP => m_netActorNode.Mp;
         public int MaxHP => m_netActorNode.Hp;
         public int MaxMP => m_netActorNode.Mp;
-        public int CurSpeed => m_netActorNode.Speed;
+        public float Speed
+        {
+            get => m_netActorNode.Speed;
+            set
+            {
+                m_netActorNode.Speed = value;
+            }
+        }
         public int CurLevel => m_netActorNode.Level;
         public int CurSceneId
         {
@@ -93,6 +100,20 @@ namespace SceneServer.Core.Model.Actor
         }
         public SkillSpell SkillSpell => m_skillSpell;
         public List<int> EquippedSkillIds => m_netActorNode.EquippedSkills.ToList<int>();
+
+        public override void SetTransform(NetTransform transform)
+        {
+            base.SetTransform(transform);
+            // 同时存储在netActorNode中
+            m_netActorNode.Transform.Position = transform.Position;
+            m_netActorNode.Transform.Rotation = transform.Rotation;
+            m_netActorNode.Transform.Scale = transform.Scale;
+        }
+        public bool ChangeActorState(NetActorState state)
+        {
+            m_netActorNode.NetActorState = state;
+            return true;
+        }
         public bool ChangeMP(int mpDelta)
         {
             return true;

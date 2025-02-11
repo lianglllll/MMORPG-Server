@@ -18,15 +18,16 @@ namespace GameGateServer.Net
         public ServerInfoNode ServerInfoNode { get; set; }
         public NetClient NetClient { get; set; }
         public bool IsFirstConn { get; set; }
+        public string Token { get; set; }
     }
 
     public class ServersMgr : Singleton<ServersMgr>
     {
         private ServerInfoNode? m_curSin;
-        private Dictionary<SERVER_TYPE, ServerEntry>    m_outgoingServerConnection          = new();
+        private Dictionary<SERVER_TYPE, ServerEntry> m_outgoingServerConnection = new();
 
-        private Dictionary<int, ServerEntry>            m_outgoing_SceneServerConnection     = new();    // <sceneId, scene>
-        private Dictionary<int, int>                    m_outgoing_SceneServerConnection2    = new();    // <serverId, sceneId>
+        private Dictionary<int, ServerEntry> m_outgoing_SceneServerConnection = new();    // <sceneId, scene>
+        private Dictionary<int, int> m_outgoing_SceneServerConnection2 = new();    // <serverId, sceneId>
 
         public string GameToken { get; private set; }
 
@@ -50,8 +51,10 @@ namespace GameGateServer.Net
                 null, 0, null, null);
             SessionManager.Instance.Init();
             SecurityHandler.Instance.Init();
-            GameGateHandler.Instance.Init();
+            GameGateServerHandler.Instance.Init();
             EnterGameWorldHanlder.Instance.Init();
+            SceneHandler.Instance.Init();
+
 
             // 协议注册
             ProtoHelper.Instance.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
@@ -87,13 +90,13 @@ namespace GameGateServer.Net
             {
                 ClusterEventType.GamegatemgrEnter,
             };
-            foreach(var e in events)
+            foreach (var e in events)
             {
                 bitmap |= (1 << (int)e);
             }
             return bitmap;
         }
-        
+
         // phase
         private bool _ExecutePhase0()
         {
@@ -182,7 +185,7 @@ namespace GameGateServer.Net
             req.ServerInfoNode = m_curSin;
             tcpClient.Send(req);
         }
-        private void _CCConnectedFailedCallback(NetClient tcpClient,bool isEnd)
+        private void _CCConnectedFailedCallback(NetClient tcpClient, bool isEnd)
         {
             if (isEnd)
             {
@@ -220,7 +223,7 @@ namespace GameGateServer.Net
                 Log.Error(message.ResultMsg);
             }
         }
-       
+
         // ggm
         public void AddGGMServerInfo(ServerInfoNode sin)
         {
@@ -313,15 +316,16 @@ namespace GameGateServer.Net
         private bool _ExecuteStart(ExecuteGGCommandRequest message)
         {
             bool result = false;
-            if(message.GameServerInfoNode == null)
+            if (message.GameServerInfoNode == null)
             {
                 goto End;
             }
 
             if (!m_outgoingServerConnection.ContainsKey(SERVER_TYPE.Game))
             {
-                m_outgoingServerConnection[SERVER_TYPE.Game] = new ServerEntry { 
-                    ServerInfoNode = message.GameServerInfoNode, 
+                m_outgoingServerConnection[SERVER_TYPE.Game] = new ServerEntry
+                {
+                    ServerInfoNode = message.GameServerInfoNode,
                     IsFirstConn = true
                 };
             }
@@ -337,7 +341,7 @@ namespace GameGateServer.Net
         private bool _ExecuteEnd()
         {
             // 1.移除game相关的连接
-            if(m_outgoingServerConnection.ContainsKey(SERVER_TYPE.Game) && m_outgoingServerConnection[SERVER_TYPE.Game].NetClient != null)
+            if (m_outgoingServerConnection.ContainsKey(SERVER_TYPE.Game) && m_outgoingServerConnection[SERVER_TYPE.Game].NetClient != null)
             {
                 ConnManager.Instance.CloseOutgoingServerConnection(m_outgoingServerConnection[SERVER_TYPE.Game].NetClient);
             }
@@ -347,7 +351,7 @@ namespace GameGateServer.Net
             ConnManager.Instance.UserEnd();
 
             // 3.清空当前的scene连接
-            foreach(var sEntry in m_outgoing_SceneServerConnection.Values)
+            foreach (var sEntry in m_outgoing_SceneServerConnection.Values)
             {
                 ConnManager.Instance.CloseOutgoingServerConnection(sEntry.NetClient);
             }
@@ -447,7 +451,7 @@ namespace GameGateServer.Net
             {
                 Log.Information("Successfully connected to the Scene server,serverId = [{0}], sceneId = [{1}].",
                     entry.ServerInfoNode.ServerId, entry.ServerInfoNode.SceneServerInfo.SceneId);
-                
+
                 tcpClient.Connection.Set<int>(tcpClient.ServerId);
 
                 // 注册
@@ -493,5 +497,15 @@ namespace GameGateServer.Net
         {
             return m_outgoingServerConnection[SERVER_TYPE.Game].NetClient.Send(message);
         }
+        public bool SendToSceneServer(int sceneId, IMessage message)
+        {
+            var entry = m_outgoing_SceneServerConnection.GetValueOrDefault(sceneId, null);
+            if (entry != null)
+            {
+                return entry.NetClient.Send(message);
+            }
+            return false;
+        }
+
     }
 }

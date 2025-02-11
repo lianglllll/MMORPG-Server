@@ -16,6 +16,7 @@ namespace GameGateServer.Net
         public string m_cId;
         public int curSceneId;
 
+
         public Connection Conn;                                       
         public float LastHeartTime;        // 用myTime                
         private ConcurrentQueue<IMessage> msgBuffer = new ConcurrentQueue<IMessage>();

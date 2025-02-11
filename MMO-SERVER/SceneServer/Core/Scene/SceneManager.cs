@@ -1,5 +1,6 @@
 ﻿using Common.Summer.Core;
 using Common.Summer.Tools;
+using Google.Protobuf;
 using HS.Protobuf.DBProxy.DBCharacter;
 using HS.Protobuf.Scene;
 using HS.Protobuf.SceneEntity;
@@ -129,5 +130,49 @@ namespace SceneServer.Core.Scene
 
         }
 
+        public void ActorChangeState(SceneActor self, ActorChangeStateRequest message, bool isIncludeSelf = false)
+        {
+            // 保存与角色的相关信息
+            self.SetTransform(message.OriginalTransform);
+            self.ChangeActorState(message.State);
+            Log.Information("actor[entityId = {0}] change state {1}", self.EntityId, message.State);
+
+            // 通知附近玩家
+            var resp = new ActorChangeStateResponse();
+            resp.EntityId = self.EntityId;
+            resp.State = message.State;
+            resp.OriginalTransform = message.OriginalTransform;
+            resp.Timestamp = message.Timestamp;
+
+            var all = m_aoiZone.FindViewEntity(self.EntityId, isIncludeSelf);
+            foreach (var chr in all.OfType<SceneCharacter>())
+            {
+                resp.SessionId = chr.SessionId;
+                chr.Send(resp);
+            }
+        }
+
+        internal void ActorChangeMotionData(SceneActor self, ActorChangeMotionDataRequest message, bool isIncludeSelf = false)
+        {
+            // 改变相关信息
+            self.SetTransform(message.OriginalTransform);
+            self.Speed = message.Speed;
+            Log.Information("actor[entityId = {0}] change motion data", self.EntityId);
+
+            // 通知附近玩家
+            var resp = new ActorChangeMotionDataResponse();
+            resp.EntityId = self.EntityId;
+            resp.OriginalTransform = message.OriginalTransform;
+            resp.Timestamp = message.Timestamp;
+            resp.Speed = message.Speed;
+
+            var all = m_aoiZone.FindViewEntity(self.EntityId, isIncludeSelf);
+            foreach (var chr in all.OfType<SceneCharacter>())
+            {
+                resp.SessionId = chr.SessionId;
+                chr.Send(resp);
+            }
+
+        }
     }
 }

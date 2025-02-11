@@ -6,7 +6,7 @@ namespace SceneServer.Core.Model
     public class SceneEntity
     {
         protected int m_entityId;
-        private Vector3Int m_position;
+        private Vector3Int m_position;  // 这里的vector3都是*1000倍的
         private Vector3Int m_rotation;
         private Vector3Int m_scale;
 
@@ -54,5 +54,12 @@ namespace SceneServer.Core.Model
         {
 
         }
+        public virtual void SetTransform(NetTransform transform)
+        {
+            m_position = transform.Position;
+            m_rotation = transform.Rotation;
+            m_scale = transform.Scale;
+        }
+
     }
 }

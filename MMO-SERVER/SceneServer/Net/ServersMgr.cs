@@ -31,7 +31,7 @@ namespace SceneServer.Net
     {
         private ServerInfoNode? m_curSin;
         private Dictionary<SERVER_TYPE, ServerEntry> m_outgoingServerConnection = new();
-        private Dictionary<int, GameGateEntry> m_gameGateConn = new();
+        private Dictionary<int, GameGateEntry> m_gameGateConn = new();          // <serverID, gameGate>
 
         public string GameToken { get; private set; }
 
@@ -54,6 +54,7 @@ namespace SceneServer.Net
                 Config.Server.ip, Config.Server.serverPort, null, ClusterServerDisconnected);
             SceneServerHandler.Instance.Init();
             EnterGameWorldHanlder.Instance.Init();
+            SceneHandler.Instance.Init();
 
             // 协议注册
             ProtoHelper.Instance.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
@@ -450,7 +451,12 @@ namespace SceneServer.Net
                 Connection = conn,
             };
             m_gameGateConn.Add(message.ServerInfoNode.ServerId, entry);
+
             conn.Set<int>(message.ServerInfoNode.ServerId);
+
+            //// 分配一下连接token
+            //var token = SceneTokenManager.Instance.NewToken(conn, message.ServerInfoNode.ServerId);
+
             RegisterToSceneResponse resp = new();
             resp.ResultCode = 0;
             conn.Send(resp);
