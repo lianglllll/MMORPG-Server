@@ -10,7 +10,7 @@ enum CommonProtocl{
 	COMMON_PROTOCL_EXCHANGE_PUBLIC_KEY_REQ	= 1005;
 	COMMON_PROTOCL_EXCHANGE_PUBLIC_KEY_RESP	= 1006;
 	COMMON_PROTOCL_Exchange_COMMUNICATION_SECRET_KEY_REQ	= 1007;
-	COMMON_PROTOCL_Exchange_COMMUNICATION_SECRET_KEY_RESP = 1008;
+	COMMON_PROTOCL_Exchange_COMMUNICATION_SECRET_KEY_RESP	= 1008;
 }
 
 enum SERVER_TYPE{
@@ -24,12 +24,14 @@ enum SERVER_TYPE{
 	SERVER_TYPE_GAMEGATEMGR		= 7;
 	SERVER_TYPE_SCENE			= 8;
 	SERVER_TYPE_DBPROXY			= 9;
+	SERVER_TYPE_MASTERTIME		= 10;
+	SERVER_TYPE_SLAVETIME		= 11;
 	// 关于pb区域号划分
 	// login:	20000	login/longinGate/loginGateMgr
 	// game:	30000	背包/聊天/任务/商店/好友/邮件/排行榜/公会/活动
-	// scene:	40000	场景/副本 
+	// scene:	40000	场景/副本/战斗skill buff   
 	// DB:		50000	mongodb/redis
-	// combat:	60000	skill buff   
+	// time:	60000	
 }
 enum PROTOCAL_CODE{
 	PROTOCAL_CODE_NONE = 0;
@@ -38,22 +40,24 @@ enum PROTOCAL_CODE{
 }
 
 message ServerInfoNode{
-	int32 serverId		= 1;
-	SERVER_TYPE serverType = 2;
-	string ip			= 3;
-	int32 port			= 4;
+	int32 serverId			= 1;
+	SERVER_TYPE serverType	= 2;
+	string ip				= 3;
+	int32 port				= 4;
+	int32 eventBitmap		= 5;
 	oneof payload{   
-		ControlCenterServerInfoNode controlCenterInfo = 5;
-		LoginServerInfoNode loginServerInfo = 6;
-		LoginGateServerInfoNode loginGateServerInfo = 7;
-		LoginGateMgrServerInfoNode loginGateMgrServerInfo = 8;
-		GameServerInfoNode gameServerInfo = 9;
-		GameGateServerInfoNode gameGateServerInfo = 10;
-		GameGateMgrServerInfoNode gameGateMgrServerInfo = 11;
-		SceneServerInfoNode sceneServerInfo = 12;
-		DBProxyServerInfoNode dbProxyServerInfo = 13;
+		ControlCenterServerInfoNode controlCenterInfo		= 6;
+		LoginServerInfoNode loginServerInfo					= 7;
+		LoginGateServerInfoNode loginGateServerInfo			= 8;
+		LoginGateMgrServerInfoNode loginGateMgrServerInfo	= 9;
+		GameServerInfoNode gameServerInfo					= 10;
+		GameGateServerInfoNode gameGateServerInfo			= 11;
+		GameGateMgrServerInfoNode gameGateMgrServerInfo		= 12;
+		SceneServerInfoNode sceneServerInfo					= 13;
+		DBProxyServerInfoNode dbProxyServerInfo				= 14;
+		MasterTimeServerInfoNode masterTimeServerInfo		= 15;
+		SlaveTimeServerInfoNode slaveTimeServerInfo			= 16;
 	}
-	int32 eventBitmap	= 14;
 }
 message ControlCenterServerInfoNode{
 }
@@ -77,6 +81,11 @@ message SceneServerInfoNode{
 }
 message DBProxyServerInfoNode{
 }
+message MasterTimeServerInfoNode{
+}
+message SlaveTimeServerInfoNode{
+}
+
 
 enum GateCommand{
 	GATE_COMMAND_NONE = 0;

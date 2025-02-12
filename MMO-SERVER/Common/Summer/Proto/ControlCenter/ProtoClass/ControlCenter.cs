@@ -48,7 +48,7 @@ namespace HS.Protobuf.ControlCenter {
             "X1NFUlZFUklORk9fUkVHSVNURVJfUkVTUBCSThIwCitDT05UUk9MQ0VOVEVS",
             "X1BST1RPQ0xfR0VUX0FMTFNFUlZFUklORk9fUkVREJNOEjEKLENPTlRST0xD",
             "RU5URVJfUFJPVE9DTF9HRVRfQUxMU0VSVkVSSU5GT19SRVNQEJROEi0KKENP",
-            "TlRST0xDRU5URVJfUFJPVE9DTF9DTFVTVEVSX0VWRU5UX1JFU1AQlk4qmgUK",
+            "TlRST0xDRU5URVJfUFJPVE9DTF9DTFVTVEVSX0VWRU5UX1JFU1AQlk4qugYK",
             "EENsdXN0ZXJFdmVudFR5cGUSJAogQ0xVU1RFUl9FVkVOVF9UWVBFX1VOS05P",
             "V05fRVZFTlQQABImCiJDTFVTVEVSX0VWRU5UX1RZUEVfTE9HSU5HQVRFX0VO",
             "VEVSEAESJQohQ0xVU1RFUl9FVkVOVF9UWVBFX0xPR0lOR0FURV9FWElUEAIS",
@@ -63,7 +63,11 @@ namespace HS.Protobuf.ControlCenter {
             "X1RZUEVfR0FNRUdBVEVNR1JfRVhJVBAMEiIKHkNMVVNURVJfRVZFTlRfVFlQ",
             "RV9TQ0VORV9FTlRFUhANEiEKHUNMVVNURVJfRVZFTlRfVFlQRV9TQ0VORV9F",
             "WElUEA4SJAogQ0xVU1RFUl9FVkVOVF9UWVBFX0RCUFJPWFlfRU5URVIQDxIj",
-            "Ch9DTFVTVEVSX0VWRU5UX1RZUEVfREJQUk9YWV9FWElUEBBiBnByb3RvMw=="));
+            "Ch9DTFVTVEVSX0VWRU5UX1RZUEVfREJQUk9YWV9FWElUEBASJwojQ0xVU1RF",
+            "Ul9FVkVOVF9UWVBFX01BU1RFUlRJTUVfRU5URVIQERImCiJDTFVTVEVSX0VW",
+            "RU5UX1RZUEVfTUFTVEVSVElNRV9FWElUEBISJgoiQ0xVU1RFUl9FVkVOVF9U",
+            "WVBFX1NMQVZFVElNRV9FTlRFUhATEiUKIUNMVVNURVJfRVZFTlRfVFlQRV9T",
+            "TEFWRVRJTUVfRVhJVBAUYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::HS.Protobuf.Common.CommonReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.ControlCenter.ControlCenterProtocl), typeof(global::HS.Protobuf.ControlCenter.ClusterEventType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -145,7 +149,7 @@ namespace HS.Protobuf.ControlCenter {
     /// </summary>
     [pbr::OriginalName("CLUSTER_EVENT_TYPE_LOGINGATEMGR_ENTER")] LogingatemgrEnter = 9,
     /// <summary>
-    /// logingatemgr 进入集群
+    /// logingatemgr 退出集群
     /// </summary>
     [pbr::OriginalName("CLUSTER_EVENT_TYPE_LOGINGATEMGR_EXIT")] LogingatemgrExit = 10,
     /// <summary>
@@ -153,7 +157,7 @@ namespace HS.Protobuf.ControlCenter {
     /// </summary>
     [pbr::OriginalName("CLUSTER_EVENT_TYPE_GAMEGATEMGR_ENTER")] GamegatemgrEnter = 11,
     /// <summary>
-    /// gamegatemgr 进入集群
+    /// gamegatemgr 退出集群
     /// </summary>
     [pbr::OriginalName("CLUSTER_EVENT_TYPE_GAMEGATEMGR_EXIT")] GamegatemgrExit = 12,
     /// <summary>
@@ -161,7 +165,7 @@ namespace HS.Protobuf.ControlCenter {
     /// </summary>
     [pbr::OriginalName("CLUSTER_EVENT_TYPE_SCENE_ENTER")] SceneEnter = 13,
     /// <summary>
-    /// scene 进入集群
+    /// scene 退出集群
     /// </summary>
     [pbr::OriginalName("CLUSTER_EVENT_TYPE_SCENE_EXIT")] SceneExit = 14,
     /// <summary>
@@ -169,9 +173,25 @@ namespace HS.Protobuf.ControlCenter {
     /// </summary>
     [pbr::OriginalName("CLUSTER_EVENT_TYPE_DBPROXY_ENTER")] DbproxyEnter = 15,
     /// <summary>
-    /// dbproxy 进入集群
+    /// dbproxy 退出集群
     /// </summary>
     [pbr::OriginalName("CLUSTER_EVENT_TYPE_DBPROXY_EXIT")] DbproxyExit = 16,
+    /// <summary>
+    /// masterTime 进入集群
+    /// </summary>
+    [pbr::OriginalName("CLUSTER_EVENT_TYPE_MASTERTIME_ENTER")] MastertimeEnter = 17,
+    /// <summary>
+    /// masterTime 退出集群
+    /// </summary>
+    [pbr::OriginalName("CLUSTER_EVENT_TYPE_MASTERTIME_EXIT")] MastertimeExit = 18,
+    /// <summary>
+    /// slaveTime 进入集群
+    /// </summary>
+    [pbr::OriginalName("CLUSTER_EVENT_TYPE_SLAVETIME_ENTER")] SlavetimeEnter = 19,
+    /// <summary>
+    /// slaveTime 退出集群
+    /// </summary>
+    [pbr::OriginalName("CLUSTER_EVENT_TYPE_SLAVETIME_EXIT")] SlavetimeExit = 20,
   }
 
   #endregion

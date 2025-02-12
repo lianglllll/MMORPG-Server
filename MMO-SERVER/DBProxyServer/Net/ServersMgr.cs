@@ -10,29 +10,29 @@ namespace DBProxyServer.Net
 {
     public class ServersMgr : Singleton<ServersMgr>
     {
-        private bool isFirstStart;
-        private ServerInfoNode? m_curServerInfoNode;
+        private ServerInfoNode? m_sin;
+
+        private bool isFirstConnectToCC;
         public NetClient? ccClient;
-        public int ServerId { get { return m_curServerInfoNode.ServerId; } }
         public void Init()
         {
-            isFirstStart = true;
+            isFirstConnectToCC = true;
 
             // 本服务器的信息
-            m_curServerInfoNode = new ServerInfoNode();
+            m_sin = new ServerInfoNode();
             DBProxyServerInfoNode dbpNode = new();
-            m_curServerInfoNode.ServerType = SERVER_TYPE.Dbproxy;
-            m_curServerInfoNode.Ip = Config.Server.ip;
-            m_curServerInfoNode.Port = Config.Server.port;
-            m_curServerInfoNode.ServerId = 0;
-            m_curServerInfoNode.DbProxyServerInfo = dbpNode;
-            m_curServerInfoNode.EventBitmap = 0;
+            m_sin.ServerType = SERVER_TYPE.Dbproxy;
+            m_sin.Ip = Config.Server.ip;
+            m_sin.Port = Config.Server.serverPort;
+            m_sin.ServerId = 0;
+            m_sin.DbProxyServerInfo = dbpNode;
+            m_sin.EventBitmap = 0;
 
             // 网络服务开启
             ConnManager.Instance.Init(Config.Server.workerCount, Config.Server.heartBeatSendInterval, Config.Server.heartBeatCheckInterval, Config.Server.heartBeatTimeOut,
                 false, true, true,
                 null, 0, null, null,
-                Config.Server.ip, Config.Server.port, null, null);
+                Config.Server.ip, Config.Server.serverPort, null, null);
 
             // 协议注册
             ProtoHelper.Instance.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
@@ -40,7 +40,7 @@ namespace DBProxyServer.Net
             // 下面这个协议是重复注册过的，原因是时序问题会报错，我看得不舒服。
             ProtoHelper.Instance.Register<ClusterEventResponse>((int)ControlCenterProtocl.ClusterEventResp);
             // 消息的订阅
-            MessageRouter.Instance.Subscribe<ServerInfoRegisterResponse>(_RegisterServerInfo2ControlCenterResponse);
+            MessageRouter.Instance.Subscribe<ServerInfoRegisterResponse>(_HandleServerInfoRegisterResponse);
 
             // 开始流程
             _ExecutePhase0();
@@ -74,7 +74,7 @@ namespace DBProxyServer.Net
             Log.Information("Successfully connect to the ControlCenter server.");
             //向cc注册自己
             ServerInfoRegisterRequest req = new();
-            req.ServerInfoNode = m_curServerInfoNode;
+            req.ServerInfoNode = m_sin;
             ccClient.Send(req);
         }
         private void _CCConnectedFailedCallback(NetClient tcpClient, bool isEnd)
@@ -96,16 +96,16 @@ namespace DBProxyServer.Net
             ccClient = null;
             _ConnectToCC();
         }
-        private void _RegisterServerInfo2ControlCenterResponse(Connection conn, ServerInfoRegisterResponse message)
+        private void _HandleServerInfoRegisterResponse(Connection conn, ServerInfoRegisterResponse message)
         {
             if (message.ResultCode == 0)
             {
-                m_curServerInfoNode.ServerId = message.ServerId;
+                m_sin.ServerId = message.ServerId;
                 Log.Information("Successfully registered to ControlCenter, Get serverId = [{0}]", message.ServerId);
                 Log.Information("Get Subscription events: {0}", message.ClusterEventNodes);
-                if (isFirstStart == true)
+                if (isFirstConnectToCC == true)
                 {
-                    isFirstStart = false;
+                    isFirstConnectToCC = false;
                     _ExecutePhase1();
                 }
             }

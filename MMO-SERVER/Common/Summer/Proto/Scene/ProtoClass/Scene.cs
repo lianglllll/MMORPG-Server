@@ -41,84 +41,85 @@ namespace HS.Protobuf.Scene {
             "EkQKFW90aGVyTmV0QWN0b3JOb2RlTGlzdBgFIAMoCzIlLkhTLlByb3RvYnVm",
             "LlNjZW5lRW50aXR5Lk5ldEFjdG9yTm9kZRJCChRvdGhlck5ldEl0ZW1Ob2Rl",
             "TGlzdBgGIAMoCzIkLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5Lk5ldEl0ZW1O",
-            "b2RlIuABCh1PdGhlckVudGl0eUVudGVyU2NlbmVSZXNwb25zZRIPCgdzY2Vu",
-            "ZUlkGAEgASgFEjwKCmVudGl0eVR5cGUYAiABKA4yKC5IUy5Qcm90b2J1Zi5T",
-            "Y2VuZUVudGl0eS5TY2VuZUVudGl0eVR5cGUSOAoJYWN0b3JOb2RlGAMgASgL",
-            "MiUuSFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuTmV0QWN0b3JOb2RlEjYKCGl0",
-            "ZW1Ob2RlGAQgASgLMiQuSFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuTmV0SXRl",
-            "bU5vZGUiLgoaQ2hhcmFjdGVyTGVhdmVTY2VuZVJlcXVlc3QSEAoIZW50aXR5",
-            "SWQYASABKAUiQgodT3RoZXJFbnRpdHlMZWF2ZVNjZW5lUmVzcG9uc2USDwoH",
-            "c2NlbmVJZBgBIAEoBRIQCghlbnRpdHlJZBgCIAEoBSJyChZBY3RvckNoYW5n",
-            "ZU1vZGVSZXF1ZXN0EhAKCGVudGl0eUlkGAEgASgFEjMKBG1vZGUYAiABKA4y",
-            "JS5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRBY3Rvck1vZGUSEQoJdGlt",
-            "ZXN0YW1wGAMgASgDInMKF0FjdG9yQ2hhbmdlTW9kZVJlc3BvbnNlEhAKCGVu",
-            "dGl0eUlkGAEgASgFEjMKBG1vZGUYAiABKA4yJS5IUy5Qcm90b2J1Zi5TY2Vu",
-            "ZUVudGl0eS5OZXRBY3Rvck1vZGUSEQoJdGltZXN0YW1wGAMgASgDIuYBChdB",
-            "Y3RvckNoYW5nZVN0YXRlUmVxdWVzdBIRCglzZXNzaW9uSWQYASABKAkSEAoI",
-            "ZW50aXR5SWQYAiABKAUSEQoJdGltZXN0YW1wGAMgASgDEjUKBXN0YXRlGAQg",
-            "ASgOMiYuSFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuTmV0QWN0b3JTdGF0ZRJA",
-            "ChFvcmlnaW5hbFRyYW5zZm9ybRgGIAEoCzIlLkhTLlByb3RvYnVmLlNjZW5l",
-            "RW50aXR5Lk5ldFRyYW5zZm9ybRIPCgVzcGVlZBgHIAEoAkgAQgkKB3BheUxv",
-            "YWQi5wEKGEFjdG9yQ2hhbmdlU3RhdGVSZXNwb25zZRIRCglzZXNzaW9uSWQY",
-            "ASABKAkSEAoIZW50aXR5SWQYAiABKAUSEQoJdGltZXN0YW1wGAMgASgDEjUK",
-            "BXN0YXRlGAQgASgOMiYuSFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuTmV0QWN0",
-            "b3JTdGF0ZRJAChFvcmlnaW5hbFRyYW5zZm9ybRgGIAEoCzIlLkhTLlByb3Rv",
-            "YnVmLlNjZW5lRW50aXR5Lk5ldFRyYW5zZm9ybRIPCgVzcGVlZBgHIAEoAkgA",
-            "QgkKB3BheUxvYWQi3gEKHEFjdG9yQ2hhbmdlTW90aW9uRGF0YVJlcXVlc3QS",
-            "EQoJc2Vzc2lvbklkGAEgASgJEhAKCGVudGl0eUlkGAIgASgFEhEKCXRpbWVz",
-            "dGFtcBgDIAEoAxINCgVzcGVlZBgEIAEoAhI1Cghyb3RhdGlvbhgFIAEoCzIj",
-            "LkhTLlByb3RvYnVmLlNjZW5lRW50aXR5Lk5ldFZlY3RvcjMSQAoRb3JpZ2lu",
-            "YWxUcmFuc2Zvcm0YBiABKAsyJS5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5O",
-            "ZXRUcmFuc2Zvcm0iqAEKHUFjdG9yQ2hhbmdlTW90aW9uRGF0YVJlc3BvbnNl",
-            "EhEKCXNlc3Npb25JZBgBIAEoCRIQCghlbnRpdHlJZBgCIAEoBRIRCgl0aW1l",
-            "c3RhbXAYAyABKAMSDQoFc3BlZWQYBCABKAISQAoRb3JpZ2luYWxUcmFuc2Zv",
-            "cm0YBSABKAsyJS5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRUcmFuc2Zv",
-            "cm0iaQocU3BhY2VDaGFyYWN0ZXJzRW50ZXJSZXNwb25zZRIPCgdzcGFjZUlk",
-            "GAEgASgFEjgKDWNoYXJhY3Rlckxpc3QYAiADKAsyIS5IUy5Qcm90b2J1Zi5T",
-            "Y2VuZUVudGl0eS5OZXRBY3RvciK6AQoSU3BhY2VFbnRlclJlc3BvbnNlEjQK",
-            "CWNoYXJhY3RlchgBIAEoCzIhLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5Lk5l",
-            "dEFjdG9yEjgKDWNoYXJhY3Rlckxpc3QYAiADKAsyIS5IUy5Qcm90b2J1Zi5T",
-            "Y2VuZUVudGl0eS5OZXRBY3RvchI0CgllSXRlbUxpc3QYAyADKAsyIS5IUy5Q",
-            "cm90b2J1Zi5TY2VuZUVudGl0eS5OZXRFSXRlbSIsChhTcGFjZUVudGl0eUxl",
-            "YXZlUmVzcG9uc2USEAoIZW50aXR5SWQYASABKAUikwEKC05FbnRpdHlTeW5j",
-            "EjIKBmVudGl0eRgBIAEoCzIiLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5Lk5l",
-            "dEVudGl0eRINCgVmb3JjZRgCIAEoCBIyCgVzdGF0ZRgDIAEoDjIjLkhTLlBy",
-            "b3RvYnVmLlNjZW5lRW50aXR5LkFjdG9yU3RhdGUSDQoFZmxhZzEYBCABKAUi",
-            "TAoWU3BhY2VFbnRpdHlTeW5jUmVxdWVzdBIyCgplbnRpdHlTeW5jGAEgASgL",
-            "Mh4uSFMuUHJvdG9idWYuU2NlbmUuTkVudGl0eVN5bmMiTQoXU3BhY2VFbnRp",
-            "dHlTeW5jUmVzcG9uc2USMgoKZW50aXR5U3luYxgBIAEoCzIeLkhTLlByb3Rv",
-            "YnVmLlNjZW5lLk5FbnRpdHlTeW5jIlYKIEN0bENsaWVudFNwYWNlRW50aXR5",
-            "U3luY1Jlc3BvbnNlEjIKCmVudGl0eVN5bmMYASABKAsyHi5IUy5Qcm90b2J1",
-            "Zi5TY2VuZS5ORW50aXR5U3luYyI3ChNTcGFjZURlbGl2ZXJSZXF1ZXN0Eg8K",
-            "B3NwYWNlSWQYASABKAUSDwoHcG9pbnRJZBgCIAEoBSI9ChRTcGFjZURlbGl2",
-            "ZXJSZXNwb25zZRISCgpyZXN1bHRDb2RlGAEgASgFEhEKCXJlc3VsdE1zZxgC",
-            "IAEoCSIhCg1SZXZpdmVSZXF1ZXN0EhAKCGVudGl0eUlkGAEgASgFIkUKDlJl",
-            "dml2ZVJlc3BvbnNlEjMKC25FbnRpdHlTeWNuGAEgASgLMh4uSFMuUHJvdG9i",
-            "dWYuU2NlbmUuTkVudGl0eVN5bmMiQwoMTmV0RUl0ZW1TeW5jEjMKCG5ldEVJ",
-            "dGVtGAEgASgLMiEuSFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuTmV0RUl0ZW0i",
-            "TQoWU3BhY2VJdGVtRW50ZXJSZXNwb25zZRIzCghuZXRFSXRlbRgBIAEoCzIh",
-            "LkhTLlByb3RvYnVmLlNjZW5lRW50aXR5Lk5ldEVJdGVtIk4KFVByb3BlcnR5",
-            "VXBkYXRlUnNwb25zZRI1CgRsaXN0GAEgAygLMicuSFMuUHJvdG9idWYuU2Nl",
-            "bmVFbnRpdHkuUHJvcGVydHlVcGRhdGUqiwUKDFNjZW5lUHJvdG9jbBIWChJT",
-            "Q0VORV9QUk9UT0NMX05PTkUQABIpCiNTQ0VORV9QUk9UT0NMX1JFR0lTVEVS",
-            "X1RPX1NDRU5FX1JFURDBuAISKgokU0NFTkVfUFJPVE9DTF9SRUdJU1RFUl9U",
-            "T19TQ0VORV9SRVNQEMK4AhItCidTQ0VORV9QUk9UT0NMX0NIQVJBQ1RFUl9F",
-            "TlRFUl9TQ0VORV9SRVEQw7gCEjMKLVNDRU5FX1BST1RPQ0xfU0VMRl9DSEFS",
-            "QUNURVJfRU5URVJfU0NFTkVfUkVTUBDEuAISMQorU0NFTkVfUFJPVE9DTF9P",
-            "VEhFUl9FTlRJVFlfRU5URVJfU0NFTkVfUkVTUBDFuAISLQonU0NFTkVfUFJP",
-            "VE9DTF9DSEFSQUNURVJfTEVBVkVfU0NFTkVfUkVREMa4AhIxCitTQ0VORV9Q",
-            "Uk9UT0NMX09USEVSX0VOVElUWV9MRUFWRV9TQ0VORV9SRVNQEMe4AhIpCiNT",
-            "Q0VORV9QUk9UT0NMX0FDVE9SX0NIQU5HRV9NT0RFX1JFURDJuAISKgokU0NF",
-            "TkVfUFJPVE9DTF9BQ1RPUl9DSEFOR0VfTU9ERV9SRVNQEMq4AhIqCiRTQ0VO",
-            "RV9QUk9UT0NMX0FDVE9SX0NIQU5HRV9TVEFURV9SRVEQy7gCEisKJVNDRU5F",
-            "X1BST1RPQ0xfQUNUT1JfQ0hBTkdFX1NUQVRFX1JFU1AQzLgCEjAKKlNDRU5F",
-            "X1BST1RPQ0xfQUNUT1JfQ0hBTkdFX01PVElPTl9EQVRBX1JFURDNuAISMQor",
-            "U0NFTkVfUFJPVE9DTF9BQ1RPUl9DSEFOR0VfTU9USU9OX0RBVEFfUkVTUBDO",
-            "uAIqywEKCVNjZW5lVHlwZRITCg9TQ0VORV9UWVBFX05VTEwQABITCg9TQ0VO",
-            "RV9UWVBFX0NJVFkQARIUChBTQ0VORV9UWVBFX0ZJRUxEEAISHQoZU0NFTkVf",
-            "VFlQRV9TSU5HTEVfTUlTU0lPThADEhwKGFNDRU5FX1RZUEVfTVVMVElfTUlT",
-            "U0lPThAEEhQKEFNDRU5FX1RZUEVfTE9HSU4QBRIXChNTQ0VORV9UWVBFX0tJ",
-            "Tl9MQU5EEAYSEgoOU0NFTkVfVFlQRV9BTEwQCGIGcHJvdG8z"));
+            "b2RlIvMBCh1PdGhlckVudGl0eUVudGVyU2NlbmVSZXNwb25zZRIRCglzZXNz",
+            "aW9uSWQYASABKAkSDwoHc2NlbmVJZBgCIAEoBRI8CgplbnRpdHlUeXBlGAMg",
+            "ASgOMiguSFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuU2NlbmVFbnRpdHlUeXBl",
+            "EjgKCWFjdG9yTm9kZRgEIAEoCzIlLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5",
+            "Lk5ldEFjdG9yTm9kZRI2CghpdGVtTm9kZRgFIAEoCzIkLkhTLlByb3RvYnVm",
+            "LlNjZW5lRW50aXR5Lk5ldEl0ZW1Ob2RlIi4KGkNoYXJhY3RlckxlYXZlU2Nl",
+            "bmVSZXF1ZXN0EhAKCGVudGl0eUlkGAEgASgFIlUKHU90aGVyRW50aXR5TGVh",
+            "dmVTY2VuZVJlc3BvbnNlEhEKCXNlc3Npb25JZBgBIAEoCRIPCgdzY2VuZUlk",
+            "GAIgASgFEhAKCGVudGl0eUlkGAMgASgFInIKFkFjdG9yQ2hhbmdlTW9kZVJl",
+            "cXVlc3QSEAoIZW50aXR5SWQYASABKAUSMwoEbW9kZRgCIAEoDjIlLkhTLlBy",
+            "b3RvYnVmLlNjZW5lRW50aXR5Lk5ldEFjdG9yTW9kZRIRCgl0aW1lc3RhbXAY",
+            "AyABKAMicwoXQWN0b3JDaGFuZ2VNb2RlUmVzcG9uc2USEAoIZW50aXR5SWQY",
+            "ASABKAUSMwoEbW9kZRgCIAEoDjIlLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5",
+            "Lk5ldEFjdG9yTW9kZRIRCgl0aW1lc3RhbXAYAyABKAMi5gEKF0FjdG9yQ2hh",
+            "bmdlU3RhdGVSZXF1ZXN0EhEKCXNlc3Npb25JZBgBIAEoCRIQCghlbnRpdHlJ",
+            "ZBgCIAEoBRIRCgl0aW1lc3RhbXAYAyABKAMSNQoFc3RhdGUYBCABKA4yJi5I",
+            "Uy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRBY3RvclN0YXRlEkAKEW9yaWdp",
+            "bmFsVHJhbnNmb3JtGAYgASgLMiUuSFMuUHJvdG9idWYuU2NlbmVFbnRpdHku",
+            "TmV0VHJhbnNmb3JtEg8KBXNwZWVkGAcgASgCSABCCQoHcGF5TG9hZCLnAQoY",
+            "QWN0b3JDaGFuZ2VTdGF0ZVJlc3BvbnNlEhEKCXNlc3Npb25JZBgBIAEoCRIQ",
+            "CghlbnRpdHlJZBgCIAEoBRIRCgl0aW1lc3RhbXAYAyABKAMSNQoFc3RhdGUY",
+            "BCABKA4yJi5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRBY3RvclN0YXRl",
+            "EkAKEW9yaWdpbmFsVHJhbnNmb3JtGAYgASgLMiUuSFMuUHJvdG9idWYuU2Nl",
+            "bmVFbnRpdHkuTmV0VHJhbnNmb3JtEg8KBXNwZWVkGAcgASgCSABCCQoHcGF5",
+            "TG9hZCLeAQocQWN0b3JDaGFuZ2VNb3Rpb25EYXRhUmVxdWVzdBIRCglzZXNz",
+            "aW9uSWQYASABKAkSEAoIZW50aXR5SWQYAiABKAUSEQoJdGltZXN0YW1wGAMg",
+            "ASgDEg0KBXNwZWVkGAQgASgCEjUKCHJvdGF0aW9uGAUgASgLMiMuSFMuUHJv",
+            "dG9idWYuU2NlbmVFbnRpdHkuTmV0VmVjdG9yMxJAChFvcmlnaW5hbFRyYW5z",
+            "Zm9ybRgGIAEoCzIlLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5Lk5ldFRyYW5z",
+            "Zm9ybSKoAQodQWN0b3JDaGFuZ2VNb3Rpb25EYXRhUmVzcG9uc2USEQoJc2Vz",
+            "c2lvbklkGAEgASgJEhAKCGVudGl0eUlkGAIgASgFEhEKCXRpbWVzdGFtcBgD",
+            "IAEoAxINCgVzcGVlZBgEIAEoAhJAChFvcmlnaW5hbFRyYW5zZm9ybRgFIAEo",
+            "CzIlLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5Lk5ldFRyYW5zZm9ybSJpChxT",
+            "cGFjZUNoYXJhY3RlcnNFbnRlclJlc3BvbnNlEg8KB3NwYWNlSWQYASABKAUS",
+            "OAoNY2hhcmFjdGVyTGlzdBgCIAMoCzIhLkhTLlByb3RvYnVmLlNjZW5lRW50",
+            "aXR5Lk5ldEFjdG9yIroBChJTcGFjZUVudGVyUmVzcG9uc2USNAoJY2hhcmFj",
+            "dGVyGAEgASgLMiEuSFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuTmV0QWN0b3IS",
+            "OAoNY2hhcmFjdGVyTGlzdBgCIAMoCzIhLkhTLlByb3RvYnVmLlNjZW5lRW50",
+            "aXR5Lk5ldEFjdG9yEjQKCWVJdGVtTGlzdBgDIAMoCzIhLkhTLlByb3RvYnVm",
+            "LlNjZW5lRW50aXR5Lk5ldEVJdGVtIiwKGFNwYWNlRW50aXR5TGVhdmVSZXNw",
+            "b25zZRIQCghlbnRpdHlJZBgBIAEoBSKTAQoLTkVudGl0eVN5bmMSMgoGZW50",
+            "aXR5GAEgASgLMiIuSFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuTmV0RW50aXR5",
+            "Eg0KBWZvcmNlGAIgASgIEjIKBXN0YXRlGAMgASgOMiMuSFMuUHJvdG9idWYu",
+            "U2NlbmVFbnRpdHkuQWN0b3JTdGF0ZRINCgVmbGFnMRgEIAEoBSJMChZTcGFj",
+            "ZUVudGl0eVN5bmNSZXF1ZXN0EjIKCmVudGl0eVN5bmMYASABKAsyHi5IUy5Q",
+            "cm90b2J1Zi5TY2VuZS5ORW50aXR5U3luYyJNChdTcGFjZUVudGl0eVN5bmNS",
+            "ZXNwb25zZRIyCgplbnRpdHlTeW5jGAEgASgLMh4uSFMuUHJvdG9idWYuU2Nl",
+            "bmUuTkVudGl0eVN5bmMiVgogQ3RsQ2xpZW50U3BhY2VFbnRpdHlTeW5jUmVz",
+            "cG9uc2USMgoKZW50aXR5U3luYxgBIAEoCzIeLkhTLlByb3RvYnVmLlNjZW5l",
+            "Lk5FbnRpdHlTeW5jIjcKE1NwYWNlRGVsaXZlclJlcXVlc3QSDwoHc3BhY2VJ",
+            "ZBgBIAEoBRIPCgdwb2ludElkGAIgASgFIj0KFFNwYWNlRGVsaXZlclJlc3Bv",
+            "bnNlEhIKCnJlc3VsdENvZGUYASABKAUSEQoJcmVzdWx0TXNnGAIgASgJIiEK",
+            "DVJldml2ZVJlcXVlc3QSEAoIZW50aXR5SWQYASABKAUiRQoOUmV2aXZlUmVz",
+            "cG9uc2USMwoLbkVudGl0eVN5Y24YASABKAsyHi5IUy5Qcm90b2J1Zi5TY2Vu",
+            "ZS5ORW50aXR5U3luYyJDCgxOZXRFSXRlbVN5bmMSMwoIbmV0RUl0ZW0YASAB",
+            "KAsyIS5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRFSXRlbSJNChZTcGFj",
+            "ZUl0ZW1FbnRlclJlc3BvbnNlEjMKCG5ldEVJdGVtGAEgASgLMiEuSFMuUHJv",
+            "dG9idWYuU2NlbmVFbnRpdHkuTmV0RUl0ZW0iTgoVUHJvcGVydHlVcGRhdGVS",
+            "c3BvbnNlEjUKBGxpc3QYASADKAsyJy5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0",
+            "eS5Qcm9wZXJ0eVVwZGF0ZSqLBQoMU2NlbmVQcm90b2NsEhYKElNDRU5FX1BS",
+            "T1RPQ0xfTk9ORRAAEikKI1NDRU5FX1BST1RPQ0xfUkVHSVNURVJfVE9fU0NF",
+            "TkVfUkVREMG4AhIqCiRTQ0VORV9QUk9UT0NMX1JFR0lTVEVSX1RPX1NDRU5F",
+            "X1JFU1AQwrgCEi0KJ1NDRU5FX1BST1RPQ0xfQ0hBUkFDVEVSX0VOVEVSX1ND",
+            "RU5FX1JFURDDuAISMwotU0NFTkVfUFJPVE9DTF9TRUxGX0NIQVJBQ1RFUl9F",
+            "TlRFUl9TQ0VORV9SRVNQEMS4AhIxCitTQ0VORV9QUk9UT0NMX09USEVSX0VO",
+            "VElUWV9FTlRFUl9TQ0VORV9SRVNQEMW4AhItCidTQ0VORV9QUk9UT0NMX0NI",
+            "QVJBQ1RFUl9MRUFWRV9TQ0VORV9SRVEQxrgCEjEKK1NDRU5FX1BST1RPQ0xf",
+            "T1RIRVJfRU5USVRZX0xFQVZFX1NDRU5FX1JFU1AQx7gCEikKI1NDRU5FX1BS",
+            "T1RPQ0xfQUNUT1JfQ0hBTkdFX01PREVfUkVREMm4AhIqCiRTQ0VORV9QUk9U",
+            "T0NMX0FDVE9SX0NIQU5HRV9NT0RFX1JFU1AQyrgCEioKJFNDRU5FX1BST1RP",
+            "Q0xfQUNUT1JfQ0hBTkdFX1NUQVRFX1JFURDLuAISKwolU0NFTkVfUFJPVE9D",
+            "TF9BQ1RPUl9DSEFOR0VfU1RBVEVfUkVTUBDMuAISMAoqU0NFTkVfUFJPVE9D",
+            "TF9BQ1RPUl9DSEFOR0VfTU9USU9OX0RBVEFfUkVREM24AhIxCitTQ0VORV9Q",
+            "Uk9UT0NMX0FDVE9SX0NIQU5HRV9NT1RJT05fREFUQV9SRVNQEM64AirLAQoJ",
+            "U2NlbmVUeXBlEhMKD1NDRU5FX1RZUEVfTlVMTBAAEhMKD1NDRU5FX1RZUEVf",
+            "Q0lUWRABEhQKEFNDRU5FX1RZUEVfRklFTEQQAhIdChlTQ0VORV9UWVBFX1NJ",
+            "TkdMRV9NSVNTSU9OEAMSHAoYU0NFTkVfVFlQRV9NVUxUSV9NSVNTSU9OEAQS",
+            "FAoQU0NFTkVfVFlQRV9MT0dJThAFEhcKE1NDRU5FX1RZUEVfS0lOX0xBTkQQ",
+            "BhISCg5TQ0VORV9UWVBFX0FMTBAIYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::HS.Protobuf.Common.CommonReflection.Descriptor, global::HS.Protobuf.SceneEntity.SceneEntityReflection.Descriptor, global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.Scene.SceneProtocl), typeof(global::HS.Protobuf.Scene.SceneType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -126,9 +127,9 @@ namespace HS.Protobuf.Scene {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.RegisterToSceneResponse), global::HS.Protobuf.Scene.RegisterToSceneResponse.Parser, new[]{ "ResultCode", "ResultMsg", "SceneToken" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.CharacterEnterSceneRequest), global::HS.Protobuf.Scene.CharacterEnterSceneRequest.Parser, new[]{ "TaskId", "SessionId", "GameGateServerId", "DbChrNode" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.SelfCharacterEnterSceneResponse), global::HS.Protobuf.Scene.SelfCharacterEnterSceneResponse.Parser, new[]{ "TaskId", "ResultCode", "ResultMsg", "SelfNetActorNode", "OtherNetActorNodeList", "OtherNetItemNodeList" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.OtherEntityEnterSceneResponse), global::HS.Protobuf.Scene.OtherEntityEnterSceneResponse.Parser, new[]{ "SceneId", "EntityType", "ActorNode", "ItemNode" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.OtherEntityEnterSceneResponse), global::HS.Protobuf.Scene.OtherEntityEnterSceneResponse.Parser, new[]{ "SessionId", "SceneId", "EntityType", "ActorNode", "ItemNode" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.CharacterLeaveSceneRequest), global::HS.Protobuf.Scene.CharacterLeaveSceneRequest.Parser, new[]{ "EntityId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.OtherEntityLeaveSceneResponse), global::HS.Protobuf.Scene.OtherEntityLeaveSceneResponse.Parser, new[]{ "SceneId", "EntityId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.OtherEntityLeaveSceneResponse), global::HS.Protobuf.Scene.OtherEntityLeaveSceneResponse.Parser, new[]{ "SessionId", "SceneId", "EntityId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeModeRequest), global::HS.Protobuf.Scene.ActorChangeModeRequest.Parser, new[]{ "EntityId", "Mode", "Timestamp" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeModeResponse), global::HS.Protobuf.Scene.ActorChangeModeResponse.Parser, new[]{ "EntityId", "Mode", "Timestamp" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeStateRequest), global::HS.Protobuf.Scene.ActorChangeStateRequest.Parser, new[]{ "SessionId", "EntityId", "Timestamp", "State", "OriginalTransform", "Speed" }, new[]{ "PayLoad" }, null, null, null),
@@ -1414,6 +1415,7 @@ namespace HS.Protobuf.Scene {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public OtherEntityEnterSceneResponse(OtherEntityEnterSceneResponse other) : this() {
+      sessionId_ = other.sessionId_;
       sceneId_ = other.sceneId_;
       entityType_ = other.entityType_;
       actorNode_ = other.actorNode_ != null ? other.actorNode_.Clone() : null;
@@ -1427,8 +1429,20 @@ namespace HS.Protobuf.Scene {
       return new OtherEntityEnterSceneResponse(this);
     }
 
+    /// <summary>Field number for the "sessionId" field.</summary>
+    public const int SessionIdFieldNumber = 1;
+    private string sessionId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string SessionId {
+      get { return sessionId_; }
+      set {
+        sessionId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     /// <summary>Field number for the "sceneId" field.</summary>
-    public const int SceneIdFieldNumber = 1;
+    public const int SceneIdFieldNumber = 2;
     private int sceneId_;
     /// <summary>
     /// 防止因为时序问题，client已经切换场景了，这个包才过来。
@@ -1443,7 +1457,7 @@ namespace HS.Protobuf.Scene {
     }
 
     /// <summary>Field number for the "entityType" field.</summary>
-    public const int EntityTypeFieldNumber = 2;
+    public const int EntityTypeFieldNumber = 3;
     private global::HS.Protobuf.SceneEntity.SceneEntityType entityType_ = global::HS.Protobuf.SceneEntity.SceneEntityType.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1455,7 +1469,7 @@ namespace HS.Protobuf.Scene {
     }
 
     /// <summary>Field number for the "actorNode" field.</summary>
-    public const int ActorNodeFieldNumber = 3;
+    public const int ActorNodeFieldNumber = 4;
     private global::HS.Protobuf.SceneEntity.NetActorNode actorNode_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1467,7 +1481,7 @@ namespace HS.Protobuf.Scene {
     }
 
     /// <summary>Field number for the "itemNode" field.</summary>
-    public const int ItemNodeFieldNumber = 4;
+    public const int ItemNodeFieldNumber = 5;
     private global::HS.Protobuf.SceneEntity.NetItemNode itemNode_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1493,6 +1507,7 @@ namespace HS.Protobuf.Scene {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (SessionId != other.SessionId) return false;
       if (SceneId != other.SceneId) return false;
       if (EntityType != other.EntityType) return false;
       if (!object.Equals(ActorNode, other.ActorNode)) return false;
@@ -1504,6 +1519,7 @@ namespace HS.Protobuf.Scene {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
+      if (SessionId.Length != 0) hash ^= SessionId.GetHashCode();
       if (SceneId != 0) hash ^= SceneId.GetHashCode();
       if (EntityType != global::HS.Protobuf.SceneEntity.SceneEntityType.None) hash ^= EntityType.GetHashCode();
       if (actorNode_ != null) hash ^= ActorNode.GetHashCode();
@@ -1526,20 +1542,24 @@ namespace HS.Protobuf.Scene {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
+      if (SessionId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(SessionId);
+      }
       if (SceneId != 0) {
-        output.WriteRawTag(8);
+        output.WriteRawTag(16);
         output.WriteInt32(SceneId);
       }
       if (EntityType != global::HS.Protobuf.SceneEntity.SceneEntityType.None) {
-        output.WriteRawTag(16);
+        output.WriteRawTag(24);
         output.WriteEnum((int) EntityType);
       }
       if (actorNode_ != null) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(34);
         output.WriteMessage(ActorNode);
       }
       if (itemNode_ != null) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(42);
         output.WriteMessage(ItemNode);
       }
       if (_unknownFields != null) {
@@ -1552,20 +1572,24 @@ namespace HS.Protobuf.Scene {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (SessionId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(SessionId);
+      }
       if (SceneId != 0) {
-        output.WriteRawTag(8);
+        output.WriteRawTag(16);
         output.WriteInt32(SceneId);
       }
       if (EntityType != global::HS.Protobuf.SceneEntity.SceneEntityType.None) {
-        output.WriteRawTag(16);
+        output.WriteRawTag(24);
         output.WriteEnum((int) EntityType);
       }
       if (actorNode_ != null) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(34);
         output.WriteMessage(ActorNode);
       }
       if (itemNode_ != null) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(42);
         output.WriteMessage(ItemNode);
       }
       if (_unknownFields != null) {
@@ -1578,6 +1602,9 @@ namespace HS.Protobuf.Scene {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
+      if (SessionId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(SessionId);
+      }
       if (SceneId != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(SceneId);
       }
@@ -1601,6 +1628,9 @@ namespace HS.Protobuf.Scene {
     public void MergeFrom(OtherEntityEnterSceneResponse other) {
       if (other == null) {
         return;
+      }
+      if (other.SessionId.Length != 0) {
+        SessionId = other.SessionId;
       }
       if (other.SceneId != 0) {
         SceneId = other.SceneId;
@@ -1635,22 +1665,26 @@ namespace HS.Protobuf.Scene {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 8: {
-            SceneId = input.ReadInt32();
+          case 10: {
+            SessionId = input.ReadString();
             break;
           }
           case 16: {
+            SceneId = input.ReadInt32();
+            break;
+          }
+          case 24: {
             EntityType = (global::HS.Protobuf.SceneEntity.SceneEntityType) input.ReadEnum();
             break;
           }
-          case 26: {
+          case 34: {
             if (actorNode_ == null) {
               ActorNode = new global::HS.Protobuf.SceneEntity.NetActorNode();
             }
             input.ReadMessage(ActorNode);
             break;
           }
-          case 34: {
+          case 42: {
             if (itemNode_ == null) {
               ItemNode = new global::HS.Protobuf.SceneEntity.NetItemNode();
             }
@@ -1672,22 +1706,26 @@ namespace HS.Protobuf.Scene {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 8: {
-            SceneId = input.ReadInt32();
+          case 10: {
+            SessionId = input.ReadString();
             break;
           }
           case 16: {
+            SceneId = input.ReadInt32();
+            break;
+          }
+          case 24: {
             EntityType = (global::HS.Protobuf.SceneEntity.SceneEntityType) input.ReadEnum();
             break;
           }
-          case 26: {
+          case 34: {
             if (actorNode_ == null) {
               ActorNode = new global::HS.Protobuf.SceneEntity.NetActorNode();
             }
             input.ReadMessage(ActorNode);
             break;
           }
-          case 34: {
+          case 42: {
             if (itemNode_ == null) {
               ItemNode = new global::HS.Protobuf.SceneEntity.NetItemNode();
             }
@@ -1924,6 +1962,7 @@ namespace HS.Protobuf.Scene {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public OtherEntityLeaveSceneResponse(OtherEntityLeaveSceneResponse other) : this() {
+      sessionId_ = other.sessionId_;
       sceneId_ = other.sceneId_;
       entityId_ = other.entityId_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -1935,8 +1974,20 @@ namespace HS.Protobuf.Scene {
       return new OtherEntityLeaveSceneResponse(this);
     }
 
+    /// <summary>Field number for the "sessionId" field.</summary>
+    public const int SessionIdFieldNumber = 1;
+    private string sessionId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string SessionId {
+      get { return sessionId_; }
+      set {
+        sessionId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
     /// <summary>Field number for the "sceneId" field.</summary>
-    public const int SceneIdFieldNumber = 1;
+    public const int SceneIdFieldNumber = 2;
     private int sceneId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1948,7 +1999,7 @@ namespace HS.Protobuf.Scene {
     }
 
     /// <summary>Field number for the "entityId" field.</summary>
-    public const int EntityIdFieldNumber = 2;
+    public const int EntityIdFieldNumber = 3;
     private int entityId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1974,6 +2025,7 @@ namespace HS.Protobuf.Scene {
       if (ReferenceEquals(other, this)) {
         return true;
       }
+      if (SessionId != other.SessionId) return false;
       if (SceneId != other.SceneId) return false;
       if (EntityId != other.EntityId) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -1983,6 +2035,7 @@ namespace HS.Protobuf.Scene {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
+      if (SessionId.Length != 0) hash ^= SessionId.GetHashCode();
       if (SceneId != 0) hash ^= SceneId.GetHashCode();
       if (EntityId != 0) hash ^= EntityId.GetHashCode();
       if (_unknownFields != null) {
@@ -2003,12 +2056,16 @@ namespace HS.Protobuf.Scene {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
+      if (SessionId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(SessionId);
+      }
       if (SceneId != 0) {
-        output.WriteRawTag(8);
+        output.WriteRawTag(16);
         output.WriteInt32(SceneId);
       }
       if (EntityId != 0) {
-        output.WriteRawTag(16);
+        output.WriteRawTag(24);
         output.WriteInt32(EntityId);
       }
       if (_unknownFields != null) {
@@ -2021,12 +2078,16 @@ namespace HS.Protobuf.Scene {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (SessionId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(SessionId);
+      }
       if (SceneId != 0) {
-        output.WriteRawTag(8);
+        output.WriteRawTag(16);
         output.WriteInt32(SceneId);
       }
       if (EntityId != 0) {
-        output.WriteRawTag(16);
+        output.WriteRawTag(24);
         output.WriteInt32(EntityId);
       }
       if (_unknownFields != null) {
@@ -2039,6 +2100,9 @@ namespace HS.Protobuf.Scene {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
+      if (SessionId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(SessionId);
+      }
       if (SceneId != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(SceneId);
       }
@@ -2056,6 +2120,9 @@ namespace HS.Protobuf.Scene {
     public void MergeFrom(OtherEntityLeaveSceneResponse other) {
       if (other == null) {
         return;
+      }
+      if (other.SessionId.Length != 0) {
+        SessionId = other.SessionId;
       }
       if (other.SceneId != 0) {
         SceneId = other.SceneId;
@@ -2078,11 +2145,15 @@ namespace HS.Protobuf.Scene {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 8: {
-            SceneId = input.ReadInt32();
+          case 10: {
+            SessionId = input.ReadString();
             break;
           }
           case 16: {
+            SceneId = input.ReadInt32();
+            break;
+          }
+          case 24: {
             EntityId = input.ReadInt32();
             break;
           }
@@ -2101,11 +2172,15 @@ namespace HS.Protobuf.Scene {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 8: {
-            SceneId = input.ReadInt32();
+          case 10: {
+            SessionId = input.ReadString();
             break;
           }
           case 16: {
+            SceneId = input.ReadInt32();
+            break;
+          }
+          case 24: {
             EntityId = input.ReadInt32();
             break;
           }

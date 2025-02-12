@@ -8,7 +8,7 @@ namespace DBProxyServer.Utils
         public string ip { get; set; }
 
         [YamlMember(Alias = "port")]
-        public int port { get; set; }
+        public int serverPort { get; set; }
 
         [YamlMember(Alias = "workerCount")]
         public int workerCount { get; set; }        

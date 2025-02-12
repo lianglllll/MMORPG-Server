@@ -58,17 +58,19 @@ message SelfCharacterEnterSceneResponse{
 	repeated HS.Protobuf.SceneEntity.NetItemNode  otherNetItemNodeList	= 6;
 }
 message OtherEntityEnterSceneResponse{
-	int32 sceneId = 1;		// 防止因为时序问题，client已经切换场景了，这个包才过来。
-	HS.Protobuf.SceneEntity.SceneEntityType entityType = 2;
-	HS.Protobuf.SceneEntity.NetActorNode actorNode = 3;
-	HS.Protobuf.SceneEntity.NetItemNode  itemNode  = 4;
+	string sessionId = 1;
+	int32 sceneId = 2;		// 防止因为时序问题，client已经切换场景了，这个包才过来。
+	HS.Protobuf.SceneEntity.SceneEntityType entityType = 3;
+	HS.Protobuf.SceneEntity.NetActorNode actorNode = 4;
+	HS.Protobuf.SceneEntity.NetItemNode  itemNode  = 5;
 }
 message CharacterLeaveSceneRequest{
 	int32 entityId = 1;
 }
 message OtherEntityLeaveSceneResponse{
-	int32 sceneId = 1;		
-	int32 entityId = 2;
+	string sessionId = 1;
+	int32 sceneId = 2;		
+	int32 entityId = 3;
 }
 
 message ActorChangeModeRequest{

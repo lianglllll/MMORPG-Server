@@ -33,6 +33,7 @@
     <Folder Include="Summer\Proto\DBProxy\ProtoSource\" />
     <Folder Include="Summer\Proto\Login\ProtoClass\" />
     <Folder Include="Summer\Proto\Scene\ProtoClass\" />
+    <Folder Include="Summer\Proto\TimeSync\ProtoClass\" />
     <Folder Include="Summer\StaticData\Data\" />
   </ItemGroup>
 

@@ -30,6 +30,8 @@ namespace ControlCenter.Core
             m_serversByType[SERVER_TYPE.Scene]          = new();
             m_serversByType[SERVER_TYPE.Gamegatemgr]    = new();
             m_serversByType[SERVER_TYPE.Dbproxy]        = new();
+            m_serversByType[SERVER_TYPE.Mastertime]     = new();
+            m_serversByType[SERVER_TYPE.Slavetime]      = new();
 
             ConnManager.Instance.Init(Config.Server.workerCount, 0, Config.Server.heartBeatCheckInterval, Config.Server.heartBeatTimeOut,
                 false, true, false,
@@ -113,6 +115,12 @@ namespace ControlCenter.Core
                 case SERVER_TYPE.Dbproxy:
                     ceNode.EventType = ClusterEventType.DbproxyEnter;
                     break;
+                case SERVER_TYPE.Mastertime:
+                    ceNode.EventType = ClusterEventType.MastertimeEnter;
+                    break;
+                case SERVER_TYPE.Slavetime:
+                    ceNode.EventType = ClusterEventType.SlavetimeEnter;
+                    break;
                 default:
                     Log.Error("NetService._ServerInfoRegisterRequest 错误的注册类型:{0}", message.ServerInfoNode.ServerType.ToString());
                     resp.ResultCode = 1;
@@ -179,6 +187,12 @@ namespace ControlCenter.Core
                         break;
                     case SERVER_TYPE.Dbproxy:
                         ceNode.EventType = ClusterEventType.DbproxyExit;
+                        break;
+                    case SERVER_TYPE.Mastertime:
+                        ceNode.EventType = ClusterEventType.MastertimeExit;
+                        break;
+                    case SERVER_TYPE.Slavetime:
+                        ceNode.EventType = ClusterEventType.SlavetimeExit;
                         break;
                     default:
                         Log.Error("NetService._ServerInfoRegisterRequest 错误的断开类型 = {0}", serverInfoNode.ServerType.ToString());

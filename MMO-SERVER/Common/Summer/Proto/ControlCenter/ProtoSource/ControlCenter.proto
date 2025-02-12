@@ -22,13 +22,17 @@ enum ClusterEventType {
     CLUSTER_EVENT_TYPE_GAMEGATE_ENTER = 7;      // gamegate 进入集群
     CLUSTER_EVENT_TYPE_GAMEGATE_EXIT = 8;       // gamegate 退出集群 
 	CLUSTER_EVENT_TYPE_LOGINGATEMGR_ENTER = 9;  // logingatemgr 进入集群
-	CLUSTER_EVENT_TYPE_LOGINGATEMGR_EXIT = 10;	// logingatemgr 进入集群
+	CLUSTER_EVENT_TYPE_LOGINGATEMGR_EXIT = 10;	// logingatemgr 退出集群
 	CLUSTER_EVENT_TYPE_GAMEGATEMGR_ENTER = 11;  // gamegatemgr 进入集群
-	CLUSTER_EVENT_TYPE_GAMEGATEMGR_EXIT = 12;	// gamegatemgr 进入集群
+	CLUSTER_EVENT_TYPE_GAMEGATEMGR_EXIT = 12;	// gamegatemgr 退出集群
 	CLUSTER_EVENT_TYPE_SCENE_ENTER = 13;        // scene 进入集群
-	CLUSTER_EVENT_TYPE_SCENE_EXIT = 14;			// scene 进入集群
+	CLUSTER_EVENT_TYPE_SCENE_EXIT = 14;			// scene 退出集群
 	CLUSTER_EVENT_TYPE_DBPROXY_ENTER = 15;      // dbproxy 进入集群
-	CLUSTER_EVENT_TYPE_DBPROXY_EXIT = 16;		// dbproxy 进入集群
+	CLUSTER_EVENT_TYPE_DBPROXY_EXIT = 16;		// dbproxy 退出集群
+	CLUSTER_EVENT_TYPE_MASTERTIME_ENTER = 17;	// masterTime 进入集群
+	CLUSTER_EVENT_TYPE_MASTERTIME_EXIT = 18;	// masterTime 退出集群
+	CLUSTER_EVENT_TYPE_SLAVETIME_ENTER = 19;	// slaveTime 进入集群
+	CLUSTER_EVENT_TYPE_SLAVETIME_EXIT = 20;		// slaveTime 退出集群
 }
 
 message ClusterEventNode{

@@ -14,7 +14,7 @@ namespace SceneServer.Net
         public Session(string sessionId, Connection conn)
         {
             m_sessionId = sessionId;
-            conn = conn;
+            m_conn = conn;
         }
         public void Send(IMessage message)
         {

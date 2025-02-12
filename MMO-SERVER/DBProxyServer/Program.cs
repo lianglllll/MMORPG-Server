@@ -43,7 +43,7 @@ namespace DBProxyServer
             ");
             Log.Information("[DBProxyServer]初始化,配置如下：");
             Log.Information("Ip：{0}", Config.Server.ip);
-            Log.Information("ServerPort：{0}", Config.Server.port);
+            Log.Information("ServerPort：{0}", Config.Server.serverPort);
             Log.Information("WorkerCount：{0}", Config.Server.workerCount);
             Log.Information("UpdateHz：{0}", Config.Server.updateHz);
             Log.Information("\x1b[32m" + "=============================================" + "\x1b[0m");

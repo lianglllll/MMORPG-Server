@@ -83,6 +83,7 @@ namespace SceneServer.Core.Scene
             var views = nearbyEntity.ToList();
             foreach (var oChr in views.OfType<SceneCharacter>())
             {
+                oResp.SessionId = oChr.SessionId;
                 oChr.Send(oResp);
             }
         }
@@ -102,6 +103,7 @@ namespace SceneServer.Core.Scene
             var views = m_aoiZone.FindViewEntity(chr.EntityId, false);
             foreach (var cc in views.OfType<SceneCharacter>())
             {
+                resp.SessionId = cc.SessionId;
                 cc.Send(resp);
             }
 
