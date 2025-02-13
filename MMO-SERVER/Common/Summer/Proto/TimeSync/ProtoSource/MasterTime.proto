@@ -1,0 +1,31 @@
+syntax = "proto3";
+import "Common/ProtoSource/Common.proto";
+package HS.Protobuf.MasterTime;
+
+enum MasterTimeProtocl{
+	MASTER_TIME_PROTOCL_NONE = 0;
+	MASTER_TIME_PROTOCL_REGISTER_TO_MT_REQ = 60001;		// [RegisterToMTRequest]
+	MASTER_TIME_PROTOCL_REGISTER_TO_MT_RESP = 60002;	// [RegisterToMTResponse]
+	MASTER_TIME_PROTOCL_TIME_SYNC_REQ = 60003;			// [TimeSyncRequest]
+	MASTER_TIME_PROTOCL_TIME_SYNC_RESP = 60004;			// [TimeSyncResponse]
+}
+
+message RegisterToMTRequest{
+	HS.Protobuf.Common.ServerInfoNode serverInfoNode = 1;
+}
+message RegisterToMTResponse{
+	int32 resultCode = 1;
+	string resultMsg = 2;
+}
+
+message TimeSyncRequest{
+	int64 client_tick = 1;       // 客户端当前tick值
+	double client_time = 2;      // 客户端本地时间（毫秒）
+	fixed32 crc = 3;             // 校验码
+}
+message TimeSyncResponse{
+	int64 client_tick = 1;       // 回传客户端的tick
+	int64 server_tick = 2;       // 服务器当前tick值
+	double server_time = 3;      // 服务器权威时间（毫秒）
+	double rtt_estimate = 4;     // 服务器估算的RTT
+}
