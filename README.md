@@ -12,7 +12,7 @@
 
 本项目主要用于学习如今网游的开发流程，学习网游关键技术，最终能构建我心中的那个世界。
 
-2020.4.20：[目前项目进度演示视频链接](https://www.bilibili.com/video/BV1Rw4m1m7vS/?spm_id_from=333.999.0.0&vd_source=ff929fb8407b30d15d4d258e14043130)
+2024.4.20：[目前项目进度演示视频链接](https://www.bilibili.com/video/BV1Rw4m1m7vS/?spm_id_from=333.999.0.0&vd_source=ff929fb8407b30d15d4d258e14043130)
 
 
 
@@ -37,20 +37,81 @@
 
 **服务器角色简要说明：**
 
-```
-中心服务器(ControlCenterServer)			   :保存其他服务器的信息，不做逻辑处理。
-数据库服务器(DBProxyServer)				   :作为mognodb和其他server之间沟通的代理服务器。
-登录服务器(LoginServer)					   :完成登录、注册功能
-登录网关服务器(LoginGateServer)			   :隔绝内外网、加解密信息、转发信息到login。
-登录网关管理服务器(LoginGateMgrServer)        :监控全部LoginGate,给Login和LoginGate建立关联，扩容和收缩为login服务的loginGate数量。
-游戏服务器(GameServer)					    :处理与场景无关的游戏逻辑，如聊天、背包、组队、商店、任务、邮件...
-游戏网关服务器(GameGateServer)                :隔绝内外网、加解密信息、转发信息到Game或者Scene。
-游戏网关管理服务器(GameGateServerMgrServer)   :监控GameGate和Scene,给Game和GameGate和Scene之间建立联系，扩容和收缩为Game服务的GameGate的数量。
-场景服务器(SceneServer)                       :处理玩家的移动、战斗相关的逻辑。
-日志服务器(LogServer)						 :收集各个服务器的运行log，保存到数据库中。//todo
-游戏管理员服务器(GmServer)					   :接受来自web后台的命令，控制其他服务器。  //todo
-web代理服务器(HttpProxyServer)				:处理来自网页的请求，主要是可以查看其他服务器的负载情况，也可以发命令。 //todo 
-```
+
+
+### 中心服务器(ControlCenterServer)
+
+- 其他所有的服务器都需要向ControlCenterServer注册自己服务器的信息(ip、port、ListenEvent)
+- 提供获取某某特定服务器信息的功能
+- 提供订阅服务功能(如LoginGateServer订阅了LGMEnter事件，当LoginGateMgrServer上线后就会通知LoginGateServer)
+
+### 数据库服务器(DBProxyServer)			
+
+- 作为mognodb和其他server之间沟通的代理服务器。
+
+### 登录服务器(LoginServer)	
+
+- 完成登录、注册功能。
+
+### 登录网关服务器(LoginGateServer)
+
+- 隔绝内外网
+- 加解密敏感信息
+- 转发信息到login。
+
+### 登录网关管理服务器(LoginGateMgrServer)
+
+- 监控全部LoginGate状态
+- 给Login和LoginGate建立关联
+- 对为login服务的loginGate数量进行扩缩容。
+
+### 游戏服务器(GameServer)
+
+- 处理与场景无关的游戏逻辑，如聊天、背包、组队、商店、任务、邮件...
+
+### 游戏网关服务器(GameGateServer)
+
+- 隔绝内外网
+- 加解密敏感信息
+- 转发信息到Game或者Scene
+
+### 游戏网关管理服务器(GameGateServerMgrServer)
+
+- 监控GameGate和Scene
+- 给Game和GameGate和Scene之间建立联系
+- 对为Game服务的GameGate数量进行扩缩容
+
+### 场景服务器(SceneServer)
+
+- 处理玩家的移动、战斗相关的逻辑。
+
+### 时间同步主服务器(MasterTimeServer)
+
+- 尚未开发
+- 定期将时间同步到SlaveTimeServer
+
+### 时间同步子服务器(SlaveTimeServer)
+
+- 尚未开发
+- 其他服务器会连接到SlaveTimeServer进行时间同步
+
+### 日志服务器(LogServer)
+
+- 尚未开发
+- 收集各个服务器的运行log并且进行分析
+- 将log数据保存到数据库中
+
+### 游戏管理员服务器(GmServer)
+
+- 尚未开发
+-  接受来自web后台的命令并且执行，间接控制其他服务器
+
+### web代理服务器(HttpProxyServer)				
+
+- 尚未开发
+- 处理来自网页的请求，主要是可以查看其他服务器的负载情况，也可以发命令到GmServer。
+
+
 
 
 
@@ -175,7 +236,7 @@ AI
 
 
 
-# 项目部署运行
+# 项目部署运行(废弃)
 
 
 
