@@ -18,9 +18,11 @@ message NetTransform{
 
 enum NetActorMode {
     NET_ACTOR_MODE_NONE = 0;
-    NET_ACTOR_MODE_UNARMED = 1;
-    NET_ACTOR_MODE_ARMED = 2;
-    NET_ACTOR_MODE_SWORD_FLY = 3;
+    NET_ACTOR_MODE_NORMAL = 1;
+    NET_ACTOR_MODE_EQUIP_REFLE = 2;
+    NET_ACTOR_MODE_EQUIP_SWORD = 3;
+    NET_ACTOR_MODE_FLY_NORMAL = 4;
+    NET_ACTOR_MODE_FLY_SWORD = 5;
 }
 enum NetActorState {
     NET_ACTOR_STATE_NONE = 0;
@@ -37,7 +39,8 @@ enum NetActorState {
     NET_ACTOR_STATE_DEFENSE = 11;  
     NET_ACTOR_STATE_EVADE = 12;  
     NET_ACTOR_STATE_SKILL = 13;  
-    NET_ACTOR_STATE_CUSTOM = 14;  // 自定义状态
+    NET_ACTOR_STATE_CUSTOM = 14;	// 自定义状态
+    NET_ACTOR_STATE_CHANGEHIGHT = 15;  
 }
 enum NetActorSmallState {
     NET_ACTOR_SMALL_STATE_NONE = 0;
