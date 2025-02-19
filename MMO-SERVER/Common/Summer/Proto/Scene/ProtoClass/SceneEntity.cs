@@ -38,7 +38,7 @@ namespace HS.Protobuf.SceneEntity {
             "DHByb2Zlc3Npb25JZBgDIAEoBRIRCglhY3Rvck5hbWUYBCABKAkSDQoFbGV2",
             "ZWwYBSABKAUSCwoDZXhwGAYgASgDEg8KB3NjZW5lSWQYByABKAUSCgoCaHAY",
             "CCABKAUSCgoCbXAYCSABKAUSDQoFbWF4SHAYCiABKAUSDQoFbWF4TXAYCyAB",
-            "KAUSDQoFc3BlZWQYDCABKAISOwoMbmV0QWN0b3JUeXBlGA0gASgOMiUuSFMu",
+            "KAUSDQoFc3BlZWQYDCABKAUSOwoMbmV0QWN0b3JUeXBlGA0gASgOMiUuSFMu",
             "UHJvdG9idWYuU2NlbmVFbnRpdHkuTmV0QWN0b3JUeXBlEjsKDG5ldEFjdG9y",
             "TW9kZRgOIAEoDjIlLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5Lk5ldEFjdG9y",
             "TW9kZRI9Cg1uZXRBY3RvclN0YXRlGA8gASgOMiYuSFMuUHJvdG9idWYuU2Nl",
@@ -1026,10 +1026,10 @@ namespace HS.Protobuf.SceneEntity {
 
     /// <summary>Field number for the "speed" field.</summary>
     public const int SpeedFieldNumber = 12;
-    private float speed_;
+    private int speed_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public float Speed {
+    public int Speed {
       get { return speed_; }
       set {
         speed_ = value;
@@ -1143,7 +1143,7 @@ namespace HS.Protobuf.SceneEntity {
       if (Mp != other.Mp) return false;
       if (MaxHp != other.MaxHp) return false;
       if (MaxMp != other.MaxMp) return false;
-      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Speed, other.Speed)) return false;
+      if (Speed != other.Speed) return false;
       if (NetActorType != other.NetActorType) return false;
       if (NetActorMode != other.NetActorMode) return false;
       if (NetActorState != other.NetActorState) return false;
@@ -1169,7 +1169,7 @@ namespace HS.Protobuf.SceneEntity {
       if (Mp != 0) hash ^= Mp.GetHashCode();
       if (MaxHp != 0) hash ^= MaxHp.GetHashCode();
       if (MaxMp != 0) hash ^= MaxMp.GetHashCode();
-      if (Speed != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Speed);
+      if (Speed != 0) hash ^= Speed.GetHashCode();
       if (NetActorType != global::HS.Protobuf.SceneEntity.NetActorType.Character) hash ^= NetActorType.GetHashCode();
       if (NetActorMode != global::HS.Protobuf.SceneEntity.NetActorMode.None) hash ^= NetActorMode.GetHashCode();
       if (NetActorState != global::HS.Protobuf.SceneEntity.NetActorState.None) hash ^= NetActorState.GetHashCode();
@@ -1239,9 +1239,9 @@ namespace HS.Protobuf.SceneEntity {
         output.WriteRawTag(88);
         output.WriteInt32(MaxMp);
       }
-      if (Speed != 0F) {
-        output.WriteRawTag(101);
-        output.WriteFloat(Speed);
+      if (Speed != 0) {
+        output.WriteRawTag(96);
+        output.WriteInt32(Speed);
       }
       if (NetActorType != global::HS.Protobuf.SceneEntity.NetActorType.Character) {
         output.WriteRawTag(104);
@@ -1316,9 +1316,9 @@ namespace HS.Protobuf.SceneEntity {
         output.WriteRawTag(88);
         output.WriteInt32(MaxMp);
       }
-      if (Speed != 0F) {
-        output.WriteRawTag(101);
-        output.WriteFloat(Speed);
+      if (Speed != 0) {
+        output.WriteRawTag(96);
+        output.WriteInt32(Speed);
       }
       if (NetActorType != global::HS.Protobuf.SceneEntity.NetActorType.Character) {
         output.WriteRawTag(104);
@@ -1382,8 +1382,8 @@ namespace HS.Protobuf.SceneEntity {
       if (MaxMp != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(MaxMp);
       }
-      if (Speed != 0F) {
-        size += 1 + 4;
+      if (Speed != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Speed);
       }
       if (NetActorType != global::HS.Protobuf.SceneEntity.NetActorType.Character) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) NetActorType);
@@ -1448,7 +1448,7 @@ namespace HS.Protobuf.SceneEntity {
       if (other.MaxMp != 0) {
         MaxMp = other.MaxMp;
       }
-      if (other.Speed != 0F) {
+      if (other.Speed != 0) {
         Speed = other.Speed;
       }
       if (other.NetActorType != global::HS.Protobuf.SceneEntity.NetActorType.Character) {
@@ -1528,8 +1528,8 @@ namespace HS.Protobuf.SceneEntity {
             MaxMp = input.ReadInt32();
             break;
           }
-          case 101: {
-            Speed = input.ReadFloat();
+          case 96: {
+            Speed = input.ReadInt32();
             break;
           }
           case 104: {
@@ -1623,8 +1623,8 @@ namespace HS.Protobuf.SceneEntity {
             MaxMp = input.ReadInt32();
             break;
           }
-          case 101: {
-            Speed = input.ReadFloat();
+          case 96: {
+            Speed = input.ReadInt32();
             break;
           }
           case 104: {

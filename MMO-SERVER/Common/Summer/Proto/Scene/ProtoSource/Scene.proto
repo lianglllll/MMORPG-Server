@@ -107,7 +107,7 @@ message ActorChangeMotionDataRequest{
 	string sessionId = 1;
 	int32 entityId = 2;
 	int64 timestamp = 3;
-	float speed = 4;
+	int32 speed = 4;
 	HS.Protobuf.SceneEntity.NetVector3 rotation = 5;
 	HS.Protobuf.SceneEntity.NetTransform originalTransform = 6;
 }

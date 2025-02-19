@@ -9,7 +9,7 @@ namespace SceneServer.Core.Combat.Attrubute
     public class AttrubuteData
     {
         //速度
-        public float Speed;
+        public int Speed;
         //最大生命值
         public int MaxHP;
         //最大魔法值

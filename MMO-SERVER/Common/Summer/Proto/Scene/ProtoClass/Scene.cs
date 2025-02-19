@@ -67,7 +67,7 @@ namespace HS.Protobuf.Scene {
             "bmVFbnRpdHkuTmV0VHJhbnNmb3JtEg8KBXNwZWVkGAcgASgCSABCCQoHcGF5",
             "TG9hZCLeAQocQWN0b3JDaGFuZ2VNb3Rpb25EYXRhUmVxdWVzdBIRCglzZXNz",
             "aW9uSWQYASABKAkSEAoIZW50aXR5SWQYAiABKAUSEQoJdGltZXN0YW1wGAMg",
-            "ASgDEg0KBXNwZWVkGAQgASgCEjUKCHJvdGF0aW9uGAUgASgLMiMuSFMuUHJv",
+            "ASgDEg0KBXNwZWVkGAQgASgFEjUKCHJvdGF0aW9uGAUgASgLMiMuSFMuUHJv",
             "dG9idWYuU2NlbmVFbnRpdHkuTmV0VmVjdG9yMxJAChFvcmlnaW5hbFRyYW5z",
             "Zm9ybRgGIAEoCzIlLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5Lk5ldFRyYW5z",
             "Zm9ybSKoAQodQWN0b3JDaGFuZ2VNb3Rpb25EYXRhUmVzcG9uc2USEQoJc2Vz",
@@ -3630,10 +3630,10 @@ namespace HS.Protobuf.Scene {
 
     /// <summary>Field number for the "speed" field.</summary>
     public const int SpeedFieldNumber = 4;
-    private float speed_;
+    private int speed_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public float Speed {
+    public int Speed {
       get { return speed_; }
       set {
         speed_ = value;
@@ -3682,7 +3682,7 @@ namespace HS.Protobuf.Scene {
       if (SessionId != other.SessionId) return false;
       if (EntityId != other.EntityId) return false;
       if (Timestamp != other.Timestamp) return false;
-      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Speed, other.Speed)) return false;
+      if (Speed != other.Speed) return false;
       if (!object.Equals(Rotation, other.Rotation)) return false;
       if (!object.Equals(OriginalTransform, other.OriginalTransform)) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -3695,7 +3695,7 @@ namespace HS.Protobuf.Scene {
       if (SessionId.Length != 0) hash ^= SessionId.GetHashCode();
       if (EntityId != 0) hash ^= EntityId.GetHashCode();
       if (Timestamp != 0L) hash ^= Timestamp.GetHashCode();
-      if (Speed != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Speed);
+      if (Speed != 0) hash ^= Speed.GetHashCode();
       if (rotation_ != null) hash ^= Rotation.GetHashCode();
       if (originalTransform_ != null) hash ^= OriginalTransform.GetHashCode();
       if (_unknownFields != null) {
@@ -3728,9 +3728,9 @@ namespace HS.Protobuf.Scene {
         output.WriteRawTag(24);
         output.WriteInt64(Timestamp);
       }
-      if (Speed != 0F) {
-        output.WriteRawTag(37);
-        output.WriteFloat(Speed);
+      if (Speed != 0) {
+        output.WriteRawTag(32);
+        output.WriteInt32(Speed);
       }
       if (rotation_ != null) {
         output.WriteRawTag(42);
@@ -3762,9 +3762,9 @@ namespace HS.Protobuf.Scene {
         output.WriteRawTag(24);
         output.WriteInt64(Timestamp);
       }
-      if (Speed != 0F) {
-        output.WriteRawTag(37);
-        output.WriteFloat(Speed);
+      if (Speed != 0) {
+        output.WriteRawTag(32);
+        output.WriteInt32(Speed);
       }
       if (rotation_ != null) {
         output.WriteRawTag(42);
@@ -3793,8 +3793,8 @@ namespace HS.Protobuf.Scene {
       if (Timestamp != 0L) {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(Timestamp);
       }
-      if (Speed != 0F) {
-        size += 1 + 4;
+      if (Speed != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Speed);
       }
       if (rotation_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Rotation);
@@ -3823,7 +3823,7 @@ namespace HS.Protobuf.Scene {
       if (other.Timestamp != 0L) {
         Timestamp = other.Timestamp;
       }
-      if (other.Speed != 0F) {
+      if (other.Speed != 0) {
         Speed = other.Speed;
       }
       if (other.rotation_ != null) {
@@ -3865,8 +3865,8 @@ namespace HS.Protobuf.Scene {
             Timestamp = input.ReadInt64();
             break;
           }
-          case 37: {
-            Speed = input.ReadFloat();
+          case 32: {
+            Speed = input.ReadInt32();
             break;
           }
           case 42: {
@@ -3910,8 +3910,8 @@ namespace HS.Protobuf.Scene {
             Timestamp = input.ReadInt64();
             break;
           }
-          case 37: {
-            Speed = input.ReadFloat();
+          case 32: {
+            Speed = input.ReadInt32();
             break;
           }
           case 42: {

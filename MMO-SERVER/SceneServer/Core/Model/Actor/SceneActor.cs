@@ -63,7 +63,7 @@ namespace SceneServer.Core.Model.Actor
         public int CurMP => m_netActorNode.Mp;
         public int MaxHP => m_netActorNode.Hp;
         public int MaxMP => m_netActorNode.Mp;
-        public float Speed
+        public int Speed
         {
             get => m_netActorNode.Speed;
             set
