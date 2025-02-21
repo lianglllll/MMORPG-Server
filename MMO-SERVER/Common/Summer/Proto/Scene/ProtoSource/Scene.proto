@@ -74,14 +74,16 @@ message OtherEntityLeaveSceneResponse{
 }
 
 message ActorChangeModeRequest{
-	int32 entityId = 1;
-	HS.Protobuf.SceneEntity.NetActorMode mode = 2;
-	int64 timestamp = 3;
+	string sessionId = 1;
+	int32 entityId = 2;
+	HS.Protobuf.SceneEntity.NetActorMode mode = 3;
+	int64 timestamp = 4;
 }
 message ActorChangeModeResponse{
-	int32 entityId = 1;
-	HS.Protobuf.SceneEntity.NetActorMode mode = 2;
-	int64 timestamp = 3;
+	string sessionId = 1;
+	int32 entityId = 2;
+	HS.Protobuf.SceneEntity.NetActorMode mode = 3;
+	int64 timestamp = 4;
 }
 message ActorChangeStateRequest{
 	string sessionId = 1;

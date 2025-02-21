@@ -153,7 +153,25 @@ namespace SceneServer.Core.Scene
                 chr.Send(resp);
             }
         }
+        public void ActorChangeMode(SceneActor self, ActorChangeModeRequest message, bool isIncludeSelf = false)
+        {
+            // 保存与角色的相关信息
+            self.ChangeActorMode(message.Mode);
+            Log.Information("actor[entityId = {0}] change mode {1}", self.EntityId, message.Mode);
 
+            // 通知附近玩家
+            var resp = new ActorChangeModeResponse();
+            resp.EntityId = self.EntityId;
+            resp.Mode = message.Mode;
+            resp.Timestamp = message.Timestamp;
+
+            var all = m_aoiZone.FindViewEntity(self.EntityId, isIncludeSelf);
+            foreach (var chr in all.OfType<SceneCharacter>())
+            {
+                resp.SessionId = chr.SessionId;
+                chr.Send(resp);
+            }
+        }
         internal void ActorChangeMotionData(SceneActor self, ActorChangeMotionDataRequest message, bool isIncludeSelf = false)
         {
             // 改变相关信息

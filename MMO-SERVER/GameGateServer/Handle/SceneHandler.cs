@@ -61,11 +61,26 @@ namespace GameGateServer.Handle
 
         private void _HandleActorChangeModeRequest(Connection conn, ActorChangeModeRequest message)
         {
-            throw new NotImplementedException();
+            var session = conn.Get<Session>();
+            if (session == null)
+            {
+                goto End;
+            }
+            ServersMgr.Instance.SendToSceneServer(session.curSceneId, message);
+        End:
+            return;
         }
         private void _HandleActorChangeModeResponse(Connection conn, ActorChangeModeResponse message)
         {
-            throw new NotImplementedException();
+            var session = SessionManager.Instance.GetSessionBySessionId(message.SessionId);
+            if (session == null)
+            {
+                goto End;
+            }
+            message.SessionId = "";
+            session.Send(message);
+        End:
+            return;
         }
 
         private void _HandleActorChangeStateRequest(Connection conn, ActorChangeStateRequest message)

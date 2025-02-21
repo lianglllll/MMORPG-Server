@@ -32,7 +32,20 @@ namespace SceneServer.Handle
 
         private void _HandleActorChangeModeRequest(Connection conn, ActorChangeModeRequest message)
         {
-            throw new NotImplementedException();
+            // 这里只能是player发信息过来的
+            var actor = SceneEntityManager.Instance.GetSceneEntityById(message.EntityId) as SceneActor;
+            if (actor == null)
+            {
+                goto End;
+            }
+            // 不接受死亡角色的状态切换(我们有专门的复活协议处理)
+            if (actor.IsDeath)
+            {
+                goto End;
+            }
+            SceneManager.Instance.ActorChangeMode(actor, message);
+        End:
+            return;
         }
         private void _HandleActorChangeStateRequest(Connection conn, ActorChangeStateRequest message)
         {

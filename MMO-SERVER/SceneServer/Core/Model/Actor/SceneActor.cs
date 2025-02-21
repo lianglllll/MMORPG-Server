@@ -34,9 +34,9 @@ namespace SceneServer.Core.Model.Actor
             netActorNode.Hp = MaxHP;
             netActorNode.Mp = MaxMP;
             netActorNode.Speed = m_attributeManager.final.Speed;
-            netActorNode.NetActorMode = NetActorMode.None;
-            netActorNode.NetActorState = NetActorState.None;
-            netActorNode.NetActorSmallState = NetActorSmallState.None;
+            netActorNode.NetActorMode = NetActorMode.Normal;
+            netActorNode.NetActorState = NetActorState.Idle;
+            netActorNode.NetActorSmallState = NetActorSmallState.None; // 可以选择去掉
             m_curUseSkill = null;
             m_skillSpell.Init(this);
             m_skillManager.Init(this);
@@ -112,6 +112,11 @@ namespace SceneServer.Core.Model.Actor
         public bool ChangeActorState(NetActorState state)
         {
             m_netActorNode.NetActorState = state;
+            return true;
+        }
+        public bool ChangeActorMode(NetActorMode mode)
+        {
+            m_netActorNode.NetActorMode = mode;
             return true;
         }
         public bool ChangeMP(int mpDelta)
