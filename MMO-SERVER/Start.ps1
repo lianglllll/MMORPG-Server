@@ -1,5 +1,5 @@
 # 设置启动间隔（秒）
-$delay = 1
+$delay = 0.1
 
 # 定义所有服务器的目录路径（相对于脚本所在位置）
 $baseDir = Split-Path -Parent $MyInvocation.MyCommand.Path
