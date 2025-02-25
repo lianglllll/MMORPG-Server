@@ -12,7 +12,6 @@ server:
   heartBeatTimeOut: 30
   heartBeatCheckInterval: 15
   heartBeatSendInterval: 10
-  # 所需scene数量、sceneids
 
 cc:
   ip: 127.0.0.1
