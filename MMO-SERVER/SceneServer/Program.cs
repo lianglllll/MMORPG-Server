@@ -9,10 +9,21 @@ namespace SceneServer
 {
     class Program
     {
-        private static bool Init()
+        private static bool Init(string[] args)
         {
             SerilogManager.Instance.Init();
-            Config.Init();                      // 加载服务器配置
+
+            string configPath = "config.yaml";
+            for (int i = 0; i < args.Length; i++)
+            {
+                if (args[i].Equals("-config", StringComparison.OrdinalIgnoreCase) && i + 1 < args.Length)
+                {
+                    configPath = args[i + 1];
+                    break;
+                }
+            }
+            Config.Init(configPath);               
+
             StaticDataManager.Instance.Init();
             Scheduler.Instance.Start(Config.Server.updateHz);
 
@@ -85,7 +96,7 @@ namespace SceneServer
         }
         public static void Main(string[] args)
         {
-            Init();
+            Init(args);
             //Shell();
         }
     }

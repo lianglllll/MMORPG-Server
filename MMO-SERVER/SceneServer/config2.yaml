@@ -1,9 +1,10 @@
 server:
-  ip: 10.11.140.90
-  userPort: 10700
-  serverPort: 10701
+  ip: 127.0.0.1
+  serverPort: 10901
   # 工作线程数
   workerCount: 1
+  # AOI视野距离(米)
+  aoiViewArea: 50
   # 逻辑处理频率(hz)
   updateHz: 50
   # 心跳相关(单位：秒)

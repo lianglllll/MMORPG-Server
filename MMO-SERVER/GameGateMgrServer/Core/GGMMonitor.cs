@@ -288,6 +288,16 @@ namespace GameGateMgrServer.Core
             }
             sEntry.Connection.Send(req);
 
+            if(req.Command == GateCommand.Start)
+            {
+                Log.Information("AssignTaskToScene, sceneServerId = {0}, command = {1},gameServerId = {2}", 
+                    sceneServerId, req.Command,gameEntry.ServerInfo.ServerId);
+            }else
+            {
+                Log.Information("AssignTaskToScene, sceneServerId = {0}, command = {1}",
+                    sceneServerId, req.Command);
+            }
+
         End:
             return;
         }

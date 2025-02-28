@@ -21,7 +21,8 @@ Function Start-AndRecordPID {
     param (
         [string]$targetDirectory,
         [string]$executableName,
-        [string]$displayName
+        [string]$displayName,
+        [string]$arguments = ""
     )
     
     if (-Not (Test-Path $targetDirectory)) {
@@ -39,7 +40,10 @@ Function Start-AndRecordPID {
         Write-Host "Starting program in directory: $targetDirectory"
         
         # 使用 wt 启动程序并设置窗口标题
-        Start-Process -FilePath "wt.exe" -ArgumentList @("new-tab", "--title", $displayName, "powershell", "-NoExit", "-Command", ".\$executableName")
+        Start-Process -FilePath "wt.exe" -ArgumentList @(
+        "new-tab",
+        "--title", $displayName, 
+        "powershell", "-NoExit", "-Command", ".\$executableName $arguments")
 
         Start-Sleep -Seconds $delay
         
@@ -62,4 +66,5 @@ Start-AndRecordPID -targetDirectory $loginServerDir -executableName "LoginServer
 Start-AndRecordPID -targetDirectory $gameGateMgrServerDir -executableName "GameGateMgrServer.exe" -displayName "GameGateMgrServer"
 Start-AndRecordPID -targetDirectory $gameGateServerDir -executableName "GameGateServer.exe" -displayName "GameGateServer"
 Start-AndRecordPID -targetDirectory $gameServerDir -executableName "GameServer.exe" -displayName "GameServer"
-Start-AndRecordPID -targetDirectory $spaceServerDir -executableName "SceneServer.exe" -displayName "SceneServer"
+Start-AndRecordPID -targetDirectory $spaceServerDir -executableName "SceneServer.exe" -displayName "SceneServer1" -arguments "-config config.yaml"
+Start-AndRecordPID -targetDirectory $spaceServerDir -executableName "SceneServer.exe" -displayName "SceneServer2" -arguments "-config config2.yaml"

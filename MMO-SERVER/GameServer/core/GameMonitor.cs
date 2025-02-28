@@ -32,7 +32,7 @@ namespace GameServer.Core
         {
             // todo
             waitDispatchSceneId.Enqueue(1);
-            // waitDispatchSceneId.Enqueue(2);
+            waitDispatchSceneId.Enqueue(2);
 
             ProtoHelper.Instance.Register<RegisterSceneToGGRequest>((int)GameGateProtocl.RegisterScenesToGgReq);
             ProtoHelper.Instance.Register<RegisterSceneToGGResponse>((int)GameGateProtocl.RegisterScenesToGgResp);
