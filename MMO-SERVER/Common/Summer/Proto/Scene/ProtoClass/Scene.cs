@@ -55,72 +55,76 @@ namespace HS.Protobuf.Scene {
             "b3JNb2RlEhEKCXRpbWVzdGFtcBgEIAEoAyKGAQoXQWN0b3JDaGFuZ2VNb2Rl",
             "UmVzcG9uc2USEQoJc2Vzc2lvbklkGAEgASgJEhAKCGVudGl0eUlkGAIgASgF",
             "EjMKBG1vZGUYAyABKA4yJS5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRB",
-            "Y3Rvck1vZGUSEQoJdGltZXN0YW1wGAQgASgDIuYBChdBY3RvckNoYW5nZVN0",
-            "YXRlUmVxdWVzdBIRCglzZXNzaW9uSWQYASABKAkSEAoIZW50aXR5SWQYAiAB",
-            "KAUSEQoJdGltZXN0YW1wGAMgASgDEjUKBXN0YXRlGAQgASgOMiYuSFMuUHJv",
-            "dG9idWYuU2NlbmVFbnRpdHkuTmV0QWN0b3JTdGF0ZRJAChFvcmlnaW5hbFRy",
-            "YW5zZm9ybRgGIAEoCzIlLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5Lk5ldFRy",
-            "YW5zZm9ybRIPCgVzcGVlZBgHIAEoAkgAQgkKB3BheUxvYWQi5wEKGEFjdG9y",
-            "Q2hhbmdlU3RhdGVSZXNwb25zZRIRCglzZXNzaW9uSWQYASABKAkSEAoIZW50",
-            "aXR5SWQYAiABKAUSEQoJdGltZXN0YW1wGAMgASgDEjUKBXN0YXRlGAQgASgO",
-            "MiYuSFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuTmV0QWN0b3JTdGF0ZRJAChFv",
-            "cmlnaW5hbFRyYW5zZm9ybRgGIAEoCzIlLkhTLlByb3RvYnVmLlNjZW5lRW50",
-            "aXR5Lk5ldFRyYW5zZm9ybRIPCgVzcGVlZBgHIAEoAkgAQgkKB3BheUxvYWQi",
-            "3gEKHEFjdG9yQ2hhbmdlTW90aW9uRGF0YVJlcXVlc3QSEQoJc2Vzc2lvbklk",
-            "GAEgASgJEhAKCGVudGl0eUlkGAIgASgFEhEKCXRpbWVzdGFtcBgDIAEoAxIN",
-            "CgVzcGVlZBgEIAEoBRI1Cghyb3RhdGlvbhgFIAEoCzIjLkhTLlByb3RvYnVm",
-            "LlNjZW5lRW50aXR5Lk5ldFZlY3RvcjMSQAoRb3JpZ2luYWxUcmFuc2Zvcm0Y",
-            "BiABKAsyJS5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRUcmFuc2Zvcm0i",
-            "qAEKHUFjdG9yQ2hhbmdlTW90aW9uRGF0YVJlc3BvbnNlEhEKCXNlc3Npb25J",
-            "ZBgBIAEoCRIQCghlbnRpdHlJZBgCIAEoBRIRCgl0aW1lc3RhbXAYAyABKAMS",
-            "DQoFc3BlZWQYBCABKAISQAoRb3JpZ2luYWxUcmFuc2Zvcm0YBSABKAsyJS5I",
-            "Uy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRUcmFuc2Zvcm0iaQocU3BhY2VD",
-            "aGFyYWN0ZXJzRW50ZXJSZXNwb25zZRIPCgdzcGFjZUlkGAEgASgFEjgKDWNo",
-            "YXJhY3Rlckxpc3QYAiADKAsyIS5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5O",
-            "ZXRBY3RvciK6AQoSU3BhY2VFbnRlclJlc3BvbnNlEjQKCWNoYXJhY3RlchgB",
-            "IAEoCzIhLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5Lk5ldEFjdG9yEjgKDWNo",
-            "YXJhY3Rlckxpc3QYAiADKAsyIS5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5O",
-            "ZXRBY3RvchI0CgllSXRlbUxpc3QYAyADKAsyIS5IUy5Qcm90b2J1Zi5TY2Vu",
-            "ZUVudGl0eS5OZXRFSXRlbSIsChhTcGFjZUVudGl0eUxlYXZlUmVzcG9uc2US",
-            "EAoIZW50aXR5SWQYASABKAUikwEKC05FbnRpdHlTeW5jEjIKBmVudGl0eRgB",
-            "IAEoCzIiLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5Lk5ldEVudGl0eRINCgVm",
-            "b3JjZRgCIAEoCBIyCgVzdGF0ZRgDIAEoDjIjLkhTLlByb3RvYnVmLlNjZW5l",
-            "RW50aXR5LkFjdG9yU3RhdGUSDQoFZmxhZzEYBCABKAUiTAoWU3BhY2VFbnRp",
-            "dHlTeW5jUmVxdWVzdBIyCgplbnRpdHlTeW5jGAEgASgLMh4uSFMuUHJvdG9i",
-            "dWYuU2NlbmUuTkVudGl0eVN5bmMiTQoXU3BhY2VFbnRpdHlTeW5jUmVzcG9u",
-            "c2USMgoKZW50aXR5U3luYxgBIAEoCzIeLkhTLlByb3RvYnVmLlNjZW5lLk5F",
-            "bnRpdHlTeW5jIlYKIEN0bENsaWVudFNwYWNlRW50aXR5U3luY1Jlc3BvbnNl",
-            "EjIKCmVudGl0eVN5bmMYASABKAsyHi5IUy5Qcm90b2J1Zi5TY2VuZS5ORW50",
-            "aXR5U3luYyI3ChNTcGFjZURlbGl2ZXJSZXF1ZXN0Eg8KB3NwYWNlSWQYASAB",
-            "KAUSDwoHcG9pbnRJZBgCIAEoBSI9ChRTcGFjZURlbGl2ZXJSZXNwb25zZRIS",
-            "CgpyZXN1bHRDb2RlGAEgASgFEhEKCXJlc3VsdE1zZxgCIAEoCSIhCg1SZXZp",
-            "dmVSZXF1ZXN0EhAKCGVudGl0eUlkGAEgASgFIkUKDlJldml2ZVJlc3BvbnNl",
-            "EjMKC25FbnRpdHlTeWNuGAEgASgLMh4uSFMuUHJvdG9idWYuU2NlbmUuTkVu",
-            "dGl0eVN5bmMiQwoMTmV0RUl0ZW1TeW5jEjMKCG5ldEVJdGVtGAEgASgLMiEu",
-            "SFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuTmV0RUl0ZW0iTQoWU3BhY2VJdGVt",
-            "RW50ZXJSZXNwb25zZRIzCghuZXRFSXRlbRgBIAEoCzIhLkhTLlByb3RvYnVm",
-            "LlNjZW5lRW50aXR5Lk5ldEVJdGVtIk4KFVByb3BlcnR5VXBkYXRlUnNwb25z",
-            "ZRI1CgRsaXN0GAEgAygLMicuSFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuUHJv",
-            "cGVydHlVcGRhdGUqiwUKDFNjZW5lUHJvdG9jbBIWChJTQ0VORV9QUk9UT0NM",
-            "X05PTkUQABIpCiNTQ0VORV9QUk9UT0NMX1JFR0lTVEVSX1RPX1NDRU5FX1JF",
-            "URDBuAISKgokU0NFTkVfUFJPVE9DTF9SRUdJU1RFUl9UT19TQ0VORV9SRVNQ",
-            "EMK4AhItCidTQ0VORV9QUk9UT0NMX0NIQVJBQ1RFUl9FTlRFUl9TQ0VORV9S",
-            "RVEQw7gCEjMKLVNDRU5FX1BST1RPQ0xfU0VMRl9DSEFSQUNURVJfRU5URVJf",
-            "U0NFTkVfUkVTUBDEuAISMQorU0NFTkVfUFJPVE9DTF9PVEhFUl9FTlRJVFlf",
-            "RU5URVJfU0NFTkVfUkVTUBDFuAISLQonU0NFTkVfUFJPVE9DTF9DSEFSQUNU",
-            "RVJfTEVBVkVfU0NFTkVfUkVREMa4AhIxCitTQ0VORV9QUk9UT0NMX09USEVS",
-            "X0VOVElUWV9MRUFWRV9TQ0VORV9SRVNQEMe4AhIpCiNTQ0VORV9QUk9UT0NM",
-            "X0FDVE9SX0NIQU5HRV9NT0RFX1JFURDJuAISKgokU0NFTkVfUFJPVE9DTF9B",
-            "Q1RPUl9DSEFOR0VfTU9ERV9SRVNQEMq4AhIqCiRTQ0VORV9QUk9UT0NMX0FD",
-            "VE9SX0NIQU5HRV9TVEFURV9SRVEQy7gCEisKJVNDRU5FX1BST1RPQ0xfQUNU",
-            "T1JfQ0hBTkdFX1NUQVRFX1JFU1AQzLgCEjAKKlNDRU5FX1BST1RPQ0xfQUNU",
-            "T1JfQ0hBTkdFX01PVElPTl9EQVRBX1JFURDNuAISMQorU0NFTkVfUFJPVE9D",
-            "TF9BQ1RPUl9DSEFOR0VfTU9USU9OX0RBVEFfUkVTUBDOuAIqywEKCVNjZW5l",
-            "VHlwZRITCg9TQ0VORV9UWVBFX05VTEwQABITCg9TQ0VORV9UWVBFX0NJVFkQ",
-            "ARIUChBTQ0VORV9UWVBFX0ZJRUxEEAISHQoZU0NFTkVfVFlQRV9TSU5HTEVf",
-            "TUlTU0lPThADEhwKGFNDRU5FX1RZUEVfTVVMVElfTUlTU0lPThAEEhQKEFND",
-            "RU5FX1RZUEVfTE9HSU4QBRIXChNTQ0VORV9UWVBFX0tJTl9MQU5EEAYSEgoO",
-            "U0NFTkVfVFlQRV9BTEwQCGIGcHJvdG8z"));
+            "Y3Rvck1vZGUSEQoJdGltZXN0YW1wGAQgASgDIoEBChdBY3RvckNoYW5nZVN0",
+            "YXRlUGF5TG9hZBIPCgVzcGVlZBgBIAEoAkgAEkoKDGV2YWRlUGF5TG9hZBgC",
+            "IAEoDjIyLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5Lk5ldEFjb3RyRXZhZGVT",
+            "dGF0ZVBheWxvYWRIAEIJCgdwYXlMb2FkIocCChdBY3RvckNoYW5nZVN0YXRl",
+            "UmVxdWVzdBIRCglzZXNzaW9uSWQYASABKAkSEAoIZW50aXR5SWQYAiABKAUS",
+            "EQoJdGltZXN0YW1wGAMgASgDEjUKBXN0YXRlGAQgASgOMiYuSFMuUHJvdG9i",
+            "dWYuU2NlbmVFbnRpdHkuTmV0QWN0b3JTdGF0ZRJAChFvcmlnaW5hbFRyYW5z",
+            "Zm9ybRgGIAEoCzIlLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5Lk5ldFRyYW5z",
+            "Zm9ybRI7CgdwYXlMb2FkGAcgASgLMiouSFMuUHJvdG9idWYuU2NlbmUuQWN0",
+            "b3JDaGFuZ2VTdGF0ZVBheUxvYWQiiAIKGEFjdG9yQ2hhbmdlU3RhdGVSZXNw",
+            "b25zZRIRCglzZXNzaW9uSWQYASABKAkSEAoIZW50aXR5SWQYAiABKAUSEQoJ",
+            "dGltZXN0YW1wGAMgASgDEjUKBXN0YXRlGAQgASgOMiYuSFMuUHJvdG9idWYu",
+            "U2NlbmVFbnRpdHkuTmV0QWN0b3JTdGF0ZRJAChFvcmlnaW5hbFRyYW5zZm9y",
+            "bRgGIAEoCzIlLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5Lk5ldFRyYW5zZm9y",
+            "bRI7CgdwYXlMb2FkGAcgASgLMiouSFMuUHJvdG9idWYuU2NlbmUuQWN0b3JD",
+            "aGFuZ2VTdGF0ZVBheUxvYWQi3gEKHEFjdG9yQ2hhbmdlTW90aW9uRGF0YVJl",
+            "cXVlc3QSEQoJc2Vzc2lvbklkGAEgASgJEhAKCGVudGl0eUlkGAIgASgFEhEK",
+            "CXRpbWVzdGFtcBgDIAEoAxINCgVzcGVlZBgEIAEoBRI1Cghyb3RhdGlvbhgF",
+            "IAEoCzIjLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5Lk5ldFZlY3RvcjMSQAoR",
+            "b3JpZ2luYWxUcmFuc2Zvcm0YBiABKAsyJS5IUy5Qcm90b2J1Zi5TY2VuZUVu",
+            "dGl0eS5OZXRUcmFuc2Zvcm0iqAEKHUFjdG9yQ2hhbmdlTW90aW9uRGF0YVJl",
+            "c3BvbnNlEhEKCXNlc3Npb25JZBgBIAEoCRIQCghlbnRpdHlJZBgCIAEoBRIR",
+            "Cgl0aW1lc3RhbXAYAyABKAMSDQoFc3BlZWQYBCABKAISQAoRb3JpZ2luYWxU",
+            "cmFuc2Zvcm0YBSABKAsyJS5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRU",
+            "cmFuc2Zvcm0iaQocU3BhY2VDaGFyYWN0ZXJzRW50ZXJSZXNwb25zZRIPCgdz",
+            "cGFjZUlkGAEgASgFEjgKDWNoYXJhY3Rlckxpc3QYAiADKAsyIS5IUy5Qcm90",
+            "b2J1Zi5TY2VuZUVudGl0eS5OZXRBY3RvciK6AQoSU3BhY2VFbnRlclJlc3Bv",
+            "bnNlEjQKCWNoYXJhY3RlchgBIAEoCzIhLkhTLlByb3RvYnVmLlNjZW5lRW50",
+            "aXR5Lk5ldEFjdG9yEjgKDWNoYXJhY3Rlckxpc3QYAiADKAsyIS5IUy5Qcm90",
+            "b2J1Zi5TY2VuZUVudGl0eS5OZXRBY3RvchI0CgllSXRlbUxpc3QYAyADKAsy",
+            "IS5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRFSXRlbSIsChhTcGFjZUVu",
+            "dGl0eUxlYXZlUmVzcG9uc2USEAoIZW50aXR5SWQYASABKAUikwEKC05FbnRp",
+            "dHlTeW5jEjIKBmVudGl0eRgBIAEoCzIiLkhTLlByb3RvYnVmLlNjZW5lRW50",
+            "aXR5Lk5ldEVudGl0eRINCgVmb3JjZRgCIAEoCBIyCgVzdGF0ZRgDIAEoDjIj",
+            "LkhTLlByb3RvYnVmLlNjZW5lRW50aXR5LkFjdG9yU3RhdGUSDQoFZmxhZzEY",
+            "BCABKAUiTAoWU3BhY2VFbnRpdHlTeW5jUmVxdWVzdBIyCgplbnRpdHlTeW5j",
+            "GAEgASgLMh4uSFMuUHJvdG9idWYuU2NlbmUuTkVudGl0eVN5bmMiTQoXU3Bh",
+            "Y2VFbnRpdHlTeW5jUmVzcG9uc2USMgoKZW50aXR5U3luYxgBIAEoCzIeLkhT",
+            "LlByb3RvYnVmLlNjZW5lLk5FbnRpdHlTeW5jIlYKIEN0bENsaWVudFNwYWNl",
+            "RW50aXR5U3luY1Jlc3BvbnNlEjIKCmVudGl0eVN5bmMYASABKAsyHi5IUy5Q",
+            "cm90b2J1Zi5TY2VuZS5ORW50aXR5U3luYyI3ChNTcGFjZURlbGl2ZXJSZXF1",
+            "ZXN0Eg8KB3NwYWNlSWQYASABKAUSDwoHcG9pbnRJZBgCIAEoBSI9ChRTcGFj",
+            "ZURlbGl2ZXJSZXNwb25zZRISCgpyZXN1bHRDb2RlGAEgASgFEhEKCXJlc3Vs",
+            "dE1zZxgCIAEoCSIhCg1SZXZpdmVSZXF1ZXN0EhAKCGVudGl0eUlkGAEgASgF",
+            "IkUKDlJldml2ZVJlc3BvbnNlEjMKC25FbnRpdHlTeWNuGAEgASgLMh4uSFMu",
+            "UHJvdG9idWYuU2NlbmUuTkVudGl0eVN5bmMiQwoMTmV0RUl0ZW1TeW5jEjMK",
+            "CG5ldEVJdGVtGAEgASgLMiEuSFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuTmV0",
+            "RUl0ZW0iTQoWU3BhY2VJdGVtRW50ZXJSZXNwb25zZRIzCghuZXRFSXRlbRgB",
+            "IAEoCzIhLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5Lk5ldEVJdGVtIk4KFVBy",
+            "b3BlcnR5VXBkYXRlUnNwb25zZRI1CgRsaXN0GAEgAygLMicuSFMuUHJvdG9i",
+            "dWYuU2NlbmVFbnRpdHkuUHJvcGVydHlVcGRhdGUqiwUKDFNjZW5lUHJvdG9j",
+            "bBIWChJTQ0VORV9QUk9UT0NMX05PTkUQABIpCiNTQ0VORV9QUk9UT0NMX1JF",
+            "R0lTVEVSX1RPX1NDRU5FX1JFURDBuAISKgokU0NFTkVfUFJPVE9DTF9SRUdJ",
+            "U1RFUl9UT19TQ0VORV9SRVNQEMK4AhItCidTQ0VORV9QUk9UT0NMX0NIQVJB",
+            "Q1RFUl9FTlRFUl9TQ0VORV9SRVEQw7gCEjMKLVNDRU5FX1BST1RPQ0xfU0VM",
+            "Rl9DSEFSQUNURVJfRU5URVJfU0NFTkVfUkVTUBDEuAISMQorU0NFTkVfUFJP",
+            "VE9DTF9PVEhFUl9FTlRJVFlfRU5URVJfU0NFTkVfUkVTUBDFuAISLQonU0NF",
+            "TkVfUFJPVE9DTF9DSEFSQUNURVJfTEVBVkVfU0NFTkVfUkVREMa4AhIxCitT",
+            "Q0VORV9QUk9UT0NMX09USEVSX0VOVElUWV9MRUFWRV9TQ0VORV9SRVNQEMe4",
+            "AhIpCiNTQ0VORV9QUk9UT0NMX0FDVE9SX0NIQU5HRV9NT0RFX1JFURDJuAIS",
+            "KgokU0NFTkVfUFJPVE9DTF9BQ1RPUl9DSEFOR0VfTU9ERV9SRVNQEMq4AhIq",
+            "CiRTQ0VORV9QUk9UT0NMX0FDVE9SX0NIQU5HRV9TVEFURV9SRVEQy7gCEisK",
+            "JVNDRU5FX1BST1RPQ0xfQUNUT1JfQ0hBTkdFX1NUQVRFX1JFU1AQzLgCEjAK",
+            "KlNDRU5FX1BST1RPQ0xfQUNUT1JfQ0hBTkdFX01PVElPTl9EQVRBX1JFURDN",
+            "uAISMQorU0NFTkVfUFJPVE9DTF9BQ1RPUl9DSEFOR0VfTU9USU9OX0RBVEFf",
+            "UkVTUBDOuAIqywEKCVNjZW5lVHlwZRITCg9TQ0VORV9UWVBFX05VTEwQABIT",
+            "Cg9TQ0VORV9UWVBFX0NJVFkQARIUChBTQ0VORV9UWVBFX0ZJRUxEEAISHQoZ",
+            "U0NFTkVfVFlQRV9TSU5HTEVfTUlTU0lPThADEhwKGFNDRU5FX1RZUEVfTVVM",
+            "VElfTUlTU0lPThAEEhQKEFNDRU5FX1RZUEVfTE9HSU4QBRIXChNTQ0VORV9U",
+            "WVBFX0tJTl9MQU5EEAYSEgoOU0NFTkVfVFlQRV9BTEwQCGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::HS.Protobuf.Common.CommonReflection.Descriptor, global::HS.Protobuf.SceneEntity.SceneEntityReflection.Descriptor, global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.Scene.SceneProtocl), typeof(global::HS.Protobuf.Scene.SceneType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -133,8 +137,9 @@ namespace HS.Protobuf.Scene {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.OtherEntityLeaveSceneResponse), global::HS.Protobuf.Scene.OtherEntityLeaveSceneResponse.Parser, new[]{ "SessionId", "SceneId", "EntityId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeModeRequest), global::HS.Protobuf.Scene.ActorChangeModeRequest.Parser, new[]{ "SessionId", "EntityId", "Mode", "Timestamp" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeModeResponse), global::HS.Protobuf.Scene.ActorChangeModeResponse.Parser, new[]{ "SessionId", "EntityId", "Mode", "Timestamp" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeStateRequest), global::HS.Protobuf.Scene.ActorChangeStateRequest.Parser, new[]{ "SessionId", "EntityId", "Timestamp", "State", "OriginalTransform", "Speed" }, new[]{ "PayLoad" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeStateResponse), global::HS.Protobuf.Scene.ActorChangeStateResponse.Parser, new[]{ "SessionId", "EntityId", "Timestamp", "State", "OriginalTransform", "Speed" }, new[]{ "PayLoad" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeStatePayLoad), global::HS.Protobuf.Scene.ActorChangeStatePayLoad.Parser, new[]{ "Speed", "EvadePayLoad" }, new[]{ "PayLoad" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeStateRequest), global::HS.Protobuf.Scene.ActorChangeStateRequest.Parser, new[]{ "SessionId", "EntityId", "Timestamp", "State", "OriginalTransform", "PayLoad" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeStateResponse), global::HS.Protobuf.Scene.ActorChangeStateResponse.Parser, new[]{ "SessionId", "EntityId", "Timestamp", "State", "OriginalTransform", "PayLoad" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeMotionDataRequest), global::HS.Protobuf.Scene.ActorChangeMotionDataRequest.Parser, new[]{ "SessionId", "EntityId", "Timestamp", "Speed", "Rotation", "OriginalTransform" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeMotionDataResponse), global::HS.Protobuf.Scene.ActorChangeMotionDataResponse.Parser, new[]{ "SessionId", "EntityId", "Timestamp", "Speed", "OriginalTransform" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.SpaceCharactersEnterResponse), global::HS.Protobuf.Scene.SpaceCharactersEnterResponse.Parser, new[]{ "SpaceId", "CharacterList" }, null, null, null, null),
@@ -2792,6 +2797,267 @@ namespace HS.Protobuf.Scene {
 
   }
 
+  public sealed partial class ActorChangeStatePayLoad : pb::IMessage<ActorChangeStatePayLoad>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<ActorChangeStatePayLoad> _parser = new pb::MessageParser<ActorChangeStatePayLoad>(() => new ActorChangeStatePayLoad());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<ActorChangeStatePayLoad> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[9]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ActorChangeStatePayLoad() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ActorChangeStatePayLoad(ActorChangeStatePayLoad other) : this() {
+      switch (other.PayLoadCase) {
+        case PayLoadOneofCase.Speed:
+          Speed = other.Speed;
+          break;
+        case PayLoadOneofCase.EvadePayLoad:
+          EvadePayLoad = other.EvadePayLoad;
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public ActorChangeStatePayLoad Clone() {
+      return new ActorChangeStatePayLoad(this);
+    }
+
+    /// <summary>Field number for the "speed" field.</summary>
+    public const int SpeedFieldNumber = 1;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public float Speed {
+      get { return payLoadCase_ == PayLoadOneofCase.Speed ? (float) payLoad_ : 0F; }
+      set {
+        payLoad_ = value;
+        payLoadCase_ = PayLoadOneofCase.Speed;
+      }
+    }
+
+    /// <summary>Field number for the "evadePayLoad" field.</summary>
+    public const int EvadePayLoadFieldNumber = 2;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::HS.Protobuf.SceneEntity.NetAcotrEvadeStatePayload EvadePayLoad {
+      get { return payLoadCase_ == PayLoadOneofCase.EvadePayLoad ? (global::HS.Protobuf.SceneEntity.NetAcotrEvadeStatePayload) payLoad_ : global::HS.Protobuf.SceneEntity.NetAcotrEvadeStatePayload.NetActorEvadeStatePayloadNone; }
+      set {
+        payLoad_ = value;
+        payLoadCase_ = PayLoadOneofCase.EvadePayLoad;
+      }
+    }
+
+    private object payLoad_;
+    /// <summary>Enum of possible cases for the "payLoad" oneof.</summary>
+    public enum PayLoadOneofCase {
+      None = 0,
+      Speed = 1,
+      EvadePayLoad = 2,
+    }
+    private PayLoadOneofCase payLoadCase_ = PayLoadOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public PayLoadOneofCase PayLoadCase {
+      get { return payLoadCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearPayLoad() {
+      payLoadCase_ = PayLoadOneofCase.None;
+      payLoad_ = null;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as ActorChangeStatePayLoad);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(ActorChangeStatePayLoad other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Speed, other.Speed)) return false;
+      if (EvadePayLoad != other.EvadePayLoad) return false;
+      if (PayLoadCase != other.PayLoadCase) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (payLoadCase_ == PayLoadOneofCase.Speed) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Speed);
+      if (payLoadCase_ == PayLoadOneofCase.EvadePayLoad) hash ^= EvadePayLoad.GetHashCode();
+      hash ^= (int) payLoadCase_;
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (payLoadCase_ == PayLoadOneofCase.Speed) {
+        output.WriteRawTag(13);
+        output.WriteFloat(Speed);
+      }
+      if (payLoadCase_ == PayLoadOneofCase.EvadePayLoad) {
+        output.WriteRawTag(16);
+        output.WriteEnum((int) EvadePayLoad);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (payLoadCase_ == PayLoadOneofCase.Speed) {
+        output.WriteRawTag(13);
+        output.WriteFloat(Speed);
+      }
+      if (payLoadCase_ == PayLoadOneofCase.EvadePayLoad) {
+        output.WriteRawTag(16);
+        output.WriteEnum((int) EvadePayLoad);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (payLoadCase_ == PayLoadOneofCase.Speed) {
+        size += 1 + 4;
+      }
+      if (payLoadCase_ == PayLoadOneofCase.EvadePayLoad) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) EvadePayLoad);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(ActorChangeStatePayLoad other) {
+      if (other == null) {
+        return;
+      }
+      switch (other.PayLoadCase) {
+        case PayLoadOneofCase.Speed:
+          Speed = other.Speed;
+          break;
+        case PayLoadOneofCase.EvadePayLoad:
+          EvadePayLoad = other.EvadePayLoad;
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 13: {
+            Speed = input.ReadFloat();
+            break;
+          }
+          case 16: {
+            payLoad_ = input.ReadEnum();
+            payLoadCase_ = PayLoadOneofCase.EvadePayLoad;
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 13: {
+            Speed = input.ReadFloat();
+            break;
+          }
+          case 16: {
+            payLoad_ = input.ReadEnum();
+            payLoadCase_ = PayLoadOneofCase.EvadePayLoad;
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
   public sealed partial class ActorChangeStateRequest : pb::IMessage<ActorChangeStateRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -2806,7 +3072,7 @@ namespace HS.Protobuf.Scene {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[9]; }
+      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[10]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2831,12 +3097,7 @@ namespace HS.Protobuf.Scene {
       timestamp_ = other.timestamp_;
       state_ = other.state_;
       originalTransform_ = other.originalTransform_ != null ? other.originalTransform_.Clone() : null;
-      switch (other.PayLoadCase) {
-        case PayLoadOneofCase.Speed:
-          Speed = other.Speed;
-          break;
-      }
-
+      payLoad_ = other.payLoad_ != null ? other.payLoad_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -2906,36 +3167,16 @@ namespace HS.Protobuf.Scene {
       }
     }
 
-    /// <summary>Field number for the "speed" field.</summary>
-    public const int SpeedFieldNumber = 7;
+    /// <summary>Field number for the "payLoad" field.</summary>
+    public const int PayLoadFieldNumber = 7;
+    private global::HS.Protobuf.Scene.ActorChangeStatePayLoad payLoad_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public float Speed {
-      get { return payLoadCase_ == PayLoadOneofCase.Speed ? (float) payLoad_ : 0F; }
+    public global::HS.Protobuf.Scene.ActorChangeStatePayLoad PayLoad {
+      get { return payLoad_; }
       set {
         payLoad_ = value;
-        payLoadCase_ = PayLoadOneofCase.Speed;
       }
-    }
-
-    private object payLoad_;
-    /// <summary>Enum of possible cases for the "payLoad" oneof.</summary>
-    public enum PayLoadOneofCase {
-      None = 0,
-      Speed = 7,
-    }
-    private PayLoadOneofCase payLoadCase_ = PayLoadOneofCase.None;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public PayLoadOneofCase PayLoadCase {
-      get { return payLoadCase_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void ClearPayLoad() {
-      payLoadCase_ = PayLoadOneofCase.None;
-      payLoad_ = null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2958,8 +3199,7 @@ namespace HS.Protobuf.Scene {
       if (Timestamp != other.Timestamp) return false;
       if (State != other.State) return false;
       if (!object.Equals(OriginalTransform, other.OriginalTransform)) return false;
-      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Speed, other.Speed)) return false;
-      if (PayLoadCase != other.PayLoadCase) return false;
+      if (!object.Equals(PayLoad, other.PayLoad)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -2972,8 +3212,7 @@ namespace HS.Protobuf.Scene {
       if (Timestamp != 0L) hash ^= Timestamp.GetHashCode();
       if (State != global::HS.Protobuf.SceneEntity.NetActorState.None) hash ^= State.GetHashCode();
       if (originalTransform_ != null) hash ^= OriginalTransform.GetHashCode();
-      if (payLoadCase_ == PayLoadOneofCase.Speed) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Speed);
-      hash ^= (int) payLoadCase_;
+      if (payLoad_ != null) hash ^= PayLoad.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -3012,9 +3251,9 @@ namespace HS.Protobuf.Scene {
         output.WriteRawTag(50);
         output.WriteMessage(OriginalTransform);
       }
-      if (payLoadCase_ == PayLoadOneofCase.Speed) {
-        output.WriteRawTag(61);
-        output.WriteFloat(Speed);
+      if (payLoad_ != null) {
+        output.WriteRawTag(58);
+        output.WriteMessage(PayLoad);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -3046,9 +3285,9 @@ namespace HS.Protobuf.Scene {
         output.WriteRawTag(50);
         output.WriteMessage(OriginalTransform);
       }
-      if (payLoadCase_ == PayLoadOneofCase.Speed) {
-        output.WriteRawTag(61);
-        output.WriteFloat(Speed);
+      if (payLoad_ != null) {
+        output.WriteRawTag(58);
+        output.WriteMessage(PayLoad);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -3075,8 +3314,8 @@ namespace HS.Protobuf.Scene {
       if (originalTransform_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(OriginalTransform);
       }
-      if (payLoadCase_ == PayLoadOneofCase.Speed) {
-        size += 1 + 4;
+      if (payLoad_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(PayLoad);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -3108,12 +3347,12 @@ namespace HS.Protobuf.Scene {
         }
         OriginalTransform.MergeFrom(other.OriginalTransform);
       }
-      switch (other.PayLoadCase) {
-        case PayLoadOneofCase.Speed:
-          Speed = other.Speed;
-          break;
+      if (other.payLoad_ != null) {
+        if (payLoad_ == null) {
+          PayLoad = new global::HS.Protobuf.Scene.ActorChangeStatePayLoad();
+        }
+        PayLoad.MergeFrom(other.PayLoad);
       }
-
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -3152,8 +3391,11 @@ namespace HS.Protobuf.Scene {
             input.ReadMessage(OriginalTransform);
             break;
           }
-          case 61: {
-            Speed = input.ReadFloat();
+          case 58: {
+            if (payLoad_ == null) {
+              PayLoad = new global::HS.Protobuf.Scene.ActorChangeStatePayLoad();
+            }
+            input.ReadMessage(PayLoad);
             break;
           }
         }
@@ -3194,8 +3436,11 @@ namespace HS.Protobuf.Scene {
             input.ReadMessage(OriginalTransform);
             break;
           }
-          case 61: {
-            Speed = input.ReadFloat();
+          case 58: {
+            if (payLoad_ == null) {
+              PayLoad = new global::HS.Protobuf.Scene.ActorChangeStatePayLoad();
+            }
+            input.ReadMessage(PayLoad);
             break;
           }
         }
@@ -3219,7 +3464,7 @@ namespace HS.Protobuf.Scene {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[10]; }
+      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[11]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3244,12 +3489,7 @@ namespace HS.Protobuf.Scene {
       timestamp_ = other.timestamp_;
       state_ = other.state_;
       originalTransform_ = other.originalTransform_ != null ? other.originalTransform_.Clone() : null;
-      switch (other.PayLoadCase) {
-        case PayLoadOneofCase.Speed:
-          Speed = other.Speed;
-          break;
-      }
-
+      payLoad_ = other.payLoad_ != null ? other.payLoad_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -3319,36 +3559,16 @@ namespace HS.Protobuf.Scene {
       }
     }
 
-    /// <summary>Field number for the "speed" field.</summary>
-    public const int SpeedFieldNumber = 7;
+    /// <summary>Field number for the "payLoad" field.</summary>
+    public const int PayLoadFieldNumber = 7;
+    private global::HS.Protobuf.Scene.ActorChangeStatePayLoad payLoad_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public float Speed {
-      get { return payLoadCase_ == PayLoadOneofCase.Speed ? (float) payLoad_ : 0F; }
+    public global::HS.Protobuf.Scene.ActorChangeStatePayLoad PayLoad {
+      get { return payLoad_; }
       set {
         payLoad_ = value;
-        payLoadCase_ = PayLoadOneofCase.Speed;
       }
-    }
-
-    private object payLoad_;
-    /// <summary>Enum of possible cases for the "payLoad" oneof.</summary>
-    public enum PayLoadOneofCase {
-      None = 0,
-      Speed = 7,
-    }
-    private PayLoadOneofCase payLoadCase_ = PayLoadOneofCase.None;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public PayLoadOneofCase PayLoadCase {
-      get { return payLoadCase_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void ClearPayLoad() {
-      payLoadCase_ = PayLoadOneofCase.None;
-      payLoad_ = null;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3371,8 +3591,7 @@ namespace HS.Protobuf.Scene {
       if (Timestamp != other.Timestamp) return false;
       if (State != other.State) return false;
       if (!object.Equals(OriginalTransform, other.OriginalTransform)) return false;
-      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(Speed, other.Speed)) return false;
-      if (PayLoadCase != other.PayLoadCase) return false;
+      if (!object.Equals(PayLoad, other.PayLoad)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -3385,8 +3604,7 @@ namespace HS.Protobuf.Scene {
       if (Timestamp != 0L) hash ^= Timestamp.GetHashCode();
       if (State != global::HS.Protobuf.SceneEntity.NetActorState.None) hash ^= State.GetHashCode();
       if (originalTransform_ != null) hash ^= OriginalTransform.GetHashCode();
-      if (payLoadCase_ == PayLoadOneofCase.Speed) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(Speed);
-      hash ^= (int) payLoadCase_;
+      if (payLoad_ != null) hash ^= PayLoad.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -3425,9 +3643,9 @@ namespace HS.Protobuf.Scene {
         output.WriteRawTag(50);
         output.WriteMessage(OriginalTransform);
       }
-      if (payLoadCase_ == PayLoadOneofCase.Speed) {
-        output.WriteRawTag(61);
-        output.WriteFloat(Speed);
+      if (payLoad_ != null) {
+        output.WriteRawTag(58);
+        output.WriteMessage(PayLoad);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -3459,9 +3677,9 @@ namespace HS.Protobuf.Scene {
         output.WriteRawTag(50);
         output.WriteMessage(OriginalTransform);
       }
-      if (payLoadCase_ == PayLoadOneofCase.Speed) {
-        output.WriteRawTag(61);
-        output.WriteFloat(Speed);
+      if (payLoad_ != null) {
+        output.WriteRawTag(58);
+        output.WriteMessage(PayLoad);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -3488,8 +3706,8 @@ namespace HS.Protobuf.Scene {
       if (originalTransform_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(OriginalTransform);
       }
-      if (payLoadCase_ == PayLoadOneofCase.Speed) {
-        size += 1 + 4;
+      if (payLoad_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(PayLoad);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -3521,12 +3739,12 @@ namespace HS.Protobuf.Scene {
         }
         OriginalTransform.MergeFrom(other.OriginalTransform);
       }
-      switch (other.PayLoadCase) {
-        case PayLoadOneofCase.Speed:
-          Speed = other.Speed;
-          break;
+      if (other.payLoad_ != null) {
+        if (payLoad_ == null) {
+          PayLoad = new global::HS.Protobuf.Scene.ActorChangeStatePayLoad();
+        }
+        PayLoad.MergeFrom(other.PayLoad);
       }
-
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -3565,8 +3783,11 @@ namespace HS.Protobuf.Scene {
             input.ReadMessage(OriginalTransform);
             break;
           }
-          case 61: {
-            Speed = input.ReadFloat();
+          case 58: {
+            if (payLoad_ == null) {
+              PayLoad = new global::HS.Protobuf.Scene.ActorChangeStatePayLoad();
+            }
+            input.ReadMessage(PayLoad);
             break;
           }
         }
@@ -3607,8 +3828,11 @@ namespace HS.Protobuf.Scene {
             input.ReadMessage(OriginalTransform);
             break;
           }
-          case 61: {
-            Speed = input.ReadFloat();
+          case 58: {
+            if (payLoad_ == null) {
+              PayLoad = new global::HS.Protobuf.Scene.ActorChangeStatePayLoad();
+            }
+            input.ReadMessage(PayLoad);
             break;
           }
         }
@@ -3632,7 +3856,7 @@ namespace HS.Protobuf.Scene {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[11]; }
+      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[12]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4024,7 +4248,7 @@ namespace HS.Protobuf.Scene {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[12]; }
+      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[13]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4373,7 +4597,7 @@ namespace HS.Protobuf.Scene {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[13]; }
+      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[14]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4591,7 +4815,7 @@ namespace HS.Protobuf.Scene {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[14]; }
+      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[15]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4844,7 +5068,7 @@ namespace HS.Protobuf.Scene {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[15]; }
+      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[16]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5036,7 +5260,7 @@ namespace HS.Protobuf.Scene {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[16]; }
+      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[17]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5351,7 +5575,7 @@ namespace HS.Protobuf.Scene {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[17]; }
+      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[18]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5549,7 +5773,7 @@ namespace HS.Protobuf.Scene {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[18]; }
+      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[19]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5750,7 +5974,7 @@ namespace HS.Protobuf.Scene {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[19]; }
+      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[20]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5951,7 +6175,7 @@ namespace HS.Protobuf.Scene {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[20]; }
+      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[21]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -6180,7 +6404,7 @@ namespace HS.Protobuf.Scene {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[21]; }
+      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[22]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -6409,7 +6633,7 @@ namespace HS.Protobuf.Scene {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[22]; }
+      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[23]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -6598,7 +6822,7 @@ namespace HS.Protobuf.Scene {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[23]; }
+      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[24]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -6799,7 +7023,7 @@ namespace HS.Protobuf.Scene {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[24]; }
+      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[25]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -7000,7 +7224,7 @@ namespace HS.Protobuf.Scene {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[25]; }
+      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[26]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -7201,7 +7425,7 @@ namespace HS.Protobuf.Scene {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[26]; }
+      get { return global::HS.Protobuf.Scene.SceneReflection.Descriptor.MessageTypes[27]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

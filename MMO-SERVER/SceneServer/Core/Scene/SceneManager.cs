@@ -145,6 +145,7 @@ namespace SceneServer.Core.Scene
             resp.State = message.State;
             resp.OriginalTransform = message.OriginalTransform;
             resp.Timestamp = message.Timestamp;
+            resp.PayLoad = message.PayLoad;
 
             var all = m_aoiZone.FindViewEntity(self.EntityId, isIncludeSelf);
             foreach (var chr in all.OfType<SceneCharacter>())

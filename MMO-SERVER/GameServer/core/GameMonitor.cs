@@ -31,8 +31,8 @@ namespace GameServer.Core
         public bool Init()
         {
             // todo
-            waitDispatchSceneId.Enqueue(1);
             waitDispatchSceneId.Enqueue(2);
+            waitDispatchSceneId.Enqueue(1);
 
             ProtoHelper.Instance.Register<RegisterSceneToGGRequest>((int)GameGateProtocl.RegisterScenesToGgReq);
             ProtoHelper.Instance.Register<RegisterSceneToGGResponse>((int)GameGateProtocl.RegisterScenesToGgResp);

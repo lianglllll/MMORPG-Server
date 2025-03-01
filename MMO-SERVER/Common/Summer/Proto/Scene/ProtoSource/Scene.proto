@@ -85,15 +85,21 @@ message ActorChangeModeResponse{
 	HS.Protobuf.SceneEntity.NetActorMode mode = 3;
 	int64 timestamp = 4;
 }
+
+
+message ActorChangeStatePayLoad{
+	oneof payLoad{
+		float speed = 1;
+		HS.Protobuf.SceneEntity.NetAcotrEvadeStatePayload evadePayLoad = 2;
+	}
+}
 message ActorChangeStateRequest{
 	string sessionId = 1;
 	int32 entityId = 2;
 	int64 timestamp = 3;
 	HS.Protobuf.SceneEntity.NetActorState state = 4;
 	HS.Protobuf.SceneEntity.NetTransform originalTransform = 6;
-	oneof payLoad{
-		float speed = 7;
-	}
+	ActorChangeStatePayLoad payLoad = 7;
 }
 message ActorChangeStateResponse{
 	string sessionId = 1;
@@ -101,9 +107,7 @@ message ActorChangeStateResponse{
 	int64 timestamp = 3;
 	HS.Protobuf.SceneEntity.NetActorState state = 4;
 	HS.Protobuf.SceneEntity.NetTransform originalTransform = 6;
-	oneof payLoad{
-		float speed = 7;
-	}
+	ActorChangeStatePayLoad payLoad = 7;
 }
 message ActorChangeMotionDataRequest{
 	string sessionId = 1;
