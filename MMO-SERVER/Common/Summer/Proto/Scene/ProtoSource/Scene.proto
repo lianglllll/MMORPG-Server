@@ -21,7 +21,6 @@ enum SceneProtocl{
 	SCENE_PROTOCL_ACTOR_CHANGE_TRANSFORM_DATA_REQ = 40013;	// [ActorChangeTransformDataRequest]
 	SCENE_PROTOCL_ACTOR_CHANGE_TRANSFORM_DATA_RESP = 40014;	// [ActorChangeTransformDataResponse]
 }
-
 enum SceneType {
     SCENE_TYPE_NULL             = 0;
     SCENE_TYPE_CITY             = 1; // Ö÷³Ç

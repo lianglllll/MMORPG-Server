@@ -1,5 +1,5 @@
 server:
-  ip: 127.0.0.1
+  ip: 10.11.140.90
   userPort: 10400
   serverPort: 10401
   # 工作线程数

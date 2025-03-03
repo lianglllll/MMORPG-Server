@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SceneServer.Core.Model.Actor
 {
-    internal class SceneNpc
+    public class SceneNpc : SceneActor
     {
     }
 }

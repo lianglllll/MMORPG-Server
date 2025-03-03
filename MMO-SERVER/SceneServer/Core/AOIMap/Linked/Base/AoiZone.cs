@@ -50,6 +50,19 @@ namespace SceneServer.Core.AOI
             var p = entity.AoiPos;
             return Enter(entity.EntityId, p.x, p.y);
         }
+        public AoiEntity Enter(long key, float x, float y)
+        {
+            if (_entityList.TryGetValue(key, out var aoiEntity)) return aoiEntity;
+
+            aoiEntity = new AoiEntity(key);
+
+            aoiEntity.X = _xLinks.Add(x, aoiEntity);
+            aoiEntity.Y = _yLinks.Add(y, aoiEntity);
+
+            _entityList.Add(key, aoiEntity);
+            return aoiEntity;
+        }
+
         public AoiEntity Enter(long key, float x, float y, Vector2 area, out HashSet<long> enter)
         {
             var entity = Enter(key, x, y);
@@ -62,21 +75,9 @@ namespace SceneServer.Core.AOI
             RefreshIncludingMyself(key, area, out enter);
             return entity;
         }
-        public AoiEntity Enter(long key, float x, float y)
-        {
-            if (_entityList.TryGetValue(key, out var entity)) return entity;
-
-            entity = new AoiEntity(key);
-
-            entity.X = _xLinks.Add(x, entity);
-            entity.Y = _yLinks.Add(y, entity);
-
-            _entityList.Add(key, entity);
-            return entity;
-        }
 
 
-        //用于刷新我们的视野范围
+        // 用于刷新我们的视野范围
         public AoiEntity Refresh(long key, Vector2 area)
         {
             if (!_entityList.TryGetValue(key, out var entity)) return null;
@@ -85,7 +86,8 @@ namespace SceneServer.Core.AOI
 
             return entity;
         }
-        //用于更新坐标信息并且刷新我们的视野范围
+
+        // 用于更新坐标信息并且刷新我们的视野范围(若坐标没有变化则不刷新)
         public AoiEntity Refresh(long key, float x, float y, Vector2 area)
         {
             if (!_entityList.TryGetValue(key, out var entity)) return null;
@@ -104,9 +106,12 @@ namespace SceneServer.Core.AOI
                 _yLinks.Move(entity.Y, ref y);
             }
 
-            if (isFind) Find(entity, ref area);
+            // if (isFind) Find(entity, ref area);
+            Find(entity, ref area);
             return entity;
         }
+
+
 
         public AoiEntity RefreshIncludingMyself(long key, Vector2 area, out HashSet<long> enter)
         {
@@ -134,6 +139,7 @@ namespace SceneServer.Core.AOI
             return entity;
         }
 
+
         /// <summary>
         /// 退出aoi空间
         /// </summary>
@@ -150,6 +156,8 @@ namespace SceneServer.Core.AOI
             _yLinks.Remove(node.Y);
             _entityList.Remove(node.Key); ;
         }
+
+
         /// <summary>
         /// Look for nodes in range
         /// </summary>
@@ -267,6 +275,5 @@ namespace SceneServer.Core.AOI
         {
             return Math.Pow((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y), 0.5);
         }
-
     }
 }

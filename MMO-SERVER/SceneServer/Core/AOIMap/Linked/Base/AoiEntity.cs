@@ -6,11 +6,11 @@ namespace SceneServer.Core.AOI
     /// </summary>
     public sealed class AoiEntity
     {
-        public readonly long Key;                   //entityId
+        public readonly long Key;                   // entityId
         public AoiNode X;
         public AoiNode Y;
-        public HashSet<long> ViewEntity;            //本次视野空间附近的人,不包括自己
-        public HashSet<long> ViewEntityBak;         //上次视野空间附近的人
+        public HashSet<long> ViewEntity;            // 本次视野空间附近的人,不包括自己
+        public HashSet<long> ViewEntityBak;         // 上次视野空间附近的人
 
         public IEnumerable<long> All => ViewEntity.Union(ViewEntityBak);
         public IEnumerable<long> Leave => ViewEntityBak.Except(ViewEntity);

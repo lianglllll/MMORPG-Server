@@ -20,7 +20,7 @@ namespace SceneServer.Core.Scene
         private SpaceDefine? m_sceneDefine;
         private SceneCharacterManager? m_sceneCharacterManager;
         private AoiZone? m_aoiZone;                                             //AOI管理器：十字链表空间(unity坐标系)
-        private Vector2? viewArea;
+        private Vector2 m_viewArea;
 
         public void Init(int sceneId)
         {
@@ -28,7 +28,7 @@ namespace SceneServer.Core.Scene
             m_sceneCharacterManager = new();
             m_sceneCharacterManager.Init();
             m_aoiZone = new AoiZone(0.001f, 0.001f);
-            viewArea = new(Config.Server.aoiViewArea, Config.Server.aoiViewArea);
+            m_viewArea = new(Config.Server.aoiViewArea, Config.Server.aoiViewArea);
 
             // 添加自循环
             Scheduler.Instance.AddTask(Update, Config.Server.updateHz, 0);
@@ -56,14 +56,21 @@ namespace SceneServer.Core.Scene
 
             // 2.加入aoi空间
             m_aoiZone.Enter(chr);
+            var handle = m_aoiZone.Refresh(chr.EntityId, m_viewArea);
+            var units = SceneEntityManager.Instance.GetSceneEntitiesByIds(handle.ViewEntity);
 
             // 3.新上线的玩家需要获取场景中:全部的角色/怪物/物品的信息
             SelfCharacterEnterSceneResponse sResp = new();
             sResp.TaskId = message.TaskId;
             sResp.ResultCode = 0;
             sResp.SelfNetActorNode = chr.NetActorNode;
-            var nearbyEntity = m_aoiZone.FindViewEntity(chr.EntityId);
-            foreach (var ent in nearbyEntity)
+
+            OtherEntityEnterSceneResponse oResp = new();
+            oResp.SceneId = SceneId;
+            oResp.EntityType = SceneEntityType.Actor;
+            oResp.ActorNode = chr.NetActorNode;
+
+            foreach (var ent in units)
             {
                 if (ent is SceneActor acotr)
                 {
@@ -72,20 +79,16 @@ namespace SceneServer.Core.Scene
                 {
                     sResp.OtherNetItemNodeList.Add(item.NetItemNode);
                 }
+
+                // 4.通知附近玩家
+                if(ent is SceneCharacter sChr)
+                {
+                    m_aoiZone.Refresh(sChr.EntityId, m_viewArea); // 刷新他的aoi，
+                    oResp.SessionId = sChr.SessionId;
+                    sChr.Send(oResp);
+                }
             }
             conn.Send(sResp);
-
-            // 4.通知附近玩家
-            OtherEntityEnterSceneResponse oResp = new();
-            oResp.SceneId = SceneId;
-            oResp.EntityType = SceneEntityType.Actor;
-            oResp.ActorNode = chr.NetActorNode;
-            var views = nearbyEntity.ToList();
-            foreach (var oChr in views.OfType<SceneCharacter>())
-            {
-                oResp.SessionId = oChr.SessionId;
-                oChr.Send(oResp);
-            }
         }
         public void CharacterLeaveScene(int entityId)
         {
@@ -132,28 +135,6 @@ namespace SceneServer.Core.Scene
 
         }
 
-        public void ActorChangeState(SceneActor self, ActorChangeStateRequest message, bool isIncludeSelf = false)
-        {
-            // 保存与角色的相关信息
-            self.SetTransform(message.OriginalTransform);
-            self.ChangeActorState(message.State);
-            Log.Information("actor[entityId = {0}] change state {1}", self.EntityId, message.State);
-
-            // 通知附近玩家
-            var resp = new ActorChangeStateResponse();
-            resp.EntityId = self.EntityId;
-            resp.State = message.State;
-            resp.OriginalTransform = message.OriginalTransform;
-            resp.Timestamp = message.Timestamp;
-            resp.PayLoad = message.PayLoad;
-
-            var all = m_aoiZone.FindViewEntity(self.EntityId, isIncludeSelf);
-            foreach (var chr in all.OfType<SceneCharacter>())
-            {
-                resp.SessionId = chr.SessionId;
-                chr.Send(resp);
-            }
-        }
         public void ActorChangeMode(SceneActor self, ActorChangeModeRequest message, bool isIncludeSelf = false)
         {
             // 保存与角色的相关信息
@@ -173,7 +154,140 @@ namespace SceneServer.Core.Scene
                 chr.Send(resp);
             }
         }
-        internal void ActorChangeTransformData(SceneActor self, ActorChangeTransformDataRequest message, bool isIncludeSelf = false)
+        public void ActorChangeState(SceneActor self, ActorChangeStateRequest message, bool isIncludeSelf = false)
+        {
+            // 保存与角色的相关信息
+            self.SetTransform(message.OriginalTransform);
+            self.ChangeActorState(message.State);
+            Log.Information("actor[entityId = {0}] change state {1}", self.EntityId, message.State);
+
+            // 更新aoi空间里面我们的坐标
+            var handle = m_aoiZone.Refresh(self.EntityId, self.AoiPos.x, self.AoiPos.y, m_viewArea);
+
+            // 通知附近玩家
+            var resp = new ActorChangeStateResponse();
+            resp.EntityId = self.EntityId;
+            resp.State = message.State;
+            resp.OriginalTransform = message.OriginalTransform;
+            resp.Timestamp = message.Timestamp;
+            resp.PayLoad = message.PayLoad;
+
+            // 告知view内的其他角色，状态变更
+            // var units = m_aoiZone.FindViewEntity(self.EntityId, isIncludeSelf);
+            var units = SceneEntityManager.Instance.GetSceneEntitiesByIds(handle.ViewEntity);
+            foreach (var sChr in units.OfType<SceneCharacter>())
+            {
+                resp.SessionId = sChr.SessionId;
+                sChr.Send(resp);
+            }
+            if (isIncludeSelf && self is SceneCharacter ssChr)
+            {
+                resp.SessionId = ssChr.SessionId;
+                ssChr.Send(resp);
+            }
+
+            // 通知各palyer视野变更
+            var enterResp = new OtherEntityEnterSceneResponse();
+            enterResp.SceneId = SceneId;
+
+            var leaveResp = new OtherEntityLeaveSceneResponse();
+            leaveResp.SceneId = SceneId;
+            
+            if (self is SceneCharacter selfChr)
+            {
+                //新进入视野的单位，双向通知
+                enterResp.EntityType = SceneEntityType.Actor;
+                enterResp.ActorNode = selfChr.NetActorNode;
+                foreach (var key in handle.Newly)
+                {
+                    var entity = SceneEntityManager.Instance.GetSceneEntityById((int)key);
+                    if (entity is SceneCharacter targetChr)
+                    {
+                        //告诉对方自己已经进入对方视野
+                        enterResp.SessionId = targetChr.SessionId;
+                        targetChr.Send(enterResp);
+
+                        //需要告诉自己,目标加入了我们的视野
+                        enterResp.ActorNode = targetChr.NetActorNode;
+                        enterResp.SessionId = selfChr.SessionId;
+                        selfChr.Send(enterResp);
+                    }
+                    else if (entity is SceneMonster targetMon)
+                    {
+                        //需要告诉自己,目标加入了我们的视野
+                        enterResp.ActorNode = selfChr.NetActorNode;
+                        enterResp.ActorNode = targetMon.NetActorNode;
+                        enterResp.SessionId = selfChr.SessionId;
+                        selfChr.Send(enterResp);
+                    }
+                    else if (entity is SceneNpc targetNpc)
+                    {
+                        //需要告诉自己,目标加入了我们的视野
+                        enterResp.ActorNode = selfChr.NetActorNode;
+                        enterResp.ActorNode = targetNpc.NetActorNode;
+                        enterResp.SessionId = selfChr.SessionId;
+                        selfChr.Send(enterResp);
+                    }
+                    else if (entity is SceneItem ie)
+                    {
+
+                    }
+                }
+
+                // 远离视野的单位，双向通知
+                foreach (var key in handle.Leave)
+                {
+                    var entity = SceneEntityManager.Instance.GetSceneEntityById((int)key);
+                    if (entity is SceneCharacter targetChr)
+                    {
+                        //告诉他,自己已经离开他的视野
+                        leaveResp.EntityId = selfChr.EntityId;
+                        leaveResp.SessionId = targetChr.SessionId;
+                        targetChr.Send(leaveResp);
+                    }
+                    // 同时告诉自己对方离开自己视野
+                    leaveResp.EntityId = (int)key;
+                    leaveResp.SessionId = selfChr.SessionId;
+                    selfChr.Send(leaveResp);
+                }
+            }
+            else if (self is SceneMonster || self is SceneNpc)
+            {
+                //新进入视野的单位，双向通知
+                foreach (var key in handle.Newly)
+                {
+                    var entity = SceneEntityManager.Instance.GetSceneEntityById((int)key);
+
+                    //如果对方是Character
+                    if (entity is SceneCharacter targetChr)
+                    {
+                        // 告诉targetChr,自己已经进入他的视野
+                        enterResp.EntityType = SceneEntityType.Actor;
+                        enterResp.ActorNode = self.NetActorNode;
+                        enterResp.SessionId = targetChr.SessionId;
+                        targetChr.Send(enterResp);
+                    }
+                }
+
+                //远离视野的单位，双向通知
+                foreach (var key in handle.Leave)
+                {
+                    var entity = SceneEntityManager.Instance.GetSceneEntityById((int)key);
+
+                    //如果对方是玩家
+                    if (entity is SceneCharacter targetChr)
+                    {
+                        //告诉他,自己已经离开他的视野
+                        leaveResp.EntityId = self.EntityId;
+                        leaveResp.SessionId = targetChr.SessionId;
+                        targetChr.Send(leaveResp);
+                    }
+
+                }
+            }
+
+        }
+        public void ActorChangeTransformData(SceneActor self, ActorChangeTransformDataRequest message, bool isIncludeSelf = false)
         {
             // 改变相关信息
             self.SetTransform(message.OriginalTransform);
@@ -181,22 +295,128 @@ namespace SceneServer.Core.Scene
             {
                 self.Speed = message.PayLoad.VerticalSpeed;
             }
-            Log.Information("actor[entityId = {0}] change transform data", self.EntityId);
+            // Log.Information("actor[entityId = {0}] change transform data", self.EntityId);
 
-            // 通知附近玩家
+            // 更新aoi空间里面我们的坐标
+            var handle = m_aoiZone?.Refresh(self.EntityId, self.AoiPos.x, self.AoiPos.y, m_viewArea);
+            var units = SceneEntityManager.Instance.GetSceneEntitiesByIds(handle.ViewEntity);
+
+            // 通知附近玩家Transform数据更新
             var resp = new ActorChangeTransformDataResponse();
             resp.EntityId = self.EntityId;
             resp.OriginalTransform = message.OriginalTransform;
             resp.Timestamp = message.Timestamp;
             resp.PayLoad = message.PayLoad;
-
-            var all = m_aoiZone.FindViewEntity(self.EntityId, isIncludeSelf);
-            foreach (var chr in all.OfType<SceneCharacter>())
+            foreach (var chr in units.OfType<SceneCharacter>())
             {
                 resp.SessionId = chr.SessionId;
                 chr.Send(resp);
             }
+            if (isIncludeSelf && self is SceneCharacter ssChr)
+            {
+                resp.SessionId = ssChr.SessionId;
+                ssChr.Send(resp);
+            }
 
+            // 通知各palyer视野变更
+            var enterResp = new OtherEntityEnterSceneResponse();
+            enterResp.SceneId = SceneId;
+
+            var leaveResp = new OtherEntityLeaveSceneResponse();
+            leaveResp.SceneId = SceneId;
+
+            if (self is SceneCharacter selfChr)
+            {
+                //新进入视野的单位，双向通知
+                enterResp.EntityType = SceneEntityType.Actor;
+                enterResp.ActorNode = selfChr.NetActorNode;
+                foreach (var key in handle.Newly)
+                {
+                    var entity = SceneEntityManager.Instance.GetSceneEntityById((int)key);
+                    if (entity is SceneCharacter targetChr)
+                    {
+                        //告诉对方自己已经进入对方视野
+                        enterResp.SessionId = targetChr.SessionId;
+                        targetChr.Send(enterResp);
+
+                        //需要告诉自己,目标加入了我们的视野
+                        enterResp.ActorNode = targetChr.NetActorNode;
+                        enterResp.SessionId = selfChr.SessionId;
+                        selfChr.Send(enterResp);
+                    }
+                    else if (entity is SceneMonster targetMon)
+                    {
+                        //需要告诉自己,目标加入了我们的视野
+                        enterResp.ActorNode = selfChr.NetActorNode;
+                        enterResp.ActorNode = targetMon.NetActorNode;
+                        enterResp.SessionId = selfChr.SessionId;
+                        selfChr.Send(enterResp);
+                    }
+                    else if (entity is SceneNpc targetNpc)
+                    {
+                        //需要告诉自己,目标加入了我们的视野
+                        enterResp.ActorNode = selfChr.NetActorNode;
+                        enterResp.ActorNode = targetNpc.NetActorNode;
+                        enterResp.SessionId = selfChr.SessionId;
+                        selfChr.Send(enterResp);
+                    }
+                    else if (entity is SceneItem ie)
+                    {
+
+                    }
+                }
+
+                // 远离视野的单位，双向通知
+                foreach (var key in handle.Leave)
+                {
+                    var entity = SceneEntityManager.Instance.GetSceneEntityById((int)key);
+                    if (entity is SceneCharacter targetChr)
+                    {
+                        //告诉他,自己已经离开他的视野
+                        leaveResp.EntityId = selfChr.EntityId;
+                        leaveResp.SessionId = targetChr.SessionId;
+                        targetChr.Send(leaveResp);
+                    }
+                    // 同时告诉自己对方离开自己视野
+                    leaveResp.EntityId = (int)key;
+                    leaveResp.SessionId = selfChr.SessionId;
+                    selfChr.Send(leaveResp);
+                }
+            }
+            else if (self is SceneMonster || self is SceneNpc)
+            {
+                //新进入视野的单位，双向通知
+                foreach (var key in handle.Newly)
+                {
+                    var entity = SceneEntityManager.Instance.GetSceneEntityById((int)key);
+
+                    //如果对方是Character
+                    if (entity is SceneCharacter targetChr)
+                    {
+                        // 告诉targetChr,自己已经进入他的视野
+                        enterResp.EntityType = SceneEntityType.Actor;
+                        enterResp.ActorNode = self.NetActorNode;
+                        enterResp.SessionId = targetChr.SessionId;
+                        targetChr.Send(enterResp);
+                    }
+                }
+
+                //远离视野的单位，双向通知
+                foreach (var key in handle.Leave)
+                {
+                    var entity = SceneEntityManager.Instance.GetSceneEntityById((int)key);
+
+                    //如果对方是玩家
+                    if (entity is SceneCharacter targetChr)
+                    {
+                        //告诉他,自己已经离开他的视野
+                        leaveResp.EntityId = self.EntityId;
+                        leaveResp.SessionId = targetChr.SessionId;
+                        targetChr.Send(leaveResp);
+                    }
+
+                }
+            }
         }
     }
 }
