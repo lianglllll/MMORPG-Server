@@ -18,8 +18,8 @@ enum SceneProtocl{
 	SCENE_PROTOCL_ACTOR_CHANGE_MODE_RESP = 40010;			// [ActorChangeModeResponse]
 	SCENE_PROTOCL_ACTOR_CHANGE_STATE_REQ = 40011;			// [ActorChangeStateRequest]
 	SCENE_PROTOCL_ACTOR_CHANGE_STATE_RESP = 40012;			// [ActorChangeStateResponse]
-	SCENE_PROTOCL_ACTOR_CHANGE_MOTION_DATA_REQ = 40013;		// [ActorChangeMotionDataRequest]
-	SCENE_PROTOCL_ACTOR_CHANGE_MOTION_DATA_RESP = 40014;	// [ActorChangeMotionDataResponse]
+	SCENE_PROTOCL_ACTOR_CHANGE_TRANSFORM_DATA_REQ = 40013;	// [ActorChangeTransformDataRequest]
+	SCENE_PROTOCL_ACTOR_CHANGE_TRANSFORM_DATA_RESP = 40014;	// [ActorChangeTransformDataResponse]
 }
 
 enum SceneType {
@@ -86,11 +86,18 @@ message ActorChangeModeResponse{
 	int64 timestamp = 4;
 }
 
-
-message ActorChangeStatePayLoad{
+enum NetAcotrEvadeStatePayload {
+	NET_ACTOR_EVADE_STATE_PAYLOAD_NONE = 0;
+	NET_ACTOR_EVADE_STATE_PAYLOAD_LEFT = 1;
+	NET_ACTOR_EVADE_STATE_PAYLOAD_RIGHT = 2;
+	NET_ACTOR_EVADE_STATE_PAYLOAD_FRONT = 3;
+	NET_ACTOR_EVADE_STATE_PAYLOAD_BACK = 4;
+}
+message ActorStatePayLoad{
 	oneof payLoad{
 		float speed = 1;
-		HS.Protobuf.SceneEntity.NetAcotrEvadeStatePayload evadePayLoad = 2;
+		NetAcotrEvadeStatePayload evadePayLoad = 2;
+		float jumpVerticalVelocity = 3;
 	}
 }
 message ActorChangeStateRequest{
@@ -99,7 +106,7 @@ message ActorChangeStateRequest{
 	int64 timestamp = 3;
 	HS.Protobuf.SceneEntity.NetActorState state = 4;
 	HS.Protobuf.SceneEntity.NetTransform originalTransform = 6;
-	ActorChangeStatePayLoad payLoad = 7;
+	ActorStatePayLoad payLoad = 7;
 }
 message ActorChangeStateResponse{
 	string sessionId = 1;
@@ -107,23 +114,29 @@ message ActorChangeStateResponse{
 	int64 timestamp = 3;
 	HS.Protobuf.SceneEntity.NetActorState state = 4;
 	HS.Protobuf.SceneEntity.NetTransform originalTransform = 6;
-	ActorChangeStatePayLoad payLoad = 7;
+	ActorStatePayLoad payLoad = 7;
 }
-message ActorChangeMotionDataRequest{
+
+message ActorChangeTransformDataPayLoad{
+	int32 verticalSpeed = 1;
+	int32 horizontalSpeed = 2;
+	int32 hightSpeed = 3;
+}
+message ActorChangeTransformDataRequest{
 	string sessionId = 1;
 	int32 entityId = 2;
 	int64 timestamp = 3;
-	int32 speed = 4;
-	HS.Protobuf.SceneEntity.NetVector3 rotation = 5;
-	HS.Protobuf.SceneEntity.NetTransform originalTransform = 6;
+	HS.Protobuf.SceneEntity.NetTransform originalTransform = 4;
+	ActorChangeTransformDataPayLoad payLoad = 5;
 }
-message ActorChangeMotionDataResponse{
+message ActorChangeTransformDataResponse{
 	string sessionId = 1;
 	int32 entityId = 2;
 	int64 timestamp = 3;
-	float speed = 4;
-	HS.Protobuf.SceneEntity.NetTransform originalTransform = 5;
+	HS.Protobuf.SceneEntity.NetTransform originalTransform = 4;
+	ActorChangeTransformDataPayLoad payLoad = 5;
 }
+
 
 // === 下面是无用的====================================================
 

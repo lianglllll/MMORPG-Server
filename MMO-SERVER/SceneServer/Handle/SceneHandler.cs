@@ -20,12 +20,12 @@ namespace SceneServer.Handle
             ProtoHelper.Instance.Register<ActorChangeModeResponse>((int)SceneProtocl.ActorChangeModeResp);
             ProtoHelper.Instance.Register<ActorChangeStateRequest>((int)SceneProtocl.ActorChangeStateReq);
             ProtoHelper.Instance.Register<ActorChangeStateResponse>((int)SceneProtocl.ActorChangeStateResp);
-            ProtoHelper.Instance.Register<ActorChangeMotionDataRequest>((int)SceneProtocl.ActorChangeMotionDataReq);
-            ProtoHelper.Instance.Register<ActorChangeMotionDataResponse>((int)SceneProtocl.ActorChangeMotionDataResp);
+            ProtoHelper.Instance.Register<ActorChangeTransformDataRequest>((int)SceneProtocl.ActorChangeTransformDataReq);
+            ProtoHelper.Instance.Register<ActorChangeTransformDataResponse>((int)SceneProtocl.ActorChangeTransformDataResp);
             // 消息的订阅
             MessageRouter.Instance.Subscribe<ActorChangeModeRequest>(_HandleActorChangeModeRequest);
             MessageRouter.Instance.Subscribe<ActorChangeStateRequest>(_HandleActorChangeStateRequest);
-            MessageRouter.Instance.Subscribe<ActorChangeMotionDataRequest>(_HandleActorChangeMotionDataRequest);
+            MessageRouter.Instance.Subscribe<ActorChangeTransformDataRequest>(_HandleActorChangeTransformDataRequest);
 
             return true;
         }
@@ -64,7 +64,7 @@ namespace SceneServer.Handle
         End:
             return;
         }
-        private void _HandleActorChangeMotionDataRequest(Connection conn, ActorChangeMotionDataRequest message)
+        private void _HandleActorChangeTransformDataRequest(Connection conn, ActorChangeTransformDataRequest message)
         {
             // 这里只能是player发信息过来的
             var actor = SceneEntityManager.Instance.GetSceneEntityById(message.EntityId) as SceneActor;
@@ -77,7 +77,7 @@ namespace SceneServer.Handle
             {
                 goto End;
             }
-            SceneManager.Instance.ActorChangeMotionData(actor, message);
+            SceneManager.Instance.ActorChangeTransformData(actor, message);
         End:
             return;
         }

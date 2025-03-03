@@ -19,8 +19,8 @@ namespace GameGateServer.Handle
             ProtoHelper.Instance.Register<ActorChangeModeResponse>((int)SceneProtocl.ActorChangeModeResp);
             ProtoHelper.Instance.Register<ActorChangeStateRequest>((int)SceneProtocl.ActorChangeStateReq);
             ProtoHelper.Instance.Register<ActorChangeStateResponse>((int)SceneProtocl.ActorChangeStateResp);
-            ProtoHelper.Instance.Register<ActorChangeMotionDataRequest>((int)SceneProtocl.ActorChangeMotionDataReq);
-            ProtoHelper.Instance.Register<ActorChangeMotionDataResponse>((int)SceneProtocl.ActorChangeMotionDataResp);
+            ProtoHelper.Instance.Register<ActorChangeTransformDataRequest>((int)SceneProtocl.ActorChangeTransformDataReq);
+            ProtoHelper.Instance.Register<ActorChangeTransformDataResponse>((int)SceneProtocl.ActorChangeTransformDataResp);
             // 消息的订阅
             MessageRouter.Instance.Subscribe<OtherEntityEnterSceneResponse>(_HandleOtherEntityEnterSceneResponse);
             MessageRouter.Instance.Subscribe<OtherEntityLeaveSceneResponse>(_HandleOtherEntityLeaveSceneResponse);
@@ -28,8 +28,8 @@ namespace GameGateServer.Handle
             MessageRouter.Instance.Subscribe<ActorChangeModeResponse>(_HandleActorChangeModeResponse);
             MessageRouter.Instance.Subscribe<ActorChangeStateRequest>(_HandleActorChangeStateRequest);
             MessageRouter.Instance.Subscribe<ActorChangeStateResponse>(_HandleActorChangeStateResponse);
-            MessageRouter.Instance.Subscribe<ActorChangeMotionDataRequest>(_HandleActorChangeMotionDataRequest);
-            MessageRouter.Instance.Subscribe<ActorChangeMotionDataResponse>(_HandleActorChangeMotionDataResponse);
+            MessageRouter.Instance.Subscribe<ActorChangeTransformDataRequest>(_HandleActorChangeTransformDataRequest);
+            MessageRouter.Instance.Subscribe<ActorChangeTransformDataResponse>(_HandleActorChangeTransformDataResponse);
 
             return true;
         }
@@ -107,7 +107,7 @@ namespace GameGateServer.Handle
             return;
         }
 
-        private void _HandleActorChangeMotionDataRequest(Connection conn, ActorChangeMotionDataRequest message)
+        private void _HandleActorChangeTransformDataRequest(Connection conn, ActorChangeTransformDataRequest message)
         {
             var session = conn.Get<Session>();
             if (session == null)
@@ -118,7 +118,7 @@ namespace GameGateServer.Handle
         End:
             return;
         }
-        private void _HandleActorChangeMotionDataResponse(Connection conn, ActorChangeMotionDataResponse message)
+        private void _HandleActorChangeTransformDataResponse(Connection conn, ActorChangeTransformDataResponse message)
         {
             var session = SessionManager.Instance.GetSessionBySessionId(message.SessionId);
             if (session == null)

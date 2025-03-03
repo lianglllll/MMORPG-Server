@@ -116,27 +116,22 @@ namespace HS.Protobuf.SceneEntity {
             "TlQQExIiCh5ORVRfQUNUT1JfU1RBVEVfU0FNTExfSElUX0JBQ0sQFBIpCiVO",
             "RVRfQUNUT1JfU1RBVEVfU0FNTExfRElaWllfU1VTVEFJTkVEEBUSJAogTkVU",
             "X0FDVE9SX1NUQVRFX1NBTUxMX0tOT0NLX0JBQ0sQFhIiCh5ORVRfQUNUT1Jf",
-            "U1RBVEVfU0FNTExfS05PQ0tfVVAQFyrlAQoZTmV0QWNvdHJFdmFkZVN0YXRl",
-            "UGF5bG9hZBImCiJORVRfQUNUT1JfRVZBREVfU1RBVEVfUEFZTE9BRF9OT05F",
-            "EAASJgoiTkVUX0FDVE9SX0VWQURFX1NUQVRFX1BBWUxPQURfTEVGVBABEicK",
-            "I05FVF9BQ1RPUl9FVkFERV9TVEFURV9QQVlMT0FEX1JJR0hUEAISJwojTkVU",
-            "X0FDVE9SX0VWQURFX1NUQVRFX1BBWUxPQURfRlJPTlQQAxImCiJORVRfQUNU",
-            "T1JfRVZBREVfU1RBVEVfUEFZTE9BRF9CQUNLEAQqYAoMTmV0QWN0b3JUeXBl",
-            "EhwKGE5FVF9BQ1RPUl9UWVBFX0NIQVJBQ1RFUhAAEhoKFk5FVF9BQ1RPUl9U",
-            "WVBFX01PTlNURVIQARIWChJORVRfQUNUT1JfVFlQRV9OUEMQAiqJAQoPU2Nl",
-            "bmVFbnRpdHlUeXBlEhoKFlNDRU5FX0VOVElUWV9UWVBFX05PTkUQABIbChdT",
-            "Q0VORV9FTlRJVFlfVFlQRV9BQ1RPUhABEhoKFlNDRU5FX0VOVElUWV9UWVBF",
-            "X0lURU0QAhIhCh1TQ0VORV9FTlRJVFlfVFlQRV9JTlRFUkFDVElWTxADKjQK",
-            "CUFjdG9yTW9kZRIICgRGUkVFEAASCAoEREVBRBABEggKBFJFU1QQAhIJCgVG",
-            "SUdIVBADKjgKD0FjdG9yQ29tYmF0TW9kZRIJCgVTdGFuZBAAEgkKBUVxdWlw",
-            "EAESDwoLU3dvcmRGbGlnaHQQAiqKAQoKQWN0b3JTdGF0ZRILCgdBaXJEb3du",
-            "EAASCQoFRGVhdGgQARILCgdEZWZlbnNlEAISCQoFRGl6enkQAxIJCgVFdmFk",
-            "ZRAEEggKBEh1cnQQBRIICgRJZGxlEAYSCgoGSnVtcFVwEAcSCAoETW92ZRAI",
-            "EgkKBVNraWxsEAkSDAoIQ29uc3RhbnQQCiowCglBY3RvclR5cGUSDQoJQ2hh",
-            "cmFjdGVyEAASCwoHTW9uc3RlchABEgcKA05QQxACYgZwcm90bzM="));
+            "U1RBVEVfU0FNTExfS05PQ0tfVVAQFypgCgxOZXRBY3RvclR5cGUSHAoYTkVU",
+            "X0FDVE9SX1RZUEVfQ0hBUkFDVEVSEAASGgoWTkVUX0FDVE9SX1RZUEVfTU9O",
+            "U1RFUhABEhYKEk5FVF9BQ1RPUl9UWVBFX05QQxACKokBCg9TY2VuZUVudGl0",
+            "eVR5cGUSGgoWU0NFTkVfRU5USVRZX1RZUEVfTk9ORRAAEhsKF1NDRU5FX0VO",
+            "VElUWV9UWVBFX0FDVE9SEAESGgoWU0NFTkVfRU5USVRZX1RZUEVfSVRFTRAC",
+            "EiEKHVNDRU5FX0VOVElUWV9UWVBFX0lOVEVSQUNUSVZPEAMqNAoJQWN0b3JN",
+            "b2RlEggKBEZSRUUQABIICgRERUFEEAESCAoEUkVTVBACEgkKBUZJR0hUEAMq",
+            "OAoPQWN0b3JDb21iYXRNb2RlEgkKBVN0YW5kEAASCQoFRXF1aXAQARIPCgtT",
+            "d29yZEZsaWdodBACKooBCgpBY3RvclN0YXRlEgsKB0FpckRvd24QABIJCgVE",
+            "ZWF0aBABEgsKB0RlZmVuc2UQAhIJCgVEaXp6eRADEgkKBUV2YWRlEAQSCAoE",
+            "SHVydBAFEggKBElkbGUQBhIKCgZKdW1wVXAQBxIICgRNb3ZlEAgSCQoFU2tp",
+            "bGwQCRIMCghDb25zdGFudBAKKjAKCUFjdG9yVHlwZRINCglDaGFyYWN0ZXIQ",
+            "ABILCgdNb25zdGVyEAESBwoDTlBDEAJiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::HS.Protobuf.Common.CommonReflection.Descriptor, global::HS.Protobuf.Combat.Skill.SkillReflection.Descriptor, global::HS.Protobuf.Combat.Buff.BuffReflection.Descriptor, global::HS.Protobuf.Game.Backpack.BackpackReflection.Descriptor, },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.SceneEntity.NetActorMode), typeof(global::HS.Protobuf.SceneEntity.NetActorState), typeof(global::HS.Protobuf.SceneEntity.NetActorSmallState), typeof(global::HS.Protobuf.SceneEntity.NetAcotrEvadeStatePayload), typeof(global::HS.Protobuf.SceneEntity.NetActorType), typeof(global::HS.Protobuf.SceneEntity.SceneEntityType), typeof(global::HS.Protobuf.SceneEntity.ActorMode), typeof(global::HS.Protobuf.SceneEntity.ActorCombatMode), typeof(global::HS.Protobuf.SceneEntity.ActorState), typeof(global::HS.Protobuf.SceneEntity.ActorType), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.SceneEntity.NetActorMode), typeof(global::HS.Protobuf.SceneEntity.NetActorState), typeof(global::HS.Protobuf.SceneEntity.NetActorSmallState), typeof(global::HS.Protobuf.SceneEntity.NetActorType), typeof(global::HS.Protobuf.SceneEntity.SceneEntityType), typeof(global::HS.Protobuf.SceneEntity.ActorMode), typeof(global::HS.Protobuf.SceneEntity.ActorCombatMode), typeof(global::HS.Protobuf.SceneEntity.ActorState), typeof(global::HS.Protobuf.SceneEntity.ActorType), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.SceneEntity.NetVector3), global::HS.Protobuf.SceneEntity.NetVector3.Parser, new[]{ "X", "Y", "Z" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.SceneEntity.NetTransform), global::HS.Protobuf.SceneEntity.NetTransform.Parser, new[]{ "Position", "Rotation", "Scale" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.SceneEntity.NetActorNode), global::HS.Protobuf.SceneEntity.NetActorNode.Parser, new[]{ "EntityId", "Transform", "ProfessionId", "ActorName", "Level", "Exp", "SceneId", "Hp", "Mp", "MaxHp", "MaxMp", "Speed", "NetActorType", "NetActorMode", "NetActorState", "NetActorSmallState", "EquippedSkills", "WornEquipments", "Buffs" }, null, null, null, null),
@@ -207,14 +202,6 @@ namespace HS.Protobuf.SceneEntity {
     [pbr::OriginalName("NET_ACTOR_STATE_SAMLL_DIZZY_SUSTAINED")] NetActorStateSamllDizzySustained = 21,
     [pbr::OriginalName("NET_ACTOR_STATE_SAMLL_KNOCK_BACK")] NetActorStateSamllKnockBack = 22,
     [pbr::OriginalName("NET_ACTOR_STATE_SAMLL_KNOCK_UP")] NetActorStateSamllKnockUp = 23,
-  }
-
-  public enum NetAcotrEvadeStatePayload {
-    [pbr::OriginalName("NET_ACTOR_EVADE_STATE_PAYLOAD_NONE")] NetActorEvadeStatePayloadNone = 0,
-    [pbr::OriginalName("NET_ACTOR_EVADE_STATE_PAYLOAD_LEFT")] NetActorEvadeStatePayloadLeft = 1,
-    [pbr::OriginalName("NET_ACTOR_EVADE_STATE_PAYLOAD_RIGHT")] NetActorEvadeStatePayloadRight = 2,
-    [pbr::OriginalName("NET_ACTOR_EVADE_STATE_PAYLOAD_FRONT")] NetActorEvadeStatePayloadFront = 3,
-    [pbr::OriginalName("NET_ACTOR_EVADE_STATE_PAYLOAD_BACK")] NetActorEvadeStatePayloadBack = 4,
   }
 
   public enum NetActorType {

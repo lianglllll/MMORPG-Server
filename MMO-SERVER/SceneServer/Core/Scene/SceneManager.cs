@@ -173,19 +173,22 @@ namespace SceneServer.Core.Scene
                 chr.Send(resp);
             }
         }
-        internal void ActorChangeMotionData(SceneActor self, ActorChangeMotionDataRequest message, bool isIncludeSelf = false)
+        internal void ActorChangeTransformData(SceneActor self, ActorChangeTransformDataRequest message, bool isIncludeSelf = false)
         {
             // 改变相关信息
             self.SetTransform(message.OriginalTransform);
-            self.Speed = message.Speed;
-            Log.Information("actor[entityId = {0}] change motion data", self.EntityId);
+            if(self.NetActorState == NetActorState.Motion)
+            {
+                self.Speed = message.PayLoad.VerticalSpeed;
+            }
+            Log.Information("actor[entityId = {0}] change transform data", self.EntityId);
 
             // 通知附近玩家
-            var resp = new ActorChangeMotionDataResponse();
+            var resp = new ActorChangeTransformDataResponse();
             resp.EntityId = self.EntityId;
             resp.OriginalTransform = message.OriginalTransform;
             resp.Timestamp = message.Timestamp;
-            resp.Speed = message.Speed;
+            resp.PayLoad = message.PayLoad;
 
             var all = m_aoiZone.FindViewEntity(self.EntityId, isIncludeSelf);
             foreach (var chr in all.OfType<SceneCharacter>())
