@@ -369,6 +369,9 @@ namespace GameServer.Hanle
             // 将与场景相关的character移交scene进行初始化
             int curSceneId = dbChrNode.ChrStatus.CurSceneId;
             var sceneConn = GameMonitor.Instance.GetSceneConnBySceneId(curSceneId);
+            // sceneConn为空，说明场景还没启动
+
+
             CharacterEnterSceneRequest characterEnterSceneRequest = new();
             characterEnterSceneRequest.TaskId = message.TaskId;
             characterEnterSceneRequest.SessionId = req.SessionId;
