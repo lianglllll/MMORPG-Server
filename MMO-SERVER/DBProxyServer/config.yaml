@@ -11,7 +11,7 @@ server:
   heartBeatSendInterval: 10
 
 mongodb:
-  connectionString: mongodb://localhost:27018
+  connectionString: mongodb://localhost:27017
   databaseName: mmorpg
 
 
