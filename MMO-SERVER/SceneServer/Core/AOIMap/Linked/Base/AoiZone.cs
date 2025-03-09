@@ -10,14 +10,9 @@ namespace SceneServer.Core.AOI
     {
         private readonly AoiLinkedList _xLinks;
         private readonly AoiLinkedList _yLinks;
-        private readonly Dictionary<long, AoiEntity> _entityList = new Dictionary<long, AoiEntity>();   //<entityId,AoiEntity>
+        private readonly Dictionary<long, AoiEntity> _entityList = new Dictionary<long, AoiEntity>();   // <entityId,AoiEntity>
 
-        public int Count => _entityList.Count;
-
-
-        /// <summary>
-        /// 构造函数
-        /// </summary>
+        // 构造函数
         public AoiZone()
         {
             _xLinks = new AoiLinkedList();
@@ -34,45 +29,41 @@ namespace SceneServer.Core.AOI
             _yLinks = new AoiLinkedList(maxLayer, yLinksLimit);
         }
 
-        public AoiEntity this[long key] => !_entityList.TryGetValue(key, out var entity) ? null : entity;
 
-        /// <summary>
-        /// 加入Aoi空间
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="area"></param>
-        /// <param name="enter"></param>
-        /// <returns></returns>
+        // 进入aoi空间
         public AoiEntity Enter(SceneEntity entity)
         {
-            var p = entity.AoiPos;
-            return Enter(entity.EntityId, p.x, p.y);
+            var point = entity.AoiPos;
+            return Enter(entity.EntityId, point.x, point.y);
         }
-        public AoiEntity Enter(long key, float x, float y)
+        private AoiEntity Enter(long key, float x, float y)
         {
-            if (_entityList.TryGetValue(key, out var aoiEntity)) return aoiEntity;
+            AoiEntity result;
 
-            aoiEntity = new AoiEntity(key);
+            if (_entityList.TryGetValue(key, out var aoiEntity))
+            {
+                result = aoiEntity;
+                goto End;
+            }
 
-            aoiEntity.X = _xLinks.Add(x, aoiEntity);
-            aoiEntity.Y = _yLinks.Add(y, aoiEntity);
+            result = new AoiEntity(key);
+            result.X = _xLinks.Add(x, result);
+            result.Y = _yLinks.Add(y, result);
+            _entityList.Add(key, result);
 
-            _entityList.Add(key, aoiEntity);
-            return aoiEntity;
+        End:
+            return result;
         }
-
-        public AoiEntity Enter(long key, float x, float y, Vector2 area, out HashSet<long> enter)
+        public AoiEntity Enter_ReturnCurView(long key, float x, float y, Vector2 area, out HashSet<long> enter)
         {
             var entity = Enter(key, x, y);
-            Refresh(key, area, out enter);
+            Refresh_ReturnCurView(key, area, out enter);
             return entity;
         }
-        public AoiEntity EnterIncludingMyself(long key, float x, float y, Vector2 area, out HashSet<long> enter)
+        public AoiEntity Enter_ReturnCurView_IncludingMyself(long key, float x, float y, Vector2 area, out HashSet<long> enter)
         {
             var entity = Enter(key, x, y);
-            RefreshIncludingMyself(key, area, out enter);
+            Refresh_ReturnCurView_IncludingMyself(key, area, out enter);
             return entity;
         }
 
@@ -80,16 +71,17 @@ namespace SceneServer.Core.AOI
         // 用于刷新我们的视野范围
         public AoiEntity Refresh(long key, Vector2 area)
         {
-            if (!_entityList.TryGetValue(key, out var entity)) return null;
-
-            Find(entity, ref area);
-
-            return entity;
+            AoiEntity result;
+            if (!_entityList.TryGetValue(key, out result)){
+                goto End;
+            }
+            Find(result, ref area);
+        End:
+            return result;
         }
-
-        // 用于更新坐标信息并且刷新我们的视野范围(若坐标没有变化则不刷新)
-        public AoiEntity Refresh(long key, float x, float y, Vector2 area)
+        public AoiEntity UpdatePos_Refresh(long key, float x, float y, Vector2 area)
         {
+            // 用于更新坐标信息并且刷新我们的视野范围(若坐标没有变化则不刷新)
             if (!_entityList.TryGetValue(key, out var entity)) return null;
 
             var isFind = false;
@@ -106,51 +98,45 @@ namespace SceneServer.Core.AOI
                 _yLinks.Move(entity.Y, ref y);
             }
 
-            // if (isFind) Find(entity, ref area);
-            Find(entity, ref area);
+            if (isFind) {
+                Find(entity, ref area);
+            }
             return entity;
         }
-
-
-
-        public AoiEntity RefreshIncludingMyself(long key, Vector2 area, out HashSet<long> enter)
-        {
-            var entity = Refresh(key, area, out enter);
-            enter?.Add(key);
-            return entity;
-        }
-        public AoiEntity RefreshIncludingMyself(long key, float x, float y, Vector2 area, out HashSet<long> enter)
-        {
-            var entity = Refresh(key, x, y, area, out enter);
-            enter?.Add(key);
-            return entity;
-        }
-
-        public AoiEntity Refresh(long key, Vector2 area, out HashSet<long> enter)
+        public AoiEntity Refresh_ReturnCurView(long key, Vector2 area, out HashSet<long> enter)
         {
             var entity = Refresh(key, area);
-            enter = entity?.ViewEntity;
+            enter = entity.ViewEntity;
             return entity;
         }
-        public AoiEntity Refresh(long key, float x, float y, Vector2 area, out HashSet<long> enter)
+        public AoiEntity Refresh_ReturnCurView_IncludingMyself(long key, Vector2 area, out HashSet<long> enter)
         {
-            var entity = Refresh(key, x, y, area);
+            var entity = Refresh_ReturnCurView(key, area, out enter);
+            enter?.Add(key);
+            return entity;
+        }
+        public AoiEntity UpdatePos_Refresh_ReturnCurView(long key, float x, float y, Vector2 area, out HashSet<long> enter)
+        {
+            var entity = UpdatePos_Refresh(key, x, y, area);
             enter = entity?.ViewEntity;
+            return entity;
+        }
+        public AoiEntity Update_Refresh_ReturnCurView_IncludingMyself(long key, float x, float y, Vector2 area, out HashSet<long> enter)
+        {
+            var entity = UpdatePos_Refresh_ReturnCurView(key, x, y, area, out enter);
+            enter?.Add(key);
             return entity;
         }
 
 
-        /// <summary>
-        /// 退出aoi空间
-        /// </summary>
-        /// <param name="key"></param>
+        // 退出aoi空间
         public void Exit(long key)
         {
             if (!_entityList.TryGetValue(key, out var entity)) return;
 
             Exit(entity);
         }
-        public void Exit(AoiEntity node)
+        private void Exit(AoiEntity node)
         {
             _xLinks.Remove(node.X);
             _yLinks.Remove(node.Y);
@@ -158,21 +144,18 @@ namespace SceneServer.Core.AOI
         }
 
 
-        /// <summary>
-        /// Look for nodes in range
-        /// </summary>
-        /// <param name="node"></param>
-        /// <param name="area"></param>
-        /// <returns>news entity</returns>
+        // 寻找范围内的entity
         private void Find(AoiEntity node, ref Vector2 area)
         {
-            SwapViewEntity(ref node.ViewEntity, ref node.ViewEntityBak);
+            // SwapViewEntity(ref node.ViewEntity, ref node.ViewEntityBak);
+            node.SwapViewEntity();
 
             #region xLinks
 
+            // 向链表的左右两边查找
             for (var i = 0; i < 2; i++)
             {
-                var cur = i == 0 ? node.X.Right : node.X.Left;
+                AoiNode cur = i == 0 ? node.X.Right : node.X.Left;
 
                 while (cur != null)
                 {
@@ -183,9 +166,7 @@ namespace SceneServer.Core.AOI
 
                     if (Math.Abs(Math.Abs(cur.Entity.Y.Value) - Math.Abs(node.Y.Value)) <= area.y)
                     {
-                        if (Distance(
-                            new Vector2(node.X.Value, node.Y.Value),
-                            new Vector2(cur.Entity.X.Value, cur.Entity.Y.Value)) <= area.x)
+                        if (Distance(new Vector2(node.X.Value, node.Y.Value), new Vector2(cur.Entity.X.Value, cur.Entity.Y.Value)) <= area.x)
                         {
                             try
                             {
@@ -243,22 +224,24 @@ namespace SceneServer.Core.AOI
 
             #endregion
         }
-        private static void SwapViewEntity(ref HashSet<long> viewEntity,ref HashSet<long> viewEntityBak)
-        {
-            viewEntityBak.Clear();
-            var t3 = viewEntity;
-            viewEntity = viewEntityBak;
-            viewEntityBak = t3;
-        }
 
-        /// <summary>
-        /// 查找附近Entity对象，范围通过config配置
-        /// </summary>
-        /// <param name="key">EntityId</param>
-        /// <param name="includeSelf">是否包含自己</param>
-        /// <returns></returns>
-        public IEnumerable<SceneEntity> FindViewEntity(int key,bool includeSelf=false)
+
+        // tools
+        public AoiEntity GetAoiEntityById(long key)
         {
+            if (_entityList.TryGetValue(key, out var entity))
+            {
+                return entity;
+            }
+            return null;
+        }
+        private double Distance(Vector2 a, Vector2 b)
+        {
+            return Math.Pow((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y), 0.5);
+        }
+        public IEnumerable<SceneEntity> FindViewEntity(int key, bool includeSelf = false)
+        {
+            // 查找附近Entity对象，范围通过config配置
             var area = Config.Server.aoiViewArea;
             var handle = Refresh(key, new Vector2(area, area));
             //handle有可能为空
@@ -270,10 +253,12 @@ namespace SceneServer.Core.AOI
             }
             return units;
         }
-
-        private double Distance(Vector2 a, Vector2 b)
+        private static void SwapViewEntity(ref HashSet<long> viewEntity, ref HashSet<long> viewEntityBak)
         {
-            return Math.Pow((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y), 0.5);
+            viewEntityBak.Clear();
+            var t3 = viewEntity;
+            viewEntity = viewEntityBak;
+            viewEntityBak = t3;
         }
     }
 }

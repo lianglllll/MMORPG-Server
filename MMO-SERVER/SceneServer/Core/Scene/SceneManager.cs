@@ -83,7 +83,9 @@ namespace SceneServer.Core.Scene
                 // 4.通知附近玩家
                 if(ent is SceneCharacter sChr)
                 {
-                    m_aoiZone.Refresh(sChr.EntityId, m_viewArea); // 刷新他的aoi，
+                    // 刷新他的aoi，以免下次使用时错误判断self是新加入的
+                    m_aoiZone.Refresh(sChr.EntityId, m_viewArea); 
+
                     oResp.SessionId = sChr.SessionId;
                     sChr.Send(oResp);
                 }
@@ -162,7 +164,8 @@ namespace SceneServer.Core.Scene
             Log.Information("actor[entityId = {0}] change state {1}", self.EntityId, message.State);
 
             // 更新aoi空间里面我们的坐标
-            var handle = m_aoiZone.Refresh(self.EntityId, self.AoiPos.x, self.AoiPos.y, m_viewArea);
+            var handle = m_aoiZone?.UpdatePos_Refresh(self.EntityId, self.AoiPos.x, self.AoiPos.y, m_viewArea);
+            var units = SceneEntityManager.Instance.GetSceneEntitiesByIds(handle.ViewEntity);
 
             // 通知附近玩家
             var resp = new ActorChangeStateResponse();
@@ -173,8 +176,6 @@ namespace SceneServer.Core.Scene
             resp.PayLoad = message.PayLoad;
 
             // 告知view内的其他角色，状态变更
-            // var units = m_aoiZone.FindViewEntity(self.EntityId, isIncludeSelf);
-            var units = SceneEntityManager.Instance.GetSceneEntitiesByIds(handle.ViewEntity);
             foreach (var sChr in units.OfType<SceneCharacter>())
             {
                 resp.SessionId = sChr.SessionId;
@@ -298,7 +299,7 @@ namespace SceneServer.Core.Scene
             // Log.Information("actor[entityId = {0}] change transform data", self.EntityId);
 
             // 更新aoi空间里面我们的坐标
-            var handle = m_aoiZone?.Refresh(self.EntityId, self.AoiPos.x, self.AoiPos.y, m_viewArea);
+            var handle = m_aoiZone?.UpdatePos_Refresh(self.EntityId, self.AoiPos.x, self.AoiPos.y, m_viewArea);
             var units = SceneEntityManager.Instance.GetSceneEntitiesByIds(handle.ViewEntity);
 
             // 通知附近玩家Transform数据更新

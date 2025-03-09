@@ -22,5 +22,14 @@ namespace SceneServer.Core.AOI
             ViewEntity = new HashSet<long>();
             ViewEntityBak = new HashSet<long>();
         }
+
+        public  void SwapViewEntity()
+        {
+            ViewEntityBak.Clear();
+            var t3 = ViewEntity;
+            ViewEntity = ViewEntityBak;
+            ViewEntityBak = t3;
+        }
+
     }
 }
