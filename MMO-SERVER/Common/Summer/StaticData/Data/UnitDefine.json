@@ -66,7 +66,7 @@
   "2": {
     "TID": 2,
     "Name": "仙术",
-    "Resource": "Units/Tid-0.prefab",
+    "Resource": "Units/Tid-2.prefab",
     "BgResource": "Texture/bg/RoleListItemBg/role2.png",
     "Kind": "Character",
     "Desc": "法系辅助",
@@ -98,7 +98,7 @@
   "3": {
     "TID": 3,
     "Name": "游侠",
-    "Resource": "Units/Tid-0.prefab",
+    "Resource": "Units/Tid-3.prefab",
     "BgResource": "Texture/bg/RoleListItemBg/role3.png",
     "Kind": "Character",
     "Desc": "远程高爆发",

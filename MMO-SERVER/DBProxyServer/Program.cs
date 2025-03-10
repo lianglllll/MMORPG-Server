@@ -131,7 +131,7 @@ namespace DBProxyServer
             // UserOperations.Instance.DeleteUserByUidAsync("67736c9f466dcc4edfb62a56");
 
             // CharacterOperations.Instance.DeleteCharacterByCidAsync("6773c0b050083e9841698d37");
-            /*
+
             //WorldOperations.Instance.AddWorldAsync(new HS.Protobuf.DBProxy.DBWorld.DBWorldNode
             //{
             //    WorldId = 1,
@@ -140,17 +140,17 @@ namespace DBProxyServer
             //    IsActive = true
             //});
 
-            //var testNode = new DBWorldNode
-            //{
-            //    WorldId = 1,
-            //    WorldName = "小南梁界",
-            //    WorldDesc = "领略修仙和科技的碰撞。",
-            //    Status = "active",
-            //    CreatedAt = Scheduler.UnixTime,
-            //    MaxPlayers = 1000,
-            //    CreatedBy = "天道"
-            //};
-            //var result =  WorldOperations.Instance.AddWorldAsync(testNode);
+/*            var testNode = new DBWorldNode
+            {
+                WorldId = 1,
+                WorldName = "小南梁界",
+                WorldDesc = "领略修仙和科技的碰撞。",
+                Status = "active",
+                CreatedAt = Scheduler.UnixTime,
+                MaxPlayers = 1000,
+                CreatedBy = "天道"
+            };
+            var result =  WorldOperations.Instance.AddWorldAsync(testNode);*/
 
             //var testNode2 = new DBWorldNode
             //{
@@ -176,7 +176,7 @@ namespace DBProxyServer
             //    }
             //});
 
-            */
+
 
 
             return true;
