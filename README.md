@@ -30,85 +30,187 @@
 
 ## **Server架构**
 
-2025.1.6版
+2025.3.13 版
 
-![小南梁界Server架构](README.assets/小南梁界Server架构.png)
+![小南梁界服务器架构](README.assets/小南梁界服务器架构.png)
 
-**服务器角色简要说明：**
+我们游戏服务器使用的是分布式服务器模式（Distribted Server）,游戏逻辑分布在多个服务器节点上，通过负载均衡动态分配玩家。这种模式适合超大型多人在线游戏。
+
+### CDN
+
+我们这里做一个模拟CDN的Web服务器，因为云厂商提供的CDN需要花费。
+
+主要功能：
+1.是给客户端提供我们LoginGate的地址。
+2.预防DDOS攻击导致单点问题的发生。
+
+这里解释一下单点问题（SPOF）：它指系统中存在某一组件或节点，其一旦发生故障，会导致整个系统不可用或功能严重受损。它是系统设计中的致命弱点，违背了高可用性（High Availability）和容错性（Fault Tolerance）原则。
 
 
 
-### 中心服务器(ControlCenterServer)
+### ControlCenter
 
-- 其他所有的服务器都需要向ControlCenterServer注册自己服务器的信息(ip、port、ListenEvent)
-- 提供获取某某特定服务器信息的功能
-- 提供订阅服务功能(如LoginGateServer订阅了LGMEnter事件，当LoginGateMgrServer上线后就会通知LoginGateServer)
+主要功能：
 
-### 数据库服务器(DBProxyServer)			
+1.服务器信息注册：他管理着集群中全部的服务器，当其他服务器启动之后，需要向中心服注册自己的信息。比如当login服务需要去连接GameGateMgr的服务器时，就可以通过中心服去获取IP和Port。
 
-- 作为mognodb和其他server之间沟通的代理服务器。
+2.事件订阅：可能会有怎么一个情况，当Scene启动后，它首先向ControlCenter连接并且注册自己的信息（ip、port、事件订阅的位图）。
 
-### 登录服务器(LoginServer)	
+正常情况下Scene会订阅GameGateMgr上线的事件，当GameGateMgr向ControlCenter注册后，就会触发GameGateMgr上线的事件，ControlCenter就会通知所有注册该事件的服务器。那么此时Scene就知道了GameGateMgr的信息了，就可以去连接它继续它自己的流程了。
 
-- 完成登录、注册功能。
+3.监控分布式系统中服务器的存活状态
 
-### 登录网关服务器(LoginGateServer)
 
-- 隔绝内外网
-- 加解密敏感信息
-- 转发信息到login。
 
-### 登录网关管理服务器(LoginGateMgrServer)
+### LoginGateMgr
 
-- 监控全部LoginGate状态
-- 给Login和LoginGate建立关联
-- 对为login服务的loginGate数量进行扩缩容。
+主要功能：
 
-### 游戏服务器(GameServer)
+1.所有的LoginGate上线之后，都需要连接到LoginGateMgr并且完成注册。
 
-- 处理与场景无关的游戏逻辑，如聊天、背包、组队、商店、任务、邮件...
+2.关注所有Login的上线，这里我们通过ControlCenter提供的事件服务来实现。
 
-### 游戏网关服务器(GameGateServer)
+3.分配LoginGate给Login,同时关注LoginGate的负载情况，一旦负载超出或者低于阈值，动态增加对影Login关联的LoginGate数量。
 
-- 隔绝内外网
-- 加解密敏感信息
-- 转发信息到Game或者Scene
+4.更新CDN中LoginGate的存活情况
 
-### 游戏网关管理服务器(GameGateServerMgrServer)
 
-- 监控GameGate和Scene
-- 给Game和GameGate和Scene之间建立联系
-- 对为Game服务的GameGate数量进行扩缩容
 
-### 场景服务器(SceneServer)
+### LoginGate
 
-- 处理玩家的移动、战斗相关的逻辑。
+这是与客户端直接连接的服务器
+主要功能：
+1.隔绝内外网环境，用户从始至终不知道自己一直通信的只是一个网关服务器。
+2.过滤无效的客户端请求，降低后面逻辑处理服务器的压力。
+3.和客户端的密钥交换流程，敏感请求的消息加解密。
+4.根据不同的客户端请求，将请求转发到不同的逻辑服务器当中。比如登录请求转发到Login，获取GameGateList的请求转发到Entry中
+5.定期向LoginGateMgr上报本服务器的负载情况
 
-### 时间同步主服务器(MasterTimeServer)
 
-- 尚未开发
-- 定期将时间同步到SlaveTimeServer
 
-### 时间同步子服务器(SlaveTimeServer)
+### Protal（未开发）
 
-- 尚未开发
-- 其他服务器会连接到SlaveTimeServer进行时间同步
+门户服务器
 
-### 日志服务器(LogServer)
+主要功能：
 
-- 尚未开发
-- 收集各个服务器的运行log并且进行分析
-- 将log数据保存到数据库中
+1.游戏版本更新
 
-### 游戏管理员服务器(GmServer)
+2.游戏公告
 
-- 尚未开发
--  接受来自web后台的命令并且执行，间接控制其他服务器
 
-### web代理服务器(HttpProxyServer)				
 
-- 尚未开发
-- 处理来自网页的请求，主要是可以查看其他服务器的负载情况，也可以发命令到GmServer。
+### Login
+
+主要功能
+
+1.处理登录和注册相关的信息。
+
+2.用户登录成功后将生成的session投递到Entry中。
+
+
+
+### Entry（未开发）
+
+这个服务器接受全部的Login的连接。
+这个服务器会主动连接到GameGateMgr。
+
+主要功能：
+1.接受来自Login 投递的Session, 将其放到队列中进行处理
+2.根据session的信息，向GameGateMgr询问对应的GameGate列表，并将其返回给客户端。
+3.是否需要在这里去控制进入对应世界的人数呢？
+
+
+
+### GameGateServerMgr
+
+主要功能：
+
+1.所有的GameGate和 Scene上线之后，都需要连接到GameGateMgr并且完成注册。
+
+2.关注所有Game的上线，这里我们通过ControlCenter提供的事件服务来实现。
+
+3.分配GameGate和Scene给Game
+
+4.接受来自Entry的session信息并且返回较为空闲的GameGateList
+
+
+
+### GameGate
+
+这是与客户端直接连接的服务器
+
+主要功能：
+1.隔绝内外网环境，用户从始至终不知道自己一直通信的只是一个网关服务器。
+2.过滤无效的客户端请求，降低后面逻辑处理服务器的压力。
+3.和客户端的密钥交换流程，敏感请求的消息加解密。
+4.根据不同的客户端请求，将请求转发到不同的逻辑服务器当中。比如：拉取背包信息请求，我们就会将信息投递到Game；同步位置信息请求，我们会投递到Scene中进行处理。
+5.定期向GameGateMgr上报本服务器的负载情况。
+
+
+
+### Game
+
+主要功能：
+1.保存一些与场景无关的静态数据，如：角色信息、账户信息、背包信息、装备设置、技能树。
+2.组队、聊天、任务等游戏逻辑。
+
+
+
+### Scene
+
+主要功能：
+1.记录一些与场景相关的动态数据：玩家Transfrom信息、场景信息等。
+2.处理玩家的移动、战斗相关的游戏逻辑。
+
+
+
+### DBProxy
+
+主要功能：
+1.他作为底层MongoDB的代理服务器，替我们去处理其他服务器发送过来的请求,其他服务器通过它来间接获取和设置信息。
+
+
+
+### Redis（未开发）
+
+设计为主从结构，主写从读
+主要功能：
+1.其他的服务器要获取数据库数据时首先向Redis去获取，如果有缓冲那就直接返回，如果没有，Redis就代替原来的服务器向DBProxy去请求，当响应回来之后，先将数据进行缓冲，然后在返回给原来的服务器。
+
+
+
+### Log（未开发）
+
+主要功能：
+1.收集各个服务器的log信息，目前的想法每个Server自己保存到文件，然后发送给Log，Log在自己处理。
+
+
+
+### MasterTimer
+
+时间同步主服务器，作为整一个分布式系统的时间权威
+主要功能：
+
+1.接受来自SlaveTimer的连接，并且响应其时间同步的请求
+2.向其他一些高精度的时间源去发起请求去同步自己的时间
+
+
+
+### SlaveTimer
+
+时间同步从服务器，主从结构提高容灾能力
+主要功能：
+1.定期向MasterTimer去同步时间，比较时间误差积累
+2.分布式系统中的其他服务器连接到SlaveTimer，并且定期进行时间同步。
+
+
+
+### HttpProxyServer（未开发）
+
+主要功能：
+
+1.我们使用它就可以便捷地通过web去查看分布式集群中各个服务器的状态，并且可以通过web来进行命令的发送。
 
 
 
