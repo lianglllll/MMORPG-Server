@@ -15,9 +15,6 @@ namespace DBProxyServer
         private static bool Init()
         {
             SerilogManager.Instance.Init();
-            Config.Init();                      
-            Scheduler.Instance.Start(Config.Server.updateHz);
-
             Log.Information("\x1b[32m" + @"
                       _____                    _____          
                      /\    \                  /\    \         
@@ -41,21 +38,12 @@ namespace DBProxyServer
                     \::/____/                \::/____/        
                      ~~                       ~~              
             ");
-            Log.Information("[DBProxyServer]初始化,配置如下：");
-            Log.Information("Ip：{0}", Config.Server.ip);
-            Log.Information("ServerPort：{0}", Config.Server.serverPort);
-            Log.Information("WorkerCount：{0}", Config.Server.workerCount);
-            Log.Information("UpdateHz：{0}", Config.Server.updateHz);
-            Log.Information("\x1b[32m" + "=============================================" + "\x1b[0m");
-
+            Config.Init();
+            Log.Information("[DBProxyServer]初始化配置：{@Config}", Config.Server);
             // DB
             MongoDBConnection.Instance.Init(Config.MongodbServerConfig.connectionString, 
                 Config.MongodbServerConfig.databaseName);
-            //开启网络服务
-            ServersMgr.Instance.Init();
-            UserHandler.Instance.Init();
-            CharacterHandler.Instance.Init();
-            WorldHandler.Instance.Init();
+            DBProxyServersMgr.Instance.Init();
             return true;
         }
         private static bool UnInit()

@@ -19,13 +19,11 @@ message RegisterToMTResponse{
 }
 
 message TimeSyncRequest{
-	int64 client_tick = 1;       // 客户端当前tick值
-	double client_time = 2;      // 客户端本地时间（毫秒）
-	fixed32 crc = 3;             // 校验码
+	int64 client_send_time  = 1;       
 }
 message TimeSyncResponse{
-	int64 client_tick = 1;       // 回传客户端的tick
-	int64 server_tick = 2;       // 服务器当前tick值
-	double server_time = 3;      // 服务器权威时间（毫秒）
-	double rtt_estimate = 4;     // 服务器估算的RTT
+	int64 client_send_time = 1;		// T1
+    int64 server_receive_time = 2;	// T2
+    int64 server_send_time = 3;		// T3
+    int32 next_sync_interval = 4;   // 动态调整同步频率
 }

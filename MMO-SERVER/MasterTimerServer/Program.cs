@@ -3,6 +3,7 @@ using Common.Summer.Core;
 using Common.Summer.MyLog;
 using MasterTimerServer.Utils;
 using MasterTimerServer.Core;
+using MasterTimerServer.Net;
 
 namespace MasterTimerServer
 {
@@ -10,11 +11,9 @@ namespace MasterTimerServer
     {
         private static bool Init()
         {
-            SerilogManager.Instance.Init();
             Config.Init();
-            Scheduler.Instance.Start(Config.Server.updateHz);
-            ServersMgr.Instance.Init();
 
+            SerilogManager.Instance.Init();
             Log.Information("\x1b[32m" + @"
                       _____                _____          
                      /\    \              /\    \         
@@ -38,13 +37,10 @@ namespace MasterTimerServer
                     \::/    /                             
                      \/____/                              
             ");
-            Log.Information("[MasterTimerServer]初始化成功,配置如下：");
-            Log.Information("Ip：{0}", Config.Server.ip);
-            Log.Information("Port：{0}", Config.Server.serverPort);
-            Log.Information("WorkerCount：{0}", Config.Server.workerCount);
-            Log.Information("UpdateHz：{0}", Config.Server.updateHz);
-            Log.Information("\x1b[32m" + "=============================================" + "\x1b[0m");
-            Log.Information("\x1b[32m" + "Initialization complete, server is now operational." + "\x1b[0m");
+            Log.Information("[MasterTimerServer]初始化配置：{@Config}", Config.Server);
+            Scheduler.Instance.Start(Config.Server.updateHz);
+            MasterTimerServersMgr.Instance.Init();
+
             return true;
         }
         private static bool UnInit()
@@ -81,7 +77,7 @@ namespace MasterTimerServer
         public static void Main(string[] args)
         {
             Init();
-            Shell();
+            // Shell();
         }
     }
 }

@@ -14,6 +14,12 @@ namespace Common.Summer.Net
     // 1.心跳的处理
     public class ConnManager : Singleton<ConnManager>
     {
+        private bool isStart;
+
+        private float m_userHeartBeatSendInterval;
+        private float m_userHeartBeatCheckInterval;
+        private float m_userHeartBeatTimeOut;
+
         private float m_heartBeatSendInterval;
         private float m_heartBeatCheckInterval;
         private float m_heartBeatTimeOut;
@@ -80,9 +86,17 @@ namespace Common.Summer.Net
                 // 定时发送ss心跳包
                 Scheduler.Instance.AddTask(_SendSSHeatBeatReq, heartBeatSendInterval, 0);
             }
+
+            isStart = false;
         }
         public void Start()
         {
+            if (isStart)
+            {
+                goto End;
+            }
+            isStart = true;
+
             if (m_isAcceptUser)
             {
                 _StartListeningForUserConnections(m_acceptUserIp, m_acceptUserPort);
@@ -93,6 +107,8 @@ namespace Common.Summer.Net
                 _StartListeningForClusterServerConnections(m_acceptServerIp, m_acceptServerPort);
                 Scheduler.Instance.AddTask(_CheckSSHeatBeat, m_heartBeatCheckInterval, 0);
             }
+        End:
+            return;
         }
         public void UserStart()
         {
@@ -127,13 +143,10 @@ namespace Common.Summer.Net
             m_serverAcceptServer = null;
         }
 
-
-
-
         // 1.用户连接过来的
         private void _StartListeningForUserConnections(string ip, int port)
         {
-            Log.Information("Starting to listen for userConnections[{0}:{1}].", ip, port);
+            Log.Information("Starting to listen for userConnections({0}:{1}).", ip, port);
             // 启动网络监听
             m_userAcceptServer = new TcpServer();
             m_userAcceptServer.Init(ip, port, 100, _HandleUserConnected, _HandleUserDisconnected);
@@ -213,11 +226,10 @@ namespace Common.Summer.Net
             conn.Send(resp);
         }
 
-
         // 2.分布式系统中其他服务器连接过来的
         private void _StartListeningForClusterServerConnections(string ip, int port)
         {
-            Log.Information("Starting to listen for serverConnections[{0}:{1}].",ip, port);
+            Log.Information("Starting to listen for serverConnections({0}:{1}).",ip, port);
             // 启动网络监听
             m_serverAcceptServer = new TcpServer();
             m_serverAcceptServer.Init(ip, port, 100, _HandleClusterServerConnected, _HandleClusterServerDisconnected);
@@ -296,7 +308,6 @@ namespace Common.Summer.Net
             SSHeartBeatResponse resp = new();
             conn.Send(resp);
         }
-
 
         // 3.本服务器连接到分布式系统中其他服务器
         public NetClient ConnctToServer(string ip, int port,

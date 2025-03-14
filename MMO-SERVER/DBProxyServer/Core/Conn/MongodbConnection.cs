@@ -15,7 +15,7 @@ namespace DBProxyServer.Core
             UserOperations.Instance.Init(this);
             CharacterOperations.Instance.Init(this);
             WorldOperations.Instance.Init(this);
-            Log.Information("Connected to MongoDB successfully.");
+            Log.Information("Successfully connect to MongoDB");
         }
 
         public IMongoCollection<T> GetCollection<T>(string collectionName)

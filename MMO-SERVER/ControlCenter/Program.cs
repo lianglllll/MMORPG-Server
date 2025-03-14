@@ -10,11 +10,8 @@ namespace ControlCenter
     {
         private static bool Init()
         {
-            SerilogManager.Instance.Init();
             Config.Init();
-            Scheduler.Instance.Start(Config.Server.updateHz);
-            ServersMgr.Instance.Init();
-
+            SerilogManager.Instance.Init();
             Log.Information("\x1b[32m" + @"
                       _____                    _____          
                      /\    \                  /\    \         
@@ -37,13 +34,12 @@ namespace ControlCenter
                    \::/    /                \::/    /         
                     \/____/                  \/____/         
             ");
-            Log.Information("[ControlCenter]初始化成功,配置如下：");
-            Log.Information("Ip：{0}", Config.Server.ip);
-            Log.Information("Port：{0}", Config.Server.port);
-            Log.Information("WorkerCount：{0}", Config.Server.workerCount);
-            Log.Information("UpdateHz：{0}", Config.Server.updateHz);
-            Log.Information("\x1b[32m" + "=============================================" + "\x1b[0m");
-            Log.Information("\x1b[32m" + "Initialization complete, server is now operational." + "\x1b[0m");
+            Log.Information("[ControlCenter]初始化配置：{@Config}", Config.Server);
+
+            Scheduler.Instance.Start(Config.Server.updateHz);
+            ServersMgr.Instance.Init();
+
+            Log.Information("\x1b[32m" + "The server is ready." + "\x1b[0m");
             return true;
         }
         private static bool UnInit()
@@ -80,7 +76,7 @@ namespace ControlCenter
         public static void Main(string[] args)
         {
             Init();
-            Shell();
+            // Shell();
         }
     }
 }

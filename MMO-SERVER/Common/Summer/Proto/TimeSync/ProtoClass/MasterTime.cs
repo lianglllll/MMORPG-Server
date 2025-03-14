@@ -28,24 +28,24 @@ namespace HS.Protobuf.MasterTime {
             "b21tb24vUHJvdG9Tb3VyY2UvQ29tbW9uLnByb3RvIlEKE1JlZ2lzdGVyVG9N",
             "VFJlcXVlc3QSOgoOc2VydmVySW5mb05vZGUYASABKAsyIi5IUy5Qcm90b2J1",
             "Zi5Db21tb24uU2VydmVySW5mb05vZGUiPQoUUmVnaXN0ZXJUb01UUmVzcG9u",
-            "c2USEgoKcmVzdWx0Q29kZRgBIAEoBRIRCglyZXN1bHRNc2cYAiABKAkiSAoP",
-            "VGltZVN5bmNSZXF1ZXN0EhMKC2NsaWVudF90aWNrGAEgASgDEhMKC2NsaWVu",
-            "dF90aW1lGAIgASgBEgsKA2NyYxgDIAEoByJnChBUaW1lU3luY1Jlc3BvbnNl",
-            "EhMKC2NsaWVudF90aWNrGAEgASgDEhMKC3NlcnZlcl90aWNrGAIgASgDEhMK",
-            "C3NlcnZlcl90aW1lGAMgASgBEhQKDHJ0dF9lc3RpbWF0ZRgEIAEoASrhAQoR",
-            "TWFzdGVyVGltZVByb3RvY2wSHAoYTUFTVEVSX1RJTUVfUFJPVE9DTF9OT05F",
-            "EAASLAomTUFTVEVSX1RJTUVfUFJPVE9DTF9SRUdJU1RFUl9UT19NVF9SRVEQ",
-            "4dQDEi0KJ01BU1RFUl9USU1FX1BST1RPQ0xfUkVHSVNURVJfVE9fTVRfUkVT",
-            "UBDi1AMSJwohTUFTVEVSX1RJTUVfUFJPVE9DTF9USU1FX1NZTkNfUkVREOPU",
-            "AxIoCiJNQVNURVJfVElNRV9QUk9UT0NMX1RJTUVfU1lOQ19SRVNQEOTUA2IG",
-            "cHJvdG8z"));
+            "c2USEgoKcmVzdWx0Q29kZRgBIAEoBRIRCglyZXN1bHRNc2cYAiABKAkiKwoP",
+            "VGltZVN5bmNSZXF1ZXN0EhgKEGNsaWVudF9zZW5kX3RpbWUYASABKAMifwoQ",
+            "VGltZVN5bmNSZXNwb25zZRIYChBjbGllbnRfc2VuZF90aW1lGAEgASgDEhsK",
+            "E3NlcnZlcl9yZWNlaXZlX3RpbWUYAiABKAMSGAoQc2VydmVyX3NlbmRfdGlt",
+            "ZRgEIAEoAxIaChJuZXh0X3N5bmNfaW50ZXJ2YWwYBSABKAUq4QEKEU1hc3Rl",
+            "clRpbWVQcm90b2NsEhwKGE1BU1RFUl9USU1FX1BST1RPQ0xfTk9ORRAAEiwK",
+            "Jk1BU1RFUl9USU1FX1BST1RPQ0xfUkVHSVNURVJfVE9fTVRfUkVREOHUAxIt",
+            "CidNQVNURVJfVElNRV9QUk9UT0NMX1JFR0lTVEVSX1RPX01UX1JFU1AQ4tQD",
+            "EicKIU1BU1RFUl9USU1FX1BST1RPQ0xfVElNRV9TWU5DX1JFURDj1AMSKAoi",
+            "TUFTVEVSX1RJTUVfUFJPVE9DTF9USU1FX1NZTkNfUkVTUBDk1ANiBnByb3Rv",
+            "Mw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::HS.Protobuf.Common.CommonReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.MasterTime.MasterTimeProtocl), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.MasterTime.RegisterToMTRequest), global::HS.Protobuf.MasterTime.RegisterToMTRequest.Parser, new[]{ "ServerInfoNode" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.MasterTime.RegisterToMTResponse), global::HS.Protobuf.MasterTime.RegisterToMTResponse.Parser, new[]{ "ResultCode", "ResultMsg" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.MasterTime.TimeSyncRequest), global::HS.Protobuf.MasterTime.TimeSyncRequest.Parser, new[]{ "ClientTick", "ClientTime", "Crc" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.MasterTime.TimeSyncResponse), global::HS.Protobuf.MasterTime.TimeSyncResponse.Parser, new[]{ "ClientTick", "ServerTick", "ServerTime", "RttEstimate" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.MasterTime.TimeSyncRequest), global::HS.Protobuf.MasterTime.TimeSyncRequest.Parser, new[]{ "ClientSendTime" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.MasterTime.TimeSyncResponse), global::HS.Protobuf.MasterTime.TimeSyncResponse.Parser, new[]{ "ClientSendTime", "ServerReceiveTime", "ServerSendTime", "NextSyncInterval" }, null, null, null, null)
           }));
     }
     #endregion
@@ -533,9 +533,7 @@ namespace HS.Protobuf.MasterTime {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public TimeSyncRequest(TimeSyncRequest other) : this() {
-      clientTick_ = other.clientTick_;
-      clientTime_ = other.clientTime_;
-      crc_ = other.crc_;
+      clientSendTime_ = other.clientSendTime_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -545,48 +543,15 @@ namespace HS.Protobuf.MasterTime {
       return new TimeSyncRequest(this);
     }
 
-    /// <summary>Field number for the "client_tick" field.</summary>
-    public const int ClientTickFieldNumber = 1;
-    private long clientTick_;
-    /// <summary>
-    /// 客户端当前tick值
-    /// </summary>
+    /// <summary>Field number for the "client_send_time" field.</summary>
+    public const int ClientSendTimeFieldNumber = 1;
+    private long clientSendTime_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public long ClientTick {
-      get { return clientTick_; }
+    public long ClientSendTime {
+      get { return clientSendTime_; }
       set {
-        clientTick_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "client_time" field.</summary>
-    public const int ClientTimeFieldNumber = 2;
-    private double clientTime_;
-    /// <summary>
-    /// 客户端本地时间（毫秒）
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public double ClientTime {
-      get { return clientTime_; }
-      set {
-        clientTime_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "crc" field.</summary>
-    public const int CrcFieldNumber = 3;
-    private uint crc_;
-    /// <summary>
-    /// 校验码
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public uint Crc {
-      get { return crc_; }
-      set {
-        crc_ = value;
+        clientSendTime_ = value;
       }
     }
 
@@ -605,9 +570,7 @@ namespace HS.Protobuf.MasterTime {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (ClientTick != other.ClientTick) return false;
-      if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(ClientTime, other.ClientTime)) return false;
-      if (Crc != other.Crc) return false;
+      if (ClientSendTime != other.ClientSendTime) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -615,9 +578,7 @@ namespace HS.Protobuf.MasterTime {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (ClientTick != 0L) hash ^= ClientTick.GetHashCode();
-      if (ClientTime != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(ClientTime);
-      if (Crc != 0) hash ^= Crc.GetHashCode();
+      if (ClientSendTime != 0L) hash ^= ClientSendTime.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -636,17 +597,9 @@ namespace HS.Protobuf.MasterTime {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (ClientTick != 0L) {
+      if (ClientSendTime != 0L) {
         output.WriteRawTag(8);
-        output.WriteInt64(ClientTick);
-      }
-      if (ClientTime != 0D) {
-        output.WriteRawTag(17);
-        output.WriteDouble(ClientTime);
-      }
-      if (Crc != 0) {
-        output.WriteRawTag(29);
-        output.WriteFixed32(Crc);
+        output.WriteInt64(ClientSendTime);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -658,17 +611,9 @@ namespace HS.Protobuf.MasterTime {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (ClientTick != 0L) {
+      if (ClientSendTime != 0L) {
         output.WriteRawTag(8);
-        output.WriteInt64(ClientTick);
-      }
-      if (ClientTime != 0D) {
-        output.WriteRawTag(17);
-        output.WriteDouble(ClientTime);
-      }
-      if (Crc != 0) {
-        output.WriteRawTag(29);
-        output.WriteFixed32(Crc);
+        output.WriteInt64(ClientSendTime);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -680,14 +625,8 @@ namespace HS.Protobuf.MasterTime {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (ClientTick != 0L) {
-        size += 1 + pb::CodedOutputStream.ComputeInt64Size(ClientTick);
-      }
-      if (ClientTime != 0D) {
-        size += 1 + 8;
-      }
-      if (Crc != 0) {
-        size += 1 + 4;
+      if (ClientSendTime != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(ClientSendTime);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -701,14 +640,8 @@ namespace HS.Protobuf.MasterTime {
       if (other == null) {
         return;
       }
-      if (other.ClientTick != 0L) {
-        ClientTick = other.ClientTick;
-      }
-      if (other.ClientTime != 0D) {
-        ClientTime = other.ClientTime;
-      }
-      if (other.Crc != 0) {
-        Crc = other.Crc;
+      if (other.ClientSendTime != 0L) {
+        ClientSendTime = other.ClientSendTime;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -726,15 +659,7 @@ namespace HS.Protobuf.MasterTime {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            ClientTick = input.ReadInt64();
-            break;
-          }
-          case 17: {
-            ClientTime = input.ReadDouble();
-            break;
-          }
-          case 29: {
-            Crc = input.ReadFixed32();
+            ClientSendTime = input.ReadInt64();
             break;
           }
         }
@@ -753,15 +678,7 @@ namespace HS.Protobuf.MasterTime {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            ClientTick = input.ReadInt64();
-            break;
-          }
-          case 17: {
-            ClientTime = input.ReadDouble();
-            break;
-          }
-          case 29: {
-            Crc = input.ReadFixed32();
+            ClientSendTime = input.ReadInt64();
             break;
           }
         }
@@ -805,10 +722,10 @@ namespace HS.Protobuf.MasterTime {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public TimeSyncResponse(TimeSyncResponse other) : this() {
-      clientTick_ = other.clientTick_;
-      serverTick_ = other.serverTick_;
-      serverTime_ = other.serverTime_;
-      rttEstimate_ = other.rttEstimate_;
+      clientSendTime_ = other.clientSendTime_;
+      serverReceiveTime_ = other.serverReceiveTime_;
+      serverSendTime_ = other.serverSendTime_;
+      nextSyncInterval_ = other.nextSyncInterval_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -818,63 +735,63 @@ namespace HS.Protobuf.MasterTime {
       return new TimeSyncResponse(this);
     }
 
-    /// <summary>Field number for the "client_tick" field.</summary>
-    public const int ClientTickFieldNumber = 1;
-    private long clientTick_;
+    /// <summary>Field number for the "client_send_time" field.</summary>
+    public const int ClientSendTimeFieldNumber = 1;
+    private long clientSendTime_;
     /// <summary>
-    /// 回传客户端的tick
+    /// T1
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public long ClientTick {
-      get { return clientTick_; }
+    public long ClientSendTime {
+      get { return clientSendTime_; }
       set {
-        clientTick_ = value;
+        clientSendTime_ = value;
       }
     }
 
-    /// <summary>Field number for the "server_tick" field.</summary>
-    public const int ServerTickFieldNumber = 2;
-    private long serverTick_;
+    /// <summary>Field number for the "server_receive_time" field.</summary>
+    public const int ServerReceiveTimeFieldNumber = 2;
+    private long serverReceiveTime_;
     /// <summary>
-    /// 服务器当前tick值
+    /// T2
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public long ServerTick {
-      get { return serverTick_; }
+    public long ServerReceiveTime {
+      get { return serverReceiveTime_; }
       set {
-        serverTick_ = value;
+        serverReceiveTime_ = value;
       }
     }
 
-    /// <summary>Field number for the "server_time" field.</summary>
-    public const int ServerTimeFieldNumber = 3;
-    private double serverTime_;
+    /// <summary>Field number for the "server_send_time" field.</summary>
+    public const int ServerSendTimeFieldNumber = 4;
+    private long serverSendTime_;
     /// <summary>
-    /// 服务器权威时间（毫秒）
+    /// T3
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public double ServerTime {
-      get { return serverTime_; }
+    public long ServerSendTime {
+      get { return serverSendTime_; }
       set {
-        serverTime_ = value;
+        serverSendTime_ = value;
       }
     }
 
-    /// <summary>Field number for the "rtt_estimate" field.</summary>
-    public const int RttEstimateFieldNumber = 4;
-    private double rttEstimate_;
+    /// <summary>Field number for the "next_sync_interval" field.</summary>
+    public const int NextSyncIntervalFieldNumber = 5;
+    private int nextSyncInterval_;
     /// <summary>
-    /// 服务器估算的RTT
+    /// 动态调整同步频率
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public double RttEstimate {
-      get { return rttEstimate_; }
+    public int NextSyncInterval {
+      get { return nextSyncInterval_; }
       set {
-        rttEstimate_ = value;
+        nextSyncInterval_ = value;
       }
     }
 
@@ -893,10 +810,10 @@ namespace HS.Protobuf.MasterTime {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (ClientTick != other.ClientTick) return false;
-      if (ServerTick != other.ServerTick) return false;
-      if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(ServerTime, other.ServerTime)) return false;
-      if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(RttEstimate, other.RttEstimate)) return false;
+      if (ClientSendTime != other.ClientSendTime) return false;
+      if (ServerReceiveTime != other.ServerReceiveTime) return false;
+      if (ServerSendTime != other.ServerSendTime) return false;
+      if (NextSyncInterval != other.NextSyncInterval) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -904,10 +821,10 @@ namespace HS.Protobuf.MasterTime {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (ClientTick != 0L) hash ^= ClientTick.GetHashCode();
-      if (ServerTick != 0L) hash ^= ServerTick.GetHashCode();
-      if (ServerTime != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(ServerTime);
-      if (RttEstimate != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(RttEstimate);
+      if (ClientSendTime != 0L) hash ^= ClientSendTime.GetHashCode();
+      if (ServerReceiveTime != 0L) hash ^= ServerReceiveTime.GetHashCode();
+      if (ServerSendTime != 0L) hash ^= ServerSendTime.GetHashCode();
+      if (NextSyncInterval != 0) hash ^= NextSyncInterval.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -926,21 +843,21 @@ namespace HS.Protobuf.MasterTime {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (ClientTick != 0L) {
+      if (ClientSendTime != 0L) {
         output.WriteRawTag(8);
-        output.WriteInt64(ClientTick);
+        output.WriteInt64(ClientSendTime);
       }
-      if (ServerTick != 0L) {
+      if (ServerReceiveTime != 0L) {
         output.WriteRawTag(16);
-        output.WriteInt64(ServerTick);
+        output.WriteInt64(ServerReceiveTime);
       }
-      if (ServerTime != 0D) {
-        output.WriteRawTag(25);
-        output.WriteDouble(ServerTime);
+      if (ServerSendTime != 0L) {
+        output.WriteRawTag(32);
+        output.WriteInt64(ServerSendTime);
       }
-      if (RttEstimate != 0D) {
-        output.WriteRawTag(33);
-        output.WriteDouble(RttEstimate);
+      if (NextSyncInterval != 0) {
+        output.WriteRawTag(40);
+        output.WriteInt32(NextSyncInterval);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -952,21 +869,21 @@ namespace HS.Protobuf.MasterTime {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (ClientTick != 0L) {
+      if (ClientSendTime != 0L) {
         output.WriteRawTag(8);
-        output.WriteInt64(ClientTick);
+        output.WriteInt64(ClientSendTime);
       }
-      if (ServerTick != 0L) {
+      if (ServerReceiveTime != 0L) {
         output.WriteRawTag(16);
-        output.WriteInt64(ServerTick);
+        output.WriteInt64(ServerReceiveTime);
       }
-      if (ServerTime != 0D) {
-        output.WriteRawTag(25);
-        output.WriteDouble(ServerTime);
+      if (ServerSendTime != 0L) {
+        output.WriteRawTag(32);
+        output.WriteInt64(ServerSendTime);
       }
-      if (RttEstimate != 0D) {
-        output.WriteRawTag(33);
-        output.WriteDouble(RttEstimate);
+      if (NextSyncInterval != 0) {
+        output.WriteRawTag(40);
+        output.WriteInt32(NextSyncInterval);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -978,17 +895,17 @@ namespace HS.Protobuf.MasterTime {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (ClientTick != 0L) {
-        size += 1 + pb::CodedOutputStream.ComputeInt64Size(ClientTick);
+      if (ClientSendTime != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(ClientSendTime);
       }
-      if (ServerTick != 0L) {
-        size += 1 + pb::CodedOutputStream.ComputeInt64Size(ServerTick);
+      if (ServerReceiveTime != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(ServerReceiveTime);
       }
-      if (ServerTime != 0D) {
-        size += 1 + 8;
+      if (ServerSendTime != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(ServerSendTime);
       }
-      if (RttEstimate != 0D) {
-        size += 1 + 8;
+      if (NextSyncInterval != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(NextSyncInterval);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1002,17 +919,17 @@ namespace HS.Protobuf.MasterTime {
       if (other == null) {
         return;
       }
-      if (other.ClientTick != 0L) {
-        ClientTick = other.ClientTick;
+      if (other.ClientSendTime != 0L) {
+        ClientSendTime = other.ClientSendTime;
       }
-      if (other.ServerTick != 0L) {
-        ServerTick = other.ServerTick;
+      if (other.ServerReceiveTime != 0L) {
+        ServerReceiveTime = other.ServerReceiveTime;
       }
-      if (other.ServerTime != 0D) {
-        ServerTime = other.ServerTime;
+      if (other.ServerSendTime != 0L) {
+        ServerSendTime = other.ServerSendTime;
       }
-      if (other.RttEstimate != 0D) {
-        RttEstimate = other.RttEstimate;
+      if (other.NextSyncInterval != 0) {
+        NextSyncInterval = other.NextSyncInterval;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1030,19 +947,19 @@ namespace HS.Protobuf.MasterTime {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            ClientTick = input.ReadInt64();
+            ClientSendTime = input.ReadInt64();
             break;
           }
           case 16: {
-            ServerTick = input.ReadInt64();
+            ServerReceiveTime = input.ReadInt64();
             break;
           }
-          case 25: {
-            ServerTime = input.ReadDouble();
+          case 32: {
+            ServerSendTime = input.ReadInt64();
             break;
           }
-          case 33: {
-            RttEstimate = input.ReadDouble();
+          case 40: {
+            NextSyncInterval = input.ReadInt32();
             break;
           }
         }
@@ -1061,19 +978,19 @@ namespace HS.Protobuf.MasterTime {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            ClientTick = input.ReadInt64();
+            ClientSendTime = input.ReadInt64();
             break;
           }
           case 16: {
-            ServerTick = input.ReadInt64();
+            ServerReceiveTime = input.ReadInt64();
             break;
           }
-          case 25: {
-            ServerTime = input.ReadDouble();
+          case 32: {
+            ServerSendTime = input.ReadInt64();
             break;
           }
-          case 33: {
-            RttEstimate = input.ReadDouble();
+          case 40: {
+            NextSyncInterval = input.ReadInt32();
             break;
           }
         }

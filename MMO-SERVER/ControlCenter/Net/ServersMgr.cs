@@ -248,6 +248,9 @@ namespace ControlCenter.Core
                         case (int)ClusterEventType.DbproxyEnter:
                             _AddClusterEventNodes(SERVER_TYPE.Dbproxy, ClusterEventType.DbproxyEnter, clusterEventNodes);
                             break;
+                        case (int)ClusterEventType.MastertimeEnter:
+                            _AddClusterEventNodes(SERVER_TYPE.Mastertime, ClusterEventType.MastertimeEnter, clusterEventNodes);
+                            break;
                         // 可以添加更多进入事件的处理
                         default:
                             break;
