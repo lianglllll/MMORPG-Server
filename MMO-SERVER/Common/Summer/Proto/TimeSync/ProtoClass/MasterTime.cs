@@ -32,7 +32,7 @@ namespace HS.Protobuf.MasterTime {
             "VGltZVN5bmNSZXF1ZXN0EhgKEGNsaWVudF9zZW5kX3RpbWUYASABKAMifwoQ",
             "VGltZVN5bmNSZXNwb25zZRIYChBjbGllbnRfc2VuZF90aW1lGAEgASgDEhsK",
             "E3NlcnZlcl9yZWNlaXZlX3RpbWUYAiABKAMSGAoQc2VydmVyX3NlbmRfdGlt",
-            "ZRgEIAEoAxIaChJuZXh0X3N5bmNfaW50ZXJ2YWwYBSABKAUq4QEKEU1hc3Rl",
+            "ZRgDIAEoAxIaChJuZXh0X3N5bmNfaW50ZXJ2YWwYBCABKAUq4QEKEU1hc3Rl",
             "clRpbWVQcm90b2NsEhwKGE1BU1RFUl9USU1FX1BST1RPQ0xfTk9ORRAAEiwK",
             "Jk1BU1RFUl9USU1FX1BST1RPQ0xfUkVHSVNURVJfVE9fTVRfUkVREOHUAxIt",
             "CidNQVNURVJfVElNRV9QUk9UT0NMX1JFR0lTVEVSX1RPX01UX1JFU1AQ4tQD",
@@ -766,7 +766,7 @@ namespace HS.Protobuf.MasterTime {
     }
 
     /// <summary>Field number for the "server_send_time" field.</summary>
-    public const int ServerSendTimeFieldNumber = 4;
+    public const int ServerSendTimeFieldNumber = 3;
     private long serverSendTime_;
     /// <summary>
     /// T3
@@ -781,7 +781,7 @@ namespace HS.Protobuf.MasterTime {
     }
 
     /// <summary>Field number for the "next_sync_interval" field.</summary>
-    public const int NextSyncIntervalFieldNumber = 5;
+    public const int NextSyncIntervalFieldNumber = 4;
     private int nextSyncInterval_;
     /// <summary>
     /// 动态调整同步频率
@@ -852,11 +852,11 @@ namespace HS.Protobuf.MasterTime {
         output.WriteInt64(ServerReceiveTime);
       }
       if (ServerSendTime != 0L) {
-        output.WriteRawTag(32);
+        output.WriteRawTag(24);
         output.WriteInt64(ServerSendTime);
       }
       if (NextSyncInterval != 0) {
-        output.WriteRawTag(40);
+        output.WriteRawTag(32);
         output.WriteInt32(NextSyncInterval);
       }
       if (_unknownFields != null) {
@@ -878,11 +878,11 @@ namespace HS.Protobuf.MasterTime {
         output.WriteInt64(ServerReceiveTime);
       }
       if (ServerSendTime != 0L) {
-        output.WriteRawTag(32);
+        output.WriteRawTag(24);
         output.WriteInt64(ServerSendTime);
       }
       if (NextSyncInterval != 0) {
-        output.WriteRawTag(40);
+        output.WriteRawTag(32);
         output.WriteInt32(NextSyncInterval);
       }
       if (_unknownFields != null) {
@@ -954,11 +954,11 @@ namespace HS.Protobuf.MasterTime {
             ServerReceiveTime = input.ReadInt64();
             break;
           }
-          case 32: {
+          case 24: {
             ServerSendTime = input.ReadInt64();
             break;
           }
-          case 40: {
+          case 32: {
             NextSyncInterval = input.ReadInt32();
             break;
           }
@@ -985,11 +985,11 @@ namespace HS.Protobuf.MasterTime {
             ServerReceiveTime = input.ReadInt64();
             break;
           }
-          case 32: {
+          case 24: {
             ServerSendTime = input.ReadInt64();
             break;
           }
-          case 40: {
+          case 32: {
             NextSyncInterval = input.ReadInt32();
             break;
           }

@@ -13,6 +13,7 @@ using Common.Summer.Core;
 using HS.Protobuf.LoginGate;
 using HS.Protobuf.Common;
 using Common.Summer.MyLog;
+using Common.Summer.Server;
 
 namespace ClientTest
 {
@@ -126,7 +127,7 @@ namespace ClientTest
         static void Main(string[] args)
         {
             SerilogManager.Instance.Init();
-            Thread.Sleep(2000);
+            // Thread.Sleep(2000);
 
             //ProtoHelper.Register<UserLoginRequest>((int)LoginProtocl.UserLoginRequest);
             //ProtoHelper.Register<UserLoginResponse>((int)LoginProtocl.UserLoginResponse);
@@ -146,11 +147,43 @@ namespace ClientTest
             //    (tcpClient, isEnd) => { },
             //    (tcpClient) => { });
 
-            TestHash();
+            // TestHash();
+
+            TestServerSelector();
+
 
             Console.ReadLine();
         }
 
+        private static void TestServerSelector()
+        {
+            var server1 = new ServerInfoNode
+            {
+                ServerId = 1,
+            };
+            var server2 = new ServerInfoNode
+            {
+                ServerId = 2,
+            };
+            var server3 = new ServerInfoNode
+            {
+                ServerId = 3,
+            };
+            List<ServerInfoNode> list = new List<ServerInfoNode>();
+            list.Add(server1);
+            list.Add(server2);
+            list.Add(server3);
+
+            var selector = new ServerSelector(list, ServerSelector.SelectionStrategy.Random);
+            var serverInfoNode =  selector.SelectServer();
+            Log.Information(serverInfoNode.ToString());
+            serverInfoNode = selector.SelectServer();
+            Log.Information(serverInfoNode.ToString());
+            serverInfoNode = selector.SelectServer();
+            Log.Information(serverInfoNode.ToString());
+            serverInfoNode = selector.SelectServer();
+            Log.Information(serverInfoNode.ToString());
+        }
 
         private static NetClient m_netClient;
         private static string loginGateToken;
@@ -166,5 +199,9 @@ namespace ClientTest
         {
             Log.Information(message.ToString());  
         }
+
+
+
+
     }
 }

@@ -141,6 +141,8 @@ namespace Client.TimeSync
         }
         private double CalculateOffsetDeviation()
         {
+            // 可改用Welford 优化
+
             lock (m_offsetLock)
             {
                 if (m_offsetHistory.Count < 2) return 0; // 至少需要2个数据点

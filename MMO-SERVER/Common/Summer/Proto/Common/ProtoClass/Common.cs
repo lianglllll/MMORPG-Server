@@ -24,7 +24,7 @@ namespace HS.Protobuf.Common {
     static CommonReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "CgxDb21tb24ucHJvdG8SEkhTLlByb3RvYnVmLkNvbW1vbiLDBwoOU2VydmVy",
+            "CgxDb21tb24ucHJvdG8SEkhTLlByb3RvYnVmLkNvbW1vbiKACAoOU2VydmVy",
             "SW5mb05vZGUSEAoIc2VydmVySWQYASABKAUSMwoKc2VydmVyVHlwZRgCIAEo",
             "DjIfLkhTLlByb3RvYnVmLkNvbW1vbi5TRVJWRVJfVFlQRRIKCgJpcBgDIAEo",
             "CRIMCgRwb3J0GAQgASgFEhMKC2V2ZW50Qml0bWFwGAUgASgFEkwKEWNvbnRy",
@@ -45,52 +45,52 @@ namespace HS.Protobuf.Common {
             "bi5EQlByb3h5U2VydmVySW5mb05vZGVIABJMChRtYXN0ZXJUaW1lU2VydmVy",
             "SW5mbxgPIAEoCzIsLkhTLlByb3RvYnVmLkNvbW1vbi5NYXN0ZXJUaW1lU2Vy",
             "dmVySW5mb05vZGVIABJKChNzbGF2ZVRpbWVTZXJ2ZXJJbmZvGBAgASgLMisu",
-            "SFMuUHJvdG9idWYuQ29tbW9uLlNsYXZlVGltZVNlcnZlckluZm9Ob2RlSABC",
-            "CQoHcGF5bG9hZCIdChtDb250cm9sQ2VudGVyU2VydmVySW5mb05vZGUiFQoT",
-            "TG9naW5TZXJ2ZXJJbmZvTm9kZSI2ChdMb2dpbkdhdGVTZXJ2ZXJJbmZvTm9k",
-            "ZRIbChN0YXJnZXRMb2dpblNlcnZlcklkGAEgASgFIhwKGkxvZ2luR2F0ZU1n",
-            "clNlcnZlckluZm9Ob2RlIikKEkdhbWVTZXJ2ZXJJbmZvTm9kZRITCgtnYW1l",
-            "V29ybGRJZBgBIAEoBSIqChZHYW1lR2F0ZVNlcnZlckluZm9Ob2RlEhAKCHVz",
-            "ZXJQb3J0GAEgASgFIhsKGUdhbWVHYXRlTWdyU2VydmVySW5mb05vZGUiJgoT",
-            "U2NlbmVTZXJ2ZXJJbmZvTm9kZRIPCgdzY2VuZUlkGAEgASgFIhcKFURCUHJv",
-            "eHlTZXJ2ZXJJbmZvTm9kZSIaChhNYXN0ZXJUaW1lU2VydmVySW5mb05vZGUi",
-            "GQoXU2xhdmVUaW1lU2VydmVySW5mb05vZGUiJwoEVmVjMxIJCgF4GAEgASgF",
-            "EgkKAXkYAiABKAUSCQoBehgDIAEoBSIUChJDU0hlYXJ0QmVhdFJlcXVlc3Qi",
-            "FQoTQ1NIZWFydEJlYXRSZXNwb25zZSIUChJTU0hlYXJ0QmVhdFJlcXVlc3Qi",
-            "FQoTU1NIZWFydEJlYXRSZXNwb25zZSIzChhFeGNoYW5nZVB1YmxpY0tleVJl",
-            "cXVlc3QSFwoPY2xpZW50UHVibGljS2V5GAEgASgJIjUKGUV4Y2hhbmdlUHVi",
-            "bGljS2V5UmVzcG9uc2USGAoQc2VydmVyUHVibGlsY0tleRgBIAEoCSJDCiVF",
-            "eGNoYW5nZUNvbW11bmljYXRpb25TZWNyZXRLZXlSZXF1ZXN0EgwKBGtleTEY",
-            "ASABKAkSDAoEa2V5MhgCIAEoCSJOCiZFeGNoYW5nZUNvbW11bmljYXRpb25T",
-            "ZWNyZXRLZXlSZXNwb25zZRISCgpyZXN1bHRDb2RlGAEgASgFEhAKCHJlc3Vs",
-            "TXNnGAIgASgFKpQDCg1Db21tb25Qcm90b2NsEhcKE0NPTU1PTl9QUk9UT0NM",
-            "X05PTkUQABIkCh9DT01NT05fUFJPVE9DTF9DU19IRUFSVEJFQVRfUkVREOkH",
-            "EiUKIENPTU1PTl9QUk9UT0NMX0NTX0hFQVJUQkVBVF9SRVNQEOoHEiQKH0NP",
-            "TU1PTl9QUk9UT0NMX1NTX0hFQVJUQkVBVF9SRVEQ6wcSJQogQ09NTU9OX1BS",
-            "T1RPQ0xfU1NfSEVBUlRCRUFUX1JFU1AQ7AcSKwomQ09NTU9OX1BST1RPQ0xf",
-            "RVhDSEFOR0VfUFVCTElDX0tFWV9SRVEQ7QcSLAonQ09NTU9OX1BST1RPQ0xf",
-            "RVhDSEFOR0VfUFVCTElDX0tFWV9SRVNQEO4HEjkKNENPTU1PTl9QUk9UT0NM",
-            "X0V4Y2hhbmdlX0NPTU1VTklDQVRJT05fU0VDUkVUX0tFWV9SRVEQ7wcSOgo1",
-            "Q09NTU9OX1BST1RPQ0xfRXhjaGFuZ2VfQ09NTVVOSUNBVElPTl9TRUNSRVRf",
-            "S0VZX1JFU1AQ8AcqxgIKC1NFUlZFUl9UWVBFEhQKEFNFUlZFUl9UWVBFX05P",
-            "TkUQABIdChlTRVJWRVJfVFlQRV9DT05UUk9MQ0VOVEVSEAESFQoRU0VSVkVS",
-            "X1RZUEVfTE9HSU4QAhIZChVTRVJWRVJfVFlQRV9MT0dJTkdBVEUQAxIcChhT",
-            "RVJWRVJfVFlQRV9MT0dJTkdBVEVNR1IQBBIUChBTRVJWRVJfVFlQRV9HQU1F",
-            "EAUSGAoUU0VSVkVSX1RZUEVfR0FNRUdBVEUQBhIbChdTRVJWRVJfVFlQRV9H",
-            "QU1FR0FURU1HUhAHEhUKEVNFUlZFUl9UWVBFX1NDRU5FEAgSFwoTU0VSVkVS",
-            "X1RZUEVfREJQUk9YWRAJEhoKFlNFUlZFUl9UWVBFX01BU1RFUlRJTUUQChIZ",
-            "ChVTRVJWRVJfVFlQRV9TTEFWRVRJTUUQCypYCg1QUk9UT0NBTF9DT0RFEhYK",
-            "ElBST1RPQ0FMX0NPREVfTk9ORRAAEhcKE1BST1RPQ0FMX0NPREVfTE9HSU4Q",
-            "AhIWChJQUk9UT0NBTF9DT0RFX0dBTUUQBSqCAQoLR2F0ZUNvbW1hbmQSFQoR",
-            "R0FURV9DT01NQU5EX05PTkUQABIWChJHQVRFX0NPTU1BTkRfU1RBUlQQARIV",
-            "ChFHQVRFX0NPTU1BTkRfU1RPUBACEhcKE0dBVEVfQ09NTUFORF9SRVNVTUUQ",
-            "AxIUChBHQVRFX0NPTU1BTkRfRU5EEAQqXgoMU2VydmVyU3RhdHVzEhgKFFNF",
-            "UlZFUl9TVEFUVVNfQUNUSVZFEAASGAoUU0VSVkVSX1NUQVRVU19QQVVTRUQQ",
-            "ARIaChZTRVJWRVJfU1RBVFVTX0lOQUNUSVZFEAJiBnByb3RvMw=="));
+            "SFMuUHJvdG9idWYuQ29tbW9uLlNsYXZlVGltZVNlcnZlckluZm9Ob2RlSAAS",
+            "FAoMZ2VvX2xhdGl0dWRlGBQgASgBEhUKDWdlb19sb25naXR1ZGUYFSABKAES",
+            "DgoGd2VpZ2h0GBYgASgFQgkKB3BheWxvYWQiHQobQ29udHJvbENlbnRlclNl",
+            "cnZlckluZm9Ob2RlIhUKE0xvZ2luU2VydmVySW5mb05vZGUiNgoXTG9naW5H",
+            "YXRlU2VydmVySW5mb05vZGUSGwoTdGFyZ2V0TG9naW5TZXJ2ZXJJZBgBIAEo",
+            "BSIcChpMb2dpbkdhdGVNZ3JTZXJ2ZXJJbmZvTm9kZSIpChJHYW1lU2VydmVy",
+            "SW5mb05vZGUSEwoLZ2FtZVdvcmxkSWQYASABKAUiKgoWR2FtZUdhdGVTZXJ2",
+            "ZXJJbmZvTm9kZRIQCgh1c2VyUG9ydBgBIAEoBSIbChlHYW1lR2F0ZU1nclNl",
+            "cnZlckluZm9Ob2RlIiYKE1NjZW5lU2VydmVySW5mb05vZGUSDwoHc2NlbmVJ",
+            "ZBgBIAEoBSIXChVEQlByb3h5U2VydmVySW5mb05vZGUiGgoYTWFzdGVyVGlt",
+            "ZVNlcnZlckluZm9Ob2RlIhkKF1NsYXZlVGltZVNlcnZlckluZm9Ob2RlIicK",
+            "BFZlYzMSCQoBeBgBIAEoBRIJCgF5GAIgASgFEgkKAXoYAyABKAUiFAoSQ1NI",
+            "ZWFydEJlYXRSZXF1ZXN0IhUKE0NTSGVhcnRCZWF0UmVzcG9uc2UiFAoSU1NI",
+            "ZWFydEJlYXRSZXF1ZXN0IhUKE1NTSGVhcnRCZWF0UmVzcG9uc2UiMwoYRXhj",
+            "aGFuZ2VQdWJsaWNLZXlSZXF1ZXN0EhcKD2NsaWVudFB1YmxpY0tleRgBIAEo",
+            "CSI1ChlFeGNoYW5nZVB1YmxpY0tleVJlc3BvbnNlEhgKEHNlcnZlclB1Ymxp",
+            "bGNLZXkYASABKAkiQwolRXhjaGFuZ2VDb21tdW5pY2F0aW9uU2VjcmV0S2V5",
+            "UmVxdWVzdBIMCgRrZXkxGAEgASgJEgwKBGtleTIYAiABKAkiTgomRXhjaGFu",
+            "Z2VDb21tdW5pY2F0aW9uU2VjcmV0S2V5UmVzcG9uc2USEgoKcmVzdWx0Q29k",
+            "ZRgBIAEoBRIQCghyZXN1bE1zZxgCIAEoBSqUAwoNQ29tbW9uUHJvdG9jbBIX",
+            "ChNDT01NT05fUFJPVE9DTF9OT05FEAASJAofQ09NTU9OX1BST1RPQ0xfQ1Nf",
+            "SEVBUlRCRUFUX1JFURDpBxIlCiBDT01NT05fUFJPVE9DTF9DU19IRUFSVEJF",
+            "QVRfUkVTUBDqBxIkCh9DT01NT05fUFJPVE9DTF9TU19IRUFSVEJFQVRfUkVR",
+            "EOsHEiUKIENPTU1PTl9QUk9UT0NMX1NTX0hFQVJUQkVBVF9SRVNQEOwHEisK",
+            "JkNPTU1PTl9QUk9UT0NMX0VYQ0hBTkdFX1BVQkxJQ19LRVlfUkVREO0HEiwK",
+            "J0NPTU1PTl9QUk9UT0NMX0VYQ0hBTkdFX1BVQkxJQ19LRVlfUkVTUBDuBxI5",
+            "CjRDT01NT05fUFJPVE9DTF9FeGNoYW5nZV9DT01NVU5JQ0FUSU9OX1NFQ1JF",
+            "VF9LRVlfUkVREO8HEjoKNUNPTU1PTl9QUk9UT0NMX0V4Y2hhbmdlX0NPTU1V",
+            "TklDQVRJT05fU0VDUkVUX0tFWV9SRVNQEPAHKsYCCgtTRVJWRVJfVFlQRRIU",
+            "ChBTRVJWRVJfVFlQRV9OT05FEAASHQoZU0VSVkVSX1RZUEVfQ09OVFJPTENF",
+            "TlRFUhABEhUKEVNFUlZFUl9UWVBFX0xPR0lOEAISGQoVU0VSVkVSX1RZUEVf",
+            "TE9HSU5HQVRFEAMSHAoYU0VSVkVSX1RZUEVfTE9HSU5HQVRFTUdSEAQSFAoQ",
+            "U0VSVkVSX1RZUEVfR0FNRRAFEhgKFFNFUlZFUl9UWVBFX0dBTUVHQVRFEAYS",
+            "GwoXU0VSVkVSX1RZUEVfR0FNRUdBVEVNR1IQBxIVChFTRVJWRVJfVFlQRV9T",
+            "Q0VORRAIEhcKE1NFUlZFUl9UWVBFX0RCUFJPWFkQCRIaChZTRVJWRVJfVFlQ",
+            "RV9NQVNURVJUSU1FEAoSGQoVU0VSVkVSX1RZUEVfU0xBVkVUSU1FEAsqggEK",
+            "C0dhdGVDb21tYW5kEhUKEUdBVEVfQ09NTUFORF9OT05FEAASFgoSR0FURV9D",
+            "T01NQU5EX1NUQVJUEAESFQoRR0FURV9DT01NQU5EX1NUT1AQAhIXChNHQVRF",
+            "X0NPTU1BTkRfUkVTVU1FEAMSFAoQR0FURV9DT01NQU5EX0VORBAEKl4KDFNl",
+            "cnZlclN0YXR1cxIYChRTRVJWRVJfU1RBVFVTX0FDVElWRRAAEhgKFFNFUlZF",
+            "Ul9TVEFUVVNfUEFVU0VEEAESGgoWU0VSVkVSX1NUQVRVU19JTkFDVElWRRAC",
+            "YgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.Common.CommonProtocl), typeof(global::HS.Protobuf.Common.SERVER_TYPE), typeof(global::HS.Protobuf.Common.PROTOCAL_CODE), typeof(global::HS.Protobuf.Common.GateCommand), typeof(global::HS.Protobuf.Common.ServerStatus), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Common.ServerInfoNode), global::HS.Protobuf.Common.ServerInfoNode.Parser, new[]{ "ServerId", "ServerType", "Ip", "Port", "EventBitmap", "ControlCenterInfo", "LoginServerInfo", "LoginGateServerInfo", "LoginGateMgrServerInfo", "GameServerInfo", "GameGateServerInfo", "GameGateMgrServerInfo", "SceneServerInfo", "DbProxyServerInfo", "MasterTimeServerInfo", "SlaveTimeServerInfo" }, new[]{ "Payload" }, null, null, null),
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.Common.CommonProtocl), typeof(global::HS.Protobuf.Common.SERVER_TYPE), typeof(global::HS.Protobuf.Common.GateCommand), typeof(global::HS.Protobuf.Common.ServerStatus), }, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Common.ServerInfoNode), global::HS.Protobuf.Common.ServerInfoNode.Parser, new[]{ "ServerId", "ServerType", "Ip", "Port", "EventBitmap", "ControlCenterInfo", "LoginServerInfo", "LoginGateServerInfo", "LoginGateMgrServerInfo", "GameServerInfo", "GameGateServerInfo", "GameGateMgrServerInfo", "SceneServerInfo", "DbProxyServerInfo", "MasterTimeServerInfo", "SlaveTimeServerInfo", "GeoLatitude", "GeoLongitude", "Weight" }, new[]{ "Payload" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Common.ControlCenterServerInfoNode), global::HS.Protobuf.Common.ControlCenterServerInfoNode.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Common.LoginServerInfoNode), global::HS.Protobuf.Common.LoginServerInfoNode.Parser, null, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Common.LoginGateServerInfoNode), global::HS.Protobuf.Common.LoginGateServerInfoNode.Parser, new[]{ "TargetLoginServerId" }, null, null, null, null),
@@ -150,12 +150,6 @@ namespace HS.Protobuf.Common {
     /// time:	60000	
     /// </summary>
     [pbr::OriginalName("SERVER_TYPE_SLAVETIME")] Slavetime = 11,
-  }
-
-  public enum PROTOCAL_CODE {
-    [pbr::OriginalName("PROTOCAL_CODE_NONE")] None = 0,
-    [pbr::OriginalName("PROTOCAL_CODE_LOGIN")] Login = 2,
-    [pbr::OriginalName("PROTOCAL_CODE_GAME")] Game = 5,
   }
 
   public enum GateCommand {
@@ -223,6 +217,9 @@ namespace HS.Protobuf.Common {
       ip_ = other.ip_;
       port_ = other.port_;
       eventBitmap_ = other.eventBitmap_;
+      geoLatitude_ = other.geoLatitude_;
+      geoLongitude_ = other.geoLongitude_;
+      weight_ = other.weight_;
       switch (other.PayloadCase) {
         case PayloadOneofCase.ControlCenterInfo:
           ControlCenterInfo = other.ControlCenterInfo.Clone();
@@ -460,6 +457,48 @@ namespace HS.Protobuf.Common {
       }
     }
 
+    /// <summary>Field number for the "geo_latitude" field.</summary>
+    public const int GeoLatitudeFieldNumber = 20;
+    private double geoLatitude_;
+    /// <summary>
+    /// 地理信息字段
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public double GeoLatitude {
+      get { return geoLatitude_; }
+      set {
+        geoLatitude_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "geo_longitude" field.</summary>
+    public const int GeoLongitudeFieldNumber = 21;
+    private double geoLongitude_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public double GeoLongitude {
+      get { return geoLongitude_; }
+      set {
+        geoLongitude_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "weight" field.</summary>
+    public const int WeightFieldNumber = 22;
+    private int weight_;
+    /// <summary>
+    /// 服务器权重（用于加权策略）
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int Weight {
+      get { return weight_; }
+      set {
+        weight_ = value;
+      }
+    }
+
     private object payload_;
     /// <summary>Enum of possible cases for the "payload" oneof.</summary>
     public enum PayloadOneofCase {
@@ -521,6 +560,9 @@ namespace HS.Protobuf.Common {
       if (!object.Equals(DbProxyServerInfo, other.DbProxyServerInfo)) return false;
       if (!object.Equals(MasterTimeServerInfo, other.MasterTimeServerInfo)) return false;
       if (!object.Equals(SlaveTimeServerInfo, other.SlaveTimeServerInfo)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(GeoLatitude, other.GeoLatitude)) return false;
+      if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(GeoLongitude, other.GeoLongitude)) return false;
+      if (Weight != other.Weight) return false;
       if (PayloadCase != other.PayloadCase) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -545,6 +587,9 @@ namespace HS.Protobuf.Common {
       if (payloadCase_ == PayloadOneofCase.DbProxyServerInfo) hash ^= DbProxyServerInfo.GetHashCode();
       if (payloadCase_ == PayloadOneofCase.MasterTimeServerInfo) hash ^= MasterTimeServerInfo.GetHashCode();
       if (payloadCase_ == PayloadOneofCase.SlaveTimeServerInfo) hash ^= SlaveTimeServerInfo.GetHashCode();
+      if (GeoLatitude != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(GeoLatitude);
+      if (GeoLongitude != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(GeoLongitude);
+      if (Weight != 0) hash ^= Weight.GetHashCode();
       hash ^= (int) payloadCase_;
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -628,6 +673,18 @@ namespace HS.Protobuf.Common {
         output.WriteRawTag(130, 1);
         output.WriteMessage(SlaveTimeServerInfo);
       }
+      if (GeoLatitude != 0D) {
+        output.WriteRawTag(161, 1);
+        output.WriteDouble(GeoLatitude);
+      }
+      if (GeoLongitude != 0D) {
+        output.WriteRawTag(169, 1);
+        output.WriteDouble(GeoLongitude);
+      }
+      if (Weight != 0) {
+        output.WriteRawTag(176, 1);
+        output.WriteInt32(Weight);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -702,6 +759,18 @@ namespace HS.Protobuf.Common {
         output.WriteRawTag(130, 1);
         output.WriteMessage(SlaveTimeServerInfo);
       }
+      if (GeoLatitude != 0D) {
+        output.WriteRawTag(161, 1);
+        output.WriteDouble(GeoLatitude);
+      }
+      if (GeoLongitude != 0D) {
+        output.WriteRawTag(169, 1);
+        output.WriteDouble(GeoLongitude);
+      }
+      if (Weight != 0) {
+        output.WriteRawTag(176, 1);
+        output.WriteInt32(Weight);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -760,6 +829,15 @@ namespace HS.Protobuf.Common {
       if (payloadCase_ == PayloadOneofCase.SlaveTimeServerInfo) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(SlaveTimeServerInfo);
       }
+      if (GeoLatitude != 0D) {
+        size += 2 + 8;
+      }
+      if (GeoLongitude != 0D) {
+        size += 2 + 8;
+      }
+      if (Weight != 0) {
+        size += 2 + pb::CodedOutputStream.ComputeInt32Size(Weight);
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -786,6 +864,15 @@ namespace HS.Protobuf.Common {
       }
       if (other.EventBitmap != 0) {
         EventBitmap = other.EventBitmap;
+      }
+      if (other.GeoLatitude != 0D) {
+        GeoLatitude = other.GeoLatitude;
+      }
+      if (other.GeoLongitude != 0D) {
+        GeoLongitude = other.GeoLongitude;
+      }
+      if (other.Weight != 0) {
+        Weight = other.Weight;
       }
       switch (other.PayloadCase) {
         case PayloadOneofCase.ControlCenterInfo:
@@ -990,6 +1077,18 @@ namespace HS.Protobuf.Common {
             SlaveTimeServerInfo = subBuilder;
             break;
           }
+          case 161: {
+            GeoLatitude = input.ReadDouble();
+            break;
+          }
+          case 169: {
+            GeoLongitude = input.ReadDouble();
+            break;
+          }
+          case 176: {
+            Weight = input.ReadInt32();
+            break;
+          }
         }
       }
     #endif
@@ -1122,6 +1221,18 @@ namespace HS.Protobuf.Common {
             }
             input.ReadMessage(subBuilder);
             SlaveTimeServerInfo = subBuilder;
+            break;
+          }
+          case 161: {
+            GeoLatitude = input.ReadDouble();
+            break;
+          }
+          case 169: {
+            GeoLongitude = input.ReadDouble();
+            break;
+          }
+          case 176: {
+            Weight = input.ReadInt32();
             break;
           }
         }

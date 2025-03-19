@@ -33,11 +33,7 @@ enum SERVER_TYPE{
 	// DB:		50000	mongodb/redis
 	// time:	60000	
 }
-enum PROTOCAL_CODE{
-	PROTOCAL_CODE_NONE = 0;
-	PROTOCAL_CODE_LOGIN = 2;
-	PROTOCAL_CODE_GAME = 5;
-}
+
 
 message ServerInfoNode{
 	int32 serverId			= 1;
@@ -58,7 +54,15 @@ message ServerInfoNode{
 		MasterTimeServerInfoNode masterTimeServerInfo		= 15;
 		SlaveTimeServerInfoNode slaveTimeServerInfo			= 16;
 	}
+	// 地理信息字段
+    double geo_latitude = 20;
+    double geo_longitude = 21;
+    
+    // 服务器权重（用于加权策略）
+    int32 weight = 22;
 }
+
+
 message ControlCenterServerInfoNode{
 }
 message LoginServerInfoNode{
