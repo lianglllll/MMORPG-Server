@@ -1,5 +1,6 @@
 ﻿using Common.Summer.Core;
 using Common.Summer.Net;
+using Common.Summer.Server;
 using Common.Summer.Tools;
 using DBProxyServer.Handle;
 using DBProxyServer.Utils;
@@ -79,15 +80,16 @@ namespace DBProxyServer.Net
         private void Parse1()
         {
             // 连接时间同步服务器
+            Parse2();
         }
         private void Parse2()
         {
             // 满足了全部条件才会进入下一个阶段
-            var mtNode = m_relatedServerNode[SERVER_TYPE.Mastertime];
+/*            var mtNode = m_relatedServerNode[SERVER_TYPE.Mastertime];
             if (mtNode.Client == null)
             {
                 goto End;
-            }
+            }*/
 
             // 开始网络监听，预示着当前服务器的正式启动
             ConnManager.Instance.Start();
