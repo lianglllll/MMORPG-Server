@@ -1,5 +1,5 @@
 bin/
 obj/
 
-pids.txt
-GameServer/a_Old
+/pids.txt
+/GameServer/a_Old
