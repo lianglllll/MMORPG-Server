@@ -4,6 +4,7 @@ using HS.Protobuf.SceneEntity;
 using SceneServer.Core.Combat.Skills;
 using SceneServer.Core.Model.Actor;
 using SceneServer.Core.Scene;
+using SceneServer.Core.Scene.Component;
 using Serilog;
 using System.Collections.Concurrent;
 
@@ -14,29 +15,36 @@ namespace SceneServer.Core.Combat
     /// </summary>
     public class FightManager
     {
-        public List<Missile> missiles = new List<Missile>();        //当前场景下的投射物列表 todo
+        // TODO 当前场景下的投射物列表
+        public List<Missile> missiles = new List<Missile>();        
 
-        //待处理的技能施法队列：收集来自各个客户端的施法请求,线性处理，避免多线程并发问题。
-        public ConcurrentQueue<CastInfo> castInfoQueue = new ConcurrentQueue<CastInfo>();
+        // 待处理的技能施法队列：收集来自各个客户端的施法请求,线性处理，避免多线程并发问题。
+        public ConcurrentQueue<CastInfo> castReqQueue = new ConcurrentQueue<CastInfo>();
 
-        //等待广播队列存在的意义：收集某帧的全部数据一起发送，减少数据包的发送频率
-        //  等待广播：技能施法队列：通知各个客户端谁谁谁要施法技能
+        // 等待广播队列存在的意义：收集某帧的全部数据一起发送，减少数据包的发送频率
+        // 等待广播：技能施法队列：通知各个客户端谁谁谁要施法技能
         public ConcurrentQueue<CastInfo> spellQueue = new ConcurrentQueue<CastInfo>();
         private SpellCastResponse spellCastResponse = new SpellCastResponse();
-        //  等待广播：伤害队列：告诉客户端谁谁谁收到伤害了，让其播放一些动画/特效或者ui之类的。这里不做属性更新
+
+        // 等待广播：伤害队列：告诉客户端谁谁谁收到伤害了，让其播放一些动画/特效或者ui之类的。这里不做属性更新
         public ConcurrentQueue<Damage> damageQueue = new ConcurrentQueue<Damage>();
         private DamageResponse damageResponse = new DamageResponse();
-        //  等待广播：人物属性更新的队列
+        
+        // 等待广播：人物属性更新的队列
         public ConcurrentQueue<PropertyUpdate> propertyUpdateQueue = new ConcurrentQueue<PropertyUpdate>();
         private PropertyUpdateRsponse propertyUpdateRsponse = new PropertyUpdateRsponse();
         
         public void Init()
         {
+
         }
-        public void OnUpdate(float deltaTime)
+        public void UnInit()
+        {
+        }
+        public void Update(float deltaTime)
         {
             //处理施法请求
-            while(castInfoQueue.TryDequeue(out var cast))
+            while(castReqQueue.TryDequeue(out var cast))
             {
                 RunCast(cast);
             }
@@ -49,11 +57,14 @@ namespace SceneServer.Core.Combat
 
             //广播施法请求
             BroadcastSpellInfo();
+
             //广播伤害信息
             BroadcastDamage();
+            
             //广播actor属性更新信息
             BroadcastProperties();
         }
+
         private void RunCast(CastInfo cast)
         {
             //1.判断施法者是否存在
@@ -94,11 +105,10 @@ namespace SceneServer.Core.Combat
                 }
 
                 //广播
-                //space.Broadcast(spellCastResponse);
                 foreach (var cc in hashSet)
                 {
-                    // todo
-                    // cc.session.Send(spellCastResponse);
+                    spellCastResponse.SessionId = cc.SessionId;
+                    cc.Send(spellCastResponse);
                 }
 
                 spellCastResponse.List.Clear();

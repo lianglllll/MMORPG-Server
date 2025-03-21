@@ -3,18 +3,23 @@ using Common.Summer.Tools;
 using Common.Summer.Core;
 using SceneServer.Core.Model;
 
-namespace SceneServer.Core.Scene
+namespace SceneServer.Core.Scene.Component
 {
     public class SceneEntityManager : Singleton<SceneEntityManager>
     {
         private IdGenerator _idGenerator = new IdGenerator();
         private ConcurrentDictionary<int, SceneEntity> allEntitiesDict = new(); // <entityId, SceneEntity>
 
-        public void Update(float deltaTime)
+        public override void Init()
+        {
+            Scheduler.Instance.Update(Update);
+        }
+
+        public void Update()
         {
             foreach (var entity in allEntitiesDict)
             {
-                entity.Value.Update(deltaTime);
+                entity.Value.Update(MyTime.deltaTime);
             }
         }
         public void AddSceneEntity(SceneEntity entity)

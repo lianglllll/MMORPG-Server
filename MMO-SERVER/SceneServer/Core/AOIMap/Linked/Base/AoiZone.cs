@@ -2,7 +2,7 @@
 using Common.Summer.Core;
 using SceneServer.Core.Model;
 using SceneServer.Utils;
-using SceneServer.Core.Scene;
+using SceneServer.Core.Scene.Component;
 
 namespace SceneServer.Core.AOI
 {

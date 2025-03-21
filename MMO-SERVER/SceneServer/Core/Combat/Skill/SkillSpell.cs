@@ -2,6 +2,7 @@
 using Common.Summer.Core;
 using HS.Protobuf.Combat.Skill;
 using SceneServer.Core.Model.Actor;
+using SceneServer.Core.Scene.Component;
 using SceneServer.Core.Scene;
 
 namespace SceneServer.Core.Combat.Skills
@@ -72,8 +73,7 @@ namespace SceneServer.Core.Combat.Skills
                 CasterId = Owner.EntityId,
                 SkillId = skill.SkillId
             };
-            //todo 
-            //Owner.currentSpace.fightManager.spellQueue.Enqueue(info);
+            SceneManager.Instance.FightManager.spellQueue.Enqueue(info);
         }
         private void SpellTarget(Skill skill, int target_id)
         {

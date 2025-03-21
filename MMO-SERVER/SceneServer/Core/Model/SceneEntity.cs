@@ -1,4 +1,5 @@
 ﻿using Common.Summer.Core;
+using HS.Protobuf.Common;
 using HS.Protobuf.SceneEntity;
 
 namespace SceneServer.Core.Model

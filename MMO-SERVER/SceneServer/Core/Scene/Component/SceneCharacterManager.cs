@@ -4,7 +4,7 @@ using Common.Summer.Core;
 using SceneServer.Core.Model.Actor;
 using HS.Protobuf.DBProxy.DBCharacter;
 
-namespace SceneServer.Core.Scene
+namespace SceneServer.Core.Scene.Component
 {
     /// <summary>
     /// 统一管理全部的角色（创建，移除，获取）
@@ -14,13 +14,19 @@ namespace SceneServer.Core.Scene
         //游戏中全部的角色<entityid,characterObj>,支持线程安全的字典
         private ConcurrentDictionary<int, SceneCharacter> characterDict = new();
 
-        public bool Init() {
+        public bool Init()
+        {
             ClearCharacters();
             // 5秒保存一次，用于保存角色信息
             Scheduler.Instance.AddTask(_SaveCharacterInfoToDB, 5);
             return true;
         }
-        public SceneCharacter CreateSceneCharacter(string sessionId, Connection gameGateConn,DBCharacterNode dbChrNode)
+        public void UnInit()
+        {
+            throw new NotImplementedException();
+        }
+
+        public SceneCharacter CreateSceneCharacter(string sessionId, Connection gameGateConn, DBCharacterNode dbChrNode)
         {
             var chr = new SceneCharacter();
             chr.Init(sessionId, gameGateConn, dbChrNode);
@@ -33,7 +39,8 @@ namespace SceneServer.Core.Scene
         public bool RemoveSceneCharacterByEntityId(int entityId)
         {
             //角色列表中删除
-            if(characterDict.TryRemove(entityId, out SceneCharacter chr)){
+            if (characterDict.TryRemove(entityId, out SceneCharacter chr))
+            {
                 //entity列表中删除
                 SceneEntityManager.Instance.RemoveSceneEntity(chr.EntityId);
                 return true;
@@ -50,7 +57,7 @@ namespace SceneServer.Core.Scene
         }
         public bool ClearCharacters()
         {
-            foreach(var chr in characterDict.Values)
+            foreach (var chr in characterDict.Values)
             {
                 SceneEntityManager.Instance.RemoveSceneEntity(chr.EntityId);
             }
@@ -77,5 +84,6 @@ namespace SceneServer.Core.Scene
             //    repo.UpdateAsync(chr.Data);//异步更新
             //}
         }
+
     }
 }

@@ -5,17 +5,26 @@ import "Combat/ProtoSource/Buff.proto";
 import "Game/ProtoSource/Backpack.proto";
 package HS.Protobuf.SceneEntity;
 
-message NetVector3{
-	int32 x = 1; //这里的数值是unity中数值*1000得到的整数值
-	int32 y = 2;
-	int32 z = 3;
-}
+
 message NetTransform{
-	NetVector3 position = 1;
-	NetVector3 rotation = 2;
-	NetVector3 scale = 3;
+	HS.Protobuf.Common.NetVector3 position = 1;
+	HS.Protobuf.Common.NetVector3 rotation = 2;
+	HS.Protobuf.Common.NetVector3 scale = 3;
 }
 
+enum SceneEntityType{
+	SCENE_ENTITY_TYPE_NONE = 0;
+	SCENE_ENTITY_TYPE_ACTOR = 1;
+	SCENE_ENTITY_TYPE_ITEM = 2;
+	SCENE_ENTITY_TYPE_INTERACTIVO = 3;
+}
+
+// Actor
+enum NetActorType{
+    NET_ACTOR_TYPE_CHARACTER = 0;
+    NET_ACTOR_TYPE_MONSTER = 1;
+    NET_ACTOR_TYPE_NPC = 2;
+}
 enum NetActorMode {
     NET_ACTOR_MODE_NONE = 0;
     NET_ACTOR_MODE_NORMAL = 1;
@@ -77,15 +86,6 @@ enum NetActorSmallState {
     NET_ACTOR_STATE_SAMLL_KNOCK_BACK = 22;
     NET_ACTOR_STATE_SAMLL_KNOCK_UP = 23;
 }
-
-
-
-
-enum NetActorType{
-    NET_ACTOR_TYPE_CHARACTER = 0;
-    NET_ACTOR_TYPE_MONSTER = 1;
-    NET_ACTOR_TYPE_NPC = 2;
-}
 message NetActorNode {
     int32 entityId = 1;
     NetTransform transform = 2;
@@ -107,37 +107,27 @@ message NetActorNode {
     NetActorState netActorState = 15;
     NetActorSmallState netActorSmallState = 16;
 
-    repeated int32 equippedSkills = 17;
-    repeated HS.Protobuf.Game.Backpack.ItemInfo wornEquipments = 18;
-    repeated HS.Protobuf.Combat.Buff.BuffInfo buffs = 19;
+	// int32 weaponSkillArsenalId = 17;
+    repeated int32 equippedSkills = 18;
+    repeated HS.Protobuf.Game.Backpack.ItemInfo wornEquipments = 19;
+    repeated HS.Protobuf.Combat.Buff.BuffInfo buffs = 20;
 }
+
+// Item
 message NetItemNode{
 	int32 entityId = 1;
 	int32 sceneId  = 2;
 	NetTransform transform = 3;
-	HS.Protobuf.Game.Backpack.ItemInfo ItemInfo = 4;
-}
-enum SceneEntityType{
-	SCENE_ENTITY_TYPE_NONE = 0;
-	SCENE_ENTITY_TYPE_ACTOR = 1;
-	SCENE_ENTITY_TYPE_ITEM = 2;
-	SCENE_ENTITY_TYPE_INTERACTIVO = 3;
+
+	HS.Protobuf.Game.Backpack.NetItemDataNode netItemDataNode = 4;
 }
 
-
-
-
-
-
-
-
-
-
+// =======================================无用
 //entity位置信息
 message NetEntity {
 	int32 id = 1;
-	HS.Protobuf.Common.Vec3 position = 2;
-	HS.Protobuf.Common.Vec3 direction = 3;
+	HS.Protobuf.Common.NetVector3 position = 2;
+	HS.Protobuf.Common.NetVector3 direction = 3;
 }
 
 //活动单位的模式

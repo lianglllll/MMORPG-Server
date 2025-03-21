@@ -10,7 +10,7 @@ namespace SceneServer.Core.Combat.Skills
     [AttributeUsage(AttributeTargets.Class)]
     public class SkillAttribute : Attribute
     {
-        //技能码
+        //技能码  其实就是skillid
         public int Code { get; }
 
         public SkillAttribute(int code)
@@ -23,9 +23,7 @@ namespace SceneServer.Core.Combat.Skills
     {
         public static ConcurrentDictionary<int, Type> SkillTypeDict = new();
 
-        /// <summary>
-        /// 扫描项目里带有[Skill]属性的class
-        /// </summary>
+        // 扫描项目里带有[Skill]属性的class
         public static void Start()
         {
             int count = 0;
@@ -58,12 +56,7 @@ namespace SceneServer.Core.Combat.Skills
             //Log.Debug("==>共加载{0}个自定义技能", count);
         }
 
-        /// <summary>
-        /// 创建Skill实例
-        /// </summary>
-        /// <param name="owner"></param>
-        /// <param name="skid"></param>
-        /// <returns></returns>
+        // 创建Skill实例
         public static Skill CreateSkill(SceneActor owner, int skid)
         {
             //1.如果有注解则使用所在的类型

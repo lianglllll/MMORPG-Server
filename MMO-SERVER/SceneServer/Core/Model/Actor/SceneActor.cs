@@ -5,6 +5,7 @@ using SceneServer.Core.Combat.Attrubute;
 using SceneServer.Utils;
 using SceneServer.Core.Combat.Skills;
 using GameServer.Buffs;
+using HS.Protobuf.Common;
 
 namespace SceneServer.Core.Model.Actor
 {
@@ -12,7 +13,7 @@ namespace SceneServer.Core.Model.Actor
     {
         public UnitDefine? m_define;
 
-        protected NetActorNode? m_netActorNode;
+        protected NetActorNode m_netActorNode = new();
         protected AttributeManager m_attributeManager = new();
 
         // skill
@@ -23,30 +24,47 @@ namespace SceneServer.Core.Model.Actor
         // buff
         protected BuffManager m_buffManager = new();
 
-        public void Init(NetActorNode netActorNode)
+        public void Init(NetVector3 InitPos, int professionId, int level)
         {
-            Init(netActorNode.Transform.Position, Vector3Int.zero, Vector3Int.one);
-            m_define = StaticDataManager.Instance.unitDefineDict[netActorNode.ProfessionId];
-            m_netActorNode = netActorNode;
-            m_attributeManager.Init(m_define, m_netActorNode.Level);
-            netActorNode.MaxHp = m_attributeManager.final.MaxHP;
-            netActorNode.MaxMp = m_attributeManager.final.MaxMP;
-            netActorNode.Hp = MaxHP;
-            netActorNode.Mp = MaxMP;
-            netActorNode.Speed = m_attributeManager.final.Speed;
-            netActorNode.NetActorMode = NetActorMode.Normal;
-            netActorNode.NetActorState = NetActorState.Idle;
-            netActorNode.NetActorSmallState = NetActorSmallState.None; // 可以选择去掉
+            base.Init(InitPos, Vector3Int.zero, Vector3Int.one);
+
+            m_define = StaticDataManager.Instance.unitDefineDict[professionId];
+            m_attributeManager.Init(m_define, level);
             m_curUseSkill = null;
             m_skillSpell.Init(this);
             m_skillManager.Init(this);
             m_buffManager.Init(this);
+
+            var transform = new NetTransform();
+            var pos = new NetVector3();
+            var rotation = new NetVector3();
+            var scale = new NetVector3();
+            transform.Position = pos;
+            transform.Rotation = rotation;
+            transform.Scale = scale;
+            m_netActorNode.Transform = transform;
+
+
+            m_netActorNode.ProfessionId = professionId;
+            m_netActorNode.Level = level;
+            m_netActorNode.MaxHp = m_attributeManager.final.MaxHP;
+            m_netActorNode.MaxMp = m_attributeManager.final.MaxMP;
+            m_netActorNode.Hp = MaxHP;
+            m_netActorNode.Mp = MaxMP;
+            m_netActorNode.Speed = m_attributeManager.final.Speed;
+            m_netActorNode.NetActorMode = NetActorMode.Normal;
+            m_netActorNode.NetActorState = NetActorState.Idle;
+            m_netActorNode.NetActorSmallState = NetActorSmallState.None; // 可以选择去掉
+            
+
         }
         public override void Update(float deltaTime)
         {
             m_skillManager.Update(deltaTime);
             m_buffManager.Update(deltaTime);
         }
+
+        #region GetSet
 
         public NetActorNode NetActorNode
         {
@@ -96,10 +114,12 @@ namespace SceneServer.Core.Model.Actor
         }
         public Skill GetSkillById(int skillId)
         {
-            return null;
+            return m_skillManager.GetSkillById(skillId);
         }
         public SkillSpell SkillSpell => m_skillSpell;
         public List<int> EquippedSkillIds => m_netActorNode.EquippedSkills.ToList<int>();
+
+        #endregion
 
         public override void SetTransform(NetTransform transform)
         {
@@ -130,6 +150,10 @@ namespace SceneServer.Core.Model.Actor
         public void RecvDamage(Damage damage)
         {
             throw new NotImplementedException();
+        }
+        public virtual void Revive()
+        {
+
         }
     }
 }

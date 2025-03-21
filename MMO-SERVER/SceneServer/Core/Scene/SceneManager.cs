@@ -5,45 +5,84 @@ using HS.Protobuf.DBProxy.DBCharacter;
 using HS.Protobuf.Scene;
 using HS.Protobuf.SceneEntity;
 using SceneServer.Core.AOI;
+using SceneServer.Core.Combat;
 using SceneServer.Core.Model;
 using SceneServer.Core.Model.Actor;
 using SceneServer.Core.Model.Item;
+using SceneServer.Core.Scene.Component;
 using SceneServer.Net;
 using SceneServer.Utils;
 using Serilog;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 
 namespace SceneServer.Core.Scene
 {
     public class SceneManager : Singleton<SceneManager>
     {
+        private SceneCharacterManager   m_sceneCharacterManager = new();
+        private SceneMonsterManager     m_scenenMonsterManager  = new();        
+        private SceneItemManager        m_sceneItemManager      = new();
+        private SpawnManager            m_spawnManager          = new();
+        private FightManager            m_fightManager          = new();         // 战斗管理器，负责技能、投射物、伤害、actor信息的更新
+
         private SpaceDefine? m_sceneDefine;
-        private SceneCharacterManager? m_sceneCharacterManager;
-        private AoiZone? m_aoiZone;                                             //AOI管理器：十字链表空间(unity坐标系)
+        private AoiZone? m_aoiZoneManager = new AoiZone(0.001f, 0.001f); // AOI管理器：十字链表空间(unity坐标系)
         private Vector2 m_viewArea;
+        private List<RevivalPointDefine> revivalPointDefines = new List<RevivalPointDefine>();
+
+        public ConcurrentQueue<Action> actionQueue = new ConcurrentQueue<Action>();          // 任务队列,将space中的操作全部线性化，避免了并发问题
+
+        #region Get
+
+        public SceneCharacterManager SceneCharacterManager => m_sceneCharacterManager;
+        public SceneMonsterManager SceneMonsterManager => m_scenenMonsterManager;
+        public FightManager FightManager => m_fightManager;
+        public int SceneId => m_sceneDefine.SID;
+        public AoiZone AoiZone => m_aoiZoneManager;
+
+        #endregion
 
         public void Init(int sceneId)
         {
             m_sceneDefine = StaticDataManager.Instance.sceneDefineDict[sceneId];
-            m_sceneCharacterManager = new();
-            m_sceneCharacterManager.Init();
-            m_aoiZone = new AoiZone(0.001f, 0.001f);
             m_viewArea = new(Config.Server.aoiViewArea, Config.Server.aoiViewArea);
+            foreach (var pointId in m_sceneDefine.RevivalPointS)
+            {
+                var pointDef = StaticDataManager.Instance.revivalPointDefineDict[pointId];
+                if (pointDef == null) continue;
+                revivalPointDefines.Add(pointDef);
+            }
+
+            m_sceneCharacterManager.Init();
+            m_scenenMonsterManager.Init();
+            m_sceneItemManager.Init();
+            m_spawnManager.Init();
+            m_fightManager.Init();
 
             // 添加自循环
-            Scheduler.Instance.AddTask(Update, Config.Server.updateHz, 0);
+            Scheduler.Instance.Update(Update);
         }
         public void UnInit()
         {
-            // 添加自循环
+            m_sceneCharacterManager.UnInit();
+            m_scenenMonsterManager.UnInit();
+            m_sceneItemManager.UnInit();
+            m_spawnManager.UnInit();
+            m_fightManager.UnInit();
+            actionQueue.Clear();
+            revivalPointDefines.Clear();
             Scheduler.Instance.RemoveTask(Update);
         }
         private void Update()
         {
+            m_spawnManager.Update(MyTime.deltaTime);
+            m_fightManager.Update(MyTime.deltaTime);
+            while (actionQueue.TryDequeue(out var action))
+            {
+                action?.Invoke();
+            }
         }
-
-        public int SceneId => m_sceneDefine.SID;
-        public AoiZone AoiZone => m_aoiZone;
 
         public void CharacterEnterScene(Connection conn, CharacterEnterSceneRequest message)
         {
@@ -55,8 +94,8 @@ namespace SceneServer.Core.Scene
             chr.CurSceneId = SceneId;
 
             // 2.加入aoi空间
-            m_aoiZone.Enter(chr);
-            var handle = m_aoiZone.Refresh(chr.EntityId, m_viewArea);
+            m_aoiZoneManager.Enter(chr);
+            var handle = m_aoiZoneManager.Refresh(chr.EntityId, m_viewArea);
             var units = SceneEntityManager.Instance.GetSceneEntitiesByIds(handle.ViewEntity);
 
             // 3.新上线的玩家需要获取场景中:全部的角色/怪物/物品的信息
@@ -84,7 +123,7 @@ namespace SceneServer.Core.Scene
                 if(ent is SceneCharacter sChr)
                 {
                     // 刷新他的aoi，以免下次使用时错误判断self是新加入的
-                    m_aoiZone.Refresh(sChr.EntityId, m_viewArea); 
+                    m_aoiZoneManager.Refresh(sChr.EntityId, m_viewArea); 
 
                     oResp.SessionId = sChr.SessionId;
                     sChr.Send(oResp);
@@ -105,7 +144,7 @@ namespace SceneServer.Core.Scene
             var resp = new OtherEntityLeaveSceneResponse();
             resp.SceneId = SceneId;
             resp.EntityId = chr.EntityId;
-            var views = m_aoiZone.FindViewEntity(chr.EntityId, false);
+            var views = m_aoiZoneManager.FindViewEntity(chr.EntityId, false);
             foreach (var cc in views.OfType<SceneCharacter>())
             {
                 resp.SessionId = cc.SessionId;
@@ -116,11 +155,11 @@ namespace SceneServer.Core.Scene
             m_sceneCharacterManager.RemoveSceneCharacterByEntityId(entityId);
 
             // 退出aoi空间
-            m_aoiZone.Exit(chr.EntityId);
+            m_aoiZoneManager.Exit(chr.EntityId);
         End:
             return;
         }
-        public void MonsterEnterScene()
+        public void MonsterEnterScene(SceneMonster monster)
         {
 
         }
@@ -128,11 +167,11 @@ namespace SceneServer.Core.Scene
         {
 
         }
-        public void ItemEnterScene()
+        public void ItemEnterScene(SceneItem sceneItem)
         {
 
         }
-        public void ItemExitScene()
+        public void ItemExitScene(int entityId)
         {
 
         }
@@ -149,7 +188,7 @@ namespace SceneServer.Core.Scene
             resp.Mode = message.Mode;
             resp.Timestamp = message.Timestamp;
 
-            var all = m_aoiZone.FindViewEntity(self.EntityId, isIncludeSelf);
+            var all = m_aoiZoneManager.FindViewEntity(self.EntityId, isIncludeSelf);
             foreach (var chr in all.OfType<SceneCharacter>())
             {
                 resp.SessionId = chr.SessionId;
@@ -164,7 +203,7 @@ namespace SceneServer.Core.Scene
             Log.Information("actor[entityId = {0}] change state {1}", self.EntityId, message.State);
 
             // 更新aoi空间里面我们的坐标
-            var handle = m_aoiZone?.UpdatePos_Refresh(self.EntityId, self.AoiPos.x, self.AoiPos.y, m_viewArea);
+            var handle = m_aoiZoneManager?.UpdatePos_Refresh(self.EntityId, self.AoiPos.x, self.AoiPos.y, m_viewArea);
             var units = SceneEntityManager.Instance.GetSceneEntitiesByIds(handle.ViewEntity);
 
             // 通知附近玩家
@@ -299,7 +338,7 @@ namespace SceneServer.Core.Scene
             // Log.Information("actor[entityId = {0}] change transform data", self.EntityId);
 
             // 更新aoi空间里面我们的坐标
-            var handle = m_aoiZone?.UpdatePos_Refresh(self.EntityId, self.AoiPos.x, self.AoiPos.y, m_viewArea);
+            var handle = m_aoiZoneManager?.UpdatePos_Refresh(self.EntityId, self.AoiPos.x, self.AoiPos.y, m_viewArea);
             var units = SceneEntityManager.Instance.GetSceneEntitiesByIds(handle.ViewEntity);
 
             // 通知附近玩家Transform数据更新
@@ -418,6 +457,28 @@ namespace SceneServer.Core.Scene
 
                 }
             }
+        }
+
+        // tools
+        public Vector3Int GetNearestRevivalPoint(SceneCharacter chr)
+        {
+            float comparativetGap = float.MaxValue;
+            Vector3Int pos = chr.Position;
+            foreach (var pointDef in revivalPointDefines)
+            {
+                var tempPos = new Vector3Int(pointDef.X, pointDef.Y, pointDef.Z);
+                var gap = Vector3Int.Distance(chr.Position, tempPos);
+                if (gap < comparativetGap)
+                {
+                    comparativetGap = gap;
+                    pos = tempPos;
+                }
+            }
+            return pos;
+        }
+        public void TransmitTo(SceneCharacter chr, int PointId)
+        {
+
         }
     }
 }

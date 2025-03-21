@@ -14,7 +14,7 @@ public class UnitDefine
 	public string BgResource; // 图片资源
 	public string Kind; // 类型
 	public string Desc; // 介绍
-	public int[] DefaultSkills; // 默认技能组,这里其实就是普通攻击
+	public int weaponSkillArsenalId; // 默认技能组
 	public int Speed; // 速度
 	public int HPMax; // 生命值
 	public int MPMax; // 法力值

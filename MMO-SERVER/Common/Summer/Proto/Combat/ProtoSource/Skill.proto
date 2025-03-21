@@ -2,12 +2,14 @@ syntax = "proto3";
 import "Common/ProtoSource/Common.proto";
 package HS.Protobuf.Combat.Skill;
 
-//技能信息:skillid
-message SkillInfo{
-	int32 id = 1;
+enum SkillProtocol{
+	SKILL_PROTOCOL_NONE = 0;
+	SKILL_PROTOCOL_SPELL_CAST_REQ = 41001;			// [SpellCastRequest]
+	SKILL_PROTOCOL_SPELL_CAST_RESP = 41002;			// [SpellCastResponse]
+	SKILL_PROTOCOL_SPELL_CAST_FAIL_RESP = 41003;	// [SpellCastFailResponse]
 }
 
-//技能释放结果
+// 技能释放结果
 enum CastResult{
 	Success 			= 0;	//成功		
 	IsPassive			= 1;	//被动技能
@@ -18,30 +20,34 @@ enum CastResult{
 	ColdDown			= 6;	//冷却中
 	TargetError			= 7;	//目标错误	
 }
-
-//施法信息：谁发的，要打谁
+// 施法信息：谁发的，要打谁
 message CastInfo{
 	int32 casterId = 1;
 	int32 skillId = 2;
 	int32 targetId = 3;
-	HS.Protobuf.Common.Vec3 point = 4;	//技能施法点
-	CastResult result = 5;//技能释放结果
+	HS.Protobuf.Common.NetVector3 point = 4;	// 技能施法点
+	CastResult result = 5;				// 技能释放结果
+	int64 timestamp = 6;
 }
-
-//释放技能请求
+// 释放技能请求
 message SpellCastRequest{
-	CastInfo info = 1;
+	string sessionId = 1;
+	CastInfo info = 2;
 }
-//释放技能响应,有些群攻的技能，这里用list做优化
+// 释放技能响应，这里用list做优化
 message SpellCastResponse{
-	repeated CastInfo list = 1;
+	string sessionId = 1;
+	int32 sceneId = 2;
+	int64 timestamp = 3;
+	repeated CastInfo list = 4;
 }
-
-//技能释放错误
-message SpellFailResponse{
-	int32 casterId = 1;
-	int32 skillId = 2;
-	CastResult reason = 3;
+// 技能释放错误
+message SpellCastFailResponse{
+	string sessionId = 1;
+	int32 sceneId = 2;
+	int32 casterId = 3;
+	int32 skillId = 4;
+	CastResult reason = 5;
 }
 
 //伤害类型
@@ -65,4 +71,18 @@ message Damage{
 //通知客户端有人收到伤害
 message DamageResponse{
 	repeated Damage list = 1;
+}
+
+
+// =========================弃用
+
+// 技能信息:skillid
+message SkillInfo{
+	int32 id = 1;
+}
+
+message SpellFailResponse{
+	int32 casterId = 1;
+	int32 skillId = 2;
+	CastResult reason = 3;
 }

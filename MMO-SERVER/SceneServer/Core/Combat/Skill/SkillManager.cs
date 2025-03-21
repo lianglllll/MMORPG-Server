@@ -1,58 +1,43 @@
 ﻿using HS.Protobuf.Combat.Skill;
 using SceneServer.Core.Model.Actor;
+using SceneServer.Utils;
 
 namespace SceneServer.Core.Combat.Skills
 {
-
     /// <summary>
     /// 技能管理器，每一个Actor都有独立的技能管理器
     /// </summary>
     public class SkillManager
     {
-        private SceneActor owner;                                //管理器的归属者
-        public List<Skill> Skills = new();                      //技能队列
-        
+        private SceneActor m_owner;                                // 管理器的归属者
+        public List<Skill> Skills = new();                         // 技能队列
+
         public bool Init(SceneActor owner)
         {
-            this.owner = owner;
-            InitSkills();
+            m_owner = owner;
+            var def =  StaticDataManager.Instance.weaponSkillArsenalDefineDict[m_owner.m_define.weaponSkillArsenalId];
+            _LoadSkillsByIds(def.SkillIds.ToList());
+            _LoadSkillsByIds(m_owner.EquippedSkillIds);
             return true;
         }
-        
-        /// <summary>
-        /// 初始化技能管理器
-        /// </summary>
-        public void InitSkills()
+        public void Update(float deltaTime)
         {
-            //todo 初始化技能信息，正常是通过读取数据库来加载技能信息的
-            //应该开一个表，每个user的character或者monster有那些技能
-            //因为这个属于动态数据
-            loadSkill(owner.EquippedSkillIds);
-        }
-
-        /// <summary>
-        /// 根据技能编号来加载技能
-        /// </summary>
-        /// <param name="ids"></param>
-        private void loadSkill(List<int> ids)
-        {
-            List<SkillInfo> list = new List<SkillInfo>();
-            foreach(int skid in ids)
+            foreach (Skill skill in Skills)
             {
-                if (skid == 0) continue;
-                var skillinfo = new SkillInfo() { Id = skid };
-                list.Add(skillinfo);
-                var skill = SkillSanner.CreateSkill(owner, skid);   
-                Skills.Add(skill);
+                skill.Update(deltaTime);
             }
         }
 
-        /// <summary>
-        /// 根据技能id获取某个技能
-        /// </summary>
-        /// <param name="skillId"></param>
-        /// <returns></returns>
-        public Skill GetSkill(int skillId)
+        private void _LoadSkillsByIds(List<int> ids)
+        {
+            foreach(int skid in ids)
+            {
+                if (skid == 0) continue;
+                var skill = SkillSanner.CreateSkill(m_owner, skid);   
+                Skills.Add(skill);
+            }
+        }
+        public Skill GetSkillById(int skillId)
         {
             foreach (var skill in Skills) { 
                 if(skill.Define.ID == skillId)
@@ -62,17 +47,5 @@ namespace SceneServer.Core.Combat.Skills
             }
             return null;
         }
-
-        /// <summary>
-        /// 推动每一个技能运转  
-        /// </summary>
-        public void Update(float deltaTime)
-        {
-            foreach(Skill skill in Skills)
-            {
-                skill.Update(deltaTime);
-            }
-        }
-
     }
 }

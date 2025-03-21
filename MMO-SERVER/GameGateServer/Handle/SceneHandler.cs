@@ -2,6 +2,7 @@
 using Common.Summer.Net;
 using Common.Summer.Tools;
 using GameGateServer.Net;
+using HS.Protobuf.Combat.Skill;
 using HS.Protobuf.Game;
 using HS.Protobuf.GameGate;
 using HS.Protobuf.Scene;
@@ -21,6 +22,10 @@ namespace GameGateServer.Handle
             ProtoHelper.Instance.Register<ActorChangeStateResponse>((int)SceneProtocl.ActorChangeStateResp);
             ProtoHelper.Instance.Register<ActorChangeTransformDataRequest>((int)SceneProtocl.ActorChangeTransformDataReq);
             ProtoHelper.Instance.Register<ActorChangeTransformDataResponse>((int)SceneProtocl.ActorChangeTransformDataResp);
+            ProtoHelper.Instance.Register<SpellCastRequest>((int)SkillProtocol.SpellCastReq);
+            ProtoHelper.Instance.Register<SpellCastResponse>((int)SkillProtocol.SpellCastResp);
+            ProtoHelper.Instance.Register<SpellCastFailResponse>((int)SkillProtocol.SpellCastFailResp);
+
             // 消息的订阅
             MessageRouter.Instance.Subscribe<OtherEntityEnterSceneResponse>(_HandleOtherEntityEnterSceneResponse);
             MessageRouter.Instance.Subscribe<OtherEntityLeaveSceneResponse>(_HandleOtherEntityLeaveSceneResponse);
@@ -30,6 +35,10 @@ namespace GameGateServer.Handle
             MessageRouter.Instance.Subscribe<ActorChangeStateResponse>(_HandleActorChangeStateResponse);
             MessageRouter.Instance.Subscribe<ActorChangeTransformDataRequest>(_HandleActorChangeTransformDataRequest);
             MessageRouter.Instance.Subscribe<ActorChangeTransformDataResponse>(_HandleActorChangeTransformDataResponse);
+
+            MessageRouter.Instance.Subscribe<SpellCastRequest>(HandleSpellCastRequest);
+            MessageRouter.Instance.Subscribe<SpellCastResponse>(HandleSpellCastResponse);
+            MessageRouter.Instance.Subscribe<SpellCastFailResponse>(HandleSpellFailResponse);
 
             return true;
         }
@@ -131,5 +140,40 @@ namespace GameGateServer.Handle
             return;
         }
 
+        private void HandleSpellCastRequest(Connection conn, SpellCastRequest message)
+        {
+            var session = conn.Get<Session>();
+            if (session == null)
+            {
+                goto End;
+            }
+            ServersMgr.Instance.SendToSceneServer(session.curSceneId, message);
+        End:
+            return;
+        }
+        private void HandleSpellCastResponse(Connection conn, SpellCastResponse message)
+        {
+            var session = SessionManager.Instance.GetSessionBySessionId(message.SessionId);
+            if (session == null)
+            {
+                goto End;
+            }
+            message.SessionId = "";
+            session.Send(message);
+        End:
+            return;
+        }
+        private void HandleSpellFailResponse(Connection conn, SpellCastFailResponse message)
+        {
+            var session = SessionManager.Instance.GetSessionBySessionId(message.SessionId);
+            if (session == null)
+            {
+                goto End;
+            }
+            message.SessionId = "";
+            session.Send(message);
+        End:
+            return;
+        }
     }
 }

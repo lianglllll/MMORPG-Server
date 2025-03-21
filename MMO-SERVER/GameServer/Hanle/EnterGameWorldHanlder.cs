@@ -355,7 +355,6 @@ namespace GameServer.Hanle
                 resp.ResultMsg = "没有你选择的角色信息。";
                 goto End1;
             }
-            // 保存一下与场景无关的character信息
             DBCharacterNode dbChrNode = message.ChrNode;
             if(GameCharacterManager.Instance.GetGameCharacterByCid(dbChrNode.CId) != null)
             {
@@ -363,15 +362,15 @@ namespace GameServer.Hanle
                 resp.ResultMsg = "角色已经在线...";
                 goto End1;
             }
+
+            // 保存一下与场景无关的character信息
             var gChr = GameCharacterManager.Instance.CreateGameCharacter(dbChrNode);
             Log.Information("chr enter game,cId = [{0}]", gChr.Cid);
 
             // 将与场景相关的character移交scene进行初始化
             int curSceneId = dbChrNode.ChrStatus.CurSceneId;
             var sceneConn = GameMonitor.Instance.GetSceneConnBySceneId(curSceneId);
-            // sceneConn为空，说明场景还没启动
-
-
+            // TODO sceneConn为空，说明场景还没启动
             CharacterEnterSceneRequest characterEnterSceneRequest = new();
             characterEnterSceneRequest.TaskId = message.TaskId;
             characterEnterSceneRequest.SessionId = req.SessionId;

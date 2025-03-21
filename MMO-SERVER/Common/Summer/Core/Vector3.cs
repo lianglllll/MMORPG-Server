@@ -979,11 +979,11 @@ namespace Common.Summer.Core
         }
 
         //Vec3 和 vector3之间的转换
-        public static implicit operator Vec3(Vector3 v)
+        public static implicit operator NetVector3(Vector3 v)
         {
-            return new Vec3() { X = (int)v.x, Y = (int)v.y, Z = (int)v.z };
+            return new NetVector3() { X = (int)v.x, Y = (int)v.y, Z = (int)v.z };
         }
-        public static implicit operator Vector3(Vec3 v)
+        public static implicit operator Vector3(NetVector3 v)
         {
             return new Vector3() { x = v.X, y = v.Y, z = v.Z };
         }

@@ -20,6 +20,11 @@ enum SceneProtocl{
 	SCENE_PROTOCL_ACTOR_CHANGE_STATE_RESP = 40012;			// [ActorChangeStateResponse]
 	SCENE_PROTOCL_ACTOR_CHANGE_TRANSFORM_DATA_REQ = 40013;	// [ActorChangeTransformDataRequest]
 	SCENE_PROTOCL_ACTOR_CHANGE_TRANSFORM_DATA_RESP = 40014;	// [ActorChangeTransformDataResponse]
+
+	SCENE_PROTOCL_SCENE_DELIVER_REQ = 40015;			// [SceneDeliverRequest]
+	SCENE_PROTOCL_SCENE_DELIVER_RESP = 40016;			// [SceneDeliverResponse]
+	SCENE_PROTOCL_CHARACTER_REVIVE_REQ = 40017;			// [CharacterReviveRequest]
+	SCENE_PROTOCL_CHARACTER_REVIVE_RESP = 40018;		// [CharacterReviveResponse]
 }
 enum SceneType {
     SCENE_TYPE_NULL             = 0;
@@ -136,6 +141,43 @@ message ActorChangeTransformDataResponse{
 	ActorChangeTransformDataPayLoad payLoad = 5;
 }
 
+message SceneDeliverRequest{
+	string sessionId	= 1;
+	int32 sceneId		= 2;
+	int32 entityId		= 3;
+	int32 pointId		= 4;	// 场景中哪一个点的id
+}
+message SceneDeliverResponse{
+	string sessionId		= 1;
+	int32  resultCode		= 2;
+	string resultMsg		= 3;
+}
+
+message CharacterReviveRequest{
+	string sessionId = 1;
+	int32 entityId = 2;
+}
+message CharacterReviveResponse{
+	string sessionId		= 1;
+	int32  resultCode		= 2;
+	string resultMsg		= 3;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // === 下面是无用的====================================================
 
@@ -192,6 +234,10 @@ message ReviveRequest{
 message ReviveResponse{
 	NEntitySync nEntitySycn = 1;
 }
+
+
+
+
 
 // itemEntity 信息同步响应包（没用上）
 message NetEItemSync{

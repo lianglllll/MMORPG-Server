@@ -1,5 +1,6 @@
 ﻿using Google.Protobuf;
 using Common.Summer.Core;
+using SceneServer.Core.Model.Actor;
 
 namespace SceneServer.Net
 {
@@ -10,6 +11,8 @@ namespace SceneServer.Net
     {
         private string m_sessionId; 
         private Connection m_conn;                                             // 对应的网关连接
+        public SceneCharacter Chr;
+
         public string SesssionId => m_sessionId;
         public Session(string sessionId, Connection conn)
         {

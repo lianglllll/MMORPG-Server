@@ -1,18 +1,27 @@
-﻿using HS.Protobuf.SceneEntity;
+﻿using Common.Summer.Core;
+using HS.Protobuf.Common;
+using HS.Protobuf.Game.Backpack;
+using HS.Protobuf.SceneEntity;
 
 namespace SceneServer.Core.Model.Item
 {
     public class SceneItem : SceneEntity
     {
-        private NetItemNode? m_netItemNode;
+        private NetItemNode m_netItemNode;
 
-        public NetItemNode NetItemNode
+        public NetItemNode NetItemNode => m_netItemNode;
+
+        public void Init(NetItemDataNode itemDataNode, Vector3Int pos, Vector3Int dir, Vector3Int scale)
         {
-            get
-            {
-                return m_netItemNode;
-            }
-        }
+            base.Init(pos, dir, scale);
+            m_netItemNode = new NetItemNode(); 
+            m_netItemNode.NetItemDataNode = itemDataNode;
 
+            var transform = new NetTransform();
+            transform.Position = new NetVector3();
+            transform.Rotation = new NetVector3();
+            transform.Scale = new NetVector3();
+            m_netItemNode.Transform = transform;
+        }
     }
 }

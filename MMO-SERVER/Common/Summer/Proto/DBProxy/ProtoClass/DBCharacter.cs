@@ -39,9 +39,9 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
             "QkNoYXJhY3RlclNvY2lhbE5vZGUSDwoHZ3VpbGRJZBgBIAEoCRIPCgdmYWN0",
             "aW9uGAIgASgJEhMKC2ZyaWVuZHNMaXN0GAMgAygJIjYKFERCQ2hhcmFjdGVy",
             "U2tpbGxOb2RlEg8KB3NraWxsSWQYASABKAUSDQoFbGV2ZWwYAiABKAUidgoV",
-            "REJDaGFyYWN0ZXJDb21iYXROb2RlEkUKBnNraWxscxgBIAMoCzI1LkhTLlBy",
+            "REJDaGFyYWN0ZXJDb21iYXROb2RlEkUKBnNraWxscxgCIAMoCzI1LkhTLlBy",
             "b3RvYnVmLkRCUHJveHkuREJDaGFyYWN0ZXIuREJDaGFyYWN0ZXJTa2lsbE5v",
-            "ZGUSFgoOZXF1aXBwZWRTa2lsbHMYAiADKAUijAQKD0RCQ2hhcmFjdGVyTm9k",
+            "ZGUSFgoOZXF1aXBwZWRTa2lsbHMYAyADKAUijAQKD0RCQ2hhcmFjdGVyTm9k",
             "ZRILCgNjSWQYASABKAkSCwoDdUlkGAIgASgJEg8KB3dvcmxkSWQYAyABKAUS",
             "FAoMcHJvZmVzc2lvbklkGAQgASgFEg8KB2Nock5hbWUYBSABKAkSDQoFbGV2",
             "ZWwYBiABKAUSGQoRY3JlYXRpb25UaW1lc3RhbXAYByABKAMSUQoNY2hyU3Rh",
@@ -1673,12 +1673,12 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     }
 
     /// <summary>Field number for the "skills" field.</summary>
-    public const int SkillsFieldNumber = 1;
+    public const int SkillsFieldNumber = 2;
     private static readonly pb::FieldCodec<global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterSkillNode> _repeated_skills_codec
-        = pb::FieldCodec.ForMessage(10, global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterSkillNode.Parser);
+        = pb::FieldCodec.ForMessage(18, global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterSkillNode.Parser);
     private readonly pbc::RepeatedField<global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterSkillNode> skills_ = new pbc::RepeatedField<global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterSkillNode>();
     /// <summary>
-    /// 技能列表
+    /// int32 fixedSkillCombinationId = 1;
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1687,9 +1687,9 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     }
 
     /// <summary>Field number for the "equippedSkills" field.</summary>
-    public const int EquippedSkillsFieldNumber = 2;
+    public const int EquippedSkillsFieldNumber = 3;
     private static readonly pb::FieldCodec<int> _repeated_equippedSkills_codec
-        = pb::FieldCodec.ForInt32(18);
+        = pb::FieldCodec.ForInt32(26);
     private readonly pbc::RepeatedField<int> equippedSkills_ = new pbc::RepeatedField<int>();
     /// <summary>
     /// 装备技能列表 (存储已装备技能的ID)
@@ -1799,12 +1799,12 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 10: {
+          case 18: {
             skills_.AddEntriesFrom(input, _repeated_skills_codec);
             break;
           }
-          case 18:
-          case 16: {
+          case 26:
+          case 24: {
             equippedSkills_.AddEntriesFrom(input, _repeated_equippedSkills_codec);
             break;
           }
@@ -1823,12 +1823,12 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 10: {
+          case 18: {
             skills_.AddEntriesFrom(ref input, _repeated_skills_codec);
             break;
           }
-          case 18:
-          case 16: {
+          case 26:
+          case 24: {
             equippedSkills_.AddEntriesFrom(ref input, _repeated_equippedSkills_codec);
             break;
           }

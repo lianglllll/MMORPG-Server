@@ -2,23 +2,19 @@ syntax = "proto3";
 package HS.Protobuf.Game.Backpack;
 
 // 背包系统
-
-// 物品类型
 enum ItemType{
-    Material=0;       //材料&道具
-    Consumable=1;     //消耗品
-    Equipment=2;      //武器&装备
+    Material=	0;      // 材料&道具
+    Consumable=	1;		// 消耗品
+    Equipment=	2;      // 武器&装备
 }
-// 品质
-enum Quality {
-    Common=0;     // 普通
-    Fine=1;   	  // 非凡
-    Rare=2;       // 稀有
-    Epic=3;       // 史诗
-    Legendary=4;  // 传说
-    Artifact=5;   // 神器
+enum ItemQuality {
+    ITEM_QUALITY_COMMON = 0;     // 普通
+    ITEM_QUALITY_FINE = 1;   	 // 非凡
+    ITEM_QUALITY_RARE = 2;       // 稀有
+    ITEM_QUALITY_EPIC = 3;       // 史诗
+    ITEM_QUALITY_LEGENDARY = 4;  // 传说
+    ITEM_QUALITY_ARTIFACT = 5;   // 神器
 }
-// 装备类型
 enum EquipsType{
 	UNSET = 0;      	//无
     Weapon = 1;    		//武器
@@ -34,6 +30,32 @@ enum EquipsType{
     Boots = 11;     	//鞋子
     Wings = 12;    		//翅膀
 }
+message EquipData{
+	//打孔、镶嵌、强化
+}
+message NetItemDataNode{
+	int32 itemId = 1;			// 物品id
+	ItemType itemType = 2;
+	int32 amount = 3;			// 物品数量
+	int32 gridIdx = 4;			// 物品所处位置,在哪个格子
+	EquipData equipdata = 5; 	// 装备信息，物品有这个属性，说明是武器。
+}
+
+
+// ======================================
+
+
+
+// 品质
+enum Quality {
+    Common=0;     // 普通
+    Fine=1;   	  // 非凡
+    Rare=2;       // 稀有
+    Epic=3;       // 史诗
+    Legendary=4;  // 传说
+    Artifact=5;   // 神器
+}
+
 // 物品信息
 message ItemInfo{
 	int32 itemId = 1;			//物品id
@@ -41,10 +63,7 @@ message ItemInfo{
 	int32 position = 3;			//物品所处位置,在哪个格子
 	EquipData equipdata = 4; 	//装备信息，物品有这个属性，说明是武器。
 }
-// 装备数据
-message EquipData{
-	//打孔、镶嵌、强化
-}
+
 
 // 场景中物品更新响应包
 message ItemUpdate{

@@ -7,6 +7,7 @@ using HS.Protobuf.Game;
 using HS.Protobuf.GameGateMgr;
 using HS.Protobuf.Scene;
 using SceneServer.Core.Scene;
+using SceneServer.Core.Scene.Component;
 using SceneServer.Handle;
 using SceneServer.Utils;
 using Serilog;
@@ -55,6 +56,7 @@ namespace SceneServer.Net
             SceneServerHandler.Instance.Init();
             EnterGameWorldHanlder.Instance.Init();
             SceneHandler.Instance.Init();
+            CombatHandler.Instance.Init();
 
             // 协议注册
             ProtoHelper.Instance.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
@@ -125,6 +127,7 @@ namespace SceneServer.Net
                 && m_outgoingServerConnection.ContainsKey(SERVER_TYPE.Game))
             {
                 // 加载对应的场景资源
+                SceneEntityManager.Instance.Init();
                 SceneManager.Instance.Init(m_curSin.SceneServerInfo.SceneId);
                 _ExecutePhase3();
             }

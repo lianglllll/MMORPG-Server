@@ -1,5 +1,5 @@
 bin/
 obj/
 
-# 忽略当前文件夹下的这个文件
-/pids.txt
+pids.txt
+GameServer/a_Old

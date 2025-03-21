@@ -4,7 +4,7 @@ using Common.Summer.Tools;
 using HS.Protobuf.Scene;
 using SceneServer.Core.Model.Actor;
 using SceneServer.Core.Scene;
-
+using SceneServer.Core.Scene.Component;
 
 namespace SceneServer.Handle
 {
@@ -38,6 +38,7 @@ namespace SceneServer.Handle
             {
                 goto End;
             }
+
             // 不接受死亡角色的状态切换(我们有专门的复活协议处理)
             if (actor.IsDeath)
             {
