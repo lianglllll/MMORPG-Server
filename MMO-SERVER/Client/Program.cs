@@ -14,9 +14,117 @@ using HS.Protobuf.LoginGate;
 using HS.Protobuf.Common;
 using Common.Summer.MyLog;
 using Common.Summer.Server;
+using System.Collections;
 
 namespace ClientTest
 {
+
+    public class MyHeap<T> where T : IComparable<T>
+    {
+        private T[] m_elements;
+        private int m_size;
+        private bool m_isMaxHeap;
+
+        public MyHeap(bool isMaxHeap = true, int capacity = 4)
+        {
+            m_elements = new T[capacity];
+            m_size = 0;
+            m_isMaxHeap = isMaxHeap;
+        }
+
+        public int Count => m_size;
+
+        public T Peek()
+        {
+            if (m_size == 0) throw new InvalidOperationException("Heap is empty");
+            return m_elements[0];
+        }
+
+        public void Insert(T item)
+        {
+            if (m_size == m_elements.Length)
+            {
+                Array.Resize(ref m_elements, m_elements.Length * 2);
+            }
+
+            m_elements[m_size] = item;
+            HeapifyUp(m_size);
+            m_size++;
+        }
+
+        public T ExtractTop()
+        {
+            if (m_size == 0) throw new InvalidOperationException("Heap is empty");
+
+            T top = m_elements[0];
+            m_size--;
+            m_elements[0] = m_elements[m_size];
+            HeapifyDown(0);
+            return top;
+        }
+
+        private void HeapifyUp(int index)
+        {
+            while (index > 0)
+            {
+                int parentIndex = (index - 1) / 2;
+                // 检查父节点是否满足堆性质，若满足则停止
+                if (Compare(m_elements[parentIndex], m_elements[index]))
+                    break;
+                Swap(index, parentIndex);
+                index = parentIndex;
+            }
+        }
+
+        private void HeapifyDown(int index)
+        {
+            while (true)
+            {
+                int leftChild = 2 * index + 1;
+                int rightChild = 2 * index + 2;
+                int targetChild = index;
+
+                // 选择更符合堆性质的子节点（大根堆选更大，小根堆选更小）
+                if (leftChild < m_size &&
+                    !Compare(m_elements[targetChild], m_elements[leftChild]))
+                {
+                    targetChild = leftChild;
+                }
+                if (rightChild < m_size &&
+                    !Compare(m_elements[targetChild], m_elements[rightChild]))
+                {
+                    targetChild = rightChild;
+                }
+
+                if (targetChild == index) break;
+
+                Swap(index, targetChild);
+                index = targetChild;
+            }
+        }
+
+        private bool Compare(T parent, T child)
+        {
+            int result = parent.CompareTo(child);
+            return m_isMaxHeap ? result > 0 : result < 0;
+        }
+
+        private void Swap(int i, int j)
+        {
+            T temp = m_elements[i];
+            m_elements[i] = m_elements[j];
+            m_elements[j] = temp;
+        }
+
+        public void Clear()
+        {
+            Array.Clear(m_elements, 0, m_size);
+            m_size = 0;
+        }
+    }
+
+
+
     class Program
     {
         static void TestAES()
@@ -149,8 +257,6 @@ namespace ClientTest
 
             // TestHash();
 
-            TestServerSelector();
-
 
             Console.ReadLine();
         }
@@ -199,9 +305,6 @@ namespace ClientTest
         {
             Log.Information(message.ToString());  
         }
-
-
-
 
     }
 }

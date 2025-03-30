@@ -161,7 +161,29 @@ namespace SceneServer.Core.Scene
         }
         public void MonsterEnterScene(SceneMonster monster)
         {
+            // 1.加入aoi空间
+            m_aoiZoneManager.Enter(monster);
+            var handle = m_aoiZoneManager.Refresh(monster.EntityId, m_viewArea);
+            var units = SceneEntityManager.Instance.GetSceneEntitiesByIds(handle.ViewEntity);
 
+            // 2.通知场景中的其他玩家
+            OtherEntityEnterSceneResponse oResp = new();
+            oResp.SceneId = SceneId;
+            oResp.EntityType = SceneEntityType.Actor;
+            oResp.ActorNode = monster.NetActorNode;
+
+            // 3..通知附近玩家
+            foreach (var ent in units)
+            {
+                if (ent is SceneCharacter chr)
+                {
+                    // 刷新他的aoi，以免下次使用时错误判断self是新加入的
+                    m_aoiZoneManager.Refresh(chr.EntityId, m_viewArea);
+
+                    oResp.SessionId = chr.SessionId;
+                    chr.Send(oResp);
+                }
+            }
         }
         public void MonsterExitScene()
         {
@@ -187,6 +209,7 @@ namespace SceneServer.Core.Scene
             resp.EntityId = self.EntityId;
             resp.Mode = message.Mode;
             resp.Timestamp = message.Timestamp;
+            resp.SceneId = SceneId;
 
             var all = m_aoiZoneManager.FindViewEntity(self.EntityId, isIncludeSelf);
             foreach (var chr in all.OfType<SceneCharacter>())
@@ -213,6 +236,7 @@ namespace SceneServer.Core.Scene
             resp.OriginalTransform = message.OriginalTransform;
             resp.Timestamp = message.Timestamp;
             resp.PayLoad = message.PayLoad;
+            resp.SceneId = SceneId;
 
             // 告知view内的其他角色，状态变更
             foreach (var sChr in units.OfType<SceneCharacter>())
@@ -331,7 +355,8 @@ namespace SceneServer.Core.Scene
         {
             // 改变相关信息
             self.SetTransform(message.OriginalTransform);
-            if(self.NetActorState == NetActorState.Motion)
+
+            if(self.NetActorState == NetActorState.Motion && self is SceneCharacter)
             {
                 self.Speed = message.PayLoad.VerticalSpeed;
             }
@@ -347,6 +372,7 @@ namespace SceneServer.Core.Scene
             resp.OriginalTransform = message.OriginalTransform;
             resp.Timestamp = message.Timestamp;
             resp.PayLoad = message.PayLoad;
+            resp.SceneId = SceneId;
             foreach (var chr in units.OfType<SceneCharacter>())
             {
                 resp.SessionId = chr.SessionId;

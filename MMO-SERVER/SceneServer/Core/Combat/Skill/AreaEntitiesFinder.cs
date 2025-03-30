@@ -1,88 +1,113 @@
-﻿namespace SceneServer.Combat.Skills
+﻿using Common.Summer.Core;
+using HS.Protobuf.SceneEntity;
+using SceneServer.Core.Model;
+using SceneServer.Core.Model.Actor;
+using SceneServer.Core.Scene;
+using SceneServer.Core.Scene.Component;
+using System;
+using System.Text;
+
+namespace SceneServer.Combat.Skills
 {
     public class AreaEntitiesFinder
     {
-
-        /*
-        //某点为中心的圆形区域
+        // 某点为中心的圆形区域
         public static List<SceneEntity> GetEntitiesInCircleAroundPoint()
         {
-            //插入一个假实体进入aoi空间
-            //拿到信息后再退出来。
+            // 插入一个假实体进入aoi空间
+            // 拿到信息后再退出来。
             return null;
         }
 
-        //某entity为中心的圆形区域
-        public static IEnumerable<NetActor> GetEntitiesInCircleAroundEntity(SceneEntity entity, float range, bool includeSelf = false)
-        {
-            if (entity?.currentSpace == null)
-            {
-                return new HashSet<Actor>();
-            }
+        // 某SceneActor为中心的圆形区域
+        public static IEnumerable<SceneActor> GetEntitiesInCircleAroundSceneActor(SceneActor actor, float range, bool includeSelf = false)
+        { 
+            var result = new List<SceneActor>();
 
-            //转换为客户端坐标
-            Vector3 pos = (Vector3)entity.Position * 0.001f;
+            // 转换为客户端坐标
+            Vector3 pos = (Vector3)actor.Position * 0.001f;
 
-            //通过aoi查找矩形范围内的角色
-            var space = entity.currentSpace;
-            var hanle = space.aoiZone.Refresh(entity.EntityId, new Vector2(range, range));
+            // 通过aoi查找矩形范围内的角色
+            var hanle = SceneManager.Instance.AoiZone.Refresh(actor.EntityId, new Vector2(range, range));
             if (hanle.ViewEntity == null)
             {
-                return new List<Actor>();
+                goto End;
             }
-            var all = EntityManager.Instance.GetEntitiesByIds(hanle.ViewEntity);
+
+            var all = SceneEntityManager.Instance.GetSceneEntitiesByIds(hanle.ViewEntity).OfType<SceneActor>().ToList();
             if (includeSelf)
             {
-                all.Add(entity);
+                all.Add(actor);
             }
 
-            //筛选圆形范围
-            var res = all.Where((e) => {
-                Vector3 targetPos = e.Position;
-                var dis = Vector3.Distance(pos, targetPos * 0.001f);
-                return !float.IsNaN(dis) && dis <= range*0.001f;
-            }).OfType<Actor>();
-
-            return res;
-        }
-
-        //某entity为中心的扇形区域
-        public static List<NetActor> GetEntitiesInSectorAroundEntity(NetActor originActor, float detectionAngle, float detectionRadius)
-        {
-            List<Actor> entityList = originActor.currentSpace.aoiZone.FindViewEntity(originActor.EntityId, false).OfType<Actor>().ToList<Actor>();
-            List<Actor> result = new List<Actor>();
-            foreach (var target in entityList)
+            // 筛选圆形范围
+            foreach (var target in all)
             {
-                if (AreaEntitiesFinder.CheckForLegalSectorArea(originActor, target, detectionAngle, detectionRadius))
+                Vector3 targetPos = target.Position;
+                var dis = Vector3.Distance(pos, targetPos * 0.001f);
+                if(!float.IsNaN(dis) && dis <= range * 0.001f)
                 {
                     result.Add(target);
                 }
             }
+        End:
             return result;
         }
 
-        //某entity为中心的矩形区域
-        public static List<NetActor> GetEntitiesInRectangleAroundEntity(NetActor originActor,float length, float width)
+        //  某SceneActor为中心的扇形区域
+        public static List<SceneActor> GetEntitiesInSectorAroundEntity(SceneActor actor, float detectionAngle, float detectionRadius)
         {
-            List<Actor> entityList = originActor.currentSpace.aoiZone.FindViewEntity(originActor.EntityId, false).OfType<Actor>().ToList<Actor>();
-            List<Actor> result = new List<Actor>();
-            foreach (var target in entityList)
+            var result = new List<SceneActor>();
+
+            // 通过aoi查找矩形范围内的角色
+            var hanle = SceneManager.Instance.AoiZone.Refresh(actor.EntityId, new Vector2(detectionRadius, detectionRadius));
+            if (hanle.ViewEntity == null)
             {
-                if (AreaEntitiesFinder.CheckForLegalRectangularArea(originActor, target, length, width))
+                goto End;
+            }
+            var all = SceneEntityManager.Instance.GetSceneEntitiesByIds(hanle.ViewEntity).OfType<SceneActor>();
+
+            foreach (var target in all)
+            {
+                if (AreaEntitiesFinder.CheckForLegalSectorArea(actor, target, detectionAngle, detectionRadius))
                 {
                     result.Add(target);
                 }
             }
+        End:
+            return result;
+        }
+
+        // 某entity为中心的矩形区域
+        public static List<SceneActor> GetEntitiesInRectangleAroundEntity(SceneActor actor,float length, float width)
+        {
+            var result = new List<SceneActor>();
+
+            // 通过aoi查找矩形范围内的角色
+            var hanle = SceneManager.Instance.AoiZone.Refresh(actor.EntityId, new Vector2(length, length));
+            if (hanle.ViewEntity == null)
+            {
+                goto End;
+            }
+            var all = SceneEntityManager.Instance.GetSceneEntitiesByIds(hanle.ViewEntity).OfType<SceneActor>();
+            foreach (var target in all)
+            {
+                if (AreaEntitiesFinder.CheckForLegalRectangularArea(actor, target, length, width))
+                {
+                    result.Add(target);
+                }
+            }
+        End:
             return result;
         }
 
         /// <summary>
         /// 检查当前目标是否在合法的扇形区域中
         /// </summary>
-        public static bool CheckForLegalSectorArea(NetActor originActor, NetActor targetActor, float detectionAngle, float detectionRadius)
+        public static bool CheckForLegalSectorArea(SceneActor originalActor, SceneActor targetActor, float detectionAngle, float detectionRadius)
         {
-            Vector3Int pos = originActor.Position;
-            Vector3Int dir = originActor.Direction;
+            Vector3Int pos = originalActor.Position;
+            Vector3Int dir = originalActor.Rotation;
 
             // 将欧拉角转换为弧度
             float yaw = dir.y * Mathf.Deg2Rad * 0.001f;
@@ -109,11 +134,11 @@
         /// <summary>
         /// 检查当前目标是否在合法的矩形区域内
         /// </summary>
-        public static bool CheckForLegalRectangularArea(NetActor originActor, NetActor targetActor, float length, float width)
+        public static bool CheckForLegalRectangularArea(SceneActor originActor, SceneActor targetActor, float length, float width)
         {
 
             Vector3Int pos = originActor.Position;
-            Vector3Int dir = originActor.Direction;
+            Vector3Int dir = originActor.Rotation;
 
             // 计算目标相对于所有者的位置向量
             Vector3 directionToTarget = targetActor.Position - pos;
@@ -149,8 +174,6 @@
             // 如果以上条件都不满足，则目标在矩形区域内
             return true;
         }
-
-        */
+        
     }
-
 }

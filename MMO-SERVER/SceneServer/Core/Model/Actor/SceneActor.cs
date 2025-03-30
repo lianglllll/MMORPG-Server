@@ -6,11 +6,14 @@ using SceneServer.Utils;
 using SceneServer.Core.Combat.Skills;
 using GameServer.Buffs;
 using HS.Protobuf.Common;
+using SceneServer.Core.Scene;
 
 namespace SceneServer.Core.Model.Actor
 {
     public class SceneActor : SceneEntity
     {
+        private bool m_isInit = false;
+
         public UnitDefine? m_define;
 
         protected NetActorNode m_netActorNode = new();
@@ -23,6 +26,7 @@ namespace SceneServer.Core.Model.Actor
 
         // buff
         protected BuffManager m_buffManager = new();
+
 
         public void Init(NetVector3 InitPos, int professionId, int level)
         {
@@ -43,7 +47,9 @@ namespace SceneServer.Core.Model.Actor
             transform.Rotation = rotation;
             transform.Scale = scale;
             m_netActorNode.Transform = transform;
-
+            m_netActorNode.Transform.Position = Position;
+            m_netActorNode.Transform.Rotation = Rotation;
+            m_netActorNode.Transform.Scale = Scale;
 
             m_netActorNode.ProfessionId = professionId;
             m_netActorNode.Level = level;
@@ -54,15 +60,18 @@ namespace SceneServer.Core.Model.Actor
             m_netActorNode.Speed = m_attributeManager.final.Speed;
             m_netActorNode.NetActorMode = NetActorMode.Normal;
             m_netActorNode.NetActorState = NetActorState.Idle;
-            m_netActorNode.NetActorSmallState = NetActorSmallState.None; // 可以选择去掉
-            
+            // m_netActorNode.NetActorSmallState = NetActorSmallState.None; // 可以选择去掉
+            m_netActorNode.SceneId = SceneManager.Instance.SceneId;
 
+            m_isInit = true;
         }
         public override void Update(float deltaTime)
         {
+            if (!m_isInit) return;
             m_skillManager.Update(deltaTime);
             m_buffManager.Update(deltaTime);
         }
+
 
         #region GetSet
 
@@ -79,8 +88,8 @@ namespace SceneServer.Core.Model.Actor
         public bool IsDeath => m_netActorNode.NetActorState == NetActorState.Death; 
         public int CurHP => m_netActorNode.Hp;
         public int CurMP => m_netActorNode.Mp;
-        public int MaxHP => m_netActorNode.Hp;
-        public int MaxMP => m_netActorNode.Mp;
+        public int MaxHP => m_netActorNode.MaxHp;
+        public int MaxMP => m_netActorNode.MaxMp;
         public int Speed
         {
             get => m_netActorNode.Speed;
@@ -89,7 +98,11 @@ namespace SceneServer.Core.Model.Actor
                 m_netActorNode.Speed = value;
             }
         }
-        public int CurLevel => m_netActorNode.Level;
+        public int CurLevel
+        {
+            get => m_netActorNode.Level;
+            set => m_netActorNode.Level = value;
+        }
         public int CurSceneId
         {
             get
@@ -117,9 +130,9 @@ namespace SceneServer.Core.Model.Actor
             return m_skillManager.GetSkillById(skillId);
         }
         public SkillSpell SkillSpell => m_skillSpell;
-        public List<int> EquippedSkillIds => m_netActorNode.EquippedSkills.ToList<int>();
 
         #endregion
+
 
         public override void SetTransform(NetTransform transform)
         {
@@ -132,11 +145,16 @@ namespace SceneServer.Core.Model.Actor
         public bool ChangeActorState(NetActorState state)
         {
             m_netActorNode.NetActorState = state;
+            if(m_netActorNode.NetActorState != NetActorState.Skill)
+            {
+                _CancelCurSkill();
+            }
             return true;
         }
         public bool ChangeActorMode(NetActorMode mode)
         {
             m_netActorNode.NetActorMode = mode;
+            _CancelCurSkill();
             return true;
         }
         public bool ChangeMP(int mpDelta)
@@ -149,11 +167,26 @@ namespace SceneServer.Core.Model.Actor
         }
         public void RecvDamage(Damage damage)
         {
-            throw new NotImplementedException();
         }
         public virtual void Revive()
         {
 
+        }
+        protected virtual void RecvDamageAfter(Damage damage) { }
+        protected virtual void DeathAfter(int killerID) { }
+        protected virtual void ReviveAfter() { }
+
+        private void _CancelCurSkill()
+        {
+            if(m_curUseSkill == null)
+            {
+                goto End;
+            }
+            m_curUseSkill.CancelSkill();
+            m_curUseSkill = null;
+
+        End:
+            return;
         }
     }
 }

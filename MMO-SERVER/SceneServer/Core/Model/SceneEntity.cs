@@ -61,6 +61,14 @@ namespace SceneServer.Core.Model
             m_rotation = transform.Rotation;
             m_scale = transform.Scale;
         }
-
+        public virtual NetTransform GetTransform()
+        {
+            return new NetTransform
+            {
+                Position = m_position,
+                Rotation = m_rotation,
+                Scale = m_scale,
+            };
+        }
     }
 }

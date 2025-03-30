@@ -8,39 +8,40 @@ namespace SceneServer.Core.Scene.Component
     //刷怪对象,负责某个monster的刷新
     public class Spawner
     {
-        public SpawnDefine Define;
-        public SceneMonster monster;
-        private bool reviving;          //是否处于复活倒计时
-        private float reviveTime;
+        public SpawnDefine m_define;
+        public SceneMonster m_monster;
+
+        private bool m_isReviving;          
+        private float M_reviveTimePoint;
 
         public Vector3Int SpawnPoint { get; private set; }  //刷怪位置
         public Vector3Int SpawnDir { get; private set; }    //刷怪方向
 
         public void Init(SpawnDefine define)
         {
-            Define = define;
+            m_define = define;
+            m_isReviving = false;
             SpawnPoint = ParsePoint(define.Pos);
             SpawnDir = ParsePoint(define.Dir);
-            //Log.Debug("New Spawner:场景[{0}],坐标[{1}],单位类型[{2}]", space.Name, SpawnPoint, define.TID);
+            // Log.Debug("New Spawner:场景[{0}],坐标[{1}],单位类型[{2}]", space.Name, SpawnPoint, define.TID);
             Spawn();
-            reviving = false;
         }
         private void Spawn()
         {
-            monster = SceneManager.Instance.SceneMonsterManager.Create(Define.TID, Define.Level, SpawnPoint, SpawnDir);
+            m_monster = SceneManager.Instance.SceneMonsterManager.Create(m_define.TID, m_define.Level, SpawnPoint, SpawnDir);
         }
         public void Update(float deltaTime)
         {
             // TODO:这里可以修改用事件来做把，当ai死亡就开一个定时事件，来复活它。
-            if (monster != null && monster.IsDeath && !reviving)
+            if (m_monster != null && m_monster.IsDeath && !m_isReviving)
             {
-                reviveTime = MyTime.time + Define.Period;
-                reviving = true;
+                M_reviveTimePoint = MyTime.time + m_define.Period;
+                m_isReviving = true;
             }
-            if (reviving && reviveTime < MyTime.time)
+            if (m_isReviving && M_reviveTimePoint < MyTime.time)
             {
-                monster?.Revive();
-                reviving = false;
+                m_monster?.Revive();
+                m_isReviving = false;
             }
 
         }

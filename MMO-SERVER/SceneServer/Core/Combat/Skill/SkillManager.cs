@@ -17,9 +17,13 @@ namespace SceneServer.Core.Combat.Skills
             m_owner = owner;
             var def =  StaticDataManager.Instance.weaponSkillArsenalDefineDict[m_owner.m_define.weaponSkillArsenalId];
             _LoadSkillsByIds(def.SkillIds.ToList());
-            _LoadSkillsByIds(m_owner.EquippedSkillIds);
+            // 武器相关的
+            var def2 = StaticDataManager.Instance.weaponSkillArsenalDefineDict[1];
+            _LoadSkillsByIds(def2.SkillIds.ToList());
+
             return true;
         }
+
         public void Update(float deltaTime)
         {
             foreach (Skill skill in Skills)
@@ -28,6 +32,30 @@ namespace SceneServer.Core.Combat.Skills
             }
         }
 
+        public bool AddWeaponSkills(int skillGroundId)
+        {
+            var def = StaticDataManager.Instance.weaponSkillArsenalDefineDict[m_owner.m_define.weaponSkillArsenalId];
+            _LoadSkillsByIds(def.SkillIds.ToList());
+            return true;
+        }
+        public bool AddFixedSkills()
+        {
+            bool result = false;
+            if(m_owner.NetActorNode.FixedSkillGroupInfo == null)
+            {
+                goto End;
+            }
+
+            foreach(var item in m_owner.NetActorNode.FixedSkillGroupInfo.Skills)
+            {
+                var skill = SkillSanner.CreateSkill(m_owner, item.SkillId);
+                Skills.Add(skill);
+            }
+
+            result = true;
+        End:
+            return result;
+        }
         private void _LoadSkillsByIds(List<int> ids)
         {
             foreach(int skid in ids)

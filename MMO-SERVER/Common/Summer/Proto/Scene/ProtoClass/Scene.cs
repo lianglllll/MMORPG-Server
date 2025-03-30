@@ -52,99 +52,100 @@ namespace HS.Protobuf.Scene {
             "GAIgASgFEhAKCGVudGl0eUlkGAMgASgFIoUBChZBY3RvckNoYW5nZU1vZGVS",
             "ZXF1ZXN0EhEKCXNlc3Npb25JZBgBIAEoCRIQCghlbnRpdHlJZBgCIAEoBRIz",
             "CgRtb2RlGAMgASgOMiUuSFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuTmV0QWN0",
-            "b3JNb2RlEhEKCXRpbWVzdGFtcBgEIAEoAyKGAQoXQWN0b3JDaGFuZ2VNb2Rl",
+            "b3JNb2RlEhEKCXRpbWVzdGFtcBgEIAEoAyKXAQoXQWN0b3JDaGFuZ2VNb2Rl",
             "UmVzcG9uc2USEQoJc2Vzc2lvbklkGAEgASgJEhAKCGVudGl0eUlkGAIgASgF",
             "EjMKBG1vZGUYAyABKA4yJS5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRB",
-            "Y3Rvck1vZGUSEQoJdGltZXN0YW1wGAQgASgDIpUBChFBY3RvclN0YXRlUGF5",
-            "TG9hZBIPCgVzcGVlZBgBIAEoAkgAEkQKDGV2YWRlUGF5TG9hZBgCIAEoDjIs",
-            "LkhTLlByb3RvYnVmLlNjZW5lLk5ldEFjb3RyRXZhZGVTdGF0ZVBheWxvYWRI",
-            "ABIeChRqdW1wVmVydGljYWxWZWxvY2l0eRgDIAEoAkgAQgkKB3BheUxvYWQi",
-            "gQIKF0FjdG9yQ2hhbmdlU3RhdGVSZXF1ZXN0EhEKCXNlc3Npb25JZBgBIAEo",
-            "CRIQCghlbnRpdHlJZBgCIAEoBRIRCgl0aW1lc3RhbXAYAyABKAMSNQoFc3Rh",
-            "dGUYBCABKA4yJi5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRBY3RvclN0",
-            "YXRlEkAKEW9yaWdpbmFsVHJhbnNmb3JtGAYgASgLMiUuSFMuUHJvdG9idWYu",
-            "U2NlbmVFbnRpdHkuTmV0VHJhbnNmb3JtEjUKB3BheUxvYWQYByABKAsyJC5I",
-            "Uy5Qcm90b2J1Zi5TY2VuZS5BY3RvclN0YXRlUGF5TG9hZCKCAgoYQWN0b3JD",
-            "aGFuZ2VTdGF0ZVJlc3BvbnNlEhEKCXNlc3Npb25JZBgBIAEoCRIQCghlbnRp",
-            "dHlJZBgCIAEoBRIRCgl0aW1lc3RhbXAYAyABKAMSNQoFc3RhdGUYBCABKA4y",
-            "Ji5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRBY3RvclN0YXRlEkAKEW9y",
-            "aWdpbmFsVHJhbnNmb3JtGAYgASgLMiUuSFMuUHJvdG9idWYuU2NlbmVFbnRp",
-            "dHkuTmV0VHJhbnNmb3JtEjUKB3BheUxvYWQYByABKAsyJC5IUy5Qcm90b2J1",
-            "Zi5TY2VuZS5BY3RvclN0YXRlUGF5TG9hZCJlCh9BY3RvckNoYW5nZVRyYW5z",
-            "Zm9ybURhdGFQYXlMb2FkEhUKDXZlcnRpY2FsU3BlZWQYASABKAUSFwoPaG9y",
-            "aXpvbnRhbFNwZWVkGAIgASgFEhIKCmhpZ2h0U3BlZWQYAyABKAUi4AEKH0Fj",
-            "dG9yQ2hhbmdlVHJhbnNmb3JtRGF0YVJlcXVlc3QSEQoJc2Vzc2lvbklkGAEg",
-            "ASgJEhAKCGVudGl0eUlkGAIgASgFEhEKCXRpbWVzdGFtcBgDIAEoAxJAChFv",
-            "cmlnaW5hbFRyYW5zZm9ybRgEIAEoCzIlLkhTLlByb3RvYnVmLlNjZW5lRW50",
-            "aXR5Lk5ldFRyYW5zZm9ybRJDCgdwYXlMb2FkGAUgASgLMjIuSFMuUHJvdG9i",
-            "dWYuU2NlbmUuQWN0b3JDaGFuZ2VUcmFuc2Zvcm1EYXRhUGF5TG9hZCLhAQog",
-            "QWN0b3JDaGFuZ2VUcmFuc2Zvcm1EYXRhUmVzcG9uc2USEQoJc2Vzc2lvbklk",
-            "GAEgASgJEhAKCGVudGl0eUlkGAIgASgFEhEKCXRpbWVzdGFtcBgDIAEoAxJA",
-            "ChFvcmlnaW5hbFRyYW5zZm9ybRgEIAEoCzIlLkhTLlByb3RvYnVmLlNjZW5l",
-            "RW50aXR5Lk5ldFRyYW5zZm9ybRJDCgdwYXlMb2FkGAUgASgLMjIuSFMuUHJv",
-            "dG9idWYuU2NlbmUuQWN0b3JDaGFuZ2VUcmFuc2Zvcm1EYXRhUGF5TG9hZCJc",
-            "ChNTY2VuZURlbGl2ZXJSZXF1ZXN0EhEKCXNlc3Npb25JZBgBIAEoCRIPCgdz",
-            "Y2VuZUlkGAIgASgFEhAKCGVudGl0eUlkGAMgASgFEg8KB3BvaW50SWQYBCAB",
-            "KAUiUAoUU2NlbmVEZWxpdmVyUmVzcG9uc2USEQoJc2Vzc2lvbklkGAEgASgJ",
-            "EhIKCnJlc3VsdENvZGUYAiABKAUSEQoJcmVzdWx0TXNnGAMgASgJIj0KFkNo",
-            "YXJhY3RlclJldml2ZVJlcXVlc3QSEQoJc2Vzc2lvbklkGAEgASgJEhAKCGVu",
-            "dGl0eUlkGAIgASgFIlMKF0NoYXJhY3RlclJldml2ZVJlc3BvbnNlEhEKCXNl",
-            "c3Npb25JZBgBIAEoCRISCgpyZXN1bHRDb2RlGAIgASgFEhEKCXJlc3VsdE1z",
-            "ZxgDIAEoCSJpChxTcGFjZUNoYXJhY3RlcnNFbnRlclJlc3BvbnNlEg8KB3Nw",
-            "YWNlSWQYASABKAUSOAoNY2hhcmFjdGVyTGlzdBgCIAMoCzIhLkhTLlByb3Rv",
-            "YnVmLlNjZW5lRW50aXR5Lk5ldEFjdG9yIroBChJTcGFjZUVudGVyUmVzcG9u",
-            "c2USNAoJY2hhcmFjdGVyGAEgASgLMiEuSFMuUHJvdG9idWYuU2NlbmVFbnRp",
-            "dHkuTmV0QWN0b3ISOAoNY2hhcmFjdGVyTGlzdBgCIAMoCzIhLkhTLlByb3Rv",
-            "YnVmLlNjZW5lRW50aXR5Lk5ldEFjdG9yEjQKCWVJdGVtTGlzdBgDIAMoCzIh",
-            "LkhTLlByb3RvYnVmLlNjZW5lRW50aXR5Lk5ldEVJdGVtIiwKGFNwYWNlRW50",
-            "aXR5TGVhdmVSZXNwb25zZRIQCghlbnRpdHlJZBgBIAEoBSKTAQoLTkVudGl0",
-            "eVN5bmMSMgoGZW50aXR5GAEgASgLMiIuSFMuUHJvdG9idWYuU2NlbmVFbnRp",
-            "dHkuTmV0RW50aXR5Eg0KBWZvcmNlGAIgASgIEjIKBXN0YXRlGAMgASgOMiMu",
-            "SFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuQWN0b3JTdGF0ZRINCgVmbGFnMRgE",
-            "IAEoBSJMChZTcGFjZUVudGl0eVN5bmNSZXF1ZXN0EjIKCmVudGl0eVN5bmMY",
-            "ASABKAsyHi5IUy5Qcm90b2J1Zi5TY2VuZS5ORW50aXR5U3luYyJNChdTcGFj",
-            "ZUVudGl0eVN5bmNSZXNwb25zZRIyCgplbnRpdHlTeW5jGAEgASgLMh4uSFMu",
-            "UHJvdG9idWYuU2NlbmUuTkVudGl0eVN5bmMiVgogQ3RsQ2xpZW50U3BhY2VF",
-            "bnRpdHlTeW5jUmVzcG9uc2USMgoKZW50aXR5U3luYxgBIAEoCzIeLkhTLlBy",
-            "b3RvYnVmLlNjZW5lLk5FbnRpdHlTeW5jIjcKE1NwYWNlRGVsaXZlclJlcXVl",
-            "c3QSDwoHc3BhY2VJZBgBIAEoBRIPCgdwb2ludElkGAIgASgFIj0KFFNwYWNl",
-            "RGVsaXZlclJlc3BvbnNlEhIKCnJlc3VsdENvZGUYASABKAUSEQoJcmVzdWx0",
-            "TXNnGAIgASgJIiEKDVJldml2ZVJlcXVlc3QSEAoIZW50aXR5SWQYASABKAUi",
-            "RQoOUmV2aXZlUmVzcG9uc2USMwoLbkVudGl0eVN5Y24YASABKAsyHi5IUy5Q",
-            "cm90b2J1Zi5TY2VuZS5ORW50aXR5U3luYyJDCgxOZXRFSXRlbVN5bmMSMwoI",
-            "bmV0RUl0ZW0YASABKAsyIS5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRF",
-            "SXRlbSJNChZTcGFjZUl0ZW1FbnRlclJlc3BvbnNlEjMKCG5ldEVJdGVtGAEg",
-            "ASgLMiEuSFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuTmV0RUl0ZW0iTgoVUHJv",
-            "cGVydHlVcGRhdGVSc3BvbnNlEjUKBGxpc3QYASADKAsyJy5IUy5Qcm90b2J1",
-            "Zi5TY2VuZUVudGl0eS5Qcm9wZXJ0eVVwZGF0ZSq1BgoMU2NlbmVQcm90b2Ns",
-            "EhYKElNDRU5FX1BST1RPQ0xfTk9ORRAAEikKI1NDRU5FX1BST1RPQ0xfUkVH",
-            "SVNURVJfVE9fU0NFTkVfUkVREMG4AhIqCiRTQ0VORV9QUk9UT0NMX1JFR0lT",
-            "VEVSX1RPX1NDRU5FX1JFU1AQwrgCEi0KJ1NDRU5FX1BST1RPQ0xfQ0hBUkFD",
-            "VEVSX0VOVEVSX1NDRU5FX1JFURDDuAISMwotU0NFTkVfUFJPVE9DTF9TRUxG",
-            "X0NIQVJBQ1RFUl9FTlRFUl9TQ0VORV9SRVNQEMS4AhIxCitTQ0VORV9QUk9U",
-            "T0NMX09USEVSX0VOVElUWV9FTlRFUl9TQ0VORV9SRVNQEMW4AhItCidTQ0VO",
-            "RV9QUk9UT0NMX0NIQVJBQ1RFUl9MRUFWRV9TQ0VORV9SRVEQxrgCEjEKK1ND",
-            "RU5FX1BST1RPQ0xfT1RIRVJfRU5USVRZX0xFQVZFX1NDRU5FX1JFU1AQx7gC",
-            "EikKI1NDRU5FX1BST1RPQ0xfQUNUT1JfQ0hBTkdFX01PREVfUkVREMm4AhIq",
-            "CiRTQ0VORV9QUk9UT0NMX0FDVE9SX0NIQU5HRV9NT0RFX1JFU1AQyrgCEioK",
-            "JFNDRU5FX1BST1RPQ0xfQUNUT1JfQ0hBTkdFX1NUQVRFX1JFURDLuAISKwol",
-            "U0NFTkVfUFJPVE9DTF9BQ1RPUl9DSEFOR0VfU1RBVEVfUkVTUBDMuAISMwot",
-            "U0NFTkVfUFJPVE9DTF9BQ1RPUl9DSEFOR0VfVFJBTlNGT1JNX0RBVEFfUkVR",
-            "EM24AhI0Ci5TQ0VORV9QUk9UT0NMX0FDVE9SX0NIQU5HRV9UUkFOU0ZPUk1f",
-            "REFUQV9SRVNQEM64AhIlCh9TQ0VORV9QUk9UT0NMX1NDRU5FX0RFTElWRVJf",
-            "UkVREM+4AhImCiBTQ0VORV9QUk9UT0NMX1NDRU5FX0RFTElWRVJfUkVTUBDQ",
-            "uAISKAoiU0NFTkVfUFJPVE9DTF9DSEFSQUNURVJfUkVWSVZFX1JFURDRuAIS",
-            "KQojU0NFTkVfUFJPVE9DTF9DSEFSQUNURVJfUkVWSVZFX1JFU1AQ0rgCKssB",
-            "CglTY2VuZVR5cGUSEwoPU0NFTkVfVFlQRV9OVUxMEAASEwoPU0NFTkVfVFlQ",
-            "RV9DSVRZEAESFAoQU0NFTkVfVFlQRV9GSUVMRBACEh0KGVNDRU5FX1RZUEVf",
-            "U0lOR0xFX01JU1NJT04QAxIcChhTQ0VORV9UWVBFX01VTFRJX01JU1NJT04Q",
-            "BBIUChBTQ0VORV9UWVBFX0xPR0lOEAUSFwoTU0NFTkVfVFlQRV9LSU5fTEFO",
-            "RBAGEhIKDlNDRU5FX1RZUEVfQUxMEAgq5QEKGU5ldEFjb3RyRXZhZGVTdGF0",
-            "ZVBheWxvYWQSJgoiTkVUX0FDVE9SX0VWQURFX1NUQVRFX1BBWUxPQURfTk9O",
-            "RRAAEiYKIk5FVF9BQ1RPUl9FVkFERV9TVEFURV9QQVlMT0FEX0xFRlQQARIn",
-            "CiNORVRfQUNUT1JfRVZBREVfU1RBVEVfUEFZTE9BRF9SSUdIVBACEicKI05F",
-            "VF9BQ1RPUl9FVkFERV9TVEFURV9QQVlMT0FEX0ZST05UEAMSJgoiTkVUX0FD",
-            "VE9SX0VWQURFX1NUQVRFX1BBWUxPQURfQkFDSxAEYgZwcm90bzM="));
+            "Y3Rvck1vZGUSEQoJdGltZXN0YW1wGAQgASgDEg8KB3NjZW5lSWQYBSABKAUi",
+            "lQEKEUFjdG9yU3RhdGVQYXlMb2FkEg8KBXNwZWVkGAEgASgCSAASRAoMZXZh",
+            "ZGVQYXlMb2FkGAIgASgOMiwuSFMuUHJvdG9idWYuU2NlbmUuTmV0QWNvdHJF",
+            "dmFkZVN0YXRlUGF5bG9hZEgAEh4KFGp1bXBWZXJ0aWNhbFZlbG9jaXR5GAMg",
+            "ASgCSABCCQoHcGF5TG9hZCKBAgoXQWN0b3JDaGFuZ2VTdGF0ZVJlcXVlc3QS",
+            "EQoJc2Vzc2lvbklkGAEgASgJEhAKCGVudGl0eUlkGAIgASgFEhEKCXRpbWVz",
+            "dGFtcBgDIAEoAxI1CgVzdGF0ZRgEIAEoDjImLkhTLlByb3RvYnVmLlNjZW5l",
+            "RW50aXR5Lk5ldEFjdG9yU3RhdGUSQAoRb3JpZ2luYWxUcmFuc2Zvcm0YBSAB",
+            "KAsyJS5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRUcmFuc2Zvcm0SNQoH",
+            "cGF5TG9hZBgGIAEoCzIkLkhTLlByb3RvYnVmLlNjZW5lLkFjdG9yU3RhdGVQ",
+            "YXlMb2FkIpMCChhBY3RvckNoYW5nZVN0YXRlUmVzcG9uc2USEQoJc2Vzc2lv",
+            "bklkGAEgASgJEhAKCGVudGl0eUlkGAIgASgFEhEKCXRpbWVzdGFtcBgDIAEo",
+            "AxI1CgVzdGF0ZRgEIAEoDjImLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5Lk5l",
+            "dEFjdG9yU3RhdGUSQAoRb3JpZ2luYWxUcmFuc2Zvcm0YBSABKAsyJS5IUy5Q",
+            "cm90b2J1Zi5TY2VuZUVudGl0eS5OZXRUcmFuc2Zvcm0SNQoHcGF5TG9hZBgG",
+            "IAEoCzIkLkhTLlByb3RvYnVmLlNjZW5lLkFjdG9yU3RhdGVQYXlMb2FkEg8K",
+            "B3NjZW5lSWQYByABKAUiZQofQWN0b3JDaGFuZ2VUcmFuc2Zvcm1EYXRhUGF5",
+            "TG9hZBIVCg12ZXJ0aWNhbFNwZWVkGAEgASgFEhcKD2hvcml6b250YWxTcGVl",
+            "ZBgCIAEoBRISCgpoaWdodFNwZWVkGAMgASgFIuABCh9BY3RvckNoYW5nZVRy",
+            "YW5zZm9ybURhdGFSZXF1ZXN0EhEKCXNlc3Npb25JZBgBIAEoCRIQCghlbnRp",
+            "dHlJZBgCIAEoBRIRCgl0aW1lc3RhbXAYAyABKAMSQAoRb3JpZ2luYWxUcmFu",
+            "c2Zvcm0YBCABKAsyJS5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRUcmFu",
+            "c2Zvcm0SQwoHcGF5TG9hZBgFIAEoCzIyLkhTLlByb3RvYnVmLlNjZW5lLkFj",
+            "dG9yQ2hhbmdlVHJhbnNmb3JtRGF0YVBheUxvYWQi8gEKIEFjdG9yQ2hhbmdl",
+            "VHJhbnNmb3JtRGF0YVJlc3BvbnNlEhEKCXNlc3Npb25JZBgBIAEoCRIQCghl",
+            "bnRpdHlJZBgCIAEoBRIRCgl0aW1lc3RhbXAYAyABKAMSQAoRb3JpZ2luYWxU",
+            "cmFuc2Zvcm0YBCABKAsyJS5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRU",
+            "cmFuc2Zvcm0SQwoHcGF5TG9hZBgFIAEoCzIyLkhTLlByb3RvYnVmLlNjZW5l",
+            "LkFjdG9yQ2hhbmdlVHJhbnNmb3JtRGF0YVBheUxvYWQSDwoHc2NlbmVJZBgG",
+            "IAEoBSJcChNTY2VuZURlbGl2ZXJSZXF1ZXN0EhEKCXNlc3Npb25JZBgBIAEo",
+            "CRIPCgdzY2VuZUlkGAIgASgFEhAKCGVudGl0eUlkGAMgASgFEg8KB3BvaW50",
+            "SWQYBCABKAUiUAoUU2NlbmVEZWxpdmVyUmVzcG9uc2USEQoJc2Vzc2lvbklk",
+            "GAEgASgJEhIKCnJlc3VsdENvZGUYAiABKAUSEQoJcmVzdWx0TXNnGAMgASgJ",
+            "Ij0KFkNoYXJhY3RlclJldml2ZVJlcXVlc3QSEQoJc2Vzc2lvbklkGAEgASgJ",
+            "EhAKCGVudGl0eUlkGAIgASgFIlMKF0NoYXJhY3RlclJldml2ZVJlc3BvbnNl",
+            "EhEKCXNlc3Npb25JZBgBIAEoCRISCgpyZXN1bHRDb2RlGAIgASgFEhEKCXJl",
+            "c3VsdE1zZxgDIAEoCSJpChxTcGFjZUNoYXJhY3RlcnNFbnRlclJlc3BvbnNl",
+            "Eg8KB3NwYWNlSWQYASABKAUSOAoNY2hhcmFjdGVyTGlzdBgCIAMoCzIhLkhT",
+            "LlByb3RvYnVmLlNjZW5lRW50aXR5Lk5ldEFjdG9yIroBChJTcGFjZUVudGVy",
+            "UmVzcG9uc2USNAoJY2hhcmFjdGVyGAEgASgLMiEuSFMuUHJvdG9idWYuU2Nl",
+            "bmVFbnRpdHkuTmV0QWN0b3ISOAoNY2hhcmFjdGVyTGlzdBgCIAMoCzIhLkhT",
+            "LlByb3RvYnVmLlNjZW5lRW50aXR5Lk5ldEFjdG9yEjQKCWVJdGVtTGlzdBgD",
+            "IAMoCzIhLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5Lk5ldEVJdGVtIiwKGFNw",
+            "YWNlRW50aXR5TGVhdmVSZXNwb25zZRIQCghlbnRpdHlJZBgBIAEoBSKTAQoL",
+            "TkVudGl0eVN5bmMSMgoGZW50aXR5GAEgASgLMiIuSFMuUHJvdG9idWYuU2Nl",
+            "bmVFbnRpdHkuTmV0RW50aXR5Eg0KBWZvcmNlGAIgASgIEjIKBXN0YXRlGAMg",
+            "ASgOMiMuSFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuQWN0b3JTdGF0ZRINCgVm",
+            "bGFnMRgEIAEoBSJMChZTcGFjZUVudGl0eVN5bmNSZXF1ZXN0EjIKCmVudGl0",
+            "eVN5bmMYASABKAsyHi5IUy5Qcm90b2J1Zi5TY2VuZS5ORW50aXR5U3luYyJN",
+            "ChdTcGFjZUVudGl0eVN5bmNSZXNwb25zZRIyCgplbnRpdHlTeW5jGAEgASgL",
+            "Mh4uSFMuUHJvdG9idWYuU2NlbmUuTkVudGl0eVN5bmMiVgogQ3RsQ2xpZW50",
+            "U3BhY2VFbnRpdHlTeW5jUmVzcG9uc2USMgoKZW50aXR5U3luYxgBIAEoCzIe",
+            "LkhTLlByb3RvYnVmLlNjZW5lLk5FbnRpdHlTeW5jIjcKE1NwYWNlRGVsaXZl",
+            "clJlcXVlc3QSDwoHc3BhY2VJZBgBIAEoBRIPCgdwb2ludElkGAIgASgFIj0K",
+            "FFNwYWNlRGVsaXZlclJlc3BvbnNlEhIKCnJlc3VsdENvZGUYASABKAUSEQoJ",
+            "cmVzdWx0TXNnGAIgASgJIiEKDVJldml2ZVJlcXVlc3QSEAoIZW50aXR5SWQY",
+            "ASABKAUiRQoOUmV2aXZlUmVzcG9uc2USMwoLbkVudGl0eVN5Y24YASABKAsy",
+            "Hi5IUy5Qcm90b2J1Zi5TY2VuZS5ORW50aXR5U3luYyJDCgxOZXRFSXRlbVN5",
+            "bmMSMwoIbmV0RUl0ZW0YASABKAsyIS5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0",
+            "eS5OZXRFSXRlbSJNChZTcGFjZUl0ZW1FbnRlclJlc3BvbnNlEjMKCG5ldEVJ",
+            "dGVtGAEgASgLMiEuSFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuTmV0RUl0ZW0i",
+            "TgoVUHJvcGVydHlVcGRhdGVSc3BvbnNlEjUKBGxpc3QYASADKAsyJy5IUy5Q",
+            "cm90b2J1Zi5TY2VuZUVudGl0eS5Qcm9wZXJ0eVVwZGF0ZSq1BgoMU2NlbmVQ",
+            "cm90b2NsEhYKElNDRU5FX1BST1RPQ0xfTk9ORRAAEikKI1NDRU5FX1BST1RP",
+            "Q0xfUkVHSVNURVJfVE9fU0NFTkVfUkVREMG4AhIqCiRTQ0VORV9QUk9UT0NM",
+            "X1JFR0lTVEVSX1RPX1NDRU5FX1JFU1AQwrgCEi0KJ1NDRU5FX1BST1RPQ0xf",
+            "Q0hBUkFDVEVSX0VOVEVSX1NDRU5FX1JFURDDuAISMwotU0NFTkVfUFJPVE9D",
+            "TF9TRUxGX0NIQVJBQ1RFUl9FTlRFUl9TQ0VORV9SRVNQEMS4AhIxCitTQ0VO",
+            "RV9QUk9UT0NMX09USEVSX0VOVElUWV9FTlRFUl9TQ0VORV9SRVNQEMW4AhIt",
+            "CidTQ0VORV9QUk9UT0NMX0NIQVJBQ1RFUl9MRUFWRV9TQ0VORV9SRVEQxrgC",
+            "EjEKK1NDRU5FX1BST1RPQ0xfT1RIRVJfRU5USVRZX0xFQVZFX1NDRU5FX1JF",
+            "U1AQx7gCEikKI1NDRU5FX1BST1RPQ0xfQUNUT1JfQ0hBTkdFX01PREVfUkVR",
+            "EMm4AhIqCiRTQ0VORV9QUk9UT0NMX0FDVE9SX0NIQU5HRV9NT0RFX1JFU1AQ",
+            "yrgCEioKJFNDRU5FX1BST1RPQ0xfQUNUT1JfQ0hBTkdFX1NUQVRFX1JFURDL",
+            "uAISKwolU0NFTkVfUFJPVE9DTF9BQ1RPUl9DSEFOR0VfU1RBVEVfUkVTUBDM",
+            "uAISMwotU0NFTkVfUFJPVE9DTF9BQ1RPUl9DSEFOR0VfVFJBTlNGT1JNX0RB",
+            "VEFfUkVREM24AhI0Ci5TQ0VORV9QUk9UT0NMX0FDVE9SX0NIQU5HRV9UUkFO",
+            "U0ZPUk1fREFUQV9SRVNQEM64AhIlCh9TQ0VORV9QUk9UT0NMX1NDRU5FX0RF",
+            "TElWRVJfUkVREM+4AhImCiBTQ0VORV9QUk9UT0NMX1NDRU5FX0RFTElWRVJf",
+            "UkVTUBDQuAISKAoiU0NFTkVfUFJPVE9DTF9DSEFSQUNURVJfUkVWSVZFX1JF",
+            "URDRuAISKQojU0NFTkVfUFJPVE9DTF9DSEFSQUNURVJfUkVWSVZFX1JFU1AQ",
+            "0rgCKssBCglTY2VuZVR5cGUSEwoPU0NFTkVfVFlQRV9OVUxMEAASEwoPU0NF",
+            "TkVfVFlQRV9DSVRZEAESFAoQU0NFTkVfVFlQRV9GSUVMRBACEh0KGVNDRU5F",
+            "X1RZUEVfU0lOR0xFX01JU1NJT04QAxIcChhTQ0VORV9UWVBFX01VTFRJX01J",
+            "U1NJT04QBBIUChBTQ0VORV9UWVBFX0xPR0lOEAUSFwoTU0NFTkVfVFlQRV9L",
+            "SU5fTEFORBAGEhIKDlNDRU5FX1RZUEVfQUxMEAgq5QEKGU5ldEFjb3RyRXZh",
+            "ZGVTdGF0ZVBheWxvYWQSJgoiTkVUX0FDVE9SX0VWQURFX1NUQVRFX1BBWUxP",
+            "QURfTk9ORRAAEiYKIk5FVF9BQ1RPUl9FVkFERV9TVEFURV9QQVlMT0FEX0xF",
+            "RlQQARInCiNORVRfQUNUT1JfRVZBREVfU1RBVEVfUEFZTE9BRF9SSUdIVBAC",
+            "EicKI05FVF9BQ1RPUl9FVkFERV9TVEFURV9QQVlMT0FEX0ZST05UEAMSJgoi",
+            "TkVUX0FDVE9SX0VWQURFX1NUQVRFX1BBWUxPQURfQkFDSxAEYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::HS.Protobuf.Common.CommonReflection.Descriptor, global::HS.Protobuf.SceneEntity.SceneEntityReflection.Descriptor, global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.Scene.SceneProtocl), typeof(global::HS.Protobuf.Scene.SceneType), typeof(global::HS.Protobuf.Scene.NetAcotrEvadeStatePayload), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -156,13 +157,13 @@ namespace HS.Protobuf.Scene {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.CharacterLeaveSceneRequest), global::HS.Protobuf.Scene.CharacterLeaveSceneRequest.Parser, new[]{ "EntityId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.OtherEntityLeaveSceneResponse), global::HS.Protobuf.Scene.OtherEntityLeaveSceneResponse.Parser, new[]{ "SessionId", "SceneId", "EntityId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeModeRequest), global::HS.Protobuf.Scene.ActorChangeModeRequest.Parser, new[]{ "SessionId", "EntityId", "Mode", "Timestamp" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeModeResponse), global::HS.Protobuf.Scene.ActorChangeModeResponse.Parser, new[]{ "SessionId", "EntityId", "Mode", "Timestamp" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeModeResponse), global::HS.Protobuf.Scene.ActorChangeModeResponse.Parser, new[]{ "SessionId", "EntityId", "Mode", "Timestamp", "SceneId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorStatePayLoad), global::HS.Protobuf.Scene.ActorStatePayLoad.Parser, new[]{ "Speed", "EvadePayLoad", "JumpVerticalVelocity" }, new[]{ "PayLoad" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeStateRequest), global::HS.Protobuf.Scene.ActorChangeStateRequest.Parser, new[]{ "SessionId", "EntityId", "Timestamp", "State", "OriginalTransform", "PayLoad" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeStateResponse), global::HS.Protobuf.Scene.ActorChangeStateResponse.Parser, new[]{ "SessionId", "EntityId", "Timestamp", "State", "OriginalTransform", "PayLoad" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeStateResponse), global::HS.Protobuf.Scene.ActorChangeStateResponse.Parser, new[]{ "SessionId", "EntityId", "Timestamp", "State", "OriginalTransform", "PayLoad", "SceneId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeTransformDataPayLoad), global::HS.Protobuf.Scene.ActorChangeTransformDataPayLoad.Parser, new[]{ "VerticalSpeed", "HorizontalSpeed", "HightSpeed" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeTransformDataRequest), global::HS.Protobuf.Scene.ActorChangeTransformDataRequest.Parser, new[]{ "SessionId", "EntityId", "Timestamp", "OriginalTransform", "PayLoad" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeTransformDataResponse), global::HS.Protobuf.Scene.ActorChangeTransformDataResponse.Parser, new[]{ "SessionId", "EntityId", "Timestamp", "OriginalTransform", "PayLoad" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeTransformDataResponse), global::HS.Protobuf.Scene.ActorChangeTransformDataResponse.Parser, new[]{ "SessionId", "EntityId", "Timestamp", "OriginalTransform", "PayLoad", "SceneId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.SceneDeliverRequest), global::HS.Protobuf.Scene.SceneDeliverRequest.Parser, new[]{ "SessionId", "SceneId", "EntityId", "PointId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.SceneDeliverResponse), global::HS.Protobuf.Scene.SceneDeliverResponse.Parser, new[]{ "SessionId", "ResultCode", "ResultMsg" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.CharacterReviveRequest), global::HS.Protobuf.Scene.CharacterReviveRequest.Parser, new[]{ "SessionId", "EntityId" }, null, null, null, null),
@@ -302,6 +303,9 @@ namespace HS.Protobuf.Scene {
   #endregion
 
   #region Messages
+  /// <summary>
+  /// GameGate注册用
+  /// </summary>
   public sealed partial class RegisterToSceneRequest : pb::IMessage<RegisterToSceneRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -763,6 +767,9 @@ namespace HS.Protobuf.Scene {
 
   }
 
+  /// <summary>
+  /// Game调用
+  /// </summary>
   public sealed partial class CharacterEnterSceneRequest : pb::IMessage<CharacterEnterSceneRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -1794,6 +1801,9 @@ namespace HS.Protobuf.Scene {
 
   }
 
+  /// <summary>
+  /// Game调用
+  /// </summary>
   public sealed partial class CharacterLeaveSceneRequest : pb::IMessage<CharacterLeaveSceneRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -2584,6 +2594,7 @@ namespace HS.Protobuf.Scene {
       entityId_ = other.entityId_;
       mode_ = other.mode_;
       timestamp_ = other.timestamp_;
+      sceneId_ = other.sceneId_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -2641,6 +2652,18 @@ namespace HS.Protobuf.Scene {
       }
     }
 
+    /// <summary>Field number for the "sceneId" field.</summary>
+    public const int SceneIdFieldNumber = 5;
+    private int sceneId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int SceneId {
+      get { return sceneId_; }
+      set {
+        sceneId_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -2660,6 +2683,7 @@ namespace HS.Protobuf.Scene {
       if (EntityId != other.EntityId) return false;
       if (Mode != other.Mode) return false;
       if (Timestamp != other.Timestamp) return false;
+      if (SceneId != other.SceneId) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -2671,6 +2695,7 @@ namespace HS.Protobuf.Scene {
       if (EntityId != 0) hash ^= EntityId.GetHashCode();
       if (Mode != global::HS.Protobuf.SceneEntity.NetActorMode.None) hash ^= Mode.GetHashCode();
       if (Timestamp != 0L) hash ^= Timestamp.GetHashCode();
+      if (SceneId != 0) hash ^= SceneId.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2705,6 +2730,10 @@ namespace HS.Protobuf.Scene {
         output.WriteRawTag(32);
         output.WriteInt64(Timestamp);
       }
+      if (SceneId != 0) {
+        output.WriteRawTag(40);
+        output.WriteInt32(SceneId);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -2731,6 +2760,10 @@ namespace HS.Protobuf.Scene {
         output.WriteRawTag(32);
         output.WriteInt64(Timestamp);
       }
+      if (SceneId != 0) {
+        output.WriteRawTag(40);
+        output.WriteInt32(SceneId);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -2752,6 +2785,9 @@ namespace HS.Protobuf.Scene {
       }
       if (Timestamp != 0L) {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(Timestamp);
+      }
+      if (SceneId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(SceneId);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -2776,6 +2812,9 @@ namespace HS.Protobuf.Scene {
       }
       if (other.Timestamp != 0L) {
         Timestamp = other.Timestamp;
+      }
+      if (other.SceneId != 0) {
+        SceneId = other.SceneId;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -2808,6 +2847,10 @@ namespace HS.Protobuf.Scene {
             Timestamp = input.ReadInt64();
             break;
           }
+          case 40: {
+            SceneId = input.ReadInt32();
+            break;
+          }
         }
       }
     #endif
@@ -2837,6 +2880,10 @@ namespace HS.Protobuf.Scene {
           }
           case 32: {
             Timestamp = input.ReadInt64();
+            break;
+          }
+          case 40: {
+            SceneId = input.ReadInt32();
             break;
           }
         }
@@ -3245,7 +3292,7 @@ namespace HS.Protobuf.Scene {
     }
 
     /// <summary>Field number for the "originalTransform" field.</summary>
-    public const int OriginalTransformFieldNumber = 6;
+    public const int OriginalTransformFieldNumber = 5;
     private global::HS.Protobuf.SceneEntity.NetTransform originalTransform_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -3257,7 +3304,7 @@ namespace HS.Protobuf.Scene {
     }
 
     /// <summary>Field number for the "payLoad" field.</summary>
-    public const int PayLoadFieldNumber = 7;
+    public const int PayLoadFieldNumber = 6;
     private global::HS.Protobuf.Scene.ActorStatePayLoad payLoad_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -3337,11 +3384,11 @@ namespace HS.Protobuf.Scene {
         output.WriteEnum((int) State);
       }
       if (originalTransform_ != null) {
-        output.WriteRawTag(50);
+        output.WriteRawTag(42);
         output.WriteMessage(OriginalTransform);
       }
       if (payLoad_ != null) {
-        output.WriteRawTag(58);
+        output.WriteRawTag(50);
         output.WriteMessage(PayLoad);
       }
       if (_unknownFields != null) {
@@ -3371,11 +3418,11 @@ namespace HS.Protobuf.Scene {
         output.WriteEnum((int) State);
       }
       if (originalTransform_ != null) {
-        output.WriteRawTag(50);
+        output.WriteRawTag(42);
         output.WriteMessage(OriginalTransform);
       }
       if (payLoad_ != null) {
-        output.WriteRawTag(58);
+        output.WriteRawTag(50);
         output.WriteMessage(PayLoad);
       }
       if (_unknownFields != null) {
@@ -3473,14 +3520,14 @@ namespace HS.Protobuf.Scene {
             State = (global::HS.Protobuf.SceneEntity.NetActorState) input.ReadEnum();
             break;
           }
-          case 50: {
+          case 42: {
             if (originalTransform_ == null) {
               OriginalTransform = new global::HS.Protobuf.SceneEntity.NetTransform();
             }
             input.ReadMessage(OriginalTransform);
             break;
           }
-          case 58: {
+          case 50: {
             if (payLoad_ == null) {
               PayLoad = new global::HS.Protobuf.Scene.ActorStatePayLoad();
             }
@@ -3518,14 +3565,14 @@ namespace HS.Protobuf.Scene {
             State = (global::HS.Protobuf.SceneEntity.NetActorState) input.ReadEnum();
             break;
           }
-          case 50: {
+          case 42: {
             if (originalTransform_ == null) {
               OriginalTransform = new global::HS.Protobuf.SceneEntity.NetTransform();
             }
             input.ReadMessage(OriginalTransform);
             break;
           }
-          case 58: {
+          case 50: {
             if (payLoad_ == null) {
               PayLoad = new global::HS.Protobuf.Scene.ActorStatePayLoad();
             }
@@ -3579,6 +3626,7 @@ namespace HS.Protobuf.Scene {
       state_ = other.state_;
       originalTransform_ = other.originalTransform_ != null ? other.originalTransform_.Clone() : null;
       payLoad_ = other.payLoad_ != null ? other.payLoad_.Clone() : null;
+      sceneId_ = other.sceneId_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -3637,7 +3685,7 @@ namespace HS.Protobuf.Scene {
     }
 
     /// <summary>Field number for the "originalTransform" field.</summary>
-    public const int OriginalTransformFieldNumber = 6;
+    public const int OriginalTransformFieldNumber = 5;
     private global::HS.Protobuf.SceneEntity.NetTransform originalTransform_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -3649,7 +3697,7 @@ namespace HS.Protobuf.Scene {
     }
 
     /// <summary>Field number for the "payLoad" field.</summary>
-    public const int PayLoadFieldNumber = 7;
+    public const int PayLoadFieldNumber = 6;
     private global::HS.Protobuf.Scene.ActorStatePayLoad payLoad_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -3657,6 +3705,18 @@ namespace HS.Protobuf.Scene {
       get { return payLoad_; }
       set {
         payLoad_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "sceneId" field.</summary>
+    public const int SceneIdFieldNumber = 7;
+    private int sceneId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int SceneId {
+      get { return sceneId_; }
+      set {
+        sceneId_ = value;
       }
     }
 
@@ -3681,6 +3741,7 @@ namespace HS.Protobuf.Scene {
       if (State != other.State) return false;
       if (!object.Equals(OriginalTransform, other.OriginalTransform)) return false;
       if (!object.Equals(PayLoad, other.PayLoad)) return false;
+      if (SceneId != other.SceneId) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -3694,6 +3755,7 @@ namespace HS.Protobuf.Scene {
       if (State != global::HS.Protobuf.SceneEntity.NetActorState.None) hash ^= State.GetHashCode();
       if (originalTransform_ != null) hash ^= OriginalTransform.GetHashCode();
       if (payLoad_ != null) hash ^= PayLoad.GetHashCode();
+      if (SceneId != 0) hash ^= SceneId.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -3729,12 +3791,16 @@ namespace HS.Protobuf.Scene {
         output.WriteEnum((int) State);
       }
       if (originalTransform_ != null) {
-        output.WriteRawTag(50);
+        output.WriteRawTag(42);
         output.WriteMessage(OriginalTransform);
       }
       if (payLoad_ != null) {
-        output.WriteRawTag(58);
+        output.WriteRawTag(50);
         output.WriteMessage(PayLoad);
+      }
+      if (SceneId != 0) {
+        output.WriteRawTag(56);
+        output.WriteInt32(SceneId);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -3763,12 +3829,16 @@ namespace HS.Protobuf.Scene {
         output.WriteEnum((int) State);
       }
       if (originalTransform_ != null) {
-        output.WriteRawTag(50);
+        output.WriteRawTag(42);
         output.WriteMessage(OriginalTransform);
       }
       if (payLoad_ != null) {
-        output.WriteRawTag(58);
+        output.WriteRawTag(50);
         output.WriteMessage(PayLoad);
+      }
+      if (SceneId != 0) {
+        output.WriteRawTag(56);
+        output.WriteInt32(SceneId);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -3797,6 +3867,9 @@ namespace HS.Protobuf.Scene {
       }
       if (payLoad_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(PayLoad);
+      }
+      if (SceneId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(SceneId);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -3834,6 +3907,9 @@ namespace HS.Protobuf.Scene {
         }
         PayLoad.MergeFrom(other.PayLoad);
       }
+      if (other.SceneId != 0) {
+        SceneId = other.SceneId;
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -3865,18 +3941,22 @@ namespace HS.Protobuf.Scene {
             State = (global::HS.Protobuf.SceneEntity.NetActorState) input.ReadEnum();
             break;
           }
-          case 50: {
+          case 42: {
             if (originalTransform_ == null) {
               OriginalTransform = new global::HS.Protobuf.SceneEntity.NetTransform();
             }
             input.ReadMessage(OriginalTransform);
             break;
           }
-          case 58: {
+          case 50: {
             if (payLoad_ == null) {
               PayLoad = new global::HS.Protobuf.Scene.ActorStatePayLoad();
             }
             input.ReadMessage(PayLoad);
+            break;
+          }
+          case 56: {
+            SceneId = input.ReadInt32();
             break;
           }
         }
@@ -3910,18 +3990,22 @@ namespace HS.Protobuf.Scene {
             State = (global::HS.Protobuf.SceneEntity.NetActorState) input.ReadEnum();
             break;
           }
-          case 50: {
+          case 42: {
             if (originalTransform_ == null) {
               OriginalTransform = new global::HS.Protobuf.SceneEntity.NetTransform();
             }
             input.ReadMessage(OriginalTransform);
             break;
           }
-          case 58: {
+          case 50: {
             if (payLoad_ == null) {
               PayLoad = new global::HS.Protobuf.Scene.ActorStatePayLoad();
             }
             input.ReadMessage(PayLoad);
+            break;
+          }
+          case 56: {
+            SceneId = input.ReadInt32();
             break;
           }
         }
@@ -4588,6 +4672,7 @@ namespace HS.Protobuf.Scene {
       timestamp_ = other.timestamp_;
       originalTransform_ = other.originalTransform_ != null ? other.originalTransform_.Clone() : null;
       payLoad_ = other.payLoad_ != null ? other.payLoad_.Clone() : null;
+      sceneId_ = other.sceneId_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -4657,6 +4742,18 @@ namespace HS.Protobuf.Scene {
       }
     }
 
+    /// <summary>Field number for the "sceneId" field.</summary>
+    public const int SceneIdFieldNumber = 6;
+    private int sceneId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int SceneId {
+      get { return sceneId_; }
+      set {
+        sceneId_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -4677,6 +4774,7 @@ namespace HS.Protobuf.Scene {
       if (Timestamp != other.Timestamp) return false;
       if (!object.Equals(OriginalTransform, other.OriginalTransform)) return false;
       if (!object.Equals(PayLoad, other.PayLoad)) return false;
+      if (SceneId != other.SceneId) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -4689,6 +4787,7 @@ namespace HS.Protobuf.Scene {
       if (Timestamp != 0L) hash ^= Timestamp.GetHashCode();
       if (originalTransform_ != null) hash ^= OriginalTransform.GetHashCode();
       if (payLoad_ != null) hash ^= PayLoad.GetHashCode();
+      if (SceneId != 0) hash ^= SceneId.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -4727,6 +4826,10 @@ namespace HS.Protobuf.Scene {
         output.WriteRawTag(42);
         output.WriteMessage(PayLoad);
       }
+      if (SceneId != 0) {
+        output.WriteRawTag(48);
+        output.WriteInt32(SceneId);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -4757,6 +4860,10 @@ namespace HS.Protobuf.Scene {
         output.WriteRawTag(42);
         output.WriteMessage(PayLoad);
       }
+      if (SceneId != 0) {
+        output.WriteRawTag(48);
+        output.WriteInt32(SceneId);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -4781,6 +4888,9 @@ namespace HS.Protobuf.Scene {
       }
       if (payLoad_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(PayLoad);
+      }
+      if (SceneId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(SceneId);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -4814,6 +4924,9 @@ namespace HS.Protobuf.Scene {
           PayLoad = new global::HS.Protobuf.Scene.ActorChangeTransformDataPayLoad();
         }
         PayLoad.MergeFrom(other.PayLoad);
+      }
+      if (other.SceneId != 0) {
+        SceneId = other.SceneId;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -4856,6 +4969,10 @@ namespace HS.Protobuf.Scene {
             input.ReadMessage(PayLoad);
             break;
           }
+          case 48: {
+            SceneId = input.ReadInt32();
+            break;
+          }
         }
       }
     #endif
@@ -4895,6 +5012,10 @@ namespace HS.Protobuf.Scene {
               PayLoad = new global::HS.Protobuf.Scene.ActorChangeTransformDataPayLoad();
             }
             input.ReadMessage(PayLoad);
+            break;
+          }
+          case 48: {
+            SceneId = input.ReadInt32();
             break;
           }
         }

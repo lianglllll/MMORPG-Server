@@ -42,12 +42,16 @@ message DBCharacterSocialNode {
 }
 message DBCharacterSkillNode {
     int32 skillId = 1;       // 技能ID
-    int32 level = 2;          // 技能等级
+    int32 level = 2;         // 技能等级
+}
+message DBCharacterEquipSkillNode{
+	int32 skillId = 1;
+	int32 pos = 2;
 }
 message DBCharacterCombatNode {
-	// int32 fixedSkillCombinationId = 1;
-    repeated DBCharacterSkillNode skills = 2;      // 技能列表
-    repeated int32 equippedSkills = 3;            // 装备技能列表 (存储已装备技能的ID)
+    repeated DBCharacterSkillNode skills = 1;					// 技能列表
+    repeated DBCharacterEquipSkillNode equippedSkills = 2;      // 装备技能列表 (存储已装备技能的ID)
+
 }
 message DBCharacterNode{
 	string cId = 1;

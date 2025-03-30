@@ -37,6 +37,7 @@ enum SceneType {
     SCENE_TYPE_ALL              = 8; // 注意：最大值255，新增类型找空位即可
 };
 
+// GameGate注册用
 message RegisterToSceneRequest{
 	HS.Protobuf.Common.ServerInfoNode serverInfoNode = 1;
 }
@@ -46,6 +47,7 @@ message RegisterToSceneResponse{
 	string sceneToken = 3;
 }
 
+// Game调用
 message CharacterEnterSceneRequest{
 	int32 taskId = 1;
 	string sessionId = 2;
@@ -68,6 +70,8 @@ message OtherEntityEnterSceneResponse{
 	HS.Protobuf.SceneEntity.NetActorNode actorNode = 4;
 	HS.Protobuf.SceneEntity.NetItemNode  itemNode  = 5;
 }
+
+// Game调用
 message CharacterLeaveSceneRequest{
 	int32 entityId = 1;
 }
@@ -76,6 +80,7 @@ message OtherEntityLeaveSceneResponse{
 	int32 sceneId = 2;		
 	int32 entityId = 3;
 }
+
 
 message ActorChangeModeRequest{
 	string sessionId = 1;
@@ -88,6 +93,7 @@ message ActorChangeModeResponse{
 	int32 entityId = 2;
 	HS.Protobuf.SceneEntity.NetActorMode mode = 3;
 	int64 timestamp = 4;
+	int32 sceneId = 5;
 }
 
 enum NetAcotrEvadeStatePayload {
@@ -109,16 +115,17 @@ message ActorChangeStateRequest{
 	int32 entityId = 2;
 	int64 timestamp = 3;
 	HS.Protobuf.SceneEntity.NetActorState state = 4;
-	HS.Protobuf.SceneEntity.NetTransform originalTransform = 6;
-	ActorStatePayLoad payLoad = 7;
+	HS.Protobuf.SceneEntity.NetTransform originalTransform = 5;
+	ActorStatePayLoad payLoad = 6;
 }
 message ActorChangeStateResponse{
 	string sessionId = 1;
 	int32 entityId = 2;
 	int64 timestamp = 3;
 	HS.Protobuf.SceneEntity.NetActorState state = 4;
-	HS.Protobuf.SceneEntity.NetTransform originalTransform = 6;
-	ActorStatePayLoad payLoad = 7;
+	HS.Protobuf.SceneEntity.NetTransform originalTransform = 5;
+	ActorStatePayLoad payLoad = 6;
+	int32 sceneId = 7;
 }
 
 message ActorChangeTransformDataPayLoad{
@@ -139,7 +146,11 @@ message ActorChangeTransformDataResponse{
 	int64 timestamp = 3;
 	HS.Protobuf.SceneEntity.NetTransform originalTransform = 4;
 	ActorChangeTransformDataPayLoad payLoad = 5;
+	int32 sceneId = 6;
 }
+
+
+// =========================================
 
 message SceneDeliverRequest{
 	string sessionId	= 1;
@@ -162,21 +173,6 @@ message CharacterReviveResponse{
 	int32  resultCode		= 2;
 	string resultMsg		= 3;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // === 下面是无用的====================================================

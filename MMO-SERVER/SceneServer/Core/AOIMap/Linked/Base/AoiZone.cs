@@ -98,9 +98,11 @@ namespace SceneServer.Core.AOI
                 _yLinks.Move(entity.Y, ref y);
             }
 
-            if (isFind) {
-                Find(entity, ref area);
-            }
+            /*            if (isFind) {
+                            Find(entity, ref area);
+                        }*/
+            Find(entity, ref area);
+
             return entity;
         }
         public AoiEntity Refresh_ReturnCurView(long key, Vector2 area, out HashSet<long> enter)

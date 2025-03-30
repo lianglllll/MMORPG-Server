@@ -9,16 +9,25 @@ enum SkillProtocol{
 	SKILL_PROTOCOL_SPELL_CAST_FAIL_RESP = 41003;	// [SpellCastFailResponse]
 }
 
+
+message FixedSkillInfo{
+	int32 pos = 1;
+	int32 skillId = 2;
+}
+message FixedSkillGroupInfo{
+	repeated FixedSkillInfo skills = 1;
+}
+
 // 技能释放结果
 enum CastResult{
-	Success 			= 0;	//成功		
-	IsPassive			= 1;	//被动技能
-	MpLack				= 2;	//MP不足
-	EntityDead			= 3;	//entity已经死亡
-	OutOfRange			= 4;	//超出范围
-	Running				= 5;	//进行中
-	ColdDown			= 6;	//冷却中
-	TargetError			= 7;	//目标错误	
+	Success 			= 0;	// 成功		
+	IsPassive			= 1;	// 被动技能
+	MpLack				= 2;	// MP不足
+	EntityDead			= 3;	// entity已经死亡
+	OutOfRange			= 4;	// 超出范围
+	Running				= 5;	// 进行中
+	ColdDown			= 6;	// 冷却中
+	TargetError			= 7;	// 目标错误	
 }
 // 施法信息：谁发的，要打谁
 message CastInfo{
@@ -26,8 +35,10 @@ message CastInfo{
 	int32 skillId = 2;
 	int32 targetId = 3;
 	HS.Protobuf.Common.NetVector3 point = 4;	// 技能施法点
-	CastResult result = 5;				// 技能释放结果
+	CastResult result = 5;						// 技能释放结果
 	int64 timestamp = 6;
+	HS.Protobuf.Common.NetVector3 casterStartPos = 7;
+	HS.Protobuf.Common.NetVector3 casterStartRot = 8;
 }
 // 释放技能请求
 message SpellCastRequest{
@@ -72,6 +83,18 @@ message Damage{
 message DamageResponse{
 	repeated Damage list = 1;
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // =========================弃用

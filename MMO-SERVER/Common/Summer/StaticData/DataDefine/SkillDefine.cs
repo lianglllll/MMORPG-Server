@@ -33,10 +33,9 @@ public class SkillDefine
 	public float ADC; // 物攻加成(百分比)
 	public float APC; // 法攻加成
 	public float IntonateTime; // 施法前摇
-	public string IntonateAnimName; // 前摇动作
 	public float Duration; // 激活状态动画持续的时间
-	public string ActiveAnimName; // 激活动作
-	public float PostRockTime; // 技能的后摇时间，我这里用作缓冲
+	public float CanSwitchSkillTimePoint; // 技能允许变招的时间点
+	public float CanCancelSkillTimePoint; // 技能运行取消的时间点
 	public float CD; // 冷却时间
 	public bool IsMissile; // 是否是投射物
 	public bool MissileIsGroupAttack; // 投射物是否造成群体伤害

@@ -5,7 +5,6 @@ import "Combat/ProtoSource/Buff.proto";
 import "Game/ProtoSource/Backpack.proto";
 package HS.Protobuf.SceneEntity;
 
-
 message NetTransform{
 	HS.Protobuf.Common.NetVector3 position = 1;
 	HS.Protobuf.Common.NetVector3 rotation = 2;
@@ -26,12 +25,14 @@ enum NetActorType{
     NET_ACTOR_TYPE_NPC = 2;
 }
 enum NetActorMode {
-    NET_ACTOR_MODE_NONE = 0;
-    NET_ACTOR_MODE_NORMAL = 1;
-    NET_ACTOR_MODE_EQUIP_REFLE = 2;
-    NET_ACTOR_MODE_EQUIP_SWORD = 3;
-    NET_ACTOR_MODE_FLY_NORMAL = 4;
-    NET_ACTOR_MODE_FLY_SWORD = 5;
+    NET_ACTOR_MODE_NONE				= 0;
+    NET_ACTOR_MODE_NORMAL			= 1;
+	NET_ACTOR_MODE_NORMAL_EQUIP		= 2;
+    NET_ACTOR_MODE_FLY				= 3;
+    NET_ACTOR_MODE_FLY_EQUIP		= 4;
+	NET_ACTOR_MODE_MOUNTED			= 5;
+	NET_ACTOR_MODE_MOUNTED_EQUIP	= 6;
+	NET_ACTOR_MODE_SWIMMING			= 7;
 }
 enum NetActorState {
     NET_ACTOR_STATE_NONE = 0;
@@ -107,10 +108,10 @@ message NetActorNode {
     NetActorState netActorState = 15;
     NetActorSmallState netActorSmallState = 16;
 
-	// int32 weaponSkillArsenalId = 17;
-    repeated int32 equippedSkills = 18;
+	HS.Protobuf.Combat.Skill.FixedSkillGroupInfo fixedSkillGroupInfo = 18;
     repeated HS.Protobuf.Game.Backpack.ItemInfo wornEquipments = 19;
     repeated HS.Protobuf.Combat.Buff.BuffInfo buffs = 20;
+
 }
 
 // Item

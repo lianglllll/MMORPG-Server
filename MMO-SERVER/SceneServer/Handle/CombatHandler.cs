@@ -29,7 +29,6 @@ namespace SceneServer.Handle
             MessageRouter.Instance.Subscribe<CharacterReviveRequest>(HanleReviveRequest);
         }
 
-
         private void HandleSpellCastRequest(Connection conn, SpellCastRequest message)
         {
             // 将其放入当前场景的战斗管理器的缓冲队列中

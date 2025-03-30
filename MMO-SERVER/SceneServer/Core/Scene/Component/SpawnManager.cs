@@ -10,20 +10,20 @@ namespace SceneServer.Core.Scene.Component
     //刷怪管理器，每个场景都会有一个
     public class SpawnManager
     {
-        public List<Spawner> spawners = new List<Spawner>();
+        public List<Spawner> m_spawners = new List<Spawner>();
         public void Init()
         {
             //根据当前场景加载对应的规则
             int sceneId = SceneManager.Instance.SceneId;
-            var rules = StaticDataManager.Instance.spawnDefineDict.Values
+            var spawnDefines = StaticDataManager.Instance.spawnDefineDict.Values
                 .Where(r => r.SpaceId == sceneId && r.SpawnNum > 0);
-            foreach (var r in rules)
+            foreach (var define in spawnDefines)
             {
-                for (int i = 0; i < r.SpawnNum; i++)
+                for (int i = 0; i < define.SpawnNum; i++)
                 {
                     var spawner = new Spawner();
-                    spawner.Init(r);
-                    spawners.Add(spawner);
+                    spawner.Init(define);
+                    m_spawners.Add(spawner);
                 }
             }
         }
@@ -33,7 +33,7 @@ namespace SceneServer.Core.Scene.Component
         }
         public void Update(float deltaTime)
         {
-            foreach(var spawner in spawners)
+            foreach(var spawner in m_spawners)
             {
                 spawner.Update(deltaTime);
             }

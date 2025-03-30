@@ -110,9 +110,15 @@ namespace DBProxyServer.Core
                                 }
 
                                 var equippedSkills = chrCombat["equippedSkills"].AsBsonArray;
-                                foreach (var skillId in equippedSkills)
+                                foreach (var node in equippedSkills)
                                 {
-                                    characterCombatNode.EquippedSkills.Add(skillId.AsInt32);
+                                    var nodeDoc = node.AsBsonDocument;
+                                    var sNode = new DBCharacterEquipSkillNode()
+                                    {
+                                        SkillId = nodeDoc["skillId"].AsInt32,
+                                        Pos = nodeDoc["pos"].AsInt32
+                                    };
+                                    characterCombatNode.EquippedSkills.Add(sNode);
                                 }
                                 break;
                             default:
@@ -236,9 +242,15 @@ namespace DBProxyServer.Core
                                     }
 
                                     var equippedSkills = chrCombat["equippedSkills"].AsBsonArray;
-                                    foreach (var skillId in equippedSkills)
+                                    foreach (var node in equippedSkills)
                                     {
-                                        characterCombatNode.EquippedSkills.Add(skillId.AsInt32);
+                                        var nodeDoc = node.AsBsonDocument;
+                                        var sNode = new DBCharacterEquipSkillNode()
+                                        {
+                                            SkillId = nodeDoc["skillId"].AsInt32,
+                                            Pos = nodeDoc["pos"].AsInt32
+                                        };
+                                        characterCombatNode.EquippedSkills.Add(sNode);
                                     }
 
                                     break;
@@ -348,14 +360,24 @@ namespace DBProxyServer.Core
                         skillsArray.Add(skillDocument);
                     }
 
-                    // 将装备技能ID列表转换为 BsonArray
-                    BsonArray equippedSkillsArray = new BsonArray(chrNode.ChrCombat.EquippedSkills);
+
+                    // 将装备了的技能ID列表转换为 BsonArray
+                    BsonArray equipSkillsArray = new BsonArray();
+                    foreach (var skill in chrNode.ChrCombat.EquippedSkills)
+                    {
+                        BsonDocument skillDocument = new BsonDocument
+                        {
+                            { "skillId", skill.SkillId },
+                            { "pos", skill.Pos }
+                        };
+                        equipSkillsArray.Add(skillDocument);
+                    }
 
                     // 创建 characterCombatNode BsonDocument
                     BsonDocument characterCombatNode = new BsonDocument
                     {
                         { "skills", skillsArray },
-                        { "equippedSkills", equippedSkillsArray }
+                        { "equippedSkills", equipSkillsArray }
                     };
 
                     // 将 characterCombatNode 添加到 characterDocument

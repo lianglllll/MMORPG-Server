@@ -36,7 +36,7 @@ namespace SceneServer.Core.Combat
         
         public void Init()
         {
-
+            spellCastResponse.SceneId = SceneManager.Instance.SceneId;
         }
         public void UnInit()
         {

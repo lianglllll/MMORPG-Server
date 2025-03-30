@@ -33,7 +33,11 @@ namespace SceneServer.Core.Combat.Skills
         public bool IsPointTarget => Define.TargetType == "点";
         public bool IsNormalAttack => Define.Type == "普通攻击";
         public bool IsPassive => Define.Type == "被动技能";
-
+        public bool IsCanSwitchSkill()
+        {
+            if (RunTime >= Define.CanSwitchSkillTimePoint) return true;
+            return false;
+        }
 
         public Skill(SceneActor owner, int skid)
         {
@@ -158,7 +162,10 @@ namespace SceneServer.Core.Combat.Skills
         {
             //Log.Information("技能后摇完成:" + Define.Name);
             //结束后摇阶段了
-            Owner.CurUseSkill = null;
+            if(Owner.CurUseSkill == this)
+            {
+                Owner.CurUseSkill = null;
+            }
         }
         public virtual void OnFinish()
         {
@@ -367,6 +374,11 @@ namespace SceneServer.Core.Combat.Skills
 
             return result;
 
+        }
+
+        public void CancelSkill()
+        {
+            curSkillState = SkillStage.Colding;
         }
     }
 }

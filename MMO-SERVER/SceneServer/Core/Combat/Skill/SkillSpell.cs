@@ -4,6 +4,7 @@ using HS.Protobuf.Combat.Skill;
 using SceneServer.Core.Model.Actor;
 using SceneServer.Core.Scene.Component;
 using SceneServer.Core.Scene;
+using System.Diagnostics;
 
 namespace SceneServer.Core.Combat.Skills
 {
@@ -27,15 +28,22 @@ namespace SceneServer.Core.Combat.Skills
         /// <param name="castInfo"></param>
         public void RunCast(CastInfo castInfo)
         {
-            //actor处于技能后摇中，无法释放技能
-            if (Owner.CurUseSkill != null) return;
-            //判断owner是否拥有这个技能
+            // actor处于技能后摇中，无法释放技能
+            if (Owner.CurUseSkill != null && !Owner.CurUseSkill.IsCanSwitchSkill())
+            {
+                Log.Warning("Spell::RunCast():Owner[{0}]:Skill[{1}] skilling!", Owner.EntityId, castInfo.SkillId);
+                goto End;
+            }
+
+            // 判断owner是否拥有这个技能
             var skill = Owner.GetSkillById(castInfo.SkillId);
             if (skill == null)
             {
-                Log.Warning("Spell::SpellTarget():Owner[{0}]:Skill[{1}] not found", Owner.EntityId, castInfo.SkillId);
-                return;
+                Log.Warning("Spell::RunCast():Owner[{0}]:Skill[{1}] not found!", Owner.EntityId, castInfo.SkillId);
+                goto End;
             }
+
+            Log.Information("Spell::RunCast():Owner[{0}]:Skill[{1}] success!", Owner.EntityId, castInfo.SkillId);
 
             if (skill.IsNoTarget)                           //释放无目标技能
             {
@@ -49,7 +57,8 @@ namespace SceneServer.Core.Combat.Skills
             {
                 SpellPosition(skill, castInfo.Point);
             }
-
+        End:
+            return;
         }
         private void SpellNoTarget(Skill skill)
         {
