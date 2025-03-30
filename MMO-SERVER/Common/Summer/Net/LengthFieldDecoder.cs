@@ -1,10 +1,13 @@
 ﻿using Serilog;
 using System;
+using System.Buffers.Binary;
+using System.IO;
 using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace Common.Summer.Net
 {
-    //todo 这里的异步模型还是begin/end 我们改成async
+    // TODO 这里的异步模型还是begin/end 我们改成async
     /// <summary>
     /// 这是Socket异步接收器，可以对接收的数据粘包与拆包
     /// 事件委托：
@@ -18,44 +21,78 @@ namespace Common.Summer.Net
     ///                     而数据部分的前两个字节是我们的proto协议的编号
     public class LengthFieldDecoder
     {
-        private bool m_isStart = false;             //解码器是否已经启动
-        private Socket m_Socket;                    //连接客户端的socket
-        private int m_lengthFieldOffset =0;         //第几个字节是长度字段
-        private int m_lengthFieldLength = 4;        //长度字段本身占几个字节
-        private int m_lengthAdjustment = 0;         //长度字段和内容之间距离几个字节（也就是长度字段记录了整一个数据包的长度，负数代表向前偏移，body实际长度要减去这个绝对值）
-        private int m_initialBytesToStrip = 4;      //表示获取完一个完整的数据包之后，舍弃前面的多少个字节
-        private byte[] m_buffer;                    //接收数据的缓存空间
-        private int m_offect = 0;                   //缓冲区目前的长度
-        private int m_size = 64 * 1024;             //一次性接收数据的最大字节，默认64kMb
+        // 状态字段
+        private bool m_isStart = false;                  // 解码器是否已经启动
+        private Socket m_Socket;
+        private Memory<byte> m_bufferMem;               
+        private int m_offset = 0;                        // 缓冲区目前的长度
 
-        //委托事件
-        public delegate void ReceivedHandler(byte[] data);
+        // 配置参数
+        private int m_maxBufferLength;              // 一次性接收数据的最大字节，默认64kMb
+        private int m_lengthFieldOffset;            // 第几个字节是长度字段
+        private int m_lengthFieldLength;            // 长度字段本身占几个字节
+        private int m_lengthAdjustment;             // 长度字段和内容之间距离几个字节（也就是长度字段记录了整一个数据包的长度，负数代表向前偏移，body实际长度要减去这个绝对值）
+        private int m_initialBytesToStrip;          // 表示获取完一个完整的数据包之后，舍弃前面的多少个字节
+        
+        // 委托事件
+        public delegate void ReceivedHandler(ReadOnlyMemory<byte> data);
         public delegate void DisconnectedHandler();
         private event ReceivedHandler m_onDataRecived;
         private event DisconnectedHandler m_onDisconnected;
 
-        public LengthFieldDecoder(Socket socket, int maxBufferLength, int lengthFieldOffset,
-            int lengthFieldLength,int lengthAdjustment, int initialBytesToStrip, 
-            ReceivedHandler onDataRecived, DisconnectedHandler onDisconnected)
+        public LengthFieldDecoder(
+            Socket socket, 
+            int maxBufferLength = 64 * 1024, 
+            int lengthFieldOffset = 0,
+            int lengthFieldLength = 4,
+            int lengthAdjustment = 0, 
+            int initialBytesToStrip = 4, 
+            ReceivedHandler onDataRecived = null, 
+            DisconnectedHandler onDisconnected = null)
         {
             m_Socket = socket;
-            m_size = maxBufferLength;
+            m_maxBufferLength = maxBufferLength;
             this.m_lengthFieldOffset = lengthFieldOffset;
             this.m_lengthFieldLength = lengthFieldLength;
             this.m_lengthAdjustment = lengthAdjustment;
             this.m_initialBytesToStrip = initialBytesToStrip;
-            m_buffer = new byte[m_size];
+            m_bufferMem = new Memory<byte>(new byte[m_maxBufferLength]);
             m_onDataRecived = onDataRecived;
             m_onDisconnected = onDisconnected;
         }
-
-        public void Init()
+        
+        public async Task StartAsync()
         {
             if (m_Socket != null && !m_isStart)
             {
                 m_isStart = true;
-                m_Socket.BeginReceive(m_buffer, m_offect, m_size - m_offect, SocketFlags.None, new AsyncCallback(OnReceive), null);
+                int bytesRead = 0;
+                try
+                {
+                    while (m_isStart)
+                    {
+                        var slice = m_bufferMem.Slice(m_offset);
+                        bytesRead = await m_Socket.ReceiveAsync(slice, SocketFlags.None);
+                        if (bytesRead == 0)
+                        {
+                            // 消息长度为0，代表连接已经断开
+                            _PassiveDisconnection();
+                            break;
+                        }
+                        _ProcessReceivedData(bytesRead);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "接收数据时发生异常");
+                    _PassiveDisconnection();
+                }
             }
+        }
+        public void ActiveDisconnection()
+        {
+            m_isStart = false;
+            _PassiveDisconnection();
         }
         private void _PassiveDisconnection()
         {
@@ -71,130 +108,85 @@ namespace Common.Summer.Net
             }
             m_Socket = null;
 
-            //并且向上传递消息断开信息
+            // 并且向上传递消息断开信息
             if (m_isStart)
             {
                 m_isStart = false;
                 m_onDisconnected?.Invoke();
             }
         }
-        public void ActiveDisconnection()
+        private void _ProcessReceivedData(int len)
         {
-            m_isStart = false;
-            _PassiveDisconnection();
+            int headLen = m_lengthFieldOffset + m_lengthFieldLength;
+
+            // 获取对应内存视图
+            Span<byte> bufferSpan = m_bufferMem.Span;
+            m_offset += len;
+
+            while (true)
+            {
+                // 1. 缓冲区溢出保护
+                if (m_offset > m_bufferMem.Length)
+                {
+                    throw new InvalidOperationException($"Buffer overflow. Offset:{m_offset} Capacity:{m_bufferMem.Length}");
+                }
+
+                // 2. 使用结构化条件判断
+                bool hasEnoughHeader = m_offset >= headLen;
+                if (!hasEnoughHeader) return;
+
+                // 3. 安全读取长度字段
+                if (!TryReadLengthField(bufferSpan, out int bodyLen))
+                {
+                    Log.Warning("Invalid length field format");
+                    return;
+                }
+
+                // 4. 计算总包长度并验证
+                int expectedTotalLength = headLen + m_lengthAdjustment + bodyLen;
+                if (expectedTotalLength > m_bufferMem.Length)
+                {
+                    throw new InvalidDataException($"Package too large. Length:{expectedTotalLength} Max:{m_bufferMem.Length}");
+                }
+
+                if (m_offset < expectedTotalLength) return;
+
+                // 5. 提取有效载荷（优化内存分配）
+                int payloadStart = m_initialBytesToStrip;
+                int payloadLength = bodyLen - (m_initialBytesToStrip - m_lengthFieldLength);
+                Memory<byte> payloadMem = m_bufferMem.Slice(payloadStart, payloadLength);
+
+                // 6. 触发事件（传递Memory避免复制）
+                m_onDataRecived?.Invoke(payloadMem);
+
+                // 7. 滑动缓冲区（高性能方式）
+                int remainingData = m_offset - expectedTotalLength;
+                if (remainingData > 0)
+                {
+                    // 将剩余数据移动到缓冲区起始位置
+                    bufferSpan.Slice(expectedTotalLength, remainingData).CopyTo(bufferSpan);
+                }
+                m_offset = remainingData;
+
+                // 8. 零长度退出机制
+                if (remainingData == 0) break;
+            }
         }
-        public void OnReceive(IAsyncResult result)
+
+        // 安全读取大端长度字段
+        private bool TryReadLengthField(Span<byte> buffer, out int length)
         {
             try
             {
-                int len = 0;
-                if (m_Socket != null && m_Socket.Connected)
-                {
-                    len = m_Socket.EndReceive(result);
-                }
-
-                // 消息长度为0，代表连接已经断开
-                if (len == 0)
-                {
-                    _PassiveDisconnection();
-                    return;
-                }
-
-                //处理信息
-                _ReadMessage(len);
-
-                // 继续接收数据
-                if (m_Socket != null && m_Socket.Connected)
-                {
-                    m_Socket.BeginReceive(m_buffer, m_offect, m_size - m_offect, SocketFlags.None, new AsyncCallback(OnReceive), null);
-                }
-                else
-                {
-                    Log.Information("[LengthFieldDecoder]Socket 已断开连接，无法继续接收数据。");
-                    _PassiveDisconnection();
-                }
-
+                length = BinaryPrimitives.ReadInt32BigEndian(
+                    buffer.Slice(m_lengthFieldOffset, m_lengthFieldLength));
+                return length >= 0;
             }
-            catch (ObjectDisposedException e)
+            catch (ArgumentOutOfRangeException)
             {
-                // Socket 已经被释放
-                Log.Information("[LengthFieldDecoder:ObjectDisposedException]");
-                Log.Information(e.ToString());
-                _PassiveDisconnection();
+                length = -1;
+                return false;
             }
-            catch (SocketException e)
-            {
-                //打印一下异常，并且断开与客户端的连接
-                Log.Information("[[LengthFieldDecoder:SocketException]");
-                Log.Information(e.ToString());
-                _PassiveDisconnection();
-            }
-            catch (Exception e)
-            {
-                //打印一下异常，并且断开与客户端的连接
-                Log.Information("[LengthFieldDecoder:Exception]");
-                Log.Information(e.ToString());
-                _PassiveDisconnection();
-            }
-        }
-        // 处理数据，并且进行转发处理
-        private void _ReadMessage(int len)
-        {
-            //headLen+bodyLen=totalLen
-
-            int headLen = m_lengthFieldOffset + m_lengthFieldLength;//魔法值+长度字段的长度
-            int adj = m_lengthAdjustment; //body偏移量
-
-            //循环开始之前mOffect代表上次剩余长度
-            //所以moffect需要加上本次送过来的len
-            m_offect += len;
-
-            //循环解析
-            while (true)
-            {
-                //此时缓冲区内有moffect长度的字节需要去处理
-
-                //如果未处理的数据超出缓冲区大小限制
-                if (m_offect > m_size)
-                {
-                    throw new IndexOutOfRangeException("数据超出限制");
-                }
-                if (m_offect < headLen)
-                {
-                    //接收的数据不够一个完整的包，继续接收
-                    return;
-                }
-
-                //获取body长度，通过大端模式
-                int bodyLen = _GetInt32BE(m_buffer, m_lengthFieldOffset);
-
-                //判断body够不够长
-                if (m_offect < headLen + adj + bodyLen)
-                {
-                    //接收的数据不够一个完整的包，继续接收
-                    return;
-                }
-
-                //整个包的长度为
-                int total = headLen + bodyLen;
-
-                //获取数据
-                byte[] data = new byte[bodyLen];
-                Array.Copy(m_buffer, headLen, data, 0, bodyLen);
-
-                //数据解析完毕就需要更新buffer缓冲区
-                Array.Copy(m_buffer, bodyLen+ headLen, m_buffer, 0, m_offect- total);
-                m_offect = m_offect - total;
-
-                //完成一个数据包
-                m_onDataRecived?.Invoke(data);
-            }
-
-        }
-        // 获取大端模式int值
-        private int _GetInt32BE(byte[] data, int index)
-        {
-            return (data[index] << 0x18) | (data[index + 1] << 0x10) | (data[index + 2] << 8) | (data[index + 3]);
         }
     }
 }

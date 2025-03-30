@@ -35,12 +35,14 @@ namespace Common.Summer.Core
         {
             m_socket = socket;
 
-            //给这个客户端连接创建一个解码器
-            m_lfd = new LengthFieldDecoder(socket, 64 * 1024, 0, 4, 0, 4, _OnDataRecived, _OnDisconnected);
-            m_lfd.Init();//启动解码器，开始接收消息
+            // 给这个客户端连接创建一个解码器
+            m_lfd = new LengthFieldDecoder(socket, 64 * 1024, 0, 4,
+                0, 4, _OnDataRecived, _OnDisconnected);
+            _ = m_lfd.StartAsync();   // 启动解码器，开始接收消息
 
             m_onDisconnected = disconnected;
 
+            // 加密模块
             m_encryptionManager = new EncryptionManager();
             m_encryptionManager.Init();
 
@@ -53,7 +55,7 @@ namespace Common.Summer.Core
             //向上转发，让其删除本connection对象
             m_onDisconnected?.Invoke(this);
         }
-        private void _OnDataRecived(byte[] data)
+        private void _OnDataRecived(ReadOnlyMemory<byte> data)
         {
             var msg = ProtoHelper.Instance.BytesParse2IMessage(data);
             if(msg == null)

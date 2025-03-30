@@ -4,6 +4,7 @@ using System;
 using Google.Protobuf.Reflection;
 using Serilog;
 using Common.Summer.Tools;
+using System.Buffers.Binary;
 
 namespace Common.Summer.Net
 {
@@ -55,18 +56,28 @@ namespace Common.Summer.Net
                 return null;
             }
         }
-        public IMessage BytesParse2IMessage(byte[] data)
+        public IMessage BytesParse2IMessage(ReadOnlyMemory<byte> data)
         {
-            ushort typeCode = _GetUShort(data, 0);
+            /*            ushort typeCode = _GetUShort(data, 0);
+                        Type t = Seq2Type(typeCode);
+                        if (t == null)
+                        {
+                            Log.Error($"[ProtoHelper.ParseFrom]解析失败，协议号:{typeCode}");
+                            return null;
+                        }
+                        var desc = t.GetProperty("Descriptor").GetValue(t) as MessageDescriptor;
+                        var msg = desc.Parser.ParseFrom(data, 2, data.Length - 2);
+                        return msg;*/
+
+            // 直接操作内存，无需复制
+            ReadOnlySpan<byte> span = data.Span;
+            ushort typeCode = BinaryPrimitives.ReadUInt16BigEndian(span);
+
             Type t = Seq2Type(typeCode);
-            if (t == null)
-            {
-                Log.Error($"[ProtoHelper.ParseFrom]解析失败，协议号:{typeCode}");
-                return null;
-            }
             var desc = t.GetProperty("Descriptor").GetValue(t) as MessageDescriptor;
-            var msg = desc.Parser.ParseFrom(data, 2, data.Length - 2);
-            return msg;
+
+            // 使用Span解析
+            return desc.Parser.ParseFrom(span.Slice(2));
         }
         public byte[] IMessageParse2Bytes(IMessage message)
         {
@@ -84,6 +95,7 @@ namespace Common.Summer.Net
                 return ds.ToArray();
             }
         }
+
         private ushort _GetUShort(byte[] data, int offset)
         {
             if (BitConverter.IsLittleEndian)
