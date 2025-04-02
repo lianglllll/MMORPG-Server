@@ -6,20 +6,20 @@ using System.Reflection;
 
 namespace SceneServer.Core.Combat.Skills
 {
-    //描述了一个只能应用在类上的特性
+    // 描述了一个只能应用在类上的特性
     [AttributeUsage(AttributeTargets.Class)]
     public class SkillAttribute : Attribute
     {
-        //技能码  其实就是skillid
-        public int Code { get; }
+        // 技能码  其实就是skillid
+        public int SkillId { get; }
 
         public SkillAttribute(int code)
         {
-            this.Code = code;
+            this.SkillId = code;
         }
     }
 
-    public class SkillSanner
+    public class SkillScanner
     {
         public static ConcurrentDictionary<int, Type> SkillTypeDict = new();
 
@@ -36,7 +36,7 @@ namespace SceneServer.Core.Combat.Skills
                 {
                     var attribute = (SkillAttribute)Attribute.GetCustomAttribute(type, typeof(SkillAttribute));
                     //拿到我们在属性中存放的技能id
-                    int skid = attribute.Code;
+                    int skid = attribute.SkillId;
 
                     //判断当前类型是否为skillType类或者派生类
                     if (skillType.IsAssignableFrom(type.BaseType))
@@ -59,13 +59,13 @@ namespace SceneServer.Core.Combat.Skills
         // 创建Skill实例
         public static Skill CreateSkill(SceneActor owner, int skid)
         {
-            //1.如果有注解则使用所在的类型
+            // 1.如果有注解则使用所在的类型
             if (SkillTypeDict.TryGetValue(skid, out var skillType))
             {
                 object instance = Activator.CreateInstance(skillType, owner, skid);
                 return (Skill)instance;
             }
-            //2.如果匹配不到则使用基础类型
+            // 2.如果匹配不到则使用基础类型
             return new Skill(owner, skid);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Common.Summer.Core;
 using HS.Protobuf.SceneEntity;
+using SceneServer.Core.Combat.Skills;
 using SceneServer.Core.Model;
 using SceneServer.Core.Model.Actor;
 using SceneServer.Core.Scene;
@@ -12,7 +13,7 @@ namespace SceneServer.Combat.Skills
     public class AreaEntitiesFinder
     {
         // 某点为中心的圆形区域
-        public static List<SceneEntity> GetEntitiesInCircleAroundPoint()
+        public static List<SceneActor> GetEntitiesInCircleAroundPoint(Vector3 position, int spellRangeRadius)
         {
             // 插入一个假实体进入aoi空间
             // 拿到信息后再退出来。
@@ -55,7 +56,7 @@ namespace SceneServer.Combat.Skills
         }
 
         //  某SceneActor为中心的扇形区域
-        public static List<SceneActor> GetEntitiesInSectorAroundEntity(SceneActor actor, float detectionAngle, float detectionRadius)
+        public static List<SceneActor> GetEntitiesInSectorAroundSceneActor(SceneActor actor, float detectionAngle, float detectionRadius)
         {
             var result = new List<SceneActor>();
 

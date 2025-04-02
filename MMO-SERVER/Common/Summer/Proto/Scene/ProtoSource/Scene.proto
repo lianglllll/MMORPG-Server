@@ -25,6 +25,10 @@ enum SceneProtocl{
 	SCENE_PROTOCL_SCENE_DELIVER_RESP = 40016;			// [SceneDeliverResponse]
 	SCENE_PROTOCL_CHARACTER_REVIVE_REQ = 40017;			// [CharacterReviveRequest]
 	SCENE_PROTOCL_CHARACTER_REVIVE_RESP = 40018;		// [CharacterReviveResponse]
+
+	SCENE_PROTOCL_SCENE_2_GATE_MSG = 40019;				// [Scene2GateMsg]
+
+
 }
 enum SceneType {
     SCENE_TYPE_NULL             = 0;
@@ -150,8 +154,6 @@ message ActorChangeTransformDataResponse{
 }
 
 
-// =========================================
-
 message SceneDeliverRequest{
 	string sessionId	= 1;
 	int32 sceneId		= 2;
@@ -173,6 +175,12 @@ message CharacterReviveResponse{
 	int32  resultCode		= 2;
 	string resultMsg		= 3;
 }
+
+message Scene2GateMsg{
+	string sessionId = 1;
+	bytes content = 2;
+}
+
 
 
 // === 下面是无用的====================================================

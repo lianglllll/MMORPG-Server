@@ -26,6 +26,8 @@ namespace GameGateServer.Handle
             ProtoHelper.Instance.Register<SpellCastResponse>((int)SkillProtocol.SpellCastResp);
             ProtoHelper.Instance.Register<SpellCastFailResponse>((int)SkillProtocol.SpellCastFailResp);
 
+            ProtoHelper.Instance.Register<Scene2GateMsg>((int)SceneProtocl.Scene2GateMsg);
+
             // 消息的订阅
             MessageRouter.Instance.Subscribe<OtherEntityEnterSceneResponse>(_HandleOtherEntityEnterSceneResponse);
             MessageRouter.Instance.Subscribe<OtherEntityLeaveSceneResponse>(_HandleOtherEntityLeaveSceneResponse);
@@ -39,6 +41,8 @@ namespace GameGateServer.Handle
             MessageRouter.Instance.Subscribe<SpellCastRequest>(HandleSpellCastRequest);
             MessageRouter.Instance.Subscribe<SpellCastResponse>(HandleSpellCastResponse);
             MessageRouter.Instance.Subscribe<SpellCastFailResponse>(HandleSpellFailResponse);
+
+            MessageRouter.Instance.Subscribe<Scene2GateMsg>(HandleScene2GateMsg);
 
             return true;
         }
@@ -175,5 +179,19 @@ namespace GameGateServer.Handle
         End:
             return;
         }
+
+        private void HandleScene2GateMsg(Connection conn, Scene2GateMsg message)
+        {
+            var session = SessionManager.Instance.GetSessionBySessionId(message.SessionId);
+            if (session == null)
+            {
+                goto End;
+            }
+            message.SessionId = "";
+            session.Send(message.Content);
+        End:
+            return;
+        }
+
     }
 }

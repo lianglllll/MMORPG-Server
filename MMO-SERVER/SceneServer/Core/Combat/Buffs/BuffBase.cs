@@ -1,132 +1,93 @@
 ﻿using HS.Protobuf.Combat.Buff;
 using SceneServer.Core.Model.Actor;
+using SceneServer.Utils;
 
-namespace GameServer.Buffs
+namespace SceneServer.Core.Combat.Buffs
 {
-    /// <summary>
-    /// Buff的基础类
-    /// </summary>
     public abstract class BuffBase
     {
-        //静态字段，可被子类重写
-        private float m_MaxDuration = 3;
-        private float m_TimeScale = 1;
-        private int m_MaxLevel = 1;
-        private BuffType m_BuffType;
-        private BuffConflict m_BuffConflict = BuffConflict.Cover;
-        private bool m_Dispellable = true;
-        private string m_Name = "默认名称";
-        private string m_Description = "这个Buff没有介绍";
-        private int m_Demotion = 1;
-        private string m_IconPath = "";
+        private bool m_Initialized = false;            
 
-        //动态字段
-        private int m_CurrentLevel = 0;             //当前等级
-        private float m_ResidualDuration = 3;       //当前剩余持续事件
-        private bool m_Initialized = false;         //是否初始化
+        // 静态字段，可被子类重写
+        private string m_Name               = "默认名称";
+        private string m_Description        = "这个Buff没有介绍";
+        private float m_MaxDuration         = 3;
+        private int m_maxLevel              = 1;
+        private float m_timeScale           = 1;
+        private BuffType m_buffType         = BuffType.Buff;
+        private BuffConflict m_buffConflict = BuffConflict.Cover;
+        private bool m_dispellable          = true;
+        private int m_demotion              = 1;
+        private string m_iconPath           = "";
 
-        //网络对象
-        private BuffInfo _info;
-        public BuffInfo Info
-        {
-            get
-            {
-                if(_info == null)
-                {
-                    _info = new BuffInfo();
-                    _info.Id = this.ID;
-                    _info.Bid = this.BID;
-                    _info.OwnerId = this.Owner.EntityId;
-                    _info.ProviderId = this.Provider.EntityId;
-                }
+        // 动态字段
+        private int m_instanceId            = -1;
+        private int m_CurrentLevel          = 0;       
+        private float m_buffRemainingTime   = 3;        
+        protected BuffDefine m_def;
+        private BuffInfo m_buffInfo;
 
-                _info.CurrentLevel = this.CurrentLevel;
-                _info.ResidualDuration = this.ResidualDuration; ;
-                return _info;
-            }
-        }
+        #region GetSet
 
-
-        public BuffBase() { }
-        /// <summary>
-        /// 此buff的持有者
-        /// </summary>
         public SceneActor Owner { get; protected set; }
-        /// <summary>
-        /// 此Buff提供者
-        /// </summary>
         public SceneActor Provider { get; protected set; }
-        /// <summary>
-        /// buff的定义
-        /// </summary>
-        public BuffDefine Def { get; protected set; }
-        /// <summary>
-        /// buff的编号
-        /// </summary>
-        public int BID => Def.BID;
-        /// <summary>
-        /// Buff对外显示的名称
-        /// </summary>
-        public string Name
+        public int BID => m_def.BID;
+        public string BuffName
         {
             get { return m_Name; }
             protected set { m_Name = value; }
         }
-        /// <summary>
-        /// Buff的介绍文本
-        /// </summary>
         public string Description
         {
             get { return m_Description; }
             protected set { m_Description = value; }
         }
-        /// <summary>
-        /// Buff的类型，分为正面、负面、中立三种
-        /// </summary>
-        public BuffType BuffType
+        public string IconPath
         {
-            get { return m_BuffType; }
-            protected set { m_BuffType = value; }
+            get { return m_iconPath; }
+            protected set { m_iconPath = value; }
         }
-        /// <summary>
-        /// 当两个不同单位向同一个单位施加同一个buff时的冲突处理
-        /// 分为三种：
-        /// combine,合并为一个buff，叠层（提高等级）
-        /// separate,独立存在
-        /// cover, 覆盖，后者覆盖前者
-        /// </summary>
-        public BuffConflict BuffConflict
-        {
-            get { return m_BuffConflict; }
-            protected set { m_BuffConflict = value; }
-        }
-        /// <summary>
-        /// Buff的初始持续时间
-        /// </summary>
         public float MaxDuration
         {
             get { return m_MaxDuration; }
             protected set { m_MaxDuration = Math.Clamp(value, 0, float.MaxValue); }
         }
-        /// <summary>
-        /// buff的时间流失速度，最小为0，最大为10。
-        /// </summary>
-        public float TimeScale
-        {
-            get { return m_TimeScale; }
-            set { m_TimeScale = Math.Clamp(value, 0, 10); }
-        }
-        /// <summary>
-        /// buff的最大堆叠层数，最小为1，最大为2147483647
-        /// </summary>
         public int MaxLevel
         {
-            get { return m_MaxLevel; }
-            protected set { m_MaxLevel = Math.Clamp(value, 1, int.MaxValue); }
+            get { return m_maxLevel; }
+            protected set { m_maxLevel = Math.Clamp(value, 1, int.MaxValue); }
         }
-        /// <summary>
-        /// Buff的当前等级
-        /// </summary>
+        public BuffType BuffType
+        {
+            get { return m_buffType; }
+            protected set { m_buffType = value; }
+        }
+        public BuffConflict BuffConflict
+        {
+            get { return m_buffConflict; }
+            protected set { m_buffConflict = value; }
+        }
+        public bool Dispellable
+        {
+            get { return m_dispellable; }
+            protected set { m_dispellable = value; }
+        }
+        public int Demotion
+        {
+            get { return m_demotion; }
+            protected set { m_demotion = Math.Clamp(value, 0, MaxLevel); }
+        }
+        public float TimeScale
+        {
+            get { return m_timeScale; }
+            set { m_timeScale = Math.Clamp(value, 0, 10); }
+        }
+
+        public int InstanceId
+        {
+            get => m_instanceId;
+            set => m_instanceId = value;
+        }
         public int CurrentLevel
         {
             get { return m_CurrentLevel; }
@@ -138,59 +99,34 @@ namespace GameServer.Buffs
                 m_CurrentLevel += change;
             }
         }
-        /// <summary>
-        /// 每次Buff持续时间结束时降低的等级，一般降低1级或者降低为0级。
-        /// </summary>
-        public int Demotion
+        public float BuffRemainingTime
         {
-            get { return m_Demotion; }
-            protected set { m_Demotion = Math.Clamp(value, 0, MaxLevel); }
+            get { return m_buffRemainingTime; }
+            set { m_buffRemainingTime = Math.Clamp(value, 0, float.MaxValue); }
         }
-        /// <summary>
-        /// 可否被驱散
-        /// </summary>
-        public bool Dispellable
+        public BuffInfo BuffInfo
         {
-            get { return m_Dispellable; }
-            protected set { m_Dispellable = value; }
+            get
+            {
+                if (m_buffInfo == null)
+                {
+                    m_buffInfo = new BuffInfo();
+                    m_buffInfo.Id = this.InstanceId;
+                    m_buffInfo.Bid = this.BID;
+                    m_buffInfo.OwnerId = this.Owner.EntityId;
+                    m_buffInfo.ProviderId = this.Provider.EntityId;
+                }
+
+                m_buffInfo.CurrentLevel = this.CurrentLevel;
+                m_buffInfo.ResidualDuration = this.BuffRemainingTime; ;
+                return m_buffInfo;
+            }
         }
-        /// <summary>
-        /// 图标资源的路径
-        /// </summary>
-        public string IconPath
-        {
-            get { return m_IconPath; }
-            protected set { m_IconPath = value; }
-        }
 
+        #endregion
 
-        /// <summary>
-        /// Buff的当前剩余时间
-        /// </summary>
-        public float ResidualDuration
-        {
-            get { return m_ResidualDuration; }
-            set { m_ResidualDuration = Math.Clamp(value, 0, float.MaxValue); }
-        }
-        /// <summary>
-        /// 实例ID,因为同一个buff可能有很多个，需要区分
-        /// </summary>
-        public int ID { get; set; }
-
-
-        /// <summary>
-        /// 获取buff定义
-        /// </summary>
-        /// <returns></returns>
-        public abstract BuffDefine GetBuffDefine();
-
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        /// <param name="owner"></param>
-        /// <param name="provider"></param>
-        /// <exception cref="Exception"></exception>
-        public virtual void Init(SceneActor owner, SceneActor provider)
+        #region 生命周期函数
+        public virtual void Init(SceneActor owner, SceneActor provider, int instanceId)
         {
             if (m_Initialized)
             {
@@ -200,9 +136,11 @@ namespace GameServer.Buffs
             {
                 throw new Exception("初始化值不能为空");
             }
+
+            m_Initialized = true;
+            InstanceId = instanceId;
             Owner = owner;
             Provider = provider;
-            m_Initialized = true;
 
             var def = GetBuffDefine();
             if (def != null)
@@ -220,8 +158,8 @@ namespace GameServer.Buffs
                     "覆盖" => BuffConflict.Cover,
                     _ => throw new Exception("Buff BuffConflict Not Found ：" + def.BuffConflict),
                 };
-                this.Def = def;
-                this.Name = def.Name;
+                this.m_def = def;
+                this.BuffName = def.Name;
                 this.Description = def.Description;
                 this.IconPath = def.IconPath;
                 this.MaxDuration = def.MaxDuration;
@@ -231,29 +169,36 @@ namespace GameServer.Buffs
                 this.TimeScale = def.TimeScale;
             }
         }
+        public virtual void OnGet() {
+            // 当Owner获得此buff时触发
+        }
+        public virtual void OnLost() {
+            // 当Owner失去此buff时触发
+        }
+        public virtual void Update(float delta) {
 
-        /// <summary>
-        /// 当Owner获得此buff时触发
-        /// 由BuffManager在合适的时候调用
-        /// </summary>
-        public virtual void OnGet() { }
+            // 降低持续时间
+            BuffRemainingTime -= delta;
 
-        /// <summary>
-        /// 当Owner失去此buff时触发
-        /// 由BuffManager在合适的时候调用
-        /// </summary>
-        public virtual void OnLost() { }
+            // 如果持续时间为0，则降级,
+            // 降级后如果等级为0则移除，否则刷新持续时间
+            if (BuffRemainingTime <= 0)
+            {
+                CurrentLevel -= Demotion;
+                if (CurrentLevel <= 0)
+                {
+                }
+                else
+                {
+                    BuffRemainingTime = MaxDuration;
+                }
+            }
 
-        /// <summary>
-        /// Update,由BuffManager每物理帧调用
-        /// </summary>
-        public virtual void Update(float delta) { }
+        }
+        protected virtual void OnLevelChange(int changeLevelDelta) { }
+        #endregion
 
-        /// <summary>
-        /// 当等级改变时调用
-        /// </summary>
-        /// <param name="change">改变了多少级</param>
-        protected virtual void OnLevelChange(int change) { }
-
+        // tools
+        public abstract BuffDefine GetBuffDefine();
     }
 }

@@ -14,7 +14,7 @@ namespace SceneServer.Combat.Skills.SkillImpl
 
         }
 
-        public override void OnActive()
+        protected override void OnActive()
         {
             //Owner.buffManager.AddBuff<InvincibleBuff>(Owner);
         }

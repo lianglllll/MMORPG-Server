@@ -2197,9 +2197,6 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     /// <summary>Field number for the "creationTimestamp" field.</summary>
     public const int CreationTimestampFieldNumber = 7;
     private long creationTimestamp_;
-    /// <summary>
-    /// 这个字段自动填的
-    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public long CreationTimestamp {

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace SceneServer.Core.Model.Actor
 {
-    public class SceneMonster :SceneActor
+    public class SceneMonster :SceneActor, IStateMachineOwner
     {
         public MonsterAI m_AI;                  // 怪物Ai(灵魂所在)
         public Vector3 m_initPosition;          // 出生点
@@ -38,7 +38,17 @@ namespace SceneServer.Core.Model.Actor
 
         public void Init(int professionId, int level, Vector3Int initPos, Vector3Int dir)
         {
-            base.Init(initPos, professionId, level);
+            System.Random rand = new System.Random();
+            int offsetX = rand.Next(-8, 8);
+            int offsetY = rand.Next(-8, 8);
+            Vector3Int randomizedSpawnPoint = new Vector3Int
+            {
+                x = initPos.x + offsetX * 1000,
+                y = initPos.y + offsetY * 1000,
+                z = initPos.z
+            };
+
+            base.Init(randomizedSpawnPoint, professionId, level);
             m_initPosition = initPos;
 
             // 补充网络信息
@@ -49,6 +59,9 @@ namespace SceneServer.Core.Model.Actor
             {
                 case "Monster":
                     m_AI = new MonsterAI(this);
+                    break;
+                case "WoodenStake":
+                    // m_AI = new WoodenStakeAI(this);
                     break;
                 default:
                     break;

@@ -56,7 +56,7 @@ namespace Common.Summer.Net
                 return null;
             }
         }
-        public IMessage BytesParse2IMessage(ReadOnlyMemory<byte> data)
+        public IMessage ByteArrayParse2IMessage(ReadOnlyMemory<byte> data)
         {
             /*            ushort typeCode = _GetUShort(data, 0);
                         Type t = Seq2Type(typeCode);
@@ -79,7 +79,7 @@ namespace Common.Summer.Net
             // 使用Span解析
             return desc.Parser.ParseFrom(span.Slice(2));
         }
-        public byte[] IMessageParse2Bytes(IMessage message)
+        public byte[] IMessageParse2ByteArray(IMessage message)
         {
             //获取imessage类型所对应的编号，网络传输我们只传输编号
             using (var ds = DataStream.Allocate())

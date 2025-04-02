@@ -44,7 +44,8 @@ public class SkillDefine
 	public int MissileSpeed; // 投射速度
 	public float Interval; // 伤害间隔
 	public float[] HitDelay; // 命中时间,伤害次数
-	public int[] BUFF; // 附加效果，这里面填buffId如流血效果
+	public int[] OnIntonateEndGetBuffs; // 默认buff效果
+	public int[] OnActiveEndGetBuffs; // 默认buff效果
 }
 
 

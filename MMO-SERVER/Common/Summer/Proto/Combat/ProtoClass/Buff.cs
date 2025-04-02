@@ -27,18 +27,29 @@ namespace HS.Protobuf.Combat.Buff {
             "CgpCdWZmLnByb3RvEhdIUy5Qcm90b2J1Zi5Db21iYXQuQnVmZiJ4CghCdWZm",
             "SW5mbxIKCgJpZBgBIAEoBRILCgNiaWQYAiABKAUSDwoHb3duZXJJZBgDIAEo",
             "BRISCgpwcm92aWRlcklkGAQgASgFEhQKDGN1cnJlbnRMZXZlbBgFIAEoBRIY",
-            "ChBSZXNpZHVhbER1cmF0aW9uGAYgASgCIkMKEEJ1ZmZzQWRkUmVzcG9uc2US",
+            "ChBSZXNpZHVhbER1cmF0aW9uGAYgASgCIt4BChVCdWZmT3BlcmF0aW9uUmVz",
+            "cG9uc2USEQoJc2Vzc2lvbklkGAEgASgJEg8KB3NjZW5lSWQYAiABKAUSQgoO",
+            "b3BlcmF0aW9uX3R5cGUYAyABKA4yKi5IUy5Qcm90b2J1Zi5Db21iYXQuQnVm",
+            "Zi5CdWZmT3BlcmF0aW9uVHlwZRI1CghidWZmSW5mbxgEIAEoCzIhLkhTLlBy",
+            "b3RvYnVmLkNvbWJhdC5CdWZmLkJ1ZmZJbmZvSAASGwoRcmVtb3ZlSW5zdGFu",
+            "Y2VJZHMYBSABKAVIAEIJCgdwYXlsb2FkIkMKEEJ1ZmZzQWRkUmVzcG9uc2US",
             "LwoEbGlzdBgBIAMoCzIhLkhTLlByb3RvYnVmLkNvbWJhdC5CdWZmLkJ1ZmZJ",
             "bmZvIkYKE0J1ZmZzUmVtb3ZlUmVzcG9uc2USLwoEbGlzdBgBIAMoCzIhLkhT",
             "LlByb3RvYnVmLkNvbWJhdC5CdWZmLkJ1ZmZJbmZvIkYKE0J1ZmZzVXBkYXRl",
             "UmVzcG9uc2USLwoEbGlzdBgBIAMoCzIhLkhTLlByb3RvYnVmLkNvbWJhdC5C",
-            "dWZmLkJ1ZmZJbmZvKiAKCEJ1ZmZUeXBlEggKBEJ1ZmYQABIKCgZEZWJ1ZmYQ",
-            "ASo0CgxCdWZmQ29uZmxpY3QSCwoHQ29tYmluZRAAEgwKCFNlcGFyYXRlEAES",
-            "CQoFQ292ZXIQAmIGcHJvdG8z"));
+            "dWZmLkJ1ZmZJbmZvKk8KDEJ1ZmZQcm90b2NvbBIWChJCVUZGX1BST1RPQ09M",
+            "X05PTkUQABInCiFCVUZGX1BST1RPQ09MX0JVRkZfT1BFUkFUSU9OX1JFU1AQ",
+            "kcgCKiAKCEJ1ZmZUeXBlEggKBEJ1ZmYQABIKCgZEZWJ1ZmYQASo0CgxCdWZm",
+            "Q29uZmxpY3QSCwoHQ29tYmluZRAAEgwKCFNlcGFyYXRlEAESCQoFQ292ZXIQ",
+            "AiqBAQoRQnVmZk9wZXJhdGlvblR5cGUSFgoSQlVGRl9PUEVSQVRJT05fQURE",
+            "EAASGQoVQlVGRl9PUEVSQVRJT05fUkVNT1ZFEAESGQoVQlVGRl9PUEVSQVRJ",
+            "T05fVVBEQVRFEAISHgoaQlVGRl9PUEVSQVRJT05fUkVNT1ZFRV9BTEwQA2IG",
+            "cHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.Combat.Buff.BuffType), typeof(global::HS.Protobuf.Combat.Buff.BuffConflict), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.Combat.Buff.BuffProtocol), typeof(global::HS.Protobuf.Combat.Buff.BuffType), typeof(global::HS.Protobuf.Combat.Buff.BuffConflict), typeof(global::HS.Protobuf.Combat.Buff.BuffOperationType), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Combat.Buff.BuffInfo), global::HS.Protobuf.Combat.Buff.BuffInfo.Parser, new[]{ "Id", "Bid", "OwnerId", "ProviderId", "CurrentLevel", "ResidualDuration" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Combat.Buff.BuffOperationResponse), global::HS.Protobuf.Combat.Buff.BuffOperationResponse.Parser, new[]{ "SessionId", "SceneId", "OperationType", "BuffInfo", "RemoveInstanceIds" }, new[]{ "Payload" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Combat.Buff.BuffsAddResponse), global::HS.Protobuf.Combat.Buff.BuffsAddResponse.Parser, new[]{ "List" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Combat.Buff.BuffsRemoveResponse), global::HS.Protobuf.Combat.Buff.BuffsRemoveResponse.Parser, new[]{ "List" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Combat.Buff.BuffsUpdateResponse), global::HS.Protobuf.Combat.Buff.BuffsUpdateResponse.Parser, new[]{ "List" }, null, null, null, null)
@@ -48,30 +59,51 @@ namespace HS.Protobuf.Combat.Buff {
 
   }
   #region Enums
-  /// <summary>
-  ///buff类型
-  /// </summary>
+  public enum BuffProtocol {
+    [pbr::OriginalName("BUFF_PROTOCOL_NONE")] None = 0,
+    /// <summary>
+    /// [BuffOperationResponse]
+    /// </summary>
+    [pbr::OriginalName("BUFF_PROTOCOL_BUFF_OPERATION_RESP")] BuffOperationResp = 42001,
+  }
+
   public enum BuffType {
     [pbr::OriginalName("Buff")] Buff = 0,
     [pbr::OriginalName("Debuff")] Debuff = 1,
   }
 
-  /// <summary>
-  ///buff叠加方式
-  /// </summary>
   public enum BuffConflict {
     /// <summary>
-    ///合并为一个buff，叠层(提升等级)
+    /// 合并为一个buff，叠层(提升等级)
     /// </summary>
     [pbr::OriginalName("Combine")] Combine = 0,
     /// <summary>
-    ///独立存在
+    /// 独立存在
     /// </summary>
     [pbr::OriginalName("Separate")] Separate = 1,
     /// <summary>
-    ///覆盖，后者覆盖前者
+    /// 覆盖，后者覆盖前者
     /// </summary>
     [pbr::OriginalName("Cover")] Cover = 2,
+  }
+
+  public enum BuffOperationType {
+    /// <summary>
+    /// 添加Buff
+    /// </summary>
+    [pbr::OriginalName("BUFF_OPERATION_ADD")] BuffOperationAdd = 0,
+    /// <summary>
+    /// 移除Buff
+    /// </summary>
+    [pbr::OriginalName("BUFF_OPERATION_REMOVE")] BuffOperationRemove = 1,
+    /// <summary>
+    /// 更新Buff
+    /// </summary>
+    [pbr::OriginalName("BUFF_OPERATION_UPDATE")] BuffOperationUpdate = 2,
+    /// <summary>
+    /// 移除全部Buff
+    /// </summary>
+    [pbr::OriginalName("BUFF_OPERATION_REMOVEE_ALL")] BuffOperationRemoveeAll = 3,
   }
 
   #endregion
@@ -130,7 +162,7 @@ namespace HS.Protobuf.Combat.Buff {
     public const int IdFieldNumber = 1;
     private int id_;
     /// <summary>
-    ///实例id,因为同一个buff可能有很多个，需要区分
+    /// 实例id,因为同一个buff可能有很多个，需要区分
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -181,7 +213,7 @@ namespace HS.Protobuf.Combat.Buff {
     public const int CurrentLevelFieldNumber = 5;
     private int currentLevel_;
     /// <summary>
-    ///当前等级
+    /// 当前等级
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -196,7 +228,7 @@ namespace HS.Protobuf.Combat.Buff {
     public const int ResidualDurationFieldNumber = 6;
     private float residualDuration_;
     /// <summary>
-    ///当前剩余时间
+    /// 当前剩余时间
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -460,7 +492,394 @@ namespace HS.Protobuf.Combat.Buff {
 
   }
 
+  public sealed partial class BuffOperationResponse : pb::IMessage<BuffOperationResponse>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<BuffOperationResponse> _parser = new pb::MessageParser<BuffOperationResponse>(() => new BuffOperationResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<BuffOperationResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::HS.Protobuf.Combat.Buff.BuffReflection.Descriptor.MessageTypes[1]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public BuffOperationResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public BuffOperationResponse(BuffOperationResponse other) : this() {
+      sessionId_ = other.sessionId_;
+      sceneId_ = other.sceneId_;
+      operationType_ = other.operationType_;
+      switch (other.PayloadCase) {
+        case PayloadOneofCase.BuffInfo:
+          BuffInfo = other.BuffInfo.Clone();
+          break;
+        case PayloadOneofCase.RemoveInstanceIds:
+          RemoveInstanceIds = other.RemoveInstanceIds;
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public BuffOperationResponse Clone() {
+      return new BuffOperationResponse(this);
+    }
+
+    /// <summary>Field number for the "sessionId" field.</summary>
+    public const int SessionIdFieldNumber = 1;
+    private string sessionId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string SessionId {
+      get { return sessionId_; }
+      set {
+        sessionId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "sceneId" field.</summary>
+    public const int SceneIdFieldNumber = 2;
+    private int sceneId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int SceneId {
+      get { return sceneId_; }
+      set {
+        sceneId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "operation_type" field.</summary>
+    public const int OperationTypeFieldNumber = 3;
+    private global::HS.Protobuf.Combat.Buff.BuffOperationType operationType_ = global::HS.Protobuf.Combat.Buff.BuffOperationType.BuffOperationAdd;
+    /// <summary>
+    /// 操作类型
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::HS.Protobuf.Combat.Buff.BuffOperationType OperationType {
+      get { return operationType_; }
+      set {
+        operationType_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "buffInfo" field.</summary>
+    public const int BuffInfoFieldNumber = 4;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::HS.Protobuf.Combat.Buff.BuffInfo BuffInfo {
+      get { return payloadCase_ == PayloadOneofCase.BuffInfo ? (global::HS.Protobuf.Combat.Buff.BuffInfo) payload_ : null; }
+      set {
+        payload_ = value;
+        payloadCase_ = value == null ? PayloadOneofCase.None : PayloadOneofCase.BuffInfo;
+      }
+    }
+
+    /// <summary>Field number for the "removeInstanceIds" field.</summary>
+    public const int RemoveInstanceIdsFieldNumber = 5;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int RemoveInstanceIds {
+      get { return payloadCase_ == PayloadOneofCase.RemoveInstanceIds ? (int) payload_ : 0; }
+      set {
+        payload_ = value;
+        payloadCase_ = PayloadOneofCase.RemoveInstanceIds;
+      }
+    }
+
+    private object payload_;
+    /// <summary>Enum of possible cases for the "payload" oneof.</summary>
+    public enum PayloadOneofCase {
+      None = 0,
+      BuffInfo = 4,
+      RemoveInstanceIds = 5,
+    }
+    private PayloadOneofCase payloadCase_ = PayloadOneofCase.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public PayloadOneofCase PayloadCase {
+      get { return payloadCase_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void ClearPayload() {
+      payloadCase_ = PayloadOneofCase.None;
+      payload_ = null;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as BuffOperationResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(BuffOperationResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (SessionId != other.SessionId) return false;
+      if (SceneId != other.SceneId) return false;
+      if (OperationType != other.OperationType) return false;
+      if (!object.Equals(BuffInfo, other.BuffInfo)) return false;
+      if (RemoveInstanceIds != other.RemoveInstanceIds) return false;
+      if (PayloadCase != other.PayloadCase) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (SessionId.Length != 0) hash ^= SessionId.GetHashCode();
+      if (SceneId != 0) hash ^= SceneId.GetHashCode();
+      if (OperationType != global::HS.Protobuf.Combat.Buff.BuffOperationType.BuffOperationAdd) hash ^= OperationType.GetHashCode();
+      if (payloadCase_ == PayloadOneofCase.BuffInfo) hash ^= BuffInfo.GetHashCode();
+      if (payloadCase_ == PayloadOneofCase.RemoveInstanceIds) hash ^= RemoveInstanceIds.GetHashCode();
+      hash ^= (int) payloadCase_;
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (SessionId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(SessionId);
+      }
+      if (SceneId != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(SceneId);
+      }
+      if (OperationType != global::HS.Protobuf.Combat.Buff.BuffOperationType.BuffOperationAdd) {
+        output.WriteRawTag(24);
+        output.WriteEnum((int) OperationType);
+      }
+      if (payloadCase_ == PayloadOneofCase.BuffInfo) {
+        output.WriteRawTag(34);
+        output.WriteMessage(BuffInfo);
+      }
+      if (payloadCase_ == PayloadOneofCase.RemoveInstanceIds) {
+        output.WriteRawTag(40);
+        output.WriteInt32(RemoveInstanceIds);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (SessionId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(SessionId);
+      }
+      if (SceneId != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(SceneId);
+      }
+      if (OperationType != global::HS.Protobuf.Combat.Buff.BuffOperationType.BuffOperationAdd) {
+        output.WriteRawTag(24);
+        output.WriteEnum((int) OperationType);
+      }
+      if (payloadCase_ == PayloadOneofCase.BuffInfo) {
+        output.WriteRawTag(34);
+        output.WriteMessage(BuffInfo);
+      }
+      if (payloadCase_ == PayloadOneofCase.RemoveInstanceIds) {
+        output.WriteRawTag(40);
+        output.WriteInt32(RemoveInstanceIds);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (SessionId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(SessionId);
+      }
+      if (SceneId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(SceneId);
+      }
+      if (OperationType != global::HS.Protobuf.Combat.Buff.BuffOperationType.BuffOperationAdd) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) OperationType);
+      }
+      if (payloadCase_ == PayloadOneofCase.BuffInfo) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(BuffInfo);
+      }
+      if (payloadCase_ == PayloadOneofCase.RemoveInstanceIds) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(RemoveInstanceIds);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(BuffOperationResponse other) {
+      if (other == null) {
+        return;
+      }
+      if (other.SessionId.Length != 0) {
+        SessionId = other.SessionId;
+      }
+      if (other.SceneId != 0) {
+        SceneId = other.SceneId;
+      }
+      if (other.OperationType != global::HS.Protobuf.Combat.Buff.BuffOperationType.BuffOperationAdd) {
+        OperationType = other.OperationType;
+      }
+      switch (other.PayloadCase) {
+        case PayloadOneofCase.BuffInfo:
+          if (BuffInfo == null) {
+            BuffInfo = new global::HS.Protobuf.Combat.Buff.BuffInfo();
+          }
+          BuffInfo.MergeFrom(other.BuffInfo);
+          break;
+        case PayloadOneofCase.RemoveInstanceIds:
+          RemoveInstanceIds = other.RemoveInstanceIds;
+          break;
+      }
+
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            SessionId = input.ReadString();
+            break;
+          }
+          case 16: {
+            SceneId = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            OperationType = (global::HS.Protobuf.Combat.Buff.BuffOperationType) input.ReadEnum();
+            break;
+          }
+          case 34: {
+            global::HS.Protobuf.Combat.Buff.BuffInfo subBuilder = new global::HS.Protobuf.Combat.Buff.BuffInfo();
+            if (payloadCase_ == PayloadOneofCase.BuffInfo) {
+              subBuilder.MergeFrom(BuffInfo);
+            }
+            input.ReadMessage(subBuilder);
+            BuffInfo = subBuilder;
+            break;
+          }
+          case 40: {
+            RemoveInstanceIds = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            SessionId = input.ReadString();
+            break;
+          }
+          case 16: {
+            SceneId = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            OperationType = (global::HS.Protobuf.Combat.Buff.BuffOperationType) input.ReadEnum();
+            break;
+          }
+          case 34: {
+            global::HS.Protobuf.Combat.Buff.BuffInfo subBuilder = new global::HS.Protobuf.Combat.Buff.BuffInfo();
+            if (payloadCase_ == PayloadOneofCase.BuffInfo) {
+              subBuilder.MergeFrom(BuffInfo);
+            }
+            input.ReadMessage(subBuilder);
+            BuffInfo = subBuilder;
+            break;
+          }
+          case 40: {
+            RemoveInstanceIds = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
   /// <summary>
+  /// ===================丢弃===================
   ///buff添加响应
   /// </summary>
   public sealed partial class BuffsAddResponse : pb::IMessage<BuffsAddResponse>
@@ -477,7 +896,7 @@ namespace HS.Protobuf.Combat.Buff {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Combat.Buff.BuffReflection.Descriptor.MessageTypes[1]; }
+      get { return global::HS.Protobuf.Combat.Buff.BuffReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -658,7 +1077,7 @@ namespace HS.Protobuf.Combat.Buff {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Combat.Buff.BuffReflection.Descriptor.MessageTypes[2]; }
+      get { return global::HS.Protobuf.Combat.Buff.BuffReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -839,7 +1258,7 @@ namespace HS.Protobuf.Combat.Buff {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.Combat.Buff.BuffReflection.Descriptor.MessageTypes[3]; }
+      get { return global::HS.Protobuf.Combat.Buff.BuffReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

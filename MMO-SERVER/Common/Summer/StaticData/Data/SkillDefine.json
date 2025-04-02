@@ -36,7 +36,8 @@
     "MissileSpeed": 0,
     "Interval": 0,
     "HitDelay": "[0.5]",
-    "BUFF": ""
+    "OnIntonateEndGetBuffs": "",
+    "OnActiveEndGetBuffs": ""
   },
   "1002": {
     "ID": 1002,
@@ -75,7 +76,8 @@
     "MissileSpeed": 0,
     "Interval": 0,
     "HitDelay": "[0.5]",
-    "BUFF": ""
+    "OnIntonateEndGetBuffs": "",
+    "OnActiveEndGetBuffs": ""
   },
   "1003": {
     "ID": 1003,
@@ -114,7 +116,8 @@
     "MissileSpeed": 0,
     "Interval": 0,
     "HitDelay": "[0.5]",
-    "BUFF": ""
+    "OnIntonateEndGetBuffs": "",
+    "OnActiveEndGetBuffs": ""
   },
   "1004": {
     "ID": 1004,
@@ -153,7 +156,8 @@
     "MissileSpeed": 0,
     "Interval": 0,
     "HitDelay": "[0.3,0.6,0.9]",
-    "BUFF": ""
+    "OnIntonateEndGetBuffs": "",
+    "OnActiveEndGetBuffs": ""
   },
   "1011": {
     "ID": 1011,
@@ -192,7 +196,8 @@
     "MissileSpeed": 0,
     "Interval": 0,
     "HitDelay": "[0.5]",
-    "BUFF": ""
+    "OnIntonateEndGetBuffs": "",
+    "OnActiveEndGetBuffs": ""
   },
   "1012": {
     "ID": 1012,
@@ -231,7 +236,8 @@
     "MissileSpeed": 0,
     "Interval": 0,
     "HitDelay": "[0.5]",
-    "BUFF": ""
+    "OnIntonateEndGetBuffs": "",
+    "OnActiveEndGetBuffs": ""
   },
   "1013": {
     "ID": 1013,
@@ -270,7 +276,8 @@
     "MissileSpeed": 0,
     "Interval": 0,
     "HitDelay": "[0.5]",
-    "BUFF": ""
+    "OnIntonateEndGetBuffs": "",
+    "OnActiveEndGetBuffs": ""
   },
   "1014": {
     "ID": 1014,
@@ -309,7 +316,8 @@
     "MissileSpeed": 0,
     "Interval": 0,
     "HitDelay": "[0.3,0.6,0.9]",
-    "BUFF": ""
+    "OnIntonateEndGetBuffs": "",
+    "OnActiveEndGetBuffs": ""
   },
   "40001": {
     "ID": 40001,
@@ -348,7 +356,8 @@
     "MissileSpeed": 0,
     "Interval": 0,
     "HitDelay": "[0.3,0.6,0.9]",
-    "BUFF": ""
+    "OnIntonateEndGetBuffs": "",
+    "OnActiveEndGetBuffs": ""
   },
   "40011": {
     "ID": 40011,
@@ -387,7 +396,8 @@
     "MissileSpeed": 0,
     "Interval": 0,
     "HitDelay": "[0.3,0.6,0.9]",
-    "BUFF": ""
+    "OnIntonateEndGetBuffs": "",
+    "OnActiveEndGetBuffs": ""
   },
   "40012": {
     "ID": 40012,
@@ -426,7 +436,8 @@
     "MissileSpeed": 0,
     "Interval": 0,
     "HitDelay": "[0.3,0.6,0.9]",
-    "BUFF": ""
+    "OnIntonateEndGetBuffs": "",
+    "OnActiveEndGetBuffs": "[5]"
   },
   "2001": {
     "ID": 2001,
@@ -465,7 +476,8 @@
     "MissileSpeed": 0,
     "Interval": 0,
     "HitDelay": "[0.6]",
-    "BUFF": ""
+    "OnIntonateEndGetBuffs": "",
+    "OnActiveEndGetBuffs": ""
   },
   "2002": {
     "ID": 2002,
@@ -504,7 +516,8 @@
     "MissileSpeed": 15000,
     "Interval": 0,
     "HitDelay": "",
-    "BUFF": ""
+    "OnIntonateEndGetBuffs": "",
+    "OnActiveEndGetBuffs": ""
   },
   "2003": {
     "ID": 2003,
@@ -543,7 +556,8 @@
     "MissileSpeed": 0,
     "Interval": 0,
     "HitDelay": "[0]",
-    "BUFF": ""
+    "OnIntonateEndGetBuffs": "",
+    "OnActiveEndGetBuffs": ""
   },
   "2004": {
     "ID": 2004,
@@ -582,7 +596,8 @@
     "MissileSpeed": 0,
     "Interval": 0,
     "HitDelay": "[0]",
-    "BUFF": ""
+    "OnIntonateEndGetBuffs": "",
+    "OnActiveEndGetBuffs": ""
   },
   "4001": {
     "ID": 4001,
@@ -621,7 +636,8 @@
     "MissileSpeed": 0,
     "Interval": 0,
     "HitDelay": "[0.3]",
-    "BUFF": ""
+    "OnIntonateEndGetBuffs": "",
+    "OnActiveEndGetBuffs": ""
   },
   "4002": {
     "ID": 4002,
@@ -660,7 +676,8 @@
     "MissileSpeed": 0,
     "Interval": 0,
     "HitDelay": "[0.5]",
-    "BUFF": ""
+    "OnIntonateEndGetBuffs": "",
+    "OnActiveEndGetBuffs": ""
   },
   "4003": {
     "ID": 4003,
@@ -699,7 +716,8 @@
     "MissileSpeed": 0,
     "Interval": 0,
     "HitDelay": "[0.18,0.6,1.2]",
-    "BUFF": ""
+    "OnIntonateEndGetBuffs": "",
+    "OnActiveEndGetBuffs": ""
   },
   "4004": {
     "ID": 4004,
@@ -738,7 +756,8 @@
     "MissileSpeed": 0,
     "Interval": 0,
     "HitDelay": "[0.38,0.54,0.66,0.81,0.93,1.18]",
-    "BUFF": ""
+    "OnIntonateEndGetBuffs": "",
+    "OnActiveEndGetBuffs": ""
   },
   "10001": {
     "ID": 10001,
@@ -777,7 +796,8 @@
     "MissileSpeed": 0,
     "Interval": 0,
     "HitDelay": "[0.35]",
-    "BUFF": ""
+    "OnIntonateEndGetBuffs": "",
+    "OnActiveEndGetBuffs": ""
   },
   "10002": {
     "ID": 10002,
@@ -816,7 +836,8 @@
     "MissileSpeed": 0,
     "Interval": 0,
     "HitDelay": "[0.29]",
-    "BUFF": ""
+    "OnIntonateEndGetBuffs": "",
+    "OnActiveEndGetBuffs": ""
   },
   "30001": {
     "ID": 30001,
@@ -855,7 +876,8 @@
     "MissileSpeed": 0,
     "Interval": 0,
     "HitDelay": "[0.7]",
-    "BUFF": ""
+    "OnIntonateEndGetBuffs": "",
+    "OnActiveEndGetBuffs": ""
   },
   "30002": {
     "ID": 30002,
@@ -894,7 +916,8 @@
     "MissileSpeed": 0,
     "Interval": 0,
     "HitDelay": "[0.6]",
-    "BUFF": ""
+    "OnIntonateEndGetBuffs": "",
+    "OnActiveEndGetBuffs": ""
   },
   "30003": {
     "ID": 30003,
@@ -933,6 +956,7 @@
     "MissileSpeed": 0,
     "Interval": 0,
     "HitDelay": "[0.7]",
-    "BUFF": ""
+    "OnIntonateEndGetBuffs": "",
+    "OnActiveEndGetBuffs": ""
   }
 }

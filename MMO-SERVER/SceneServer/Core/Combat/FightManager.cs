@@ -33,7 +33,7 @@ namespace SceneServer.Core.Combat
         // 等待广播：人物属性更新的队列
         public ConcurrentQueue<PropertyUpdate> propertyUpdateQueue = new ConcurrentQueue<PropertyUpdate>();
         private PropertyUpdateRsponse propertyUpdateRsponse = new PropertyUpdateRsponse();
-        
+
         public void Init()
         {
             spellCastResponse.SceneId = SceneManager.Instance.SceneId;
@@ -79,6 +79,12 @@ namespace SceneServer.Core.Combat
         }
         private void BroadcastSpellInfo()
         {
+            if(spellQueue.Count == 0)
+            {
+                goto End;
+            }
+
+            // todo 施法者可能都不是同一个aoi...
             while(spellQueue.TryDequeue(out var item))
             {
                 spellCastResponse.List.Add(item);
@@ -86,8 +92,8 @@ namespace SceneServer.Core.Combat
 
             if(spellCastResponse.List.Count() > 0)
             {
-                //找出所有受影响的玩家们,这里使用set是保证唯一性
-                //谁需要看到这个施法的过程，当然是施法者aoi范围内的玩家。
+                // 找出所有受影响的玩家们,这里使用set是保证唯一性
+                // 谁需要看到这个施法的过程，当然是施法者aoi范围内的玩家。
                 var hashSet = new HashSet<SceneCharacter>();
                 foreach (var item in spellCastResponse.List)
                 {
@@ -113,7 +119,8 @@ namespace SceneServer.Core.Combat
 
                 spellCastResponse.List.Clear();
             }
-
+        End:
+            return;
         }
         private void BroadcastDamage()
         {

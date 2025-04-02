@@ -57,7 +57,7 @@ namespace Common.Summer.Core
         }
         private void _OnDataRecived(ReadOnlyMemory<byte> data)
         {
-            var msg = ProtoHelper.Instance.BytesParse2IMessage(data);
+            var msg = ProtoHelper.Instance.ByteArrayParse2IMessage(data);
             if(msg == null)
             {
                 return;
@@ -79,7 +79,7 @@ namespace Common.Summer.Core
         {
             try
             {
-                _SocketSend(ProtoHelper.Instance.IMessageParse2Bytes(message));
+                _SocketSend(ProtoHelper.Instance.IMessageParse2ByteArray(message));
             }
             catch(Exception e)
             {
@@ -87,9 +87,20 @@ namespace Common.Summer.Core
             }
 
         }
+        public void Send(ByteString message)
+        {
+            try
+            {
+                _SocketSend(message.ToArray());
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.ToString());
+            }
+        }
         private void _SocketSend(byte[] data)
         {
-            lock (this)//多线程问题，防止争夺send
+            lock (this)// 多线程问题，防止争夺send
             {
                 if (m_socket != null && m_socket.Connected)
                 {

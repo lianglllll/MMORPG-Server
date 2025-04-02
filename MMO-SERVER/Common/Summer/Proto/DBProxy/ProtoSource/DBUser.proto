@@ -34,7 +34,7 @@ message DBUserNode{
 	repeated string activityLogs = 13;					// 存储一系列活动描述或ID
 	map<string, string> linkedAccounts = 14;			// 例如 {"google": "google_id", "facebook": "fb_id"}
 	map<string, string> preferences = 15;				// 偏好设置
-	bool isOnline = 16;                                // 在线标记
+	bool isOnline = 16;									// 在线标记
 }
 
 

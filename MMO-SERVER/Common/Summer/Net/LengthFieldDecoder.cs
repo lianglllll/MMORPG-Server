@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace Common.Summer.Net
 {
-    // TODO 这里的异步模型还是begin/end 我们改成async
     /// <summary>
     /// 这是Socket异步接收器，可以对接收的数据粘包与拆包
     /// 事件委托：

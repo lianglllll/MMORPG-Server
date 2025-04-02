@@ -1,4 +1,5 @@
 ﻿using Common.Summer.Core;
+using Common.Summer.Net;
 using Common.Summer.Tools;
 using Google.Protobuf;
 using HS.Protobuf.DBProxy.DBCharacter;
@@ -15,6 +16,7 @@ using SceneServer.Utils;
 using Serilog;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using YamlDotNet.Core.Tokens;
 
 namespace SceneServer.Core.Scene
 {
@@ -506,5 +508,29 @@ namespace SceneServer.Core.Scene
         {
 
         }
+        public void Broadcast(int entityId, bool isIncludeSelf, IMessage message)
+        {
+            var self = SceneEntityManager.Instance.GetSceneEntityById(entityId);
+            var handle = m_aoiZoneManager?.Refresh(entityId, m_viewArea);
+            if (handle == null)
+            {
+                goto End;
+            }
+            var units = SceneEntityManager.Instance.GetSceneEntitiesByIds(handle.ViewEntity);
+            if (isIncludeSelf)
+            {
+                units.Add(self);
+            }
+
+            var resp = new Scene2GateMsg();
+            resp.Content = ByteString.CopyFrom(ProtoHelper.Instance.IMessageParse2ByteArray(message));
+            foreach (var chr in units.OfType<SceneCharacter>())
+            {
+                chr.Send(resp);
+            }
+        End:
+            return;
+        }
+
     }
 }

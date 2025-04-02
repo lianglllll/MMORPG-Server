@@ -44,5 +44,13 @@ namespace GameGateServer.Net
                 msgBuffer.Enqueue(message);
             }
         }
+        public void Send(ByteString message)
+        {
+            if(Conn != null)
+            {
+                Conn.Send(message);
+            }
+        }
+
     }
 }

@@ -17,7 +17,6 @@ message DBWorldNode{
     int64 createdAt = 5;				// 创建时间戳，使用UTC时间。
     int32 maxPlayers = 6;				// 世界允许的最大玩家数量。
     string createdBy = 7;				// 创建该世界的管理员或系统用户名。
-
     string theme = 8;					// 世界的主题，用于分类或视觉展示。
     bool isPublic = 9;					// 标记世界是否为公开可见。
     int64 updatedAt = 10;				// 上次更新时间戳，使用UTC时间。

@@ -123,6 +123,7 @@ message NetItemNode{
 	HS.Protobuf.Game.Backpack.NetItemDataNode netItemDataNode = 4;
 }
 
+
 // =======================================无用
 //entity位置信息
 message NetEntity {

@@ -3,6 +3,7 @@ using Google.Protobuf;
 using HS.Protobuf.Combat.Skill;
 using HS.Protobuf.Common;
 using HS.Protobuf.DBProxy.DBCharacter;
+using HS.Protobuf.Scene;
 using HS.Protobuf.SceneEntity;
 using SceneServer.Core.Scene;
 using SceneServer.Net;
@@ -76,6 +77,11 @@ namespace SceneServer.Core.Model.Actor
         public void Send(IMessage message)
         {
             m_session.Send(message);
+        }
+        public void Send(Scene2GateMsg msg)
+        {
+            msg.SessionId = m_session.SesssionId;
+            m_session.Send(msg);
         }
 
         public void AddExp(long deltaExp)

@@ -14,7 +14,6 @@ namespace SceneServer.Core.Combat.AI
     {
         public SceneMonster owner;
 
-
         public AIBase(SceneMonster owner)
         {
             this.owner = owner;

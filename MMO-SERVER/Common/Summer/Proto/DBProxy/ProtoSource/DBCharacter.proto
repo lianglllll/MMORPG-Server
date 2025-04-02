@@ -51,7 +51,6 @@ message DBCharacterEquipSkillNode{
 message DBCharacterCombatNode {
     repeated DBCharacterSkillNode skills = 1;					// 技能列表
     repeated DBCharacterEquipSkillNode equippedSkills = 2;      // 装备技能列表 (存储已装备技能的ID)
-
 }
 message DBCharacterNode{
 	string cId = 1;
@@ -60,7 +59,7 @@ message DBCharacterNode{
 	int32 professionId = 4;
 	string chrName = 5;
 	int32 level = 6;
-	int64 creationTimestamp = 7;				// 这个字段自动填的
+	int64 creationTimestamp = 7;
 	DBCharacterStatisticsNode chrStatistics = 8;
 	DBCharacterStatusNode chrStatus = 9;
 	DBCharacterAssetsNode chrAssets = 10;

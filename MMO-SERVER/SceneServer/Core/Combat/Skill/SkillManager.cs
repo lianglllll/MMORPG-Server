@@ -48,7 +48,7 @@ namespace SceneServer.Core.Combat.Skills
 
             foreach(var item in m_owner.NetActorNode.FixedSkillGroupInfo.Skills)
             {
-                var skill = SkillSanner.CreateSkill(m_owner, item.SkillId);
+                var skill = SkillScanner.CreateSkill(m_owner, item.SkillId);
                 Skills.Add(skill);
             }
 
@@ -61,7 +61,7 @@ namespace SceneServer.Core.Combat.Skills
             foreach(int skid in ids)
             {
                 if (skid == 0) continue;
-                var skill = SkillSanner.CreateSkill(m_owner, skid);   
+                var skill = SkillScanner.CreateSkill(m_owner, skid);   
                 Skills.Add(skill);
             }
         }

@@ -14,7 +14,7 @@ namespace SceneServer.Combat.Skills.SkillImpl
 
         }
 
-        public override void OnActive()
+        protected override void OnActive()
         {
             //Log.Information("风行术激活");
             if(Target.RealObj is SceneActor actor)
