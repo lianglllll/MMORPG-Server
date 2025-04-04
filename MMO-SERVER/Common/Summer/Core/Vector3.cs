@@ -965,8 +965,6 @@ namespace Common.Summer.Core
         [MethodImpl(MethodImplOptions.InternalCall)]
         private static extern void RotateTowards_Injected(ref Vector3 current, ref Vector3 target, float maxRadiansDelta, float maxMagnitudeDelta, out Vector3 ret);
 
-
-
         //vector3和vectorint之间的转换
         public static implicit operator Vector3(Vector3Int v)
         {
@@ -978,7 +976,8 @@ namespace Common.Summer.Core
             return new Vector3Int() { x = (int)v.x, y = (int)v.y, z = (int)v.z };
         }
 
-        //Vec3 和 vector3之间的转换
+
+        //NetVector3 和 vector3之间的转换
         public static implicit operator NetVector3(Vector3 v)
         {
             return new NetVector3() { X = (int)v.x, Y = (int)v.y, Z = (int)v.z };

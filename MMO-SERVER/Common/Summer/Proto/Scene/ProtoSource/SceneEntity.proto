@@ -35,21 +35,21 @@ enum NetActorMode {
 	NET_ACTOR_MODE_SWIMMING			= 7;
 }
 enum NetActorState {
-    NET_ACTOR_STATE_NONE = 0;
-    NET_ACTOR_STATE_IDLE = 1;
-    NET_ACTOR_STATE_MOTION = 2;
-    NET_ACTOR_STATE_JUMPUP = 3;
-    NET_ACTOR_STATE_FALLING = 4;
-    NET_ACTOR_STATE_CROUCH = 5;
-    NET_ACTOR_STATE_PRONE = 6;
-    NET_ACTOR_STATE_HURT = 7;
-    NET_ACTOR_STATE_DIZZY = 8;
-    NET_ACTOR_STATE_KNOCK = 9;
-    NET_ACTOR_STATE_DEATH = 10;
-    NET_ACTOR_STATE_DEFENSE = 11;  
-    NET_ACTOR_STATE_EVADE = 12;  
-    NET_ACTOR_STATE_SKILL = 13;  
-    NET_ACTOR_STATE_CUSTOM = 14;	// 自定义状态
+    NET_ACTOR_STATE_NONE		= 0;
+    NET_ACTOR_STATE_IDLE		= 1;
+    NET_ACTOR_STATE_MOTION		= 2;
+    NET_ACTOR_STATE_JUMPUP		= 3;
+    NET_ACTOR_STATE_FALLING		= 4;
+    NET_ACTOR_STATE_CROUCH		= 5;
+    NET_ACTOR_STATE_PRONE		= 6;
+    NET_ACTOR_STATE_HURT		= 7;
+    NET_ACTOR_STATE_DIZZY		= 8;
+    NET_ACTOR_STATE_KNOCK		= 9;
+    NET_ACTOR_STATE_DEATH		= 10;
+    NET_ACTOR_STATE_DEFENSE		= 11;  
+    NET_ACTOR_STATE_EVADE		= 12;  
+    NET_ACTOR_STATE_SKILL		= 13;  
+    NET_ACTOR_STATE_CUSTOM		= 14;	// 自定义状态
     NET_ACTOR_STATE_CHANGEHIGHT = 15;  
 }
 enum NetActorSmallState {
@@ -111,7 +111,6 @@ message NetActorNode {
 	HS.Protobuf.Combat.Skill.FixedSkillGroupInfo fixedSkillGroupInfo = 18;
     repeated HS.Protobuf.Game.Backpack.ItemInfo wornEquipments = 19;
     repeated HS.Protobuf.Combat.Buff.BuffInfo buffs = 20;
-
 }
 
 // Item

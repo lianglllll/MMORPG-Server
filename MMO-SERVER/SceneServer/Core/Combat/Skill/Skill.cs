@@ -11,10 +11,10 @@ namespace SceneServer.Core.Combat.Skills
     //开始 - 前摇 - 激活 - 结束
     public enum SkillStage
     {
-        None,               //无状态
-        Intonate,           //吟唱
-        Active,             //已激活
-        Colding             //冷却中
+        None,               // 无状态
+        Intonate,           // 吟唱
+        Active,             // 已激活
+        Colding             // 冷却中
     }
 
     public class Skill
@@ -191,6 +191,7 @@ namespace SceneServer.Core.Combat.Skills
             // 默认调用def中的buff
             foreach(var buffId in Define.OnIntonateEndGetBuffs)
             {
+                if(buffId == 0) continue;
                 Owner.m_buffManager.AddBuff(Owner, buffId);
             }
         }
@@ -199,6 +200,7 @@ namespace SceneServer.Core.Combat.Skills
             // 默认调用def中的buff
             foreach (var buffId in Define.OnActiveEndGetBuffs)
             {
+                if (buffId == 0) continue;
                 Owner.m_buffManager.AddBuff(Owner, buffId);
             }
         }

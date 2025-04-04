@@ -6,6 +6,8 @@ using HS.Protobuf.ControlCenter;
 using HS.Protobuf.Game;
 using HS.Protobuf.GameGateMgr;
 using HS.Protobuf.Scene;
+using SceneServer.Core.Combat.Buffs;
+using SceneServer.Core.Combat.Skills;
 using SceneServer.Core.Scene;
 using SceneServer.Core.Scene.Component;
 using SceneServer.Handle;
@@ -57,6 +59,8 @@ namespace SceneServer.Net
             EnterGameWorldHanlder.Instance.Init();
             SceneHandler.Instance.Init();
             CombatHandler.Instance.Init();
+            SkillScanner.Start();
+            BuffScanner.Start();
 
             // 协议注册
             ProtoHelper.Instance.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);

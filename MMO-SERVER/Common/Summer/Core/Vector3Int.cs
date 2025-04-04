@@ -516,8 +516,8 @@ namespace Common.Summer.Core
         }
 
 
-        //vector3int和Vec3转换
-        public static implicit operator Vector3Int(Vec3 v)
+        // vector3int和Vec3转换
+/*        public static implicit operator Vector3Int(Vec3 v)
         {
             return new Vector3Int() { x = v.X, y = v.Y, z = v.Z };
         }
@@ -525,7 +525,7 @@ namespace Common.Summer.Core
         {
             return new Vec3() { X = v.x, Y = v.y, Z = v.z };
         }
-
+*/
         public static implicit operator Vector3Int(NetVector3 v)
         {
             return new Vector3Int() { x = v.X, y = v.Y, z = v.Z };

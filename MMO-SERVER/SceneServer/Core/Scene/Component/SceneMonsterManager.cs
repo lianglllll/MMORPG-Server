@@ -31,6 +31,8 @@ namespace SceneServer.Core.Scene.Component
 
             // 显示到当前场景
             SceneManager.Instance.MonsterEnterScene(monster);
+
+            monster.Init2();
             return monster;
         }
 

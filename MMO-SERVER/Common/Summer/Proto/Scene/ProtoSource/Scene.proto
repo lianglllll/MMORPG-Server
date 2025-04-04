@@ -101,17 +101,17 @@ message ActorChangeModeResponse{
 }
 
 enum NetAcotrEvadeStatePayload {
-	NET_ACTOR_EVADE_STATE_PAYLOAD_NONE = 0;
-	NET_ACTOR_EVADE_STATE_PAYLOAD_LEFT = 1;
+	NET_ACTOR_EVADE_STATE_PAYLOAD_NONE	= 0;
+	NET_ACTOR_EVADE_STATE_PAYLOAD_LEFT	= 1;
 	NET_ACTOR_EVADE_STATE_PAYLOAD_RIGHT = 2;
 	NET_ACTOR_EVADE_STATE_PAYLOAD_FRONT = 3;
-	NET_ACTOR_EVADE_STATE_PAYLOAD_BACK = 4;
+	NET_ACTOR_EVADE_STATE_PAYLOAD_BACK	= 4;
 }
 message ActorStatePayLoad{
 	oneof payLoad{
-		float speed = 1;
-		NetAcotrEvadeStatePayload evadePayLoad = 2;
-		float jumpVerticalVelocity = 3;
+		float speed								= 1;
+		NetAcotrEvadeStatePayload evadePayLoad	= 2;
+		float jumpVerticalVelocity				= 3;
 	}
 }
 message ActorChangeStateRequest{

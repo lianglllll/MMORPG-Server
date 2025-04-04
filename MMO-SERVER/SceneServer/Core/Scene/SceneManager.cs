@@ -531,6 +531,5 @@ namespace SceneServer.Core.Scene
         End:
             return;
         }
-
     }
 }

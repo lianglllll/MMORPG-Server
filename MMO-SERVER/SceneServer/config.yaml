@@ -4,7 +4,7 @@ server:
   # 工作线程数
   workerCount: 1
   # AOI视野距离(米)
-  aoiViewArea: 50
+  aoiViewArea: 100
   # 逻辑处理频率(hz)
   updateHz: 50
   # 心跳相关(单位：秒)

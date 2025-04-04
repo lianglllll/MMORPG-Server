@@ -1,4 +1,5 @@
-﻿using Common.Summer.Tools;
+﻿using Common.Summer.Net;
+using Common.Summer.Tools;
 using HS.Protobuf.Combat.Buff;
 using SceneServer.Core.Model.Actor;
 using SceneServer.Core.Scene;
@@ -30,6 +31,9 @@ namespace SceneServer.Core.Combat.Buffs
             m_owner = Owner;
             m_buffMap = new();
             removeQueue = new Queue<BuffBase>();
+
+            ProtoHelper.Instance.Register<BuffOperationResponse>((int)BuffProtocol.BuffOperationResp);
+
             return true;
         }
         public void Update(float delta)
@@ -121,6 +125,7 @@ namespace SceneServer.Core.Combat.Buffs
 
             // 广播通知客户端
             var resp = new BuffOperationResponse();
+            resp.SceneId = SceneManager.Instance.SceneId;
             resp.OperationType = BuffOperationType.BuffOperationAdd;
             resp.BuffInfo = buff.BuffInfo;
             SceneManager.Instance.Broadcast(Owner.EntityId, true, resp);
@@ -152,6 +157,7 @@ namespace SceneServer.Core.Combat.Buffs
                 BuffsChangePostProcessing();
                 // 广播通知客户端
                 var resp = new BuffOperationResponse();
+                resp.SceneId = SceneManager.Instance.SceneId;
                 resp.OperationType = BuffOperationType.BuffOperationRemove;
                 resp.BuffInfo = buff.BuffInfo;
                 SceneManager.Instance.Broadcast(Owner.EntityId, true, resp);
@@ -162,7 +168,6 @@ namespace SceneServer.Core.Combat.Buffs
         }
         public void RemoveAllBuff()
         {
-
             foreach (var kv in m_buffMap)
             {
                 foreach (var item in kv.Value)
@@ -173,11 +178,12 @@ namespace SceneServer.Core.Combat.Buffs
             }
             m_buffMap.Clear();
 
-            // 告诉其他人
-            // Owner?.currentSpace?.AOIBroadcast(Owner, resp, true);
+            // 广播通知客户端
+            var resp = new BuffOperationResponse();
+            resp.SceneId = SceneManager.Instance.SceneId;
+            resp.OperationType = BuffOperationType.BuffOperationRemoveeAll;
+            SceneManager.Instance.Broadcast(Owner.EntityId, true, resp);
         }
-
-
 
         private void BuffsChangePostProcessing()
         {

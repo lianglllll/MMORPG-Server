@@ -22,11 +22,6 @@ namespace SceneServer.Core.Combat.AI
             {
                 curState.Exit();
             }
-        }
-        public void Stop()
-        {
-            curState.Exit();
-
             foreach (var item in stateDict.Values)
             {
                 item.UnInit();
@@ -44,7 +39,6 @@ namespace SceneServer.Core.Combat.AI
             }
             return state;
         }
-
         public bool ChangeState<T>(bool reCurrstate = false) where T : StateBase, new()
         {
             if (curState != null && curState.GetType() == typeof(T) && !reCurrstate) return false;
@@ -61,9 +55,9 @@ namespace SceneServer.Core.Combat.AI
 
             return false;
         }
-        public virtual void Update()
+        public virtual void Update(float deltaTime)
         {
-            curState?.Update();
+            curState?.Update(deltaTime);
         }
     }
 }
