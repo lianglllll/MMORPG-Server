@@ -1,4 +1,6 @@
 ﻿
+using Common.Summer.Core;
+using Google.Protobuf;
 using HS.Protobuf.DBProxy.DBCharacter;
 
 namespace GameServer.Core.Model
@@ -8,6 +10,8 @@ namespace GameServer.Core.Model
         private int m_entityId;
         private int m_curSceneId;
         private DBCharacterNode dbChr;
+        private Connection relativeGateConnection;
+        private string sessionId;
 
         // level exp
         // equips  背包
@@ -24,11 +28,27 @@ namespace GameServer.Core.Model
             set { m_curSceneId = value; }
         }
         public string Cid => dbChr.CId;
-
+        public Connection RelativeGateConnection
+        {
+            get => relativeGateConnection;
+            set => relativeGateConnection = value;
+        }
+        public string SessionId
+        {
+            get => sessionId;
+            set => sessionId = value;   
+        }
+        public string ChrName => dbChr.ChrName;
 
         public GameCharacter(DBCharacterNode dbChr)
         {
             this.dbChr = dbChr;
+            m_curSceneId = dbChr.ChrStatus.CurSceneId;
+        }
+
+        public void Send(IMessage message)
+        {
+            relativeGateConnection.Send(message);
         }
     }
 }

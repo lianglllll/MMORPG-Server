@@ -329,9 +329,10 @@ namespace GameServer.Hanle
         private void _HandleEnterGameRequest(Connection conn, EnterGameRequest message)
         {
             // 获取dbCharacter
-            GetDBCharacterByCidRequest req = new();
             int taskId = m_idGenerator.GetId();
             m_tasks.Add(taskId, message);
+
+            GetDBCharacterByCidRequest req = new();
             req.TaskId = taskId;
             req.CId = message.CharacterId;
             req.ReadMask = new FieldMask { Paths = { "chrStatistics", "chrStatus", "chrAssets", "chrSocial", "chrCombat" } };
@@ -365,12 +366,16 @@ namespace GameServer.Hanle
 
             // 保存一下与场景无关的character信息
             var gChr = GameCharacterManager.Instance.CreateGameCharacter(dbChrNode);
+            gChr.RelativeGateConnection = gateConn;
+            gChr.SessionId = req.SessionId;
             Log.Information("chr enter game,cId = [{0}]", gChr.Cid);
 
             // 将与场景相关的character移交scene进行初始化
             int curSceneId = dbChrNode.ChrStatus.CurSceneId;
             var sceneConn = GameMonitor.Instance.GetSceneConnBySceneId(curSceneId);
+
             // TODO sceneConn为空，说明场景还没启动
+
             CharacterEnterSceneRequest characterEnterSceneRequest = new();
             characterEnterSceneRequest.TaskId = message.TaskId;
             characterEnterSceneRequest.SessionId = req.SessionId;

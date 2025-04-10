@@ -1,6 +1,7 @@
 syntax = "proto3";
 package HS.Protobuf.Game.Backpack;
 
+// 33000
 // 背包系统
 enum ItemType{
     Material=	0;      // 材料&道具

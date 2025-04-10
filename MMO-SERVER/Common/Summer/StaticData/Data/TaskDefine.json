@@ -1,0 +1,101 @@
+{
+  "1": {
+    "ID": 1,
+    "Task_chain_id": 1,
+    "Task_sub_id": 1,
+    "Icon": "hello",
+    "Desc": "哈基米",
+    "Task_target": "GetItem",
+    "Target_amount": 1,
+    "Award": "{“gold” : 1000}",
+    "Open_chain": "[2, 3]"
+  },
+  "2": {
+    "ID": 2,
+    "Task_chain_id": 1,
+    "Task_sub_id": 2,
+    "Icon": "hello",
+    "Desc": "哈基米",
+    "Task_target": "GetItem",
+    "Target_amount": 1,
+    "Award": "{“gold” : 1000}",
+    "Open_chain": ""
+  },
+  "3": {
+    "ID": 3,
+    "Task_chain_id": 1,
+    "Task_sub_id": 3,
+    "Icon": "hello",
+    "Desc": "哈基米",
+    "Task_target": "GetItem",
+    "Target_amount": 1,
+    "Award": "{“gold” : 1000}",
+    "Open_chain": ""
+  },
+  "4": {
+    "ID": 4,
+    "Task_chain_id": 1,
+    "Task_sub_id": 4,
+    "Icon": "hello",
+    "Desc": "哈基米",
+    "Task_target": "GetItem",
+    "Target_amount": 1,
+    "Award": "{“gold” : 1000}",
+    "Open_chain": ""
+  },
+  "5": {
+    "ID": 5,
+    "Task_chain_id": 1,
+    "Task_sub_id": 5,
+    "Icon": "hello",
+    "Desc": "哈基米",
+    "Task_target": "GetItem",
+    "Target_amount": 1,
+    "Award": "{“gold” : 1000}",
+    "Open_chain": ""
+  },
+  "6": {
+    "ID": 6,
+    "Task_chain_id": 1,
+    "Task_sub_id": 6,
+    "Icon": "hello",
+    "Desc": "哈基米",
+    "Task_target": "GetItem",
+    "Target_amount": 1,
+    "Award": "{“gold” : 1000}",
+    "Open_chain": ""
+  },
+  "7": {
+    "ID": 7,
+    "Task_chain_id": 1,
+    "Task_sub_id": 7,
+    "Icon": "hello",
+    "Desc": "哈基米",
+    "Task_target": "GetItem",
+    "Target_amount": 1,
+    "Award": "{“gold” : 1000}",
+    "Open_chain": ""
+  },
+  "8": {
+    "ID": 8,
+    "Task_chain_id": 2,
+    "Task_sub_id": 1,
+    "Icon": "hello",
+    "Desc": "哈基米",
+    "Task_target": "GetItem",
+    "Target_amount": 1,
+    "Award": "{“gold” : 1000}",
+    "Open_chain": ""
+  },
+  "9": {
+    "ID": 9,
+    "Task_chain_id": 3,
+    "Task_sub_id": 1,
+    "Icon": "hello",
+    "Desc": "哈基米",
+    "Task_target": "GetItem",
+    "Target_amount": 1,
+    "Award": "{“gold” : 1000}",
+    "Open_chain": ""
+  }
+}

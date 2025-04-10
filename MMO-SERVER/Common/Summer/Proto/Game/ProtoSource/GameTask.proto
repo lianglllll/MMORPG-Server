@@ -1,0 +1,10 @@
+syntax = "proto3";
+package HS.Protobuf.GameTask;
+
+enum GameTaskState{
+	GAME_TASK_STATE_NONE		= 0;	
+	GAME_TASK_STATE_NOSTARTED	= 1;	// 未开始
+	GAME_TASK_STATE_INPROGRESS	= 2;	// 进行中
+	GAME_TASK_STATE_COMPLETED	= 3;	// 已完成
+	GAME_TASK_STATE_TURNEDIN	= 4;	// 已提交
+}

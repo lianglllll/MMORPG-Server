@@ -9,7 +9,7 @@ namespace GameGateServer.Handle
 {
     public class EnterGameWorldHanlder : Singleton<EnterGameWorldHanlder>
     {
-        public bool Init()
+        public override void Init()
         {
             // 协议注册
             ProtoHelper.Instance.Register<RegisterSessionToGGRequest>((int)GameGateProtocl.RegisterSessionToGgReq);
@@ -37,7 +37,6 @@ namespace GameGateServer.Handle
             MessageRouter.Instance.Subscribe<EnterGameRequest>(_HandleEnterGameRequest);
             MessageRouter.Instance.Subscribe<EnterGameResponse>(_HandleEnterGameResponse);
 
-            return true;
         }
 
         private void _HandleRegisterSessionToGGRequest(Connection conn, RegisterSessionToGGRequest message)

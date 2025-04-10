@@ -34,7 +34,7 @@ namespace Common.Summer.Core
         public bool Init(Socket socket, DisconnectedHandler disconnected)
         {
             m_socket = socket;
-
+            // m_socket.NoDelay = true;
             // 给这个客户端连接创建一个解码器
             m_lfd = new LengthFieldDecoder(socket, 64 * 1024, 0, 4,
                 0, 4, _OnDataRecived, _OnDisconnected);
@@ -100,6 +100,7 @@ namespace Common.Summer.Core
         }
         private void _SocketSend(byte[] data)
         {
+            if (data == null) return;
             lock (this)// 多线程问题，防止争夺send
             {
                 if (m_socket != null && m_socket.Connected)

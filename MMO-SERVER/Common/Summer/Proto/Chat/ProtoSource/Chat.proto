@@ -2,31 +2,70 @@ syntax = "proto3";
 package HS.Protobuf.Chat;
 
 enum ChatProtocl{
-	CHAT_PROTOCL_NONE = 0;
+	CHAT_PROTOCL_NONE						= 0;
+	CHAT_PROTOCL_SEND_CHAT_MESSAGE_REQ		= 34001;
+	CHAT_PROTOCL_CHAT_MESSAGE_RESP			= 34002;
 }
 
-// todo
+enum ChatMessageChannel{
+	CHAT_MESSAGE_CHANNEL_NONE		= 0;
+	CHAT_MESSAGE_CHANNEL_SYSTEM		= 1;
+	CHAT_MESSAGE_CHANNEL_LOCAL		= 2;
+	CHAT_MESSAGE_CHANNEL_SCENE		= 3;
+	CHAT_MESSAGE_CHANNEL_WORLD		= 4;
+	CHAT_MESSAGE_CHANNEL_TEAM		= 5;
+	CHAT_MESSAGE_CHANNEL_GUILD		= 6;
+	CHAT_MESSAGE_CHANNEL_PRIVATE	= 7;
+}
+
+message ChatMessageV2{
+	ChatMessageChannel channel	= 1;
+	string from_chrId			= 2;
+	string from_chrName			= 3;
+	string content				= 4;
+	int64  sentTime				= 5;
+
+	// 私聊
+	string to_chrId				= 6;
+	string to_chrName			= 7;
+
+	// 场景相关
+	int32 sceneId				= 8;
+}
+
+message SendChatMessageRequest{
+	ChatMessageV2 chatMessage = 1;
+}
+message SendChatMessageResponse{
+	int32 resultCode	= 1;
+	int32 resultMsg		= 2;
+}
+message ChatMessageResponse{
+	string sessionId					= 1;
+	repeated ChatMessageV2 chatMessages	= 2;
+}
+
+// ========================old=======================
 enum ChatChannel{
-	ALL = 0;				
-	LOCAL = 1;
-	WORLD = 2;
-	SYSTEM = 4;
+	ALL		= 0;				
+	LOCAL	= 1;
+	WORLD	= 2;
+	SYSTEM	= 4;
 	PRIVATE = 8;
-	TEAM = 16;
-	GUILD = 32;
+	TEAM	= 16;
+	GUILD	= 32;
 }
 message ChatMessage{
-	ChatChannel channel = 1;
+	ChatChannel channel		= 1;
 	int32 id = 2;
 	int32 from_id = 3;
-	string from_name = 4;			//假设两个玩家在不同的地图私聊，因为客户端只记录本地图的玩家信息，所以找不到name。
-									//也可以拿着这个id去问服务端，但是这样会加大服务端的压力
+	string from_name = 4;			//	假设两个玩家在不同的地图私聊，因为客户端只记录本地图的玩家信息，所以找不到name。
+									//	也可以拿着这个id去问服务端，但是这样会加大服务端的压力
 	int32 to_id = 5;
 	string to_name = 6;
 	string content = 7;
 	double time = 8;				//时间，来拿做判断啊。比如说排序，聊天时能拿最近5分钟的消息....
 }
-
 message ChatRequest{
 	ChatMessage message = 1;
 }

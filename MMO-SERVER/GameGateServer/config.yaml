@@ -9,7 +9,7 @@ server:
   # 心跳相关(单位：秒)
   heartBeatTimeOut: 30000
   heartBeatCheckInterval: 15
-  heartBeatSendInterval: 10
+  heartBeatSendInterval: 20000
 
 cc:
   ip: 127.0.0.1

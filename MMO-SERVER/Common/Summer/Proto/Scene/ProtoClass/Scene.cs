@@ -66,12 +66,12 @@ namespace HS.Protobuf.Scene {
             "KAsyJS5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRUcmFuc2Zvcm0SNQoH",
             "cGF5TG9hZBgGIAEoCzIkLkhTLlByb3RvYnVmLlNjZW5lLkFjdG9yU3RhdGVQ",
             "YXlMb2FkIpMCChhBY3RvckNoYW5nZVN0YXRlUmVzcG9uc2USEQoJc2Vzc2lv",
-            "bklkGAEgASgJEhAKCGVudGl0eUlkGAIgASgFEhEKCXRpbWVzdGFtcBgDIAEo",
-            "AxI1CgVzdGF0ZRgEIAEoDjImLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5Lk5l",
-            "dEFjdG9yU3RhdGUSQAoRb3JpZ2luYWxUcmFuc2Zvcm0YBSABKAsyJS5IUy5Q",
-            "cm90b2J1Zi5TY2VuZUVudGl0eS5OZXRUcmFuc2Zvcm0SNQoHcGF5TG9hZBgG",
-            "IAEoCzIkLkhTLlByb3RvYnVmLlNjZW5lLkFjdG9yU3RhdGVQYXlMb2FkEg8K",
-            "B3NjZW5lSWQYByABKAUiZQofQWN0b3JDaGFuZ2VUcmFuc2Zvcm1EYXRhUGF5",
+            "bklkGAEgASgJEg8KB3NjZW5lSWQYAiABKAUSEAoIZW50aXR5SWQYAyABKAUS",
+            "EQoJdGltZXN0YW1wGAQgASgDEjUKBXN0YXRlGAUgASgOMiYuSFMuUHJvdG9i",
+            "dWYuU2NlbmVFbnRpdHkuTmV0QWN0b3JTdGF0ZRJAChFvcmlnaW5hbFRyYW5z",
+            "Zm9ybRgGIAEoCzIlLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5Lk5ldFRyYW5z",
+            "Zm9ybRI1CgdwYXlMb2FkGAcgASgLMiQuSFMuUHJvdG9idWYuU2NlbmUuQWN0",
+            "b3JTdGF0ZVBheUxvYWQiZQofQWN0b3JDaGFuZ2VUcmFuc2Zvcm1EYXRhUGF5",
             "TG9hZBIVCg12ZXJ0aWNhbFNwZWVkGAEgASgFEhcKD2hvcml6b250YWxTcGVl",
             "ZBgCIAEoBRISCgpoaWdodFNwZWVkGAMgASgFIuABCh9BY3RvckNoYW5nZVRy",
             "YW5zZm9ybURhdGFSZXF1ZXN0EhEKCXNlc3Npb25JZBgBIAEoCRIQCghlbnRp",
@@ -79,12 +79,12 @@ namespace HS.Protobuf.Scene {
             "c2Zvcm0YBCABKAsyJS5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRUcmFu",
             "c2Zvcm0SQwoHcGF5TG9hZBgFIAEoCzIyLkhTLlByb3RvYnVmLlNjZW5lLkFj",
             "dG9yQ2hhbmdlVHJhbnNmb3JtRGF0YVBheUxvYWQi8gEKIEFjdG9yQ2hhbmdl",
-            "VHJhbnNmb3JtRGF0YVJlc3BvbnNlEhEKCXNlc3Npb25JZBgBIAEoCRIQCghl",
-            "bnRpdHlJZBgCIAEoBRIRCgl0aW1lc3RhbXAYAyABKAMSQAoRb3JpZ2luYWxU",
-            "cmFuc2Zvcm0YBCABKAsyJS5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRU",
-            "cmFuc2Zvcm0SQwoHcGF5TG9hZBgFIAEoCzIyLkhTLlByb3RvYnVmLlNjZW5l",
-            "LkFjdG9yQ2hhbmdlVHJhbnNmb3JtRGF0YVBheUxvYWQSDwoHc2NlbmVJZBgG",
-            "IAEoBSJcChNTY2VuZURlbGl2ZXJSZXF1ZXN0EhEKCXNlc3Npb25JZBgBIAEo",
+            "VHJhbnNmb3JtRGF0YVJlc3BvbnNlEhEKCXNlc3Npb25JZBgBIAEoCRIPCgdz",
+            "Y2VuZUlkGAIgASgFEhAKCGVudGl0eUlkGAMgASgFEhEKCXRpbWVzdGFtcBgE",
+            "IAEoAxJAChFvcmlnaW5hbFRyYW5zZm9ybRgFIAEoCzIlLkhTLlByb3RvYnVm",
+            "LlNjZW5lRW50aXR5Lk5ldFRyYW5zZm9ybRJDCgdwYXlMb2FkGAYgASgLMjIu",
+            "SFMuUHJvdG9idWYuU2NlbmUuQWN0b3JDaGFuZ2VUcmFuc2Zvcm1EYXRhUGF5",
+            "TG9hZCJcChNTY2VuZURlbGl2ZXJSZXF1ZXN0EhEKCXNlc3Npb25JZBgBIAEo",
             "CRIPCgdzY2VuZUlkGAIgASgFEhAKCGVudGl0eUlkGAMgASgFEg8KB3BvaW50",
             "SWQYBCABKAUiUAoUU2NlbmVEZWxpdmVyUmVzcG9uc2USEQoJc2Vzc2lvbklk",
             "GAEgASgJEhIKCnJlc3VsdENvZGUYAiABKAUSEQoJcmVzdWx0TXNnGAMgASgJ",
@@ -162,10 +162,10 @@ namespace HS.Protobuf.Scene {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeModeResponse), global::HS.Protobuf.Scene.ActorChangeModeResponse.Parser, new[]{ "SessionId", "EntityId", "Mode", "Timestamp", "SceneId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorStatePayLoad), global::HS.Protobuf.Scene.ActorStatePayLoad.Parser, new[]{ "Speed", "EvadePayLoad", "JumpVerticalVelocity" }, new[]{ "PayLoad" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeStateRequest), global::HS.Protobuf.Scene.ActorChangeStateRequest.Parser, new[]{ "SessionId", "EntityId", "Timestamp", "State", "OriginalTransform", "PayLoad" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeStateResponse), global::HS.Protobuf.Scene.ActorChangeStateResponse.Parser, new[]{ "SessionId", "EntityId", "Timestamp", "State", "OriginalTransform", "PayLoad", "SceneId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeStateResponse), global::HS.Protobuf.Scene.ActorChangeStateResponse.Parser, new[]{ "SessionId", "SceneId", "EntityId", "Timestamp", "State", "OriginalTransform", "PayLoad" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeTransformDataPayLoad), global::HS.Protobuf.Scene.ActorChangeTransformDataPayLoad.Parser, new[]{ "VerticalSpeed", "HorizontalSpeed", "HightSpeed" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeTransformDataRequest), global::HS.Protobuf.Scene.ActorChangeTransformDataRequest.Parser, new[]{ "SessionId", "EntityId", "Timestamp", "OriginalTransform", "PayLoad" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeTransformDataResponse), global::HS.Protobuf.Scene.ActorChangeTransformDataResponse.Parser, new[]{ "SessionId", "EntityId", "Timestamp", "OriginalTransform", "PayLoad", "SceneId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeTransformDataResponse), global::HS.Protobuf.Scene.ActorChangeTransformDataResponse.Parser, new[]{ "SessionId", "SceneId", "EntityId", "Timestamp", "OriginalTransform", "PayLoad" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.SceneDeliverRequest), global::HS.Protobuf.Scene.SceneDeliverRequest.Parser, new[]{ "SessionId", "SceneId", "EntityId", "PointId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.SceneDeliverResponse), global::HS.Protobuf.Scene.SceneDeliverResponse.Parser, new[]{ "SessionId", "ResultCode", "ResultMsg" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.CharacterReviveRequest), global::HS.Protobuf.Scene.CharacterReviveRequest.Parser, new[]{ "SessionId", "EntityId" }, null, null, null, null),
@@ -3628,12 +3628,12 @@ namespace HS.Protobuf.Scene {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ActorChangeStateResponse(ActorChangeStateResponse other) : this() {
       sessionId_ = other.sessionId_;
+      sceneId_ = other.sceneId_;
       entityId_ = other.entityId_;
       timestamp_ = other.timestamp_;
       state_ = other.state_;
       originalTransform_ = other.originalTransform_ != null ? other.originalTransform_.Clone() : null;
       payLoad_ = other.payLoad_ != null ? other.payLoad_.Clone() : null;
-      sceneId_ = other.sceneId_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -3655,8 +3655,20 @@ namespace HS.Protobuf.Scene {
       }
     }
 
+    /// <summary>Field number for the "sceneId" field.</summary>
+    public const int SceneIdFieldNumber = 2;
+    private int sceneId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int SceneId {
+      get { return sceneId_; }
+      set {
+        sceneId_ = value;
+      }
+    }
+
     /// <summary>Field number for the "entityId" field.</summary>
-    public const int EntityIdFieldNumber = 2;
+    public const int EntityIdFieldNumber = 3;
     private int entityId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -3668,7 +3680,7 @@ namespace HS.Protobuf.Scene {
     }
 
     /// <summary>Field number for the "timestamp" field.</summary>
-    public const int TimestampFieldNumber = 3;
+    public const int TimestampFieldNumber = 4;
     private long timestamp_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -3680,7 +3692,7 @@ namespace HS.Protobuf.Scene {
     }
 
     /// <summary>Field number for the "state" field.</summary>
-    public const int StateFieldNumber = 4;
+    public const int StateFieldNumber = 5;
     private global::HS.Protobuf.SceneEntity.NetActorState state_ = global::HS.Protobuf.SceneEntity.NetActorState.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -3692,7 +3704,7 @@ namespace HS.Protobuf.Scene {
     }
 
     /// <summary>Field number for the "originalTransform" field.</summary>
-    public const int OriginalTransformFieldNumber = 5;
+    public const int OriginalTransformFieldNumber = 6;
     private global::HS.Protobuf.SceneEntity.NetTransform originalTransform_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -3704,7 +3716,7 @@ namespace HS.Protobuf.Scene {
     }
 
     /// <summary>Field number for the "payLoad" field.</summary>
-    public const int PayLoadFieldNumber = 6;
+    public const int PayLoadFieldNumber = 7;
     private global::HS.Protobuf.Scene.ActorStatePayLoad payLoad_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -3712,18 +3724,6 @@ namespace HS.Protobuf.Scene {
       get { return payLoad_; }
       set {
         payLoad_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "sceneId" field.</summary>
-    public const int SceneIdFieldNumber = 7;
-    private int sceneId_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int SceneId {
-      get { return sceneId_; }
-      set {
-        sceneId_ = value;
       }
     }
 
@@ -3743,12 +3743,12 @@ namespace HS.Protobuf.Scene {
         return true;
       }
       if (SessionId != other.SessionId) return false;
+      if (SceneId != other.SceneId) return false;
       if (EntityId != other.EntityId) return false;
       if (Timestamp != other.Timestamp) return false;
       if (State != other.State) return false;
       if (!object.Equals(OriginalTransform, other.OriginalTransform)) return false;
       if (!object.Equals(PayLoad, other.PayLoad)) return false;
-      if (SceneId != other.SceneId) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -3757,12 +3757,12 @@ namespace HS.Protobuf.Scene {
     public override int GetHashCode() {
       int hash = 1;
       if (SessionId.Length != 0) hash ^= SessionId.GetHashCode();
+      if (SceneId != 0) hash ^= SceneId.GetHashCode();
       if (EntityId != 0) hash ^= EntityId.GetHashCode();
       if (Timestamp != 0L) hash ^= Timestamp.GetHashCode();
       if (State != global::HS.Protobuf.SceneEntity.NetActorState.None) hash ^= State.GetHashCode();
       if (originalTransform_ != null) hash ^= OriginalTransform.GetHashCode();
       if (payLoad_ != null) hash ^= PayLoad.GetHashCode();
-      if (SceneId != 0) hash ^= SceneId.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -3785,29 +3785,29 @@ namespace HS.Protobuf.Scene {
         output.WriteRawTag(10);
         output.WriteString(SessionId);
       }
-      if (EntityId != 0) {
+      if (SceneId != 0) {
         output.WriteRawTag(16);
+        output.WriteInt32(SceneId);
+      }
+      if (EntityId != 0) {
+        output.WriteRawTag(24);
         output.WriteInt32(EntityId);
       }
       if (Timestamp != 0L) {
-        output.WriteRawTag(24);
+        output.WriteRawTag(32);
         output.WriteInt64(Timestamp);
       }
       if (State != global::HS.Protobuf.SceneEntity.NetActorState.None) {
-        output.WriteRawTag(32);
+        output.WriteRawTag(40);
         output.WriteEnum((int) State);
       }
       if (originalTransform_ != null) {
-        output.WriteRawTag(42);
+        output.WriteRawTag(50);
         output.WriteMessage(OriginalTransform);
       }
       if (payLoad_ != null) {
-        output.WriteRawTag(50);
+        output.WriteRawTag(58);
         output.WriteMessage(PayLoad);
-      }
-      if (SceneId != 0) {
-        output.WriteRawTag(56);
-        output.WriteInt32(SceneId);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -3823,29 +3823,29 @@ namespace HS.Protobuf.Scene {
         output.WriteRawTag(10);
         output.WriteString(SessionId);
       }
-      if (EntityId != 0) {
+      if (SceneId != 0) {
         output.WriteRawTag(16);
+        output.WriteInt32(SceneId);
+      }
+      if (EntityId != 0) {
+        output.WriteRawTag(24);
         output.WriteInt32(EntityId);
       }
       if (Timestamp != 0L) {
-        output.WriteRawTag(24);
+        output.WriteRawTag(32);
         output.WriteInt64(Timestamp);
       }
       if (State != global::HS.Protobuf.SceneEntity.NetActorState.None) {
-        output.WriteRawTag(32);
+        output.WriteRawTag(40);
         output.WriteEnum((int) State);
       }
       if (originalTransform_ != null) {
-        output.WriteRawTag(42);
+        output.WriteRawTag(50);
         output.WriteMessage(OriginalTransform);
       }
       if (payLoad_ != null) {
-        output.WriteRawTag(50);
+        output.WriteRawTag(58);
         output.WriteMessage(PayLoad);
-      }
-      if (SceneId != 0) {
-        output.WriteRawTag(56);
-        output.WriteInt32(SceneId);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -3859,6 +3859,9 @@ namespace HS.Protobuf.Scene {
       int size = 0;
       if (SessionId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(SessionId);
+      }
+      if (SceneId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(SceneId);
       }
       if (EntityId != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(EntityId);
@@ -3875,9 +3878,6 @@ namespace HS.Protobuf.Scene {
       if (payLoad_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(PayLoad);
       }
-      if (SceneId != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(SceneId);
-      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -3892,6 +3892,9 @@ namespace HS.Protobuf.Scene {
       }
       if (other.SessionId.Length != 0) {
         SessionId = other.SessionId;
+      }
+      if (other.SceneId != 0) {
+        SceneId = other.SceneId;
       }
       if (other.EntityId != 0) {
         EntityId = other.EntityId;
@@ -3914,9 +3917,6 @@ namespace HS.Protobuf.Scene {
         }
         PayLoad.MergeFrom(other.PayLoad);
       }
-      if (other.SceneId != 0) {
-        SceneId = other.SceneId;
-      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -3937,33 +3937,33 @@ namespace HS.Protobuf.Scene {
             break;
           }
           case 16: {
-            EntityId = input.ReadInt32();
+            SceneId = input.ReadInt32();
             break;
           }
           case 24: {
-            Timestamp = input.ReadInt64();
+            EntityId = input.ReadInt32();
             break;
           }
           case 32: {
+            Timestamp = input.ReadInt64();
+            break;
+          }
+          case 40: {
             State = (global::HS.Protobuf.SceneEntity.NetActorState) input.ReadEnum();
             break;
           }
-          case 42: {
+          case 50: {
             if (originalTransform_ == null) {
               OriginalTransform = new global::HS.Protobuf.SceneEntity.NetTransform();
             }
             input.ReadMessage(OriginalTransform);
             break;
           }
-          case 50: {
+          case 58: {
             if (payLoad_ == null) {
               PayLoad = new global::HS.Protobuf.Scene.ActorStatePayLoad();
             }
             input.ReadMessage(PayLoad);
-            break;
-          }
-          case 56: {
-            SceneId = input.ReadInt32();
             break;
           }
         }
@@ -3986,33 +3986,33 @@ namespace HS.Protobuf.Scene {
             break;
           }
           case 16: {
-            EntityId = input.ReadInt32();
+            SceneId = input.ReadInt32();
             break;
           }
           case 24: {
-            Timestamp = input.ReadInt64();
+            EntityId = input.ReadInt32();
             break;
           }
           case 32: {
+            Timestamp = input.ReadInt64();
+            break;
+          }
+          case 40: {
             State = (global::HS.Protobuf.SceneEntity.NetActorState) input.ReadEnum();
             break;
           }
-          case 42: {
+          case 50: {
             if (originalTransform_ == null) {
               OriginalTransform = new global::HS.Protobuf.SceneEntity.NetTransform();
             }
             input.ReadMessage(OriginalTransform);
             break;
           }
-          case 50: {
+          case 58: {
             if (payLoad_ == null) {
               PayLoad = new global::HS.Protobuf.Scene.ActorStatePayLoad();
             }
             input.ReadMessage(PayLoad);
-            break;
-          }
-          case 56: {
-            SceneId = input.ReadInt32();
             break;
           }
         }
@@ -4675,11 +4675,11 @@ namespace HS.Protobuf.Scene {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public ActorChangeTransformDataResponse(ActorChangeTransformDataResponse other) : this() {
       sessionId_ = other.sessionId_;
+      sceneId_ = other.sceneId_;
       entityId_ = other.entityId_;
       timestamp_ = other.timestamp_;
       originalTransform_ = other.originalTransform_ != null ? other.originalTransform_.Clone() : null;
       payLoad_ = other.payLoad_ != null ? other.payLoad_.Clone() : null;
-      sceneId_ = other.sceneId_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -4701,8 +4701,20 @@ namespace HS.Protobuf.Scene {
       }
     }
 
+    /// <summary>Field number for the "sceneId" field.</summary>
+    public const int SceneIdFieldNumber = 2;
+    private int sceneId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int SceneId {
+      get { return sceneId_; }
+      set {
+        sceneId_ = value;
+      }
+    }
+
     /// <summary>Field number for the "entityId" field.</summary>
-    public const int EntityIdFieldNumber = 2;
+    public const int EntityIdFieldNumber = 3;
     private int entityId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -4714,7 +4726,7 @@ namespace HS.Protobuf.Scene {
     }
 
     /// <summary>Field number for the "timestamp" field.</summary>
-    public const int TimestampFieldNumber = 3;
+    public const int TimestampFieldNumber = 4;
     private long timestamp_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -4726,7 +4738,7 @@ namespace HS.Protobuf.Scene {
     }
 
     /// <summary>Field number for the "originalTransform" field.</summary>
-    public const int OriginalTransformFieldNumber = 4;
+    public const int OriginalTransformFieldNumber = 5;
     private global::HS.Protobuf.SceneEntity.NetTransform originalTransform_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -4738,7 +4750,7 @@ namespace HS.Protobuf.Scene {
     }
 
     /// <summary>Field number for the "payLoad" field.</summary>
-    public const int PayLoadFieldNumber = 5;
+    public const int PayLoadFieldNumber = 6;
     private global::HS.Protobuf.Scene.ActorChangeTransformDataPayLoad payLoad_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -4746,18 +4758,6 @@ namespace HS.Protobuf.Scene {
       get { return payLoad_; }
       set {
         payLoad_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "sceneId" field.</summary>
-    public const int SceneIdFieldNumber = 6;
-    private int sceneId_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int SceneId {
-      get { return sceneId_; }
-      set {
-        sceneId_ = value;
       }
     }
 
@@ -4777,11 +4777,11 @@ namespace HS.Protobuf.Scene {
         return true;
       }
       if (SessionId != other.SessionId) return false;
+      if (SceneId != other.SceneId) return false;
       if (EntityId != other.EntityId) return false;
       if (Timestamp != other.Timestamp) return false;
       if (!object.Equals(OriginalTransform, other.OriginalTransform)) return false;
       if (!object.Equals(PayLoad, other.PayLoad)) return false;
-      if (SceneId != other.SceneId) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -4790,11 +4790,11 @@ namespace HS.Protobuf.Scene {
     public override int GetHashCode() {
       int hash = 1;
       if (SessionId.Length != 0) hash ^= SessionId.GetHashCode();
+      if (SceneId != 0) hash ^= SceneId.GetHashCode();
       if (EntityId != 0) hash ^= EntityId.GetHashCode();
       if (Timestamp != 0L) hash ^= Timestamp.GetHashCode();
       if (originalTransform_ != null) hash ^= OriginalTransform.GetHashCode();
       if (payLoad_ != null) hash ^= PayLoad.GetHashCode();
-      if (SceneId != 0) hash ^= SceneId.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -4817,25 +4817,25 @@ namespace HS.Protobuf.Scene {
         output.WriteRawTag(10);
         output.WriteString(SessionId);
       }
-      if (EntityId != 0) {
+      if (SceneId != 0) {
         output.WriteRawTag(16);
+        output.WriteInt32(SceneId);
+      }
+      if (EntityId != 0) {
+        output.WriteRawTag(24);
         output.WriteInt32(EntityId);
       }
       if (Timestamp != 0L) {
-        output.WriteRawTag(24);
+        output.WriteRawTag(32);
         output.WriteInt64(Timestamp);
       }
       if (originalTransform_ != null) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(42);
         output.WriteMessage(OriginalTransform);
       }
       if (payLoad_ != null) {
-        output.WriteRawTag(42);
+        output.WriteRawTag(50);
         output.WriteMessage(PayLoad);
-      }
-      if (SceneId != 0) {
-        output.WriteRawTag(48);
-        output.WriteInt32(SceneId);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -4851,25 +4851,25 @@ namespace HS.Protobuf.Scene {
         output.WriteRawTag(10);
         output.WriteString(SessionId);
       }
-      if (EntityId != 0) {
+      if (SceneId != 0) {
         output.WriteRawTag(16);
+        output.WriteInt32(SceneId);
+      }
+      if (EntityId != 0) {
+        output.WriteRawTag(24);
         output.WriteInt32(EntityId);
       }
       if (Timestamp != 0L) {
-        output.WriteRawTag(24);
+        output.WriteRawTag(32);
         output.WriteInt64(Timestamp);
       }
       if (originalTransform_ != null) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(42);
         output.WriteMessage(OriginalTransform);
       }
       if (payLoad_ != null) {
-        output.WriteRawTag(42);
+        output.WriteRawTag(50);
         output.WriteMessage(PayLoad);
-      }
-      if (SceneId != 0) {
-        output.WriteRawTag(48);
-        output.WriteInt32(SceneId);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -4884,6 +4884,9 @@ namespace HS.Protobuf.Scene {
       if (SessionId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(SessionId);
       }
+      if (SceneId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(SceneId);
+      }
       if (EntityId != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(EntityId);
       }
@@ -4895,9 +4898,6 @@ namespace HS.Protobuf.Scene {
       }
       if (payLoad_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(PayLoad);
-      }
-      if (SceneId != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(SceneId);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -4913,6 +4913,9 @@ namespace HS.Protobuf.Scene {
       }
       if (other.SessionId.Length != 0) {
         SessionId = other.SessionId;
+      }
+      if (other.SceneId != 0) {
+        SceneId = other.SceneId;
       }
       if (other.EntityId != 0) {
         EntityId = other.EntityId;
@@ -4931,9 +4934,6 @@ namespace HS.Protobuf.Scene {
           PayLoad = new global::HS.Protobuf.Scene.ActorChangeTransformDataPayLoad();
         }
         PayLoad.MergeFrom(other.PayLoad);
-      }
-      if (other.SceneId != 0) {
-        SceneId = other.SceneId;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -4955,29 +4955,29 @@ namespace HS.Protobuf.Scene {
             break;
           }
           case 16: {
-            EntityId = input.ReadInt32();
+            SceneId = input.ReadInt32();
             break;
           }
           case 24: {
+            EntityId = input.ReadInt32();
+            break;
+          }
+          case 32: {
             Timestamp = input.ReadInt64();
             break;
           }
-          case 34: {
+          case 42: {
             if (originalTransform_ == null) {
               OriginalTransform = new global::HS.Protobuf.SceneEntity.NetTransform();
             }
             input.ReadMessage(OriginalTransform);
             break;
           }
-          case 42: {
+          case 50: {
             if (payLoad_ == null) {
               PayLoad = new global::HS.Protobuf.Scene.ActorChangeTransformDataPayLoad();
             }
             input.ReadMessage(PayLoad);
-            break;
-          }
-          case 48: {
-            SceneId = input.ReadInt32();
             break;
           }
         }
@@ -5000,29 +5000,29 @@ namespace HS.Protobuf.Scene {
             break;
           }
           case 16: {
-            EntityId = input.ReadInt32();
+            SceneId = input.ReadInt32();
             break;
           }
           case 24: {
+            EntityId = input.ReadInt32();
+            break;
+          }
+          case 32: {
             Timestamp = input.ReadInt64();
             break;
           }
-          case 34: {
+          case 42: {
             if (originalTransform_ == null) {
               OriginalTransform = new global::HS.Protobuf.SceneEntity.NetTransform();
             }
             input.ReadMessage(OriginalTransform);
             break;
           }
-          case 42: {
+          case 50: {
             if (payLoad_ == null) {
               PayLoad = new global::HS.Protobuf.Scene.ActorChangeTransformDataPayLoad();
             }
             input.ReadMessage(PayLoad);
-            break;
-          }
-          case 48: {
-            SceneId = input.ReadInt32();
             break;
           }
         }

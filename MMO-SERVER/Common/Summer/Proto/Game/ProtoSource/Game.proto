@@ -5,18 +5,17 @@ package HS.Protobuf.Game;
 
 enum GameProtocl{
 	GAME_PROTOCL_NONE = 0;
-	GAME_PROTOCL_REGISTER_TO_G_REQ = 30001;
-	GAME_PROTOCL_REGISTER_TO_G_RESP =30002;
-	GAME_PROTOCL_GET_CHARACTER_LIST_REQ = 30005;	// [GetCharacterListRequest]
-	GAME_PROTOCL_GET_CHARACTER_LIST_RESP = 30006;	// [GetCharacterListResponse]
-	GAME_PROTOCL_CREATE_CHARACTER_REQ = 30007;		// [CreateCharacterRequest]
-	GAME_PROTOCL_CREATE_CHARACTER_RESP = 30008;		// [CreateCharacterResponse]
-	GAME_PROTOCL_DELETE_CHARACTER_REQ = 30009;		// [DeleteCharacterRequest]
-	GAME_PROTOCL_DELETE_CHARACTER_RESP = 30010;		// [DeleteCharacterResponse]
-	GAME_PROTOCL_ENTER_GAME_REQ = 30011;			// [EnterGameRequest]
-	GAME_PROTOCL_ENTER_GAME_RESP = 30012;			// [EnterGameResponse]
-	GAME_PROTOCL_EXIT_GAME_REQ = 30013;				// [ExitGameRequest]
-
+	GAME_PROTOCL_REGISTER_TO_G_REQ			= 30001;
+	GAME_PROTOCL_REGISTER_TO_G_RESP			= 30002;
+	GAME_PROTOCL_GET_CHARACTER_LIST_REQ		= 30005;	// [GetCharacterListRequest]
+	GAME_PROTOCL_GET_CHARACTER_LIST_RESP	= 30006;	// [GetCharacterListResponse]
+	GAME_PROTOCL_CREATE_CHARACTER_REQ		= 30007;	// [CreateCharacterRequest]
+	GAME_PROTOCL_CREATE_CHARACTER_RESP		= 30008;	// [CreateCharacterResponse]
+	GAME_PROTOCL_DELETE_CHARACTER_REQ		= 30009;	// [DeleteCharacterRequest]
+	GAME_PROTOCL_DELETE_CHARACTER_RESP		= 30010;	// [DeleteCharacterResponse]
+	GAME_PROTOCL_ENTER_GAME_REQ				= 30011;	// [EnterGameRequest]
+	GAME_PROTOCL_ENTER_GAME_RESP			= 30012;	// [EnterGameResponse]
+	GAME_PROTOCL_EXIT_GAME_REQ				= 30013;	// [ExitGameRequest]
 }
 
 message SimpleCharacterInfoNode{
@@ -91,7 +90,6 @@ message EnterGameResponse{
 	repeated HS.Protobuf.SceneEntity.NetActorNode otherNetActorNodeList	= 6;
 	repeated HS.Protobuf.SceneEntity.NetItemNode  otherNetItemNodeList	= 7;
 }
-
 message ExitGameRequest{
 	string gameToken = 1;
 	string characterId = 2;

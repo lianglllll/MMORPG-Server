@@ -109,6 +109,7 @@ namespace HS.Protobuf.Game.Backpack {
   }
   #region Enums
   /// <summary>
+  /// 33000
   /// ±³°üÏµÍ³
   /// </summary>
   public enum ItemType {

@@ -1,0 +1,21 @@
+syntax = "proto3";
+// import "google/protobuf/field_mask.proto";
+package HS.Protobuf.DBProxy.DBTask;
+
+enum DBTaskProtocl{
+	DBTASK_PROTOCL_NONE = 0;
+}
+
+message DBTaskNode{
+	int32 taskChainId	= 1;
+	int32 taskId		= 2;
+	int32 status		= 3;
+	int64 startTime		= 4;
+	int64 endTime		= 5;
+	bytes taskData		= 6;		// 当前任务进度
+}
+
+message DBCharacterTasks{
+	string cId					= 1;
+	repeated DBTaskNode tasks	= 2;
+}

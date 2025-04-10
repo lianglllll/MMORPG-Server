@@ -15,14 +15,15 @@ namespace GameServer.Utils
         //场景数据
         public Dictionary<int, UnitDefine> unitDefineDict = null;
         public Dictionary<int, ItemDefine> ItemDefinedDict = null;
-
+        public Dictionary<int, TaskDefine> TaskDefinedDict = null;
 
         //初始化，就是将文件中的数据读入
-        public void Init()
+        public override void Init()
         {
             //获取文件对象信息
             unitDefineDict = Load<UnitDefine>("UnitDefine.json");
             ItemDefinedDict = Load<ItemDefine>("ItemDefine.json");
+            TaskDefinedDict = Load<TaskDefine>("TaskDefine.json");
         }
 
         //根据path加载解析json文件转换为dict
@@ -46,7 +47,6 @@ namespace GameServer.Utils
 
             return JsonConvert.DeserializeObject<Dictionary<int, T>>(context, settings);
         }
-
     }
 
     //自定义的JsonConverter,用于解决普通的JsonConverter无法转换float[]的问题
@@ -76,7 +76,6 @@ namespace GameServer.Utils
             throw new NotImplementedException();
         }
     }
-
     public class IntArrayConverter : JsonConverter<int[]>
     {
         public override int[] ReadJson(JsonReader reader, Type objectType, int[] existingValue, bool hasExistingValue, JsonSerializer serializer)

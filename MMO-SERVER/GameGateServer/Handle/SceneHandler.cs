@@ -11,7 +11,7 @@ namespace GameGateServer.Handle
 {
     public class SceneHandler : Singleton<SceneHandler>
     {
-        public bool Init()
+        public override void Init()
         {
             // 协议注册
             ProtoHelper.Instance.Register<OtherEntityEnterSceneResponse>((int)SceneProtocl.OtherEntityEnterSceneResp);
@@ -44,7 +44,6 @@ namespace GameGateServer.Handle
 
             MessageRouter.Instance.Subscribe<Scene2GateMsg>(HandleScene2GateMsg);
 
-            return true;
         }
 
         private void _HandleOtherEntityEnterSceneResponse(Connection conn, OtherEntityEnterSceneResponse message)

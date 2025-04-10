@@ -4,6 +4,7 @@ using Common.Summer.Tools;
 using GameServer.Core;
 using GameServer.Handle;
 using GameServer.Hanle;
+using GameServer.Manager;
 using GameServer.Utils;
 using Google.Protobuf;
 using Google.Protobuf.Collections;
@@ -46,9 +47,12 @@ namespace GameServer.Net
                 Config.Server.ip, Config.Server.serverPort, null, ClusterServerDisconnected);
             GameMonitor.Instance.Init();
             GameServerHandler.Instance.Init();
-            SessionManager.Instance.Init();
+            // SessionManager.Instance.Init();
             GameTokenManager.Instance.Init();
+            StaticDataManager.Instance.Init();
             EnterGameWorldHanlder.Instance.Init(m_curSin.GameServerInfo.GameWorldId);
+            ChatManager.Instance.Init();
+            ChatHandler.Instance.Init();
 
             // 协议注册
             ProtoHelper.Instance.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);

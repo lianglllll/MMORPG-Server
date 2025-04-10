@@ -115,21 +115,21 @@ message ActorStatePayLoad{
 	}
 }
 message ActorChangeStateRequest{
-	string sessionId = 1;
-	int32 entityId = 2;
-	int64 timestamp = 3;
-	HS.Protobuf.SceneEntity.NetActorState state = 4;
-	HS.Protobuf.SceneEntity.NetTransform originalTransform = 5;
-	ActorStatePayLoad payLoad = 6;
+	string sessionId										= 1;
+	int32 entityId											= 2;
+	int64 timestamp											= 3;
+	HS.Protobuf.SceneEntity.NetActorState state				= 4;
+	HS.Protobuf.SceneEntity.NetTransform originalTransform	= 5;
+	ActorStatePayLoad payLoad								= 6;
 }
 message ActorChangeStateResponse{
-	string sessionId = 1;
-	int32 entityId = 2;
-	int64 timestamp = 3;
-	HS.Protobuf.SceneEntity.NetActorState state = 4;
-	HS.Protobuf.SceneEntity.NetTransform originalTransform = 5;
-	ActorStatePayLoad payLoad = 6;
-	int32 sceneId = 7;
+	string sessionId										= 1;
+	int32 sceneId											= 2;
+	int32 entityId											= 3;
+	int64 timestamp											= 4;
+	HS.Protobuf.SceneEntity.NetActorState state				= 5;
+	HS.Protobuf.SceneEntity.NetTransform originalTransform	= 6;
+	ActorStatePayLoad payLoad								= 7;
 }
 
 message ActorChangeTransformDataPayLoad{
@@ -138,19 +138,19 @@ message ActorChangeTransformDataPayLoad{
 	int32 hightSpeed = 3;
 }
 message ActorChangeTransformDataRequest{
-	string sessionId = 1;
-	int32 entityId = 2;
-	int64 timestamp = 3;
-	HS.Protobuf.SceneEntity.NetTransform originalTransform = 4;
-	ActorChangeTransformDataPayLoad payLoad = 5;
+	string sessionId										= 1;
+	int32 entityId											= 2;
+	int64 timestamp											= 3;
+	HS.Protobuf.SceneEntity.NetTransform originalTransform	= 4;
+	ActorChangeTransformDataPayLoad payLoad					= 5;
 }
 message ActorChangeTransformDataResponse{
-	string sessionId = 1;
-	int32 entityId = 2;
-	int64 timestamp = 3;
-	HS.Protobuf.SceneEntity.NetTransform originalTransform = 4;
-	ActorChangeTransformDataPayLoad payLoad = 5;
-	int32 sceneId = 6;
+	string sessionId										= 1;
+	int32 sceneId											= 2;
+	int32 entityId											= 3;
+	int64 timestamp											= 4;
+	HS.Protobuf.SceneEntity.NetTransform originalTransform	= 5;
+	ActorChangeTransformDataPayLoad payLoad					= 6;
 }
 
 

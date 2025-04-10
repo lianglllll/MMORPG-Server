@@ -1,6 +1,7 @@
 ﻿using Common.Summer.Core;
 using Common.Summer.Tools;
 using Google.Protobuf;
+using HS.Protobuf.Chat;
 using Serilog;
 using System;
 using System.Collections.Concurrent;
@@ -92,12 +93,12 @@ namespace Common.Summer.Net
         // 添加消息到消息队列
         public void AddMessage(Connection conn, IMessage message)
         {
-            //加锁
+            // 加锁
             lock (messageQueue)
             {
                 messageQueue.Enqueue(new MessageHandlerArgs() { conn = conn, message = message });
             }
-            //唤醒一个线程来处理消息队列
+            // 唤醒一个线程来处理消息队列
             threadEvent.Set();
         }
 

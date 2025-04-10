@@ -31,7 +31,7 @@ namespace GameGateServer.Net
 
         public string GameToken { get; private set; }
 
-        public void Init()
+        public override void Init()
         {
             // 本服务器的信息
             m_curSin = new ServerInfoNode();
@@ -45,7 +45,7 @@ namespace GameGateServer.Net
             ggNode.UserPort = Config.Server.userPort;
 
             // 网络服务初始化
-            ConnManager.Instance.Init(Config.Server.workerCount, 0, Config.Server.heartBeatCheckInterval, Config.Server.heartBeatTimeOut,
+            ConnManager.Instance.Init(Config.Server.workerCount, Config.Server.heartBeatSendInterval, Config.Server.heartBeatCheckInterval, Config.Server.heartBeatTimeOut,
                 true, false, true,
                 Config.Server.ip, Config.Server.userPort, UserConnected, UserDisconnected,
                 null, 0, null, null);
@@ -54,6 +54,7 @@ namespace GameGateServer.Net
             GameGateServerHandler.Instance.Init();
             EnterGameWorldHanlder.Instance.Init();
             SceneHandler.Instance.Init();
+            ChatHandler.Instance.Init();
 
 
             // 协议注册
