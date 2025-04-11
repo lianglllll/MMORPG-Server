@@ -45,6 +45,7 @@ namespace GameServer.Handle
 
             // 补全一些信息(减少带宽考虑)
             chatMessage.FromChrName = chr.ChrName;
+            var resp = new ChatMessageResponse();
 
             if (chatMessage.Channel == ChatMessageChannel.Private)
             {
@@ -52,7 +53,6 @@ namespace GameServer.Handle
             }
             else if(chatMessage.Channel == ChatMessageChannel.Scene)
             {
-                var resp = new ChatMessageResponse();
                 resp.ChatMessages.Add(chatMessage);
                 chatMessage.SceneId = chr.CurSceneId;
                 foreach(var sChr in GameCharacterManager.Instance.GetPartGameCharacterBySceneId(chr.CurSceneId).Values)
@@ -63,12 +63,11 @@ namespace GameServer.Handle
             }
             else if (chatMessage.Channel == ChatMessageChannel.World)
             {
-                var resp = new ChatMessageResponse();
                 resp.ChatMessages.Add(chatMessage);
                 foreach (var sChr in GameCharacterManager.Instance.GetAllGameCharacter().Values)
                 {
                     resp.SessionId = sChr.SessionId;
-                    sChr.Send(chatMessage);
+                    sChr.Send(resp);
                 }
             }
             else if (chatMessage.Channel == ChatMessageChannel.System)
