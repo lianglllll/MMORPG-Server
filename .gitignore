@@ -36,3 +36,5 @@ HybridCLRData/
 /Tools/**/out-csharp/Message.cs
 /Tools/**/temp/
 /Tools/**/out/
+
+/README_temp.md
