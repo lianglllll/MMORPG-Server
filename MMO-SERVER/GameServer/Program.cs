@@ -6,6 +6,9 @@ using Common.Summer.Core;
 using Serilog.Sinks.SystemConsole.Themes;
 using System.Collections.Generic;
 using Common.Summer.MyLog;
+using Newtonsoft.Json;
+using GameServer.Core.Task;
+using GameServer.Core.Model;
 
 namespace GameServer
 {
@@ -92,7 +95,13 @@ namespace GameServer
                         UnInit();
                         Environment.Exit(0);
                         return true;
-
+                    case "LevelUp":
+                        foreach(var item in GameCharacterManager.Instance.GetAllGameCharacter().Values)
+                        {
+                            item.CharacterEventSystem.Trigger("LevelUp");
+                            break;
+                        }
+                        break;
                     default:
                         Console.WriteLine($"Unknown command: {command}");
                         break;
@@ -102,7 +111,7 @@ namespace GameServer
         public static void Main(string[] args)
         {
             Init();
-            //Shell();
+            Shell();
         }
     }
 }

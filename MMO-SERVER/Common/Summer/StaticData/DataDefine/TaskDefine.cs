@@ -8,15 +8,21 @@
 
 public class TaskDefine
 {
-	public int ID; // 默认Id
-	public int Task_chain_id; // 链id
-	public int Task_sub_id; // 任务子id
+	public int Task_id; // 任务id
+	public int Task_type; // 任务类型
+	public int Chain_id; // 所属任务链ID
+ 
+	public int Sub_id; // 任务链中的子序号
+
+	public string Title; // 任务标题
+	public string Desc; // 任务描述
 	public string Icon; // 任务图标
-	public string Desc; // 描述
-	public string Task_target; // 任务目标
-	public int Target_amount; // 目标数量
-	public string Award; // 奖励
-	public int[] Open_chain; // 打开的支线链
+	public string Pre_conditions; // 任务解锁条件
+	public string Target_conditions; // 任务完成条件
+	public string Reward_items; // 奖励
+	public int[] Next_chains; // 后续开启的支线链
+	public string Daily_refresh_time; // 日常任务刷新时间（格式：HH:MM）
+	public string Expire_time; // 限时任务过期时间（格式：YYYY-MM-DD HH:MM:SS）
 }
 
 

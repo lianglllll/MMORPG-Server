@@ -144,7 +144,7 @@ namespace HS.Protobuf.Common {
     /// <summary>
     /// 关于pb区域号划分
     /// login:	20000	login/longinGate/loginGateMgr
-    /// game:	30000	背包/聊天/任务/商店/好友/邮件/排行榜/公会/活动
+    /// game:	30000	3背包/4聊天/5任务/6商店/7好友/8邮件/9排行榜/公会/活动
     /// scene:	40000	场景/副本/战斗skill buff   
     /// DB:		50000	mongodb/redis
     /// time:	60000	

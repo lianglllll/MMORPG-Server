@@ -16,13 +16,15 @@ namespace SceneServer.Core.Model.Actor
         private string m_cId;
         private Session m_session;
 
+        #region GetSet
         public string SessionId => m_session.SesssionId;
         protected long Exp
         {
             get => NetActorNode.Exp;
             set => NetActorNode.Exp = value;
         }
-
+        public String Cid => m_cId;
+        #endregion
 
         public void Init(string sessionId,Connection conn, DBCharacterNode dbChrNode)
         {

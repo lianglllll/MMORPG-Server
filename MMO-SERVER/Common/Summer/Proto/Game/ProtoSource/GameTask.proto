@@ -1,10 +1,48 @@
 syntax = "proto3";
 package HS.Protobuf.GameTask;
 
+enum GameTaskProtocol{
+	GAME_TASK_PROTOCOL_NONE = 0;
+	GAME_TASK_PROTOCOL_GET_ALL_GAME_TASKS_REQ	= 35001;	// GetAllGameTasksRequest
+	GAME_TASK_PROTOCOL_GET_ALL_GAME_TASKS_RESP	= 35002;	// GetAllGameTaskResponse
+}
+
+enum GameTaskType{
+	GAME_TASK_TYPE_NONE				= 0;
+	GAME_TASK_TYPE_MAIN_STORY		= 1;
+	GAME_TASK_TYPE_SIDE_STORY		= 2;
+	GAME_TASK_TYPE_COMMON			= 3;
+	GAME_TASK_TYPE_DAILY			= 4;
+	GAME_TASK_TYPE_GUILD			= 5;
+	GAME_TASK_TYPE_FACTION			= 6;
+	GAME_TASK_TYPE_HIDE				= 7;
+	GAME_TASK_TYPE_CYCLE			= 8;
+	GAME_TASK_TYPE_ACHIEVEMENT		= 9;
+	GAME_TASK_TYPE_CUSTOM			= 10;
+}
 enum GameTaskState{
-	GAME_TASK_STATE_NONE		= 0;	
-	GAME_TASK_STATE_NOSTARTED	= 1;	// 未开始
-	GAME_TASK_STATE_INPROGRESS	= 2;	// 进行中
-	GAME_TASK_STATE_COMPLETED	= 3;	// 已完成
-	GAME_TASK_STATE_TURNEDIN	= 4;	// 已提交
+	GAME_TASK_STATE_NONE         = 0;
+	GAME_TASK_STATE_LOCKED       = 1;	// 表示任务尚未达到激活条件，对玩家完全不可见或不可交互
+	GAME_TASK_STATE_UNLOCKED     = 2;	// 表示任务已达到激活条件但尚未被接受，对玩家可见但尚未激活
+	GAME_TASK_STATE_IN_PROGRESS  = 3;
+	GAME_TASK_STATE_COMPLETED    = 4;  // 可领取奖励
+	GAME_TASK_STATE_REWARDED     = 5;  // 奖励已领取
+	// 可选扩展
+	GAME_TASK_STATE_FAILED       = 6;
+	GAME_TASK_STATE_ABANDONED    = 7;
+}
+
+message NetGameTaskNode{
+	int32 taskId = 1;
+	GameTaskState taskState = 2;
+	string taskProgress		= 3;
+}
+
+message GetAllGameTasksRequest{
+	string sessionId = 1;
+	string cId = 2;
+}
+message GetAllGameTaskResponse{
+	string sessionId = 1;
+	repeated NetGameTaskNode tasks = 2;
 }

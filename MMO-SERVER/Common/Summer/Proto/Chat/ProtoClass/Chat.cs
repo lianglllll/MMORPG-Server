@@ -57,9 +57,9 @@ namespace HS.Protobuf.Chat {
             "SEFUX01FU1NBR0VfQ0hBTk5FTF9OT05FEAASHwobQ0hBVF9NRVNTQUdFX0NI",
             "QU5ORUxfU1lTVEVNEAESHgoaQ0hBVF9NRVNTQUdFX0NIQU5ORUxfTE9DQUwQ",
             "AhIeChpDSEFUX01FU1NBR0VfQ0hBTk5FTF9TQ0VORRADEh4KGkNIQVRfTUVT",
-            "U0FHRV9DSEFOTkVMX1dPUkxEEAQSIAocQ0hBVF9NRVNTQUdFX0NIQU5ORUxf",
-            "UFJJVkFURRAFEh0KGUNIQVRfTUVTU0FHRV9DSEFOTkVMX1RFQU0QBhIeChpD",
-            "SEFUX01FU1NBR0VfQ0hBTk5FTF9HVUlMRBAHKloKC0NoYXRDaGFubmVsEgcK",
+            "U0FHRV9DSEFOTkVMX1dPUkxEEAQSHQoZQ0hBVF9NRVNTQUdFX0NIQU5ORUxf",
+            "VEVBTRAFEh4KGkNIQVRfTUVTU0FHRV9DSEFOTkVMX0dVSUxEEAYSIAocQ0hB",
+            "VF9NRVNTQUdFX0NIQU5ORUxfUFJJVkFURRAHKloKC0NoYXRDaGFubmVsEgcK",
             "A0FMTBAAEgkKBUxPQ0FMEAESCQoFV09STEQQAhIKCgZTWVNURU0QBBILCgdQ",
             "UklWQVRFEAgSCAoEVEVBTRAQEgkKBUdVSUxEECBiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
@@ -91,9 +91,9 @@ namespace HS.Protobuf.Chat {
     [pbr::OriginalName("CHAT_MESSAGE_CHANNEL_LOCAL")] Local = 2,
     [pbr::OriginalName("CHAT_MESSAGE_CHANNEL_SCENE")] Scene = 3,
     [pbr::OriginalName("CHAT_MESSAGE_CHANNEL_WORLD")] World = 4,
-    [pbr::OriginalName("CHAT_MESSAGE_CHANNEL_PRIVATE")] Private = 5,
-    [pbr::OriginalName("CHAT_MESSAGE_CHANNEL_TEAM")] Team = 6,
-    [pbr::OriginalName("CHAT_MESSAGE_CHANNEL_GUILD")] Guild = 7,
+    [pbr::OriginalName("CHAT_MESSAGE_CHANNEL_TEAM")] Team = 5,
+    [pbr::OriginalName("CHAT_MESSAGE_CHANNEL_GUILD")] Guild = 6,
+    [pbr::OriginalName("CHAT_MESSAGE_CHANNEL_PRIVATE")] Private = 7,
   }
 
   /// <summary>

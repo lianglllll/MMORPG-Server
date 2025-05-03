@@ -7,6 +7,7 @@ using DBProxyServer.Core;
 using DBProxyServer.Handle;
 using HS.Protobuf.DBProxy.DBWorld;
 using Common.Summer.MyLog;
+using HS.Protobuf.DBProxy.DBTask;
 
 namespace DBProxyServer
 {
@@ -128,17 +129,17 @@ namespace DBProxyServer
             //    IsActive = true
             //});
 
-/*            var testNode = new DBWorldNode
-            {
-                WorldId = 1,
-                WorldName = "小南梁界",
-                WorldDesc = "领略修仙和科技的碰撞。",
-                Status = "active",
-                CreatedAt = Scheduler.UnixTime,
-                MaxPlayers = 1000,
-                CreatedBy = "天道"
-            };
-            var result =  WorldOperations.Instance.AddWorldAsync(testNode);*/
+            /*            var testNode = new DBWorldNode
+                        {
+                            WorldId = 1,
+                            WorldName = "小南梁界",
+                            WorldDesc = "领略修仙和科技的碰撞。",
+                            Status = "active",
+                            CreatedAt = Scheduler.UnixTime,
+                            MaxPlayers = 1000,
+                            CreatedBy = "天道"
+                        };
+                        var result =  WorldOperations.Instance.AddWorldAsync(testNode);*/
 
             //var testNode2 = new DBWorldNode
             //{
@@ -164,7 +165,15 @@ namespace DBProxyServer
             //    }
             //});
 
-
+/*            TaskOperations.Instance.SaveDBTaskNodes("111111", new List<DBTaskNode>()
+            {
+                new DBTaskNode()
+                {
+                    TaskId = 1,
+                    State = 2,
+                    TaskProgress = "hello, world "
+                }
+            });*/
 
 
             return true;

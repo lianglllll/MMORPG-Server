@@ -7,15 +7,9 @@ enum DBTaskProtocl{
 }
 
 message DBTaskNode{
-	int32 taskChainId	= 1;
-	int32 taskId		= 2;
-	int32 status		= 3;
-	int64 startTime		= 4;
-	int64 endTime		= 5;
-	bytes taskData		= 6;		// 当前任务进度
-}
-
-message DBCharacterTasks{
-	string cId					= 1;
-	repeated DBTaskNode tasks	= 2;
+	int32 taskId			= 1;
+	int32 state				= 2;
+	string taskProgress		= 3;		// 当前任务进度
+	int64 startTime			= 4;
+	int64 endTime			= 5;
 }

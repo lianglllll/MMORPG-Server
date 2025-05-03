@@ -24,37 +24,799 @@ namespace HS.Protobuf.GameTask {
     static GameTaskReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cg5HYW1lVGFzay5wcm90bxIUSFMuUHJvdG9idWYuR2FtZVRhc2sqpQEKDUdh",
-            "bWVUYXNrU3RhdGUSGAoUR0FNRV9UQVNLX1NUQVRFX05PTkUQABIdChlHQU1F",
-            "X1RBU0tfU1RBVEVfTk9TVEFSVEVEEAESHgoaR0FNRV9UQVNLX1NUQVRFX0lO",
-            "UFJPR1JFU1MQAhIdChlHQU1FX1RBU0tfU1RBVEVfQ09NUExFVEVEEAMSHAoY",
-            "R0FNRV9UQVNLX1NUQVRFX1RVUk5FRElOEARiBnByb3RvMw=="));
+            "Cg5HYW1lVGFzay5wcm90bxIUSFMuUHJvdG9idWYuR2FtZVRhc2sibwoPTmV0",
+            "R2FtZVRhc2tOb2RlEg4KBnRhc2tJZBgBIAEoBRI2Cgl0YXNrU3RhdGUYAiAB",
+            "KA4yIy5IUy5Qcm90b2J1Zi5HYW1lVGFzay5HYW1lVGFza1N0YXRlEhQKDHRh",
+            "c2tQcm9ncmVzcxgDIAEoCSI4ChZHZXRBbGxHYW1lVGFza3NSZXF1ZXN0EhEK",
+            "CXNlc3Npb25JZBgBIAEoCRILCgNjSWQYAiABKAkiYQoWR2V0QWxsR2FtZVRh",
+            "c2tSZXNwb25zZRIRCglzZXNzaW9uSWQYASABKAkSNAoFdGFza3MYAiADKAsy",
+            "JS5IUy5Qcm90b2J1Zi5HYW1lVGFzay5OZXRHYW1lVGFza05vZGUqkgEKEEdh",
+            "bWVUYXNrUHJvdG9jb2wSGwoXR0FNRV9UQVNLX1BST1RPQ09MX05PTkUQABIv",
+            "CilHQU1FX1RBU0tfUFJPVE9DT0xfR0VUX0FMTF9HQU1FX1RBU0tTX1JFURC5",
+            "kQISMAoqR0FNRV9UQVNLX1BST1RPQ09MX0dFVF9BTExfR0FNRV9UQVNLU19S",
+            "RVNQELqRAiq+AgoMR2FtZVRhc2tUeXBlEhcKE0dBTUVfVEFTS19UWVBFX05P",
+            "TkUQABIdChlHQU1FX1RBU0tfVFlQRV9NQUlOX1NUT1JZEAESHQoZR0FNRV9U",
+            "QVNLX1RZUEVfU0lERV9TVE9SWRACEhkKFUdBTUVfVEFTS19UWVBFX0NPTU1P",
+            "ThADEhgKFEdBTUVfVEFTS19UWVBFX0RBSUxZEAQSGAoUR0FNRV9UQVNLX1RZ",
+            "UEVfR1VJTEQQBRIaChZHQU1FX1RBU0tfVFlQRV9GQUNUSU9OEAYSFwoTR0FN",
+            "RV9UQVNLX1RZUEVfSElERRAHEhgKFEdBTUVfVEFTS19UWVBFX0NZQ0xFEAgS",
+            "HgoaR0FNRV9UQVNLX1RZUEVfQUNISUVWRU1FTlQQCRIZChVHQU1FX1RBU0tf",
+            "VFlQRV9DVVNUT00QCir8AQoNR2FtZVRhc2tTdGF0ZRIYChRHQU1FX1RBU0tf",
+            "U1RBVEVfTk9ORRAAEhoKFkdBTUVfVEFTS19TVEFURV9MT0NLRUQQARIcChhH",
+            "QU1FX1RBU0tfU1RBVEVfVU5MT0NLRUQQAhIfChtHQU1FX1RBU0tfU1RBVEVf",
+            "SU5fUFJPR1JFU1MQAxIdChlHQU1FX1RBU0tfU1RBVEVfQ09NUExFVEVEEAQS",
+            "HAoYR0FNRV9UQVNLX1NUQVRFX1JFV0FSREVEEAUSGgoWR0FNRV9UQVNLX1NU",
+            "QVRFX0ZBSUxFRBAGEh0KGUdBTUVfVEFTS19TVEFURV9BQkFORE9ORUQQB2IG",
+            "cHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.GameTask.GameTaskState), }, null, null));
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.GameTask.GameTaskProtocol), typeof(global::HS.Protobuf.GameTask.GameTaskType), typeof(global::HS.Protobuf.GameTask.GameTaskState), }, null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameTask.NetGameTaskNode), global::HS.Protobuf.GameTask.NetGameTaskNode.Parser, new[]{ "TaskId", "TaskState", "TaskProgress" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameTask.GetAllGameTasksRequest), global::HS.Protobuf.GameTask.GetAllGameTasksRequest.Parser, new[]{ "SessionId", "CId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameTask.GetAllGameTaskResponse), global::HS.Protobuf.GameTask.GetAllGameTaskResponse.Parser, new[]{ "SessionId", "Tasks" }, null, null, null, null)
+          }));
     }
     #endregion
 
   }
   #region Enums
+  public enum GameTaskProtocol {
+    [pbr::OriginalName("GAME_TASK_PROTOCOL_NONE")] None = 0,
+    /// <summary>
+    /// GetAllGameTasksRequest
+    /// </summary>
+    [pbr::OriginalName("GAME_TASK_PROTOCOL_GET_ALL_GAME_TASKS_REQ")] GetAllGameTasksReq = 35001,
+    /// <summary>
+    /// GetAllGameTaskResponse
+    /// </summary>
+    [pbr::OriginalName("GAME_TASK_PROTOCOL_GET_ALL_GAME_TASKS_RESP")] GetAllGameTasksResp = 35002,
+  }
+
+  public enum GameTaskType {
+    [pbr::OriginalName("GAME_TASK_TYPE_NONE")] None = 0,
+    [pbr::OriginalName("GAME_TASK_TYPE_MAIN_STORY")] MainStory = 1,
+    [pbr::OriginalName("GAME_TASK_TYPE_SIDE_STORY")] SideStory = 2,
+    [pbr::OriginalName("GAME_TASK_TYPE_COMMON")] Common = 3,
+    [pbr::OriginalName("GAME_TASK_TYPE_DAILY")] Daily = 4,
+    [pbr::OriginalName("GAME_TASK_TYPE_GUILD")] Guild = 5,
+    [pbr::OriginalName("GAME_TASK_TYPE_FACTION")] Faction = 6,
+    [pbr::OriginalName("GAME_TASK_TYPE_HIDE")] Hide = 7,
+    [pbr::OriginalName("GAME_TASK_TYPE_CYCLE")] Cycle = 8,
+    [pbr::OriginalName("GAME_TASK_TYPE_ACHIEVEMENT")] Achievement = 9,
+    [pbr::OriginalName("GAME_TASK_TYPE_CUSTOM")] Custom = 10,
+  }
+
   public enum GameTaskState {
     [pbr::OriginalName("GAME_TASK_STATE_NONE")] None = 0,
     /// <summary>
-    /// 未开始
+    /// 表示任务尚未达到激活条件，对玩家完全不可见或不可交互
     /// </summary>
-    [pbr::OriginalName("GAME_TASK_STATE_NOSTARTED")] Nostarted = 1,
+    [pbr::OriginalName("GAME_TASK_STATE_LOCKED")] Locked = 1,
     /// <summary>
-    /// 进行中
+    /// 表示任务已达到激活条件但尚未被接受，对玩家可见但尚未激活
     /// </summary>
-    [pbr::OriginalName("GAME_TASK_STATE_INPROGRESS")] Inprogress = 2,
+    [pbr::OriginalName("GAME_TASK_STATE_UNLOCKED")] Unlocked = 2,
+    [pbr::OriginalName("GAME_TASK_STATE_IN_PROGRESS")] InProgress = 3,
     /// <summary>
-    /// 已完成
+    /// 可领取奖励
     /// </summary>
-    [pbr::OriginalName("GAME_TASK_STATE_COMPLETED")] Completed = 3,
+    [pbr::OriginalName("GAME_TASK_STATE_COMPLETED")] Completed = 4,
     /// <summary>
-    /// 已提交
+    /// 奖励已领取
     /// </summary>
-    [pbr::OriginalName("GAME_TASK_STATE_TURNEDIN")] Turnedin = 4,
+    [pbr::OriginalName("GAME_TASK_STATE_REWARDED")] Rewarded = 5,
+    /// <summary>
+    /// 可选扩展
+    /// </summary>
+    [pbr::OriginalName("GAME_TASK_STATE_FAILED")] Failed = 6,
+    [pbr::OriginalName("GAME_TASK_STATE_ABANDONED")] Abandoned = 7,
+  }
+
+  #endregion
+
+  #region Messages
+  public sealed partial class NetGameTaskNode : pb::IMessage<NetGameTaskNode>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<NetGameTaskNode> _parser = new pb::MessageParser<NetGameTaskNode>(() => new NetGameTaskNode());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<NetGameTaskNode> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::HS.Protobuf.GameTask.GameTaskReflection.Descriptor.MessageTypes[0]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public NetGameTaskNode() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public NetGameTaskNode(NetGameTaskNode other) : this() {
+      taskId_ = other.taskId_;
+      taskState_ = other.taskState_;
+      taskProgress_ = other.taskProgress_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public NetGameTaskNode Clone() {
+      return new NetGameTaskNode(this);
+    }
+
+    /// <summary>Field number for the "taskId" field.</summary>
+    public const int TaskIdFieldNumber = 1;
+    private int taskId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int TaskId {
+      get { return taskId_; }
+      set {
+        taskId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "taskState" field.</summary>
+    public const int TaskStateFieldNumber = 2;
+    private global::HS.Protobuf.GameTask.GameTaskState taskState_ = global::HS.Protobuf.GameTask.GameTaskState.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::HS.Protobuf.GameTask.GameTaskState TaskState {
+      get { return taskState_; }
+      set {
+        taskState_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "taskProgress" field.</summary>
+    public const int TaskProgressFieldNumber = 3;
+    private string taskProgress_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string TaskProgress {
+      get { return taskProgress_; }
+      set {
+        taskProgress_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as NetGameTaskNode);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(NetGameTaskNode other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (TaskId != other.TaskId) return false;
+      if (TaskState != other.TaskState) return false;
+      if (TaskProgress != other.TaskProgress) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (TaskId != 0) hash ^= TaskId.GetHashCode();
+      if (TaskState != global::HS.Protobuf.GameTask.GameTaskState.None) hash ^= TaskState.GetHashCode();
+      if (TaskProgress.Length != 0) hash ^= TaskProgress.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (TaskId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(TaskId);
+      }
+      if (TaskState != global::HS.Protobuf.GameTask.GameTaskState.None) {
+        output.WriteRawTag(16);
+        output.WriteEnum((int) TaskState);
+      }
+      if (TaskProgress.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(TaskProgress);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (TaskId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(TaskId);
+      }
+      if (TaskState != global::HS.Protobuf.GameTask.GameTaskState.None) {
+        output.WriteRawTag(16);
+        output.WriteEnum((int) TaskState);
+      }
+      if (TaskProgress.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(TaskProgress);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (TaskId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(TaskId);
+      }
+      if (TaskState != global::HS.Protobuf.GameTask.GameTaskState.None) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) TaskState);
+      }
+      if (TaskProgress.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(TaskProgress);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(NetGameTaskNode other) {
+      if (other == null) {
+        return;
+      }
+      if (other.TaskId != 0) {
+        TaskId = other.TaskId;
+      }
+      if (other.TaskState != global::HS.Protobuf.GameTask.GameTaskState.None) {
+        TaskState = other.TaskState;
+      }
+      if (other.TaskProgress.Length != 0) {
+        TaskProgress = other.TaskProgress;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            TaskId = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            TaskState = (global::HS.Protobuf.GameTask.GameTaskState) input.ReadEnum();
+            break;
+          }
+          case 26: {
+            TaskProgress = input.ReadString();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            TaskId = input.ReadInt32();
+            break;
+          }
+          case 16: {
+            TaskState = (global::HS.Protobuf.GameTask.GameTaskState) input.ReadEnum();
+            break;
+          }
+          case 26: {
+            TaskProgress = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class GetAllGameTasksRequest : pb::IMessage<GetAllGameTasksRequest>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<GetAllGameTasksRequest> _parser = new pb::MessageParser<GetAllGameTasksRequest>(() => new GetAllGameTasksRequest());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<GetAllGameTasksRequest> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::HS.Protobuf.GameTask.GameTaskReflection.Descriptor.MessageTypes[1]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetAllGameTasksRequest() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetAllGameTasksRequest(GetAllGameTasksRequest other) : this() {
+      sessionId_ = other.sessionId_;
+      cId_ = other.cId_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetAllGameTasksRequest Clone() {
+      return new GetAllGameTasksRequest(this);
+    }
+
+    /// <summary>Field number for the "sessionId" field.</summary>
+    public const int SessionIdFieldNumber = 1;
+    private string sessionId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string SessionId {
+      get { return sessionId_; }
+      set {
+        sessionId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "cId" field.</summary>
+    public const int CIdFieldNumber = 2;
+    private string cId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string CId {
+      get { return cId_; }
+      set {
+        cId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as GetAllGameTasksRequest);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(GetAllGameTasksRequest other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (SessionId != other.SessionId) return false;
+      if (CId != other.CId) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (SessionId.Length != 0) hash ^= SessionId.GetHashCode();
+      if (CId.Length != 0) hash ^= CId.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (SessionId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(SessionId);
+      }
+      if (CId.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(CId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (SessionId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(SessionId);
+      }
+      if (CId.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(CId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (SessionId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(SessionId);
+      }
+      if (CId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(CId);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(GetAllGameTasksRequest other) {
+      if (other == null) {
+        return;
+      }
+      if (other.SessionId.Length != 0) {
+        SessionId = other.SessionId;
+      }
+      if (other.CId.Length != 0) {
+        CId = other.CId;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            SessionId = input.ReadString();
+            break;
+          }
+          case 18: {
+            CId = input.ReadString();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            SessionId = input.ReadString();
+            break;
+          }
+          case 18: {
+            CId = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class GetAllGameTaskResponse : pb::IMessage<GetAllGameTaskResponse>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<GetAllGameTaskResponse> _parser = new pb::MessageParser<GetAllGameTaskResponse>(() => new GetAllGameTaskResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<GetAllGameTaskResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::HS.Protobuf.GameTask.GameTaskReflection.Descriptor.MessageTypes[2]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetAllGameTaskResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetAllGameTaskResponse(GetAllGameTaskResponse other) : this() {
+      sessionId_ = other.sessionId_;
+      tasks_ = other.tasks_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public GetAllGameTaskResponse Clone() {
+      return new GetAllGameTaskResponse(this);
+    }
+
+    /// <summary>Field number for the "sessionId" field.</summary>
+    public const int SessionIdFieldNumber = 1;
+    private string sessionId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string SessionId {
+      get { return sessionId_; }
+      set {
+        sessionId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "tasks" field.</summary>
+    public const int TasksFieldNumber = 2;
+    private static readonly pb::FieldCodec<global::HS.Protobuf.GameTask.NetGameTaskNode> _repeated_tasks_codec
+        = pb::FieldCodec.ForMessage(18, global::HS.Protobuf.GameTask.NetGameTaskNode.Parser);
+    private readonly pbc::RepeatedField<global::HS.Protobuf.GameTask.NetGameTaskNode> tasks_ = new pbc::RepeatedField<global::HS.Protobuf.GameTask.NetGameTaskNode>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<global::HS.Protobuf.GameTask.NetGameTaskNode> Tasks {
+      get { return tasks_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as GetAllGameTaskResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(GetAllGameTaskResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (SessionId != other.SessionId) return false;
+      if(!tasks_.Equals(other.tasks_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (SessionId.Length != 0) hash ^= SessionId.GetHashCode();
+      hash ^= tasks_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (SessionId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(SessionId);
+      }
+      tasks_.WriteTo(output, _repeated_tasks_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (SessionId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(SessionId);
+      }
+      tasks_.WriteTo(ref output, _repeated_tasks_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (SessionId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(SessionId);
+      }
+      size += tasks_.CalculateSize(_repeated_tasks_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(GetAllGameTaskResponse other) {
+      if (other == null) {
+        return;
+      }
+      if (other.SessionId.Length != 0) {
+        SessionId = other.SessionId;
+      }
+      tasks_.Add(other.tasks_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            SessionId = input.ReadString();
+            break;
+          }
+          case 18: {
+            tasks_.AddEntriesFrom(input, _repeated_tasks_codec);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            SessionId = input.ReadString();
+            break;
+          }
+          case 18: {
+            tasks_.AddEntriesFrom(ref input, _repeated_tasks_codec);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
   }
 
   #endregion

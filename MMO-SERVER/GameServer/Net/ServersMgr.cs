@@ -53,6 +53,7 @@ namespace GameServer.Net
             EnterGameWorldHanlder.Instance.Init(m_curSin.GameServerInfo.GameWorldId);
             ChatManager.Instance.Init();
             ChatHandler.Instance.Init();
+            TaskHandler.Instance.Init();
 
             // 协议注册
             ProtoHelper.Instance.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);

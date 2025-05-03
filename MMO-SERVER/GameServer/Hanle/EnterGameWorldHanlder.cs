@@ -4,14 +4,19 @@ using Common.Summer.Security;
 using Common.Summer.Tools;
 using GameServer.Core;
 using GameServer.Core.Model;
+using GameServer.Core.Task;
+using GameServer.Core.Task.Event;
 using GameServer.Model;
 using GameServer.Net;
 using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
 using HS.Protobuf.DBProxy.DBCharacter;
+using HS.Protobuf.DBProxy.DBTask;
 using HS.Protobuf.DBProxy.DBUser;
 using HS.Protobuf.Game;
+using HS.Protobuf.GameTask;
 using HS.Protobuf.Scene;
+using Newtonsoft.Json;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -51,7 +56,8 @@ namespace GameServer.Hanle
             ProtoHelper.Instance.Register<SelfCharacterEnterSceneResponse>((int)SceneProtocl.SelfCharacterEnterSceneResp);
             ProtoHelper.Instance.Register<ExitGameRequest>((int)GameProtocl.ExitGameReq);
             ProtoHelper.Instance.Register<CharacterLeaveSceneRequest>((int)SceneProtocl.CharacterLeaveSceneReq);
-
+            ProtoHelper.Instance.Register<CharacterLeaveSceneResponse>((int)SceneProtocl.CharacterLeaveSceneResp);
+            ProtoHelper.Instance.Register<SaveDBCharacterRequest>((int)DBCharacterProtocl.SaveDbcharactersReq);
 
             // 消息的订阅
             MessageRouter.Instance.Subscribe<GetCharacterListRequest>(_HandleGetCharacterListRequest);
@@ -69,6 +75,7 @@ namespace GameServer.Hanle
             MessageRouter.Instance.Subscribe<SelfCharacterEnterSceneResponse>(_HandleSelfCharacterEnterSceneResponse);
 
             MessageRouter.Instance.Subscribe<ExitGameRequest>(_HandleExitGameRequest);
+            MessageRouter.Instance.Subscribe<CharacterLeaveSceneResponse>(_HandleCharacterLeaveSceneResponse);
 
             return true;
         }
@@ -126,21 +133,21 @@ namespace GameServer.Hanle
             CreateCharacterResponse resp = new();
             resp.SessionId = message.SessionId;
 
-            //角色名是否为空
+            // 角色名是否为空
             if (string.IsNullOrWhiteSpace(message.CName))
             {
                 resp.ResultCode = 1;
                 resp.ResultMsg = "角色名不能为空";
                 goto End1;
             }
-            //角色名长度限制
+            // 角色名长度限制
             if (message.CName.Length > 12)
             {
                 resp.ResultCode = 2;
                 resp.ResultMsg = "角色名最大长度为12";
                 goto End1;
             }
-            //角色类型有误
+            // 角色类型有误
             if (message.ProfessionId >= 5 || message.ProfessionId < 0)
             {
                 resp.ResultCode = 3;
@@ -178,6 +185,25 @@ namespace GameServer.Hanle
             chrStatistics.KillCount = 0;
             chrStatistics.DeathCount = 0;
             chrStatistics.TaskCompleted = 0;
+
+            DBCharacterTasks chrTasks = new();
+            cNode.ChrTasks = chrTasks;
+            var cond = new ConditionData()
+            {
+                condType = "EnterGame",
+                Parameters = new string[] { "1" },
+                TargetValue = 1,
+                CurValue = 0
+            };
+            List<ConditionData> conds = new List<ConditionData>();
+            conds.Add(cond);
+            var tmp = JsonConvert.SerializeObject(conds);
+            chrTasks.Tasks.Add(new DBTaskNode()
+            {
+                TaskId = 1,
+                State = (int)GameTaskState.InProgress,
+                TaskProgress = tmp
+            });
 
             ServersMgr.Instance.SendMsgToDBProxy(req);
             goto End2;
@@ -335,7 +361,7 @@ namespace GameServer.Hanle
             GetDBCharacterByCidRequest req = new();
             req.TaskId = taskId;
             req.CId = message.CharacterId;
-            req.ReadMask = new FieldMask { Paths = { "chrStatistics", "chrStatus", "chrAssets", "chrSocial", "chrCombat" } };
+            req.ReadMask = new FieldMask { Paths = { "chrStatistics", "chrStatus", "chrAssets", "chrSocial", "chrCombat", "chrTask" } };
             ServersMgr.Instance.SendMsgToDBProxy(req);
         }
         private void _HandleGetDBCharacterByCidReponse(Connection conn, GetDBCharacterByCidReponse message)
@@ -364,6 +390,16 @@ namespace GameServer.Hanle
                 goto End1;
             }
 
+            int curSceneId = dbChrNode.ChrStatus.CurSceneId;
+            var sceneConn = GameMonitor.Instance.GetSceneConnBySceneId(curSceneId);
+            // TODO sceneConn为空，说明场景还没启动
+            if (sceneConn == null)
+            {
+                resp.ResultCode = 4;
+                resp.ResultMsg = "当前场景不可达...";
+                goto End1;
+            }
+
             // 保存一下与场景无关的character信息
             var gChr = GameCharacterManager.Instance.CreateGameCharacter(dbChrNode);
             gChr.RelativeGateConnection = gateConn;
@@ -371,18 +407,12 @@ namespace GameServer.Hanle
             Log.Information("chr enter game,cId = [{0}]", gChr.Cid);
 
             // 将与场景相关的character移交scene进行初始化
-            int curSceneId = dbChrNode.ChrStatus.CurSceneId;
-            var sceneConn = GameMonitor.Instance.GetSceneConnBySceneId(curSceneId);
-
-            // TODO sceneConn为空，说明场景还没启动
-
             CharacterEnterSceneRequest characterEnterSceneRequest = new();
             characterEnterSceneRequest.TaskId = message.TaskId;
             characterEnterSceneRequest.SessionId = req.SessionId;
             GameToken gameToken = GameTokenManager.Instance.GetToken(req.GameToken);
             characterEnterSceneRequest.GameGateServerId = gameToken.ServerId;
             characterEnterSceneRequest.DbChrNode = dbChrNode;
-
             sceneConn.Send(characterEnterSceneRequest);
             goto End2;
         End1:
@@ -417,6 +447,9 @@ namespace GameServer.Hanle
             gChr.CurSceneId = message.SelfNetActorNode.SceneId;
             gChr.EntityId = message.SelfNetActorNode.EntityId;
 
+            // 进入游戏事件
+            gChr.CharacterEventSystem.Trigger(GameEventType.EnterGame.ToString());
+
             // 拆message中的数据放到resp中
             resp.ResultCode = 0;
             resp.CharacterId = gChr.Cid;
@@ -443,15 +476,33 @@ namespace GameServer.Hanle
         {
             // 解决当前的chr信息
             var gChar = GameCharacterManager.Instance.GetGameCharacterByCid(message.CharacterId);
-            GameCharacterManager.Instance.RemoveGameCharacterByCid(message.CharacterId);
 
             // 告诉对应scene解决chr
             var req = new CharacterLeaveSceneRequest();
             req.EntityId = gChar.EntityId;
             var sceneConn = GameMonitor.Instance.GetSceneConnBySceneId(gChar.CurSceneId);
             sceneConn.Send(req);
+        }
+        private void _HandleCharacterLeaveSceneResponse(Connection conn, CharacterLeaveSceneResponse message)
+        {
+            var gChr = GameCharacterManager.Instance.GetGameCharacterByCid(message.CId);
+            GameCharacterManager.Instance.RemoveGameCharacterByCid(message.CId);
 
-            Log.Information("chr exit game,cId = [{0}]", gChar.Cid);
+            var req = new SaveDBCharacterRequest();
+            req.CNode = gChr.DBCharacterNode;
+
+            // 场景相关信息
+            var chrStatus = req.CNode.ChrStatus;
+            chrStatus.CurSceneId = gChr.CurSceneId;
+            chrStatus.X = message.SceneSaveDatea.Position.X;
+            chrStatus.Y = message.SceneSaveDatea.Position.Y;
+            chrStatus.Z = message.SceneSaveDatea.Position.Z;
+            // 任务
+            req.CNode.ChrTasks = gChr.GameTaskManager.GetDBTaskNodes();
+
+            ServersMgr.Instance.SendMsgToDBProxy(req);
+
+            Log.Information("chr exit game,cId = [{0}]", gChr.Cid);
         }
     }
 }

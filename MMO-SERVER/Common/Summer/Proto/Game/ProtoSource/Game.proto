@@ -90,6 +90,8 @@ message EnterGameResponse{
 	repeated HS.Protobuf.SceneEntity.NetActorNode otherNetActorNodeList	= 6;
 	repeated HS.Protobuf.SceneEntity.NetItemNode  otherNetItemNodeList	= 7;
 }
+
+// gamegate用于发送客户端断开用的
 message ExitGameRequest{
 	string gameToken = 1;
 	string characterId = 2;

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SceneServer.Core.Combat.AI
+namespace Common.Summer.Tools
 {
     public interface IStateMachineOwner { }
 

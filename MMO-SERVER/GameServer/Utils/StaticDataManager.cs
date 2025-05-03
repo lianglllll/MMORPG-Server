@@ -4,6 +4,7 @@ using Common.Summer.Tools;
 using System.Collections.Generic;
 using System.IO;
 using System;
+using System.Collections;
 
 namespace GameServer.Utils
 {
@@ -16,6 +17,7 @@ namespace GameServer.Utils
         public Dictionary<int, UnitDefine> unitDefineDict = null;
         public Dictionary<int, ItemDefine> ItemDefinedDict = null;
         public Dictionary<int, TaskDefine> TaskDefinedDict = null;
+        private Dictionary<int, Dictionary<int, TaskDefine>> TaskDefinedDict2 = null;
 
         //初始化，就是将文件中的数据读入
         public override void Init()
@@ -24,10 +26,11 @@ namespace GameServer.Utils
             unitDefineDict = Load<UnitDefine>("UnitDefine.json");
             ItemDefinedDict = Load<ItemDefine>("ItemDefine.json");
             TaskDefinedDict = Load<TaskDefine>("TaskDefine.json");
+            HandleTasks();
         }
 
         //根据path加载解析json文件转换为dict
-        public Dictionary<int, T> Load<T>(string filePath)
+        private Dictionary<int, T> Load<T>(string filePath)
         {
             //获取exe文件所在目录的绝对路径
             string exePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
@@ -46,6 +49,38 @@ namespace GameServer.Utils
             };
 
             return JsonConvert.DeserializeObject<Dictionary<int, T>>(context, settings);
+        }
+        private void HandleTasks()
+        {
+            TaskDefinedDict2 = new();
+            foreach(var taskDef in TaskDefinedDict.Values)
+            {
+                int chainId = taskDef.Chain_id;
+                int subId = taskDef.Sub_id;
+                if (!TaskDefinedDict2.TryGetValue(chainId, out var tasks))
+                {
+                    tasks = new Dictionary<int, TaskDefine>();
+                    TaskDefinedDict2.Add(chainId, tasks);
+                }
+                tasks.Add(subId, taskDef);
+            }
+        }
+        public TaskDefine GetChainTaskDefine(int chainId, int subId)
+        {
+            TaskDefine result = null;
+            TaskDefinedDict2.TryGetValue(chainId, out var tasks);
+            if (tasks == null)
+            {
+                goto End;
+            }
+            tasks.TryGetValue(subId, out result);
+        End:
+            return result;
+        }
+        public TaskDefine GetTaskDefineByTaskId(int taskId)
+        {
+            TaskDefinedDict.TryGetValue(taskId, out var taskDef);
+            return taskDef;
         }
     }
 

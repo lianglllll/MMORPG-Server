@@ -40,6 +40,7 @@ namespace GameServer.Core.Model
                 goto End;
             }
             sceneGrounpChr[chr.CurSceneId].TryRemove(cId, out var _);
+            chr.SaveGameCharacter();
         End:
             return result;
         }

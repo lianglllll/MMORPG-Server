@@ -1,17 +1,19 @@
 syntax = "proto3";
 import "google/protobuf/field_mask.proto";
+import "DBProxy/ProtoSource/DBTask.proto";
 package HS.Protobuf.DBProxy.DBCharacter;
 
 enum DBCharacterProtocl{
-	DBCHARACTER_PROTOCL_NONE = 0;
-	DBCHARACTER_PROTOCL_GET_DBCHARACTER_BY_CID_REQ = 51001;		// [GetDBCharacterByCidRequest]
-	DBCHARACTER_PROTOCL_GET_DBCHARACTER_BY_CID_RESP = 51002;	// [GetDBCharacterByCidReponse]
-	DBCHARACTER_PROTOCL_ADD_DBCHARACTER_REQ = 51003;			// [AddDBCharacterRequset]
-	DBCHARACTER_PROTOCL_ADD_DBCHARACTER_RESP = 51004;			// [AddDBCharacterResponse]
-	DBCHARACTER_PROTOCL_DELETE_DBCHARACTER_BY_CID_REQ = 51005;	// [DeleteDBCharacterByCidRequest]
-	DBCHARACTER_PROTOCL_DELETE_DBCHARACTER_BY_CID_RESP = 51006;	// [DeleteDBCharacterByCidResponse]
-	DBCHARACTER_PROTOCL_GET_DBCHARACTERS_BY_UID_REQ = 51007;	// [GetDBCharactersByUidRequest]
-	DBCHARACTER_PROTOCL_GET_DBCHARACTERS_BY_UID_RESP = 51008;	// [GetDBCharactersByUidResponse]
+	DBCHARACTER_PROTOCL_NONE							= 0;
+	DBCHARACTER_PROTOCL_GET_DBCHARACTER_BY_CID_REQ		= 51001;	// [GetDBCharacterByCidRequest]
+	DBCHARACTER_PROTOCL_GET_DBCHARACTER_BY_CID_RESP		= 51002;	// [GetDBCharacterByCidReponse]
+	DBCHARACTER_PROTOCL_ADD_DBCHARACTER_REQ				= 51003;	// [AddDBCharacterRequset]
+	DBCHARACTER_PROTOCL_ADD_DBCHARACTER_RESP			= 51004;	// [AddDBCharacterResponse]
+	DBCHARACTER_PROTOCL_DELETE_DBCHARACTER_BY_CID_REQ	= 51005;	// [DeleteDBCharacterByCidRequest]
+	DBCHARACTER_PROTOCL_DELETE_DBCHARACTER_BY_CID_RESP	= 51006;	// [DeleteDBCharacterByCidResponse]
+	DBCHARACTER_PROTOCL_GET_DBCHARACTERS_BY_UID_REQ		= 51007;	// [GetDBCharactersByUidRequest]
+	DBCHARACTER_PROTOCL_GET_DBCHARACTERS_BY_UID_RESP	= 51008;	// [GetDBCharactersByUidResponse]
+	DBCHARACTER_PROTOCL_SAVE_DBCHARACTERS_REQ			= 51009;	// [SaveDBCharacterRequest]
 }
 
 message DBCharacterStatisticsNode{
@@ -52,6 +54,9 @@ message DBCharacterCombatNode {
     repeated DBCharacterSkillNode skills = 1;					// 技能列表
     repeated DBCharacterEquipSkillNode equippedSkills = 2;      // 装备技能列表 (存储已装备技能的ID)
 }
+message DBCharacterTasks{
+	repeated HS.Protobuf.DBProxy.DBTask.DBTaskNode tasks	= 1;
+}
 message DBCharacterNode{
 	string cId = 1;
 	string uId = 2;
@@ -65,6 +70,7 @@ message DBCharacterNode{
 	DBCharacterAssetsNode chrAssets = 10;
 	DBCharacterSocialNode chrSocial = 11; 
 	DBCharacterCombatNode chrCombat = 12;
+	DBCharacterTasks chrTasks = 13; 
 }
 
 message GetDBCharacterByCidRequest{
@@ -111,4 +117,8 @@ message GetDBCharactersByUidResponse{
 	int32 resultCode = 2;
 	string resultMsg = 3;
 	repeated DBCharacterNode cNodes = 4;
+}
+
+message SaveDBCharacterRequest{
+	DBCharacterNode cNode = 1;
 }

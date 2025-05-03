@@ -24,18 +24,15 @@ namespace HS.Protobuf.DBProxy.DBTask {
     static DBTaskReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "CgxEQlRhc2sucHJvdG8SGkhTLlByb3RvYnVmLkRCUHJveHkuREJUYXNrIncK",
-            "CkRCVGFza05vZGUSEwoLdGFza0NoYWluSWQYASABKAUSDgoGdGFza0lkGAIg",
-            "ASgFEg4KBnN0YXR1cxgDIAEoBRIRCglzdGFydFRpbWUYBCABKAMSDwoHZW5k",
-            "VGltZRgFIAEoAxIQCgh0YXNrRGF0YRgGIAEoDCJWChBEQkNoYXJhY3RlclRh",
-            "c2tzEgsKA2NJZBgBIAEoCRI1CgV0YXNrcxgCIAMoCzImLkhTLlByb3RvYnVm",
-            "LkRCUHJveHkuREJUYXNrLkRCVGFza05vZGUqKAoNREJUYXNrUHJvdG9jbBIX",
-            "ChNEQlRBU0tfUFJPVE9DTF9OT05FEABiBnByb3RvMw=="));
+            "CgxEQlRhc2sucHJvdG8SGkhTLlByb3RvYnVmLkRCUHJveHkuREJUYXNrImUK",
+            "CkRCVGFza05vZGUSDgoGdGFza0lkGAEgASgFEg0KBXN0YXRlGAIgASgFEhQK",
+            "DHRhc2tQcm9ncmVzcxgDIAEoCRIRCglzdGFydFRpbWUYBCABKAMSDwoHZW5k",
+            "VGltZRgFIAEoAyooCg1EQlRhc2tQcm90b2NsEhcKE0RCVEFTS19QUk9UT0NM",
+            "X05PTkUQAGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.DBProxy.DBTask.DBTaskProtocl), }, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBTask.DBTaskNode), global::HS.Protobuf.DBProxy.DBTask.DBTaskNode.Parser, new[]{ "TaskChainId", "TaskId", "Status", "StartTime", "EndTime", "TaskData" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBTask.DBCharacterTasks), global::HS.Protobuf.DBProxy.DBTask.DBCharacterTasks.Parser, new[]{ "CId", "Tasks" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBTask.DBTaskNode), global::HS.Protobuf.DBProxy.DBTask.DBTaskNode.Parser, new[]{ "TaskId", "State", "TaskProgress", "StartTime", "EndTime" }, null, null, null, null)
           }));
     }
     #endregion
@@ -83,12 +80,11 @@ namespace HS.Protobuf.DBProxy.DBTask {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public DBTaskNode(DBTaskNode other) : this() {
-      taskChainId_ = other.taskChainId_;
       taskId_ = other.taskId_;
-      status_ = other.status_;
+      state_ = other.state_;
+      taskProgress_ = other.taskProgress_;
       startTime_ = other.startTime_;
       endTime_ = other.endTime_;
-      taskData_ = other.taskData_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -98,20 +94,8 @@ namespace HS.Protobuf.DBProxy.DBTask {
       return new DBTaskNode(this);
     }
 
-    /// <summary>Field number for the "taskChainId" field.</summary>
-    public const int TaskChainIdFieldNumber = 1;
-    private int taskChainId_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int TaskChainId {
-      get { return taskChainId_; }
-      set {
-        taskChainId_ = value;
-      }
-    }
-
     /// <summary>Field number for the "taskId" field.</summary>
-    public const int TaskIdFieldNumber = 2;
+    public const int TaskIdFieldNumber = 1;
     private int taskId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -122,15 +106,30 @@ namespace HS.Protobuf.DBProxy.DBTask {
       }
     }
 
-    /// <summary>Field number for the "status" field.</summary>
-    public const int StatusFieldNumber = 3;
-    private int status_;
+    /// <summary>Field number for the "state" field.</summary>
+    public const int StateFieldNumber = 2;
+    private int state_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int Status {
-      get { return status_; }
+    public int State {
+      get { return state_; }
       set {
-        status_ = value;
+        state_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "taskProgress" field.</summary>
+    public const int TaskProgressFieldNumber = 3;
+    private string taskProgress_ = "";
+    /// <summary>
+    /// 当前任务进度
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string TaskProgress {
+      get { return taskProgress_; }
+      set {
+        taskProgress_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -158,21 +157,6 @@ namespace HS.Protobuf.DBProxy.DBTask {
       }
     }
 
-    /// <summary>Field number for the "taskData" field.</summary>
-    public const int TaskDataFieldNumber = 6;
-    private pb::ByteString taskData_ = pb::ByteString.Empty;
-    /// <summary>
-    /// 当前任务进度
-    /// </summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pb::ByteString TaskData {
-      get { return taskData_; }
-      set {
-        taskData_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
@@ -188,12 +172,11 @@ namespace HS.Protobuf.DBProxy.DBTask {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (TaskChainId != other.TaskChainId) return false;
       if (TaskId != other.TaskId) return false;
-      if (Status != other.Status) return false;
+      if (State != other.State) return false;
+      if (TaskProgress != other.TaskProgress) return false;
       if (StartTime != other.StartTime) return false;
       if (EndTime != other.EndTime) return false;
-      if (TaskData != other.TaskData) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -201,12 +184,11 @@ namespace HS.Protobuf.DBProxy.DBTask {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (TaskChainId != 0) hash ^= TaskChainId.GetHashCode();
       if (TaskId != 0) hash ^= TaskId.GetHashCode();
-      if (Status != 0) hash ^= Status.GetHashCode();
+      if (State != 0) hash ^= State.GetHashCode();
+      if (TaskProgress.Length != 0) hash ^= TaskProgress.GetHashCode();
       if (StartTime != 0L) hash ^= StartTime.GetHashCode();
       if (EndTime != 0L) hash ^= EndTime.GetHashCode();
-      if (TaskData.Length != 0) hash ^= TaskData.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -225,17 +207,17 @@ namespace HS.Protobuf.DBProxy.DBTask {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (TaskChainId != 0) {
-        output.WriteRawTag(8);
-        output.WriteInt32(TaskChainId);
-      }
       if (TaskId != 0) {
-        output.WriteRawTag(16);
+        output.WriteRawTag(8);
         output.WriteInt32(TaskId);
       }
-      if (Status != 0) {
-        output.WriteRawTag(24);
-        output.WriteInt32(Status);
+      if (State != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(State);
+      }
+      if (TaskProgress.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(TaskProgress);
       }
       if (StartTime != 0L) {
         output.WriteRawTag(32);
@@ -244,10 +226,6 @@ namespace HS.Protobuf.DBProxy.DBTask {
       if (EndTime != 0L) {
         output.WriteRawTag(40);
         output.WriteInt64(EndTime);
-      }
-      if (TaskData.Length != 0) {
-        output.WriteRawTag(50);
-        output.WriteBytes(TaskData);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -259,17 +237,17 @@ namespace HS.Protobuf.DBProxy.DBTask {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (TaskChainId != 0) {
-        output.WriteRawTag(8);
-        output.WriteInt32(TaskChainId);
-      }
       if (TaskId != 0) {
-        output.WriteRawTag(16);
+        output.WriteRawTag(8);
         output.WriteInt32(TaskId);
       }
-      if (Status != 0) {
-        output.WriteRawTag(24);
-        output.WriteInt32(Status);
+      if (State != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(State);
+      }
+      if (TaskProgress.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(TaskProgress);
       }
       if (StartTime != 0L) {
         output.WriteRawTag(32);
@@ -278,10 +256,6 @@ namespace HS.Protobuf.DBProxy.DBTask {
       if (EndTime != 0L) {
         output.WriteRawTag(40);
         output.WriteInt64(EndTime);
-      }
-      if (TaskData.Length != 0) {
-        output.WriteRawTag(50);
-        output.WriteBytes(TaskData);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -293,23 +267,20 @@ namespace HS.Protobuf.DBProxy.DBTask {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (TaskChainId != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(TaskChainId);
-      }
       if (TaskId != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(TaskId);
       }
-      if (Status != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Status);
+      if (State != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(State);
+      }
+      if (TaskProgress.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(TaskProgress);
       }
       if (StartTime != 0L) {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(StartTime);
       }
       if (EndTime != 0L) {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(EndTime);
-      }
-      if (TaskData.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeBytesSize(TaskData);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -323,14 +294,14 @@ namespace HS.Protobuf.DBProxy.DBTask {
       if (other == null) {
         return;
       }
-      if (other.TaskChainId != 0) {
-        TaskChainId = other.TaskChainId;
-      }
       if (other.TaskId != 0) {
         TaskId = other.TaskId;
       }
-      if (other.Status != 0) {
-        Status = other.Status;
+      if (other.State != 0) {
+        State = other.State;
+      }
+      if (other.TaskProgress.Length != 0) {
+        TaskProgress = other.TaskProgress;
       }
       if (other.StartTime != 0L) {
         StartTime = other.StartTime;
@@ -338,9 +309,6 @@ namespace HS.Protobuf.DBProxy.DBTask {
       if (other.EndTime != 0L) {
         EndTime = other.EndTime;
       }
-      if (other.TaskData.Length != 0) {
-        TaskData = other.TaskData;
-      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -357,15 +325,15 @@ namespace HS.Protobuf.DBProxy.DBTask {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 8: {
-            TaskChainId = input.ReadInt32();
-            break;
-          }
-          case 16: {
             TaskId = input.ReadInt32();
             break;
           }
-          case 24: {
-            Status = input.ReadInt32();
+          case 16: {
+            State = input.ReadInt32();
+            break;
+          }
+          case 26: {
+            TaskProgress = input.ReadString();
             break;
           }
           case 32: {
@@ -374,10 +342,6 @@ namespace HS.Protobuf.DBProxy.DBTask {
           }
           case 40: {
             EndTime = input.ReadInt64();
-            break;
-          }
-          case 50: {
-            TaskData = input.ReadBytes();
             break;
           }
         }
@@ -396,15 +360,15 @@ namespace HS.Protobuf.DBProxy.DBTask {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 8: {
-            TaskChainId = input.ReadInt32();
-            break;
-          }
-          case 16: {
             TaskId = input.ReadInt32();
             break;
           }
-          case 24: {
-            Status = input.ReadInt32();
+          case 16: {
+            State = input.ReadInt32();
+            break;
+          }
+          case 26: {
+            TaskProgress = input.ReadString();
             break;
           }
           case 32: {
@@ -413,225 +377,6 @@ namespace HS.Protobuf.DBProxy.DBTask {
           }
           case 40: {
             EndTime = input.ReadInt64();
-            break;
-          }
-          case 50: {
-            TaskData = input.ReadBytes();
-            break;
-          }
-        }
-      }
-    }
-    #endif
-
-  }
-
-  public sealed partial class DBCharacterTasks : pb::IMessage<DBCharacterTasks>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
-    private static readonly pb::MessageParser<DBCharacterTasks> _parser = new pb::MessageParser<DBCharacterTasks>(() => new DBCharacterTasks());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<DBCharacterTasks> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.DBProxy.DBTask.DBTaskReflection.Descriptor.MessageTypes[1]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public DBCharacterTasks() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public DBCharacterTasks(DBCharacterTasks other) : this() {
-      cId_ = other.cId_;
-      tasks_ = other.tasks_.Clone();
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public DBCharacterTasks Clone() {
-      return new DBCharacterTasks(this);
-    }
-
-    /// <summary>Field number for the "cId" field.</summary>
-    public const int CIdFieldNumber = 1;
-    private string cId_ = "";
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string CId {
-      get { return cId_; }
-      set {
-        cId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
-    /// <summary>Field number for the "tasks" field.</summary>
-    public const int TasksFieldNumber = 2;
-    private static readonly pb::FieldCodec<global::HS.Protobuf.DBProxy.DBTask.DBTaskNode> _repeated_tasks_codec
-        = pb::FieldCodec.ForMessage(18, global::HS.Protobuf.DBProxy.DBTask.DBTaskNode.Parser);
-    private readonly pbc::RepeatedField<global::HS.Protobuf.DBProxy.DBTask.DBTaskNode> tasks_ = new pbc::RepeatedField<global::HS.Protobuf.DBProxy.DBTask.DBTaskNode>();
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::HS.Protobuf.DBProxy.DBTask.DBTaskNode> Tasks {
-      get { return tasks_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override bool Equals(object other) {
-      return Equals(other as DBCharacterTasks);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(DBCharacterTasks other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (CId != other.CId) return false;
-      if(!tasks_.Equals(other.tasks_)) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (CId.Length != 0) hash ^= CId.GetHashCode();
-      hash ^= tasks_.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
-      if (CId.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(CId);
-      }
-      tasks_.WriteTo(output, _repeated_tasks_codec);
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (CId.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(CId);
-      }
-      tasks_.WriteTo(ref output, _repeated_tasks_codec);
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CalculateSize() {
-      int size = 0;
-      if (CId.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(CId);
-      }
-      size += tasks_.CalculateSize(_repeated_tasks_codec);
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(DBCharacterTasks other) {
-      if (other == null) {
-        return;
-      }
-      if (other.CId.Length != 0) {
-        CId = other.CId;
-      }
-      tasks_.Add(other.tasks_);
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 10: {
-            CId = input.ReadString();
-            break;
-          }
-          case 18: {
-            tasks_.AddEntriesFrom(input, _repeated_tasks_codec);
-            break;
-          }
-        }
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            CId = input.ReadString();
-            break;
-          }
-          case 18: {
-            tasks_.AddEntriesFrom(ref input, _repeated_tasks_codec);
             break;
           }
         }

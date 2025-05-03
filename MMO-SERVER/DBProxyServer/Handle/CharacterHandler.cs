@@ -20,22 +20,29 @@ namespace DBProxyServer.Handle
             ProtoHelper.Instance.Register<DeleteDBCharacterByCidResponse>((int)DBCharacterProtocl.DeleteDbcharacterByCidResp);
             ProtoHelper.Instance.Register<GetDBCharactersByUidRequest>((int)DBCharacterProtocl.GetDbcharactersByUidReq);
             ProtoHelper.Instance.Register<GetDBCharactersByUidResponse>((int)DBCharacterProtocl.GetDbcharactersByUidResp);
+            ProtoHelper.Instance.Register<SaveDBCharacterRequest>((int)DBCharacterProtocl.SaveDbcharactersReq);
+
             // 消息的订阅
             MessageRouter.Instance.Subscribe<GetDBCharacterByCidRequest>(_HandleGetDBCharacterByCidRequest);
             MessageRouter.Instance.Subscribe<AddDBCharacterRequset>(_HandleAddDBCharacterRequset);
             MessageRouter.Instance.Subscribe<DeleteDBCharacterByCidRequest>(_HandleDeleteDBCharacterRequest);
             MessageRouter.Instance.Subscribe<GetDBCharactersByUidRequest>(_HandleGetDBCharactersByUidRequest);
+            MessageRouter.Instance.Subscribe<SaveDBCharacterRequest>(_HandleSaveDBCharacterRequestAsync);
         }
+
         public async void _HandleGetDBCharacterByCidRequest(Connection sender, GetDBCharacterByCidRequest message)
         {
             GetDBCharacterByCidReponse resp = new();
             resp.TaskId = message.TaskId;
             DBCharacterNode cNode = await CharacterOperations.Instance.GetCharacterByCidAsync(message.CId, message.ReadMask);
-            if (cNode != null)
+            if (cNode == null)
             {
-                resp.ChrNode = cNode;
+                resp.ResultCode = 1;
+                goto End;
             }
+            resp.ChrNode = cNode;
             resp.ResultCode = 0;
+        End:
             sender.Send(resp);
         }
         private async void _HandleGetDBCharactersByUidRequest(Connection conn, GetDBCharactersByUidRequest message)
@@ -104,6 +111,10 @@ namespace DBProxyServer.Handle
             }
 
             sender.Send(resp);
+        }
+        private async void _HandleSaveDBCharacterRequestAsync(Connection conn, SaveDBCharacterRequest message)
+        {
+            await CharacterOperations.Instance.SaveCharacterAsync(message.CNode);
         }
     }
 }

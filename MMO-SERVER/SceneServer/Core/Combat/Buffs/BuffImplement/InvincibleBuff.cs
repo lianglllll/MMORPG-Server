@@ -12,7 +12,6 @@ namespace SceneServer.Core.Combat.Buffs.BuffImplement
         {
             return StaticDataManager.Instance.buffDefineDict.GetValueOrDefault(5);
         }
-
         public override void OnGet()
         {
             Owner.SetActorReciveDamageMode(false);

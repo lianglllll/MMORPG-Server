@@ -55,6 +55,7 @@ namespace GameGateServer.Net
             EnterGameWorldHanlder.Instance.Init();
             SceneHandler.Instance.Init();
             ChatHandler.Instance.Init();
+            TaskHandler.Instance.Init();
 
 
             // 协议注册

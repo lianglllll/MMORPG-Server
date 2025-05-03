@@ -1,4 +1,4 @@
-namespace SceneServer.Core.Combat.AI
+namespace Common.Summer.Tools
 {
     public class StateBase
     {

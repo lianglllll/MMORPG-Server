@@ -5,6 +5,7 @@ using HS.Protobuf.DBProxy.DBCharacter;
 using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
 using System.Linq;
+using Serilog;
 
 namespace DBProxyServer.Core
 {
@@ -121,12 +122,16 @@ namespace DBProxyServer.Core
                                     characterCombatNode.EquippedSkills.Add(sNode);
                                 }
                                 break;
+                            case "chrTask":
+                                var tasks = await TaskOperations.Instance.GetDBTaskNodesByCid(cNode.CId);
+                                cNode.ChrTasks = new DBCharacterTasks();
+                                cNode.ChrTasks.Tasks.Add(tasks);
+                                break;
                             default:
                                 throw new InvalidOperationException($"Unknown field: {path}");
                         }
                     }
                 }
-
                 return cNode;
             }
             catch (FormatException ex)
@@ -252,7 +257,11 @@ namespace DBProxyServer.Core
                                         };
                                         characterCombatNode.EquippedSkills.Add(sNode);
                                     }
-
+                                    break;
+                                case "chrTask":
+                                    var tasks = await TaskOperations.Instance.GetDBTaskNodesByCid(cNode.CId);
+                                    cNode.ChrTasks = new DBCharacterTasks();
+                                    cNode.ChrTasks.Tasks.Add(tasks);
                                     break;
                                 default:
                                     throw new InvalidOperationException($"Unknown field: {path}");
@@ -274,7 +283,7 @@ namespace DBProxyServer.Core
         End:
             return null;
         }
-        public async Task<string> AddCharacterAsync(DBCharacterNode chrNode)
+        public async Task<string> AddCharacterAsync(DBCharacterNode cNode)
         {
             try
             {
@@ -284,73 +293,73 @@ namespace DBProxyServer.Core
                 BsonDocument characterDocument = new BsonDocument
                 {
                     { "_id", objectId },
-                    { "uId", chrNode.UId },
-                    { "worldId", chrNode.WorldId},
-                    { "professionId", chrNode.ProfessionId },
-                    { "chrName", chrNode.ChrName },
-                    { "level", chrNode.Level },
-                    { "creationTimestamp", chrNode.CreationTimestamp },
+                    { "uId", cNode.UId },
+                    { "worldId", cNode.WorldId},
+                    { "professionId", cNode.ProfessionId },
+                    { "chrName", cNode.ChrName },
+                    { "level", cNode.Level },
+                    { "creationTimestamp", cNode.CreationTimestamp },
                 };
 
                 // Character Statistics
-                if (chrNode.ChrStatistics != null)
+                if (cNode.ChrStatistics != null)
                 {
                     BsonDocument characterStatistics = new BsonDocument
                     {
-                        { "killCount", chrNode.ChrStatistics.KillCount },
-                        { "deathCount", chrNode.ChrStatistics.DeathCount },   // 新增
-                        { "taskCompleted", chrNode.ChrStatistics.TaskCompleted } // 新增
+                        { "killCount", cNode.ChrStatistics.KillCount },
+                        { "deathCount", cNode.ChrStatistics.DeathCount },   // 新增
+                        { "taskCompleted", cNode.ChrStatistics.TaskCompleted } // 新增
                     };
                     characterDocument.Add("chrStatistics", characterStatistics);
                 }
 
                 // Character Status
-                if(chrNode.ChrStatus != null)
+                if(cNode.ChrStatus != null)
                 {
                     BsonDocument characterStatus = new BsonDocument
                     {
-                        { "hp", chrNode.ChrStatus.Hp },
-                        { "mp", chrNode.ChrStatus.Mp },
-                        { "exp", chrNode.ChrStatus.Exp },
-                        { "curSceneId", chrNode.ChrStatus.CurSceneId },
-                        { "x", chrNode.ChrStatus.X },
-                        { "y", chrNode.ChrStatus.Y },
-                        { "z", chrNode.ChrStatus.Z }
+                        { "hp", cNode.ChrStatus.Hp },
+                        { "mp", cNode.ChrStatus.Mp },
+                        { "exp", cNode.ChrStatus.Exp },
+                        { "curSceneId", cNode.ChrStatus.CurSceneId },
+                        { "x", cNode.ChrStatus.X },
+                        { "y", cNode.ChrStatus.Y },
+                        { "z", cNode.ChrStatus.Z }
                     };
                     characterDocument.Add("chrStatus", characterStatus);
                 }
 
                 // Character Assets
-                if (chrNode.ChrAssets != null)
+                if (cNode.ChrAssets != null)
                 {
                     BsonDocument characterAssets = new BsonDocument
                     {
-                        { "backpackData", new BsonBinaryData(chrNode.ChrAssets.BackpackData.ToByteArray()) },
-                        { "equipsData", new BsonBinaryData(chrNode.ChrAssets.EquipsData.ToByteArray()) },
-                        { "currency", new BsonDocument(chrNode.ChrAssets.Currency) },       // 将货币映射为BsonDocument
-                        { "achievements", new BsonArray(chrNode.ChrAssets.Achievements) },  // 将成就列表转为BsonArray
-                        { "titles", new BsonArray(chrNode.ChrAssets.Titles) }               // 将头衔列表转为BsonArray
+                        { "backpackData", new BsonBinaryData(cNode.ChrAssets.BackpackData.ToByteArray()) },
+                        { "equipsData", new BsonBinaryData(cNode.ChrAssets.EquipsData.ToByteArray()) },
+                        { "currency", new BsonDocument(cNode.ChrAssets.Currency) },       // 将货币映射为BsonDocument
+                        { "achievements", new BsonArray(cNode.ChrAssets.Achievements) },  // 将成就列表转为BsonArray
+                        { "titles", new BsonArray(cNode.ChrAssets.Titles) }               // 将头衔列表转为BsonArray
                     };
                     characterDocument.Add("chrAssets", characterAssets);
                 }
 
                 // Character Social
-                if (chrNode.ChrSocial != null)
+                if (cNode.ChrSocial != null)
                 {
                     BsonDocument characterSocial = new BsonDocument
                     {
-                        { "guildId", chrNode.ChrSocial.GuildId },
-                        { "faction", chrNode.ChrSocial.Faction },
-                        { "friendsList", new BsonArray(chrNode.ChrSocial.FriendsList) } // 将好友列表转为BsonArray
+                        { "guildId", cNode.ChrSocial.GuildId },
+                        { "faction", cNode.ChrSocial.Faction },
+                        { "friendsList", new BsonArray(cNode.ChrSocial.FriendsList) } // 将好友列表转为BsonArray
                     };
                     characterDocument.Add("chrSocial", characterSocial);
                 }
 
-                if (chrNode.ChrCombat != null)
+                if (cNode.ChrCombat != null)
                 {
                     // 将技能列表转换为 BsonArray
                     BsonArray skillsArray = new BsonArray();
-                    foreach (var skill in chrNode.ChrCombat.Skills)
+                    foreach (var skill in cNode.ChrCombat.Skills)
                     {
                         BsonDocument skillDocument = new BsonDocument
                         {
@@ -363,7 +372,7 @@ namespace DBProxyServer.Core
 
                     // 将装备了的技能ID列表转换为 BsonArray
                     BsonArray equipSkillsArray = new BsonArray();
-                    foreach (var skill in chrNode.ChrCombat.EquippedSkills)
+                    foreach (var skill in cNode.ChrCombat.EquippedSkills)
                     {
                         BsonDocument skillDocument = new BsonDocument
                         {
@@ -384,8 +393,14 @@ namespace DBProxyServer.Core
                     characterDocument.Add("chrCombat", characterCombatNode);
                 }
 
+
+                // 任务模块
+                if (cNode.ChrTasks != null && cNode.ChrTasks.Tasks != null)
+                {
+                    await TaskOperations.Instance.SaveDBTaskNodes(objectIdStr, cNode.ChrTasks.Tasks.ToList());
+                }
                 await m_characterCollection.InsertOneAsync(characterDocument);
-                await UserOperations.Instance.AddCharacterIdAsync(chrNode.UId, chrNode.WorldId, objectIdStr);
+                await UserOperations.Instance.AddCharacterIdAsync(cNode.UId, cNode.WorldId, objectIdStr);
                 return objectIdStr;
             }
             catch (Exception ex)
@@ -454,6 +469,147 @@ namespace DBProxyServer.Core
             {
                 Console.WriteLine($"Error checking character name existence: {ex.Message}");
                 // 在发生异常时，返回 false 或根据需求处理错误逻辑
+                return false;
+            }
+        }
+        public async Task<bool> SaveCharacterAsync(DBCharacterNode cNode)
+        {
+            try
+            {
+                // 构建基础过滤器
+                ObjectId objectId = new ObjectId(cNode.CId);
+                var filter = Builders<BsonDocument>.Filter.Eq("_id", objectId);
+
+                // 动态构建更新操作
+                var updateDefinitions = new List<UpdateDefinition<BsonDocument>>();
+
+                // 基础字段更新
+                var baseUpdate = Builders<BsonDocument>.Update
+                    //.Set("uId", cNode.UId)
+                    //.Set("professionId", cNode.ProfessionId)
+                    .Set("chrName", cNode.ChrName)
+                    .Set("level", cNode.Level);
+                    //.Set("creationTimestamp", cNode.CreationTimestamp);
+                updateDefinitions.Add(baseUpdate);
+
+                // 统计信息更新
+                if (cNode.ChrStatistics != null)
+                {
+                    var statsUpdate = Builders<BsonDocument>.Update.Set("chrStatistics", new BsonDocument
+                    {
+                        ["killCount"] = cNode.ChrStatistics.KillCount,
+                        ["deathCount"] = cNode.ChrStatistics.DeathCount,
+                        ["taskCompleted"] = cNode.ChrStatistics.TaskCompleted
+                    });
+                    updateDefinitions.Add(statsUpdate);
+                }
+
+                // 状态信息更新
+                if (cNode.ChrStatus != null)
+                {
+                    var statusUpdate = Builders<BsonDocument>.Update.Set("chrStatus", new BsonDocument
+                    {
+                        ["hp"] = cNode.ChrStatus.Hp,
+                        ["mp"] = cNode.ChrStatus.Mp,
+                        ["exp"] = cNode.ChrStatus.Exp,
+                        ["curSceneId"] = cNode.ChrStatus.CurSceneId,
+                        ["x"] = cNode.ChrStatus.X,
+                        ["y"] = cNode.ChrStatus.Y,
+                        ["z"] = cNode.ChrStatus.Z
+                    });
+                    updateDefinitions.Add(statusUpdate);
+                }
+
+                // 资产信息更新
+                if (cNode.ChrAssets != null)
+                {
+                    var assetsDoc = new BsonDocument
+                    {
+                        ["backpackData"] = new BsonBinaryData(cNode.ChrAssets.BackpackData.ToByteArray()),
+                        ["equipsData"] = new BsonBinaryData(cNode.ChrAssets.EquipsData.ToByteArray()),
+                        ["currency"] = new BsonDocument(cNode.ChrAssets.Currency),
+                        ["achievements"] = new BsonArray(cNode.ChrAssets.Achievements),
+                        ["titles"] = new BsonArray(cNode.ChrAssets.Titles)
+                    };
+                    updateDefinitions.Add(Builders<BsonDocument>.Update.Set("chrAssets", assetsDoc));
+                }
+
+                // 社交信息更新
+                if (cNode.ChrSocial != null)
+                {
+                    var socialUpdate = Builders<BsonDocument>.Update.Set("chrSocial", new BsonDocument
+                    {
+                        ["guildId"] = cNode.ChrSocial.GuildId,
+                        ["faction"] = cNode.ChrSocial.Faction,
+                        ["friendsList"] = new BsonArray(cNode.ChrSocial.FriendsList)
+                    });
+                    updateDefinitions.Add(socialUpdate);
+                }
+
+                // 战斗信息更新
+                if (cNode.ChrCombat != null)
+                {
+                    var combatDoc = new BsonDocument();
+
+                    // 技能列表
+                    var skillsArray = new BsonArray();
+                    foreach (var skill in cNode.ChrCombat.Skills)
+                    {
+                        skillsArray.Add(new BsonDocument
+                        {
+                            ["skillId"] = skill.SkillId,
+                            ["level"] = skill.Level
+                        });
+                    }
+                    combatDoc["skills"] = skillsArray;
+
+                    // 已装备技能
+                    var equippedArray = new BsonArray();
+                    foreach (var equip in cNode.ChrCombat.EquippedSkills)
+                    {
+                        equippedArray.Add(new BsonDocument
+                        {
+                            ["skillId"] = equip.SkillId,
+                            ["pos"] = equip.Pos
+                        });
+                    }
+                    combatDoc["equippedSkills"] = equippedArray;
+
+                    updateDefinitions.Add(Builders<BsonDocument>.Update.Set("chrCombat", combatDoc));
+                }
+
+                // 任务模块
+                if(cNode.ChrTasks != null && cNode.ChrTasks.Tasks != null)
+                {
+                    await TaskOperations.Instance.SaveDBTaskNodes(cNode.CId, cNode.ChrTasks.Tasks.ToList());
+                }
+
+                // 合并所有更新操作
+                var combinedUpdate = Builders<BsonDocument>.Update.Combine(updateDefinitions);
+
+                // 执行原子更新
+                var result = await m_characterCollection.UpdateOneAsync(
+                    filter,
+                    combinedUpdate,
+                    new UpdateOptions { IsUpsert = false } // 禁止自动创建
+                ).ConfigureAwait(false);
+
+                // 返回更新是否生效
+                return result.IsModifiedCountAvailable && result.ModifiedCount > 0;
+            }
+            catch (FormatException ex)
+            {
+                Log.Error($"无效的角色ID格式: {cNode.CId} - {ex.Message}");
+                return false;
+            }
+            catch (MongoException ex)
+            {
+                Log.Error($"数据库操作失败: {ex.Message}");
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"未知错误: {ex}");
                 return false;
             }
         }

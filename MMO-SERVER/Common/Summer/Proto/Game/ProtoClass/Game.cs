@@ -3422,6 +3422,9 @@ namespace HS.Protobuf.Game {
 
   }
 
+  /// <summary>
+  /// gamegate用于发送客户端断开用的
+  /// </summary>
   public sealed partial class ExitGameRequest : pb::IMessage<ExitGameRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage

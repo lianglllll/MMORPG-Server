@@ -6,29 +6,28 @@ package HS.Protobuf.Scene;
 
 enum SceneProtocl{
 	SCENE_PROTOCL_NONE = 0;
-	SCENE_PROTOCL_REGISTER_TO_SCENE_REQ = 40001;			// [RegisterToSceneRequest]
-	SCENE_PROTOCL_REGISTER_TO_SCENE_RESP = 40002;			// [RegisterToSceneResponse]
-	SCENE_PROTOCL_CHARACTER_ENTER_SCENE_REQ = 40003;		// [CharacterEnterSceneRequest]
-	SCENE_PROTOCL_SELF_CHARACTER_ENTER_SCENE_RESP = 40004;	// [SelfCharacterEnterSceneResponse]
-	SCENE_PROTOCL_OTHER_ENTITY_ENTER_SCENE_RESP = 40005;	// [OtherEntityEnterSceneResponse]
-	SCENE_PROTOCL_CHARACTER_LEAVE_SCENE_REQ = 40006;		// [CharacterLeaveSceneRequest]
-	SCENE_PROTOCL_OTHER_ENTITY_LEAVE_SCENE_RESP = 40007;	// [OtherEntityLeaveSceneResponse]
+	SCENE_PROTOCL_REGISTER_TO_SCENE_REQ				= 40001;	// [RegisterToSceneRequest]
+	SCENE_PROTOCL_REGISTER_TO_SCENE_RESP			= 40002;	// [RegisterToSceneResponse]
+	SCENE_PROTOCL_CHARACTER_ENTER_SCENE_REQ			= 40003;	// [CharacterEnterSceneRequest]
+	SCENE_PROTOCL_SELF_CHARACTER_ENTER_SCENE_RESP	= 40004;	// [SelfCharacterEnterSceneResponse]
+	SCENE_PROTOCL_OTHER_ENTITY_ENTER_SCENE_RESP		= 40005;	// [OtherEntityEnterSceneResponse]
+	SCENE_PROTOCL_CHARACTER_LEAVE_SCENE_REQ			= 40006;	// [CharacterLeaveSceneRequest]
+	SCENE_PROTOCL_CHARACTER_LEAVE_SCENE_RESP		= 40007;	// [CharacterLeaveSceneResponse]
+	SCENE_PROTOCL_OTHER_ENTITY_LEAVE_SCENE_RESP		= 40008;	// [OtherEntityLeaveSceneResponse]
 
-	SCENE_PROTOCL_ACTOR_CHANGE_MODE_REQ = 40009;			// [ActorChangeModeRequest]
-	SCENE_PROTOCL_ACTOR_CHANGE_MODE_RESP = 40010;			// [ActorChangeModeResponse]
-	SCENE_PROTOCL_ACTOR_CHANGE_STATE_REQ = 40011;			// [ActorChangeStateRequest]
-	SCENE_PROTOCL_ACTOR_CHANGE_STATE_RESP = 40012;			// [ActorChangeStateResponse]
-	SCENE_PROTOCL_ACTOR_CHANGE_TRANSFORM_DATA_REQ = 40013;	// [ActorChangeTransformDataRequest]
-	SCENE_PROTOCL_ACTOR_CHANGE_TRANSFORM_DATA_RESP = 40014;	// [ActorChangeTransformDataResponse]
+	SCENE_PROTOCL_ACTOR_CHANGE_MODE_REQ				= 40009;	// [ActorChangeModeRequest]
+	SCENE_PROTOCL_ACTOR_CHANGE_MODE_RESP			= 40010;	// [ActorChangeModeResponse]
+	SCENE_PROTOCL_ACTOR_CHANGE_STATE_REQ			= 40011;	// [ActorChangeStateRequest]
+	SCENE_PROTOCL_ACTOR_CHANGE_STATE_RESP			= 40012;	// [ActorChangeStateResponse]
+	SCENE_PROTOCL_ACTOR_CHANGE_TRANSFORM_DATA_REQ	= 40013;	// [ActorChangeTransformDataRequest]
+	SCENE_PROTOCL_ACTOR_CHANGE_TRANSFORM_DATA_RESP	= 40014;	// [ActorChangeTransformDataResponse]
 
-	SCENE_PROTOCL_SCENE_DELIVER_REQ = 40015;			// [SceneDeliverRequest]
-	SCENE_PROTOCL_SCENE_DELIVER_RESP = 40016;			// [SceneDeliverResponse]
-	SCENE_PROTOCL_CHARACTER_REVIVE_REQ = 40017;			// [CharacterReviveRequest]
-	SCENE_PROTOCL_CHARACTER_REVIVE_RESP = 40018;		// [CharacterReviveResponse]
+	SCENE_PROTOCL_SCENE_DELIVER_REQ		= 40015;	// [SceneDeliverRequest]
+	SCENE_PROTOCL_SCENE_DELIVER_RESP	= 40016;	// [SceneDeliverResponse]
+	SCENE_PROTOCL_CHARACTER_REVIVE_REQ	= 40017;	// [CharacterReviveRequest]
+	SCENE_PROTOCL_CHARACTER_REVIVE_RESP = 40018;	// [CharacterReviveResponse]
 
-	SCENE_PROTOCL_SCENE_2_GATE_MSG = 40019;				// [Scene2GateMsg]
-
-
+	SCENE_PROTOCL_SCENE_2_GATE_MSG = 40019;			// [Scene2GateMsg]
 }
 enum SceneType {
     SCENE_TYPE_NULL             = 0;
@@ -78,6 +77,13 @@ message OtherEntityEnterSceneResponse{
 // Gameµ÷ÓÃ
 message CharacterLeaveSceneRequest{
 	int32 entityId = 1;
+}
+message NeedSaveSceneData{
+	HS.Protobuf.Common.NetVector3 position = 1;
+}
+message CharacterLeaveSceneResponse{
+	string cId = 1;
+	NeedSaveSceneData sceneSaveDatea = 2;
 }
 message OtherEntityLeaveSceneResponse{
 	string sessionId = 1;
