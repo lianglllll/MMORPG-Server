@@ -57,7 +57,6 @@ namespace GameGateServer.Net
             ChatHandler.Instance.Init();
             TaskHandler.Instance.Init();
 
-
             // 协议注册
             ProtoHelper.Instance.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
             ProtoHelper.Instance.Register<ServerInfoRegisterResponse>((int)ControlCenterProtocl.ServerinfoRegisterResp);
@@ -161,6 +160,25 @@ namespace GameGateServer.Net
                     SendToGameServer(req);
                 }
             }
+        }
+        public void ActiveDisconnectUserConn(Connection connection)
+        {
+            // session中移除他
+            var session = connection.Get<Session>();
+            if (session != null)
+            {
+                SessionManager.Instance.RemoveSessionById(session.Id);
+                if (!string.IsNullOrEmpty(session.m_cId))
+                {
+                    // 通知game删除
+                    var req = new ExitGameRequest();
+                    req.GameToken = GameToken;
+                    req.CharacterId = session.m_cId;
+                    SendToGameServer(req);
+                }
+            }
+            // 交给下层断开连接
+            ConnManager.Instance.CloseUserConnection(connection);
         }
 
         // cc

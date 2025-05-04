@@ -16,6 +16,7 @@ enum GameProtocl{
 	GAME_PROTOCL_ENTER_GAME_REQ				= 30011;	// [EnterGameRequest]
 	GAME_PROTOCL_ENTER_GAME_RESP			= 30012;	// [EnterGameResponse]
 	GAME_PROTOCL_EXIT_GAME_REQ				= 30013;	// [ExitGameRequest]
+	GAME_PROTOCL_EXIT_GAME_RESP				= 30014;	// [ExitGameResponse]
 }
 
 message SimpleCharacterInfoNode{
@@ -95,4 +96,7 @@ message EnterGameResponse{
 message ExitGameRequest{
 	string gameToken = 1;
 	string characterId = 2;
+}
+message ExitGameResponse{
+
 }

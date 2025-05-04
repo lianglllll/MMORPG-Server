@@ -24,6 +24,8 @@ namespace GameGateServer.Handle
             ProtoHelper.Instance.Register<DeleteCharacterResponse>((int)GameProtocl.DeleteCharacterResp);
             ProtoHelper.Instance.Register<EnterGameRequest>((int)GameProtocl.EnterGameReq);
             ProtoHelper.Instance.Register<EnterGameResponse>((int)GameProtocl.EnterGameResp);
+            ProtoHelper.Instance.Register<ExitGameRequest>((int)GameProtocl.ExitGameReq);
+            ProtoHelper.Instance.Register<ExitGameResponse>((int)GameProtocl.ExitGameResp);
 
             // 消息的订阅
             MessageRouter.Instance.Subscribe<RegisterSessionToGGRequest>(_HandleRegisterSessionToGGRequest);
@@ -36,7 +38,12 @@ namespace GameGateServer.Handle
             MessageRouter.Instance.Subscribe<DeleteCharacterResponse>(_HandleDeleteCharacterResponse);
             MessageRouter.Instance.Subscribe<EnterGameRequest>(_HandleEnterGameRequest);
             MessageRouter.Instance.Subscribe<EnterGameResponse>(_HandleEnterGameResponse);
+            MessageRouter.Instance.Subscribe<ExitGameRequest>(_HandleExitGameRequest);
+        }
 
+        private void _HandleExitGameRequest(Connection conn, ExitGameRequest message)
+        {
+            ServersMgr.Instance.ActiveDisconnectUserConn(conn);
         }
 
         private void _HandleRegisterSessionToGGRequest(Connection conn, RegisterSessionToGGRequest message)
