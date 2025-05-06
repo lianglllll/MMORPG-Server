@@ -9,6 +9,7 @@ using HS.Protobuf.DBProxy.DBTask;
 using MongoDB.Bson.Serialization;
 using Serilog;
 using System.Reflection.Metadata;
+using System;
 
 namespace DBProxyServer.Core
 {
@@ -21,11 +22,11 @@ namespace DBProxyServer.Core
             m_taskCollection = dbConnection.GetCollection<BsonDocument>("Task");
         }
 
-        public async Task<List<DBTaskNode>> GetDBTaskNodesByCid(string cid)
+        public async Task<List<DBTaskNode>> GetDBTaskNodesByCid(string cId)
         {
             List<DBTaskNode> result = new();
 
-            var filter = Builders<BsonDocument>.Filter.Eq("cid", cid);
+            var filter = Builders<BsonDocument>.Filter.Eq("cId", cId);
             var document = await m_taskCollection.Find(filter).FirstOrDefaultAsync();
             if (document == null || !document.Contains("tasks"))
                 return new List<DBTaskNode>();
@@ -44,15 +45,11 @@ namespace DBProxyServer.Core
                 })
                 .ToList();
         }
-        public async Task<List<DBTaskNode>> GetDBTaskNodesByCids(List<string> cids)
-        {
-            return null;
-        }
-        public async Task SaveDBTaskNodes(string cid, List<DBTaskNode> newTasks)
+        public async Task SaveDBTaskNodes(string cId, List<DBTaskNode> newTasks)
         {
             // 获取现有任务ID（假设有缓存或查询）
-            var filter = Builders<BsonDocument>.Filter.Eq("cid", cid);
-            var existingTaskIds = GetExistingTaskIds(cid);
+            var filter = Builders<BsonDocument>.Filter.Eq("cId", cId);
+            var existingTaskIds = GetExistingTaskIds(cId);
             var newTaskIds = newTasks.Select(t => t.TaskId).ToList();
 
             // 阶段1：清理废弃任务
@@ -115,7 +112,7 @@ namespace DBProxyServer.Core
                     }
                 }
                 var combinedUpdate = Builders<BsonDocument>.Update
-                    .SetOnInsert("cid", cid) // 首次插入时设置cid,作用域只在IsUpsert = true时生效
+                    .SetOnInsert("cid", cId) // 首次插入时设置cid,作用域只在IsUpsert = true时生效
                     .AddToSetEach("tasks", newTaskDocuments);
                 await m_taskCollection.UpdateOneAsync(
                     filter,
@@ -124,10 +121,16 @@ namespace DBProxyServer.Core
                 ).ConfigureAwait(false);
             }
         }
-
-        private List<int> GetExistingTaskIds(string cid)
+        public async Task<bool> RemoveTasksByCid(string cId)
         {
-            var filter = Builders<BsonDocument>.Filter.Eq("cid", cid);
+            var filter = Builders<BsonDocument>.Filter.Eq("cId", cId);
+            var deleteResult = await m_taskCollection.DeleteOneAsync(filter);
+            // 返回是否成功删除一条文档
+            return deleteResult.DeletedCount > 0;
+        }
+        private List<int> GetExistingTaskIds(string cId)
+        {
+            var filter = Builders<BsonDocument>.Filter.Eq("cId", cId);
             var projection = Builders<BsonDocument>.Projection      // 投影筛选结果用
                 .Include("tasks.taskId")
                 .Exclude("_id");

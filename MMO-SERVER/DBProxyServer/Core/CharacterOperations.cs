@@ -418,8 +418,11 @@ namespace DBProxyServer.Core
             {
                 // 删除user终的cid
                 var chr = await m_characterCollection.Find(filter).FirstOrDefaultAsync();
+                // 删除和User表的关联
                 await UserOperations.Instance.RemoveCharacterIdAsync(chr["uId"].ToString(), chr["worldId"].ToInt32(), cId);
-                
+                // 删除和Task表的关联
+                await TaskOperations.Instance.RemoveTasksByCid(cId);
+
                 // 执行删除操作
                 var deleteResult = await m_characterCollection.DeleteOneAsync(filter);
                 // 返回是否成功删除一条文档
@@ -446,6 +449,7 @@ namespace DBProxyServer.Core
 
                 // 执行批量删除操作
                 var deleteResult = await m_characterCollection.DeleteManyAsync(filter);
+                // todo task也需要删除
 
                 // 返回是否成功删除至少一条文档
                 return deleteResult.DeletedCount > 0;
