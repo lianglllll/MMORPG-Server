@@ -1,4 +1,6 @@
-﻿using GameServer.Core.Model;
+﻿using Common.Summer.Tools;
+using GameServer.Core.Model;
+using GameServer.Core.Task.Condition.Impl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,14 +10,21 @@ using System.Threading.Tasks;
 
 namespace GameServer.Core.Task.Condition
 {
-    public class ConditionParser
+    public class TaskConditionParser : Singleton<TaskConditionParser>
     {
         private Dictionary<string, IConditionChecker> m_checkers = new Dictionary<string, IConditionChecker>();
 
-        public void RegisterChecker(string prefix, IConditionChecker checker)
+        public void Init()
         {
-            // prefix : kill  level
-            m_checkers[prefix] = checker;
+            m_checkers["Level"] = new LevelConditionChecker();
+            m_checkers["Task"] = new TaskCompletedChecker();
+            m_checkers["EnterGame"] = new EnterGameConditionChecker();
+            m_checkers["ReachPosition"] = new ReachPositionConditionChecker();
+            m_checkers["TalkNpc"] = new TalkNpcConditionChecker();
+            m_checkers["CastSkill"] = new CastSkillConditionChecker();
+            m_checkers["KillMonster"] = new KillMonsterConditionChecker();
+            m_checkers["CollectItem"] = new CollectItemConditionChecker();
+
         }
         public bool InitCondition(ConditionData data, GameCharacter chr)
         {

@@ -1,5 +1,6 @@
 ﻿using Common.Summer.Tools;
 using GameServer.Core.Model;
+using GameServer.Core.Task.Condition;
 using GameServer.Core.Task.Reward;
 using GameServer.Utils;
 using HS.Protobuf.DBProxy.DBTask;
@@ -37,12 +38,12 @@ namespace GameServer.Core.Task
     {
         private GameCharacter m_owner;
         private TaskDefine m_taskDefine;
-        private RewardParser m_rewardParser;
 
         // 动态信息
         private List<ConditionData> m_progress;    
         private GameTaskState m_curState;               
         private StateMachine m_machine;
+        private List<RewardData> m_reward;
 
         #region
         public TaskDefine TaskDefine => m_taskDefine;
@@ -80,6 +81,7 @@ namespace GameServer.Core.Task
             }
         }
         public List<ConditionData> Progress => m_progress;
+        public List<RewardData> Reward => m_reward;
         public int TaskId => m_taskDefine.Task_id;
         public GameCharacter Owner => m_owner;
         #endregion
@@ -106,7 +108,7 @@ namespace GameServer.Core.Task
                     {
                         m_progress = JsonConvert.DeserializeObject<List<ConditionData>>(dbNode.TaskProgress);
                     }
-                    ChangeState(tmpState);
+                    ChangeState(tmpState, true);
                 }
                 catch (Exception ex)
                 {
@@ -124,14 +126,29 @@ namespace GameServer.Core.Task
             }
             GameTaskStateBase state = m_machine.CurState as GameTaskStateBase;
             state.UpdateProgress(conditionKey, m_owner, args);
+
+            SendGameTaskProgressChangeMsg();
         }
         public void GrantRewards()
         {
-            m_rewardParser.GrantRewards(m_taskDefine.Reward_items, m_owner);
+            if(m_reward == null)
+            {
+                goto End;
+            }
+            if(m_curState != GameTaskState.Completed)
+            {
+                goto End;
+            }
+            foreach(var item in m_reward)
+            {
+                TaskRewardParser.Instance.GrantRewards(item, Owner);
+            }
+        End:
+            return;
         }
 
         // tools
-        public void ChangeState(GameTaskState newState)
+        public void ChangeState(GameTaskState newState, bool dontSendMsg = false)
         {
             if (m_curState == newState) return;
             m_curState = newState;
@@ -151,16 +168,21 @@ namespace GameServer.Core.Task
                     }
                     foreach (var condition in m_progress)
                     {
-                        m_owner.GameTaskManager.ConditionParser.InitCondition(condition, Owner);
+                        TaskConditionParser.Instance.InitCondition(condition, Owner);
                     }
                     m_machine.ChangeState<GameTaskInProgressState>();
                     break;
                 case GameTaskState.Completed:
+                    m_reward = ParseRewardsStr(m_taskDefine.Reward_items);
                     m_machine.ChangeState<GameTaskCompletedState>();
                     break;
                 case GameTaskState.Rewarded:
                     m_machine.ChangeState<GameTaskRewardedState>();
                     break;
+            }
+            if (!dontSendMsg)
+            {
+                SendGameTaskStateChangeMsg();
             }
         }
         public void ResetTask()
@@ -168,13 +190,17 @@ namespace GameServer.Core.Task
             m_progress = ParseConditionsStr(m_taskDefine.Pre_conditions);
             foreach(var condition in m_progress)
             {
-                m_owner.GameTaskManager.ConditionParser.InitCondition(condition, Owner);
+                TaskConditionParser.Instance.InitCondition(condition, Owner);
             }
             ChangeState(GameTaskState.Locked);
         }
         public void ClearProgress()
         {
             m_progress = null;
+        }
+        public void ClearReward()
+        {
+            m_reward = null;
         }
         public List<ConditionData> ParseConditionsStr(string conditions)
         {
@@ -201,6 +227,52 @@ namespace GameServer.Core.Task
                 });
             }
             return dict;
+        }
+        private List<RewardData> ParseRewardsStr(string rewards)
+        {
+            var dict = new List<RewardData>();
+            if (string.IsNullOrEmpty(rewards)) return dict;
+
+            // 示例条件格式："Item:1001,5;Item:1002,1;Skill:1222"
+            foreach (var clause in rewards.Split(';', StringSplitOptions.RemoveEmptyEntries))
+            {
+                var typeParts = clause.Split(new[] { ':' }, 2);
+                var rewardType = typeParts[0];
+                dict.Add(new RewardData
+                {
+                    rewardType = rewardType,
+                    Parameters = typeParts.Length > 1 ? typeParts[1].Split(',') : Array.Empty<string>(),
+                });
+            }
+            return dict;
+        }
+
+        private void SendGameTaskStateChangeMsg()
+        {
+            GameTaskChangeOperationResponse resp = new();
+            resp.TaskId = m_taskDefine.Task_id;
+            resp.Opration = GameTaskChangeOperationType.State;
+
+            // args
+            resp.NewState = m_curState;
+            if(m_curState == GameTaskState.Locked || m_curState == GameTaskState.InProgress) { 
+                resp.NewConditions = JsonConvert.SerializeObject(m_progress);
+            }
+
+            resp.SessionId = Owner.SessionId;
+            Owner.Send(resp);
+        }
+        private void SendGameTaskProgressChangeMsg()
+        {
+            GameTaskChangeOperationResponse resp = new();
+            resp.TaskId = m_taskDefine.Task_id;
+            resp.Opration = GameTaskChangeOperationType.Condition;
+
+            // args
+            resp.NewConditions = JsonConvert.SerializeObject(m_progress);
+
+            resp.SessionId = Owner.SessionId;
+            Owner.Send(resp);
         }
     }
 
@@ -249,7 +321,7 @@ namespace GameServer.Core.Task
             foreach(var cond in m_gameTask.Progress)
             {
                 if (cond.condType != conditionType) continue;
-                m_taskManager.ConditionParser.UpdateCondition(cond, m_owner, args);
+                TaskConditionParser.Instance.UpdateCondition(cond, m_owner, args);
             }
 
             if (CheckUnlockConditions())
@@ -309,7 +381,7 @@ namespace GameServer.Core.Task
             foreach (var cond in m_gameTask.Progress)
             {
                 if (cond.condType != conditionType) continue;
-                m_taskManager.ConditionParser.UpdateCondition(cond, m_owner, args);
+                TaskConditionParser.Instance.UpdateCondition(cond, m_owner, args);
             }
             if (CheckCompelteConditions())
             {
@@ -333,35 +405,17 @@ namespace GameServer.Core.Task
     }
     public class GameTaskCompletedState : GameTaskStateBase
     {
-        private List<RewardData> m_reward;
-
         public override void Enter()
         {
             // 如果没奖励的话直接跳过
-            m_reward = ParseRewardsStr(m_gameTask.TaskDefine.Reward_items);
-            if(m_reward.Count == 0)
+            if(m_gameTask.Reward.Count == 0)
             {
                 m_gameTask.ChangeState(GameTaskState.Rewarded);
             }
         }
-
-        private List<RewardData> ParseRewardsStr(string rewards)
+        public override void Exit()
         {
-            var dict = new List<RewardData>();
-            if (string.IsNullOrEmpty(rewards)) return dict;
-
-            // 示例条件格式："Item:1001,5;Item:1002,1;Skill:1222"
-            foreach (var clause in rewards.Split(';', StringSplitOptions.RemoveEmptyEntries))
-            {
-                var typeParts = clause.Split(new[] { ':' }, 2);
-                var rewardType = typeParts[0];
-                dict.Add(new RewardData
-                {
-                    rewardType = rewardType,
-                    Parameters = typeParts.Length > 1 ? typeParts[1].Split(',') : Array.Empty<string>(),
-                });
-            }
-            return dict;
+            m_gameTask.ClearReward();
         }
     }
     public class GameTaskRewardedState : GameTaskStateBase

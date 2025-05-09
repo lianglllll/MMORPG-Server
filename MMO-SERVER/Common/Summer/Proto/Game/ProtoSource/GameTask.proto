@@ -5,6 +5,10 @@ enum GameTaskProtocol{
 	GAME_TASK_PROTOCOL_NONE = 0;
 	GAME_TASK_PROTOCOL_GET_ALL_GAME_TASKS_REQ	= 35001;	// GetAllGameTasksRequest
 	GAME_TASK_PROTOCOL_GET_ALL_GAME_TASKS_RESP	= 35002;	// GetAllGameTaskResponse
+	GAME_TASK_PROTOCOL_GAME_TASK_CHANGE_OPERATION_RESP	= 35004;	// GameTaskChangeOperationResponse
+	GAME_TASK_PROTOCOL_TAKE_GAME_TASKS_REQ				= 35005;	// TakeGameTaskRequest
+	GAME_TASK_PROTOCOL_RE_TAKE_GAME_TASKS_REQ			= 35007;	// ReTakeGameTaskRequest
+	GAME_TASK_PROTOCOL_CLAIM_TASK_REWARDS_REQ			= 35009;	// ClaimTaskRewardsRequest
 }
 
 enum GameTaskType{
@@ -45,4 +49,46 @@ message GetAllGameTasksRequest{
 message GetAllGameTaskResponse{
 	string sessionId = 1;
 	repeated NetGameTaskNode tasks = 2;
+}
+
+// 服务端任务的变化，需要同步到客户端
+enum GameTaskChangeOperationType{
+	GAME_TASK_CHANGE_OPERATION_TYPE_NONE		= 0;
+	GAME_TASK_CHANGE_OPERATION_TYPE_STATE		= 1;
+	GAME_TASK_CHANGE_OPERATION_TYPE_CONDITION	= 2;
+	GAME_TASK_CHANGE_OPERATION_TYPE_ADD			= 3;
+	GAME_TASK_CHANGE_OPERATION_TYPE_REMOVE		= 4;
+}
+message GameTaskChangeOperationResponse{
+	string sessionId						= 1;
+	int32 taskId							= 2;
+	GameTaskChangeOperationType opration	= 3;
+	// args
+	GameTaskState newState					= 4;
+	string newConditions					= 5;
+	NetGameTaskNode newNode					= 6;
+}
+
+// 接取任务
+message TakeGameTaskRequest{
+	string sessionId	= 1;
+	string cId			= 2;
+	// 
+	int32 taskId		= 3;
+}
+
+// 领取奖励
+message ClaimTaskRewardsRequest{
+	string sessionId	= 1;
+	string cId			= 2;
+	// 
+	int32 taskId		= 3;
+}
+
+// 重新接取任务
+message ReTakeGameTaskRequest{
+	string sessionId	= 1;
+	string cId			= 2;
+	// 
+	int32 taskId		= 3;
 }

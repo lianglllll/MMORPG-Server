@@ -2,6 +2,8 @@
 using Common.Summer.Net;
 using Common.Summer.Tools;
 using GameServer.Core;
+using GameServer.Core.Task.Condition;
+using GameServer.Core.Task.Reward;
 using GameServer.Handle;
 using GameServer.Hanle;
 using GameServer.Manager;
@@ -51,8 +53,12 @@ namespace GameServer.Net
             GameTokenManager.Instance.Init();
             StaticDataManager.Instance.Init();
             EnterGameWorldHanlder.Instance.Init(m_curSin.GameServerInfo.GameWorldId);
+
             ChatManager.Instance.Init();
             ChatHandler.Instance.Init();
+            
+            TaskConditionParser.Instance.Init();
+            TaskRewardParser.Instance.Init();
             TaskHandler.Instance.Init();
 
             // 协议注册

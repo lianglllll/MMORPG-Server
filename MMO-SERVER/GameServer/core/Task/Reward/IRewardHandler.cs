@@ -10,6 +10,6 @@ namespace GameServer.Core.Task.Reward
 {
     public interface IRewardHandler
     {
-        void GrantReward(string rewardString, GameCharacter chr);
+        void GrantReward(RewardData rewardData, GameCharacter chr);
     }
 }

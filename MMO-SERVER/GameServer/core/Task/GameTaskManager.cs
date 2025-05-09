@@ -3,10 +3,13 @@ using GameServer.Core.Model;
 using GameServer.Core.Task.Condition;
 using GameServer.Core.Task.Condition.Impl;
 using GameServer.Core.Task.Event;
+using GameServer.Core.Task.Reward;
+using GameServer.Core.Task.Reward.Impl;
 using GameServer.Utils;
 using HS.Protobuf.DBProxy.DBCharacter;
 using HS.Protobuf.DBProxy.DBTask;
 using HS.Protobuf.GameTask;
+using MySqlX.XDevAPI.Common;
 using Newtonsoft.Json;
 using Serilog;
 using System;
@@ -19,28 +22,13 @@ namespace GameServer.Core.Task
 {
     public class GameTaskManager
     {
-        
         private GameCharacter m_owner;
         private Dictionary<int, GameTask> m_allTasks = new Dictionary<int, GameTask>();
-
         private Dictionary<string, Dictionary<int, GameTask>> conditions = new();
-        private ConditionParser m_conditionParser = new ConditionParser();                  // 用于自定义判断任务条件的是否完成
-
-        public ConditionParser ConditionParser => m_conditionParser;
 
         public void Init(GameCharacter owner, DBCharacterTasks tasks)
         {
             m_owner = owner;
-
-            // 注册条件检查器
-            m_conditionParser.RegisterChecker("Level", new LevelConditionChecker());
-            m_conditionParser.RegisterChecker("Task", new TaskCompletedChecker());
-            m_conditionParser.RegisterChecker("EnterGame", new EnterGameConditionChecker());
-            m_conditionParser.RegisterChecker("ReachPosition", new ReachPositionConditionChecker());
-            m_conditionParser.RegisterChecker("TalkNpc", new TalkNpcConditionChecker());
-            m_conditionParser.RegisterChecker("CastSkill", new CastSkillConditionChecker());
-            m_conditionParser.RegisterChecker("KillMonster", new KillMonsterConditionChecker());
-            m_conditionParser.RegisterChecker("CollectItem", new CollectItemConditionChecker());
 
             // 事件注册
             m_owner.CharacterEventSystem.Subscribe("KillMonster", HandleKillMonsterEvent);
@@ -104,6 +92,7 @@ namespace GameServer.Core.Task
             gameTask.Init(m_owner, def, null);
             m_allTasks.Add(taskId, gameTask);
 
+            _SendAddGameTaskMsg(gameTask);
         End:
             return result;
         }
@@ -115,6 +104,7 @@ namespace GameServer.Core.Task
                 goto End;
             }
             m_allTasks.Remove(taskId);
+            _RemoveGameTaskMsg(taskId);
         End:
             return result;
         }
@@ -229,6 +219,66 @@ namespace GameServer.Core.Task
                 list.Add(task.NetGameTaskNode);
             }
             return list;
+        }
+        public bool TakeGameTask(int taskId)
+        {
+            bool result = false;    
+            if(!m_allTasks.TryGetValue(taskId, out var task))
+            {
+                goto End;
+            }
+            if(task.GameTaskState != GameTaskState.Unlocked)
+            {
+                goto End;
+            }
+            task.ChangeState(GameTaskState.InProgress);
+            result = true;
+        End:
+            return result;
+        }
+        public bool ReTakeGameTask(int taskId)
+        {
+            bool result = false;
+            if (!m_allTasks.TryGetValue(taskId, out var task))
+            {
+                goto End;
+            }
+            if (task.GameTaskState != GameTaskState.InProgress)
+            {
+                goto End;
+            }
+            task.ResetTask();
+            result = true;
+        End:
+            return result;
+        }
+        public bool ClaimTaskRewards(int taskId)
+        {
+            bool result = false;
+            if (!m_allTasks.TryGetValue(taskId, out var task))
+            {
+                goto End;
+            }
+            task.GrantRewards();
+            result = true;
+        End:
+            return result;
+        }
+        private void _SendAddGameTaskMsg(GameTask gameTask)
+        {
+            GameTaskChangeOperationResponse resp = new();
+            resp.Opration = GameTaskChangeOperationType.Add;
+            resp.NewNode = gameTask.NetGameTaskNode;
+            resp.SessionId = m_owner.SessionId;
+            m_owner.Send(resp);
+        }
+        private void _RemoveGameTaskMsg(int taskId)
+        {
+            GameTaskChangeOperationResponse resp = new();
+            resp.Opration = GameTaskChangeOperationType.Remove;
+            resp.TaskId = taskId;
+            resp.SessionId = m_owner.SessionId;
+            m_owner.Send(resp);
         }
     }
 }
