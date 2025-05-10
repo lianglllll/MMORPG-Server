@@ -82,7 +82,7 @@ namespace SceneServer.Core.Combat.Skills
                 CasterId = Owner.EntityId,
                 SkillId = skill.SkillId
             };
-            SceneManager.Instance.FightManager.spellQueue.Enqueue(info);
+            SceneManager.Instance.FightManager.spellSkillQueue.Enqueue(info);
         }
         private void SpellTarget(Skill skill, int target_id)
         {

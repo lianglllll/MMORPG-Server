@@ -29,7 +29,6 @@ namespace SceneServer.Core.AOI
             _yLinks = new AoiLinkedList(maxLayer, yLinksLimit);
         }
 
-
         // 进入aoi空间
         public AoiEntity Enter(SceneEntity entity)
         {
@@ -67,6 +66,19 @@ namespace SceneServer.Core.AOI
             return entity;
         }
 
+        // 退出aoi空间
+        public void Exit(long key)
+        {
+            if (!_entityList.TryGetValue(key, out var entity)) return;
+
+            Exit(entity);
+        }
+        private void Exit(AoiEntity node)
+        {
+            _xLinks.Remove(node.X);
+            _yLinks.Remove(node.Y);
+            _entityList.Remove(node.Key); ;
+        }
 
         // 用于刷新我们的视野范围
         public AoiEntity Refresh(long key, Vector2 area)
@@ -129,22 +141,6 @@ namespace SceneServer.Core.AOI
             enter?.Add(key);
             return entity;
         }
-
-
-        // 退出aoi空间
-        public void Exit(long key)
-        {
-            if (!_entityList.TryGetValue(key, out var entity)) return;
-
-            Exit(entity);
-        }
-        private void Exit(AoiEntity node)
-        {
-            _xLinks.Remove(node.X);
-            _yLinks.Remove(node.Y);
-            _entityList.Remove(node.Key); ;
-        }
-
 
         // 寻找范围内的entity
         private void Find(AoiEntity node, ref Vector2 area)
@@ -227,7 +223,6 @@ namespace SceneServer.Core.AOI
             #endregion
         }
 
-
         // tools
         public AoiEntity GetAoiEntityById(long key)
         {
@@ -246,7 +241,7 @@ namespace SceneServer.Core.AOI
             // 查找附近Entity对象，范围通过config配置
             var area = Config.Server.aoiViewArea;
             var handle = Refresh(key, new Vector2(area, area));
-            //handle有可能为空
+            // handle有可能为空
             if (handle == null) return new HashSet<SceneEntity>();
             var units = SceneEntityManager.Instance.GetSceneEntitiesByIds(handle.ViewEntity);
             if (includeSelf)

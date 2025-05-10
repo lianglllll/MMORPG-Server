@@ -37,9 +37,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedisServer", "RedisServer\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpProxyServer", "HttpProxyServer\HttpProxyServer.csproj", "{7C4D7527-E5FA-42EC-9B2A-27E21254DA9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntryServer", "EntryServer\EntryServer.csproj", "{E499626C-3714-4DE3-81FD-E73834352478}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntryServer", "EntryServer\EntryServer.csproj", "{E499626C-3714-4DE3-81FD-E73834352478}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PortalServer", "PortalServer\PortalServer.csproj", "{730A4295-EFE8-4B6D-B9F8-148754D6909E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortalServer", "PortalServer\PortalServer.csproj", "{730A4295-EFE8-4B6D-B9F8-148754D6909E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameServer_Old", "GameServer_Old\GameServer_Old.csproj", "{8FE8B96C-3ACA-44C5-A2C1-2D7163F68E75}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -123,6 +125,10 @@ Global
 		{730A4295-EFE8-4B6D-B9F8-148754D6909E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{730A4295-EFE8-4B6D-B9F8-148754D6909E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{730A4295-EFE8-4B6D-B9F8-148754D6909E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FE8B96C-3ACA-44C5-A2C1-2D7163F68E75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FE8B96C-3ACA-44C5-A2C1-2D7163F68E75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FE8B96C-3ACA-44C5-A2C1-2D7163F68E75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FE8B96C-3ACA-44C5-A2C1-2D7163F68E75}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

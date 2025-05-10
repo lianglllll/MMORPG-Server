@@ -839,10 +839,10 @@
     "OnIntonateEndGetBuffs": "",
     "OnActiveEndGetBuffs": ""
   },
-  "30001": {
-    "ID": 30001,
+  "1003001": {
+    "ID": 1003001,
     "TID": 1003,
-    "Code": 30001,
+    "Code": 1003001,
     "Name": "给你一个右锤子",
     "Description": "牛头战士的专属普通攻击1",
     "Level": 1,
@@ -866,7 +866,7 @@
     "APC": 0,
     "IntonateTime": 0,
     "Duration": 1,
-    "CanSwitchSkillTimePoint": 0,
+    "CanSwitchSkillTimePoint": 0.8,
     "CanCancelSkillTimePoint": 0,
     "CD": 5,
     "IsMissile": 0,
@@ -879,10 +879,10 @@
     "OnIntonateEndGetBuffs": "",
     "OnActiveEndGetBuffs": ""
   },
-  "30002": {
-    "ID": 30002,
+  "1003002": {
+    "ID": 1003002,
     "TID": 1003,
-    "Code": 30002,
+    "Code": 1003002,
     "Name": "给你一个左锤子",
     "Description": "牛头战士的专属普通攻击2",
     "Level": 1,
@@ -906,7 +906,7 @@
     "APC": 0,
     "IntonateTime": 0,
     "Duration": 1,
-    "CanSwitchSkillTimePoint": 0,
+    "CanSwitchSkillTimePoint": 0.8,
     "CanCancelSkillTimePoint": 0,
     "CD": 5,
     "IsMissile": 0,
@@ -919,10 +919,10 @@
     "OnIntonateEndGetBuffs": "",
     "OnActiveEndGetBuffs": ""
   },
-  "30003": {
-    "ID": 30003,
+  "1003003": {
+    "ID": 1003003,
     "TID": 1003,
-    "Code": 30003,
+    "Code": 1003003,
     "Name": "给你两个锤子",
     "Description": "牛头战士的专属普通攻击3",
     "Level": 1,
@@ -946,7 +946,7 @@
     "APC": 0,
     "IntonateTime": 0,
     "Duration": 1,
-    "CanSwitchSkillTimePoint": 0,
+    "CanSwitchSkillTimePoint": 0.8,
     "CanCancelSkillTimePoint": 0,
     "CD": 5,
     "IsMissile": 0,

@@ -4,11 +4,12 @@ package HS.Protobuf.Combat.Skill;
 
 enum SkillProtocol{
 	SKILL_PROTOCOL_NONE = 0;
-	SKILL_PROTOCOL_SPELL_CAST_REQ = 41001;			// [SpellCastRequest]
-	SKILL_PROTOCOL_SPELL_CAST_RESP = 41002;			// [SpellCastResponse]
+	SKILL_PROTOCOL_SPELL_CAST_REQ		= 41001;	// [SpellCastRequest]
+	SKILL_PROTOCOL_SPELL_CAST_RESP		= 41002;	// [SpellCastResponse]
 	SKILL_PROTOCOL_SPELL_CAST_FAIL_RESP = 41003;	// [SpellCastFailResponse]
-}
 
+	SKILL_PROTOCOL_DAMAGE_RESP = 41005;		// [DamageResponse]
+}
 
 message FixedSkillInfo{
 	int32 pos = 1;
@@ -47,10 +48,10 @@ message SpellCastRequest{
 }
 // 释放技能响应，这里用list做优化
 message SpellCastResponse{
-	string sessionId = 1;
-	int32 sceneId = 2;
-	int64 timestamp = 3;
-	repeated CastInfo list = 4;
+	string sessionId		= 1;
+	int32 sceneId			= 2;
+	int64 timestamp			= 3;
+	repeated CastInfo list	= 4;
 }
 // 技能释放错误
 message SpellCastFailResponse{
@@ -61,14 +62,14 @@ message SpellCastFailResponse{
 	CastResult reason = 5;
 }
 
-//伤害类型
+// 伤害类型
 enum DameageType{
 	UNKNOWN = 0;		//默认值,表示未知或未设置
 	PHYSICAL = 1;		
 	MAGICAL = 2;
 	REAL = 3;			//真伤,不受任何防御属性影响
 }
-//伤害数据
+// 伤害数据
 message Damage{
 	int32 attackerId = 1;
 	int32 targetId = 2;
@@ -79,21 +80,12 @@ message Damage{
 	bool isMiss = 7;
 	bool isImmune = 8;		//免疫伤害
 }
-//通知客户端有人收到伤害
+
+// 通知客户端有人收到伤害
 message DamageResponse{
-	repeated Damage list = 1;
+	string sessionId		= 1;
+	repeated Damage damages = 2;
 }
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -1,6 +1,5 @@
 ﻿using Common.Summer.Tools;
 using GameServer.core.Model.BaseItem.Sub;
-using GameServer.InventorySystem;
 using HS.Protobuf.Game.Backpack;
 using System;
 using System.Collections.Generic;

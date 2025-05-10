@@ -39,7 +39,7 @@
     "Icon": "Texture/Task/Default.png",
     "Pre_conditions": "",
     "Target_conditions": "TalkNpc:100;",
-    "Reward_items": "Skills:1001",
+    "Reward_items": "SkillChain:1001;Skill:1001",
     "Next_chains": "",
     "Daily_refresh_time": "",
     "Expire_time": ""

@@ -124,6 +124,7 @@ message NetItemNode{
 
 
 // =======================================无用
+
 //entity位置信息
 message NetEntity {
 	int32 id = 1;
@@ -187,9 +188,9 @@ message NetActor{
 	repeated HS.Protobuf.Combat.Buff.BuffInfo buffsList = 17;		//actor的buff
 }
 
-//actor属性更新消息类型
+// actor属性更新响应
 message PropertyUpdate{
-	//属性类型枚举
+	// 属性类型枚举
 	enum Prop{
 		HP = 0;		
 		MP = 1;
@@ -223,6 +224,9 @@ message PropertyUpdate{
 	Prop property = 2;
 	PropertyValue oldValue = 3;
 	PropertyValue newValue = 4;
+}
+message PropertyUpdateRsponse{
+	repeated PropertyUpdate list = 1;
 }
 
 // Net itemEntity信息

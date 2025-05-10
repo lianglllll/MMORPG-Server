@@ -6,7 +6,6 @@ using GameServer.Core;
 using GameServer.Core.Model;
 using GameServer.Core.Task;
 using GameServer.Core.Task.Event;
-using GameServer.Model;
 using GameServer.Net;
 using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;

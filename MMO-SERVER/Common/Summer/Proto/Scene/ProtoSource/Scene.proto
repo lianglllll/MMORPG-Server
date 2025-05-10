@@ -28,6 +28,8 @@ enum SceneProtocl{
 	SCENE_PROTOCL_CHARACTER_REVIVE_RESP = 40018;	// [CharacterReviveResponse]
 
 	SCENE_PROTOCL_SCENE_2_GATE_MSG = 40019;			// [Scene2GateMsg]
+
+	SCENE_PROTOCL_ACTOR_PROPERTY_UPDATE_RESP = 40022;	// [ActorPropertyUpdateRsponse]
 }
 enum SceneType {
     SCENE_TYPE_NULL             = 0;
@@ -159,7 +161,6 @@ message ActorChangeTransformDataResponse{
 	ActorChangeTransformDataPayLoad payLoad					= 6;
 }
 
-
 message SceneDeliverRequest{
 	string sessionId	= 1;
 	int32 sceneId		= 2;
@@ -182,14 +183,51 @@ message CharacterReviveResponse{
 	string resultMsg		= 3;
 }
 
+// 用于包装scene发送到GameGate的信息
 message Scene2GateMsg{
 	string sessionId = 1;
 	bytes content = 2;
 }
 
+// 属性更新
+message ActorPropertyUpdate{
+	// 属性类型枚举
+	enum PropType{
+		None	= 0;
+		HP		= 1;		
+		MP		= 2;
+		HPMax	= 3;
+		MPMax	= 4;
+		Speed	= 5;
+		Level	= 6;
+		Exp		= 7;		
+		//幸运、罪恶、技能点
+	}
 
+	// 为了可以存放不同的类型的数据
+	message PropertyValue{
+		oneof value{
+			int32 int_value		= 1;
+			int64 long_value	= 2;
+			float float_value	= 3;
+			string string_value = 4;
+		}
+	}
+
+	int32 entityId			= 1;
+	PropType propertyType	= 2;
+	PropertyValue oldValue	= 3;
+	PropertyValue newValue	= 4;
+}
+message ActorPropertyUpdateRsponse{
+	string sessionId						= 1;
+	repeated ActorPropertyUpdate propertys	= 2;
+}
 
 // === 下面是无用的====================================================
+
+
+
 
 //有其他角色进入场景响应
 message SpaceCharactersEnterResponse{
@@ -245,10 +283,6 @@ message ReviveResponse{
 	NEntitySync nEntitySycn = 1;
 }
 
-
-
-
-
 // itemEntity 信息同步响应包（没用上）
 message NetEItemSync{
 	HS.Protobuf.SceneEntity.NetEItem  netEItem =  1;
@@ -258,7 +292,3 @@ message SpaceItemEnterResponse{
 	HS.Protobuf.SceneEntity.NetEItem  netEItem =  1;
 }
 
-//actor属性更新响应
-message PropertyUpdateRsponse{
-	repeated HS.Protobuf.SceneEntity.PropertyUpdate list = 1;
-}

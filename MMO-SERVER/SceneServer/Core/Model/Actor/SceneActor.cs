@@ -7,6 +7,7 @@ using SceneServer.Core.Combat.Skills;
 using HS.Protobuf.Common;
 using SceneServer.Core.Scene;
 using SceneServer.Core.Combat.Buffs;
+using HS.Protobuf.Scene;
 
 namespace SceneServer.Core.Model.Actor
 {
@@ -190,10 +191,10 @@ namespace SceneServer.Core.Model.Actor
             }
 
             // 发包
-            PropertyUpdate po = new PropertyUpdate()
+            ActorPropertyUpdate po = new()
             {
                 EntityId = EntityId,
-                Property = PropertyUpdate.Types.Prop.Hp,
+                PropertyType = ActorPropertyUpdate.Types.PropType.Hp,
                 OldValue = new() { FloatValue = oldValue },
                 NewValue = new() { FloatValue = CurHP },
             };
@@ -224,12 +225,12 @@ namespace SceneServer.Core.Model.Actor
             }
 
             // 发包
-            PropertyUpdate po = new PropertyUpdate()
+            ActorPropertyUpdate po = new()
             {
                 EntityId = EntityId,
-                Property = PropertyUpdate.Types.Prop.Hp,
+                PropertyType = ActorPropertyUpdate.Types.PropType.Mp,
                 OldValue = new() { FloatValue = oldValue },
-                NewValue = new() { FloatValue = CurHP },
+                NewValue = new() { FloatValue = CurMP },
             };
             SceneManager.Instance.FightManager.propertyUpdateQueue.Enqueue(po);
 
@@ -240,7 +241,7 @@ namespace SceneServer.Core.Model.Actor
         public void RecvDamage(Damage damage)
         {
             // 由技能和buff触出，当前actor收到扣血通知
-            //扣血，属性更新
+            // 扣血，属性更新
             if (CurHP > damage.Amount)
             {
                 ChangeHP(-(int)damage.Amount);

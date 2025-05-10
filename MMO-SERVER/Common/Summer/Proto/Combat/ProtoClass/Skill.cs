@@ -47,20 +47,21 @@ namespace HS.Protobuf.Combat.Skill {
             "dGFyZ2V0SWQYAiABKAUSDwoHc2tpbGxJZBgDIAEoBRIOCgZhbW91bnQYBCAB",
             "KAISOQoKZGFtYWdlVHlwZRgFIAEoDjIlLkhTLlByb3RvYnVmLkNvbWJhdC5T",
             "a2lsbC5EYW1lYWdlVHlwZRIOCgZpc0NyaXQYBiABKAgSDgoGaXNNaXNzGAcg",
-            "ASgIEhAKCGlzSW1tdW5lGAggASgIIkAKDkRhbWFnZVJlc3BvbnNlEi4KBGxp",
-            "c3QYASADKAsyIC5IUy5Qcm90b2J1Zi5Db21iYXQuU2tpbGwuRGFtYWdlIhcK",
-            "CVNraWxsSW5mbxIKCgJpZBgBIAEoBSJsChFTcGVsbEZhaWxSZXNwb25zZRIQ",
-            "CghjYXN0ZXJJZBgBIAEoBRIPCgdza2lsbElkGAIgASgFEjQKBnJlYXNvbhgD",
-            "IAEoDjIkLkhTLlByb3RvYnVmLkNvbWJhdC5Ta2lsbC5DYXN0UmVzdWx0Kp4B",
-            "Cg1Ta2lsbFByb3RvY29sEhcKE1NLSUxMX1BST1RPQ09MX05PTkUQABIjCh1T",
-            "S0lMTF9QUk9UT0NPTF9TUEVMTF9DQVNUX1JFURCpwAISJAoeU0tJTExfUFJP",
-            "VE9DT0xfU1BFTExfQ0FTVF9SRVNQEKrAAhIpCiNTS0lMTF9QUk9UT0NPTF9T",
-            "UEVMTF9DQVNUX0ZBSUxfUkVTUBCrwAIqgAEKCkNhc3RSZXN1bHQSCwoHU3Vj",
-            "Y2VzcxAAEg0KCUlzUGFzc2l2ZRABEgoKBk1wTGFjaxACEg4KCkVudGl0eURl",
-            "YWQQAxIOCgpPdXRPZlJhbmdlEAQSCwoHUnVubmluZxAFEgwKCENvbGREb3du",
-            "EAYSDwoLVGFyZ2V0RXJyb3IQByo/CgtEYW1lYWdlVHlwZRILCgdVTktOT1dO",
-            "EAASDAoIUEhZU0lDQUwQARILCgdNQUdJQ0FMEAISCAoEUkVBTBADYgZwcm90",
-            "bzM="));
+            "ASgIEhAKCGlzSW1tdW5lGAggASgIIlYKDkRhbWFnZVJlc3BvbnNlEhEKCXNl",
+            "c3Npb25JZBgBIAEoCRIxCgdkYW1hZ2VzGAIgAygLMiAuSFMuUHJvdG9idWYu",
+            "Q29tYmF0LlNraWxsLkRhbWFnZSIXCglTa2lsbEluZm8SCgoCaWQYASABKAUi",
+            "bAoRU3BlbGxGYWlsUmVzcG9uc2USEAoIY2FzdGVySWQYASABKAUSDwoHc2tp",
+            "bGxJZBgCIAEoBRI0CgZyZWFzb24YAyABKA4yJC5IUy5Qcm90b2J1Zi5Db21i",
+            "YXQuU2tpbGwuQ2FzdFJlc3VsdCrAAQoNU2tpbGxQcm90b2NvbBIXChNTS0lM",
+            "TF9QUk9UT0NPTF9OT05FEAASIwodU0tJTExfUFJPVE9DT0xfU1BFTExfQ0FT",
+            "VF9SRVEQqcACEiQKHlNLSUxMX1BST1RPQ09MX1NQRUxMX0NBU1RfUkVTUBCq",
+            "wAISKQojU0tJTExfUFJPVE9DT0xfU1BFTExfQ0FTVF9GQUlMX1JFU1AQq8AC",
+            "EiAKGlNLSUxMX1BST1RPQ09MX0RBTUFHRV9SRVNQEK3AAiqAAQoKQ2FzdFJl",
+            "c3VsdBILCgdTdWNjZXNzEAASDQoJSXNQYXNzaXZlEAESCgoGTXBMYWNrEAIS",
+            "DgoKRW50aXR5RGVhZBADEg4KCk91dE9mUmFuZ2UQBBILCgdSdW5uaW5nEAUS",
+            "DAoIQ29sZERvd24QBhIPCgtUYXJnZXRFcnJvchAHKj8KC0RhbWVhZ2VUeXBl",
+            "EgsKB1VOS05PV04QABIMCghQSFlTSUNBTBABEgsKB01BR0lDQUwQAhIICgRS",
+            "RUFMEANiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::HS.Protobuf.Common.CommonReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.Combat.Skill.SkillProtocol), typeof(global::HS.Protobuf.Combat.Skill.CastResult), typeof(global::HS.Protobuf.Combat.Skill.DameageType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -71,7 +72,7 @@ namespace HS.Protobuf.Combat.Skill {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Combat.Skill.SpellCastResponse), global::HS.Protobuf.Combat.Skill.SpellCastResponse.Parser, new[]{ "SessionId", "SceneId", "Timestamp", "List" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Combat.Skill.SpellCastFailResponse), global::HS.Protobuf.Combat.Skill.SpellCastFailResponse.Parser, new[]{ "SessionId", "SceneId", "CasterId", "SkillId", "Reason" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Combat.Skill.Damage), global::HS.Protobuf.Combat.Skill.Damage.Parser, new[]{ "AttackerId", "TargetId", "SkillId", "Amount", "DamageType", "IsCrit", "IsMiss", "IsImmune" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Combat.Skill.DamageResponse), global::HS.Protobuf.Combat.Skill.DamageResponse.Parser, new[]{ "List" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Combat.Skill.DamageResponse), global::HS.Protobuf.Combat.Skill.DamageResponse.Parser, new[]{ "SessionId", "Damages" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Combat.Skill.SkillInfo), global::HS.Protobuf.Combat.Skill.SkillInfo.Parser, new[]{ "Id" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Combat.Skill.SpellFailResponse), global::HS.Protobuf.Combat.Skill.SpellFailResponse.Parser, new[]{ "CasterId", "SkillId", "Reason" }, null, null, null, null)
           }));
@@ -94,6 +95,10 @@ namespace HS.Protobuf.Combat.Skill {
     /// [SpellCastFailResponse]
     /// </summary>
     [pbr::OriginalName("SKILL_PROTOCOL_SPELL_CAST_FAIL_RESP")] SpellCastFailResp = 41003,
+    /// <summary>
+    /// [DamageResponse]
+    /// </summary>
+    [pbr::OriginalName("SKILL_PROTOCOL_DAMAGE_RESP")] DamageResp = 41005,
   }
 
   /// <summary>
@@ -135,7 +140,7 @@ namespace HS.Protobuf.Combat.Skill {
   }
 
   /// <summary>
-  ///伤害类型
+  /// 伤害类型
   /// </summary>
   public enum DameageType {
     /// <summary>
@@ -1912,7 +1917,7 @@ namespace HS.Protobuf.Combat.Skill {
   }
 
   /// <summary>
-  ///伤害数据
+  /// 伤害数据
   /// </summary>
   public sealed partial class Damage : pb::IMessage<Damage>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
@@ -2372,7 +2377,7 @@ namespace HS.Protobuf.Combat.Skill {
   }
 
   /// <summary>
-  ///通知客户端有人收到伤害
+  /// 通知客户端有人收到伤害
   /// </summary>
   public sealed partial class DamageResponse : pb::IMessage<DamageResponse>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
@@ -2408,7 +2413,8 @@ namespace HS.Protobuf.Combat.Skill {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public DamageResponse(DamageResponse other) : this() {
-      list_ = other.list_.Clone();
+      sessionId_ = other.sessionId_;
+      damages_ = other.damages_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -2418,15 +2424,27 @@ namespace HS.Protobuf.Combat.Skill {
       return new DamageResponse(this);
     }
 
-    /// <summary>Field number for the "list" field.</summary>
-    public const int ListFieldNumber = 1;
-    private static readonly pb::FieldCodec<global::HS.Protobuf.Combat.Skill.Damage> _repeated_list_codec
-        = pb::FieldCodec.ForMessage(10, global::HS.Protobuf.Combat.Skill.Damage.Parser);
-    private readonly pbc::RepeatedField<global::HS.Protobuf.Combat.Skill.Damage> list_ = new pbc::RepeatedField<global::HS.Protobuf.Combat.Skill.Damage>();
+    /// <summary>Field number for the "sessionId" field.</summary>
+    public const int SessionIdFieldNumber = 1;
+    private string sessionId_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::HS.Protobuf.Combat.Skill.Damage> List {
-      get { return list_; }
+    public string SessionId {
+      get { return sessionId_; }
+      set {
+        sessionId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "damages" field.</summary>
+    public const int DamagesFieldNumber = 2;
+    private static readonly pb::FieldCodec<global::HS.Protobuf.Combat.Skill.Damage> _repeated_damages_codec
+        = pb::FieldCodec.ForMessage(18, global::HS.Protobuf.Combat.Skill.Damage.Parser);
+    private readonly pbc::RepeatedField<global::HS.Protobuf.Combat.Skill.Damage> damages_ = new pbc::RepeatedField<global::HS.Protobuf.Combat.Skill.Damage>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public pbc::RepeatedField<global::HS.Protobuf.Combat.Skill.Damage> Damages {
+      get { return damages_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2444,7 +2462,8 @@ namespace HS.Protobuf.Combat.Skill {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if(!list_.Equals(other.list_)) return false;
+      if (SessionId != other.SessionId) return false;
+      if(!damages_.Equals(other.damages_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -2452,7 +2471,8 @@ namespace HS.Protobuf.Combat.Skill {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      hash ^= list_.GetHashCode();
+      if (SessionId.Length != 0) hash ^= SessionId.GetHashCode();
+      hash ^= damages_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -2471,7 +2491,11 @@ namespace HS.Protobuf.Combat.Skill {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      list_.WriteTo(output, _repeated_list_codec);
+      if (SessionId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(SessionId);
+      }
+      damages_.WriteTo(output, _repeated_damages_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -2482,7 +2506,11 @@ namespace HS.Protobuf.Combat.Skill {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      list_.WriteTo(ref output, _repeated_list_codec);
+      if (SessionId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(SessionId);
+      }
+      damages_.WriteTo(ref output, _repeated_damages_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -2493,7 +2521,10 @@ namespace HS.Protobuf.Combat.Skill {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      size += list_.CalculateSize(_repeated_list_codec);
+      if (SessionId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(SessionId);
+      }
+      size += damages_.CalculateSize(_repeated_damages_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -2506,7 +2537,10 @@ namespace HS.Protobuf.Combat.Skill {
       if (other == null) {
         return;
       }
-      list_.Add(other.list_);
+      if (other.SessionId.Length != 0) {
+        SessionId = other.SessionId;
+      }
+      damages_.Add(other.damages_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -2523,7 +2557,11 @@ namespace HS.Protobuf.Combat.Skill {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            list_.AddEntriesFrom(input, _repeated_list_codec);
+            SessionId = input.ReadString();
+            break;
+          }
+          case 18: {
+            damages_.AddEntriesFrom(input, _repeated_damages_codec);
             break;
           }
         }
@@ -2542,7 +2580,11 @@ namespace HS.Protobuf.Combat.Skill {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
-            list_.AddEntriesFrom(ref input, _repeated_list_codec);
+            SessionId = input.ReadString();
+            break;
+          }
+          case 18: {
+            damages_.AddEntriesFrom(ref input, _repeated_damages_codec);
             break;
           }
         }

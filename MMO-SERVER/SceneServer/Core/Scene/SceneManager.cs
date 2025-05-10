@@ -42,7 +42,7 @@ namespace SceneServer.Core.Scene
         public FightManager FightManager => m_fightManager;
         public int SceneId => m_sceneDefine.SID;
         public AoiZone AoiZone => m_aoiZoneManager;
-
+        public Vector2 ViewArea => m_viewArea;
         #endregion
 
         public void Init(int sceneId)
@@ -146,8 +146,9 @@ namespace SceneServer.Core.Scene
             var resp = new OtherEntityLeaveSceneResponse();
             resp.SceneId = SceneId;
             resp.EntityId = chr.EntityId;
-            var views = m_aoiZoneManager.FindViewEntity(chr.EntityId, false);
-            foreach (var cc in views.OfType<SceneCharacter>())
+            var handle = m_aoiZoneManager.Refresh(chr.EntityId, m_viewArea);
+            var units = SceneEntityManager.Instance.GetSceneEntitiesByIds(handle.ViewEntity);
+            foreach (var cc in units.OfType<SceneCharacter>())
             {
                 resp.SessionId = cc.SessionId;
                 cc.Send(resp);
@@ -204,7 +205,7 @@ namespace SceneServer.Core.Scene
         {
             // 保存与角色的相关信息
             self.ChangeActorMode(message.Mode);
-            Log.Information("actor[entityId = {0}] change mode {1}", self.EntityId, message.Mode);
+            // Log.Information("actor[entityId = {0}] change mode {1}", self.EntityId, message.Mode);
 
             // 通知附近玩家
             var resp = new ActorChangeModeResponse();
@@ -213,8 +214,13 @@ namespace SceneServer.Core.Scene
             resp.Timestamp = message.Timestamp;
             resp.SceneId = SceneId;
 
-            var all = m_aoiZoneManager.FindViewEntity(self.EntityId, isIncludeSelf);
-            foreach (var chr in all.OfType<SceneCharacter>())
+            var handle = m_aoiZoneManager.Refresh(self.EntityId, m_viewArea);
+            var units = SceneEntityManager.Instance.GetSceneEntitiesByIds(handle.ViewEntity);
+            if (isIncludeSelf)
+            {
+                units.Add(self);
+            }
+            foreach (var chr in units.OfType<SceneCharacter>())
             {
                 resp.SessionId = chr.SessionId;
                 chr.Send(resp);

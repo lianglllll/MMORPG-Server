@@ -1,5 +1,4 @@
-﻿using GameServer.Model;
-using Google.Protobuf.Collections;
+﻿using Google.Protobuf.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Common.Summer.Tools;

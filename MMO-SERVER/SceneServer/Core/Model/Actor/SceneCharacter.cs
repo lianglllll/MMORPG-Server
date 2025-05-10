@@ -113,10 +113,10 @@ namespace SceneServer.Core.Model.Actor
             }
 
             //发包
-            PropertyUpdate po = new PropertyUpdate()
+            ActorPropertyUpdate po = new()
             {
                 EntityId = EntityId,
-                Property = PropertyUpdate.Types.Prop.Exp,
+                PropertyType = ActorPropertyUpdate.Types.PropType.Exp,
                 OldValue = new() { LongValue = oldExp },
                 NewValue = new() { LongValue = Exp }
             };
@@ -128,10 +128,10 @@ namespace SceneServer.Core.Model.Actor
             if (deltaLevel <= 0) return;
             int oldLevel = CurLevel;
             CurLevel += deltaLevel;
-            PropertyUpdate po = new PropertyUpdate()
+            ActorPropertyUpdate po = new()
             {
                 EntityId = EntityId,
-                Property = PropertyUpdate.Types.Prop.Level,
+                PropertyType = ActorPropertyUpdate.Types.PropType.Level,
                 OldValue = new() { IntValue = oldLevel },
                 NewValue = new() { IntValue = CurLevel }
             };

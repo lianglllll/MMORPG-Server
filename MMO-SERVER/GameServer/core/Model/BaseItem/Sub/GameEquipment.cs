@@ -1,4 +1,3 @@
-using GameServer.Combat;
 using HS.Protobuf.Game.Backpack;
 
 namespace GameServer.core.Model.BaseItem.Sub
@@ -9,7 +8,7 @@ namespace GameServer.core.Model.BaseItem.Sub
     public class GameEquipment : GameItem
     {
         public EquipsType EquipsType => ParseEquipType(m_itemDefine.EquipType);
-        public AttrubuteData attrubuteData;
+        // public AttrubuteData attrubuteData;
 
         public GameEquipment(NetItemDataNode netItemDataNode) : base(netItemDataNode)
         {
@@ -54,7 +53,7 @@ namespace GameServer.core.Model.BaseItem.Sub
 
         private void LoadAttrubuteData()
         {
-            attrubuteData = new AttrubuteData
+/*            attrubuteData = new AttrubuteData
             {
                 Speed   = m_itemDefine.Speed,
                 HPMax   = m_itemDefine.HP,
@@ -72,7 +71,7 @@ namespace GameServer.core.Model.BaseItem.Sub
                 DodgeRate   = m_itemDefine.DodgeRate,
                 HpRegen     = m_itemDefine.HpRegen,
                 HpSteal     = m_itemDefine.HpSteal,
-            };
+            };*/
         }
 
     }

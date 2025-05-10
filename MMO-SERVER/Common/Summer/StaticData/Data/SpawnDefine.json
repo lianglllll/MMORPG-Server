@@ -36,7 +36,7 @@
     "Dir": "[0,0,0]",
     "TID": 1003,
     "Level": 5,
-    "Period": 10,
-    "SpawnNum": 0
+    "Period": 30,
+    "SpawnNum": 1
   }
 }

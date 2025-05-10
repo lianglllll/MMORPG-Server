@@ -230,7 +230,7 @@
     "BgResource": "",
     "Kind": "Monster",
     "Desc": "高攻高防御,横冲直撞",
-    "weaponSkillArsenalId": 1,
+    "weaponSkillArsenalId": 3,
     "Speed": 3000,
     "HPMax": 2000,
     "MPMax": 2000,

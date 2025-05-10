@@ -2,6 +2,7 @@
 using Common.Summer.Tools;
 using Common.Summer.Core;
 using SceneServer.Core.Model;
+using HS.Protobuf.Scene;
 
 namespace SceneServer.Core.Scene.Component
 {
@@ -50,6 +51,18 @@ namespace SceneServer.Core.Scene.Component
             foreach (var id in ids)
             {
                 if (allEntitiesDict.TryGetValue((int)id, out var entity))
+                {
+                    res.Add(entity);
+                }
+            }
+            return res;
+        }
+        public List<SceneEntity> GetSceneEntitiesByIds(List<int> ids)
+        {
+            List<SceneEntity> res = new();
+            foreach (var id in ids)
+            {
+                if (allEntitiesDict.TryGetValue(id, out var entity))
                 {
                     res.Add(entity);
                 }
