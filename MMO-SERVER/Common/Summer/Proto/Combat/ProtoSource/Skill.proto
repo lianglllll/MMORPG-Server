@@ -56,7 +56,7 @@ message SpellCastResponse{
 // ¼¼ÄÜÊÍ·Å´íÎó
 message SpellCastFailResponse{
 	string sessionId = 1;
-	int32 sceneId = 2;
+	// int32 sceneId = 2;
 	int32 casterId = 3;
 	int32 skillId = 4;
 	CastResult reason = 5;

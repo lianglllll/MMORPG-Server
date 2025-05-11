@@ -39,29 +39,28 @@ namespace HS.Protobuf.Combat.Skill {
             "CgRpbmZvGAIgASgLMiIuSFMuUHJvdG9idWYuQ29tYmF0LlNraWxsLkNhc3RJ",
             "bmZvInwKEVNwZWxsQ2FzdFJlc3BvbnNlEhEKCXNlc3Npb25JZBgBIAEoCRIP",
             "CgdzY2VuZUlkGAIgASgFEhEKCXRpbWVzdGFtcBgDIAEoAxIwCgRsaXN0GAQg",
-            "AygLMiIuSFMuUHJvdG9idWYuQ29tYmF0LlNraWxsLkNhc3RJbmZvIpQBChVT",
-            "cGVsbENhc3RGYWlsUmVzcG9uc2USEQoJc2Vzc2lvbklkGAEgASgJEg8KB3Nj",
-            "ZW5lSWQYAiABKAUSEAoIY2FzdGVySWQYAyABKAUSDwoHc2tpbGxJZBgEIAEo",
-            "BRI0CgZyZWFzb24YBSABKA4yJC5IUy5Qcm90b2J1Zi5Db21iYXQuU2tpbGwu",
-            "Q2FzdFJlc3VsdCK8AQoGRGFtYWdlEhIKCmF0dGFja2VySWQYASABKAUSEAoI",
-            "dGFyZ2V0SWQYAiABKAUSDwoHc2tpbGxJZBgDIAEoBRIOCgZhbW91bnQYBCAB",
-            "KAISOQoKZGFtYWdlVHlwZRgFIAEoDjIlLkhTLlByb3RvYnVmLkNvbWJhdC5T",
-            "a2lsbC5EYW1lYWdlVHlwZRIOCgZpc0NyaXQYBiABKAgSDgoGaXNNaXNzGAcg",
-            "ASgIEhAKCGlzSW1tdW5lGAggASgIIlYKDkRhbWFnZVJlc3BvbnNlEhEKCXNl",
-            "c3Npb25JZBgBIAEoCRIxCgdkYW1hZ2VzGAIgAygLMiAuSFMuUHJvdG9idWYu",
-            "Q29tYmF0LlNraWxsLkRhbWFnZSIXCglTa2lsbEluZm8SCgoCaWQYASABKAUi",
-            "bAoRU3BlbGxGYWlsUmVzcG9uc2USEAoIY2FzdGVySWQYASABKAUSDwoHc2tp",
-            "bGxJZBgCIAEoBRI0CgZyZWFzb24YAyABKA4yJC5IUy5Qcm90b2J1Zi5Db21i",
-            "YXQuU2tpbGwuQ2FzdFJlc3VsdCrAAQoNU2tpbGxQcm90b2NvbBIXChNTS0lM",
-            "TF9QUk9UT0NPTF9OT05FEAASIwodU0tJTExfUFJPVE9DT0xfU1BFTExfQ0FT",
-            "VF9SRVEQqcACEiQKHlNLSUxMX1BST1RPQ09MX1NQRUxMX0NBU1RfUkVTUBCq",
-            "wAISKQojU0tJTExfUFJPVE9DT0xfU1BFTExfQ0FTVF9GQUlMX1JFU1AQq8AC",
-            "EiAKGlNLSUxMX1BST1RPQ09MX0RBTUFHRV9SRVNQEK3AAiqAAQoKQ2FzdFJl",
-            "c3VsdBILCgdTdWNjZXNzEAASDQoJSXNQYXNzaXZlEAESCgoGTXBMYWNrEAIS",
-            "DgoKRW50aXR5RGVhZBADEg4KCk91dE9mUmFuZ2UQBBILCgdSdW5uaW5nEAUS",
-            "DAoIQ29sZERvd24QBhIPCgtUYXJnZXRFcnJvchAHKj8KC0RhbWVhZ2VUeXBl",
-            "EgsKB1VOS05PV04QABIMCghQSFlTSUNBTBABEgsKB01BR0lDQUwQAhIICgRS",
-            "RUFMEANiBnByb3RvMw=="));
+            "AygLMiIuSFMuUHJvdG9idWYuQ29tYmF0LlNraWxsLkNhc3RJbmZvIoMBChVT",
+            "cGVsbENhc3RGYWlsUmVzcG9uc2USEQoJc2Vzc2lvbklkGAEgASgJEhAKCGNh",
+            "c3RlcklkGAMgASgFEg8KB3NraWxsSWQYBCABKAUSNAoGcmVhc29uGAUgASgO",
+            "MiQuSFMuUHJvdG9idWYuQ29tYmF0LlNraWxsLkNhc3RSZXN1bHQivAEKBkRh",
+            "bWFnZRISCgphdHRhY2tlcklkGAEgASgFEhAKCHRhcmdldElkGAIgASgFEg8K",
+            "B3NraWxsSWQYAyABKAUSDgoGYW1vdW50GAQgASgCEjkKCmRhbWFnZVR5cGUY",
+            "BSABKA4yJS5IUy5Qcm90b2J1Zi5Db21iYXQuU2tpbGwuRGFtZWFnZVR5cGUS",
+            "DgoGaXNDcml0GAYgASgIEg4KBmlzTWlzcxgHIAEoCBIQCghpc0ltbXVuZRgI",
+            "IAEoCCJWCg5EYW1hZ2VSZXNwb25zZRIRCglzZXNzaW9uSWQYASABKAkSMQoH",
+            "ZGFtYWdlcxgCIAMoCzIgLkhTLlByb3RvYnVmLkNvbWJhdC5Ta2lsbC5EYW1h",
+            "Z2UiFwoJU2tpbGxJbmZvEgoKAmlkGAEgASgFImwKEVNwZWxsRmFpbFJlc3Bv",
+            "bnNlEhAKCGNhc3RlcklkGAEgASgFEg8KB3NraWxsSWQYAiABKAUSNAoGcmVh",
+            "c29uGAMgASgOMiQuSFMuUHJvdG9idWYuQ29tYmF0LlNraWxsLkNhc3RSZXN1",
+            "bHQqwAEKDVNraWxsUHJvdG9jb2wSFwoTU0tJTExfUFJPVE9DT0xfTk9ORRAA",
+            "EiMKHVNLSUxMX1BST1RPQ09MX1NQRUxMX0NBU1RfUkVREKnAAhIkCh5TS0lM",
+            "TF9QUk9UT0NPTF9TUEVMTF9DQVNUX1JFU1AQqsACEikKI1NLSUxMX1BST1RP",
+            "Q09MX1NQRUxMX0NBU1RfRkFJTF9SRVNQEKvAAhIgChpTS0lMTF9QUk9UT0NP",
+            "TF9EQU1BR0VfUkVTUBCtwAIqgAEKCkNhc3RSZXN1bHQSCwoHU3VjY2VzcxAA",
+            "Eg0KCUlzUGFzc2l2ZRABEgoKBk1wTGFjaxACEg4KCkVudGl0eURlYWQQAxIO",
+            "CgpPdXRPZlJhbmdlEAQSCwoHUnVubmluZxAFEgwKCENvbGREb3duEAYSDwoL",
+            "VGFyZ2V0RXJyb3IQByo/CgtEYW1lYWdlVHlwZRILCgdVTktOT1dOEAASDAoI",
+            "UEhZU0lDQUwQARILCgdNQUdJQ0FMEAISCAoEUkVBTBADYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::HS.Protobuf.Common.CommonReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.Combat.Skill.SkillProtocol), typeof(global::HS.Protobuf.Combat.Skill.CastResult), typeof(global::HS.Protobuf.Combat.Skill.DameageType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -70,7 +69,7 @@ namespace HS.Protobuf.Combat.Skill {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Combat.Skill.CastInfo), global::HS.Protobuf.Combat.Skill.CastInfo.Parser, new[]{ "CasterId", "SkillId", "TargetId", "Point", "Result", "Timestamp", "CasterStartPos", "CasterStartRot" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Combat.Skill.SpellCastRequest), global::HS.Protobuf.Combat.Skill.SpellCastRequest.Parser, new[]{ "SessionId", "Info" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Combat.Skill.SpellCastResponse), global::HS.Protobuf.Combat.Skill.SpellCastResponse.Parser, new[]{ "SessionId", "SceneId", "Timestamp", "List" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Combat.Skill.SpellCastFailResponse), global::HS.Protobuf.Combat.Skill.SpellCastFailResponse.Parser, new[]{ "SessionId", "SceneId", "CasterId", "SkillId", "Reason" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Combat.Skill.SpellCastFailResponse), global::HS.Protobuf.Combat.Skill.SpellCastFailResponse.Parser, new[]{ "SessionId", "CasterId", "SkillId", "Reason" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Combat.Skill.Damage), global::HS.Protobuf.Combat.Skill.Damage.Parser, new[]{ "AttackerId", "TargetId", "SkillId", "Amount", "DamageType", "IsCrit", "IsMiss", "IsImmune" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Combat.Skill.DamageResponse), global::HS.Protobuf.Combat.Skill.DamageResponse.Parser, new[]{ "SessionId", "Damages" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Combat.Skill.SkillInfo), global::HS.Protobuf.Combat.Skill.SkillInfo.Parser, new[]{ "Id" }, null, null, null, null),
@@ -1614,7 +1613,6 @@ namespace HS.Protobuf.Combat.Skill {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public SpellCastFailResponse(SpellCastFailResponse other) : this() {
       sessionId_ = other.sessionId_;
-      sceneId_ = other.sceneId_;
       casterId_ = other.casterId_;
       skillId_ = other.skillId_;
       reason_ = other.reason_;
@@ -1639,21 +1637,12 @@ namespace HS.Protobuf.Combat.Skill {
       }
     }
 
-    /// <summary>Field number for the "sceneId" field.</summary>
-    public const int SceneIdFieldNumber = 2;
-    private int sceneId_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int SceneId {
-      get { return sceneId_; }
-      set {
-        sceneId_ = value;
-      }
-    }
-
     /// <summary>Field number for the "casterId" field.</summary>
     public const int CasterIdFieldNumber = 3;
     private int casterId_;
+    /// <summary>
+    /// int32 sceneId = 2;
+    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CasterId {
@@ -1703,7 +1692,6 @@ namespace HS.Protobuf.Combat.Skill {
         return true;
       }
       if (SessionId != other.SessionId) return false;
-      if (SceneId != other.SceneId) return false;
       if (CasterId != other.CasterId) return false;
       if (SkillId != other.SkillId) return false;
       if (Reason != other.Reason) return false;
@@ -1715,7 +1703,6 @@ namespace HS.Protobuf.Combat.Skill {
     public override int GetHashCode() {
       int hash = 1;
       if (SessionId.Length != 0) hash ^= SessionId.GetHashCode();
-      if (SceneId != 0) hash ^= SceneId.GetHashCode();
       if (CasterId != 0) hash ^= CasterId.GetHashCode();
       if (SkillId != 0) hash ^= SkillId.GetHashCode();
       if (Reason != global::HS.Protobuf.Combat.Skill.CastResult.Success) hash ^= Reason.GetHashCode();
@@ -1740,10 +1727,6 @@ namespace HS.Protobuf.Combat.Skill {
       if (SessionId.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(SessionId);
-      }
-      if (SceneId != 0) {
-        output.WriteRawTag(16);
-        output.WriteInt32(SceneId);
       }
       if (CasterId != 0) {
         output.WriteRawTag(24);
@@ -1771,10 +1754,6 @@ namespace HS.Protobuf.Combat.Skill {
         output.WriteRawTag(10);
         output.WriteString(SessionId);
       }
-      if (SceneId != 0) {
-        output.WriteRawTag(16);
-        output.WriteInt32(SceneId);
-      }
       if (CasterId != 0) {
         output.WriteRawTag(24);
         output.WriteInt32(CasterId);
@@ -1800,9 +1779,6 @@ namespace HS.Protobuf.Combat.Skill {
       if (SessionId.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(SessionId);
       }
-      if (SceneId != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(SceneId);
-      }
       if (CasterId != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(CasterId);
       }
@@ -1826,9 +1802,6 @@ namespace HS.Protobuf.Combat.Skill {
       }
       if (other.SessionId.Length != 0) {
         SessionId = other.SessionId;
-      }
-      if (other.SceneId != 0) {
-        SceneId = other.SceneId;
       }
       if (other.CasterId != 0) {
         CasterId = other.CasterId;
@@ -1856,10 +1829,6 @@ namespace HS.Protobuf.Combat.Skill {
             break;
           case 10: {
             SessionId = input.ReadString();
-            break;
-          }
-          case 16: {
-            SceneId = input.ReadInt32();
             break;
           }
           case 24: {
@@ -1891,10 +1860,6 @@ namespace HS.Protobuf.Combat.Skill {
             break;
           case 10: {
             SessionId = input.ReadString();
-            break;
-          }
-          case 16: {
-            SceneId = input.ReadInt32();
             break;
           }
           case 24: {

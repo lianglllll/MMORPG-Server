@@ -1,4 +1,6 @@
-﻿using HS.Protobuf.Combat.Skill;
+﻿using Common.Summer.Net;
+using Google.Protobuf;
+using HS.Protobuf.Combat.Skill;
 using HS.Protobuf.Scene;
 using HS.Protobuf.SceneEntity;
 using SceneServer.Core.Combat.Skills;
@@ -8,7 +10,9 @@ using SceneServer.Core.Scene.Component;
 using Serilog;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Reflection.Metadata;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SceneServer.Core.Combat
 {
@@ -24,17 +28,18 @@ namespace SceneServer.Core.Combat
         public ConcurrentQueue<CastInfo> castReqQueue = new();
 
         // 等待广播队列存在的意义：收集某帧的全部数据一起发送，减少数据包的发送频率
+
         // 等待广播：技能施法队列：通知各个客户端谁谁谁要施法技能
         public ConcurrentQueue<CastInfo> spellSkillQueue = new();
-
         // 等待广播：伤害队列：告诉客户端谁谁谁收到伤害了，让其播放一些动画/特效或者ui之类的。这里不做属性更新
         public ConcurrentQueue<Damage> damageQueue = new();
-        
         // 等待广播：人物属性更新的队列
         public ConcurrentQueue<ActorPropertyUpdate> propertyUpdateQueue = new();
 
         public void Init()
         {
+            ProtoHelper.Instance.Register<ActorPropertyUpdateRsponse>((int)SceneProtocl.ActorPropertyUpdateResp);
+            ProtoHelper.Instance.Register<DamageResponse>((int)SkillProtocol.DamageResp);
         }
         public void UnInit()
         {
@@ -47,6 +52,8 @@ namespace SceneServer.Core.Combat
             // 处理飞行物的逻辑更新
             HandleMissiles(deltaTime);
 
+            // ======缓存aoi
+
             // 广播施法请求
             BroadcastSpellInfo();
 
@@ -55,6 +62,7 @@ namespace SceneServer.Core.Combat
             
             // 广播actor属性更新信息
             BroadcastProperties();
+            // ======
         }
         private void HandleSkillCast()
         {
@@ -90,7 +98,7 @@ namespace SceneServer.Core.Combat
             int curSceneId = SceneManager.Instance.SceneId;
             while (spellSkillQueue.TryDequeue(out var castInfo))
             {
-                var entityAoiView = SceneManager.Instance.AoiZone.Refresh(castInfo.CasterId, SceneManager.Instance.ViewArea);
+                var entityAoiView = SceneManager.Instance.AoiZone.GetAoiEntityById(castInfo.CasterId);
                 var relativeEntityIds = entityAoiView.ViewEntity;
                 relativeEntityIds.Add(castInfo.CasterId);
                 foreach (var entityId in relativeEntityIds)
@@ -123,7 +131,7 @@ namespace SceneServer.Core.Combat
             Dictionary<int, DamageResponse> dict = new();
             while (damageQueue.TryDequeue(out var damage))
             {
-                var entityAoiView = SceneManager.Instance.AoiZone.Refresh(damage.TargetId, SceneManager.Instance.ViewArea);
+                var entityAoiView = SceneManager.Instance.AoiZone.GetAoiEntityById(damage.TargetId);
                 var relativeEntityIds = entityAoiView.ViewEntity;
                 relativeEntityIds.Add(damage.TargetId);
                 foreach (var entityId in relativeEntityIds)
@@ -155,7 +163,7 @@ namespace SceneServer.Core.Combat
             Dictionary<int, ActorPropertyUpdateRsponse> dict = new();
             while (propertyUpdateQueue.TryDequeue(out var propertyUpdate))
             {
-                var entityAoiView = SceneManager.Instance.AoiZone.Refresh(propertyUpdate.EntityId, SceneManager.Instance.ViewArea);
+                var entityAoiView = SceneManager.Instance.AoiZone.GetAoiEntityById(propertyUpdate.EntityId);
                 var relativeEntityIds = entityAoiView.ViewEntity;
                 relativeEntityIds.Add(propertyUpdate.EntityId);
                 foreach (var entityId in relativeEntityIds)

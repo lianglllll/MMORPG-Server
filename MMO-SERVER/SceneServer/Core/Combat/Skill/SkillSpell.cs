@@ -5,6 +5,7 @@ using SceneServer.Core.Model.Actor;
 using SceneServer.Core.Scene.Component;
 using SceneServer.Core.Scene;
 using System.Diagnostics;
+using System;
 
 namespace SceneServer.Core.Combat.Skills
 {
@@ -29,9 +30,9 @@ namespace SceneServer.Core.Combat.Skills
         public void RunCast(CastInfo castInfo)
         {
             // actor处于技能后摇中，无法释放技能
-            if (Owner.CurUseSkill != null && !Owner.CurUseSkill.IsCanSwitchSkill())
+            if (!IsCanCast())
             {
-                Log.Warning("Spell::RunCast():Owner[{0}]:Skill[{1}] skilling!", Owner.EntityId, castInfo.SkillId);
+                Log.Warning("Spell::RunCast():Owner[{0}]:skilling!, Skill[{1}] can't cast!", Owner.EntityId, castInfo.SkillId);
                 goto End;
             }
 
@@ -60,6 +61,17 @@ namespace SceneServer.Core.Combat.Skills
         End:
             return;
         }
+        public bool IsCanCast()
+        {
+            bool result = false;
+            if(Owner.CurUseSkill == null || Owner.CurUseSkill.IsCanSwitchSkill())
+            {
+                result = true;
+                goto End;
+            }
+        End:
+            return result;
+        }
         private void SpellNoTarget(Skill skill)
         {
             //执行技能,因为是无目标技能所有 选择自己 或者 不选
@@ -86,7 +98,7 @@ namespace SceneServer.Core.Combat.Skills
         }
         private void SpellTarget(Skill skill, int target_id)
         {
-            //检测目标
+            // 检测目标
             var target = SceneEntityManager.Instance.GetSceneEntityById(target_id) as SceneActor;
             if (target == null)
             {
@@ -94,29 +106,28 @@ namespace SceneServer.Core.Combat.Skills
                 return;
             }
 
-            //检测是否能执行技能
+            // 检测是否能执行技能
             SCObject sco = new SCEntity(target);
             var res = skill.CanUse(sco);
 
-            //通知施法者,执行失败
+            // 通知施法者,执行失败
             if (res != CastResult.Success)
             {
                 OnSpellFailure(skill.SkillId, res);
                 return;
             }
 
-            //执行技能
+            // 执行技能
             skill.Use(sco);
 
-            //广播，可能本帧有很多人施法节能，那就收集本帧的info，等到下一帧再发出去
+            // 广播，可能本帧有很多人施法节能，那就收集本帧的info，等到下一帧再发出去
             CastInfo info = new CastInfo()
             {
                 CasterId = Owner.EntityId,
                 TargetId = target_id,
                 SkillId = skill.SkillId
             };
-            // todo
-            // Owner.currentSpace.fightManager.spellQueue.Enqueue(info);
+           SceneManager.Instance.FightManager.spellSkillQueue.Enqueue(info);
         }
         private void SpellPosition(Skill skill, Vector3 position)
         {
@@ -145,7 +156,6 @@ namespace SceneServer.Core.Combat.Skills
             // Owner.currentSpace.fightManager.spellQueue.Enqueue(info);
         }
 
-
         /// <summary>
         /// 技能施法失败，通知玩家
         /// </summary>
@@ -157,14 +167,14 @@ namespace SceneServer.Core.Combat.Skills
 
             if (Owner is SceneCharacter chr)
             {
-                SpellFailResponse resp = new SpellFailResponse()
+                var resp = new SpellCastFailResponse()
                 {
+                    SessionId = chr.SessionId,
                     CasterId = Owner.EntityId,
                     SkillId = skill_id,
                     Reason = reason
                 };
-                // todo
-                // chr.session.Send(resp);
+                chr.Send(resp);
             }
         }
 

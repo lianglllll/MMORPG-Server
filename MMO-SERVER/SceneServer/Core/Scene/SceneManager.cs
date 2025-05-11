@@ -231,7 +231,7 @@ namespace SceneServer.Core.Scene
             // 保存与角色的相关信息
             self.SetTransform(message.OriginalTransform);
             self.ChangeActorState(message.State);
-            Log.Information("actor[entityId = {0}] change state {1}", self.EntityId, message.State);
+            // Log.Information("actor[entityId = {0}] change state {1}", self.EntityId, message.State);
 
             // 更新aoi空间里面我们的坐标
             var handle = m_aoiZoneManager?.UpdatePos_Refresh(self.EntityId, self.AoiPos.x, self.AoiPos.y, m_viewArea);

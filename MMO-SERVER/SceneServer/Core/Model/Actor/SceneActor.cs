@@ -265,6 +265,7 @@ namespace SceneServer.Core.Model.Actor
         }
         protected virtual void ReviveAfter() { }
 
+        // tools
         private void _CancelCurSkill()
         {
             if(m_curUseSkill == null)
@@ -277,5 +278,6 @@ namespace SceneServer.Core.Model.Actor
         End:
             return;
         }
+        protected virtual void ForceChangeActor(NetActorState state) { }
     }
 }

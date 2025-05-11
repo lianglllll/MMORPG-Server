@@ -194,9 +194,14 @@ namespace SceneServer.Core.Model.Actor
             return;
         }
 
+        public bool IsCanAttack()
+        {
+            return m_skillSpell.IsCanCast();
+        }
         public Skill Attack(SceneActor target)
         {
             Skill result = null;
+
             // 目标死亡，丢弃本次请求
             if (target == null || target.IsDeath)
             {

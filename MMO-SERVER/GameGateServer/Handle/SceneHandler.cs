@@ -28,6 +28,9 @@ namespace GameGateServer.Handle
 
             ProtoHelper.Instance.Register<Scene2GateMsg>((int)SceneProtocl.Scene2GateMsg);
 
+            ProtoHelper.Instance.Register<ActorPropertyUpdateRsponse>((int)SceneProtocl.ActorPropertyUpdateResp);
+            ProtoHelper.Instance.Register<DamageResponse>((int)SkillProtocol.DamageResp);
+
             // 消息的订阅
             MessageRouter.Instance.Subscribe<OtherEntityEnterSceneResponse>(_HandleOtherEntityEnterSceneResponse);
             MessageRouter.Instance.Subscribe<OtherEntityLeaveSceneResponse>(_HandleOtherEntityLeaveSceneResponse);
@@ -43,6 +46,9 @@ namespace GameGateServer.Handle
             MessageRouter.Instance.Subscribe<SpellCastFailResponse>(HandleSpellFailResponse);
 
             MessageRouter.Instance.Subscribe<Scene2GateMsg>(HandleScene2GateMsg);
+
+            MessageRouter.Instance.Subscribe<ActorPropertyUpdateRsponse>(HandleActorPropertyUpdateRsponse);
+            MessageRouter.Instance.Subscribe<DamageResponse>(HandleDamageResponse);
 
         }
 
@@ -192,5 +198,30 @@ namespace GameGateServer.Handle
             return;
         }
 
+        private void HandleActorPropertyUpdateRsponse(Connection conn, ActorPropertyUpdateRsponse message)
+        {
+            var session = SessionManager.Instance.GetSessionBySessionId(message.SessionId);
+            if (session == null)
+            {
+                goto End;
+            }
+            message.SessionId = "";
+            session.Send(message);
+        End:
+            return;
+        }
+
+        private void HandleDamageResponse(Connection conn, DamageResponse message)
+        {
+            var session = SessionManager.Instance.GetSessionBySessionId(message.SessionId);
+            if (session == null)
+            {
+                goto End;
+            }
+            message.SessionId = "";
+            session.Send(message);
+        End:
+            return;
+        }
     }
 }

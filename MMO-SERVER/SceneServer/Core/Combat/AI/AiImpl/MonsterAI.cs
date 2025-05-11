@@ -35,7 +35,7 @@ namespace SceneServer.Core.Combat.AI
         public int chaseSpeed = 5000;
         public int maxChaseDistance = 20000;
       
-        public int maxAttackDistance = 3500;
+        public int maxAttackDistance = 2500;
 
         public int FleeSpeed = 5000;
 

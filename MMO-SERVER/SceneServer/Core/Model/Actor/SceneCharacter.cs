@@ -143,5 +143,26 @@ namespace SceneServer.Core.Model.Actor
             m_attributeManager.Reload(CurLevel);
         }
 
+        protected override void Death(int killerID)
+        {
+            base.Death(killerID);
+            // 将当前角色的状态设置为当前mode的death状态
+            // 并且强制同步到客户端
+            ForceChangeActor(NetActorState.Death);
+        }
+        protected override void ForceChangeActor(NetActorState state)
+        {
+            base.ForceChangeActor(state);
+            ChangeActorState(state);
+            var resp = new ActorChangeStateResponse();
+            resp.SessionId = SessionId;
+            resp.SceneId = SceneManager.Instance.SceneId;
+            resp.EntityId = EntityId;
+            resp.State = state;
+            // resp.Timestamp = ;
+            resp.OriginalTransform = GetTransform();
+            
+            Send(resp);
+        }
     }
 }

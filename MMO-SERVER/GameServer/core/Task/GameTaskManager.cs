@@ -9,7 +9,6 @@ using GameServer.Utils;
 using HS.Protobuf.DBProxy.DBCharacter;
 using HS.Protobuf.DBProxy.DBTask;
 using HS.Protobuf.GameTask;
-using MySqlX.XDevAPI.Common;
 using Newtonsoft.Json;
 using Serilog;
 using System;

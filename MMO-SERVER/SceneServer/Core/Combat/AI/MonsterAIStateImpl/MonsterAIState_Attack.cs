@@ -12,7 +12,6 @@ namespace SceneServer.Core.Combat.AI.MonsterAIStateImpl
         public float attackInterval = 2f;
         public float remainAttackCD;
 
-
         public override void Enter()
         {
             TryAttack();
@@ -20,6 +19,10 @@ namespace SceneServer.Core.Combat.AI.MonsterAIStateImpl
 
         public override void Update(float deltaTime)
         {
+            if(!monsterAI.Monster.IsCanAttack())
+            {
+                goto End;
+            }
             remainAttackCD -= deltaTime;
 
             if (remainAttackCD <= 0)

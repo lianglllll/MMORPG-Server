@@ -96,32 +96,32 @@ namespace SceneServer.Core.Combat.Skills
         }
         public CastResult CanUse(SCObject sco)
         {
-            //持有者状态不正常
+            // 持有者状态不正常
             if (Owner.NetActorState == NetActorState.Death || Owner.NetActorState == NetActorState.Dizzy)
             {
                 return CastResult.TargetError;
             }
 
-            //被动技能
+            // 被动技能
             if (IsPassive)
                 return CastResult.IsPassive;
-            //MP不足
+            // MP不足
             else if (Owner.CurMP < Define.Cost)
                 return CastResult.MpLack;
-            //正在进行
+            // 正在进行
             else if (curSkillState != SkillStage.None && curSkillState != SkillStage.Colding)
                 return CastResult.Running;
-            //冷却中
+            // 冷却中
             else if (ColdDown > 0)
                 return CastResult.ColdDown;
-            //Entity已经死亡
+            // Entity已经死亡
             else if (Owner.IsDeath)
                 return CastResult.EntityDead;
-            //目标已死亡
+            // 目标已死亡
             else if (sco is SCEntity && (sco.RealObj as SceneActor).IsDeath)
                 return CastResult.EntityDead;
 
-            //单位技能&&施法者和目标的距离超过限制
+            // 单位技能&&施法者和目标的距离超过限制
             if (IsTarget)
             {
                 var dist = Vector3.Distance(Owner.Position, sco.Position);
@@ -149,7 +149,7 @@ namespace SceneServer.Core.Combat.Skills
         protected virtual void OnActive()
         {
             curHitCnt = 0;
-            //是否有投射物
+            // 是否有投射物
             if (Define.IsMissile)
             {
                 var missile = Missile.Create(this, Owner.Position, Target);
@@ -222,11 +222,11 @@ namespace SceneServer.Core.Combat.Skills
             else if (IsTarget)                         // 单体
             {
                 var target = targetSco.RealObj as SceneActor;
-                //bool isLegalArea = AreaEntitiesFinder.CheckForLegalSectorArea(Owner, target, detectionAngle: 90, Define.SpellRangeRadius);
-                //if (isLegalArea)
-                //{
-                //    targets.Add(target);
-                //}
+                bool isLegalArea = AreaEntitiesFinder.CheckForLegalSectorArea(Owner, target, 90, Define.SpellRangeRadius);
+                if (isLegalArea)
+                {
+                    targets.Add(target);
+                }
             }
             else if (IsPointTarget)
             {
