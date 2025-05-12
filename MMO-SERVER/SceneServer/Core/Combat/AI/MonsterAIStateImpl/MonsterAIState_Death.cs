@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SceneServer.Core.Combat.AI.MonsterAIStateImpl
 {
-    public class MonsterAIState_Dead : MonsterAIState
+    public class MonsterAIState_Death : MonsterAIState
     {
         public override void Enter()
         {

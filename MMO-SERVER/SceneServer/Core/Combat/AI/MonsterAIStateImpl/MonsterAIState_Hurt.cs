@@ -20,7 +20,7 @@ namespace SceneServer.Core.Combat.AI.MonsterAIStateImpl
             curWaitTime -= deltaTime;
             if(curWaitTime <= 0f)
             {
-                if (monsterAI.Monster.CurHP / monsterAI.Monster.MaxHP < 0.1f)
+                if (((float)monsterAI.Monster.CurHP / monsterAI.Monster.MaxHP) < 0.05f)
                 {
                     monsterAI.ChangeState(MonsterState.Flee);
                 }

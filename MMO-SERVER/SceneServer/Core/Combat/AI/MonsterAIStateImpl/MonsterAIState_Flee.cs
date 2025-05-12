@@ -22,6 +22,11 @@ namespace SceneServer.Core.Combat.AI.MonsterAIStateImpl
         }
         public override void Update(float deltatime)
         {
+            if(monsterAI.Target == null)
+            {
+                monsterAI.ChangeState(MonsterState.Patrol);
+                goto End;
+            }
 
             if (monsterAI.Monster.CurHP / monsterAI.Monster.MaxHP > 0.5f)
             {

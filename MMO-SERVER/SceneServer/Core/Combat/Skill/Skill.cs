@@ -216,7 +216,7 @@ namespace SceneServer.Core.Combat.Skills
             if (IsTarget && Define.IsGroupAttack)       // 单体群攻
             {
                 var sce = new SCEntity(Owner);
-                targets = GetAttackAreaEntitysNoOwner(Define.EffectAreaType, targetSco);
+                targets = GetAttackAreaEntitys(Define.EffectAreaType, targetSco);
 
             }
             else if (IsTarget)                         // 单体
@@ -230,11 +230,11 @@ namespace SceneServer.Core.Combat.Skills
             }
             else if (IsPointTarget)
             {
-                targets = GetAttackAreaEntitysNoOwner(Define.EffectAreaType, targetSco);
+                targets = GetAttackAreaEntitys(Define.EffectAreaType, targetSco);
             }
             else if (IsNoTarget)
             {
-                targets = GetAttackAreaEntitysNoOwner(Define.EffectAreaType, targetSco);
+                targets = GetAttackAreaEntitys(Define.EffectAreaType, targetSco);
             }
 
             // 2.对目标造成伤害
@@ -327,8 +327,7 @@ namespace SceneServer.Core.Combat.Skills
             //}
         }
 
-
-        private List<SceneActor> GetAttackAreaEntitysNoOwner(string EffectAreaType, SCObject targetSco)
+        private List<SceneActor> GetAttackAreaEntitys(string EffectAreaType, SCObject targetSco)
         {
             List<SceneActor> result = new();
             if (IsTarget)
@@ -341,10 +340,12 @@ namespace SceneServer.Core.Combat.Skills
                 else if (Define.EffectAreaType == "圆形")
                 {
                     result = AreaEntitiesFinder.GetEntitiesInCircleAroundSceneActor(Owner, Define.SpellRangeRadius, false).ToList();
-                }else if(Define.EffectAreaType == "矩形")
+                }
+                else if(Define.EffectAreaType == "矩形")
                 {
                     throw new NotImplementedException();
-                }else
+                }
+                else
                 {
                     throw new NotImplementedException();
                 }
@@ -371,7 +372,7 @@ namespace SceneServer.Core.Combat.Skills
             }
             else if (IsPointTarget)
             {
-                //圆形
+                // 圆形
                 if (Define.EffectAreaType == "圆形")
                 {
                     SCPosition scPos = targetSco as SCPosition;
@@ -385,9 +386,7 @@ namespace SceneServer.Core.Combat.Skills
                 }
 
             }
-
             return result;
-
         }
     }
 }

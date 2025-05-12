@@ -77,97 +77,102 @@ namespace HS.Protobuf.Scene {
             "bRI1CgdwYXlMb2FkGAcgASgLMiQuSFMuUHJvdG9idWYuU2NlbmUuQWN0b3JT",
             "dGF0ZVBheUxvYWQiZQofQWN0b3JDaGFuZ2VUcmFuc2Zvcm1EYXRhUGF5TG9h",
             "ZBIVCg12ZXJ0aWNhbFNwZWVkGAEgASgFEhcKD2hvcml6b250YWxTcGVlZBgC",
-            "IAEoBRISCgpoaWdodFNwZWVkGAMgASgFIuABCh9BY3RvckNoYW5nZVRyYW5z",
+            "IAEoBRISCgpoaWdodFNwZWVkGAMgASgFIpcCCh9BY3RvckNoYW5nZVRyYW5z",
             "Zm9ybURhdGFSZXF1ZXN0EhEKCXNlc3Npb25JZBgBIAEoCRIQCghlbnRpdHlJ",
-            "ZBgCIAEoBRIRCgl0aW1lc3RhbXAYAyABKAMSQAoRb3JpZ2luYWxUcmFuc2Zv",
-            "cm0YBCABKAsyJS5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRUcmFuc2Zv",
-            "cm0SQwoHcGF5TG9hZBgFIAEoCzIyLkhTLlByb3RvYnVmLlNjZW5lLkFjdG9y",
-            "Q2hhbmdlVHJhbnNmb3JtRGF0YVBheUxvYWQi8gEKIEFjdG9yQ2hhbmdlVHJh",
-            "bnNmb3JtRGF0YVJlc3BvbnNlEhEKCXNlc3Npb25JZBgBIAEoCRIPCgdzY2Vu",
-            "ZUlkGAIgASgFEhAKCGVudGl0eUlkGAMgASgFEhEKCXRpbWVzdGFtcBgEIAEo",
-            "AxJAChFvcmlnaW5hbFRyYW5zZm9ybRgFIAEoCzIlLkhTLlByb3RvYnVmLlNj",
-            "ZW5lRW50aXR5Lk5ldFRyYW5zZm9ybRJDCgdwYXlMb2FkGAYgASgLMjIuSFMu",
-            "UHJvdG9idWYuU2NlbmUuQWN0b3JDaGFuZ2VUcmFuc2Zvcm1EYXRhUGF5TG9h",
-            "ZCJcChNTY2VuZURlbGl2ZXJSZXF1ZXN0EhEKCXNlc3Npb25JZBgBIAEoCRIP",
-            "CgdzY2VuZUlkGAIgASgFEhAKCGVudGl0eUlkGAMgASgFEg8KB3BvaW50SWQY",
-            "BCABKAUiUAoUU2NlbmVEZWxpdmVyUmVzcG9uc2USEQoJc2Vzc2lvbklkGAEg",
-            "ASgJEhIKCnJlc3VsdENvZGUYAiABKAUSEQoJcmVzdWx0TXNnGAMgASgJIj0K",
-            "FkNoYXJhY3RlclJldml2ZVJlcXVlc3QSEQoJc2Vzc2lvbklkGAEgASgJEhAK",
-            "CGVudGl0eUlkGAIgASgFIlMKF0NoYXJhY3RlclJldml2ZVJlc3BvbnNlEhEK",
-            "CXNlc3Npb25JZBgBIAEoCRISCgpyZXN1bHRDb2RlGAIgASgFEhEKCXJlc3Vs",
-            "dE1zZxgDIAEoCSIzCg1TY2VuZTJHYXRlTXNnEhEKCXNlc3Npb25JZBgBIAEo",
-            "CRIPCgdjb250ZW50GAIgASgMIs0DChNBY3RvclByb3BlcnR5VXBkYXRlEhAK",
-            "CGVudGl0eUlkGAEgASgFEkUKDHByb3BlcnR5VHlwZRgCIAEoDjIvLkhTLlBy",
-            "b3RvYnVmLlNjZW5lLkFjdG9yUHJvcGVydHlVcGRhdGUuUHJvcFR5cGUSRgoI",
-            "b2xkVmFsdWUYAyABKAsyNC5IUy5Qcm90b2J1Zi5TY2VuZS5BY3RvclByb3Bl",
-            "cnR5VXBkYXRlLlByb3BlcnR5VmFsdWUSRgoIbmV3VmFsdWUYBCABKAsyNC5I",
-            "Uy5Qcm90b2J1Zi5TY2VuZS5BY3RvclByb3BlcnR5VXBkYXRlLlByb3BlcnR5",
-            "VmFsdWUacgoNUHJvcGVydHlWYWx1ZRITCglpbnRfdmFsdWUYASABKAVIABIU",
-            "Cgpsb25nX3ZhbHVlGAIgASgDSAASFQoLZmxvYXRfdmFsdWUYAyABKAJIABIW",
-            "CgxzdHJpbmdfdmFsdWUYBCABKAlIAEIHCgV2YWx1ZSJZCghQcm9wVHlwZRII",
-            "CgROb25lEAASBgoCSFAQARIGCgJNUBACEgkKBUhQTWF4EAMSCQoFTVBNYXgQ",
-            "BBIJCgVTcGVlZBAFEgkKBUxldmVsEAYSBwoDRXhwEAciagoaQWN0b3JQcm9w",
-            "ZXJ0eVVwZGF0ZVJzcG9uc2USEQoJc2Vzc2lvbklkGAEgASgJEjkKCXByb3Bl",
-            "cnR5cxgCIAMoCzImLkhTLlByb3RvYnVmLlNjZW5lLkFjdG9yUHJvcGVydHlV",
-            "cGRhdGUiaQocU3BhY2VDaGFyYWN0ZXJzRW50ZXJSZXNwb25zZRIPCgdzcGFj",
-            "ZUlkGAEgASgFEjgKDWNoYXJhY3Rlckxpc3QYAiADKAsyIS5IUy5Qcm90b2J1",
-            "Zi5TY2VuZUVudGl0eS5OZXRBY3RvciK6AQoSU3BhY2VFbnRlclJlc3BvbnNl",
-            "EjQKCWNoYXJhY3RlchgBIAEoCzIhLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5",
-            "Lk5ldEFjdG9yEjgKDWNoYXJhY3Rlckxpc3QYAiADKAsyIS5IUy5Qcm90b2J1",
-            "Zi5TY2VuZUVudGl0eS5OZXRBY3RvchI0CgllSXRlbUxpc3QYAyADKAsyIS5I",
-            "Uy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRFSXRlbSIsChhTcGFjZUVudGl0",
-            "eUxlYXZlUmVzcG9uc2USEAoIZW50aXR5SWQYASABKAUikwEKC05FbnRpdHlT",
-            "eW5jEjIKBmVudGl0eRgBIAEoCzIiLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5",
-            "Lk5ldEVudGl0eRINCgVmb3JjZRgCIAEoCBIyCgVzdGF0ZRgDIAEoDjIjLkhT",
-            "LlByb3RvYnVmLlNjZW5lRW50aXR5LkFjdG9yU3RhdGUSDQoFZmxhZzEYBCAB",
-            "KAUiTAoWU3BhY2VFbnRpdHlTeW5jUmVxdWVzdBIyCgplbnRpdHlTeW5jGAEg",
-            "ASgLMh4uSFMuUHJvdG9idWYuU2NlbmUuTkVudGl0eVN5bmMiTQoXU3BhY2VF",
-            "bnRpdHlTeW5jUmVzcG9uc2USMgoKZW50aXR5U3luYxgBIAEoCzIeLkhTLlBy",
-            "b3RvYnVmLlNjZW5lLk5FbnRpdHlTeW5jIlYKIEN0bENsaWVudFNwYWNlRW50",
-            "aXR5U3luY1Jlc3BvbnNlEjIKCmVudGl0eVN5bmMYASABKAsyHi5IUy5Qcm90",
-            "b2J1Zi5TY2VuZS5ORW50aXR5U3luYyI3ChNTcGFjZURlbGl2ZXJSZXF1ZXN0",
-            "Eg8KB3NwYWNlSWQYASABKAUSDwoHcG9pbnRJZBgCIAEoBSI9ChRTcGFjZURl",
-            "bGl2ZXJSZXNwb25zZRISCgpyZXN1bHRDb2RlGAEgASgFEhEKCXJlc3VsdE1z",
-            "ZxgCIAEoCSIhCg1SZXZpdmVSZXF1ZXN0EhAKCGVudGl0eUlkGAEgASgFIkUK",
-            "DlJldml2ZVJlc3BvbnNlEjMKC25FbnRpdHlTeWNuGAEgASgLMh4uSFMuUHJv",
-            "dG9idWYuU2NlbmUuTkVudGl0eVN5bmMiQwoMTmV0RUl0ZW1TeW5jEjMKCG5l",
-            "dEVJdGVtGAEgASgLMiEuSFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuTmV0RUl0",
-            "ZW0iTQoWU3BhY2VJdGVtRW50ZXJSZXNwb25zZRIzCghuZXRFSXRlbRgBIAEo",
-            "CzIhLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5Lk5ldEVJdGVtKrsHCgxTY2Vu",
-            "ZVByb3RvY2wSFgoSU0NFTkVfUFJPVE9DTF9OT05FEAASKQojU0NFTkVfUFJP",
-            "VE9DTF9SRUdJU1RFUl9UT19TQ0VORV9SRVEQwbgCEioKJFNDRU5FX1BST1RP",
-            "Q0xfUkVHSVNURVJfVE9fU0NFTkVfUkVTUBDCuAISLQonU0NFTkVfUFJPVE9D",
-            "TF9DSEFSQUNURVJfRU5URVJfU0NFTkVfUkVREMO4AhIzCi1TQ0VORV9QUk9U",
-            "T0NMX1NFTEZfQ0hBUkFDVEVSX0VOVEVSX1NDRU5FX1JFU1AQxLgCEjEKK1ND",
-            "RU5FX1BST1RPQ0xfT1RIRVJfRU5USVRZX0VOVEVSX1NDRU5FX1JFU1AQxbgC",
-            "Ei0KJ1NDRU5FX1BST1RPQ0xfQ0hBUkFDVEVSX0xFQVZFX1NDRU5FX1JFURDG",
-            "uAISLgooU0NFTkVfUFJPVE9DTF9DSEFSQUNURVJfTEVBVkVfU0NFTkVfUkVT",
-            "UBDHuAISMQorU0NFTkVfUFJPVE9DTF9PVEhFUl9FTlRJVFlfTEVBVkVfU0NF",
-            "TkVfUkVTUBDIuAISKQojU0NFTkVfUFJPVE9DTF9BQ1RPUl9DSEFOR0VfTU9E",
-            "RV9SRVEQybgCEioKJFNDRU5FX1BST1RPQ0xfQUNUT1JfQ0hBTkdFX01PREVf",
-            "UkVTUBDKuAISKgokU0NFTkVfUFJPVE9DTF9BQ1RPUl9DSEFOR0VfU1RBVEVf",
-            "UkVREMu4AhIrCiVTQ0VORV9QUk9UT0NMX0FDVE9SX0NIQU5HRV9TVEFURV9S",
-            "RVNQEMy4AhIzCi1TQ0VORV9QUk9UT0NMX0FDVE9SX0NIQU5HRV9UUkFOU0ZP",
-            "Uk1fREFUQV9SRVEQzbgCEjQKLlNDRU5FX1BST1RPQ0xfQUNUT1JfQ0hBTkdF",
-            "X1RSQU5TRk9STV9EQVRBX1JFU1AQzrgCEiUKH1NDRU5FX1BST1RPQ0xfU0NF",
-            "TkVfREVMSVZFUl9SRVEQz7gCEiYKIFNDRU5FX1BST1RPQ0xfU0NFTkVfREVM",
-            "SVZFUl9SRVNQENC4AhIoCiJTQ0VORV9QUk9UT0NMX0NIQVJBQ1RFUl9SRVZJ",
-            "VkVfUkVRENG4AhIpCiNTQ0VORV9QUk9UT0NMX0NIQVJBQ1RFUl9SRVZJVkVf",
-            "UkVTUBDSuAISJAoeU0NFTkVfUFJPVE9DTF9TQ0VORV8yX0dBVEVfTVNHENO4",
-            "AhIuCihTQ0VORV9QUk9UT0NMX0FDVE9SX1BST1BFUlRZX1VQREFURV9SRVNQ",
-            "ENa4AirLAQoJU2NlbmVUeXBlEhMKD1NDRU5FX1RZUEVfTlVMTBAAEhMKD1ND",
-            "RU5FX1RZUEVfQ0lUWRABEhQKEFNDRU5FX1RZUEVfRklFTEQQAhIdChlTQ0VO",
-            "RV9UWVBFX1NJTkdMRV9NSVNTSU9OEAMSHAoYU0NFTkVfVFlQRV9NVUxUSV9N",
-            "SVNTSU9OEAQSFAoQU0NFTkVfVFlQRV9MT0dJThAFEhcKE1NDRU5FX1RZUEVf",
-            "S0lOX0xBTkQQBhISCg5TQ0VORV9UWVBFX0FMTBAIKuUBChlOZXRBY290ckV2",
-            "YWRlU3RhdGVQYXlsb2FkEiYKIk5FVF9BQ1RPUl9FVkFERV9TVEFURV9QQVlM",
-            "T0FEX05PTkUQABImCiJORVRfQUNUT1JfRVZBREVfU1RBVEVfUEFZTE9BRF9M",
-            "RUZUEAESJwojTkVUX0FDVE9SX0VWQURFX1NUQVRFX1BBWUxPQURfUklHSFQQ",
-            "AhInCiNORVRfQUNUT1JfRVZBREVfU1RBVEVfUEFZTE9BRF9GUk9OVBADEiYK",
-            "Ik5FVF9BQ1RPUl9FVkFERV9TVEFURV9QQVlMT0FEX0JBQ0sQBGIGcHJvdG8z"));
+            "ZBgCIAEoBRIRCgl0aW1lc3RhbXAYAyABKAMSNQoFc3RhdGUYBCABKA4yJi5I",
+            "Uy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRBY3RvclN0YXRlEkAKEW9yaWdp",
+            "bmFsVHJhbnNmb3JtGAUgASgLMiUuSFMuUHJvdG9idWYuU2NlbmVFbnRpdHku",
+            "TmV0VHJhbnNmb3JtEkMKB3BheUxvYWQYBiABKAsyMi5IUy5Qcm90b2J1Zi5T",
+            "Y2VuZS5BY3RvckNoYW5nZVRyYW5zZm9ybURhdGFQYXlMb2FkIqkCCiBBY3Rv",
+            "ckNoYW5nZVRyYW5zZm9ybURhdGFSZXNwb25zZRIRCglzZXNzaW9uSWQYASAB",
+            "KAkSDwoHc2NlbmVJZBgCIAEoBRIQCghlbnRpdHlJZBgDIAEoBRIRCgl0aW1l",
+            "c3RhbXAYBCABKAMSNQoFc3RhdGUYBSABKA4yJi5IUy5Qcm90b2J1Zi5TY2Vu",
+            "ZUVudGl0eS5OZXRBY3RvclN0YXRlEkAKEW9yaWdpbmFsVHJhbnNmb3JtGAYg",
+            "ASgLMiUuSFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuTmV0VHJhbnNmb3JtEkMK",
+            "B3BheUxvYWQYByABKAsyMi5IUy5Qcm90b2J1Zi5TY2VuZS5BY3RvckNoYW5n",
+            "ZVRyYW5zZm9ybURhdGFQYXlMb2FkIlwKE1NjZW5lRGVsaXZlclJlcXVlc3QS",
+            "EQoJc2Vzc2lvbklkGAEgASgJEg8KB3NjZW5lSWQYAiABKAUSEAoIZW50aXR5",
+            "SWQYAyABKAUSDwoHcG9pbnRJZBgEIAEoBSJQChRTY2VuZURlbGl2ZXJSZXNw",
+            "b25zZRIRCglzZXNzaW9uSWQYASABKAkSEgoKcmVzdWx0Q29kZRgCIAEoBRIR",
+            "CglyZXN1bHRNc2cYAyABKAkiPQoWQ2hhcmFjdGVyUmV2aXZlUmVxdWVzdBIR",
+            "CglzZXNzaW9uSWQYASABKAkSEAoIZW50aXR5SWQYAiABKAUiUwoXQ2hhcmFj",
+            "dGVyUmV2aXZlUmVzcG9uc2USEQoJc2Vzc2lvbklkGAEgASgJEhIKCnJlc3Vs",
+            "dENvZGUYAiABKAUSEQoJcmVzdWx0TXNnGAMgASgJIjMKDVNjZW5lMkdhdGVN",
+            "c2cSEQoJc2Vzc2lvbklkGAEgASgJEg8KB2NvbnRlbnQYAiABKAwi4gIKE0Fj",
+            "dG9yUHJvcGVydHlVcGRhdGUSEAoIZW50aXR5SWQYASABKAUSNQoMcHJvcGVy",
+            "dHlUeXBlGAIgASgOMh8uSFMuUHJvdG9idWYuU2NlbmUuUHJvcGVydHlUeXBl",
+            "EkYKCG9sZFZhbHVlGAMgASgLMjQuSFMuUHJvdG9idWYuU2NlbmUuQWN0b3JQ",
+            "cm9wZXJ0eVVwZGF0ZS5Qcm9wZXJ0eVZhbHVlEkYKCG5ld1ZhbHVlGAQgASgL",
+            "MjQuSFMuUHJvdG9idWYuU2NlbmUuQWN0b3JQcm9wZXJ0eVVwZGF0ZS5Qcm9w",
+            "ZXJ0eVZhbHVlGnIKDVByb3BlcnR5VmFsdWUSEwoJaW50X3ZhbHVlGAEgASgF",
+            "SAASFAoKbG9uZ192YWx1ZRgCIAEoA0gAEhUKC2Zsb2F0X3ZhbHVlGAMgASgC",
+            "SAASFgoMc3RyaW5nX3ZhbHVlGAQgASgJSABCBwoFdmFsdWUiagoaQWN0b3JQ",
+            "cm9wZXJ0eVVwZGF0ZVJzcG9uc2USEQoJc2Vzc2lvbklkGAEgASgJEjkKCXBy",
+            "b3BlcnR5cxgCIAMoCzImLkhTLlByb3RvYnVmLlNjZW5lLkFjdG9yUHJvcGVy",
+            "dHlVcGRhdGUiaQocU3BhY2VDaGFyYWN0ZXJzRW50ZXJSZXNwb25zZRIPCgdz",
+            "cGFjZUlkGAEgASgFEjgKDWNoYXJhY3Rlckxpc3QYAiADKAsyIS5IUy5Qcm90",
+            "b2J1Zi5TY2VuZUVudGl0eS5OZXRBY3RvciK6AQoSU3BhY2VFbnRlclJlc3Bv",
+            "bnNlEjQKCWNoYXJhY3RlchgBIAEoCzIhLkhTLlByb3RvYnVmLlNjZW5lRW50",
+            "aXR5Lk5ldEFjdG9yEjgKDWNoYXJhY3Rlckxpc3QYAiADKAsyIS5IUy5Qcm90",
+            "b2J1Zi5TY2VuZUVudGl0eS5OZXRBY3RvchI0CgllSXRlbUxpc3QYAyADKAsy",
+            "IS5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRFSXRlbSIsChhTcGFjZUVu",
+            "dGl0eUxlYXZlUmVzcG9uc2USEAoIZW50aXR5SWQYASABKAUikwEKC05FbnRp",
+            "dHlTeW5jEjIKBmVudGl0eRgBIAEoCzIiLkhTLlByb3RvYnVmLlNjZW5lRW50",
+            "aXR5Lk5ldEVudGl0eRINCgVmb3JjZRgCIAEoCBIyCgVzdGF0ZRgDIAEoDjIj",
+            "LkhTLlByb3RvYnVmLlNjZW5lRW50aXR5LkFjdG9yU3RhdGUSDQoFZmxhZzEY",
+            "BCABKAUiTAoWU3BhY2VFbnRpdHlTeW5jUmVxdWVzdBIyCgplbnRpdHlTeW5j",
+            "GAEgASgLMh4uSFMuUHJvdG9idWYuU2NlbmUuTkVudGl0eVN5bmMiTQoXU3Bh",
+            "Y2VFbnRpdHlTeW5jUmVzcG9uc2USMgoKZW50aXR5U3luYxgBIAEoCzIeLkhT",
+            "LlByb3RvYnVmLlNjZW5lLk5FbnRpdHlTeW5jIlYKIEN0bENsaWVudFNwYWNl",
+            "RW50aXR5U3luY1Jlc3BvbnNlEjIKCmVudGl0eVN5bmMYASABKAsyHi5IUy5Q",
+            "cm90b2J1Zi5TY2VuZS5ORW50aXR5U3luYyI3ChNTcGFjZURlbGl2ZXJSZXF1",
+            "ZXN0Eg8KB3NwYWNlSWQYASABKAUSDwoHcG9pbnRJZBgCIAEoBSI9ChRTcGFj",
+            "ZURlbGl2ZXJSZXNwb25zZRISCgpyZXN1bHRDb2RlGAEgASgFEhEKCXJlc3Vs",
+            "dE1zZxgCIAEoCSIhCg1SZXZpdmVSZXF1ZXN0EhAKCGVudGl0eUlkGAEgASgF",
+            "IkUKDlJldml2ZVJlc3BvbnNlEjMKC25FbnRpdHlTeWNuGAEgASgLMh4uSFMu",
+            "UHJvdG9idWYuU2NlbmUuTkVudGl0eVN5bmMiQwoMTmV0RUl0ZW1TeW5jEjMK",
+            "CG5ldEVJdGVtGAEgASgLMiEuSFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuTmV0",
+            "RUl0ZW0iTQoWU3BhY2VJdGVtRW50ZXJSZXNwb25zZRIzCghuZXRFSXRlbRgB",
+            "IAEoCzIhLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5Lk5ldEVJdGVtKrsHCgxT",
+            "Y2VuZVByb3RvY2wSFgoSU0NFTkVfUFJPVE9DTF9OT05FEAASKQojU0NFTkVf",
+            "UFJPVE9DTF9SRUdJU1RFUl9UT19TQ0VORV9SRVEQwbgCEioKJFNDRU5FX1BS",
+            "T1RPQ0xfUkVHSVNURVJfVE9fU0NFTkVfUkVTUBDCuAISLQonU0NFTkVfUFJP",
+            "VE9DTF9DSEFSQUNURVJfRU5URVJfU0NFTkVfUkVREMO4AhIzCi1TQ0VORV9Q",
+            "Uk9UT0NMX1NFTEZfQ0hBUkFDVEVSX0VOVEVSX1NDRU5FX1JFU1AQxLgCEjEK",
+            "K1NDRU5FX1BST1RPQ0xfT1RIRVJfRU5USVRZX0VOVEVSX1NDRU5FX1JFU1AQ",
+            "xbgCEi0KJ1NDRU5FX1BST1RPQ0xfQ0hBUkFDVEVSX0xFQVZFX1NDRU5FX1JF",
+            "URDGuAISLgooU0NFTkVfUFJPVE9DTF9DSEFSQUNURVJfTEVBVkVfU0NFTkVf",
+            "UkVTUBDHuAISMQorU0NFTkVfUFJPVE9DTF9PVEhFUl9FTlRJVFlfTEVBVkVf",
+            "U0NFTkVfUkVTUBDIuAISKQojU0NFTkVfUFJPVE9DTF9BQ1RPUl9DSEFOR0Vf",
+            "TU9ERV9SRVEQybgCEioKJFNDRU5FX1BST1RPQ0xfQUNUT1JfQ0hBTkdFX01P",
+            "REVfUkVTUBDKuAISKgokU0NFTkVfUFJPVE9DTF9BQ1RPUl9DSEFOR0VfU1RB",
+            "VEVfUkVREMu4AhIrCiVTQ0VORV9QUk9UT0NMX0FDVE9SX0NIQU5HRV9TVEFU",
+            "RV9SRVNQEMy4AhIzCi1TQ0VORV9QUk9UT0NMX0FDVE9SX0NIQU5HRV9UUkFO",
+            "U0ZPUk1fREFUQV9SRVEQzbgCEjQKLlNDRU5FX1BST1RPQ0xfQUNUT1JfQ0hB",
+            "TkdFX1RSQU5TRk9STV9EQVRBX1JFU1AQzrgCEiUKH1NDRU5FX1BST1RPQ0xf",
+            "U0NFTkVfREVMSVZFUl9SRVEQz7gCEiYKIFNDRU5FX1BST1RPQ0xfU0NFTkVf",
+            "REVMSVZFUl9SRVNQENC4AhIoCiJTQ0VORV9QUk9UT0NMX0NIQVJBQ1RFUl9S",
+            "RVZJVkVfUkVRENG4AhIpCiNTQ0VORV9QUk9UT0NMX0NIQVJBQ1RFUl9SRVZJ",
+            "VkVfUkVTUBDSuAISJAoeU0NFTkVfUFJPVE9DTF9TQ0VORV8yX0dBVEVfTVNH",
+            "ENO4AhIuCihTQ0VORV9QUk9UT0NMX0FDVE9SX1BST1BFUlRZX1VQREFURV9S",
+            "RVNQENa4AirLAQoJU2NlbmVUeXBlEhMKD1NDRU5FX1RZUEVfTlVMTBAAEhMK",
+            "D1NDRU5FX1RZUEVfQ0lUWRABEhQKEFNDRU5FX1RZUEVfRklFTEQQAhIdChlT",
+            "Q0VORV9UWVBFX1NJTkdMRV9NSVNTSU9OEAMSHAoYU0NFTkVfVFlQRV9NVUxU",
+            "SV9NSVNTSU9OEAQSFAoQU0NFTkVfVFlQRV9MT0dJThAFEhcKE1NDRU5FX1RZ",
+            "UEVfS0lOX0xBTkQQBhISCg5TQ0VORV9UWVBFX0FMTBAIKuUBChlOZXRBY290",
+            "ckV2YWRlU3RhdGVQYXlsb2FkEiYKIk5FVF9BQ1RPUl9FVkFERV9TVEFURV9Q",
+            "QVlMT0FEX05PTkUQABImCiJORVRfQUNUT1JfRVZBREVfU1RBVEVfUEFZTE9B",
+            "RF9MRUZUEAESJwojTkVUX0FDVE9SX0VWQURFX1NUQVRFX1BBWUxPQURfUklH",
+            "SFQQAhInCiNORVRfQUNUT1JfRVZBREVfU1RBVEVfUEFZTE9BRF9GUk9OVBAD",
+            "EiYKIk5FVF9BQ1RPUl9FVkFERV9TVEFURV9QQVlMT0FEX0JBQ0sQBCrPAQoM",
+            "UHJvcGVydHlUeXBlEhYKElBST1BFUlRZX1RZUEVfTk9ORRAAEhQKEFBST1BF",
+            "UlRZX1RZUEVfSFAQARIUChBQUk9QRVJUWV9UWVBFX01QEAISGAoUUFJPUEVS",
+            "VFlfVFlQRV9NQVhfSFAQAxIYChRQUk9QRVJUWV9UWVBFX01BWF9NUBAEEhcK",
+            "E1BST1BFUlRZX1RZUEVfU1BFRUQQBRIVChFQUk9QRVJUWV9UWVBFX0VYUBAG",
+            "EhcKE1BST1BFUlRZX1RZUEVfTEVWRUwQB2IGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::HS.Protobuf.Common.CommonReflection.Descriptor, global::HS.Protobuf.SceneEntity.SceneEntityReflection.Descriptor, global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterReflection.Descriptor, },
-          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.Scene.SceneProtocl), typeof(global::HS.Protobuf.Scene.SceneType), typeof(global::HS.Protobuf.Scene.NetAcotrEvadeStatePayload), }, null, new pbr::GeneratedClrTypeInfo[] {
+          new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.Scene.SceneProtocl), typeof(global::HS.Protobuf.Scene.SceneType), typeof(global::HS.Protobuf.Scene.NetAcotrEvadeStatePayload), typeof(global::HS.Protobuf.Scene.PropertyType), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.RegisterToSceneRequest), global::HS.Protobuf.Scene.RegisterToSceneRequest.Parser, new[]{ "ServerInfoNode" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.RegisterToSceneResponse), global::HS.Protobuf.Scene.RegisterToSceneResponse.Parser, new[]{ "ResultCode", "ResultMsg", "SceneToken" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.CharacterEnterSceneRequest), global::HS.Protobuf.Scene.CharacterEnterSceneRequest.Parser, new[]{ "TaskId", "SessionId", "GameGateServerId", "DbChrNode" }, null, null, null, null),
@@ -183,14 +188,14 @@ namespace HS.Protobuf.Scene {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeStateRequest), global::HS.Protobuf.Scene.ActorChangeStateRequest.Parser, new[]{ "SessionId", "EntityId", "Timestamp", "State", "OriginalTransform", "PayLoad" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeStateResponse), global::HS.Protobuf.Scene.ActorChangeStateResponse.Parser, new[]{ "SessionId", "SceneId", "EntityId", "Timestamp", "State", "OriginalTransform", "PayLoad" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeTransformDataPayLoad), global::HS.Protobuf.Scene.ActorChangeTransformDataPayLoad.Parser, new[]{ "VerticalSpeed", "HorizontalSpeed", "HightSpeed" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeTransformDataRequest), global::HS.Protobuf.Scene.ActorChangeTransformDataRequest.Parser, new[]{ "SessionId", "EntityId", "Timestamp", "OriginalTransform", "PayLoad" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeTransformDataResponse), global::HS.Protobuf.Scene.ActorChangeTransformDataResponse.Parser, new[]{ "SessionId", "SceneId", "EntityId", "Timestamp", "OriginalTransform", "PayLoad" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeTransformDataRequest), global::HS.Protobuf.Scene.ActorChangeTransformDataRequest.Parser, new[]{ "SessionId", "EntityId", "Timestamp", "State", "OriginalTransform", "PayLoad" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorChangeTransformDataResponse), global::HS.Protobuf.Scene.ActorChangeTransformDataResponse.Parser, new[]{ "SessionId", "SceneId", "EntityId", "Timestamp", "State", "OriginalTransform", "PayLoad" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.SceneDeliverRequest), global::HS.Protobuf.Scene.SceneDeliverRequest.Parser, new[]{ "SessionId", "SceneId", "EntityId", "PointId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.SceneDeliverResponse), global::HS.Protobuf.Scene.SceneDeliverResponse.Parser, new[]{ "SessionId", "ResultCode", "ResultMsg" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.CharacterReviveRequest), global::HS.Protobuf.Scene.CharacterReviveRequest.Parser, new[]{ "SessionId", "EntityId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.CharacterReviveResponse), global::HS.Protobuf.Scene.CharacterReviveResponse.Parser, new[]{ "SessionId", "ResultCode", "ResultMsg" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.Scene2GateMsg), global::HS.Protobuf.Scene.Scene2GateMsg.Parser, new[]{ "SessionId", "Content" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorPropertyUpdate), global::HS.Protobuf.Scene.ActorPropertyUpdate.Parser, new[]{ "EntityId", "PropertyType", "OldValue", "NewValue" }, null, new[]{ typeof(global::HS.Protobuf.Scene.ActorPropertyUpdate.Types.PropType) }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorPropertyUpdate.Types.PropertyValue), global::HS.Protobuf.Scene.ActorPropertyUpdate.Types.PropertyValue.Parser, new[]{ "IntValue", "LongValue", "FloatValue", "StringValue" }, new[]{ "Value" }, null, null, null)}),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorPropertyUpdate), global::HS.Protobuf.Scene.ActorPropertyUpdate.Parser, new[]{ "EntityId", "PropertyType", "OldValue", "NewValue" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorPropertyUpdate.Types.PropertyValue), global::HS.Protobuf.Scene.ActorPropertyUpdate.Types.PropertyValue.Parser, new[]{ "IntValue", "LongValue", "FloatValue", "StringValue" }, new[]{ "Value" }, null, null, null)}),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.ActorPropertyUpdateRsponse), global::HS.Protobuf.Scene.ActorPropertyUpdateRsponse.Parser, new[]{ "SessionId", "Propertys" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.SpaceCharactersEnterResponse), global::HS.Protobuf.Scene.SpaceCharactersEnterResponse.Parser, new[]{ "SpaceId", "CharacterList" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.Scene.SpaceEnterResponse), global::HS.Protobuf.Scene.SpaceEnterResponse.Parser, new[]{ "Character", "CharacterList", "EItemList" }, null, null, null, null),
@@ -333,6 +338,23 @@ namespace HS.Protobuf.Scene {
     [pbr::OriginalName("NET_ACTOR_EVADE_STATE_PAYLOAD_RIGHT")] NetActorEvadeStatePayloadRight = 2,
     [pbr::OriginalName("NET_ACTOR_EVADE_STATE_PAYLOAD_FRONT")] NetActorEvadeStatePayloadFront = 3,
     [pbr::OriginalName("NET_ACTOR_EVADE_STATE_PAYLOAD_BACK")] NetActorEvadeStatePayloadBack = 4,
+  }
+
+  /// <summary>
+  /// 属性类型枚举
+  /// </summary>
+  public enum PropertyType {
+    [pbr::OriginalName("PROPERTY_TYPE_NONE")] None = 0,
+    [pbr::OriginalName("PROPERTY_TYPE_HP")] Hp = 1,
+    [pbr::OriginalName("PROPERTY_TYPE_MP")] Mp = 2,
+    [pbr::OriginalName("PROPERTY_TYPE_MAX_HP")] MaxHp = 3,
+    [pbr::OriginalName("PROPERTY_TYPE_MAX_MP")] MaxMp = 4,
+    [pbr::OriginalName("PROPERTY_TYPE_SPEED")] Speed = 5,
+    [pbr::OriginalName("PROPERTY_TYPE_EXP")] Exp = 6,
+    /// <summary>
+    ///幸运、罪恶、技能点
+    /// </summary>
+    [pbr::OriginalName("PROPERTY_TYPE_LEVEL")] Level = 7,
   }
 
   #endregion
@@ -4783,6 +4805,7 @@ namespace HS.Protobuf.Scene {
       sessionId_ = other.sessionId_;
       entityId_ = other.entityId_;
       timestamp_ = other.timestamp_;
+      state_ = other.state_;
       originalTransform_ = other.originalTransform_ != null ? other.originalTransform_.Clone() : null;
       payLoad_ = other.payLoad_ != null ? other.payLoad_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -4830,8 +4853,20 @@ namespace HS.Protobuf.Scene {
       }
     }
 
+    /// <summary>Field number for the "state" field.</summary>
+    public const int StateFieldNumber = 4;
+    private global::HS.Protobuf.SceneEntity.NetActorState state_ = global::HS.Protobuf.SceneEntity.NetActorState.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::HS.Protobuf.SceneEntity.NetActorState State {
+      get { return state_; }
+      set {
+        state_ = value;
+      }
+    }
+
     /// <summary>Field number for the "originalTransform" field.</summary>
-    public const int OriginalTransformFieldNumber = 4;
+    public const int OriginalTransformFieldNumber = 5;
     private global::HS.Protobuf.SceneEntity.NetTransform originalTransform_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -4843,7 +4878,7 @@ namespace HS.Protobuf.Scene {
     }
 
     /// <summary>Field number for the "payLoad" field.</summary>
-    public const int PayLoadFieldNumber = 5;
+    public const int PayLoadFieldNumber = 6;
     private global::HS.Protobuf.Scene.ActorChangeTransformDataPayLoad payLoad_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -4872,6 +4907,7 @@ namespace HS.Protobuf.Scene {
       if (SessionId != other.SessionId) return false;
       if (EntityId != other.EntityId) return false;
       if (Timestamp != other.Timestamp) return false;
+      if (State != other.State) return false;
       if (!object.Equals(OriginalTransform, other.OriginalTransform)) return false;
       if (!object.Equals(PayLoad, other.PayLoad)) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -4884,6 +4920,7 @@ namespace HS.Protobuf.Scene {
       if (SessionId.Length != 0) hash ^= SessionId.GetHashCode();
       if (EntityId != 0) hash ^= EntityId.GetHashCode();
       if (Timestamp != 0L) hash ^= Timestamp.GetHashCode();
+      if (State != global::HS.Protobuf.SceneEntity.NetActorState.None) hash ^= State.GetHashCode();
       if (originalTransform_ != null) hash ^= OriginalTransform.GetHashCode();
       if (payLoad_ != null) hash ^= PayLoad.GetHashCode();
       if (_unknownFields != null) {
@@ -4916,12 +4953,16 @@ namespace HS.Protobuf.Scene {
         output.WriteRawTag(24);
         output.WriteInt64(Timestamp);
       }
+      if (State != global::HS.Protobuf.SceneEntity.NetActorState.None) {
+        output.WriteRawTag(32);
+        output.WriteEnum((int) State);
+      }
       if (originalTransform_ != null) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(42);
         output.WriteMessage(OriginalTransform);
       }
       if (payLoad_ != null) {
-        output.WriteRawTag(42);
+        output.WriteRawTag(50);
         output.WriteMessage(PayLoad);
       }
       if (_unknownFields != null) {
@@ -4946,12 +4987,16 @@ namespace HS.Protobuf.Scene {
         output.WriteRawTag(24);
         output.WriteInt64(Timestamp);
       }
+      if (State != global::HS.Protobuf.SceneEntity.NetActorState.None) {
+        output.WriteRawTag(32);
+        output.WriteEnum((int) State);
+      }
       if (originalTransform_ != null) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(42);
         output.WriteMessage(OriginalTransform);
       }
       if (payLoad_ != null) {
-        output.WriteRawTag(42);
+        output.WriteRawTag(50);
         output.WriteMessage(PayLoad);
       }
       if (_unknownFields != null) {
@@ -4972,6 +5017,9 @@ namespace HS.Protobuf.Scene {
       }
       if (Timestamp != 0L) {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(Timestamp);
+      }
+      if (State != global::HS.Protobuf.SceneEntity.NetActorState.None) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) State);
       }
       if (originalTransform_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(OriginalTransform);
@@ -4999,6 +5047,9 @@ namespace HS.Protobuf.Scene {
       }
       if (other.Timestamp != 0L) {
         Timestamp = other.Timestamp;
+      }
+      if (other.State != global::HS.Protobuf.SceneEntity.NetActorState.None) {
+        State = other.State;
       }
       if (other.originalTransform_ != null) {
         if (originalTransform_ == null) {
@@ -5039,14 +5090,18 @@ namespace HS.Protobuf.Scene {
             Timestamp = input.ReadInt64();
             break;
           }
-          case 34: {
+          case 32: {
+            State = (global::HS.Protobuf.SceneEntity.NetActorState) input.ReadEnum();
+            break;
+          }
+          case 42: {
             if (originalTransform_ == null) {
               OriginalTransform = new global::HS.Protobuf.SceneEntity.NetTransform();
             }
             input.ReadMessage(OriginalTransform);
             break;
           }
-          case 42: {
+          case 50: {
             if (payLoad_ == null) {
               PayLoad = new global::HS.Protobuf.Scene.ActorChangeTransformDataPayLoad();
             }
@@ -5080,14 +5135,18 @@ namespace HS.Protobuf.Scene {
             Timestamp = input.ReadInt64();
             break;
           }
-          case 34: {
+          case 32: {
+            State = (global::HS.Protobuf.SceneEntity.NetActorState) input.ReadEnum();
+            break;
+          }
+          case 42: {
             if (originalTransform_ == null) {
               OriginalTransform = new global::HS.Protobuf.SceneEntity.NetTransform();
             }
             input.ReadMessage(OriginalTransform);
             break;
           }
-          case 42: {
+          case 50: {
             if (payLoad_ == null) {
               PayLoad = new global::HS.Protobuf.Scene.ActorChangeTransformDataPayLoad();
             }
@@ -5139,6 +5198,7 @@ namespace HS.Protobuf.Scene {
       sceneId_ = other.sceneId_;
       entityId_ = other.entityId_;
       timestamp_ = other.timestamp_;
+      state_ = other.state_;
       originalTransform_ = other.originalTransform_ != null ? other.originalTransform_.Clone() : null;
       payLoad_ = other.payLoad_ != null ? other.payLoad_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -5198,8 +5258,20 @@ namespace HS.Protobuf.Scene {
       }
     }
 
+    /// <summary>Field number for the "state" field.</summary>
+    public const int StateFieldNumber = 5;
+    private global::HS.Protobuf.SceneEntity.NetActorState state_ = global::HS.Protobuf.SceneEntity.NetActorState.None;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::HS.Protobuf.SceneEntity.NetActorState State {
+      get { return state_; }
+      set {
+        state_ = value;
+      }
+    }
+
     /// <summary>Field number for the "originalTransform" field.</summary>
-    public const int OriginalTransformFieldNumber = 5;
+    public const int OriginalTransformFieldNumber = 6;
     private global::HS.Protobuf.SceneEntity.NetTransform originalTransform_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -5211,7 +5283,7 @@ namespace HS.Protobuf.Scene {
     }
 
     /// <summary>Field number for the "payLoad" field.</summary>
-    public const int PayLoadFieldNumber = 6;
+    public const int PayLoadFieldNumber = 7;
     private global::HS.Protobuf.Scene.ActorChangeTransformDataPayLoad payLoad_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -5241,6 +5313,7 @@ namespace HS.Protobuf.Scene {
       if (SceneId != other.SceneId) return false;
       if (EntityId != other.EntityId) return false;
       if (Timestamp != other.Timestamp) return false;
+      if (State != other.State) return false;
       if (!object.Equals(OriginalTransform, other.OriginalTransform)) return false;
       if (!object.Equals(PayLoad, other.PayLoad)) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -5254,6 +5327,7 @@ namespace HS.Protobuf.Scene {
       if (SceneId != 0) hash ^= SceneId.GetHashCode();
       if (EntityId != 0) hash ^= EntityId.GetHashCode();
       if (Timestamp != 0L) hash ^= Timestamp.GetHashCode();
+      if (State != global::HS.Protobuf.SceneEntity.NetActorState.None) hash ^= State.GetHashCode();
       if (originalTransform_ != null) hash ^= OriginalTransform.GetHashCode();
       if (payLoad_ != null) hash ^= PayLoad.GetHashCode();
       if (_unknownFields != null) {
@@ -5290,12 +5364,16 @@ namespace HS.Protobuf.Scene {
         output.WriteRawTag(32);
         output.WriteInt64(Timestamp);
       }
+      if (State != global::HS.Protobuf.SceneEntity.NetActorState.None) {
+        output.WriteRawTag(40);
+        output.WriteEnum((int) State);
+      }
       if (originalTransform_ != null) {
-        output.WriteRawTag(42);
+        output.WriteRawTag(50);
         output.WriteMessage(OriginalTransform);
       }
       if (payLoad_ != null) {
-        output.WriteRawTag(50);
+        output.WriteRawTag(58);
         output.WriteMessage(PayLoad);
       }
       if (_unknownFields != null) {
@@ -5324,12 +5402,16 @@ namespace HS.Protobuf.Scene {
         output.WriteRawTag(32);
         output.WriteInt64(Timestamp);
       }
+      if (State != global::HS.Protobuf.SceneEntity.NetActorState.None) {
+        output.WriteRawTag(40);
+        output.WriteEnum((int) State);
+      }
       if (originalTransform_ != null) {
-        output.WriteRawTag(42);
+        output.WriteRawTag(50);
         output.WriteMessage(OriginalTransform);
       }
       if (payLoad_ != null) {
-        output.WriteRawTag(50);
+        output.WriteRawTag(58);
         output.WriteMessage(PayLoad);
       }
       if (_unknownFields != null) {
@@ -5353,6 +5435,9 @@ namespace HS.Protobuf.Scene {
       }
       if (Timestamp != 0L) {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(Timestamp);
+      }
+      if (State != global::HS.Protobuf.SceneEntity.NetActorState.None) {
+        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) State);
       }
       if (originalTransform_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(OriginalTransform);
@@ -5383,6 +5468,9 @@ namespace HS.Protobuf.Scene {
       }
       if (other.Timestamp != 0L) {
         Timestamp = other.Timestamp;
+      }
+      if (other.State != global::HS.Protobuf.SceneEntity.NetActorState.None) {
+        State = other.State;
       }
       if (other.originalTransform_ != null) {
         if (originalTransform_ == null) {
@@ -5427,14 +5515,18 @@ namespace HS.Protobuf.Scene {
             Timestamp = input.ReadInt64();
             break;
           }
-          case 42: {
+          case 40: {
+            State = (global::HS.Protobuf.SceneEntity.NetActorState) input.ReadEnum();
+            break;
+          }
+          case 50: {
             if (originalTransform_ == null) {
               OriginalTransform = new global::HS.Protobuf.SceneEntity.NetTransform();
             }
             input.ReadMessage(OriginalTransform);
             break;
           }
-          case 50: {
+          case 58: {
             if (payLoad_ == null) {
               PayLoad = new global::HS.Protobuf.Scene.ActorChangeTransformDataPayLoad();
             }
@@ -5472,14 +5564,18 @@ namespace HS.Protobuf.Scene {
             Timestamp = input.ReadInt64();
             break;
           }
-          case 42: {
+          case 40: {
+            State = (global::HS.Protobuf.SceneEntity.NetActorState) input.ReadEnum();
+            break;
+          }
+          case 50: {
             if (originalTransform_ == null) {
               OriginalTransform = new global::HS.Protobuf.SceneEntity.NetTransform();
             }
             input.ReadMessage(OriginalTransform);
             break;
           }
-          case 50: {
+          case 58: {
             if (payLoad_ == null) {
               PayLoad = new global::HS.Protobuf.Scene.ActorChangeTransformDataPayLoad();
             }
@@ -6841,10 +6937,10 @@ namespace HS.Protobuf.Scene {
 
     /// <summary>Field number for the "propertyType" field.</summary>
     public const int PropertyTypeFieldNumber = 2;
-    private global::HS.Protobuf.Scene.ActorPropertyUpdate.Types.PropType propertyType_ = global::HS.Protobuf.Scene.ActorPropertyUpdate.Types.PropType.None;
+    private global::HS.Protobuf.Scene.PropertyType propertyType_ = global::HS.Protobuf.Scene.PropertyType.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::HS.Protobuf.Scene.ActorPropertyUpdate.Types.PropType PropertyType {
+    public global::HS.Protobuf.Scene.PropertyType PropertyType {
       get { return propertyType_; }
       set {
         propertyType_ = value;
@@ -6902,7 +6998,7 @@ namespace HS.Protobuf.Scene {
     public override int GetHashCode() {
       int hash = 1;
       if (EntityId != 0) hash ^= EntityId.GetHashCode();
-      if (PropertyType != global::HS.Protobuf.Scene.ActorPropertyUpdate.Types.PropType.None) hash ^= PropertyType.GetHashCode();
+      if (PropertyType != global::HS.Protobuf.Scene.PropertyType.None) hash ^= PropertyType.GetHashCode();
       if (oldValue_ != null) hash ^= OldValue.GetHashCode();
       if (newValue_ != null) hash ^= NewValue.GetHashCode();
       if (_unknownFields != null) {
@@ -6927,7 +7023,7 @@ namespace HS.Protobuf.Scene {
         output.WriteRawTag(8);
         output.WriteInt32(EntityId);
       }
-      if (PropertyType != global::HS.Protobuf.Scene.ActorPropertyUpdate.Types.PropType.None) {
+      if (PropertyType != global::HS.Protobuf.Scene.PropertyType.None) {
         output.WriteRawTag(16);
         output.WriteEnum((int) PropertyType);
       }
@@ -6953,7 +7049,7 @@ namespace HS.Protobuf.Scene {
         output.WriteRawTag(8);
         output.WriteInt32(EntityId);
       }
-      if (PropertyType != global::HS.Protobuf.Scene.ActorPropertyUpdate.Types.PropType.None) {
+      if (PropertyType != global::HS.Protobuf.Scene.PropertyType.None) {
         output.WriteRawTag(16);
         output.WriteEnum((int) PropertyType);
       }
@@ -6978,7 +7074,7 @@ namespace HS.Protobuf.Scene {
       if (EntityId != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(EntityId);
       }
-      if (PropertyType != global::HS.Protobuf.Scene.ActorPropertyUpdate.Types.PropType.None) {
+      if (PropertyType != global::HS.Protobuf.Scene.PropertyType.None) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) PropertyType);
       }
       if (oldValue_ != null) {
@@ -7002,7 +7098,7 @@ namespace HS.Protobuf.Scene {
       if (other.EntityId != 0) {
         EntityId = other.EntityId;
       }
-      if (other.PropertyType != global::HS.Protobuf.Scene.ActorPropertyUpdate.Types.PropType.None) {
+      if (other.PropertyType != global::HS.Protobuf.Scene.PropertyType.None) {
         PropertyType = other.PropertyType;
       }
       if (other.oldValue_ != null) {
@@ -7037,7 +7133,7 @@ namespace HS.Protobuf.Scene {
             break;
           }
           case 16: {
-            PropertyType = (global::HS.Protobuf.Scene.ActorPropertyUpdate.Types.PropType) input.ReadEnum();
+            PropertyType = (global::HS.Protobuf.Scene.PropertyType) input.ReadEnum();
             break;
           }
           case 26: {
@@ -7074,7 +7170,7 @@ namespace HS.Protobuf.Scene {
             break;
           }
           case 16: {
-            PropertyType = (global::HS.Protobuf.Scene.ActorPropertyUpdate.Types.PropType) input.ReadEnum();
+            PropertyType = (global::HS.Protobuf.Scene.PropertyType) input.ReadEnum();
             break;
           }
           case 26: {
@@ -7101,23 +7197,6 @@ namespace HS.Protobuf.Scene {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static partial class Types {
-      /// <summary>
-      /// 属性类型枚举
-      /// </summary>
-      public enum PropType {
-        [pbr::OriginalName("None")] None = 0,
-        [pbr::OriginalName("HP")] Hp = 1,
-        [pbr::OriginalName("MP")] Mp = 2,
-        [pbr::OriginalName("HPMax")] Hpmax = 3,
-        [pbr::OriginalName("MPMax")] Mpmax = 4,
-        [pbr::OriginalName("Speed")] Speed = 5,
-        [pbr::OriginalName("Level")] Level = 6,
-        /// <summary>
-        ///幸运、罪恶、技能点
-        /// </summary>
-        [pbr::OriginalName("Exp")] Exp = 7,
-      }
-
       /// <summary>
       /// 为了可以存放不同的类型的数据
       /// </summary>

@@ -14,7 +14,7 @@ namespace SceneServer.Core.Combat.AI.MonsterAIStateImpl
         Patrol,
         Chase,
         Attack,
-        Dead,
+        Death,
         Flee,
         Hurt
     }

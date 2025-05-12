@@ -149,16 +149,18 @@ message ActorChangeTransformDataRequest{
 	string sessionId										= 1;
 	int32 entityId											= 2;
 	int64 timestamp											= 3;
-	HS.Protobuf.SceneEntity.NetTransform originalTransform	= 4;
-	ActorChangeTransformDataPayLoad payLoad					= 5;
+	HS.Protobuf.SceneEntity.NetActorState state				= 4;
+	HS.Protobuf.SceneEntity.NetTransform originalTransform	= 5;
+	ActorChangeTransformDataPayLoad payLoad					= 6;
 }
 message ActorChangeTransformDataResponse{
 	string sessionId										= 1;
 	int32 sceneId											= 2;
 	int32 entityId											= 3;
 	int64 timestamp											= 4;
-	HS.Protobuf.SceneEntity.NetTransform originalTransform	= 5;
-	ActorChangeTransformDataPayLoad payLoad					= 6;
+	HS.Protobuf.SceneEntity.NetActorState state				= 5;
+	HS.Protobuf.SceneEntity.NetTransform originalTransform	= 6;
+	ActorChangeTransformDataPayLoad payLoad					= 7;
 }
 
 message SceneDeliverRequest{
@@ -189,20 +191,22 @@ message Scene2GateMsg{
 	bytes content = 2;
 }
 
+
+// 属性类型枚举
+enum PropertyType{
+	PROPERTY_TYPE_NONE		= 0;
+	PROPERTY_TYPE_HP		= 1;
+	PROPERTY_TYPE_MP		= 2;
+	PROPERTY_TYPE_MAX_HP	= 3;
+	PROPERTY_TYPE_MAX_MP	= 4;
+	PROPERTY_TYPE_SPEED		= 5;
+	PROPERTY_TYPE_EXP		= 6;
+	PROPERTY_TYPE_LEVEL		= 7;
+	//幸运、罪恶、技能点
+}
+
 // 属性更新
 message ActorPropertyUpdate{
-	// 属性类型枚举
-	enum PropType{
-		None	= 0;
-		HP		= 1;		
-		MP		= 2;
-		HPMax	= 3;
-		MPMax	= 4;
-		Speed	= 5;
-		Level	= 6;
-		Exp		= 7;		
-		//幸运、罪恶、技能点
-	}
 
 	// 为了可以存放不同的类型的数据
 	message PropertyValue{
@@ -214,10 +218,10 @@ message ActorPropertyUpdate{
 		}
 	}
 
-	int32 entityId			= 1;
-	PropType propertyType	= 2;
-	PropertyValue oldValue	= 3;
-	PropertyValue newValue	= 4;
+	int32 entityId				= 1;
+	PropertyType propertyType	= 2;
+	PropertyValue oldValue		= 3;
+	PropertyValue newValue		= 4;
 }
 message ActorPropertyUpdateRsponse{
 	string sessionId						= 1;

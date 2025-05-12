@@ -146,7 +146,7 @@ namespace SceneServer.Core.AOI
         private void Find(AoiEntity node, ref Vector2 area)
         {
             // SwapViewEntity(ref node.ViewEntity, ref node.ViewEntityBak);
-            node.SwapViewEntity();
+            node.RecordViewAndClear();
 
             #region xLinks
 

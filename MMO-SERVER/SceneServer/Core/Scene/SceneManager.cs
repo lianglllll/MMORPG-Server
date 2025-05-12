@@ -261,10 +261,9 @@ namespace SceneServer.Core.Scene
             // 通知各palyer视野变更
             var enterResp = new OtherEntityEnterSceneResponse();
             enterResp.SceneId = SceneId;
-
             var leaveResp = new OtherEntityLeaveSceneResponse();
             leaveResp.SceneId = SceneId;
-            
+
             if (self is SceneCharacter selfChr)
             {
                 //新进入视野的单位，双向通知
@@ -307,6 +306,7 @@ namespace SceneServer.Core.Scene
                 }
 
                 // 远离视野的单位，双向通知
+
                 foreach (var key in handle.Leave)
                 {
                     var entity = SceneEntityManager.Instance.GetSceneEntityById((int)key);

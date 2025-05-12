@@ -124,6 +124,7 @@ namespace SceneServer.Core.Model.Actor
             m_netActorNode.Transform.Rotation = Rotation;
             m_netActorNode.Transform.Scale = Scale;
 
+            m_netActorNode.ActorName = m_define.Name;
             m_netActorNode.ProfessionId = professionId;
             m_netActorNode.Level = level;
             m_netActorNode.MaxHp = m_attributeManager.final.MaxHP;
@@ -178,7 +179,7 @@ namespace SceneServer.Core.Model.Actor
                 goto End;
             }
 
-            float oldValue = CurHP;
+            int oldValue = CurHP;
             CurHP += hpDelta;
 
             if (CurHP <= 0)
@@ -194,9 +195,9 @@ namespace SceneServer.Core.Model.Actor
             ActorPropertyUpdate po = new()
             {
                 EntityId = EntityId,
-                PropertyType = ActorPropertyUpdate.Types.PropType.Hp,
-                OldValue = new() { FloatValue = oldValue },
-                NewValue = new() { FloatValue = CurHP },
+                PropertyType = PropertyType.Hp,
+                OldValue = new() { IntValue = oldValue },
+                NewValue = new() { IntValue = CurHP },
             };
             SceneManager.Instance.FightManager.propertyUpdateQueue.Enqueue(po);
 
@@ -212,7 +213,7 @@ namespace SceneServer.Core.Model.Actor
                 goto End;
             }
 
-            float oldValue = CurMP;
+            int oldValue = CurMP;
             CurMP += mpDelta;
 
             if (CurMP <= 0)
@@ -228,9 +229,9 @@ namespace SceneServer.Core.Model.Actor
             ActorPropertyUpdate po = new()
             {
                 EntityId = EntityId,
-                PropertyType = ActorPropertyUpdate.Types.PropType.Mp,
-                OldValue = new() { FloatValue = oldValue },
-                NewValue = new() { FloatValue = CurMP },
+                PropertyType = PropertyType.Mp,
+                OldValue = new() { IntValue = oldValue },
+                NewValue = new() { IntValue = CurMP },
             };
             SceneManager.Instance.FightManager.propertyUpdateQueue.Enqueue(po);
 
@@ -248,6 +249,7 @@ namespace SceneServer.Core.Model.Actor
             }
             else
             {
+                ChangeHP(-CurHP);
                 Death(damage.AttackerId);
             }
 
@@ -278,6 +280,6 @@ namespace SceneServer.Core.Model.Actor
         End:
             return;
         }
-        protected virtual void ForceChangeActor(NetActorState state) { }
+        protected virtual void ForceChangeSelfActor(NetActorState state) { }
     }
 }

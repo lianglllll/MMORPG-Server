@@ -116,7 +116,7 @@ namespace SceneServer.Core.Model.Actor
             ActorPropertyUpdate po = new()
             {
                 EntityId = EntityId,
-                PropertyType = ActorPropertyUpdate.Types.PropType.Exp,
+                PropertyType = PropertyType.Exp,
                 OldValue = new() { LongValue = oldExp },
                 NewValue = new() { LongValue = Exp }
             };
@@ -131,7 +131,7 @@ namespace SceneServer.Core.Model.Actor
             ActorPropertyUpdate po = new()
             {
                 EntityId = EntityId,
-                PropertyType = ActorPropertyUpdate.Types.PropType.Level,
+                PropertyType = PropertyType.Level,
                 OldValue = new() { IntValue = oldLevel },
                 NewValue = new() { IntValue = CurLevel }
             };
@@ -148,11 +148,11 @@ namespace SceneServer.Core.Model.Actor
             base.Death(killerID);
             // 将当前角色的状态设置为当前mode的death状态
             // 并且强制同步到客户端
-            ForceChangeActor(NetActorState.Death);
+            ForceChangeSelfActor(NetActorState.Death);
         }
-        protected override void ForceChangeActor(NetActorState state)
+        protected override void ForceChangeSelfActor(NetActorState state)
         {
-            base.ForceChangeActor(state);
+            base.ForceChangeSelfActor(state);
             ChangeActorState(state);
             var resp = new ActorChangeStateResponse();
             resp.SessionId = SessionId;

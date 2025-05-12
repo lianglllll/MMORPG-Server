@@ -132,6 +132,10 @@ namespace SceneServer.Core.Combat
             while (damageQueue.TryDequeue(out var damage))
             {
                 var entityAoiView = SceneManager.Instance.AoiZone.GetAoiEntityById(damage.TargetId);
+
+                // todo
+                if (entityAoiView == null) continue;
+
                 var relativeEntityIds = entityAoiView.ViewEntity;
                 relativeEntityIds.Add(damage.TargetId);
                 foreach (var entityId in relativeEntityIds)
@@ -164,6 +168,10 @@ namespace SceneServer.Core.Combat
             while (propertyUpdateQueue.TryDequeue(out var propertyUpdate))
             {
                 var entityAoiView = SceneManager.Instance.AoiZone.GetAoiEntityById(propertyUpdate.EntityId);
+
+                // todo
+                if (entityAoiView == null) continue;
+
                 var relativeEntityIds = entityAoiView.ViewEntity;
                 relativeEntityIds.Add(propertyUpdate.EntityId);
                 foreach (var entityId in relativeEntityIds)

@@ -102,8 +102,8 @@ namespace SceneServer.Core.Combat.AI
                 case MonsterState.Chase:
                     m_stateMachine.ChangeState<MonsterAIState_Chase>(reCurrstate);
                     break;
-                case MonsterState.Dead:
-                    m_stateMachine.ChangeState<MonsterAIState_Dead>(reCurrstate);
+                case MonsterState.Death:
+                    m_stateMachine.ChangeState<MonsterAIState_Death>(reCurrstate);
                     break;
                 case MonsterState.Flee:
                     m_stateMachine.ChangeState<MonsterAIState_Flee>(reCurrstate);
@@ -133,8 +133,14 @@ namespace SceneServer.Core.Combat.AI
             }
 
             // 自动选择最高仇恨目标
-            m_target = threatTable.OrderByDescending(p => p.Value)
-                     .FirstOrDefault().Key;
+            if(threatTable.Count > 0)
+            {
+                m_target = threatTable.OrderByDescending(p => p.Value).FirstOrDefault().Key;
+            }
+            else
+            {
+                m_target = null;
+            }
         }
 
         public void FindNearestTarget()
@@ -153,15 +159,24 @@ namespace SceneServer.Core.Combat.AI
         public bool IsTargetInRange(float range)
         {
             bool result = false; 
+            // 目标为空
             if(m_target == null)
             {
                 goto End;
             }
+            // 目标已经离开当前场景
             if (SceneEntityManager.Instance.GetSceneEntityById(Target.EntityId) == null)
             {
                 m_target = null;
                 goto End;
             }
+            // 目标已经死亡
+            if (m_target.IsDeath)
+            {
+                m_target = null;
+                goto End;
+            }
+            // 目标超出检测距离
             float distance = Vector3.Distance(m_monster.Position, m_target.Position);
             if (distance > range)
             {

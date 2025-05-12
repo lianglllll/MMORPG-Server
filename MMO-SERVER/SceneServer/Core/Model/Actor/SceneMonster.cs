@@ -21,7 +21,7 @@ namespace SceneServer.Core.Model.Actor
         public MonsterAI m_AI;                      // 怪物Ai(灵魂所在)
         public Vector3 m_initPosition;              // 出生点
 
-        public SceneActor m_target;                 // 追击的目标
+        public SceneActor m_moveToTarget;           // 追击的目标
         public Vector3 m_targetPos;                 // 移动时的目标位置
         public Vector3 m_curPos;                    // 移动时的当前位置
         private bool m_isMoving;
@@ -31,15 +31,6 @@ namespace SceneServer.Core.Model.Actor
 
         #region getSet
         public bool IsMoving => m_isMoving;
-        public bool HaveTarget()
-        {
-            if (m_target == null || m_target.IsDeath ||SceneEntityManager.Instance.GetSceneEntityById(m_target.EntityId) != null)
-            {
-                m_target = null;
-                return false;
-            }
-            return true;
-        }
         #endregion
 
         #region 生命周期函数
@@ -108,17 +99,33 @@ namespace SceneServer.Core.Model.Actor
             if (IsDeath) return;
 
             // 标记伤害来源为我们的target
-            m_target = SceneEntityManager.Instance.GetSceneEntityById(damage.AttackerId) as SceneActor;
+            m_moveToTarget = SceneEntityManager.Instance.GetSceneEntityById(damage.AttackerId) as SceneActor;
 
             // 切换为hit状态
-            LookAtTarget();
+            LookAtTarget(m_moveToTarget);
             m_AI.ChangeState(MonsterState.Hurt);
+            // todo 这个状态可能需要我们自己去控制，而不是让客户端自己去表现。
+        }
+        protected override void Death(int killerID)
+        {
+            base.Death(killerID);
+
+            // 告知其他人
+            var resp = new ActorChangeStateRequest();
+            resp.State = NetActorState.Death;
+            resp.OriginalTransform = GetTransform();
+            // resp.Timestamp = 0;
+            SceneManager.Instance.ActorChangeState(this, resp);
+
+            // 状态机切换
+            m_AI.ChangeState(MonsterState.Death);
+
+
+            DeathAfter(killerID);
         }
         protected override void DeathAfter(int killerID)
         {
             base.DeathAfter(killerID);
-            // 状态机切换
-            m_AI.ChangeState(MonsterState.Dead);
 
             //怪物死亡，得给击杀者奖励啥的：exp
             var killer = SceneEntityManager.Instance.GetSceneEntityById(killerID);
@@ -158,38 +165,62 @@ namespace SceneServer.Core.Model.Actor
         // 方向向量转换位欧拉角
         public Vector3 LookRotation(Vector3 fromDir)
         {
-            float Rad2Deg = 57.29578f;
-            Vector3 eulerAngles = new Vector3();
+            /*            float Rad2Deg = 57.29578f;
+                        Vector3 eulerAngles = new Vector3();
 
-            // 计算欧拉角X
-            eulerAngles.x = MathF.Acos(MathF.Sqrt((fromDir.x * fromDir.x + fromDir.z * fromDir.z) / (fromDir.x * fromDir.x + fromDir.y * fromDir.y + fromDir.z * fromDir.z))) * Rad2Deg;
-            if (fromDir.y > 0)
-                eulerAngles.x = 360 - eulerAngles.x;
+                        // 计算欧拉角X
+                        eulerAngles.x = MathF.Acos(MathF.Sqrt((fromDir.x * fromDir.x + fromDir.z * fromDir.z) / (fromDir.x * fromDir.x + fromDir.y * fromDir.y + fromDir.z * fromDir.z))) * Rad2Deg;
+                        if (fromDir.y > 0)
+                            eulerAngles.x = 360 - eulerAngles.x;
 
-            // 计算欧拉角Y
-            eulerAngles.y = MathF.Atan2(fromDir.x, fromDir.z) * Rad2Deg;
-            if (eulerAngles.y < 0)
-                eulerAngles.y += 180;
-            if (fromDir.x < 0)
-                eulerAngles.y += 180;
+                        // 计算欧拉角Y
+                        eulerAngles.y = MathF.Atan2(fromDir.x, fromDir.z) * Rad2Deg;
+                        if (eulerAngles.y < 0)
+                            eulerAngles.y += 180;
+                        if (fromDir.x < 0)
+                            eulerAngles.y += 180;
 
-            // 欧拉角Z为0
-            eulerAngles.z = 0;
+                        // 欧拉角Z为0
+                        eulerAngles.z = 0;
 
-            return eulerAngles;
+                        return eulerAngles;*/
+
+            // 处理零向量
+            if (fromDir == Vector3.zero)
+                return Vector3.zero;
+
+            // 计算俯仰角（Pitch，绕X轴）
+            float pitch = MathF.Atan2(fromDir.y, MathF.Sqrt(fromDir.x * fromDir.x + fromDir.x * fromDir.x));
+            float pitchDeg = pitch * (180 / MathF.PI); // 弧度转角度
+
+            // 计算偏航角（Yaw，绕Y轴）
+            float yaw = MathF.Atan2(fromDir.x, fromDir.z) * (180 / MathF.PI);
+            yaw = (yaw < 0) ? yaw + 360 : yaw; // 确保角度在0~360度
+
+            return new Vector3(pitchDeg, yaw, 0);
+
         }
-        public void LookAtTarget()
+        public void LookAtTarget(SceneActor target)
         {
-            if (m_target == null)
+            if (target == null)
             {
                 goto End;
             }
 
-            Vector3 curV = Position;
-            Vector3 targetV = m_target.Position;
-            var dir = (targetV - curV).normalized;
-            Rotation = LookRotation(dir) * Y1000;
+            // 将当前位置和目标位置的 Y 值置零，强制投影到 XZ 平面
+            Vector3 curPosXZ = new Vector3(Position.x, 0, Position.z);
+            Vector3 targetPosXZ = new Vector3(target.Position.x, 0, target.Position.z);
 
+            // 计算 XZ 平面方向向量
+            Vector3 dir = targetPosXZ - curPosXZ;
+            if (dir == Vector3.zero)
+            {
+                // 避免零向量
+                goto End;
+            }
+            dir = Vector3.Normalize(dir);
+            
+            Rotation = LookRotation(dir) * Y1000;
         End:
             return;
         }
@@ -217,7 +248,7 @@ namespace SceneServer.Core.Model.Actor
             }
 
             // 看向敌人
-            LookAtTarget();
+            LookAtTarget(target);
 
             // 施放技能
             m_skillSpell.RunCast(new CastInfo { CasterId = EntityId, TargetId = target.EntityId, SkillId = skill.Define.ID });
