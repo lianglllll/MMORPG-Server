@@ -3,6 +3,7 @@ using Common.Summer.Core;
 using SceneServer.Core.Model;
 using SceneServer.Utils;
 using SceneServer.Core.Scene.Component;
+using System.Collections.Concurrent;
 
 namespace SceneServer.Core.AOI
 {
@@ -10,7 +11,7 @@ namespace SceneServer.Core.AOI
     {
         private readonly AoiLinkedList _xLinks;
         private readonly AoiLinkedList _yLinks;
-        private readonly Dictionary<long, AoiEntity> _entityList = new Dictionary<long, AoiEntity>();   // <entityId,AoiEntity>
+        private readonly ConcurrentDictionary<long, AoiEntity> _entityList = new();   // <entityId,AoiEntity>
 
         // 构造函数
         public AoiZone()
@@ -48,7 +49,7 @@ namespace SceneServer.Core.AOI
             result = new AoiEntity(key);
             result.X = _xLinks.Add(x, result);
             result.Y = _yLinks.Add(y, result);
-            _entityList.Add(key, result);
+            _entityList.TryAdd(key, result);
 
         End:
             return result;
@@ -77,7 +78,7 @@ namespace SceneServer.Core.AOI
         {
             _xLinks.Remove(node.X);
             _yLinks.Remove(node.Y);
-            _entityList.Remove(node.Key); ;
+            _entityList.Remove(node.Key, out _); ;
         }
 
         // 用于刷新我们的视野范围
@@ -110,11 +111,10 @@ namespace SceneServer.Core.AOI
                 _yLinks.Move(entity.Y, ref y);
             }
 
-            /*            if (isFind) {
-                            Find(entity, ref area);
-                        }*/
-            Find(entity, ref area);
-
+            if (isFind)
+            {
+                Find(entity, ref area);
+            }
             return entity;
         }
         public AoiEntity Refresh_ReturnCurView(long key, Vector2 area, out HashSet<long> enter)
@@ -145,8 +145,7 @@ namespace SceneServer.Core.AOI
         // 寻找范围内的entity
         private void Find(AoiEntity node, ref Vector2 area)
         {
-            // SwapViewEntity(ref node.ViewEntity, ref node.ViewEntityBak);
-            node.RecordViewAndClear();
+            node.RecordCurViewAndClear();
 
             #region xLinks
 
@@ -221,6 +220,7 @@ namespace SceneServer.Core.AOI
             }
 
             #endregion
+
         }
 
         // tools
@@ -235,27 +235,6 @@ namespace SceneServer.Core.AOI
         private double Distance(Vector2 a, Vector2 b)
         {
             return Math.Pow((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y), 0.5);
-        }
-        public IEnumerable<SceneEntity> FindViewEntity(int key, bool includeSelf = false)
-        {
-            // 查找附近Entity对象，范围通过config配置
-            var area = Config.Server.aoiViewArea;
-            var handle = Refresh(key, new Vector2(area, area));
-            // handle有可能为空
-            if (handle == null) return new HashSet<SceneEntity>();
-            var units = SceneEntityManager.Instance.GetSceneEntitiesByIds(handle.ViewEntity);
-            if (includeSelf)
-            {
-                units.Add(SceneEntityManager.Instance.GetSceneEntityById(key));
-            }
-            return units;
-        }
-        private static void SwapViewEntity(ref HashSet<long> viewEntity, ref HashSet<long> viewEntityBak)
-        {
-            viewEntityBak.Clear();
-            var t3 = viewEntity;
-            viewEntity = viewEntityBak;
-            viewEntityBak = t3;
         }
     }
 }

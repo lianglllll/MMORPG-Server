@@ -241,6 +241,8 @@ namespace SceneServer.Core.Model.Actor
 
         public void RecvDamage(Damage damage)
         {
+            if (IsDeath) return;
+
             // 由技能和buff触出，当前actor收到扣血通知
             // 扣血，属性更新
             if (CurHP > damage.Amount)

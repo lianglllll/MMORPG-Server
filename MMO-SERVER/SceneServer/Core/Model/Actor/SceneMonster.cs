@@ -4,6 +4,7 @@ using HS.Protobuf.Scene;
 using HS.Protobuf.SceneEntity;
 using SceneServer.Core.Combat.AI;
 using SceneServer.Core.Combat.AI.MonsterAIStateImpl;
+using SceneServer.Core.Combat.AI.WoodenDummy;
 using SceneServer.Core.Combat.Skills;
 using SceneServer.Core.Scene;
 using SceneServer.Core.Scene.Component;
@@ -18,13 +19,14 @@ namespace SceneServer.Core.Model.Actor
 {
     public class SceneMonster :SceneActor
     {
-        public MonsterAI m_AI;                      // 怪物Ai(灵魂所在)
-        public Vector3 m_initPosition;              // 出生点
+        public BaseMonsterAI    m_AI;               // 怪物Ai(灵魂所在)
+        public Vector3          m_initPosition;     // 出生点
+        private Spawner         m_spawner;
 
-        public SceneActor m_moveToTarget;           // 追击的目标
-        public Vector3 m_targetPos;                 // 移动时的目标位置
-        public Vector3 m_curPos;                    // 移动时的当前位置
-        private bool m_isMoving;
+        public SceneActor   m_moveToTarget;         // 追击的目标
+        public Vector3      m_targetPos;            // 移动时的目标位置
+        public Vector3      m_curPos;               // 移动时的当前位置
+        private bool        m_isMoving;
 
         private static Vector3Int Y1000 = new Vector3Int(0, 1000, 0);   // Y单位方向
         private Random random = new Random();                                   // 随机数生成器
@@ -34,15 +36,17 @@ namespace SceneServer.Core.Model.Actor
         #endregion
 
         #region 生命周期函数
-        public void Init(int professionId, int level, Vector3Int initPos, Vector3Int dir)
+        public void Init(int professionId, int level, Spawner spawner)
         {
+            m_spawner = spawner;
+            Vector3 initPos = spawner.SpawnPoint;
             int offsetX = random.Next(-8, 8);
-            int offsetY = random.Next(-8, 8);
-            Vector3Int randomizedSpawnPoint = new Vector3Int
+            int offsetZ = random.Next(-8, 8);
+            Vector3 randomizedSpawnPoint = new() 
             {
                 x = initPos.x + offsetX * 1000,
-                y = initPos.y + offsetY * 1000,
-                z = initPos.z
+                y = initPos.y,
+                z = initPos.z + offsetZ * 1000,
             };
 
             base.Init(randomizedSpawnPoint, professionId, level);
@@ -55,13 +59,13 @@ namespace SceneServer.Core.Model.Actor
         public void Init2()
         {
             // 给monster注入灵魂
-            switch (m_define.AI)
+            switch (m_spawner.AIName)
             {
                 case "Monster":
-                    m_AI = new MonsterAI(this);
+                    m_AI = new BossMonsterAI(this, m_spawner.PatrolPath);
                     break;
-                case "WoodenStake":
-                    // m_AI = new WoodenStakeAI(this);
+                case "WoodenDummy":
+                    m_AI = new WoodenDummyMonsterAI(this);
                     break;
                 default:
                     break;
@@ -84,18 +88,16 @@ namespace SceneServer.Core.Model.Actor
             Position = m_initPosition;
 
             // 设置当前怪物的状态
-            MonsterChangeState(NetActorState.Idle);
+            ChangeActorStateAndSend(NetActorState.Idle);
             ReviveAfter();
         }
         protected override void ReviveAfter()
         {
             // 状态机切换
-            m_AI.ChangeState(MonsterState.Patrol);
+            m_AI.ChangeState(MonsterState.None);
         }
         protected override void RecvDamageAfter(Damage damage)
         {
-            base.RecvDamageAfter(damage);
-
             if (IsDeath) return;
 
             // 标记伤害来源为我们的target
@@ -103,23 +105,19 @@ namespace SceneServer.Core.Model.Actor
 
             // 切换为hit状态
             LookAtTarget(m_moveToTarget);
-            m_AI.ChangeState(MonsterState.Hurt);
+            m_AI.ChangeState(MonsterState.Hurt, true);
+
+            m_netActorNode.NetActorState = NetActorState.Hurt;
             // todo 这个状态可能需要我们自己去控制，而不是让客户端自己去表现。
         }
         protected override void Death(int killerID)
         {
             base.Death(killerID);
 
-            // 告知其他人
-            var resp = new ActorChangeStateRequest();
-            resp.State = NetActorState.Death;
-            resp.OriginalTransform = GetTransform();
-            // resp.Timestamp = 0;
-            SceneManager.Instance.ActorChangeState(this, resp);
+            ChangeActorStateAndSend(NetActorState.Death);
 
             // 状态机切换
             m_AI.ChangeState(MonsterState.Death);
-
 
             DeathAfter(killerID);
         }
@@ -142,9 +140,12 @@ namespace SceneServer.Core.Model.Actor
 
         #region Tools
 
-        private void MonsterChangeState(NetActorState state)
+        public void ChangeActorStateAndSend(NetActorState state)
         {
             if (state == NetActorState) return;
+
+            m_netActorNode.NetActorState = state;
+
             ActorChangeStateRequest message = new();
             message.EntityId = m_entityId;
             message.State = state;
@@ -186,8 +187,8 @@ namespace SceneServer.Core.Model.Actor
                         return eulerAngles;*/
 
             // 处理零向量
-            if (fromDir == Vector3.zero)
-                return Vector3.zero;
+            if (fromDir == Vector3.Zero)
+                return Vector3.Zero;
 
             // 计算俯仰角（Pitch，绕X轴）
             float pitch = MathF.Atan2(fromDir.y, MathF.Sqrt(fromDir.x * fromDir.x + fromDir.x * fromDir.x));
@@ -213,7 +214,7 @@ namespace SceneServer.Core.Model.Actor
 
             // 计算 XZ 平面方向向量
             Vector3 dir = targetPosXZ - curPosXZ;
-            if (dir == Vector3.zero)
+            if (dir == Vector3.Zero)
             {
                 // 避免零向量
                 goto End;
@@ -276,7 +277,7 @@ namespace SceneServer.Core.Model.Actor
             // 设置monster的状态
             if (NetActorState != NetActorState.Motion)
             {
-                MonsterChangeState(NetActorState.Motion);
+                ChangeActorStateAndSend(NetActorState.Motion);
             }
 
         End:
@@ -288,8 +289,6 @@ namespace SceneServer.Core.Model.Actor
             {
                 goto End;
             }
-
-
 
             // 移动向量
             var dir = (m_targetPos - m_curPos).normalized;
@@ -329,11 +328,10 @@ namespace SceneServer.Core.Model.Actor
             
             m_curPos = m_targetPos;
 
-            MonsterChangeState(NetActorState.Idle);
+            ChangeActorStateAndSend(NetActorState.Idle);
         End:
             return;
         }
-
         #endregion
     }
 }

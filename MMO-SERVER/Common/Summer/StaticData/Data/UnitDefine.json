@@ -27,7 +27,6 @@
     "GSTR": 2,
     "GINT": 1,
     "GAGI": 0.6,
-    "AI": "no",
     "ExpReward": 0,
     "GoldReward": 0
   },
@@ -59,7 +58,6 @@
     "GSTR": 1,
     "GINT": 2,
     "GAGI": 0.6,
-    "AI": "no",
     "ExpReward": 0,
     "GoldReward": 0
   },
@@ -91,7 +89,6 @@
     "GSTR": 1,
     "GINT": 2,
     "GAGI": 0.6,
-    "AI": "no",
     "ExpReward": 0,
     "GoldReward": 0
   },
@@ -123,7 +120,6 @@
     "GSTR": 2,
     "GINT": 1,
     "GAGI": 0.6,
-    "AI": "no",
     "ExpReward": 0,
     "GoldReward": 0
   },
@@ -155,7 +151,6 @@
     "GSTR": 2,
     "GINT": 1,
     "GAGI": 0.6,
-    "AI": "no",
     "ExpReward": 0,
     "GoldReward": 0
   },
@@ -187,7 +182,6 @@
     "GSTR": 1,
     "GINT": 1,
     "GAGI": 1,
-    "AI": "Monster",
     "ExpReward": 10,
     "GoldReward": 5
   },
@@ -219,7 +213,6 @@
     "GSTR": 1,
     "GINT": 1,
     "GAGI": 1,
-    "AI": "Monster",
     "ExpReward": 20,
     "GoldReward": 10
   },
@@ -251,7 +244,6 @@
     "GSTR": 1,
     "GINT": 1,
     "GAGI": 1,
-    "AI": "Monster",
     "ExpReward": 2000,
     "GoldReward": 100
   }

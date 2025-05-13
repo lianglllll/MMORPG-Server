@@ -9,10 +9,10 @@ namespace SceneServer.Core.AOI
         public readonly long Key;                   // entityId
         public AoiNode X;
         public AoiNode Y;
+        // todo ViewEntity极其容易被修改 
         public HashSet<long> ViewEntity;            // 本次视野空间附近的人,不包括自己
-        public HashSet<long> ViewEntityBak;         // 上次视野空间附近的人
+        private HashSet<long> ViewEntityBak;        // 上次视野空间附近的人
 
-        public IEnumerable<long> All => ViewEntity.Union(ViewEntityBak);
         public IEnumerable<long> Leave => ViewEntityBak.Except(ViewEntity);
         public IEnumerable<long> Newly => ViewEntity.Except(ViewEntityBak);
 
@@ -23,12 +23,19 @@ namespace SceneServer.Core.AOI
             ViewEntityBak = new HashSet<long>();
         }
 
-        public  void RecordViewAndClear()
+        // tools
+        public void RecordCurViewAndClear()
         {
             ViewEntityBak.Clear();
-            ViewEntityBak = ViewEntity;
-            ViewEntity.Clear();
-        }
 
+            var t3 = ViewEntity;
+            ViewEntity = ViewEntityBak;
+            ViewEntityBak = t3;
+        }
+        public List<long> GetViewEntityIds()
+        {
+            List<long> ids = ViewEntity.ToList();
+            return ids;
+        }
     }
 }

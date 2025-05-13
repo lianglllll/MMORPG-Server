@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SceneServer.Core.Combat.AI.MonsterAIStateImpl
 {
-    public class MonsterAIState_Patrol : MonsterAIState
+    public class BossMonsterAIState_Patrol : BossMonsterAIState
     {
         private Vector3 currentDestination;
         private float waitTimer;
@@ -58,13 +58,12 @@ namespace SceneServer.Core.Combat.AI.MonsterAIStateImpl
         {
             monsterAI.Monster.StopMove();
         }
-
         private void GetNextDestination()
         {
-            if (monsterAI.patrolPath.Count > 0)
+            if (monsterAI.m_patrolPathQueue.Count > 0)
             {
-                currentDestination = monsterAI.patrolPath.Dequeue();
-                monsterAI.patrolPath.Enqueue(currentDestination);
+                currentDestination = monsterAI.m_patrolPathQueue.Dequeue();
+                monsterAI.m_patrolPathQueue.Enqueue(currentDestination);
                 monsterAI.Monster.StartMoveToPoint(currentDestination, monsterAI.patrolSpeed);
                 waitTimer = monsterAI.random.NextInt64(3, 7); 
             }

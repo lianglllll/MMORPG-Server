@@ -184,7 +184,6 @@ namespace SceneServer.Core.Combat.Buffs
             resp.OperationType = BuffOperationType.BuffOperationRemoveeAll;
             SceneManager.Instance.Broadcast(Owner.EntityId, true, resp);
         }
-
         private void BuffsChangePostProcessing()
         {
             //更新actor网络对象上面的buff信息

@@ -99,7 +99,7 @@ namespace SceneServer.Core.Combat
             while (spellSkillQueue.TryDequeue(out var castInfo))
             {
                 var entityAoiView = SceneManager.Instance.AoiZone.GetAoiEntityById(castInfo.CasterId);
-                var relativeEntityIds = entityAoiView.ViewEntity;
+                var relativeEntityIds = entityAoiView.GetViewEntityIds();
                 relativeEntityIds.Add(castInfo.CasterId);
                 foreach (var entityId in relativeEntityIds)
                 {
@@ -136,7 +136,7 @@ namespace SceneServer.Core.Combat
                 // todo
                 if (entityAoiView == null) continue;
 
-                var relativeEntityIds = entityAoiView.ViewEntity;
+                var relativeEntityIds = entityAoiView.GetViewEntityIds();
                 relativeEntityIds.Add(damage.TargetId);
                 foreach (var entityId in relativeEntityIds)
                 {
@@ -172,7 +172,7 @@ namespace SceneServer.Core.Combat
                 // todo
                 if (entityAoiView == null) continue;
 
-                var relativeEntityIds = entityAoiView.ViewEntity;
+                var relativeEntityIds = entityAoiView.GetViewEntityIds();
                 relativeEntityIds.Add(propertyUpdate.EntityId);
                 foreach (var entityId in relativeEntityIds)
                 {

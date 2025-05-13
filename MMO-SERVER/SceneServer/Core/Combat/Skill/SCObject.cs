@@ -22,8 +22,8 @@ namespace SceneServer.Core.Combat.Skills
 
         protected virtual int GetId() => 0;
         protected virtual object GetRealObj() => realObj;
-        protected virtual Vector3 GetPosition() => Vector3.zero;
-        protected virtual Vector3 GetDirection() => Vector3.zero;
+        protected virtual Vector3 GetPosition() => Vector3.Zero;
+        protected virtual Vector3 GetDirection() => Vector3.Zero;
 
     }
 

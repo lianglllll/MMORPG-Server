@@ -2,12 +2,15 @@
   "0": {
     "ID": 0,
     "SpaceId": 2,
-    "Pos": "[310000,1000,182000]",
+    "Pos": "[50000,1000,43000]",
     "Dir": "[0,0,0]",
-    "TID": 1001,
+    "TID": 1003,
     "Level": 1,
-    "Period": 20,
-    "SpawnNum": 0
+    "Period": 8,
+    "SpawnNum": 1,
+    "PatrolType": 0,
+    "PatrolPath": "",
+    "AI": "WoodenDummy"
   },
   "1": {
     "ID": 1,
@@ -17,7 +20,10 @@
     "TID": 1001,
     "Level": 1,
     "Period": 20,
-    "SpawnNum": 0
+    "SpawnNum": 0,
+    "PatrolType": 1,
+    "PatrolPath": "",
+    "AI": "Boss"
   },
   "2": {
     "ID": 2,
@@ -27,16 +33,22 @@
     "TID": 1002,
     "Level": 2,
     "Period": 20,
-    "SpawnNum": 0
+    "SpawnNum": 0,
+    "PatrolType": 1,
+    "PatrolPath": "",
+    "AI": "Boss"
   },
   "3": {
     "ID": 3,
     "SpaceId": 2,
-    "Pos": "[37000,2000,24000]",
+    "Pos": "[50000,1000,43000]",
     "Dir": "[0,0,0]",
     "TID": 1003,
     "Level": 3,
     "Period": 30,
-    "SpawnNum": 1
+    "SpawnNum": 0,
+    "PatrolType": 2,
+    "PatrolPath": "50000,1000,77000\n75000,1000,66000\n84000,1000,43000\n74000,1000,19000\n50000,1000,9000\n25000,1000,19000\n16000,1000,43000\n25000,1000,66000",
+    "AI": "Boss"
   }
 }

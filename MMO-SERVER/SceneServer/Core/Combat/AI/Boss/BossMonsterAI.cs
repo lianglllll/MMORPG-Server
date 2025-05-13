@@ -1,6 +1,7 @@
 ﻿using Common.Summer.Core;
 using Common.Summer.Tools;
 using SceneServer.Combat.Skills;
+using SceneServer.Core.Combat.AI.MonsterAi.MonsterAIStateImpl;
 using SceneServer.Core.Combat.AI.MonsterAIStateImpl;
 using SceneServer.Core.Combat.Skills;
 using SceneServer.Core.Model.Actor;
@@ -14,80 +15,65 @@ using System.Threading.Tasks;
 
 namespace SceneServer.Core.Combat.AI
 {
-    public class MonsterAI : IStateMachineOwner
+    public class BossMonsterAI : BaseMonsterAI
     {
-        protected SceneMonster m_monster;
-        protected StateMachine m_stateMachine;
-        protected MonsterState m_curState;
+        protected SceneMonster m_owner;
 
-        // AI 驱动频率
-        private int m_fps;                  
-        private float m_cumulativeTime;
-        private float m_updateTime;
+        #region AI 参数
 
-        // AI 参数
+        // patrol
         public float IdleWaitTime = 5f;
-
         public int patrolSpeed = 1500;
-        public Queue<Vector3> patrolPath = new ();
+        public Queue<Vector3> m_patrolPathQueue;
 
+        // chase
         protected SceneActor m_target;
+        public Dictionary<SceneActor, float> threatTable = new();   // 仇恨表
         public int chaseSpeed = 5000;
         public int maxChaseDistance = 20000;
-      
+        public int maxBrithDistance = 35000; 
+        // attack
         public int maxAttackDistance = 2500;
-
+        // flee
         public int FleeSpeed = 5000;
 
-        public Dictionary<SceneActor, float> threatTable = new();
-        public Random random = new();
+        #endregion
 
         #region GetSet
-
-        public SceneMonster Monster => m_monster;
+        public SceneMonster Monster => m_owner;
         public SceneActor Target => m_target;
         #endregion
 
         #region 生命周期函数
-
-        public MonsterAI(SceneMonster owner, int fps = 10)
+        public BossMonsterAI(SceneMonster owner, List<Vector3> patrolPath, int fps = 10) : base(fps)
         {
-            m_monster = owner;
+            m_owner = owner;
 
-            m_fps = fps;
-            m_cumulativeTime = 0;
-            m_updateTime = 1.0f / fps;
+            // 巡逻路径
+            m_patrolPathQueue = new();
+            foreach (var item in patrolPath)
+            {
+                m_patrolPathQueue.Enqueue(item);
+            }
 
-            m_stateMachine = new StateMachine();
-            m_stateMachine.Init(this);
-
-            // tmp 模拟一下路径
-            patrolPath.Enqueue(new Vector3 { x = Monster.m_initPosition.x, y = Monster.m_initPosition.y, z = Monster.m_initPosition.z});
-            patrolPath.Enqueue(new Vector3 { x = Monster.m_initPosition.x + 10000, y = Monster.m_initPosition.y, z = Monster.m_initPosition.z});
-
+            // 默认
             ChangeState(MonsterState.Patrol);
         }
-        public  void Update(float deltaTime)
+        protected override void Dothing(float deltaTime)
         {
-            m_cumulativeTime += deltaTime;
-            if (m_cumulativeTime > m_updateTime)
-            {
-                // UpdateThreatTable();
-                // CheckEnvironmentalHazards();
-                m_stateMachine.Update(m_cumulativeTime);
+            // UpdateThreatTable();
+            // CheckEnvironmentalHazards();
 
-                // 推动ai的移动
-                m_monster.Moving(m_cumulativeTime);
-
-                m_cumulativeTime = 0;
-            }
+            // 推动ai的移动
+            m_owner.Moving(deltaTime);
         }
-
         #endregion
 
         #region 其他通用的工具
 
-        public void ChangeState(MonsterState state, bool reCurrstate = false)
+        public Random random = new();
+
+        public override void ChangeState(MonsterState state, bool reCurrstate = false)
         {
             if (m_curState == state && !reCurrstate) return;
             m_curState = state;
@@ -97,22 +83,28 @@ namespace SceneServer.Core.Combat.AI
             switch (m_curState)
             {
                 case MonsterState.Patrol:
-                    m_stateMachine.ChangeState<MonsterAIState_Patrol>(reCurrstate);
+                    m_stateMachine.ChangeState<BossMonsterAIState_Patrol>(reCurrstate);
                     break;
                 case MonsterState.Chase:
-                    m_stateMachine.ChangeState<MonsterAIState_Chase>(reCurrstate);
+                    m_stateMachine.ChangeState<BossMonsterAIState_Chase>(reCurrstate);
                     break;
                 case MonsterState.Death:
-                    m_stateMachine.ChangeState<MonsterAIState_Death>(reCurrstate);
+                    m_stateMachine.ChangeState<BossMonsterAIState_Death>(reCurrstate);
                     break;
                 case MonsterState.Flee:
-                    m_stateMachine.ChangeState<MonsterAIState_Flee>(reCurrstate);
+                    m_stateMachine.ChangeState<BossMonsterAIState_Flee>(reCurrstate);
                     break;
                 case MonsterState.Hurt:
-                    m_stateMachine.ChangeState<MonsterAIState_Hurt>(reCurrstate);
+                    m_stateMachine.ChangeState<BossMonsterAIState_Hurt>(reCurrstate);
                     break;
                 case MonsterState.Attack:
-                    m_stateMachine.ChangeState<MonsterAIState_Attack>(reCurrstate);
+                    m_stateMachine.ChangeState<BossMonsterAIState_Attack>(reCurrstate);
+                    break;
+                case MonsterState.Rturn:
+                    m_stateMachine.ChangeState<BossMonsterAIState_ReturnBrith>(reCurrstate);
+                    break;
+                default:
+                    m_stateMachine.ChangeState<BossMonsterAIState_Patrol>(reCurrstate);
                     break;
             }
         }
@@ -177,7 +169,7 @@ namespace SceneServer.Core.Combat.AI
                 goto End;
             }
             // 目标超出检测距离
-            float distance = Vector3.Distance(m_monster.Position, m_target.Position);
+            float distance = Vector3.Distance(m_owner.Position, m_target.Position);
             if (distance > range)
             {
                 goto End;
@@ -188,14 +180,26 @@ namespace SceneServer.Core.Combat.AI
         }
         public void CheckNeedRestore_HpAndMp()
         {
-            if (m_monster.CurHP < m_monster.MaxHP)
+            if (m_owner.CurHP < m_owner.MaxHP)
             {
-                m_monster.ChangeHP((int)(m_monster.MaxHP * 0.1f));
+                m_owner.ChangeHP((int)(m_owner.MaxHP * 0.1f));
             }
-            if(m_monster.CurMP < m_monster.MaxMP)
+            if(m_owner.CurMP < m_owner.MaxMP)
             {
-                m_monster.ChangeMP((int)(m_monster.MaxMP * 0.1f));
+                m_owner.ChangeMP((int)(m_owner.MaxMP * 0.1f));
             }
+        }
+
+        public bool CheckExceedMaxBrithDistance()
+        {
+            bool result = false;
+            var distance = Vector3.Distance(m_owner.Position, m_owner.m_initPosition);
+            if(distance > maxBrithDistance)
+            {
+                result = true;
+            }
+        End:
+            return result;
         }
 
         #endregion

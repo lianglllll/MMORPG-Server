@@ -420,7 +420,7 @@
     "IntonateArt": "",
     "HitArt": "Effects/Hits/Holy hit.prefab",
     "Cost": 100,
-    "AD": 100,
+    "AD": 30000,
     "AP": 0,
     "ADC": 0.8,
     "APC": 0,

@@ -120,7 +120,7 @@ namespace Common.Summer.Core
         //
         // 摘要:
         //     Shorthand for writing Vector3(0, 0, 0).
-        public static Vector3 zero
+        public static Vector3 Zero
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get
@@ -625,7 +625,7 @@ namespace Common.Summer.Core
                 return value / num;
             }
 
-            return zero;
+            return Zero;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -638,7 +638,7 @@ namespace Common.Summer.Core
             }
             else
             {
-                this = zero;
+                this = Zero;
             }
         }
 
@@ -670,7 +670,7 @@ namespace Common.Summer.Core
             float num = Dot(onNormal, onNormal);
             if (num < float.Epsilon)
             {
-                return zero;
+                return Zero;
             }
 
             float num2 = Dot(vector, onNormal);

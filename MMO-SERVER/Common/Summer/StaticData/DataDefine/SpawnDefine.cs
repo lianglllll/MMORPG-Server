@@ -16,6 +16,9 @@ public class SpawnDefine
 	public int Level; // 单位等级
 	public int Period; // 刷怪周期(秒)
 	public int SpawnNum; // 刷怪数量
+	public int PatrolType; // 巡逻类型
+	public string PatrolPath; // 
+	public string AI; // AI名称
 }
 
 

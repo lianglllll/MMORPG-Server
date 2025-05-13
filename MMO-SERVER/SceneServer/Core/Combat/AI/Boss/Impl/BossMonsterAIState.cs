@@ -8,24 +8,13 @@ using System.Threading.Tasks;
 
 namespace SceneServer.Core.Combat.AI.MonsterAIStateImpl
 {
-    public enum MonsterState
+    public abstract class BossMonsterAIState : StateBase
     {
-        None,
-        Patrol,
-        Chase,
-        Attack,
-        Death,
-        Flee,
-        Hurt
-    }
-
-    public abstract class MonsterAIState : StateBase
-    {
-        protected MonsterAI monsterAI;
+        protected BossMonsterAI monsterAI;
 
         public override void Init(IStateMachineOwner owner)
         {
-            monsterAI = owner as MonsterAI;
+            monsterAI = owner as BossMonsterAI;
         }
 
     }

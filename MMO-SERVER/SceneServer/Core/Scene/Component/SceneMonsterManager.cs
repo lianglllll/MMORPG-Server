@@ -18,12 +18,12 @@ namespace SceneServer.Core.Scene.Component
             throw new NotImplementedException();
         }
 
-        public SceneMonster Create(int professionId, int level, Vector3Int pos, Vector3Int dir)
+        public SceneMonster Create(int professionId, int level, Spawner spawner)
         {
             // 怪物初始化
             SceneMonster monster = new SceneMonster();
             SceneEntityManager.Instance.AddSceneEntity(monster);
-            monster.Init(professionId, level, pos, dir);
+            monster.Init(professionId, level, spawner);
             monster.NetActorNode.EntityId = monster.EntityId;
 
             // 添加到当前的mostermanager中管理

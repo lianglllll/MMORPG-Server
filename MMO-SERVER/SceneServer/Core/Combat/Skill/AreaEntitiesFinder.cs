@@ -29,7 +29,8 @@ namespace SceneServer.Combat.Skills
             Vector3 pos = (Vector3)actor.Position * 0.001f;
 
             // 通过aoi查找矩形范围内的角色
-            var hanle = SceneManager.Instance.AoiZone.Refresh(actor.EntityId, new Vector2(range, range));
+            // var hanle = SceneManager.Instance.AoiZone.Refresh(actor.EntityId, new Vector2(range, range));
+            var hanle = SceneManager.Instance.AoiZone.GetAoiEntityById(actor.EntityId);
             if (hanle.ViewEntity == null)
             {
                 goto End;
@@ -61,7 +62,8 @@ namespace SceneServer.Combat.Skills
             var result = new List<SceneActor>();
 
             // 通过aoi查找矩形范围内的角色
-            var hanle = SceneManager.Instance.AoiZone.Refresh(actor.EntityId, new Vector2(detectionRadius, detectionRadius));
+            // var hanle = SceneManager.Instance.AoiZone.Refresh(actor.EntityId, new Vector2(detectionRadius, detectionRadius));
+            var hanle = SceneManager.Instance.AoiZone.GetAoiEntityById(actor.EntityId);
             if (hanle.ViewEntity == null)
             {
                 goto End;
@@ -85,7 +87,8 @@ namespace SceneServer.Combat.Skills
             var result = new List<SceneActor>();
 
             // 通过aoi查找矩形范围内的角色
-            var hanle = SceneManager.Instance.AoiZone.Refresh(actor.EntityId, new Vector2(length, length));
+            // var hanle = SceneManager.Instance.AoiZone.Refresh(actor.EntityId, new Vector2(length, length));
+            var hanle = SceneManager.Instance.AoiZone.GetAoiEntityById(actor.EntityId);
             if (hanle.ViewEntity == null)
             {
                 goto End;

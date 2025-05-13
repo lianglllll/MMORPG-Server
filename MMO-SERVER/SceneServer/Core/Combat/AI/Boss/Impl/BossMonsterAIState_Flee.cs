@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SceneServer.Core.Combat.AI.MonsterAIStateImpl
 {
-    public class MonsterAIState_Flee : MonsterAIState
+    public class BossMonsterAIState_Flee : BossMonsterAIState
     {
         private Vector3 fleeDirection;
         private float changeDirInterval;

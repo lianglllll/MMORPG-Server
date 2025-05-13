@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SceneServer.Core.Combat.AI.MonsterAIStateImpl
 {
-    public class MonsterAIState_Hurt : MonsterAIState
+    public class BossMonsterAIState_Hurt : BossMonsterAIState
     {
         private float hurtWaitTime = 1f;
         private float curWaitTime;
@@ -37,8 +37,6 @@ namespace SceneServer.Core.Combat.AI.MonsterAIStateImpl
                     monsterAI.ChangeState(MonsterState.Patrol);
                 }
             }
-        }
-        public override void Exit() { 
         }
 
     }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SceneServer.Core.Combat.AI.MonsterAIStateImpl
 {
-    public class MonsterAIState_Chase : MonsterAIState
+    public class BossMonsterAIState_Chase : BossMonsterAIState
     {
         public override void Enter()
         {
@@ -15,6 +15,12 @@ namespace SceneServer.Core.Combat.AI.MonsterAIStateImpl
 
         public override void Update(float deltaTime)
         {
+            if (monsterAI.CheckExceedMaxBrithDistance())
+            {
+                monsterAI.ChangeState(MonsterState.Rturn);
+                goto End;
+            }
+
             if (monsterAI.IsTargetInRange(monsterAI.maxAttackDistance))
             {
                 monsterAI.ChangeState(MonsterState.Attack);

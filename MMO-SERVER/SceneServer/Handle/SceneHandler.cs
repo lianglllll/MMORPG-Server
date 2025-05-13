@@ -5,6 +5,7 @@ using HS.Protobuf.Scene;
 using SceneServer.Core.Model.Actor;
 using SceneServer.Core.Scene;
 using SceneServer.Core.Scene.Component;
+using Serilog;
 
 namespace SceneServer.Handle
 {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SceneServer.Core.Combat.AI.MonsterAIStateImpl
 {
-    public class MonsterAIState_Attack : MonsterAIState
+    public class BossMonsterAIState_Attack : BossMonsterAIState
     {
         public float attackInterval = 2f;
         public float remainAttackCD;
