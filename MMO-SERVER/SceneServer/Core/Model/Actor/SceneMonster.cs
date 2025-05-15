@@ -50,7 +50,7 @@ namespace SceneServer.Core.Model.Actor
             };
 
             base.Init(randomizedSpawnPoint, professionId, level);
-            m_initPosition = initPos;
+            m_initPosition = randomizedSpawnPoint;
 
             // 补充网络信息
             m_netActorNode.NetActorType = NetActorType.Monster;

@@ -1,51 +1,163 @@
 syntax = "proto3";
-package HS.Protobuf.Game.Backpack;
+package HS.Protobuf.Backpack;
 
-// 33000
-// 背包系统
+enum BackpackProtocol{
+	BACKPACK_PROTOCOL_NONE							= 0;
+	BACKPACK_PROTOCOL_GET_ITEM_INVENTORY_DATA_REQ	= 33001;	// [GetItemInventoryDataRequest]
+	BACKPACK_PROTOCOL_GET_ITEM_INVENTORY_DATA_RESP	= 33002;	// [GetItemInventoryDataResponse]
+	BACKPACK_PROTOCOL_CHANGE_ITEM_POSITION_REQ		= 33003;	// [ChangeItemPositionRequest]
+	BACKPACK_PROTOCOL_CHANGE_ITEM_POSITION_RESP		= 33004;	// [ChangeItemPositionResponse]
+	BACKPACK_PROTOCOL_USE_ITEM_REQ					= 33005;	// [UseItemRequest]
+	BACKPACK_PROTOCOL_USE_ITEM_RESP					= 33006;	// [UseItemResponse]
+	BACKPACK_PROTOCOL_DISCARD_ITEM_REQ				= 33007;	// [DiscardItemRequest]
+	BACKPACK_PROTOCOL_DISCARD_ITEM_RESP				= 33008;	// [DiscardItemResponse]
+	BACKPACK_PROTOCOL_WEAR_EQUIP_REQ				= 33009;	// [WearEquipRequest]
+	BACKPACK_PROTOCOL_WEAR_EQUIP_RESP				= 33010;	// [WearEquipResponse]
+	BACKPACK_PROTOCOL_UNLOAD_EQUIP_REQ				= 33011;	// [UnloadEquipRequest]
+	BACKPACK_PROTOCOL_UNLOAD_EQUIP_RESP				= 33012;	// [UnloadEquipResponse]
+}
+
 enum ItemType{
-    Material=	0;      // 材料&道具
-    Consumable=	1;		// 消耗品
-    Equipment=	2;      // 武器&装备
+    Material	= 0;    // 材料&道具
+    Consumable	= 1;	// 消耗品
+    Equipment	= 2;    // 武器&装备
 }
 enum ItemQuality {
-    ITEM_QUALITY_COMMON = 0;     // 普通
-    ITEM_QUALITY_FINE = 1;   	 // 非凡
-    ITEM_QUALITY_RARE = 2;       // 稀有
-    ITEM_QUALITY_EPIC = 3;       // 史诗
-    ITEM_QUALITY_LEGENDARY = 4;  // 传说
-    ITEM_QUALITY_ARTIFACT = 5;   // 神器
+    ITEM_QUALITY_COMMON		= 0;    // 普通
+    ITEM_QUALITY_FINE		= 1;   	// 非凡
+    ITEM_QUALITY_RARE		= 2;    // 稀有
+    ITEM_QUALITY_EPIC		= 3;    // 史诗
+    ITEM_QUALITY_LEGENDARY	= 4;	// 传说
+    ITEM_QUALITY_ARTIFACT	= 5;	// 神器
 }
 enum EquipsType{
-	UNSET = 0;      	//无
-    Weapon = 1;    		//武器
-	SecondaryWeapon = 2;//副武器
-	Helmet = 3;			//头盔
-    Neck = 4;      		//项链
-    Chest = 5;     		//胸甲
-	Wristband = 6;		//护腕
-    Belt = 7;      		//腰带
-    Bracelet = 8;		//手镯
-	Legs = 9;      		//裤子
-    Ring = 10;      	//戒指
-    Boots = 11;     	//鞋子
-    Wings = 12;    		//翅膀
+	UNSET			= 0;    // 无
+    Weapon			= 1;    // 武器
+	Helmet			= 2;	// 头盔
+    Neck			= 3;    // 项链
+    Chest			= 4;    // 胸甲
+	Wristband		= 5;	// 护腕
+    Bracelet		= 6;	// 手镯
+    Ring			= 7;	// 戒指
+    Belt			= 8;    // 腰带
+	Legs			= 9;    // 裤子
+    Boots			= 10;   // 鞋子
+    Wings			= 11;   // 翅膀|飞行道具
 }
 message EquipData{
-	//打孔、镶嵌、强化
+	// 打孔、镶嵌、强化
 }
 message NetItemDataNode{
-	int32 itemId = 1;			// 物品id
-	ItemType itemType = 2;
-	int32 amount = 3;			// 物品数量
-	int32 gridIdx = 4;			// 物品所处位置,在哪个格子
+	int32 itemId		= 1;	// 物品id
+	ItemType itemType	= 2;
+	int32 amount		= 3;	// 物品数量
+	int32 gridIdx		= 4;	// 物品所处位置,在哪个格子
 	EquipData equipdata = 5; 	// 装备信息，物品有这个属性，说明是武器。
 }
 
+enum ItemInventoryType{
+	ITEM_INVENTORY_TYPE_BACKPACK	= 0;
+	ITEM_INVENTORY_TYPE_WAREHOUSE	= 1;
+	ITEM_INVENTORY_TYPE_EQUIPMENTS	= 2;
+}
+message NetItemInventoryDataNode{
+	ItemInventoryType inventoryType			= 1;
+	int32 capacity							= 2;
+	repeated NetItemDataNode itemDataNodes	= 3;
+}
 
-// ======================================
+message GetItemInventoryDataRequest{
+	string sessionId		= 1;
+	string cId				= 2;
+	ItemInventoryType type	= 3;
+}
+message GetItemInventoryDataResponse{
+	string sessionId				= 1;
+	NetItemInventoryDataNode node	= 2;
+}
+
+// 采用预测机制 + 记录副本机制 + 请求响应。
+// 我们客户端对背包的位置操作都会进行记录，然后发包
+// 只有当某个包响应了，我们就会更新副本到当前的这个响应的操作为止。
+
+// 背包物品放置请求
+message ChangeItemPositionRequest{
+	string sessionId					= 1;
+	string cId							= 2;
+	ItemInventoryType originInventory	= 3;
+	int32 originIndex					= 4;
+	ItemInventoryType targetInventory	= 5;
+	int32 targetIndex					= 6;
+	int32 seq							= 7;
+}
+message ChangeItemPositionResponse{
+	string sessionId		= 1;
+	ItemInventoryType type	= 2;
+	int32 seq				= 3;
+	int32 resultCode		= 4;
+	string resultMsg		= 5;
+}
+
+// 使用物品请求
+message UseItemRequest{
+	string sessionId		= 1;
+	string cId				= 2;
+	int32 gridIndex			= 3;
+	int32 count				= 4;
+}
+message UseItemResponse{
+	string sessionId	= 1;
+	int32 resultCode	= 2;
+	string resultMsg	= 3;
+}
+
+// 物品丢弃
+message DiscardItemRequest{
+	string sessionId		= 1;
+	string cId				= 2;
+	ItemInventoryType type	= 3;
+	int32 gridIndex			= 4;
+	int32 count				= 5;
+	int32 seq				= 6;
+}
+message DiscardItemResponse{
+	string sessionId		= 1;
+	int32  resultCode		= 2;
+	string resultMsg		= 3;
+	int32 seq				= 4;
+}
+
+// 背包中的装备穿戴请求
+message WearEquipRequest{
+	string sessionId	= 1;
+	string cId			= 2;
+	int32 gridIndex		= 3;
+	int32 seq			= 4;
+}
+message WearEquipResponse{
+	string sessionId				= 1;
+	int32 replaceEquipNewSlotIndex	= 2;
+	int32 seq						= 3;
+	int32 resultCode				= 4;
+	string resultMsg				= 5;
+}
+
+// 装备栏中的装备卸载请求
+message UnloadEquipRequest{
+	string sessionId	= 1;
+	string cId			= 2;
+	EquipsType type		= 3;
+	int32 seq			= 4;
+}
+message UnloadEquipResponse{
+	string sessionId				= 1;
+	EquipsType type					= 2;
+	int32 seq						= 3;
+	int32 replaceEquipNewSlotIndex	= 4;
+}
 
 
+// ================弃用======================
 
 // 品质
 enum Quality {
@@ -56,7 +168,6 @@ enum Quality {
     Legendary=4;  // 传说
     Artifact=5;   // 神器
 }
-
 // 物品信息
 message ItemInfo{
 	int32 itemId = 1;			//物品id
@@ -92,6 +203,7 @@ message InventoryInfoResponse{
 	InventoryInfo WarehouseInfo = 3;
 	InventoryInfo EquipmentInfo = 4;
 }
+
 // 仓库类型
 enum InventoryType{
 	Knapsack = 0;
@@ -171,3 +283,4 @@ message WearEquipmentRequest{
 message UnloadEquipmentRequest{
 	EquipsType type = 1;
 }
+// ================弃用======================

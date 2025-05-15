@@ -88,40 +88,58 @@ enum NetActorSmallState {
     NET_ACTOR_STATE_SAMLL_KNOCK_UP = 23;
 }
 message NetActorNode {
-    int32 entityId = 1;
-    NetTransform transform = 2;
+    int32 entityId			= 1;
+    NetTransform transform	= 2;
 
-    int32 professionId = 3;
-    string actorName = 4;
-    int32 level = 5;
-    int64 exp = 6;
-    int32 sceneId = 7; 
+    int32 professionId	= 3;
+    string actorName	= 4;
+    int32 level			= 5;
+    int64 exp			= 6;
+    int32 sceneId		= 7; 
 
-    int32 hp = 8;
-    int32 mp = 9;
+    int32 hp	= 8;
+    int32 mp	= 9;
     int32 maxHp = 10;
     int32 maxMp = 11;
     int32 speed = 12;
 
-	NetActorType netActorType = 13;
-	NetActorMode netActorMode = 14;
+	NetActorType netActorType	= 13;
+	NetActorMode netActorMode	= 14;
     NetActorState netActorState = 15;
     NetActorSmallState netActorSmallState = 16;
 
-	HS.Protobuf.Combat.Skill.FixedSkillGroupInfo fixedSkillGroupInfo = 18;
-    repeated HS.Protobuf.Game.Backpack.ItemInfo wornEquipments = 19;
-    repeated HS.Protobuf.Combat.Buff.BuffInfo buffs = 20;
+	HS.Protobuf.Combat.Skill.FixedSkillGroupInfo fixedSkillGroupInfo	= 18;
+    repeated HS.Protobuf.Backpack.ItemInfo wornEquipments				= 19;
+    repeated HS.Protobuf.Combat.Buff.BuffInfo buffs						= 20;
 }
 
 // Item
 message NetItemNode{
-	int32 entityId = 1;
-	int32 sceneId  = 2;
-	NetTransform transform = 3;
-
-	HS.Protobuf.Game.Backpack.NetItemDataNode netItemDataNode = 4;
+	int32 entityId											= 1;
+	int32 sceneId											= 2;
+	NetTransform transform									= 3;
+	HS.Protobuf.Backpack.NetItemDataNode netItemDataNode	= 4;
 }
 
+// 属性数据节点
+message NetAttrubuteDataNode{
+	int32 Speed		= 1;
+	int32 MaxHP		= 2;
+	int32 MaxMP		= 3;
+	int32 AD		= 4;
+	int32 AP		= 5;
+	int32 DEF		= 6;
+	int32 MDEF		= 7;
+	float CRI		= 8;
+	float CRD		= 9;
+	float HitRate	= 10;
+	float DodgeRate = 11;
+	int32 HpRegen	= 12;
+	float HpSteal	= 13;
+	int32 STR		= 14;
+	int32 INT		= 15;
+	int32 AGI		= 16;
+}
 
 // =======================================无用
 
@@ -181,7 +199,7 @@ message NetActor{
 	float mp=10;
 	ActorType actorType = 11; 
 	repeated HS.Protobuf.Combat.Skill.SkillInfo skills = 12;		//技能列表
-	repeated HS.Protobuf.Game.Backpack.ItemInfo equipList = 13;	 	//穿戴装备
+	repeated HS.Protobuf.Backpack.ItemInfo equipList = 13;	 		//穿戴装备
 	float hpMax = 14;
 	float mpMax = 15;
 	int32 speed = 16;
@@ -231,7 +249,7 @@ message PropertyUpdateRsponse{
 
 // Net itemEntity信息
 message NetEItem{
-	HS.Protobuf.Game.Backpack.ItemInfo ItemInfo = 1;
+	HS.Protobuf.Backpack.ItemInfo ItemInfo = 1;
 	int32 spaceId = 2;
 	NetEntity entity = 3;
 }

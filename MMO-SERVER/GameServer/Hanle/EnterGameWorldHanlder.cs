@@ -360,7 +360,7 @@ namespace GameServer.Hanle
             GetDBCharacterByCidRequest req = new();
             req.TaskId = taskId;
             req.CId = message.CharacterId;
-            req.ReadMask = new FieldMask { Paths = { "chrStatistics", "chrStatus", "chrAssets", "chrSocial", "chrCombat", "chrTask" } };
+            req.ReadMask = new FieldMask { Paths = { "chrStatistics", "chrStatus", "chrAssets", "chrSocial", "chrCombat", "chrTask", "chrInventorys" } };
             ServersMgr.Instance.SendMsgToDBProxy(req);
         }
         private void _HandleGetDBCharacterByCidReponse(Connection conn, GetDBCharacterByCidReponse message)
@@ -388,17 +388,6 @@ namespace GameServer.Hanle
                 resp.ResultMsg = "角色已经在线...";
                 goto End1;
             }
-
-            int curSceneId = dbChrNode.ChrStatus.CurSceneId;
-            var sceneConn = GameMonitor.Instance.GetSceneConnBySceneId(curSceneId);
-            // TODO sceneConn为空，说明场景还没启动
-            if (sceneConn == null)
-            {
-                resp.ResultCode = 4;
-                resp.ResultMsg = "当前场景不可达...";
-                goto End1;
-            }
-
             // 保存一下与场景无关的character信息
             var gChr = GameCharacterManager.Instance.CreateGameCharacter(dbChrNode);
             gChr.RelativeGateConnection = gateConn;
@@ -406,6 +395,14 @@ namespace GameServer.Hanle
             Log.Information("chr enter game,cId = [{0}]", gChr.Cid);
 
             // 将与场景相关的character移交scene进行初始化
+            var sceneConn = GameMonitor.Instance.GetSceneConnBySceneId(gChr.CurSceneId);
+            // TODO sceneConn为空，说明场景还没启动
+            if (sceneConn == null)
+            {
+                resp.ResultCode = 4;
+                resp.ResultMsg = "当前场景不可达...";
+                goto End1;
+            }
             CharacterEnterSceneRequest characterEnterSceneRequest = new();
             characterEnterSceneRequest.TaskId = message.TaskId;
             characterEnterSceneRequest.SessionId = req.SessionId;
@@ -485,22 +482,7 @@ namespace GameServer.Hanle
         private void _HandleCharacterLeaveSceneResponse(Connection conn, CharacterLeaveSceneResponse message)
         {
             var gChr = GameCharacterManager.Instance.GetGameCharacterByCid(message.CId);
-            GameCharacterManager.Instance.RemoveGameCharacterByCid(message.CId);
-
-            var req = new SaveDBCharacterRequest();
-            req.CNode = gChr.DBCharacterNode;
-
-            // 场景相关信息
-            var chrStatus = req.CNode.ChrStatus;
-            chrStatus.CurSceneId = gChr.CurSceneId;
-            chrStatus.X = message.SceneSaveDatea.Position.X;
-            chrStatus.Y = message.SceneSaveDatea.Position.Y;
-            chrStatus.Z = message.SceneSaveDatea.Position.Z;
-            // 任务
-            req.CNode.ChrTasks = gChr.GameTaskManager.GetDBTaskNodes();
-
-            ServersMgr.Instance.SendMsgToDBProxy(req);
-
+            GameCharacterManager.Instance.RemoveGameCharacterByCid(message.CId, message);
             Log.Information("chr exit game,cId = [{0}]", gChr.Cid);
         }
     }

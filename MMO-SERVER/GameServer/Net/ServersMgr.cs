@@ -61,6 +61,8 @@ namespace GameServer.Net
             TaskRewardParser.Instance.Init();
             TaskHandler.Instance.Init();
 
+            GameItemHandler.Instance.Init();
+
             // 协议注册
             ProtoHelper.Instance.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);
             ProtoHelper.Instance.Register<ServerInfoRegisterResponse>((int)ControlCenterProtocl.ServerinfoRegisterResp);

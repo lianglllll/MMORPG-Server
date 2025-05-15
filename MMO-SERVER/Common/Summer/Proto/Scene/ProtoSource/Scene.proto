@@ -2,6 +2,7 @@ syntax = "proto3";
 import "Common/ProtoSource/Common.proto";
 import "Scene/ProtoSource/SceneEntity.proto";
 import "DBProxy/ProtoSource/DBCharacter.proto";
+import "Game/ProtoSource/Backpack.proto";
 package HS.Protobuf.Scene;
 
 enum SceneProtocl{
@@ -14,22 +15,28 @@ enum SceneProtocl{
 	SCENE_PROTOCL_CHARACTER_LEAVE_SCENE_REQ			= 40006;	// [CharacterLeaveSceneRequest]
 	SCENE_PROTOCL_CHARACTER_LEAVE_SCENE_RESP		= 40007;	// [CharacterLeaveSceneResponse]
 	SCENE_PROTOCL_OTHER_ENTITY_LEAVE_SCENE_RESP		= 40008;	// [OtherEntityLeaveSceneResponse]
-
 	SCENE_PROTOCL_ACTOR_CHANGE_MODE_REQ				= 40009;	// [ActorChangeModeRequest]
 	SCENE_PROTOCL_ACTOR_CHANGE_MODE_RESP			= 40010;	// [ActorChangeModeResponse]
 	SCENE_PROTOCL_ACTOR_CHANGE_STATE_REQ			= 40011;	// [ActorChangeStateRequest]
 	SCENE_PROTOCL_ACTOR_CHANGE_STATE_RESP			= 40012;	// [ActorChangeStateResponse]
 	SCENE_PROTOCL_ACTOR_CHANGE_TRANSFORM_DATA_REQ	= 40013;	// [ActorChangeTransformDataRequest]
 	SCENE_PROTOCL_ACTOR_CHANGE_TRANSFORM_DATA_RESP	= 40014;	// [ActorChangeTransformDataResponse]
+	SCENE_PROTOCL_SCENE_DELIVER_REQ					= 40015;	// [SceneDeliverRequest]
+	SCENE_PROTOCL_SCENE_DELIVER_RESP				= 40016;	// [SceneDeliverResponse]
+	SCENE_PROTOCL_CHARACTER_REVIVE_REQ				= 40017;	// [CharacterReviveRequest]
+	SCENE_PROTOCL_CHARACTER_REVIVE_RESP				= 40018;	// [CharacterReviveResponse]
+	SCENE_PROTOCL_SCENE_2_GATE_MSG					= 40019;	// [Scene2GateMsg]
 
-	SCENE_PROTOCL_SCENE_DELIVER_REQ		= 40015;	// [SceneDeliverRequest]
-	SCENE_PROTOCL_SCENE_DELIVER_RESP	= 40016;	// [SceneDeliverResponse]
-	SCENE_PROTOCL_CHARACTER_REVIVE_REQ	= 40017;	// [CharacterReviveRequest]
-	SCENE_PROTOCL_CHARACTER_REVIVE_RESP = 40018;	// [CharacterReviveResponse]
 
-	SCENE_PROTOCL_SCENE_2_GATE_MSG = 40019;			// [Scene2GateMsg]
+	SCENE_PROTOCL_ACTOR_PROPERTY_UPDATE_RESP		= 40022;	// [ActorPropertyUpdateRsponse]
 
-	SCENE_PROTOCL_ACTOR_PROPERTY_UPDATE_RESP = 40022;	// [ActorPropertyUpdateRsponse]
+	SCENE_PROTOCL_SCENE_ITEM_OPRATION_RESP			= 40024;	// [SceneItemOperationResponse]
+	SCENE_PROTOCL_PICKUP_SCENE_ITEM_REQ				= 40025;	// [PickUpSceneItemRequest]
+	SCENE_PROTOCL_PICKUP_SCENE_ITEM_RESP			= 40026;	// [PickupSceneItemResponse]
+	SCENE_PROTOCL_DISCARD_GAME_ITEM_TO_SCENE_REQ	= 40027;	// [DiscardGameItemToSceneRequest]
+	SCENE_PROTOCL_DISCARD_GAME_ITEM_TO_SCENE_RESP	= 40028;	// [DiscardGameItemToSceneResponse]
+	SCENE_PROTOCL_CHANGE_EQUIPMENT_TO_SCENE_REQ		= 40029;	// [ChangeEquipmentToSceneRequest]
+	SCENE_PROTOCL_CHANGE_EQUIPMENT_TO_SCENE_RESP	= 40030;	// [ChangeEquipmentToSceneResponse]
 }
 enum SceneType {
     SCENE_TYPE_NULL             = 0;
@@ -69,14 +76,12 @@ message SelfCharacterEnterSceneResponse{
 	repeated HS.Protobuf.SceneEntity.NetItemNode  otherNetItemNodeList	= 6;
 }
 message OtherEntityEnterSceneResponse{
-	string sessionId = 1;
-	int32 sceneId = 2;		// 防止因为时序问题，client已经切换场景了，这个包才过来。
-	HS.Protobuf.SceneEntity.SceneEntityType entityType = 3;
-	HS.Protobuf.SceneEntity.NetActorNode actorNode = 4;
-	HS.Protobuf.SceneEntity.NetItemNode  itemNode  = 5;
+	string sessionId									= 1;
+	int32 sceneId										= 2;		 // 防止因为时序问题，client已经切换场景了，这个包才过来。
+	HS.Protobuf.SceneEntity.SceneEntityType entityType	= 3;
+	HS.Protobuf.SceneEntity.NetActorNode actorNode		= 4;
+	HS.Protobuf.SceneEntity.NetItemNode  itemNode		= 5;
 }
-
-// Game调用
 message CharacterLeaveSceneRequest{
 	int32 entityId = 1;
 }
@@ -93,7 +98,7 @@ message OtherEntityLeaveSceneResponse{
 	int32 entityId = 3;
 }
 
-
+// actor 相关
 message ActorChangeModeRequest{
 	string sessionId = 1;
 	int32 entityId = 2;
@@ -161,8 +166,12 @@ message ActorChangeTransformDataResponse{
 	HS.Protobuf.SceneEntity.NetActorState state				= 5;
 	HS.Protobuf.SceneEntity.NetTransform originalTransform	= 6;
 	ActorChangeTransformDataPayLoad payLoad					= 7;
+	// 当skill状态的时候，技能有可能是rootmotion的，这时候就需要去更新我们服务端的信息了。
+	// todo 这只是比较粗糙的做法，真正的做法可能是在服务器运行 动作的信息 来更新角色位置。
+	bool isNotBroadcast										= 8;		
 }
 
+// 传送
 message SceneDeliverRequest{
 	string sessionId	= 1;
 	int32 sceneId		= 2;
@@ -175,9 +184,10 @@ message SceneDeliverResponse{
 	string resultMsg		= 3;
 }
 
+// 复活
 message CharacterReviveRequest{
-	string sessionId = 1;
-	int32 entityId = 2;
+	string sessionId	= 1;
+	int32 entityId		= 2;
 }
 message CharacterReviveResponse{
 	string sessionId		= 1;
@@ -191,8 +201,7 @@ message Scene2GateMsg{
 	bytes content = 2;
 }
 
-
-// 属性类型枚举
+// 属性
 enum PropertyType{
 	PROPERTY_TYPE_NONE		= 0;
 	PROPERTY_TYPE_HP		= 1;
@@ -204,8 +213,6 @@ enum PropertyType{
 	PROPERTY_TYPE_LEVEL		= 7;
 	//幸运、罪恶、技能点
 }
-
-// 属性更新
 message ActorPropertyUpdate{
 
 	// 为了可以存放不同的类型的数据
@@ -227,6 +234,56 @@ message ActorPropertyUpdateRsponse{
 	string sessionId						= 1;
 	repeated ActorPropertyUpdate propertys	= 2;
 }
+
+// 物品
+enum SceneItemOperationType{
+	SCENE_ITEM_OPERATION_TYPE_UPDATE = 0;
+} 
+message SceneItemOperationResponse{
+	string sessionId						= 1;
+	int32 sceneId							= 2;
+	SceneItemOperationType operation_type	= 3;		
+	oneof payload {
+		// 可能数量发生变化
+		int32 newCount						= 4;
+	}
+}
+
+// 物品拾起
+message PickUpSceneItemRequest{
+	string sessionId	= 1;
+	int32 entityId		= 2;
+}
+message PickupSceneItemResponse{
+	string sessionId	= 1;
+	int32  resultCode	= 2;
+	string resultMsg	= 3;
+	int32 itemId		= 4;
+	int32 count			= 5;
+}
+
+// Game发的
+message DiscardGameItemToSceneRequest{
+	int32 entityId										= 1;
+	HS.Protobuf.Backpack.NetItemDataNode itemDataNode	= 2;
+}
+message DiscardGameItemToSceneResponse{
+}
+enum ChangeEquipmentOperationType{
+	CHANGE_EQUIPMENT_OPERATION_TYPE_NONE	= 0;
+	CHANGE_EQUIPMENT_OPERATION_TYPE_UNLOAD	= 1;
+	CHANGE_EQUIPMENT_OPERATION_TYPE_WEAR	= 2;
+}
+message ChangeEquipmentToSceneRequest{
+	int32 entityId								= 1;
+	ChangeEquipmentOperationType operationType	= 2;
+	HS.Protobuf.Backpack.EquipsType equipType	= 3;
+	HS.Protobuf.SceneEntity.NetAttrubuteDataNode attrubuteDataNode		= 4;
+}
+message ChangeEquipmentToSceneResponse{
+}
+
+
 
 // === 下面是无用的====================================================
 

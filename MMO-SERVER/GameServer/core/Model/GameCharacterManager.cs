@@ -32,7 +32,7 @@ namespace GameServer.Core.Model
 
             return gChr;
         }
-        public bool RemoveGameCharacterByCid(string cId)
+        public bool RemoveGameCharacterByCid(string cId, HS.Protobuf.Scene.CharacterLeaveSceneResponse message)
         {
             bool result = false;
             if(!characterDict.TryRemove(cId, out var chr))
@@ -40,7 +40,7 @@ namespace GameServer.Core.Model
                 goto End;
             }
             sceneGrounpChr[chr.CurSceneId].TryRemove(cId, out var _);
-            chr.SaveGameCharacter();
+            chr.SaveGameCharacter(message);
         End:
             return result;
         }

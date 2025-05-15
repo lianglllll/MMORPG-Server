@@ -1,5 +1,5 @@
 ﻿using GameServer.Utils;
-using HS.Protobuf.Game.Backpack;
+using HS.Protobuf.Backpack;
 using HS.Protobuf.SceneEntity;
 using System;
 using System.Collections.Generic;
@@ -15,9 +15,8 @@ namespace GameServer.core.Model.BaseItem
         protected NetItemDataNode m_netItemDataNode;
 
         #region GetSet
-
         public int ItemId => m_itemDefine.ID;
-        public int Amount
+        public int Count
         {
             get => m_netItemDataNode.Amount; 
             set { m_netItemDataNode.Amount = value; }
@@ -32,7 +31,7 @@ namespace GameServer.core.Model.BaseItem
         }
         public int StackingUpperLimit => m_itemDefine.Capicity;
         public NetItemDataNode NetItemDataNode => m_netItemDataNode;
-
+        public ItemDefine ItemDefine => m_itemDefine;
         #endregion
 
         public GameItem(NetItemDataNode netItemDataNode)

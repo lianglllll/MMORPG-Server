@@ -56,6 +56,7 @@ namespace GameGateServer.Net
             SceneHandler.Instance.Init();
             ChatHandler.Instance.Init();
             TaskHandler.Instance.Init();
+            GameItemHandler.Instance.Init();
 
             // 协议注册
             ProtoHelper.Instance.Register<ServerInfoRegisterRequest>((int)ControlCenterProtocl.ServerinfoRegisterReq);

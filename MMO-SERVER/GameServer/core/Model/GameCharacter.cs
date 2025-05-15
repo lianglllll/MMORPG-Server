@@ -1,9 +1,12 @@
-﻿
-using Common.Summer.Core;
+﻿using Common.Summer.Core;
 using GameServer.Core.Task;
 using GameServer.Core.Task.Event;
+using GameServer.InventorySystem;
+using GameServer.Net;
 using Google.Protobuf;
+using HS.Protobuf.Backpack;
 using HS.Protobuf.DBProxy.DBCharacter;
+using System.IO;
 
 namespace GameServer.Core.Model
 {
@@ -11,17 +14,17 @@ namespace GameServer.Core.Model
     {
         private int m_entityId;
         private int m_curSceneId;
+        private string sessionId;
         private DBCharacterNode m_dbChr;
         private Connection relativeGateConnection;
-        private string sessionId;
-        private CharacterEventSystem m_characterEventSystem;
-        private GameTaskManager m_gameTaskManager;
+        private CharacterEventSystem    m_characterEventSystem;
+        private GameTaskManager         m_gameTaskManager;
+        private EquipmentManager        m_equipmentManager;
+        private InventoryManager        m_backPackManager;
 
-        // equips
-        // 背包
-        // chat
+        // chat信息
 
-        #region
+        #region GetSet
         public int EntityId
         {
             get { return m_entityId; }
@@ -57,28 +60,71 @@ namespace GameServer.Core.Model
         public CharacterEventSystem CharacterEventSystem => m_characterEventSystem;
         public GameTaskManager GameTaskManager => m_gameTaskManager;
         public DBCharacterNode DBCharacterNode => m_dbChr;
+        public InventoryManager BackPackManager => m_backPackManager;
+        public EquipmentManager EquipmentManager => m_equipmentManager;
         #endregion
-
+        #region 生命周期
         public GameCharacter(DBCharacterNode dbChr)
         {
             this.m_dbChr = dbChr;
-
             m_curSceneId = dbChr.ChrStatus.CurSceneId;
-
-            m_characterEventSystem = new();
-
-            m_gameTaskManager = new GameTaskManager();
+            m_characterEventSystem  = new();
+            m_gameTaskManager = new();
             m_gameTaskManager.Init(this, dbChr.ChrTasks);
+            m_equipmentManager = new();
+            m_equipmentManager.Init(this, dbChr.ChrInventorys.EquipsData.ToByteArray());
+            m_backPackManager = new();
+            m_backPackManager.Init(this, ItemInventoryType.Backpack, dbChr.ChrInventorys.BackpackData.ToByteArray());
         }
-        public void SaveGameCharacter()
+        #endregion
+        #region tools
+        public void SaveGameCharacter(HS.Protobuf.Scene.CharacterLeaveSceneResponse message)
         {
-            // 保存一部分信息
+            var req = new SaveDBCharacterRequest();
+            req.CNode = DBCharacterNode;
 
+            // 场景相关信息
+            var chrStatus = req.CNode.ChrStatus;
+            chrStatus.CurSceneId = CurSceneId;
+            chrStatus.X = message.SceneSaveDatea.Position.X;
+            chrStatus.Y = message.SceneSaveDatea.Position.Y;
+            chrStatus.Z = message.SceneSaveDatea.Position.Z;
+            
             // 任务
+            req.CNode.ChrTasks = GameTaskManager.GetDBTaskNodes();
+
+            // 背包
+            var chrInventorys = new DBInventorys();
+            req.CNode.ChrInventorys = chrInventorys;
+            if (m_backPackManager.HasChanged)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    m_backPackManager.NetItemInventoryDataNode.WriteTo(ms);
+                    chrInventorys.BackpackData = ByteString.FromStream(ms);
+                }
+            }
+            if (m_equipmentManager.HasChanged)
+            {
+                using (var ms = new MemoryStream())
+                {
+                    m_equipmentManager.NetItemInventoryDataNode.WriteTo(ms);
+                    chrInventorys.EquipsData = ByteString.FromStream(ms);
+                }
+            }
+
+            ServersMgr.Instance.SendMsgToDBProxy(req);
+
         }
-        public void Send(IMessage message)
+        public void SendToGate(IMessage message)
         {
             relativeGateConnection.Send(message);
         }
+        public void SendToScene(IMessage message)
+        {
+            var sceneConn = GameMonitor.Instance.GetSceneConnBySceneId(m_curSceneId);
+            sceneConn.Send(message);
+        }
+        #endregion
     }
 }

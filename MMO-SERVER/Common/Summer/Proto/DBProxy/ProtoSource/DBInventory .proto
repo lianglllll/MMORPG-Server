@@ -1,0 +1,6 @@
+syntax = "proto3";
+package HS.Protobuf.DBProxy.DBInventory;
+
+enum DBInventoryProtocol{
+	DBINVENTORY_PROTOCL_NONE = 0;
+}

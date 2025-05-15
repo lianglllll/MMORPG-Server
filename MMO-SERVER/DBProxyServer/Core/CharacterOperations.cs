@@ -127,6 +127,10 @@ namespace DBProxyServer.Core
                                 cNode.ChrTasks = new DBCharacterTasks();
                                 cNode.ChrTasks.Tasks.Add(tasks);
                                 break;
+                            case "chrInventorys":
+                                var Inventorys = await InventoryOperations.Instance.GetDBInventorysByCid(cNode.CId);
+                                cNode.ChrInventorys = Inventorys;
+                                break;
                             default:
                                 throw new InvalidOperationException($"Unknown field: {path}");
                         }
@@ -262,6 +266,10 @@ namespace DBProxyServer.Core
                                     var tasks = await TaskOperations.Instance.GetDBTaskNodesByCid(cNode.CId);
                                     cNode.ChrTasks = new DBCharacterTasks();
                                     cNode.ChrTasks.Tasks.Add(tasks);
+                                    break;
+                                case "chrInventorys":
+                                    var Inventorys = await InventoryOperations.Instance.GetDBInventorysByCid(cNode.CId);
+                                    cNode.ChrInventorys = Inventorys;
                                     break;
                                 default:
                                     throw new InvalidOperationException($"Unknown field: {path}");
@@ -588,6 +596,11 @@ namespace DBProxyServer.Core
                     await TaskOperations.Instance.SaveDBTaskNodes(cNode.CId, cNode.ChrTasks.Tasks.ToList());
                 }
 
+                // 背包
+                if (cNode.ChrInventorys != null)
+                {
+                    await InventoryOperations.Instance.SaveDBInventorys(cNode.CId, cNode.ChrInventorys);
+                }
                 // 合并所有更新操作
                 var combinedUpdate = Builders<BsonDocument>.Update.Combine(updateDefinitions);
 

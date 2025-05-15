@@ -1,5 +1,5 @@
 using GameServer.core.Model.BaseItem;
-using HS.Protobuf.Game.Backpack;
+using HS.Protobuf.Backpack;
 
 namespace GameServer.core.Model.BaseItem.Sub
 {

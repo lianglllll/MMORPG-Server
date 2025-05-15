@@ -269,7 +269,7 @@ namespace GameServer.Core.Task
             resp.Opration = GameTaskChangeOperationType.Add;
             resp.NewNode = gameTask.NetGameTaskNode;
             resp.SessionId = m_owner.SessionId;
-            m_owner.Send(resp);
+            m_owner.SendToGate(resp);
         }
         private void _RemoveGameTaskMsg(int taskId)
         {
@@ -277,7 +277,7 @@ namespace GameServer.Core.Task
             resp.Opration = GameTaskChangeOperationType.Remove;
             resp.TaskId = taskId;
             resp.SessionId = m_owner.SessionId;
-            m_owner.Send(resp);
+            m_owner.SendToGate(resp);
         }
     }
 }

@@ -260,7 +260,7 @@ namespace GameServer.Core.Task
             }
 
             resp.SessionId = Owner.SessionId;
-            Owner.Send(resp);
+            Owner.SendToGate(resp);
         }
         private void SendGameTaskProgressChangeMsg()
         {
@@ -272,7 +272,7 @@ namespace GameServer.Core.Task
             resp.NewConditions = JsonConvert.SerializeObject(m_progress);
 
             resp.SessionId = Owner.SessionId;
-            Owner.Send(resp);
+            Owner.SendToGate(resp);
         }
     }
 

@@ -33,11 +33,11 @@ enum BuffOperationType {
   
 }
 message BuffOperationResponse {
-	string sessionId = 1;
-	int32 sceneId  = 2;
-	BuffOperationType operation_type = 3;		// 操作类型
+	string sessionId					= 1;
+	int32 sceneId						= 2;
+	BuffOperationType operation_type	= 3;		// 操作类型
 	oneof payload {
-		BuffInfo buffInfo = 4;						
+		BuffInfo buffInfo		= 4;						
 		int32 removeInstanceIds = 5;
 	}
 }

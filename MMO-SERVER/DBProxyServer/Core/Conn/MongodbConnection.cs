@@ -16,6 +16,7 @@ namespace DBProxyServer.Core
             CharacterOperations.Instance.Init(this);
             WorldOperations.Instance.Init(this);
             TaskOperations.Instance.Init(this);
+            InventoryOperations.Instance.Init(this);
             Log.Information("Successfully connect to MongoDB");
         }
 

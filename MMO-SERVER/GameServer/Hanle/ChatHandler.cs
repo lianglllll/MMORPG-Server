@@ -9,7 +9,6 @@ using HS.Protobuf.Chat;
 using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
 using HS.Protobuf.Game;
-using HS.Protobuf.Game.Backpack;
 using Serilog;
 using System;
 
@@ -56,7 +55,7 @@ namespace GameServer.Handle
                 foreach(var sChr in GameCharacterManager.Instance.GetPartGameCharacterBySceneId(chr.CurSceneId).Values)
                 {
                     resp.SessionId = sChr.SessionId;
-                    sChr.Send(resp);
+                    sChr.SendToGate(resp);
                 }
             }
             else if (chatMessage.Channel == ChatMessageChannel.World)
@@ -65,7 +64,7 @@ namespace GameServer.Handle
                 foreach (var sChr in GameCharacterManager.Instance.GetAllGameCharacter().Values)
                 {
                     resp.SessionId = sChr.SessionId;
-                    sChr.Send(resp);
+                    sChr.SendToGate(resp);
                 }
             }
             else if (chatMessage.Channel == ChatMessageChannel.System)

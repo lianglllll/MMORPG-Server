@@ -1,6 +1,7 @@
 syntax = "proto3";
 import "google/protobuf/field_mask.proto";
 import "DBProxy/ProtoSource/DBTask.proto";
+// import "DBProxy/ProtoSource/DBInventory .proto";
 package HS.Protobuf.DBProxy.DBCharacter;
 
 enum DBCharacterProtocl{
@@ -57,20 +58,27 @@ message DBCharacterCombatNode {
 message DBCharacterTasks{
 	repeated HS.Protobuf.DBProxy.DBTask.DBTaskNode tasks	= 1;
 }
+message DBInventorys{
+	bytes backpackData	= 1;
+	bytes equipsData	= 2;
+}
+
+
 message DBCharacterNode{
-	string cId = 1;
-	string uId = 2;
-	int32 worldId = 3;
-	int32 professionId = 4;
-	string chrName = 5;
-	int32 level = 6;
-	int64 creationTimestamp = 7;
-	DBCharacterStatisticsNode chrStatistics = 8;
-	DBCharacterStatusNode chrStatus = 9;
-	DBCharacterAssetsNode chrAssets = 10;
-	DBCharacterSocialNode chrSocial = 11; 
-	DBCharacterCombatNode chrCombat = 12;
-	DBCharacterTasks chrTasks = 13; 
+	string cId						= 1;
+	string uId						= 2;
+	int32 worldId					= 3;
+	int32 professionId				= 4;
+	string chrName					= 5;
+	int32 level						= 6;
+	int64 creationTimestamp			= 7;
+	DBCharacterStatisticsNode chrStatistics		= 8;
+	DBCharacterStatusNode chrStatus				= 9;
+	DBCharacterAssetsNode chrAssets				= 10;
+	DBCharacterSocialNode chrSocial				= 11; 
+	DBCharacterCombatNode chrCombat				= 12;
+	DBCharacterTasks chrTasks	= 13; 
+	DBInventorys chrInventorys	= 14;
 }
 
 message GetDBCharacterByCidRequest{
