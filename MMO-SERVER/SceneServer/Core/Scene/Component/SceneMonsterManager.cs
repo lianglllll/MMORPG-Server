@@ -15,7 +15,7 @@ namespace SceneServer.Core.Scene.Component
         }
         public void UnInit()
         {
-            throw new NotImplementedException();
+            monsterDict.Clear();
         }
 
         public SceneMonster Create(int professionId, int level, Spawner spawner)

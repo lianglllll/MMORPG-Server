@@ -42,7 +42,6 @@ namespace GameGateServer.Handle
             MessageRouter.Instance.Subscribe<UnloadEquipRequest>(HandleUnloadEquipRequest);
             return true;
         }
-
         private void HandleGetItemInventoryDataRequest(Connection conn, GetItemInventoryDataRequest message)
         {
             var session = conn.Get<Session>();

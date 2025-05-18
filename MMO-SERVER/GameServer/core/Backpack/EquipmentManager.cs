@@ -2,6 +2,7 @@
 using GameServer.core.Model.BaseItem.Sub;
 using GameServer.Core.Model;
 using HS.Protobuf.Backpack;
+using HS.Protobuf.Common;
 using HS.Protobuf.Scene;
 using HS.Protobuf.SceneEntity;
 using System.Collections.Concurrent;
@@ -16,7 +17,7 @@ namespace GameServer.InventorySystem
     public class EquipmentManager
     {
         private GameCharacter m_owner;
-        private ConcurrentDictionary<EquipsType, GameEquipment> equipDict = new();
+        private ConcurrentDictionary<EquipSlotType, GameEquipment> equipDict = new();
         private NetItemInventoryDataNode m_netItemInventoryDataNode;                    // 网络对象,主要是用作发送给客户端，和保存数据库
         private bool m_netDataIsNewly;
         private bool m_hasChange;
@@ -28,7 +29,7 @@ namespace GameServer.InventorySystem
             get => m_hasChange;
             set
             {
-                HasChanged = true;
+                m_hasChange = value;
                 m_netDataIsNewly = false;
             }
         }
@@ -61,7 +62,7 @@ namespace GameServer.InventorySystem
             {
                 m_netItemInventoryDataNode = new();
                 m_netItemInventoryDataNode.InventoryType = ItemInventoryType.Equipments;
-                m_netItemInventoryDataNode.Capacity = 12;
+                m_netItemInventoryDataNode.Capacity = 15;
                 HasChanged = true;
                 goto End;
             }
@@ -73,7 +74,7 @@ namespace GameServer.InventorySystem
             foreach (var iteminfo in m_netItemInventoryDataNode.ItemDataNodes)
             {
                 var item = new GameEquipment(iteminfo);
-                equipDict.TryAdd(item.EquipsType, item);
+                equipDict.TryAdd(item.EquipSlotType, item);
             }
 
             // 更新chr装备信息
@@ -85,30 +86,31 @@ namespace GameServer.InventorySystem
         #endregion
 
         #region 操作函数
-        public GameEquipment GetEquipment(EquipsType type)
+        public GameEquipment GetEquipment(EquipSlotType type)
         {
             return equipDict.GetValueOrDefault(type, null);
         }
-        public bool WearEquipment(GameEquipment equipment)
+        public bool WearEquipment(GameEquipment equipment, EquipSlotType equipSlotType)
         {
             // 穿戴之前，先卸下来身上的装备放回背包
-            UnloadEquipment(equipment.EquipsType, false);
+            UnloadEquipment(equipSlotType, false);
 
             // 移除背包中的物品格子
             int gridIdx = equipment.GridIdx;
             Owner.BackPackManager.RemoveGrid(gridIdx);
 
             // 穿到身上
-            equipDict[equipment.EquipsType] = equipment;
+            equipDict[equipSlotType] = equipment;
+            equipment.EquipSlotType = equipSlotType;
 
             HasChanged = true;
 
             // 通知scene装备属性的变更
-            _SendChangeEquipmentToSceneRequest(equipment.EquipsType, ChangeEquipmentOperationType.Wear, equipment.NetAttrubuteDataNode);
+            _SendChangeEquipmentToSceneRequest(equipSlotType, ChangeEquipmentOperationType.Wear, equipment.NetAttrubuteDataNode);
 
             return true;
         }
-        public bool UnloadEquipment(EquipsType type, bool isSendToScene)
+        public bool UnloadEquipment(EquipSlotType type, bool isSendToScene)
         {
             bool result = false;
 
@@ -126,7 +128,8 @@ namespace GameServer.InventorySystem
             }
 
             // 放回背包成功,从字典中移除
-            equipDict.TryRemove(type, out _);
+            equipDict.TryRemove(type, out var equip);
+            equip.EquipSlotType = EquipSlotType.None;
 
             HasChanged = true;
 
@@ -141,17 +144,31 @@ namespace GameServer.InventorySystem
         #endregion
 
         #region tools
-        private void _SendChangeEquipmentToSceneRequest(EquipsType equipsType, ChangeEquipmentOperationType opType, NetAttrubuteDataNode attrubuteData = null)
+        private void _SendChangeEquipmentToSceneRequest(EquipSlotType equipsType, ChangeEquipmentOperationType opType, NetAttrubuteDataNode attrubuteData = null)
         {
             var req = new ChangeEquipmentToSceneRequest();
             req.EntityId = Owner.EntityId;
             req.OperationType = opType;
-            req.EquipType = equipsType;
-            if(opType == ChangeEquipmentOperationType.Wear)
+            var equipNode = new NetEquipmentNode();
+            req.EquipNode = equipNode;
+            equipNode.EquipType = equipsType;
+            if (opType == ChangeEquipmentOperationType.Wear)
             {
-                req.AttrubuteDataNode = attrubuteData;
+                equipNode.AttrubuteDataNode = attrubuteData;
             }
             Owner.SendToScene(req);
+        }
+        public List<NetEquipmentNode> GetNetEquipmentNodes()
+        {
+            var list = new List<NetEquipmentNode>();
+            foreach(var kv in equipDict)
+            {
+                var node = new NetEquipmentNode();
+                node.EquipType = kv.Key;
+                node.AttrubuteDataNode = kv.Value.NetAttrubuteDataNode; 
+                list.Add(node);
+            }
+            return list;
         }
         #endregion
     }

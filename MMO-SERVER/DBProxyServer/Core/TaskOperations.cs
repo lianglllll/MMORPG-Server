@@ -112,7 +112,7 @@ namespace DBProxyServer.Core
                     }
                 }
                 var combinedUpdate = Builders<BsonDocument>.Update
-                    .SetOnInsert("cid", cId) // 首次插入时设置cid,作用域只在IsUpsert = true时生效
+                    .SetOnInsert("cId", cId) // 首次插入时设置cid,作用域只在IsUpsert = true时生效
                     .AddToSetEach("tasks", newTaskDocuments);
                 await m_taskCollection.UpdateOneAsync(
                     filter,

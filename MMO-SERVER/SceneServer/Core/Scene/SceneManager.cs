@@ -38,6 +38,7 @@ namespace SceneServer.Core.Scene
         #region Get
         public SceneCharacterManager SceneCharacterManager => m_sceneCharacterManager;
         public SceneMonsterManager SceneMonsterManager => m_scenenMonsterManager;
+        public SceneItemManager SceneItemManager => m_sceneItemManager;
         public FightManager FightManager => m_fightManager;
         public int SceneId => m_sceneDefine.SID;
         public AoiZone AoiZone => m_aoiZoneManager;
@@ -92,7 +93,7 @@ namespace SceneServer.Core.Scene
 
                 // 1.创建chr实例
                 var gateConn = ServersMgr.Instance.GetGameGateConnByServerId(message.GameGateServerId);
-                var chr = m_sceneCharacterManager.CreateSceneCharacter(message.SessionId, gateConn, message.DbChrNode);
+                var chr = m_sceneCharacterManager.CreateSceneCharacter(message.SessionId, gateConn, message);
                 chr.CurSceneId = SceneId;
 
                 // 2.加入aoi空间
@@ -197,7 +198,7 @@ namespace SceneServer.Core.Scene
                 }
             });
         }
-        public void MonsterExitScene()
+        public void MonsterExitScene(int entityId)
         {
             m_actionQueue.Enqueue(() => {
 
@@ -206,13 +207,56 @@ namespace SceneServer.Core.Scene
         public void ItemEnterScene(SceneItem sceneItem)
         {
             m_actionQueue.Enqueue(() => {
+                // 1.加入aoi空间
+                m_aoiZoneManager.Enter(sceneItem);
+                var handle = m_aoiZoneManager.Refresh(sceneItem.EntityId, m_viewArea);
+                var units = SceneEntityManager.Instance.GetSceneEntitiesByIds(handle.ViewEntity);
 
+                // 2.通知场景中的其他玩家
+                OtherEntityEnterSceneResponse oResp = new();
+                oResp.SceneId = SceneId;
+                oResp.EntityType = SceneEntityType.Item;
+                oResp.ItemNode = sceneItem.NetItemNode;
+
+                // 3..通知附近玩家
+                foreach (var ent in units)
+                {
+                    if (ent is SceneCharacter chr)
+                    {
+                        // 刷新他的aoi，以免下次使用时错误判断self是新加入的
+                        m_aoiZoneManager.Refresh(chr.EntityId, m_viewArea);
+
+                        oResp.SessionId = chr.SessionId;
+                        chr.Send(oResp);
+                    }
+                }
             });
         }
         public void ItemExitScene(int entityId)
         {
             m_actionQueue.Enqueue(() => {
+                var item = SceneItemManager.GetEItemByEntityId(entityId);
+                if (item == null)
+                {
+                    goto End;
+                }
 
+                // 广播通知其他玩家
+                var resp = new OtherEntityLeaveSceneResponse();
+                resp.SceneId = SceneId;
+                resp.EntityId = item.EntityId;
+                var handle = m_aoiZoneManager.GetAoiEntityById(item.EntityId);
+                var units = SceneEntityManager.Instance.GetSceneEntitiesByIds(handle.ViewEntity);
+                foreach (var cc in units.OfType<SceneCharacter>())
+                {
+                    resp.SessionId = cc.SessionId;
+                    cc.Send(resp);
+                }
+
+                // 退出aoi空间
+                m_aoiZoneManager.Exit(item.EntityId);
+            End:
+                return;
             });
         }
 

@@ -9,6 +9,7 @@ using GameServer.Core.Task.Event;
 using GameServer.Net;
 using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
+using HS.Protobuf.Backpack;
 using HS.Protobuf.DBProxy.DBCharacter;
 using HS.Protobuf.DBProxy.DBTask;
 using HS.Protobuf.DBProxy.DBUser;
@@ -19,6 +20,7 @@ using Newtonsoft.Json;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace GameServer.Hanle
 {
@@ -174,7 +176,7 @@ namespace GameServer.Hanle
             chrStatus.Hp = 0;
             chrStatus.Mp = 0;
             chrStatus.Exp = 0;
-            chrStatus.CurSceneId = 1; // 起始之地
+            chrStatus.CurSceneId = 2; // 起始之地
             chrStatus.X = 0;
             chrStatus.Y = 0;
             chrStatus.Z = 0;
@@ -185,6 +187,7 @@ namespace GameServer.Hanle
             chrStatistics.DeathCount = 0;
             chrStatistics.TaskCompleted = 0;
 
+            // 默认任务
             DBCharacterTasks chrTasks = new();
             cNode.ChrTasks = chrTasks;
             var cond = new ConditionData()
@@ -203,6 +206,26 @@ namespace GameServer.Hanle
                 State = (int)GameTaskState.InProgress,
                 TaskProgress = tmp
             });
+
+            // 默认物品
+            var inventorys = new DBInventorys();
+            cNode.ChrInventorys = inventorys;   
+            var backpack = new NetItemInventoryDataNode();
+            backpack.InventoryType = ItemInventoryType.Backpack;
+            backpack.Capacity = 20;
+            backpack.ItemDataNodes.Add(new NetItemDataNode()
+            {
+                ItemId = 1,
+                ItemType = ItemType.Material,
+                Amount = 1,
+                GridIdx = 0,
+            });
+            using (var ms = new MemoryStream())
+            {
+                backpack.WriteTo(ms);
+                ms.Position = 0;
+                inventorys.BackpackData = ByteString.FromStream(ms);
+            }
 
             ServersMgr.Instance.SendMsgToDBProxy(req);
             goto End2;
@@ -409,6 +432,7 @@ namespace GameServer.Hanle
             GameToken gameToken = GameTokenManager.Instance.GetToken(req.GameToken);
             characterEnterSceneRequest.GameGateServerId = gameToken.ServerId;
             characterEnterSceneRequest.DbChrNode = dbChrNode;
+            characterEnterSceneRequest.Equips.AddRange(gChr.EquipmentManager.GetNetEquipmentNodes());
             sceneConn.Send(characterEnterSceneRequest);
             goto End2;
         End1:

@@ -6,6 +6,8 @@ using GameServer.Net;
 using Google.Protobuf;
 using HS.Protobuf.Backpack;
 using HS.Protobuf.DBProxy.DBCharacter;
+using HS.Protobuf.SceneEntity;
+using System.Collections.Generic;
 using System.IO;
 
 namespace GameServer.Core.Model
@@ -17,7 +19,7 @@ namespace GameServer.Core.Model
         private string sessionId;
         private DBCharacterNode m_dbChr;
         private Connection relativeGateConnection;
-        private CharacterEventSystem    m_characterEventSystem;
+        private CharacterEventSystem    m_characterEventSystem;     // todo 有些事件需要跨服务器的，比如说game服里面的任务需要scene服里面的角色位置。
         private GameTaskManager         m_gameTaskManager;
         private EquipmentManager        m_equipmentManager;
         private InventoryManager        m_backPackManager;

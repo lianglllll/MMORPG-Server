@@ -63,22 +63,21 @@ message DBInventorys{
 	bytes equipsData	= 2;
 }
 
-
 message DBCharacterNode{
-	string cId						= 1;
-	string uId						= 2;
-	int32 worldId					= 3;
-	int32 professionId				= 4;
-	string chrName					= 5;
-	int32 level						= 6;
-	int64 creationTimestamp			= 7;
+	string cId									= 1;
+	string uId									= 2;
+	int32 worldId								= 3;
+	int32 professionId							= 4;
+	string chrName								= 5;
+	int32 level									= 6;
+	int64 creationTimestamp						= 7;
 	DBCharacterStatisticsNode chrStatistics		= 8;
 	DBCharacterStatusNode chrStatus				= 9;
 	DBCharacterAssetsNode chrAssets				= 10;
 	DBCharacterSocialNode chrSocial				= 11; 
 	DBCharacterCombatNode chrCombat				= 12;
-	DBCharacterTasks chrTasks	= 13; 
-	DBInventorys chrInventorys	= 14;
+	DBCharacterTasks chrTasks					= 13; 
+	DBInventorys chrInventorys					= 14;
 }
 
 message GetDBCharacterByCidRequest{

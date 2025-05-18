@@ -26,14 +26,15 @@ namespace SceneServer.Core.Model.Actor
         public String Cid => m_cId;
         #endregion
 
-        public void Init(string sessionId,Connection conn, DBCharacterNode dbChrNode)
+        public void Init(string sessionId,Connection conn, CharacterEnterSceneRequest message)
         {
+            var dbChrNode = message.DbChrNode;
             m_cId = dbChrNode.CId;
             m_session = new Session(sessionId, conn);
             m_session.Chr = this;
 
             var initPos = new NetVector3 { X = dbChrNode.ChrStatus.X, Y = dbChrNode.ChrStatus.Y, Z = dbChrNode.ChrStatus.Z };
-            base.Init(initPos, dbChrNode.ProfessionId, dbChrNode.Level);
+            base.Init(initPos, dbChrNode.ProfessionId, dbChrNode.Level, message.Equips);
 
             // 补充网络信息
             m_netActorNode.ActorName = dbChrNode.ChrName;

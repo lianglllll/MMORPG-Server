@@ -9,6 +9,7 @@ using Serilog;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 
 namespace GameServer.InventorySystem
@@ -28,7 +29,7 @@ namespace GameServer.InventorySystem
             get => m_hasChange;
             set
             {
-                HasChanged = true;
+                m_hasChange = value;
                 m_netDataIsNewly = false;
             }
         }
@@ -51,7 +52,6 @@ namespace GameServer.InventorySystem
         public GameCharacter Chr => m_owner;
         public int Capacity => m_netItemInventoryDataNode.Capacity;
         #endregion
-
         #region 生命周期
         public void Init(GameCharacter chr, ItemInventoryType inventoryType, byte[] bytes)
         {
@@ -83,11 +83,10 @@ namespace GameServer.InventorySystem
             return;
         }
         #endregion
-
         #region 背包操作函数
-        public GameItem AddGameItems(int itemId, int count = 1)
+        public int AddGameItem(int itemId, int count = 1)
         {
-            GameItem gameItem = null;
+            int counter = count;
             // 1.检查物品是否存在
             if (!StaticDataManager.Instance.ItemDefinedDict.TryGetValue(itemId, out var def))
             {
@@ -98,13 +97,12 @@ namespace GameServer.InventorySystem
             // 2.检查背包容量是否充足
             GameItem firstSameItem = null;
             int firstEmptyItemIndex = -1;
-            if (_CaculateMaxRemainAmount(itemId, ref firstSameItem, ref firstEmptyItemIndex) < count)
+            if (_CaculateMaxRemainCount(itemId, ref firstSameItem, ref firstEmptyItemIndex) < count)
             {
                 goto End;
             }
 
             // 3.循环放置
-            var counter = count;
             while (counter > 0)
             {
                 // 寻找背包种存放着相同物品的格子
@@ -140,8 +138,7 @@ namespace GameServer.InventorySystem
 
         End:
             // 返回成功添加的个数
-            //return amount - counter;
-            return gameItem;
+             return count - counter;
         }
         public bool AddGameEquipItem(GameItem item)
         {
@@ -252,7 +249,6 @@ namespace GameServer.InventorySystem
             }
 
         }
-
         public bool UseItem(int gridIdx, int count)
         {
             bool result = false;
@@ -278,66 +274,15 @@ namespace GameServer.InventorySystem
             return result;
         }
         #endregion
-
         #region tools
-        private GameItem _CreateItem(NetItemDataNode netItemDataNode)
-        {
-            GameItem newItem = null;
-            switch (netItemDataNode.ItemType)
-            {
-                case ItemType.Consumable:
-                    newItem = new GameConsumable(netItemDataNode);
-                    break;
-                case ItemType.Material:
-                    newItem = new GameMaterialItem(netItemDataNode);
-                    break;
-                case ItemType.Equipment:
-                    newItem = new GameEquipment(netItemDataNode);
-                    break;
-            }
-            return newItem;
-        }
-        public GameItem _CreateItem(ItemDefine def, int amount, int pos)
-        {
-            GameItem newItem = null;
-            switch (def.ItemType)
-            {
-                case "消耗品":
-                    newItem = new GameConsumable(def, amount, pos);
-                    break;
-                case "道具":
-                    newItem = new GameMaterialItem(def, amount, pos);
-                    break;
-                case "装备":
-                    newItem = new GameEquipment(def, pos);
-                    break;
-            }
-            return newItem;
-        }
-        private bool _ReSetItemGridIdx(int gridIdx, GameItem item)
-        {
-            bool result = false;
-            if(gridIdx < 0 || gridIdx >= Capacity || item == null)
-            {
-                goto End;
-            }
 
-            // 设置插槽
-            ItemDict[gridIdx] = item;
-            item.GridIdx = gridIdx;
-            
-            HasChanged = true;
 
-            result = true;
-        End:
-            return result;
-        }
         /// <summary>
         /// 检查当前背包还可以放多少个Itemid这种物品,顺便找到第一个sameItem和第一个空格子
         /// </summary>
         /// <param name="itemId"></param>
         /// <returns></returns>
-        private int _CaculateMaxRemainAmount(int itemId, ref GameItem firstSameItem, ref int firstEmptyItemIndex)
+        private int _CaculateMaxRemainCount(int itemId, ref GameItem firstSameItem, ref int firstEmptyItemIndex)
         {
             // 记录可用数量
             var amounter = 0;
@@ -457,6 +402,84 @@ namespace GameServer.InventorySystem
             return true;
         }
 
+        public bool IsCanAddToInventory(int targetItemId, int targetCount)
+        {
+            bool result = false;
+            int counter = 0;
+            var itemDef = StaticDataManager.Instance.ItemDefinedDict[targetItemId];
+            for (int i = 0; i < Capacity; ++i)
+            {
+                if (ItemDict.TryGetValue(i, out var item))
+                {
+                    if (item.ItemId == targetItemId)
+                    {
+                        counter += (item.StackingUpperLimit - item.Count);
+                    }
+                }
+                else
+                {
+                    counter += itemDef.Capicity;
+                }
+                if (counter >= targetCount)
+                {
+                    result = true;
+                    break;
+                }
+            }
+            return result;
+        }
+        private GameItem _CreateItem(NetItemDataNode netItemDataNode)
+        {
+            GameItem newItem = null;
+            switch (netItemDataNode.ItemType)
+            {
+                case ItemType.Consumable:
+                    newItem = new GameConsumable(netItemDataNode);
+                    break;
+                case ItemType.Material:
+                    newItem = new GameMaterialItem(netItemDataNode);
+                    break;
+                case ItemType.Equipment:
+                    newItem = new GameEquipment(netItemDataNode);
+                    break;
+            }
+            return newItem;
+        }
+        public GameItem _CreateItem(ItemDefine def, int amount, int pos)
+        {
+            GameItem newItem = null;
+            switch (def.ItemType)
+            {
+                case "消耗品":
+                    newItem = new GameConsumable(def, amount, pos);
+                    break;
+                case "道具":
+                    newItem = new GameMaterialItem(def, amount, pos);
+                    break;
+                case "装备":
+                    newItem = new GameEquipment(def, pos);
+                    break;
+            }
+            return newItem;
+        }
+        private bool _ReSetItemGridIdx(int gridIdx, GameItem item)
+        {
+            bool result = false;
+            if (gridIdx < 0 || gridIdx >= Capacity || item == null)
+            {
+                goto End;
+            }
+
+            // 设置插槽
+            ItemDict[gridIdx] = item;
+            item.GridIdx = gridIdx;
+
+            HasChanged = true;
+
+            result = true;
+        End:
+            return result;
+        }
         private void _SendDiscardGameItemToSceneRequest(GameItem gameItem)
         {
             var req = new DiscardGameItemToSceneRequest();
@@ -464,8 +487,6 @@ namespace GameServer.InventorySystem
             req.ItemDataNode = gameItem.NetItemDataNode;
             m_owner.SendToScene(req);
         }
-
         #endregion
-
     }
 }

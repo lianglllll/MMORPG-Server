@@ -29,8 +29,8 @@ enum GameTaskState{
 	GAME_TASK_STATE_LOCKED       = 1;	// 表示任务尚未达到激活条件，对玩家完全不可见或不可交互
 	GAME_TASK_STATE_UNLOCKED     = 2;	// 表示任务已达到激活条件但尚未被接受，对玩家可见但尚未激活
 	GAME_TASK_STATE_IN_PROGRESS  = 3;
-	GAME_TASK_STATE_COMPLETED    = 4;  // 可领取奖励
-	GAME_TASK_STATE_REWARDED     = 5;  // 奖励已领取
+	GAME_TASK_STATE_COMPLETED    = 4;	// 可领取奖励
+	GAME_TASK_STATE_REWARDED     = 5;	// 奖励已领取
 	// 可选扩展
 	GAME_TASK_STATE_FAILED       = 6;
 	GAME_TASK_STATE_ABANDONED    = 7;

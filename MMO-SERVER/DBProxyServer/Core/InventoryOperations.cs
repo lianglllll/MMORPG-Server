@@ -66,7 +66,7 @@ namespace DBProxyServer.Core
         }
         public async Task<bool> SaveDBInventorys(string cId, DBInventorys inventorys)
         {
-            const int maxRetry = 2; // 最大重试次数
+            const int maxRetry = 2;
             var attempt = 0;
 
             while (attempt <= maxRetry)
@@ -80,28 +80,37 @@ namespace DBProxyServer.Core
                     if (inventorys == null)
                         throw new ArgumentNullException(nameof(inventorys));
 
-                    // 构建二进制数据字段
-                    var backpackBytes = inventorys.BackpackData?.ToByteArray() ?? Array.Empty<byte>();
-                    var equipsBytes = inventorys.EquipsData?.ToByteArray() ?? Array.Empty<byte>();
+                    // 动态构建更新操作
+                    var updateBuilder = Builders<BsonDocument>.Update;
+                    var updateDef = updateBuilder.SetOnInsert("cId", cId)
+                                                .Set("lastUpdate", DateTime.UtcNow);
 
-                    // 创建更新定义 (使用BSON避免类型转换)
-                    var update = Builders<BsonDocument>.Update
-                        .SetOnInsert("cId", cId)
-                        .Set("backpackData", new BsonBinaryData(backpackBytes, BsonBinarySubType.Binary))
-                        .Set("equipsData", new BsonBinaryData(equipsBytes, BsonBinarySubType.Binary))
-                        .Set("lastUpdate", DateTime.UtcNow);
+                    // 仅在数据非空时更新对应字段
+                    if (inventorys.BackpackData != null && !inventorys.BackpackData.IsEmpty)
+                    {
+                        var backpackBytes = inventorys.BackpackData.ToByteArray();
+                        updateDef = updateDef.Set("backpackData",
+                            new BsonBinaryData(backpackBytes, BsonBinarySubType.Binary));
+                    }
+
+                    if (inventorys.EquipsData != null && !inventorys.EquipsData.IsEmpty)
+                    {
+                        var equipsBytes = inventorys.EquipsData.ToByteArray();
+                        updateDef = updateDef.Set("equipsData",
+                            new BsonBinaryData(equipsBytes, BsonBinarySubType.Binary));
+                    }
 
                     // 配置更新选项
                     var options = new UpdateOptions
                     {
-                        IsUpsert = true,                    // 不存在时创建文档
-                        BypassDocumentValidation = false    // 启用模式校验
+                        IsUpsert = true,
+                        BypassDocumentValidation = false
                     };
 
-                    // 执行原子更新操作
+                    // 执行原子更新
                     var result = await m_inventoryCollection.UpdateOneAsync(
                         filter: Builders<BsonDocument>.Filter.Eq("cId", cId),
-                        update: update,
+                        update: updateDef,
                         options: options
                     );
 
@@ -113,7 +122,7 @@ namespace DBProxyServer.Core
 
                     // 重试逻辑
                     if (attempt++ >= maxRetry) break;
-                    await Task.Delay(50 * attempt); // 指数退避
+                    await Task.Delay(50 * attempt);
                 }
                 catch (MongoWriteException ex) when (ex.WriteError.Category == ServerErrorCategory.DuplicateKey)
                 {
@@ -127,6 +136,13 @@ namespace DBProxyServer.Core
                 }
             }
             return false;
+        }
+        public async Task<bool> RemoveDBInventorysByCid(string cId)
+        {
+            var filter = Builders<BsonDocument>.Filter.Eq("cId", cId);
+            var deleteResult = await m_inventoryCollection.DeleteOneAsync(filter);
+            // 返回是否成功删除一条文档
+            return deleteResult.DeletedCount > 0;
         }
     }
 }

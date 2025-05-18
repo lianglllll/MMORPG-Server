@@ -1,4 +1,5 @@
 using HS.Protobuf.Backpack;
+using HS.Protobuf.Common;
 using HS.Protobuf.SceneEntity;
 
 namespace GameServer.core.Model.BaseItem.Sub
@@ -13,6 +14,21 @@ namespace GameServer.core.Model.BaseItem.Sub
 
         #region GetSet
         public EquipsType EquipsType => m_equipsType;
+        public EquipSlotType EquipSlotType
+        {
+            get
+            {
+                return m_netItemDataNode.Equipdata.SlotType;
+            }
+            set
+            {
+                if (m_netItemDataNode.Equipdata == null)
+                {
+                    m_netItemDataNode.Equipdata = new EquipData();
+                }
+                m_netItemDataNode.Equipdata.SlotType = value;
+            }
+        }
         public NetAttrubuteDataNode NetAttrubuteDataNode => m_netAttrubuteDataNode;
         #endregion
 

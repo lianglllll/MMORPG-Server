@@ -43,6 +43,11 @@ namespace SceneServer.Core.Combat
         }
         public void UnInit()
         {
+            missiles.Clear();
+            castReqQueue.Clear();
+            spellSkillQueue.Clear();
+            damageQueue.Clear();
+            propertyUpdateQueue.Clear();
         }
         public void Update(float deltaTime)
         {

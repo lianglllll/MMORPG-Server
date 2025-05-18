@@ -297,7 +297,7 @@ namespace DBProxyServer.Core
             {
                 // Main Character Document
                 ObjectId objectId = ObjectId.GenerateNewId();
-                string objectIdStr = objectId.ToString();
+                string cId = objectId.ToString();
                 BsonDocument characterDocument = new BsonDocument
                 {
                     { "_id", objectId },
@@ -401,15 +401,21 @@ namespace DBProxyServer.Core
                     characterDocument.Add("chrCombat", characterCombatNode);
                 }
 
-
                 // 任务模块
                 if (cNode.ChrTasks != null && cNode.ChrTasks.Tasks != null)
                 {
-                    await TaskOperations.Instance.SaveDBTaskNodes(objectIdStr, cNode.ChrTasks.Tasks.ToList());
+                    await TaskOperations.Instance.SaveDBTaskNodes(cId, cNode.ChrTasks.Tasks.ToList());
                 }
+                
+                // 背包
+                if(cNode.ChrInventorys != null)
+                {
+                    await InventoryOperations.Instance.SaveDBInventorys(cId, cNode.ChrInventorys);
+                }
+
                 await m_characterCollection.InsertOneAsync(characterDocument);
-                await UserOperations.Instance.AddCharacterIdAsync(cNode.UId, cNode.WorldId, objectIdStr);
-                return objectIdStr;
+                await UserOperations.Instance.AddCharacterIdAsync(cNode.UId, cNode.WorldId, cId);
+                return cId;
             }
             catch (Exception ex)
             {
@@ -430,6 +436,8 @@ namespace DBProxyServer.Core
                 await UserOperations.Instance.RemoveCharacterIdAsync(chr["uId"].ToString(), chr["worldId"].ToInt32(), cId);
                 // 删除和Task表的关联
                 await TaskOperations.Instance.RemoveTasksByCid(cId);
+                // 删除和Item表的关联
+                await InventoryOperations.Instance.RemoveDBInventorysByCid(cId);
 
                 // 执行删除操作
                 var deleteResult = await m_characterCollection.DeleteOneAsync(filter);
@@ -440,27 +448,6 @@ namespace DBProxyServer.Core
             {
                 Console.WriteLine($"Invalid ObjectId format: {ex.Message}");
                 return false;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"An error occurred: {ex.Message}");
-                return false;
-            }
-
-        }
-        public async Task<bool> RemoveCharactersByUidAsync(string uId)
-        {
-            try
-            {
-                // 定义过滤器以查找包含该 uId 的文档
-                var filter = Builders<BsonDocument>.Filter.Eq("uId", uId);
-
-                // 执行批量删除操作
-                var deleteResult = await m_characterCollection.DeleteManyAsync(filter);
-                // todo task也需要删除
-
-                // 返回是否成功删除至少一条文档
-                return deleteResult.DeletedCount > 0;
             }
             catch (Exception ex)
             {
@@ -630,5 +617,29 @@ namespace DBProxyServer.Core
                 return false;
             }
         }
+
+        #region 未使用
+        public async Task<bool> RemoveCharactersByUidAsync(string uId)
+        {
+            try
+            {
+                // 定义过滤器以查找包含该 uId 的文档
+                var filter = Builders<BsonDocument>.Filter.Eq("uId", uId);
+                // 执行批量删除操作
+                var deleteResult = await m_characterCollection.DeleteManyAsync(filter);
+                // todo task也需要删除
+                // todo Item也需要删除
+
+
+                // 返回是否成功删除至少一条文档
+                return deleteResult.DeletedCount > 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                return false;
+            }
+        }
+        #endregion
     }
 }

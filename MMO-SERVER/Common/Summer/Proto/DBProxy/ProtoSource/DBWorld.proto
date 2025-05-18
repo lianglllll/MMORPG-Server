@@ -10,21 +10,21 @@ enum DBWorldProtocl{
 }
 
 message DBWorldNode{
-	int32 worldId = 1;
-	string worldName = 2;
-	string worldDesc = 3;
-    string status = 4;					// 世界状态：如 "INACTIVE", "ACTIVE", "MAINTENANCE", "DEPRECATED"。
-    int64 createdAt = 5;				// 创建时间戳，使用UTC时间。
-    int32 maxPlayers = 6;				// 世界允许的最大玩家数量。
-    string createdBy = 7;				// 创建该世界的管理员或系统用户名。
-    string theme = 8;					// 世界的主题，用于分类或视觉展示。
-    bool isPublic = 9;					// 标记世界是否为公开可见。
-    int64 updatedAt = 10;				// 上次更新时间戳，使用UTC时间。
-    string lastModifiedBy = 11;			// 最后一次修改该世界的用户。
-    map<string, string> metadata = 12;	// 存储额外的元数据键值对。
-    string region = 13;					// 世界所在的地理区域或服务器部署位置。
-    float version = 14;					// 游戏世界的版本号，用于管理和更新。
-    repeated string tags = 15;			// 标签列表，用于分类和搜索。
+	int32 worldId					= 1;
+	string worldName				= 2;
+	string worldDesc				= 3;
+    string status					= 4;	// 世界状态：如 "INACTIVE", "ACTIVE", "MAINTENANCE", "DEPRECATED"。
+    int64 createdAt					= 5;	// 创建时间戳，使用UTC时间。
+    int32 maxPlayers				= 6;	// 世界允许的最大玩家数量。
+    string createdBy				= 7;	// 创建该世界的管理员或系统用户名。
+    string theme					= 8;	// 世界的主题，用于分类或视觉展示。
+    bool isPublic					= 9;	// 标记世界是否为公开可见。
+    int64 updatedAt					= 10;	// 上次更新时间戳，使用UTC时间。
+    string lastModifiedBy			= 11;	// 最后一次修改该世界的用户。
+    map<string, string> metadata	= 12;	// 存储额外的元数据键值对。
+    string region					= 13;	// 世界所在的地理区域或服务器部署位置。
+    float version					= 14;	// 游戏世界的版本号，用于管理和更新。
+    repeated string tags			= 15;	// 标签列表，用于分类和搜索。
 }
 
 message GetDBWorldNodeByWorldIdRequest{

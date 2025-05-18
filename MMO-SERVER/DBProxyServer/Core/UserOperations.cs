@@ -81,30 +81,6 @@ namespace DBProxyServer.Core
                 return false; // 插入失败
             }
         }
-        public async Task DeleteCharacterIdAsync(string uId, string characterId)
-        {
-            try
-            {
-                var objectId = new ObjectId(uId);
-                var filter = Builders<BsonDocument>.Filter.Eq("_id", objectId);
-                var update = Builders<BsonDocument>.Update.Pull("characterIds", characterId);
-
-                var result = await m_userCollection.UpdateOneAsync(filter, update);
-
-                if (result.MatchedCount == 0)
-                {
-                    Console.WriteLine("No documents matched the filter.");
-                }
-                else if (result.ModifiedCount == 0)
-                {
-                    Console.WriteLine("Matched document(s) but no updates were made (characterId might not exist).");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"An error occurred while removing the Character ID: {ex.Message}");
-            }
-        }
         public async Task<bool> UpdatePasswordAsync(string uId, string newPassword)
         {
             try

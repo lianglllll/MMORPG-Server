@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using Common.Summer.Core;
 using SceneServer.Core.Model.Actor;
 using HS.Protobuf.DBProxy.DBCharacter;
+using HS.Protobuf.Scene;
 
 namespace SceneServer.Core.Scene.Component
 {
@@ -23,13 +24,13 @@ namespace SceneServer.Core.Scene.Component
         }
         public void UnInit()
         {
-            throw new NotImplementedException();
+            ClearCharacters();
         }
 
-        public SceneCharacter CreateSceneCharacter(string sessionId, Connection gameGateConn, DBCharacterNode dbChrNode)
+        public SceneCharacter CreateSceneCharacter(string sessionId, Connection gameGateConn, CharacterEnterSceneRequest message)
         {
             var chr = new SceneCharacter();
-            chr.Init(sessionId, gameGateConn, dbChrNode);
+            chr.Init(sessionId, gameGateConn, message);
             SceneEntityManager.Instance.AddSceneEntity(chr);
             characterDict[chr.EntityId] = chr;
             // todo 

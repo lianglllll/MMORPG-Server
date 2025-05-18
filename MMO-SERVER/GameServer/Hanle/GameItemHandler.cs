@@ -38,6 +38,8 @@ namespace GameServer.Hanle
             ProtoHelper.Instance.Register<UnloadEquipResponse>((int)BackpackProtocol.UnloadEquipResp);
             ProtoHelper.Instance.Register<ChangeEquipmentToSceneRequest>((int)SceneProtocl.ChangeEquipmentToSceneReq);
             ProtoHelper.Instance.Register<ChangeEquipmentToSceneResponse>((int)SceneProtocl.ChangeEquipmentToSceneResp);
+            ProtoHelper.Instance.Register<PickUpSceneItemToGameRequest>((int)BackpackProtocol.PickUpGameItemToGameReq);
+            ProtoHelper.Instance.Register<PickUpSceneItemToGameResponse>((int)BackpackProtocol.PickUpGameItemToGameResp);
 
             // 消息的订阅
             MessageRouter.Instance.Subscribe<GetItemInventoryDataRequest>(HandleGetItemInventoryDataRequest);
@@ -46,9 +48,8 @@ namespace GameServer.Hanle
             MessageRouter.Instance.Subscribe<DiscardItemRequest>(HandleDiscardItemRequest);
             MessageRouter.Instance.Subscribe<WearEquipRequest>(HandleWearEquipRequest);
             MessageRouter.Instance.Subscribe<UnloadEquipRequest>(HandleUnloadEquipRequest);
+            MessageRouter.Instance.Subscribe<PickUpSceneItemToGameRequest>(HandlePickUpSceneItemToGameRequest);
         }
-
-
         private void HandleGetItemInventoryDataRequest(Connection conn, GetItemInventoryDataRequest message)
         {
             GameCharacter chr = GameCharacterManager.Instance.GetGameCharacterByCid(message.CId);
@@ -70,7 +71,7 @@ namespace GameServer.Hanle
             {
 
             }
-            conn.SendToGate(resp);
+            conn.Send(resp);
         End:
             return;
         }
@@ -195,7 +196,7 @@ namespace GameServer.Hanle
             {
                 goto End;
             }
-            chr.EquipmentManager.WearEquipment(gameEquipment);
+            chr.EquipmentManager.WearEquipment(gameEquipment, message.EquipSlotType);
         End:
             return;
         }
@@ -208,6 +209,32 @@ namespace GameServer.Hanle
             }
             chr.EquipmentManager.UnloadEquipment(message.Type, true);
         End:
+            return;
+        }
+        private void HandlePickUpSceneItemToGameRequest(Connection conn, PickUpSceneItemToGameRequest message)
+        {
+            var resp = new PickUpSceneItemToGameResponse();
+
+            GameCharacter chr = GameCharacterManager.Instance.GetGameCharacterByCid(message.CId);
+            if (chr == null)
+            {
+                goto End2;
+            }
+            resp.EntityId = chr.EntityId;
+
+            var itemDateNode = message.ItemDataNode;
+            if(!chr.BackPackManager.IsCanAddToInventory(itemDateNode.ItemId, itemDateNode.Amount))
+            {
+                resp.ResultCode = 1;
+                resp.ResultMsg = "背包无法一次性装下当前物品";
+                goto End1;
+            }
+
+            chr.BackPackManager.AddGameItem(itemDateNode.ItemId, itemDateNode.Amount);
+
+        End1:
+            conn.Send(resp);
+        End2:
             return;
         }
     }

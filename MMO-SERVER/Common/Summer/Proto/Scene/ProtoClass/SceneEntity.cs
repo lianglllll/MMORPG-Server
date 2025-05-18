@@ -31,7 +31,7 @@ namespace HS.Protobuf.SceneEntity {
             "dFRyYW5zZm9ybRIwCghwb3NpdGlvbhgBIAEoCzIeLkhTLlByb3RvYnVmLkNv",
             "bW1vbi5OZXRWZWN0b3IzEjAKCHJvdGF0aW9uGAIgASgLMh4uSFMuUHJvdG9i",
             "dWYuQ29tbW9uLk5ldFZlY3RvcjMSLQoFc2NhbGUYAyABKAsyHi5IUy5Qcm90",
-            "b2J1Zi5Db21tb24uTmV0VmVjdG9yMyKtBQoMTmV0QWN0b3JOb2RlEhAKCGVu",
+            "b2J1Zi5Db21tb24uTmV0VmVjdG9yMyL1BAoMTmV0QWN0b3JOb2RlEhAKCGVu",
             "dGl0eUlkGAEgASgFEjgKCXRyYW5zZm9ybRgCIAEoCzIlLkhTLlByb3RvYnVm",
             "LlNjZW5lRW50aXR5Lk5ldFRyYW5zZm9ybRIUCgxwcm9mZXNzaW9uSWQYAyAB",
             "KAUSEQoJYWN0b3JOYW1lGAQgASgJEg0KBWxldmVsGAUgASgFEgsKA2V4cBgG",
@@ -44,107 +44,99 @@ namespace HS.Protobuf.SceneEntity {
             "U3RhdGUSRwoSbmV0QWN0b3JTbWFsbFN0YXRlGBAgASgOMisuSFMuUHJvdG9i",
             "dWYuU2NlbmVFbnRpdHkuTmV0QWN0b3JTbWFsbFN0YXRlEkoKE2ZpeGVkU2tp",
             "bGxHcm91cEluZm8YEiABKAsyLS5IUy5Qcm90b2J1Zi5Db21iYXQuU2tpbGwu",
-            "Rml4ZWRTa2lsbEdyb3VwSW5mbxI2Cg53b3JuRXF1aXBtZW50cxgTIAMoCzIe",
-            "LkhTLlByb3RvYnVmLkJhY2twYWNrLkl0ZW1JbmZvEjAKBWJ1ZmZzGBQgAygL",
-            "MiEuSFMuUHJvdG9idWYuQ29tYmF0LkJ1ZmYuQnVmZkluZm8iqgEKC05ldEl0",
-            "ZW1Ob2RlEhAKCGVudGl0eUlkGAEgASgFEg8KB3NjZW5lSWQYAiABKAUSOAoJ",
-            "dHJhbnNmb3JtGAMgASgLMiUuSFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuTmV0",
-            "VHJhbnNmb3JtEj4KD25ldEl0ZW1EYXRhTm9kZRgEIAEoCzIlLkhTLlByb3Rv",
-            "YnVmLkJhY2twYWNrLk5ldEl0ZW1EYXRhTm9kZSL9AQoUTmV0QXR0cnVidXRl",
-            "RGF0YU5vZGUSDQoFU3BlZWQYASABKAUSDQoFTWF4SFAYAiABKAUSDQoFTWF4",
-            "TVAYAyABKAUSCgoCQUQYBCABKAUSCgoCQVAYBSABKAUSCwoDREVGGAYgASgF",
-            "EgwKBE1ERUYYByABKAUSCwoDQ1JJGAggASgCEgsKA0NSRBgJIAEoAhIPCgdI",
-            "aXRSYXRlGAogASgCEhEKCURvZGdlUmF0ZRgLIAEoAhIPCgdIcFJlZ2VuGAwg",
-            "ASgFEg8KB0hwU3RlYWwYDSABKAISCwoDU1RSGA4gASgFEgsKA0lOVBgPIAEo",
-            "BRILCgNBR0kYECABKAUifAoJTmV0RW50aXR5EgoKAmlkGAEgASgFEjAKCHBv",
-            "c2l0aW9uGAIgASgLMh4uSFMuUHJvdG9idWYuQ29tbW9uLk5ldFZlY3RvcjMS",
-            "MQoJZGlyZWN0aW9uGAMgASgLMh4uSFMuUHJvdG9idWYuQ29tbW9uLk5ldFZl",
-            "Y3RvcjMiugMKCE5ldEFjdG9yEgoKAmlkGAEgASgFEgsKA3RpZBgCIAEoBRIy",
-            "CgZlbnRpdHkYAyABKAsyIi5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRF",
-            "bnRpdHkSDAoEbmFtZRgEIAEoCRINCgVsZXZlbBgFIAEoBRILCgNleHAYBiAB",
-            "KAMSDwoHc3BhY2VJZBgHIAEoBRIMCgRnb2xkGAggASgDEgoKAmhwGAkgASgC",
-            "EgoKAm1wGAogASgCEjUKCWFjdG9yVHlwZRgLIAEoDjIiLkhTLlByb3RvYnVm",
-            "LlNjZW5lRW50aXR5LkFjdG9yVHlwZRIzCgZza2lsbHMYDCADKAsyIy5IUy5Q",
-            "cm90b2J1Zi5Db21iYXQuU2tpbGwuU2tpbGxJbmZvEjEKCWVxdWlwTGlzdBgN",
-            "IAMoCzIeLkhTLlByb3RvYnVmLkJhY2twYWNrLkl0ZW1JbmZvEg0KBWhwTWF4",
-            "GA4gASgCEg0KBW1wTWF4GA8gASgCEg0KBXNwZWVkGBAgASgFEjQKCWJ1ZmZz",
-            "TGlzdBgRIAMoCzIhLkhTLlByb3RvYnVmLkNvbWJhdC5CdWZmLkJ1ZmZJbmZv",
-            "IvMECg5Qcm9wZXJ0eVVwZGF0ZRIRCgllbnRpdHlfaWQYASABKAUSPgoIcHJv",
-            "cGVydHkYAiABKA4yLC5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5Qcm9wZXJ0",
-            "eVVwZGF0ZS5Qcm9wEkcKCG9sZFZhbHVlGAMgASgLMjUuSFMuUHJvdG9idWYu",
-            "U2NlbmVFbnRpdHkuUHJvcGVydHlVcGRhdGUuUHJvcGVydHlWYWx1ZRJHCghu",
-            "ZXdWYWx1ZRgEIAEoCzI1LkhTLlByb3RvYnVmLlNjZW5lRW50aXR5LlByb3Bl",
-            "cnR5VXBkYXRlLlByb3BlcnR5VmFsdWUa8gEKDVByb3BlcnR5VmFsdWUSEwoJ",
-            "aW50X3ZhbHVlGAEgASgFSAASFQoLZmxvYXRfdmFsdWUYAiABKAJIABIWCgxz",
-            "dHJpbmdfdmFsdWUYAyABKAlIABI4Cgptb2RlX3ZhbHVlGAQgASgOMiIuSFMu",
-            "UHJvdG9idWYuU2NlbmVFbnRpdHkuQWN0b3JNb2RlSAASFAoKbG9uZ192YWx1",
-            "ZRgFIAEoA0gAEkQKEGNvbWJhdE1vZGVfdmFsdWUYBiABKA4yKC5IUy5Qcm90",
-            "b2J1Zi5TY2VuZUVudGl0eS5BY3RvckNvbWJhdE1vZGVIAEIHCgV2YWx1ZSKG",
-            "AQoEUHJvcBIGCgJIUBAAEgYKAk1QEAESCQoFSFBNYXgQAhIJCgVNUE1heBAD",
-            "EggKBE1vZGUQBBIJCgVMZXZlbBAFEggKBE5hbWUQBhIJCgVHb2xkcxAHEgcK",
-            "A0V4cBAIEgoKBkVuZXJneRAJEgkKBVNwZWVkEAoSDgoKQ29tYmF0TW9kZRAL",
-            "Ik4KFVByb3BlcnR5VXBkYXRlUnNwb25zZRI1CgRsaXN0GAEgAygLMicuSFMu",
-            "UHJvdG9idWYuU2NlbmVFbnRpdHkuUHJvcGVydHlVcGRhdGUigQEKCE5ldEVJ",
-            "dGVtEjAKCEl0ZW1JbmZvGAEgASgLMh4uSFMuUHJvdG9idWYuQmFja3BhY2su",
-            "SXRlbUluZm8SDwoHc3BhY2VJZBgCIAEoBRIyCgZlbnRpdHkYAyABKAsyIi5I",
-            "Uy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRFbnRpdHkqiQEKD1NjZW5lRW50",
-            "aXR5VHlwZRIaChZTQ0VORV9FTlRJVFlfVFlQRV9OT05FEAASGwoXU0NFTkVf",
-            "RU5USVRZX1RZUEVfQUNUT1IQARIaChZTQ0VORV9FTlRJVFlfVFlQRV9JVEVN",
-            "EAISIQodU0NFTkVfRU5USVRZX1RZUEVfSU5URVJBQ1RJVk8QAypgCgxOZXRB",
-            "Y3RvclR5cGUSHAoYTkVUX0FDVE9SX1RZUEVfQ0hBUkFDVEVSEAASGgoWTkVU",
-            "X0FDVE9SX1RZUEVfTU9OU1RFUhABEhYKEk5FVF9BQ1RPUl9UWVBFX05QQxAC",
-            "KvQBCgxOZXRBY3Rvck1vZGUSFwoTTkVUX0FDVE9SX01PREVfTk9ORRAAEhkK",
-            "FU5FVF9BQ1RPUl9NT0RFX05PUk1BTBABEh8KG05FVF9BQ1RPUl9NT0RFX05P",
-            "Uk1BTF9FUVVJUBACEhYKEk5FVF9BQ1RPUl9NT0RFX0ZMWRADEhwKGE5FVF9B",
-            "Q1RPUl9NT0RFX0ZMWV9FUVVJUBAEEhoKFk5FVF9BQ1RPUl9NT0RFX01PVU5U",
-            "RUQQBRIgChxORVRfQUNUT1JfTU9ERV9NT1VOVEVEX0VRVUlQEAYSGwoXTkVU",
-            "X0FDVE9SX01PREVfU1dJTU1JTkcQByrKAwoNTmV0QWN0b3JTdGF0ZRIYChRO",
-            "RVRfQUNUT1JfU1RBVEVfTk9ORRAAEhgKFE5FVF9BQ1RPUl9TVEFURV9JRExF",
-            "EAESGgoWTkVUX0FDVE9SX1NUQVRFX01PVElPThACEhoKFk5FVF9BQ1RPUl9T",
-            "VEFURV9KVU1QVVAQAxIbChdORVRfQUNUT1JfU1RBVEVfRkFMTElORxAEEhoK",
-            "Fk5FVF9BQ1RPUl9TVEFURV9DUk9VQ0gQBRIZChVORVRfQUNUT1JfU1RBVEVf",
-            "UFJPTkUQBhIYChRORVRfQUNUT1JfU1RBVEVfSFVSVBAHEhkKFU5FVF9BQ1RP",
-            "Ul9TVEFURV9ESVpaWRAIEhkKFU5FVF9BQ1RPUl9TVEFURV9LTk9DSxAJEhkK",
-            "FU5FVF9BQ1RPUl9TVEFURV9ERUFUSBAKEhsKF05FVF9BQ1RPUl9TVEFURV9E",
-            "RUZFTlNFEAsSGQoVTkVUX0FDVE9SX1NUQVRFX0VWQURFEAwSGQoVTkVUX0FD",
-            "VE9SX1NUQVRFX1NLSUxMEA0SGgoWTkVUX0FDVE9SX1NUQVRFX0NVU1RPTRAO",
-            "Eh8KG05FVF9BQ1RPUl9TVEFURV9DSEFOR0VISUdIVBAPKskHChJOZXRBY3Rv",
-            "clNtYWxsU3RhdGUSHgoaTkVUX0FDVE9SX1NNQUxMX1NUQVRFX05PTkUQABIq",
-            "CiZORVRfQUNUT1JfU1RBVEVfU0FNTExfTU9USU9OX1NMT1dfV0FMSxABEiwK",
-            "KE5FVF9BQ1RPUl9TVEFURV9TQU1MTF9NT1RJT05fTk9STUFMX1dBTEsQAhIk",
-            "CiBORVRfQUNUT1JfU1RBVEVfU0FNTExfTU9USU9OX1JVThADEikKJU5FVF9B",
-            "Q1RPUl9TVEFURV9TQU1MTF9NT1RJT05fUlVOX1NUT1AQBBIxCi1ORVRfQUNU",
-            "T1JfU1RBVEVfU0FNTExfTU9USU9OX05PUk1BTF9XQUxLX1NUT1AQBRIhCh1O",
-            "RVRfQUNUT1JfU1RBVEVfU0FNTExfSlVNUF9VUBAGEisKJ05FVF9BQ1RPUl9T",
-            "VEFURV9TQU1MTF9GQUxMSU5HX1NVU1RBSU5FRBAHEiUKIU5FVF9BQ1RPUl9T",
-            "VEFURV9TQU1MTF9GQUxMSU5HX0VORBAIEioKJk5FVF9BQ1RPUl9TVEFURV9T",
-            "QU1MTF9DUk9VQ0hfU1VTVEFJTkVEEAkSJQohTkVUX0FDVE9SX1NUQVRFX1NB",
-            "TUxMX0NST1VDSF9NT1ZFEAoSKQolTkVUX0FDVE9SX1NUQVRFX1NBTUxMX1BS",
-            "T05FX1NVU1RBSU5FRBALEiQKIE5FVF9BQ1RPUl9TVEFURV9TQU1MTF9QUk9O",
-            "RV9NT1ZFEAwSKQolTkVUX0FDVE9SX1NUQVRFX1NBTUxMX0RFQVRIX1NVU1RB",
-            "SU5FRBANEiIKHk5FVF9BQ1RPUl9TVEFURV9TQU1MTF9ERUFUSF9VUBAOEiAK",
-            "HE5FVF9BQ1RPUl9TVEFURV9TQU1MTF9ISVRfVVAQDxIiCh5ORVRfQUNUT1Jf",
-            "U1RBVEVfU0FNTExfSElUX0RPV04QEBIiCh5ORVRfQUNUT1JfU1RBVEVfU0FN",
-            "TExfSElUX0xFRlQQERIjCh9ORVRfQUNUT1JfU1RBVEVfU0FNTExfSElUX1JJ",
-            "R0hUEBISIwofTkVUX0FDVE9SX1NUQVRFX1NBTUxMX0hJVF9GUk9OVBATEiIK",
-            "Hk5FVF9BQ1RPUl9TVEFURV9TQU1MTF9ISVRfQkFDSxAUEikKJU5FVF9BQ1RP",
-            "Ul9TVEFURV9TQU1MTF9ESVpaWV9TVVNUQUlORUQQFRIkCiBORVRfQUNUT1Jf",
-            "U1RBVEVfU0FNTExfS05PQ0tfQkFDSxAWEiIKHk5FVF9BQ1RPUl9TVEFURV9T",
-            "QU1MTF9LTk9DS19VUBAXKjQKCUFjdG9yTW9kZRIICgRGUkVFEAASCAoEREVB",
-            "RBABEggKBFJFU1QQAhIJCgVGSUdIVBADKjgKD0FjdG9yQ29tYmF0TW9kZRIJ",
-            "CgVTdGFuZBAAEgkKBUVxdWlwEAESDwoLU3dvcmRGbGlnaHQQAiqKAQoKQWN0",
-            "b3JTdGF0ZRILCgdBaXJEb3duEAASCQoFRGVhdGgQARILCgdEZWZlbnNlEAIS",
-            "CQoFRGl6enkQAxIJCgVFdmFkZRAEEggKBEh1cnQQBRIICgRJZGxlEAYSCgoG",
-            "SnVtcFVwEAcSCAoETW92ZRAIEgkKBVNraWxsEAkSDAoIQ29uc3RhbnQQCiow",
-            "CglBY3RvclR5cGUSDQoJQ2hhcmFjdGVyEAASCwoHTW9uc3RlchABEgcKA05Q",
-            "QxACYgZwcm90bzM="));
+            "Rml4ZWRTa2lsbEdyb3VwSW5mbxIwCgVidWZmcxgUIAMoCzIhLkhTLlByb3Rv",
+            "YnVmLkNvbWJhdC5CdWZmLkJ1ZmZJbmZvIqoBCgtOZXRJdGVtTm9kZRIQCghl",
+            "bnRpdHlJZBgBIAEoBRIPCgdzY2VuZUlkGAIgASgFEjgKCXRyYW5zZm9ybRgD",
+            "IAEoCzIlLkhTLlByb3RvYnVmLlNjZW5lRW50aXR5Lk5ldFRyYW5zZm9ybRI+",
+            "Cg9uZXRJdGVtRGF0YU5vZGUYBCABKAsyJS5IUy5Qcm90b2J1Zi5CYWNrcGFj",
+            "ay5OZXRJdGVtRGF0YU5vZGUifAoJTmV0RW50aXR5EgoKAmlkGAEgASgFEjAK",
+            "CHBvc2l0aW9uGAIgASgLMh4uSFMuUHJvdG9idWYuQ29tbW9uLk5ldFZlY3Rv",
+            "cjMSMQoJZGlyZWN0aW9uGAMgASgLMh4uSFMuUHJvdG9idWYuQ29tbW9uLk5l",
+            "dFZlY3RvcjMiugMKCE5ldEFjdG9yEgoKAmlkGAEgASgFEgsKA3RpZBgCIAEo",
+            "BRIyCgZlbnRpdHkYAyABKAsyIi5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5O",
+            "ZXRFbnRpdHkSDAoEbmFtZRgEIAEoCRINCgVsZXZlbBgFIAEoBRILCgNleHAY",
+            "BiABKAMSDwoHc3BhY2VJZBgHIAEoBRIMCgRnb2xkGAggASgDEgoKAmhwGAkg",
+            "ASgCEgoKAm1wGAogASgCEjUKCWFjdG9yVHlwZRgLIAEoDjIiLkhTLlByb3Rv",
+            "YnVmLlNjZW5lRW50aXR5LkFjdG9yVHlwZRIzCgZza2lsbHMYDCADKAsyIy5I",
+            "Uy5Qcm90b2J1Zi5Db21iYXQuU2tpbGwuU2tpbGxJbmZvEjEKCWVxdWlwTGlz",
+            "dBgNIAMoCzIeLkhTLlByb3RvYnVmLkJhY2twYWNrLkl0ZW1JbmZvEg0KBWhw",
+            "TWF4GA4gASgCEg0KBW1wTWF4GA8gASgCEg0KBXNwZWVkGBAgASgFEjQKCWJ1",
+            "ZmZzTGlzdBgRIAMoCzIhLkhTLlByb3RvYnVmLkNvbWJhdC5CdWZmLkJ1ZmZJ",
+            "bmZvIvMECg5Qcm9wZXJ0eVVwZGF0ZRIRCgllbnRpdHlfaWQYASABKAUSPgoI",
+            "cHJvcGVydHkYAiABKA4yLC5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5Qcm9w",
+            "ZXJ0eVVwZGF0ZS5Qcm9wEkcKCG9sZFZhbHVlGAMgASgLMjUuSFMuUHJvdG9i",
+            "dWYuU2NlbmVFbnRpdHkuUHJvcGVydHlVcGRhdGUuUHJvcGVydHlWYWx1ZRJH",
+            "CghuZXdWYWx1ZRgEIAEoCzI1LkhTLlByb3RvYnVmLlNjZW5lRW50aXR5LlBy",
+            "b3BlcnR5VXBkYXRlLlByb3BlcnR5VmFsdWUa8gEKDVByb3BlcnR5VmFsdWUS",
+            "EwoJaW50X3ZhbHVlGAEgASgFSAASFQoLZmxvYXRfdmFsdWUYAiABKAJIABIW",
+            "CgxzdHJpbmdfdmFsdWUYAyABKAlIABI4Cgptb2RlX3ZhbHVlGAQgASgOMiIu",
+            "SFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuQWN0b3JNb2RlSAASFAoKbG9uZ192",
+            "YWx1ZRgFIAEoA0gAEkQKEGNvbWJhdE1vZGVfdmFsdWUYBiABKA4yKC5IUy5Q",
+            "cm90b2J1Zi5TY2VuZUVudGl0eS5BY3RvckNvbWJhdE1vZGVIAEIHCgV2YWx1",
+            "ZSKGAQoEUHJvcBIGCgJIUBAAEgYKAk1QEAESCQoFSFBNYXgQAhIJCgVNUE1h",
+            "eBADEggKBE1vZGUQBBIJCgVMZXZlbBAFEggKBE5hbWUQBhIJCgVHb2xkcxAH",
+            "EgcKA0V4cBAIEgoKBkVuZXJneRAJEgkKBVNwZWVkEAoSDgoKQ29tYmF0TW9k",
+            "ZRALIk4KFVByb3BlcnR5VXBkYXRlUnNwb25zZRI1CgRsaXN0GAEgAygLMicu",
+            "SFMuUHJvdG9idWYuU2NlbmVFbnRpdHkuUHJvcGVydHlVcGRhdGUigQEKCE5l",
+            "dEVJdGVtEjAKCEl0ZW1JbmZvGAEgASgLMh4uSFMuUHJvdG9idWYuQmFja3Bh",
+            "Y2suSXRlbUluZm8SDwoHc3BhY2VJZBgCIAEoBRIyCgZlbnRpdHkYAyABKAsy",
+            "Ii5IUy5Qcm90b2J1Zi5TY2VuZUVudGl0eS5OZXRFbnRpdHkqiQEKD1NjZW5l",
+            "RW50aXR5VHlwZRIaChZTQ0VORV9FTlRJVFlfVFlQRV9OT05FEAASGwoXU0NF",
+            "TkVfRU5USVRZX1RZUEVfQUNUT1IQARIaChZTQ0VORV9FTlRJVFlfVFlQRV9J",
+            "VEVNEAISIQodU0NFTkVfRU5USVRZX1RZUEVfSU5URVJBQ1RJVk8QAypgCgxO",
+            "ZXRBY3RvclR5cGUSHAoYTkVUX0FDVE9SX1RZUEVfQ0hBUkFDVEVSEAASGgoW",
+            "TkVUX0FDVE9SX1RZUEVfTU9OU1RFUhABEhYKEk5FVF9BQ1RPUl9UWVBFX05Q",
+            "QxACKvQBCgxOZXRBY3Rvck1vZGUSFwoTTkVUX0FDVE9SX01PREVfTk9ORRAA",
+            "EhkKFU5FVF9BQ1RPUl9NT0RFX05PUk1BTBABEh8KG05FVF9BQ1RPUl9NT0RF",
+            "X05PUk1BTF9FUVVJUBACEhYKEk5FVF9BQ1RPUl9NT0RFX0ZMWRADEhwKGE5F",
+            "VF9BQ1RPUl9NT0RFX0ZMWV9FUVVJUBAEEhoKFk5FVF9BQ1RPUl9NT0RFX01P",
+            "VU5URUQQBRIgChxORVRfQUNUT1JfTU9ERV9NT1VOVEVEX0VRVUlQEAYSGwoX",
+            "TkVUX0FDVE9SX01PREVfU1dJTU1JTkcQByrKAwoNTmV0QWN0b3JTdGF0ZRIY",
+            "ChRORVRfQUNUT1JfU1RBVEVfTk9ORRAAEhgKFE5FVF9BQ1RPUl9TVEFURV9J",
+            "RExFEAESGgoWTkVUX0FDVE9SX1NUQVRFX01PVElPThACEhoKFk5FVF9BQ1RP",
+            "Ul9TVEFURV9KVU1QVVAQAxIbChdORVRfQUNUT1JfU1RBVEVfRkFMTElORxAE",
+            "EhoKFk5FVF9BQ1RPUl9TVEFURV9DUk9VQ0gQBRIZChVORVRfQUNUT1JfU1RB",
+            "VEVfUFJPTkUQBhIYChRORVRfQUNUT1JfU1RBVEVfSFVSVBAHEhkKFU5FVF9B",
+            "Q1RPUl9TVEFURV9ESVpaWRAIEhkKFU5FVF9BQ1RPUl9TVEFURV9LTk9DSxAJ",
+            "EhkKFU5FVF9BQ1RPUl9TVEFURV9ERUFUSBAKEhsKF05FVF9BQ1RPUl9TVEFU",
+            "RV9ERUZFTlNFEAsSGQoVTkVUX0FDVE9SX1NUQVRFX0VWQURFEAwSGQoVTkVU",
+            "X0FDVE9SX1NUQVRFX1NLSUxMEA0SGgoWTkVUX0FDVE9SX1NUQVRFX0NVU1RP",
+            "TRAOEh8KG05FVF9BQ1RPUl9TVEFURV9DSEFOR0VISUdIVBAPKskHChJOZXRB",
+            "Y3RvclNtYWxsU3RhdGUSHgoaTkVUX0FDVE9SX1NNQUxMX1NUQVRFX05PTkUQ",
+            "ABIqCiZORVRfQUNUT1JfU1RBVEVfU0FNTExfTU9USU9OX1NMT1dfV0FMSxAB",
+            "EiwKKE5FVF9BQ1RPUl9TVEFURV9TQU1MTF9NT1RJT05fTk9STUFMX1dBTEsQ",
+            "AhIkCiBORVRfQUNUT1JfU1RBVEVfU0FNTExfTU9USU9OX1JVThADEikKJU5F",
+            "VF9BQ1RPUl9TVEFURV9TQU1MTF9NT1RJT05fUlVOX1NUT1AQBBIxCi1ORVRf",
+            "QUNUT1JfU1RBVEVfU0FNTExfTU9USU9OX05PUk1BTF9XQUxLX1NUT1AQBRIh",
+            "Ch1ORVRfQUNUT1JfU1RBVEVfU0FNTExfSlVNUF9VUBAGEisKJ05FVF9BQ1RP",
+            "Ul9TVEFURV9TQU1MTF9GQUxMSU5HX1NVU1RBSU5FRBAHEiUKIU5FVF9BQ1RP",
+            "Ul9TVEFURV9TQU1MTF9GQUxMSU5HX0VORBAIEioKJk5FVF9BQ1RPUl9TVEFU",
+            "RV9TQU1MTF9DUk9VQ0hfU1VTVEFJTkVEEAkSJQohTkVUX0FDVE9SX1NUQVRF",
+            "X1NBTUxMX0NST1VDSF9NT1ZFEAoSKQolTkVUX0FDVE9SX1NUQVRFX1NBTUxM",
+            "X1BST05FX1NVU1RBSU5FRBALEiQKIE5FVF9BQ1RPUl9TVEFURV9TQU1MTF9Q",
+            "Uk9ORV9NT1ZFEAwSKQolTkVUX0FDVE9SX1NUQVRFX1NBTUxMX0RFQVRIX1NV",
+            "U1RBSU5FRBANEiIKHk5FVF9BQ1RPUl9TVEFURV9TQU1MTF9ERUFUSF9VUBAO",
+            "EiAKHE5FVF9BQ1RPUl9TVEFURV9TQU1MTF9ISVRfVVAQDxIiCh5ORVRfQUNU",
+            "T1JfU1RBVEVfU0FNTExfSElUX0RPV04QEBIiCh5ORVRfQUNUT1JfU1RBVEVf",
+            "U0FNTExfSElUX0xFRlQQERIjCh9ORVRfQUNUT1JfU1RBVEVfU0FNTExfSElU",
+            "X1JJR0hUEBISIwofTkVUX0FDVE9SX1NUQVRFX1NBTUxMX0hJVF9GUk9OVBAT",
+            "EiIKHk5FVF9BQ1RPUl9TVEFURV9TQU1MTF9ISVRfQkFDSxAUEikKJU5FVF9B",
+            "Q1RPUl9TVEFURV9TQU1MTF9ESVpaWV9TVVNUQUlORUQQFRIkCiBORVRfQUNU",
+            "T1JfU1RBVEVfU0FNTExfS05PQ0tfQkFDSxAWEiIKHk5FVF9BQ1RPUl9TVEFU",
+            "RV9TQU1MTF9LTk9DS19VUBAXKjQKCUFjdG9yTW9kZRIICgRGUkVFEAASCAoE",
+            "REVBRBABEggKBFJFU1QQAhIJCgVGSUdIVBADKjgKD0FjdG9yQ29tYmF0TW9k",
+            "ZRIJCgVTdGFuZBAAEgkKBUVxdWlwEAESDwoLU3dvcmRGbGlnaHQQAiqKAQoK",
+            "QWN0b3JTdGF0ZRILCgdBaXJEb3duEAASCQoFRGVhdGgQARILCgdEZWZlbnNl",
+            "EAISCQoFRGl6enkQAxIJCgVFdmFkZRAEEggKBEh1cnQQBRIICgRJZGxlEAYS",
+            "CgoGSnVtcFVwEAcSCAoETW92ZRAIEgkKBVNraWxsEAkSDAoIQ29uc3RhbnQQ",
+            "CiowCglBY3RvclR5cGUSDQoJQ2hhcmFjdGVyEAASCwoHTW9uc3RlchABEgcK",
+            "A05QQxACYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::HS.Protobuf.Common.CommonReflection.Descriptor, global::HS.Protobuf.Combat.Skill.SkillReflection.Descriptor, global::HS.Protobuf.Combat.Buff.BuffReflection.Descriptor, global::HS.Protobuf.Backpack.BackpackReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.SceneEntity.SceneEntityType), typeof(global::HS.Protobuf.SceneEntity.NetActorType), typeof(global::HS.Protobuf.SceneEntity.NetActorMode), typeof(global::HS.Protobuf.SceneEntity.NetActorState), typeof(global::HS.Protobuf.SceneEntity.NetActorSmallState), typeof(global::HS.Protobuf.SceneEntity.ActorMode), typeof(global::HS.Protobuf.SceneEntity.ActorCombatMode), typeof(global::HS.Protobuf.SceneEntity.ActorState), typeof(global::HS.Protobuf.SceneEntity.ActorType), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.SceneEntity.NetTransform), global::HS.Protobuf.SceneEntity.NetTransform.Parser, new[]{ "Position", "Rotation", "Scale" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.SceneEntity.NetActorNode), global::HS.Protobuf.SceneEntity.NetActorNode.Parser, new[]{ "EntityId", "Transform", "ProfessionId", "ActorName", "Level", "Exp", "SceneId", "Hp", "Mp", "MaxHp", "MaxMp", "Speed", "NetActorType", "NetActorMode", "NetActorState", "NetActorSmallState", "FixedSkillGroupInfo", "WornEquipments", "Buffs" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.SceneEntity.NetActorNode), global::HS.Protobuf.SceneEntity.NetActorNode.Parser, new[]{ "EntityId", "Transform", "ProfessionId", "ActorName", "Level", "Exp", "SceneId", "Hp", "Mp", "MaxHp", "MaxMp", "Speed", "NetActorType", "NetActorMode", "NetActorState", "NetActorSmallState", "FixedSkillGroupInfo", "Buffs" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.SceneEntity.NetItemNode), global::HS.Protobuf.SceneEntity.NetItemNode.Parser, new[]{ "EntityId", "SceneId", "Transform", "NetItemDataNode" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.SceneEntity.NetAttrubuteDataNode), global::HS.Protobuf.SceneEntity.NetAttrubuteDataNode.Parser, new[]{ "Speed", "MaxHP", "MaxMP", "AD", "AP", "DEF", "MDEF", "CRI", "CRD", "HitRate", "DodgeRate", "HpRegen", "HpSteal", "STR", "INT", "AGI" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.SceneEntity.NetEntity), global::HS.Protobuf.SceneEntity.NetEntity.Parser, new[]{ "Id", "Position", "Direction" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.SceneEntity.NetActor), global::HS.Protobuf.SceneEntity.NetActor.Parser, new[]{ "Id", "Tid", "Entity", "Name", "Level", "Exp", "SpaceId", "Gold", "Hp", "Mp", "ActorType", "Skills", "EquipList", "HpMax", "MpMax", "Speed", "BuffsList" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.SceneEntity.PropertyUpdate), global::HS.Protobuf.SceneEntity.PropertyUpdate.Parser, new[]{ "EntityId", "Property", "OldValue", "NewValue" }, null, new[]{ typeof(global::HS.Protobuf.SceneEntity.PropertyUpdate.Types.Prop) }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.SceneEntity.PropertyUpdate.Types.PropertyValue), global::HS.Protobuf.SceneEntity.PropertyUpdate.Types.PropertyValue.Parser, new[]{ "IntValue", "FloatValue", "StringValue", "ModeValue", "LongValue", "CombatModeValue" }, new[]{ "Value" }, null, null, null)}),
@@ -630,7 +622,6 @@ namespace HS.Protobuf.SceneEntity {
       netActorState_ = other.netActorState_;
       netActorSmallState_ = other.netActorSmallState_;
       fixedSkillGroupInfo_ = other.fixedSkillGroupInfo_ != null ? other.fixedSkillGroupInfo_.Clone() : null;
-      wornEquipments_ = other.wornEquipments_.Clone();
       buffs_ = other.buffs_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -845,22 +836,14 @@ namespace HS.Protobuf.SceneEntity {
       }
     }
 
-    /// <summary>Field number for the "wornEquipments" field.</summary>
-    public const int WornEquipmentsFieldNumber = 19;
-    private static readonly pb::FieldCodec<global::HS.Protobuf.Backpack.ItemInfo> _repeated_wornEquipments_codec
-        = pb::FieldCodec.ForMessage(154, global::HS.Protobuf.Backpack.ItemInfo.Parser);
-    private readonly pbc::RepeatedField<global::HS.Protobuf.Backpack.ItemInfo> wornEquipments_ = new pbc::RepeatedField<global::HS.Protobuf.Backpack.ItemInfo>();
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::HS.Protobuf.Backpack.ItemInfo> WornEquipments {
-      get { return wornEquipments_; }
-    }
-
     /// <summary>Field number for the "buffs" field.</summary>
     public const int BuffsFieldNumber = 20;
     private static readonly pb::FieldCodec<global::HS.Protobuf.Combat.Buff.BuffInfo> _repeated_buffs_codec
         = pb::FieldCodec.ForMessage(162, global::HS.Protobuf.Combat.Buff.BuffInfo.Parser);
     private readonly pbc::RepeatedField<global::HS.Protobuf.Combat.Buff.BuffInfo> buffs_ = new pbc::RepeatedField<global::HS.Protobuf.Combat.Buff.BuffInfo>();
+    /// <summary>
+    /// repeated HS.Protobuf.Backpack.ItemInfo wornEquipments				= 19;
+    /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public pbc::RepeatedField<global::HS.Protobuf.Combat.Buff.BuffInfo> Buffs {
@@ -899,7 +882,6 @@ namespace HS.Protobuf.SceneEntity {
       if (NetActorState != other.NetActorState) return false;
       if (NetActorSmallState != other.NetActorSmallState) return false;
       if (!object.Equals(FixedSkillGroupInfo, other.FixedSkillGroupInfo)) return false;
-      if(!wornEquipments_.Equals(other.wornEquipments_)) return false;
       if(!buffs_.Equals(other.buffs_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -925,7 +907,6 @@ namespace HS.Protobuf.SceneEntity {
       if (NetActorState != global::HS.Protobuf.SceneEntity.NetActorState.None) hash ^= NetActorState.GetHashCode();
       if (NetActorSmallState != global::HS.Protobuf.SceneEntity.NetActorSmallState.None) hash ^= NetActorSmallState.GetHashCode();
       if (fixedSkillGroupInfo_ != null) hash ^= FixedSkillGroupInfo.GetHashCode();
-      hash ^= wornEquipments_.GetHashCode();
       hash ^= buffs_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -1013,7 +994,6 @@ namespace HS.Protobuf.SceneEntity {
         output.WriteRawTag(146, 1);
         output.WriteMessage(FixedSkillGroupInfo);
       }
-      wornEquipments_.WriteTo(output, _repeated_wornEquipments_codec);
       buffs_.WriteTo(output, _repeated_buffs_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -1093,7 +1073,6 @@ namespace HS.Protobuf.SceneEntity {
         output.WriteRawTag(146, 1);
         output.WriteMessage(FixedSkillGroupInfo);
       }
-      wornEquipments_.WriteTo(ref output, _repeated_wornEquipments_codec);
       buffs_.WriteTo(ref output, _repeated_buffs_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -1156,7 +1135,6 @@ namespace HS.Protobuf.SceneEntity {
       if (fixedSkillGroupInfo_ != null) {
         size += 2 + pb::CodedOutputStream.ComputeMessageSize(FixedSkillGroupInfo);
       }
-      size += wornEquipments_.CalculateSize(_repeated_wornEquipments_codec);
       size += buffs_.CalculateSize(_repeated_buffs_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1227,7 +1205,6 @@ namespace HS.Protobuf.SceneEntity {
         }
         FixedSkillGroupInfo.MergeFrom(other.FixedSkillGroupInfo);
       }
-      wornEquipments_.Add(other.wornEquipments_);
       buffs_.Add(other.buffs_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1316,10 +1293,6 @@ namespace HS.Protobuf.SceneEntity {
               FixedSkillGroupInfo = new global::HS.Protobuf.Combat.Skill.FixedSkillGroupInfo();
             }
             input.ReadMessage(FixedSkillGroupInfo);
-            break;
-          }
-          case 154: {
-            wornEquipments_.AddEntriesFrom(input, _repeated_wornEquipments_codec);
             break;
           }
           case 162: {
@@ -1413,10 +1386,6 @@ namespace HS.Protobuf.SceneEntity {
               FixedSkillGroupInfo = new global::HS.Protobuf.Combat.Skill.FixedSkillGroupInfo();
             }
             input.ReadMessage(FixedSkillGroupInfo);
-            break;
-          }
-          case 154: {
-            wornEquipments_.AddEntriesFrom(ref input, _repeated_wornEquipments_codec);
             break;
           }
           case 162: {
@@ -1752,753 +1721,6 @@ namespace HS.Protobuf.SceneEntity {
   }
 
   /// <summary>
-  /// 属性数据节点
-  /// </summary>
-  public sealed partial class NetAttrubuteDataNode : pb::IMessage<NetAttrubuteDataNode>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
-    private static readonly pb::MessageParser<NetAttrubuteDataNode> _parser = new pb::MessageParser<NetAttrubuteDataNode>(() => new NetAttrubuteDataNode());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<NetAttrubuteDataNode> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.SceneEntity.SceneEntityReflection.Descriptor.MessageTypes[3]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public NetAttrubuteDataNode() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public NetAttrubuteDataNode(NetAttrubuteDataNode other) : this() {
-      speed_ = other.speed_;
-      maxHP_ = other.maxHP_;
-      maxMP_ = other.maxMP_;
-      aD_ = other.aD_;
-      aP_ = other.aP_;
-      dEF_ = other.dEF_;
-      mDEF_ = other.mDEF_;
-      cRI_ = other.cRI_;
-      cRD_ = other.cRD_;
-      hitRate_ = other.hitRate_;
-      dodgeRate_ = other.dodgeRate_;
-      hpRegen_ = other.hpRegen_;
-      hpSteal_ = other.hpSteal_;
-      sTR_ = other.sTR_;
-      iNT_ = other.iNT_;
-      aGI_ = other.aGI_;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public NetAttrubuteDataNode Clone() {
-      return new NetAttrubuteDataNode(this);
-    }
-
-    /// <summary>Field number for the "Speed" field.</summary>
-    public const int SpeedFieldNumber = 1;
-    private int speed_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int Speed {
-      get { return speed_; }
-      set {
-        speed_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "MaxHP" field.</summary>
-    public const int MaxHPFieldNumber = 2;
-    private int maxHP_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int MaxHP {
-      get { return maxHP_; }
-      set {
-        maxHP_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "MaxMP" field.</summary>
-    public const int MaxMPFieldNumber = 3;
-    private int maxMP_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int MaxMP {
-      get { return maxMP_; }
-      set {
-        maxMP_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "AD" field.</summary>
-    public const int ADFieldNumber = 4;
-    private int aD_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int AD {
-      get { return aD_; }
-      set {
-        aD_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "AP" field.</summary>
-    public const int APFieldNumber = 5;
-    private int aP_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int AP {
-      get { return aP_; }
-      set {
-        aP_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "DEF" field.</summary>
-    public const int DEFFieldNumber = 6;
-    private int dEF_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int DEF {
-      get { return dEF_; }
-      set {
-        dEF_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "MDEF" field.</summary>
-    public const int MDEFFieldNumber = 7;
-    private int mDEF_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int MDEF {
-      get { return mDEF_; }
-      set {
-        mDEF_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "CRI" field.</summary>
-    public const int CRIFieldNumber = 8;
-    private float cRI_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public float CRI {
-      get { return cRI_; }
-      set {
-        cRI_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "CRD" field.</summary>
-    public const int CRDFieldNumber = 9;
-    private float cRD_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public float CRD {
-      get { return cRD_; }
-      set {
-        cRD_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "HitRate" field.</summary>
-    public const int HitRateFieldNumber = 10;
-    private float hitRate_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public float HitRate {
-      get { return hitRate_; }
-      set {
-        hitRate_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "DodgeRate" field.</summary>
-    public const int DodgeRateFieldNumber = 11;
-    private float dodgeRate_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public float DodgeRate {
-      get { return dodgeRate_; }
-      set {
-        dodgeRate_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "HpRegen" field.</summary>
-    public const int HpRegenFieldNumber = 12;
-    private int hpRegen_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int HpRegen {
-      get { return hpRegen_; }
-      set {
-        hpRegen_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "HpSteal" field.</summary>
-    public const int HpStealFieldNumber = 13;
-    private float hpSteal_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public float HpSteal {
-      get { return hpSteal_; }
-      set {
-        hpSteal_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "STR" field.</summary>
-    public const int STRFieldNumber = 14;
-    private int sTR_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int STR {
-      get { return sTR_; }
-      set {
-        sTR_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "INT" field.</summary>
-    public const int INTFieldNumber = 15;
-    private int iNT_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int INT {
-      get { return iNT_; }
-      set {
-        iNT_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "AGI" field.</summary>
-    public const int AGIFieldNumber = 16;
-    private int aGI_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int AGI {
-      get { return aGI_; }
-      set {
-        aGI_ = value;
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override bool Equals(object other) {
-      return Equals(other as NetAttrubuteDataNode);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(NetAttrubuteDataNode other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (Speed != other.Speed) return false;
-      if (MaxHP != other.MaxHP) return false;
-      if (MaxMP != other.MaxMP) return false;
-      if (AD != other.AD) return false;
-      if (AP != other.AP) return false;
-      if (DEF != other.DEF) return false;
-      if (MDEF != other.MDEF) return false;
-      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(CRI, other.CRI)) return false;
-      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(CRD, other.CRD)) return false;
-      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(HitRate, other.HitRate)) return false;
-      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(DodgeRate, other.DodgeRate)) return false;
-      if (HpRegen != other.HpRegen) return false;
-      if (!pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.Equals(HpSteal, other.HpSteal)) return false;
-      if (STR != other.STR) return false;
-      if (INT != other.INT) return false;
-      if (AGI != other.AGI) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (Speed != 0) hash ^= Speed.GetHashCode();
-      if (MaxHP != 0) hash ^= MaxHP.GetHashCode();
-      if (MaxMP != 0) hash ^= MaxMP.GetHashCode();
-      if (AD != 0) hash ^= AD.GetHashCode();
-      if (AP != 0) hash ^= AP.GetHashCode();
-      if (DEF != 0) hash ^= DEF.GetHashCode();
-      if (MDEF != 0) hash ^= MDEF.GetHashCode();
-      if (CRI != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(CRI);
-      if (CRD != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(CRD);
-      if (HitRate != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(HitRate);
-      if (DodgeRate != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(DodgeRate);
-      if (HpRegen != 0) hash ^= HpRegen.GetHashCode();
-      if (HpSteal != 0F) hash ^= pbc::ProtobufEqualityComparers.BitwiseSingleEqualityComparer.GetHashCode(HpSteal);
-      if (STR != 0) hash ^= STR.GetHashCode();
-      if (INT != 0) hash ^= INT.GetHashCode();
-      if (AGI != 0) hash ^= AGI.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
-      if (Speed != 0) {
-        output.WriteRawTag(8);
-        output.WriteInt32(Speed);
-      }
-      if (MaxHP != 0) {
-        output.WriteRawTag(16);
-        output.WriteInt32(MaxHP);
-      }
-      if (MaxMP != 0) {
-        output.WriteRawTag(24);
-        output.WriteInt32(MaxMP);
-      }
-      if (AD != 0) {
-        output.WriteRawTag(32);
-        output.WriteInt32(AD);
-      }
-      if (AP != 0) {
-        output.WriteRawTag(40);
-        output.WriteInt32(AP);
-      }
-      if (DEF != 0) {
-        output.WriteRawTag(48);
-        output.WriteInt32(DEF);
-      }
-      if (MDEF != 0) {
-        output.WriteRawTag(56);
-        output.WriteInt32(MDEF);
-      }
-      if (CRI != 0F) {
-        output.WriteRawTag(69);
-        output.WriteFloat(CRI);
-      }
-      if (CRD != 0F) {
-        output.WriteRawTag(77);
-        output.WriteFloat(CRD);
-      }
-      if (HitRate != 0F) {
-        output.WriteRawTag(85);
-        output.WriteFloat(HitRate);
-      }
-      if (DodgeRate != 0F) {
-        output.WriteRawTag(93);
-        output.WriteFloat(DodgeRate);
-      }
-      if (HpRegen != 0) {
-        output.WriteRawTag(96);
-        output.WriteInt32(HpRegen);
-      }
-      if (HpSteal != 0F) {
-        output.WriteRawTag(109);
-        output.WriteFloat(HpSteal);
-      }
-      if (STR != 0) {
-        output.WriteRawTag(112);
-        output.WriteInt32(STR);
-      }
-      if (INT != 0) {
-        output.WriteRawTag(120);
-        output.WriteInt32(INT);
-      }
-      if (AGI != 0) {
-        output.WriteRawTag(128, 1);
-        output.WriteInt32(AGI);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Speed != 0) {
-        output.WriteRawTag(8);
-        output.WriteInt32(Speed);
-      }
-      if (MaxHP != 0) {
-        output.WriteRawTag(16);
-        output.WriteInt32(MaxHP);
-      }
-      if (MaxMP != 0) {
-        output.WriteRawTag(24);
-        output.WriteInt32(MaxMP);
-      }
-      if (AD != 0) {
-        output.WriteRawTag(32);
-        output.WriteInt32(AD);
-      }
-      if (AP != 0) {
-        output.WriteRawTag(40);
-        output.WriteInt32(AP);
-      }
-      if (DEF != 0) {
-        output.WriteRawTag(48);
-        output.WriteInt32(DEF);
-      }
-      if (MDEF != 0) {
-        output.WriteRawTag(56);
-        output.WriteInt32(MDEF);
-      }
-      if (CRI != 0F) {
-        output.WriteRawTag(69);
-        output.WriteFloat(CRI);
-      }
-      if (CRD != 0F) {
-        output.WriteRawTag(77);
-        output.WriteFloat(CRD);
-      }
-      if (HitRate != 0F) {
-        output.WriteRawTag(85);
-        output.WriteFloat(HitRate);
-      }
-      if (DodgeRate != 0F) {
-        output.WriteRawTag(93);
-        output.WriteFloat(DodgeRate);
-      }
-      if (HpRegen != 0) {
-        output.WriteRawTag(96);
-        output.WriteInt32(HpRegen);
-      }
-      if (HpSteal != 0F) {
-        output.WriteRawTag(109);
-        output.WriteFloat(HpSteal);
-      }
-      if (STR != 0) {
-        output.WriteRawTag(112);
-        output.WriteInt32(STR);
-      }
-      if (INT != 0) {
-        output.WriteRawTag(120);
-        output.WriteInt32(INT);
-      }
-      if (AGI != 0) {
-        output.WriteRawTag(128, 1);
-        output.WriteInt32(AGI);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public int CalculateSize() {
-      int size = 0;
-      if (Speed != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Speed);
-      }
-      if (MaxHP != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MaxHP);
-      }
-      if (MaxMP != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MaxMP);
-      }
-      if (AD != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(AD);
-      }
-      if (AP != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(AP);
-      }
-      if (DEF != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(DEF);
-      }
-      if (MDEF != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MDEF);
-      }
-      if (CRI != 0F) {
-        size += 1 + 4;
-      }
-      if (CRD != 0F) {
-        size += 1 + 4;
-      }
-      if (HitRate != 0F) {
-        size += 1 + 4;
-      }
-      if (DodgeRate != 0F) {
-        size += 1 + 4;
-      }
-      if (HpRegen != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(HpRegen);
-      }
-      if (HpSteal != 0F) {
-        size += 1 + 4;
-      }
-      if (STR != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(STR);
-      }
-      if (INT != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(INT);
-      }
-      if (AGI != 0) {
-        size += 2 + pb::CodedOutputStream.ComputeInt32Size(AGI);
-      }
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(NetAttrubuteDataNode other) {
-      if (other == null) {
-        return;
-      }
-      if (other.Speed != 0) {
-        Speed = other.Speed;
-      }
-      if (other.MaxHP != 0) {
-        MaxHP = other.MaxHP;
-      }
-      if (other.MaxMP != 0) {
-        MaxMP = other.MaxMP;
-      }
-      if (other.AD != 0) {
-        AD = other.AD;
-      }
-      if (other.AP != 0) {
-        AP = other.AP;
-      }
-      if (other.DEF != 0) {
-        DEF = other.DEF;
-      }
-      if (other.MDEF != 0) {
-        MDEF = other.MDEF;
-      }
-      if (other.CRI != 0F) {
-        CRI = other.CRI;
-      }
-      if (other.CRD != 0F) {
-        CRD = other.CRD;
-      }
-      if (other.HitRate != 0F) {
-        HitRate = other.HitRate;
-      }
-      if (other.DodgeRate != 0F) {
-        DodgeRate = other.DodgeRate;
-      }
-      if (other.HpRegen != 0) {
-        HpRegen = other.HpRegen;
-      }
-      if (other.HpSteal != 0F) {
-        HpSteal = other.HpSteal;
-      }
-      if (other.STR != 0) {
-        STR = other.STR;
-      }
-      if (other.INT != 0) {
-        INT = other.INT;
-      }
-      if (other.AGI != 0) {
-        AGI = other.AGI;
-      }
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 8: {
-            Speed = input.ReadInt32();
-            break;
-          }
-          case 16: {
-            MaxHP = input.ReadInt32();
-            break;
-          }
-          case 24: {
-            MaxMP = input.ReadInt32();
-            break;
-          }
-          case 32: {
-            AD = input.ReadInt32();
-            break;
-          }
-          case 40: {
-            AP = input.ReadInt32();
-            break;
-          }
-          case 48: {
-            DEF = input.ReadInt32();
-            break;
-          }
-          case 56: {
-            MDEF = input.ReadInt32();
-            break;
-          }
-          case 69: {
-            CRI = input.ReadFloat();
-            break;
-          }
-          case 77: {
-            CRD = input.ReadFloat();
-            break;
-          }
-          case 85: {
-            HitRate = input.ReadFloat();
-            break;
-          }
-          case 93: {
-            DodgeRate = input.ReadFloat();
-            break;
-          }
-          case 96: {
-            HpRegen = input.ReadInt32();
-            break;
-          }
-          case 109: {
-            HpSteal = input.ReadFloat();
-            break;
-          }
-          case 112: {
-            STR = input.ReadInt32();
-            break;
-          }
-          case 120: {
-            INT = input.ReadInt32();
-            break;
-          }
-          case 128: {
-            AGI = input.ReadInt32();
-            break;
-          }
-        }
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 8: {
-            Speed = input.ReadInt32();
-            break;
-          }
-          case 16: {
-            MaxHP = input.ReadInt32();
-            break;
-          }
-          case 24: {
-            MaxMP = input.ReadInt32();
-            break;
-          }
-          case 32: {
-            AD = input.ReadInt32();
-            break;
-          }
-          case 40: {
-            AP = input.ReadInt32();
-            break;
-          }
-          case 48: {
-            DEF = input.ReadInt32();
-            break;
-          }
-          case 56: {
-            MDEF = input.ReadInt32();
-            break;
-          }
-          case 69: {
-            CRI = input.ReadFloat();
-            break;
-          }
-          case 77: {
-            CRD = input.ReadFloat();
-            break;
-          }
-          case 85: {
-            HitRate = input.ReadFloat();
-            break;
-          }
-          case 93: {
-            DodgeRate = input.ReadFloat();
-            break;
-          }
-          case 96: {
-            HpRegen = input.ReadInt32();
-            break;
-          }
-          case 109: {
-            HpSteal = input.ReadFloat();
-            break;
-          }
-          case 112: {
-            STR = input.ReadInt32();
-            break;
-          }
-          case 120: {
-            INT = input.ReadInt32();
-            break;
-          }
-          case 128: {
-            AGI = input.ReadInt32();
-            break;
-          }
-        }
-      }
-    }
-    #endif
-
-  }
-
-  /// <summary>
   ///entity位置信息
   /// </summary>
   public sealed partial class NetEntity : pb::IMessage<NetEntity>
@@ -2515,7 +1737,7 @@ namespace HS.Protobuf.SceneEntity {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.SceneEntity.SceneEntityReflection.Descriptor.MessageTypes[4]; }
+      get { return global::HS.Protobuf.SceneEntity.SceneEntityReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2799,7 +2021,7 @@ namespace HS.Protobuf.SceneEntity {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.SceneEntity.SceneEntityReflection.Descriptor.MessageTypes[5]; }
+      get { return global::HS.Protobuf.SceneEntity.SceneEntityReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3568,7 +2790,7 @@ namespace HS.Protobuf.SceneEntity {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.SceneEntity.SceneEntityReflection.Descriptor.MessageTypes[6]; }
+      get { return global::HS.Protobuf.SceneEntity.SceneEntityReflection.Descriptor.MessageTypes[5]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4344,7 +3566,7 @@ namespace HS.Protobuf.SceneEntity {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.SceneEntity.SceneEntityReflection.Descriptor.MessageTypes[7]; }
+      get { return global::HS.Protobuf.SceneEntity.SceneEntityReflection.Descriptor.MessageTypes[6]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4525,7 +3747,7 @@ namespace HS.Protobuf.SceneEntity {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::HS.Protobuf.SceneEntity.SceneEntityReflection.Descriptor.MessageTypes[8]; }
+      get { return global::HS.Protobuf.SceneEntity.SceneEntityReflection.Descriptor.MessageTypes[7]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

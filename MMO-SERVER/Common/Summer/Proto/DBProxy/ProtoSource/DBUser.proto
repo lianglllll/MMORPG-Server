@@ -18,25 +18,25 @@ enum DBUserProtocl{
 message CharacterList{
 	repeated string characterIds = 1;
 }
-message DBUserNode{
-	string uId = 1;
-	string userName = 2;
-	string password = 3;
-	string email = 4;
-	bool isEmailVerified = 5;
-	int64 creationTimestamp = 6;
-	int64 lastLoginTimestamp = 7;
-	int64 lastPasswordChangeTimestamp = 8;
-	int64 lockedUntilTimesTamp = 9;
-	string accessLevel = 10;							// 例如 "admin", "user"}
-	string accountStatus = 11;							// 例如 "active", "suspended", "deleted"
-	map<string, CharacterList> worldCharacters = 12;	// 键是世界ID，值是角色ID列表
-	repeated string activityLogs = 13;					// 存储一系列活动描述或ID
-	map<string, string> linkedAccounts = 14;			// 例如 {"google": "google_id", "facebook": "fb_id"}
-	map<string, string> preferences = 15;				// 偏好设置
-	bool isOnline = 16;									// 在线标记
-}
 
+message DBUserNode{
+	string uId									= 1;
+	string userName								= 2;
+	string password								= 3;
+	string email								= 4;
+	bool isEmailVerified						= 5;
+	int64 creationTimestamp						= 6;
+	int64 lastLoginTimestamp					= 7;
+	int64 lastPasswordChangeTimestamp			= 8;
+	int64 lockedUntilTimesTamp					= 9;
+	string accessLevel							= 10;	// 例如 "admin", "user"
+	string accountStatus						= 11;	// 例如 "active", "suspended", "deleted"
+	map<string, CharacterList> worldCharacters	= 12;	// 键是世界ID，值是角色ID列表
+	repeated string activityLogs				= 13;	// 存储一系列活动描述或ID
+	map<string, string> linkedAccounts			= 14;	// 例如 {"google": "google_id", "facebook": "fb_id"}
+	map<string, string> preferences				= 15;	// 偏好设置
+	bool isOnline								= 16;	// 在线标记
+}
 
 message GetDBUserRequest{
 	int32 taskId = 1;

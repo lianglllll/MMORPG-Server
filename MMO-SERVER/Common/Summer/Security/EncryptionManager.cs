@@ -48,15 +48,12 @@
             remoteRsaEncryption.ImportPublicKey(key);
             return true;
         }
-
         public string GetLocalRsaPublicKey()
         {
             return localRsaEncryption.GetPublicKey();
         }
-
-
+        
         //完整性验证
-
         //数字签名
     }
 }

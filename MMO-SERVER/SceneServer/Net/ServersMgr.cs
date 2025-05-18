@@ -1,6 +1,7 @@
 ﻿using Common.Summer.Core;
 using Common.Summer.Net;
 using Common.Summer.Tools;
+using Google.Protobuf;
 using HS.Protobuf.Common;
 using HS.Protobuf.ControlCenter;
 using HS.Protobuf.Game;
@@ -475,11 +476,16 @@ namespace SceneServer.Net
             Log.Error("GameGateInstance Disconnection, serverId = {0}", gameGateServerId);
             m_gameGateConn.Remove(gameGateServerId);
         }   
-
         public Connection GetGameGateConnByServerId(int gameGateServerId)
         {
             m_gameGateConn.TryGetValue(gameGateServerId, out var entry);
             return entry.Connection;
+        }
+
+        // tools
+        public bool SendToGame(IMessage message)
+        {
+            return m_outgoingServerConnection[SERVER_TYPE.Game].NetClient.Send(message);
         }
     }
 }

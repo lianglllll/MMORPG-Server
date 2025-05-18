@@ -1,7 +1,8 @@
 ﻿using Common.Summer.Core;
-using HS.Protobuf.Game.Backpack;
+using HS.Protobuf.Backpack;
 using SceneServer.Core.Model.Item;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
@@ -12,14 +13,14 @@ namespace SceneServer.Core.Scene.Component
 {
     public class SceneItemManager
     {
-        public Dictionary<int, SceneItem> itemEntityDict = new();       // <entityid, SceneItem>
+        public ConcurrentDictionary<int, SceneItem> itemEntityDict = new();       // <entityid, SceneItem>
 
         public void Init()
         {
         }
         public void UnInit()
         {
-            throw new NotImplementedException();
+            itemEntityDict.Clear();
         }
 
         public SceneItem CreateSceneItem(NetItemDataNode itemDataNode, Vector3Int pos, Vector3Int dir, Vector3Int scale)
@@ -27,34 +28,32 @@ namespace SceneServer.Core.Scene.Component
             var sceneItem = new SceneItem();
             sceneItem.Init(itemDataNode, pos, dir, scale);
 
-            //添加到entityMananger中管理
+            // 添加到entityMananger中管理
             SceneEntityManager.Instance.AddSceneEntity(sceneItem);
             itemEntityDict[sceneItem.EntityId] = sceneItem;
 
             sceneItem.NetItemNode.EntityId = sceneItem.EntityId;
             sceneItem.NetItemNode.SceneId = SceneManager.Instance.SceneId;
 
-            //显示到当前场景
+            // 显示到当前场景
             SceneManager.Instance.ItemEnterScene(sceneItem);
 
             return sceneItem;
         }
-
-        public bool RemoveItem(SceneItem item)
+        public SceneItem RemoveItem(int entityId)
         {
-            bool result = false;
-            if (!itemEntityDict.ContainsKey(item.EntityId))
+            SceneItem result = null;
+            if (!itemEntityDict.ContainsKey(entityId))
             {
                 goto End;
             }
 
-            SceneEntityManager.Instance.RemoveSceneEntity(item.EntityId);
-            itemEntityDict.Remove(item.EntityId);
+            SceneEntityManager.Instance.RemoveSceneEntity(entityId);
+            itemEntityDict.Remove(entityId, out result);
 
-            //场景中移除
-            SceneManager.Instance.ItemExitScene(item.EntityId);
+            // 场景中移除
+            SceneManager.Instance.ItemExitScene(entityId);
 
-            result = true;
         End:
             return result;
         }

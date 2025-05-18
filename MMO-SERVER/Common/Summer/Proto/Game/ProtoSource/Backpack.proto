@@ -15,6 +15,8 @@ enum BackpackProtocol{
 	BACKPACK_PROTOCOL_WEAR_EQUIP_RESP				= 33010;	// [WearEquipResponse]
 	BACKPACK_PROTOCOL_UNLOAD_EQUIP_REQ				= 33011;	// [UnloadEquipRequest]
 	BACKPACK_PROTOCOL_UNLOAD_EQUIP_RESP				= 33012;	// [UnloadEquipResponse]
+	BACKPACK_PROTOCOL_PICK_UP_GAME_ITEM_TO_GAME_REQ		= 33013;	// [PickUpSceneItemToGameRequest]
+	BACKPACK_PROTOCOL_PICK_UP_GAME_ITEM_TO_GAME_RESP	= 33014;	// [PickUpSceneItemToGameResponse]
 }
 
 enum ItemType{
@@ -46,6 +48,7 @@ enum EquipsType{
 }
 message EquipData{
 	// 打孔、镶嵌、强化
+	EquipSlotType slotType = 1;
 }
 message NetItemDataNode{
 	int32 itemId		= 1;	// 物品id
@@ -54,6 +57,22 @@ message NetItemDataNode{
 	int32 gridIdx		= 4;	// 物品所处位置,在哪个格子
 	EquipData equipdata = 5; 	// 装备信息，物品有这个属性，说明是武器。
 }
+enum EquipSlotType{
+	EQUIP_SLOT_TYPE_NONE		= 0;
+	EQUIP_SLOT_TYPE_WEAPON1		= 1;
+	EQUIP_SLOT_TYPE_WEAPON2		= 2;
+	EQUIP_SLOT_TYPE_HELMET		= 3;
+	EQUIP_SLOT_TYPE_NECK		= 4;
+	EQUIP_SLOT_TYPE_CHEST		= 5;
+	EQUIP_SLOT_TYPE_WRISTBAND	= 6;
+	EQUIP_SLOT_TYPE_BRACELET	= 7;
+	EQUIP_SLOT_TYPE_RING		= 8;
+	EQUIP_SLOT_TYPE_BELT		= 9;
+	EQUIP_SLOT_TYPE_LEGS		= 10;
+	EQUIP_SLOT_TYPE_BOOTS		= 11;
+	EQUIP_SLOT_TYPE_WINGS		= 12;
+}
+
 
 enum ItemInventoryType{
 	ITEM_INVENTORY_TYPE_BACKPACK	= 0;
@@ -129,10 +148,11 @@ message DiscardItemResponse{
 
 // 背包中的装备穿戴请求
 message WearEquipRequest{
-	string sessionId	= 1;
-	string cId			= 2;
-	int32 gridIndex		= 3;
-	int32 seq			= 4;
+	string sessionId			= 1;
+	string cId					= 2;
+	int32 gridIndex				= 3;
+	EquipSlotType equipSlotType = 4;
+	int32 seq					= 5;
 }
 message WearEquipResponse{
 	string sessionId				= 1;
@@ -146,15 +166,37 @@ message WearEquipResponse{
 message UnloadEquipRequest{
 	string sessionId	= 1;
 	string cId			= 2;
-	EquipsType type		= 3;
+	EquipSlotType type	= 3;
 	int32 seq			= 4;
 }
 message UnloadEquipResponse{
 	string sessionId				= 1;
-	EquipsType type					= 2;
+	EquipSlotType type				= 2;
 	int32 seq						= 3;
 	int32 replaceEquipNewSlotIndex	= 4;
 }
+
+// scene发过来的
+message PickUpSceneItemToGameRequest{
+	string cId						= 1;
+	NetItemDataNode itemDataNode	= 2;
+}
+message PickUpSceneItemToGameResponse{
+	int32 entityId		= 1;
+	int32 resultCode	= 2;
+	string resultMsg	= 3;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 // ================弃用======================

@@ -8,6 +8,7 @@ using HS.Protobuf.Common;
 using SceneServer.Core.Scene;
 using SceneServer.Core.Combat.Buffs;
 using HS.Protobuf.Scene;
+using Google.Protobuf.Collections;
 
 namespace SceneServer.Core.Model.Actor
 {
@@ -98,15 +99,15 @@ namespace SceneServer.Core.Model.Actor
         {
             isCanReciveDamage = active;
         }
-
+        public AttributeManager AttributeManager => m_attributeManager;
         #endregion
-
-        public void Init(NetVector3 InitPos, int professionId, int level)
+        #region 生命周期
+        public void Init(NetVector3 InitPos, int professionId, int level, RepeatedField<NetEquipmentNode> equips)
         {
             base.Init(InitPos, Vector3Int.zero, Vector3Int.one);
 
             m_define = StaticDataManager.Instance.unitDefineDict[professionId];
-            m_attributeManager.Init(m_define, level);
+            m_attributeManager.Init(m_define, level, equips);
             m_curUseSkill = null;
             m_skillSpell.Init(this);
             m_skillManager.Init(this);
@@ -134,7 +135,6 @@ namespace SceneServer.Core.Model.Actor
             m_netActorNode.Speed = m_attributeManager.final.Speed;
             m_netActorNode.NetActorMode = NetActorMode.Normal;
             m_netActorNode.NetActorState = NetActorState.Idle;
-            // m_netActorNode.NetActorSmallState = NetActorSmallState.None; // 可以选择去掉
             m_netActorNode.SceneId = SceneManager.Instance.SceneId;
 
             isCanReciveDamage = true;
@@ -146,7 +146,8 @@ namespace SceneServer.Core.Model.Actor
             m_skillManager.Update(deltaTime);
             m_buffManager.Update(deltaTime);
         }
-
+        #endregion
+        #region 属性变更
         public override void SetTransform(NetTransform transform)
         {
             base.SetTransform(transform);
@@ -238,7 +239,6 @@ namespace SceneServer.Core.Model.Actor
         End:
             return result;
         }
-
         public void RecvDamage(Damage damage)
         {
             if (IsDeath) return;
@@ -268,8 +268,8 @@ namespace SceneServer.Core.Model.Actor
 
         }
         protected virtual void ReviveAfter() { }
-
-        // tools
+        #endregion
+        #region tools
         private void _CancelCurSkill()
         {
             if(m_curUseSkill == null)
@@ -283,5 +283,6 @@ namespace SceneServer.Core.Model.Actor
             return;
         }
         protected virtual void ForceChangeSelfActor(NetActorState state) { }
+        #endregion
     }
 }

@@ -109,7 +109,7 @@ namespace DBProxyServer.Handle
         {
             DeleteDBUserResponse resp = new();
 
-            bool successs = await CharacterOperations.Instance.RemoveCharactersByUidAsync(message.UId);
+/*            bool successs = await CharacterOperations.Instance.RemoveCharactersByUidAsync(message.UId);
             if (successs)
             {
                 resp.ResultCode = 0;
@@ -117,7 +117,7 @@ namespace DBProxyServer.Handle
             else
             {
                 resp.ResultCode = 1;
-            }
+            }*/
 
             sender.Send(resp);
         }

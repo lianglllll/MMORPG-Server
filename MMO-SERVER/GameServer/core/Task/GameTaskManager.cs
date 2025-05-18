@@ -22,7 +22,7 @@ namespace GameServer.Core.Task
     public class GameTaskManager
     {
         private GameCharacter m_owner;
-        private Dictionary<int, GameTask> m_allTasks = new Dictionary<int, GameTask>();
+        private Dictionary<int, GameTask> m_allTasks = new();
         private Dictionary<string, Dictionary<int, GameTask>> conditions = new();
 
         public void Init(GameCharacter owner, DBCharacterTasks tasks)
@@ -50,7 +50,7 @@ namespace GameServer.Core.Task
             {
                 if (task.TaskDefine.Task_type == (int)GameTaskType.Daily)
                 {
-                    // 重置任务状态
+                    // 重置任务状态到进行中
                     task.ResetTask();
                 }
             }
@@ -172,7 +172,7 @@ namespace GameServer.Core.Task
         }
         #endregion
 
-        // tools
+        #region tools
         public bool Subscribe(string conditionType, GameTask gameTask)
         {
             bool result = false;
@@ -279,5 +279,6 @@ namespace GameServer.Core.Task
             resp.SessionId = m_owner.SessionId;
             m_owner.SendToGate(resp);
         }
+        #endregion
     }
 }

@@ -33,8 +33,6 @@ enum SERVER_TYPE{
 	// DB:		50000	mongodb/redis
 	// time:	60000	
 }
-
-
 message ServerInfoNode{
 	int32 serverId			= 1;
 	SERVER_TYPE serverType	= 2;
@@ -61,7 +59,6 @@ message ServerInfoNode{
     // 服务器权重（用于加权策略）
     int32 weight = 22;
 }
-
 
 message ControlCenterServerInfoNode{
 }
@@ -147,4 +144,24 @@ message ExchangeCommunicationSecretKeyRequest{
 message ExchangeCommunicationSecretKeyResponse{
 	int32 resultCode = 1;
 	int32 resulMsg = 2;
+}
+
+// ===============================================属性===============================================
+message NetAttrubuteDataNode{
+	int32 Speed		= 1;
+	int32 MaxHP		= 2;
+	int32 MaxMP		= 3;
+	int32 AD		= 4;
+	int32 AP		= 5;
+	int32 DEF		= 6;
+	int32 MDEF		= 7;
+	float CRI		= 8;
+	float CRD		= 9;
+	float HitRate	= 10;
+	float DodgeRate = 11;
+	int32 HpRegen	= 12;
+	float HpSteal	= 13;
+	int32 STR		= 14;
+	int32 INT		= 15;
+	int32 AGI		= 16;
 }

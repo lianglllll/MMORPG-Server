@@ -29,7 +29,7 @@ namespace SceneServer.Core.Scene.Component
         }
         public void UnInit()
         {
-            throw new NotImplementedException();
+            m_spawners.Clear();
         }
         public void Update(float deltaTime)
         {

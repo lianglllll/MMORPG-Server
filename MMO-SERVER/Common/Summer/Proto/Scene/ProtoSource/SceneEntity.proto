@@ -109,7 +109,7 @@ message NetActorNode {
     NetActorSmallState netActorSmallState = 16;
 
 	HS.Protobuf.Combat.Skill.FixedSkillGroupInfo fixedSkillGroupInfo	= 18;
-    repeated HS.Protobuf.Backpack.ItemInfo wornEquipments				= 19;
+    // repeated HS.Protobuf.Backpack.ItemInfo wornEquipments				= 19;
     repeated HS.Protobuf.Combat.Buff.BuffInfo buffs						= 20;
 }
 
@@ -121,25 +121,42 @@ message NetItemNode{
 	HS.Protobuf.Backpack.NetItemDataNode netItemDataNode	= 4;
 }
 
-// 属性数据节点
-message NetAttrubuteDataNode{
-	int32 Speed		= 1;
-	int32 MaxHP		= 2;
-	int32 MaxMP		= 3;
-	int32 AD		= 4;
-	int32 AP		= 5;
-	int32 DEF		= 6;
-	int32 MDEF		= 7;
-	float CRI		= 8;
-	float CRD		= 9;
-	float HitRate	= 10;
-	float DodgeRate = 11;
-	int32 HpRegen	= 12;
-	float HpSteal	= 13;
-	int32 STR		= 14;
-	int32 INT		= 15;
-	int32 AGI		= 16;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // =======================================无用
 

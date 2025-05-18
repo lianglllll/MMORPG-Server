@@ -132,7 +132,7 @@ namespace Common.Summer.Core
         //
         // 摘要:
         //     Shorthand for writing Vector3(1, 1, 1).
-        public static Vector3 one
+        public static Vector3 One
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             get

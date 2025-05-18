@@ -61,10 +61,11 @@ message RegisterToSceneResponse{
 
 // Game调用
 message CharacterEnterSceneRequest{
-	int32 taskId = 1;
-	string sessionId = 2;
-	int32 gameGateServerId = 3;
-	HS.Protobuf.DBProxy.DBCharacter.DBCharacterNode dbChrNode = 4;
+	int32 taskId												= 1;
+	string sessionId											= 2;
+	int32 gameGateServerId										= 3;
+	HS.Protobuf.DBProxy.DBCharacter.DBCharacterNode dbChrNode	= 4;
+	repeated NetEquipmentNode equips							= 5;
 }
 message SelfCharacterEnterSceneResponse{
 	int32 taskId = 1;
@@ -253,6 +254,7 @@ message SceneItemOperationResponse{
 message PickUpSceneItemRequest{
 	string sessionId	= 1;
 	int32 entityId		= 2;
+	int32 itemEntityId	= 3; 
 }
 message PickupSceneItemResponse{
 	string sessionId	= 1;
@@ -264,7 +266,7 @@ message PickupSceneItemResponse{
 
 // Game发的
 message DiscardGameItemToSceneRequest{
-	int32 entityId										= 1;
+	int32 entityId										= 1;	// chr的entityId
 	HS.Protobuf.Backpack.NetItemDataNode itemDataNode	= 2;
 }
 message DiscardGameItemToSceneResponse{
@@ -274,14 +276,42 @@ enum ChangeEquipmentOperationType{
 	CHANGE_EQUIPMENT_OPERATION_TYPE_UNLOAD	= 1;
 	CHANGE_EQUIPMENT_OPERATION_TYPE_WEAR	= 2;
 }
+
+message NetEquipmentNode{
+	HS.Protobuf.Backpack.EquipSlotType equipType				= 1;
+	HS.Protobuf.Common.NetAttrubuteDataNode attrubuteDataNode	= 2;
+}
 message ChangeEquipmentToSceneRequest{
-	int32 entityId								= 1;
-	ChangeEquipmentOperationType operationType	= 2;
-	HS.Protobuf.Backpack.EquipsType equipType	= 3;
-	HS.Protobuf.SceneEntity.NetAttrubuteDataNode attrubuteDataNode		= 4;
+	int32 entityId										= 1;
+	ChangeEquipmentOperationType operationType			= 2;
+	NetEquipmentNode equipNode							= 3;
 }
 message ChangeEquipmentToSceneResponse{
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -49,7 +49,7 @@ namespace SceneServer.Core.Model.Actor
                 z = initPos.z + offsetZ * 1000,
             };
 
-            base.Init(randomizedSpawnPoint, professionId, level);
+            base.Init(randomizedSpawnPoint, professionId, level, null);
             m_initPosition = randomizedSpawnPoint;
 
             // 补充网络信息

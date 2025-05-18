@@ -41,9 +41,9 @@ namespace GameServer.Core.Task
 
         // 动态信息
         private List<ConditionData> m_progress;    
-        private GameTaskState m_curState;               
-        private StateMachine m_machine;
-        private List<RewardData> m_reward;
+        private GameTaskState       m_curState;               
+        private StateMachine        m_machine;
+        private List<RewardData>    m_reward;
 
         #region
         public TaskDefine TaskDefine => m_taskDefine;
@@ -85,7 +85,7 @@ namespace GameServer.Core.Task
         public int TaskId => m_taskDefine.Task_id;
         public GameCharacter Owner => m_owner;
         #endregion
-
+        #region 生命周期
         public void Init(GameCharacter chr, TaskDefine def, DBTaskNode dbNode = null)
         {
             m_taskDefine = def;
@@ -96,25 +96,25 @@ namespace GameServer.Core.Task
             if (dbNode == null)
             {
                 // 第一次的
-                ResetTask();
+                ChangeState(GameTaskState.Locked, true, true);
             }
             else
             {
                 // 动态信息设置
+                var tmpState = (GameTaskState)dbNode.State;
                 try
                 {
-                    var tmpState = (GameTaskState)dbNode.State;
                     if(dbNode.TaskProgress != null)
                     {
                         m_progress = JsonConvert.DeserializeObject<List<ConditionData>>(dbNode.TaskProgress);
                     }
-                    ChangeState(tmpState, true);
+                    ChangeState(tmpState,false, true);
                 }
                 catch (Exception ex)
                 {
                     // 日志错误，重置任务状态
                     Log.Error($"任务 {dbNode.TaskId} 进度解析失败: {ex.Message}");
-                    ResetTask();
+                    ChangeState(tmpState,true, true);
                 }
             }
         }
@@ -146,15 +146,23 @@ namespace GameServer.Core.Task
         End:
             return;
         }
-
-        // tools
-        public void ChangeState(GameTaskState newState, bool dontSendMsg = false)
+        #endregion
+        #region tools
+        public void ChangeState(GameTaskState newState, bool isReEntry = false, bool dontSendMsg = false)
         {
-            if (m_curState == newState) return;
+            if (m_curState == newState && !isReEntry) return;
             m_curState = newState;
             switch(newState)
             {
                 case GameTaskState.Locked:
+                    if(m_progress == null)
+                    {
+                        m_progress = ParseConditionsStr(m_taskDefine.Pre_conditions);
+                        foreach (var condition in m_progress)
+                        {
+                            TaskConditionParser.Instance.InitCondition(condition, Owner);
+                        }
+                    }
                     m_machine.ChangeState<GameTaskLockState>();
                     break;
                 case GameTaskState.Unlocked:
@@ -187,12 +195,7 @@ namespace GameServer.Core.Task
         }
         public void ResetTask()
         {
-            m_progress = ParseConditionsStr(m_taskDefine.Pre_conditions);
-            foreach(var condition in m_progress)
-            {
-                TaskConditionParser.Instance.InitCondition(condition, Owner);
-            }
-            ChangeState(GameTaskState.Locked);
+            ChangeState(GameTaskState.Locked, true);
         }
         public void ClearProgress()
         {
@@ -274,6 +277,7 @@ namespace GameServer.Core.Task
             resp.SessionId = Owner.SessionId;
             Owner.SendToGate(resp);
         }
+        #endregion
     }
 
     public class GameTaskStateBase : StateBase
