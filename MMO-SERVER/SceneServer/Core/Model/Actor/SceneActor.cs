@@ -101,6 +101,7 @@ namespace SceneServer.Core.Model.Actor
         }
         public AttributeManager AttributeManager => m_attributeManager;
         #endregion
+
         #region 生命周期
         public void Init(NetVector3 InitPos, int professionId, int level, RepeatedField<NetEquipmentNode> equips)
         {
@@ -147,6 +148,7 @@ namespace SceneServer.Core.Model.Actor
             m_buffManager.Update(deltaTime);
         }
         #endregion
+
         #region 属性变更
         public override void SetTransform(NetTransform transform)
         {
@@ -269,6 +271,7 @@ namespace SceneServer.Core.Model.Actor
         }
         protected virtual void ReviveAfter() { }
         #endregion
+
         #region tools
         private void _CancelCurSkill()
         {

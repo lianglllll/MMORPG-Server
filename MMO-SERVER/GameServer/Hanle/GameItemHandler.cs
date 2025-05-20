@@ -157,7 +157,7 @@ namespace GameServer.Hanle
         }
         private void HandleDiscardItemRequest(Connection conn, DiscardItemRequest message)
         {
-            var resp = new ChangeItemPositionResponse();
+            var resp = new DiscardItemResponse();
             resp.SessionId = message.SessionId;
             resp.Seq = message.Seq;
 
@@ -171,7 +171,8 @@ namespace GameServer.Hanle
 
             if(message.Type == ItemInventoryType.Backpack)
             {
-                chr.BackPackManager.Discard(message.GridIndex, message.Count);
+                resp.ItemId = chr.BackPackManager.GetItemByGridIdx(message.GridIndex).ItemId;
+                resp.Count = chr.BackPackManager.Discard(message.GridIndex, message.Count);
             }
             else if(message.Type == ItemInventoryType.Warehouse)
             {
@@ -231,6 +232,8 @@ namespace GameServer.Hanle
             }
 
             chr.BackPackManager.AddGameItem(itemDateNode.ItemId, itemDateNode.Amount);
+            resp.ItemId = itemDateNode.ItemId;
+            resp.Count = itemDateNode.Amount;
 
         End1:
             conn.Send(resp);

@@ -24,26 +24,26 @@ namespace SceneServer.Core.Combat.AI.MonsterAIStateImpl
         {
             if(monsterAI.Target == null)
             {
-                monsterAI.ChangeState(MonsterState.Patrol);
+                monsterAI.ChangeState(MonsterAIState.Patrol);
                 goto End;
             }
 
             if (monsterAI.Monster.CurHP / monsterAI.Monster.MaxHP > 0.5f)
             {
-                monsterAI.ChangeState(MonsterState.Patrol);
+                monsterAI.ChangeState(MonsterAIState.Patrol);
                 goto End;
             }
 
             fleeDuration -= deltatime;
             if(fleeDuration <= 0)
             {
-                monsterAI.ChangeState(MonsterState.Chase);
+                monsterAI.ChangeState(MonsterAIState.Chase);
                 goto End;
             }
             if (!monsterAI.IsTargetInRange(monsterAI.maxChaseDistance))
             {
                 monsterAI.ClearTarget();
-                monsterAI.ChangeState(MonsterState.Patrol);
+                monsterAI.ChangeState(MonsterAIState.Patrol);
                 goto End;
             }
 

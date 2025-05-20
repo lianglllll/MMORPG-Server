@@ -20,7 +20,7 @@ namespace SceneServer.Core.Combat.AI.WoodenDummy.Impl
             curWaitTime -= deltaTime;
             if (curWaitTime <= 0f)
             {
-                monsterAI.ChangeState(MonsterState.Idle);
+                monsterAI.ChangeState(MonsterAIState.Idle);
             }
         }
     }

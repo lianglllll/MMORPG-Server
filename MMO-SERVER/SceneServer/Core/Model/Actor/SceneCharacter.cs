@@ -1,4 +1,5 @@
 ﻿using Common.Summer.Core;
+using Common.Summer.Tools.GameEvent;
 using Google.Protobuf;
 using HS.Protobuf.Combat.Skill;
 using HS.Protobuf.Common;
@@ -6,6 +7,7 @@ using HS.Protobuf.DBProxy.DBCharacter;
 using HS.Protobuf.Scene;
 using HS.Protobuf.SceneEntity;
 using SceneServer.Core.Scene;
+using SceneServer.Core.Task;
 using SceneServer.Net;
 using SceneServer.Utils;
 
@@ -15,6 +17,8 @@ namespace SceneServer.Core.Model.Actor
     {
         private string m_cId;
         private Session m_session;
+        private CharacterEventSystem m_characterEventSystem;
+        private GameTaskConditionChecker m_gameTaskConditionChecker;
 
         #region GetSet
         public string SessionId => m_session.SesssionId;
@@ -24,8 +28,11 @@ namespace SceneServer.Core.Model.Actor
             set => NetActorNode.Exp = value;
         }
         public String Cid => m_cId;
+        public CharacterEventSystem CharacterEventSystem => m_characterEventSystem;
+        public GameTaskConditionChecker GameTaskConditionChecker => m_gameTaskConditionChecker; 
         #endregion
 
+        #region 生命周期
         public void Init(string sessionId,Connection conn, CharacterEnterSceneRequest message)
         {
             var dbChrNode = message.DbChrNode;
@@ -76,17 +83,34 @@ namespace SceneServer.Core.Model.Actor
             m_skillManager.AddFixedSkills();
 
             // 处理武器对应的技能组
-        }
-        public void Send(IMessage message)
-        {
-            m_session.Send(message);
-        }
-        public void Send(Scene2GateMsg msg)
-        {
-            msg.SessionId = m_session.SesssionId;
-            m_session.Send(msg);
-        }
 
+            // 事件系统
+            m_characterEventSystem = new CharacterEventSystem();
+            m_gameTaskConditionChecker = new GameTaskConditionChecker();
+            m_gameTaskConditionChecker.Init(this, message.NeedListenConds);
+        }
+        #endregion
+
+        #region 角色行为
+        private static readonly string ReachPositionEvent = GameEventType.ReachPosition.ToString();
+        private readonly Dictionary<string, object> _cachedPositionParams = new()
+        {
+            { "Position", default(Vector3) } // 初始值可随意设置
+        };
+        public override void SetTransform(NetTransform transform)
+        {
+            base.SetTransform(transform);
+
+            // 角色位置变化事件
+            Vector3 vec = new Vector3
+            {
+                x = Position.x * 0.001f,
+                y = Position.y * 0.001f,
+                z = Position.z * 0.001f,
+            };
+            _cachedPositionParams["Position"] = vec;
+            m_characterEventSystem.Trigger(ReachPositionEvent, _cachedPositionParams);
+        }
         public void AddExp(long deltaExp)
         {
             if (deltaExp <= 0) return;
@@ -100,7 +124,7 @@ namespace SceneServer.Core.Model.Actor
             {
                 if (Exp >= define.ExpLimit)
                 {
-                    deltaLevel++; 
+                    deltaLevel++;
                     Exp -= define.ExpLimit;
                 }
                 else
@@ -108,7 +132,7 @@ namespace SceneServer.Core.Model.Actor
                     break;
                 }
             }
-            if(deltaLevel > 0)
+            if (deltaLevel > 0)
             {
                 UpgradeLevel(deltaLevel);
             }
@@ -143,7 +167,6 @@ namespace SceneServer.Core.Model.Actor
             // 属性刷新
             m_attributeManager.Reload(CurLevel);
         }
-
         protected override void Death(int killerID)
         {
             base.Death(killerID);
@@ -162,8 +185,21 @@ namespace SceneServer.Core.Model.Actor
             resp.State = state;
             // resp.Timestamp = ;
             resp.OriginalTransform = GetTransform();
-            
+
             Send(resp);
         }
+        #endregion
+
+        #region Tools
+        public void Send(IMessage message)
+        {
+            m_session.Send(message);
+        }
+        public void Send(Scene2GateMsg msg)
+        {
+            msg.SessionId = m_session.SesssionId;
+            m_session.Send(msg);
+        }
+        #endregion
     }
 }

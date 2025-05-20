@@ -2,10 +2,10 @@
 using Common.Summer.Net;
 using Common.Summer.Security;
 using Common.Summer.Tools;
+using Common.Summer.Tools.GameEvent;
 using GameServer.Core;
 using GameServer.Core.Model;
 using GameServer.Core.Task;
-using GameServer.Core.Task.Event;
 using GameServer.Net;
 using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
@@ -433,6 +433,7 @@ namespace GameServer.Hanle
             characterEnterSceneRequest.GameGateServerId = gameToken.ServerId;
             characterEnterSceneRequest.DbChrNode = dbChrNode;
             characterEnterSceneRequest.Equips.AddRange(gChr.EquipmentManager.GetNetEquipmentNodes());
+            characterEnterSceneRequest.NeedListenConds.AddRange(gChr.GameTaskManager.GetNeedSceneProgressCondistions());
             sceneConn.Send(characterEnterSceneRequest);
             goto End2;
         End1:

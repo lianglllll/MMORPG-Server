@@ -21,7 +21,7 @@ namespace SceneServer.Core.Combat.AI.MonsterAi.MonsterAIStateImpl
             // 接近到出生点就切换为巡逻状态
             if (Vector3.Distance(monsterAI.Monster.m_initPosition, monsterAI.Monster.Position) < 100)
             {
-                monsterAI.ChangeState(MonsterState.Patrol);
+                monsterAI.ChangeState(MonsterAIState.Patrol);
                 goto End;
             }
 

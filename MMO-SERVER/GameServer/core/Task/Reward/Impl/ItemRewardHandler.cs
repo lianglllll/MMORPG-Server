@@ -14,7 +14,7 @@ namespace GameServer.Core.Task.Reward.Impl
         {
             int itemId  = int.Parse(rewardData.Parameters[0]);
             int count   = int.Parse(rewardData.Parameters[1]);
-            // chr.Inventory.AddItem(itemId, count);
+            chr.BackPackManager.AddGameItem(itemId, count);
         }
     }
 }

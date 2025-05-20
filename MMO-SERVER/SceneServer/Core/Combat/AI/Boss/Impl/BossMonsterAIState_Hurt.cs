@@ -22,19 +22,19 @@ namespace SceneServer.Core.Combat.AI.MonsterAIStateImpl
             {
                 if (((float)monsterAI.Monster.CurHP / monsterAI.Monster.MaxHP) < 0.05f)
                 {
-                    monsterAI.ChangeState(MonsterState.Flee);
+                    monsterAI.ChangeState(MonsterAIState.Flee);
                 }
                 else if(monsterAI.IsTargetInRange(monsterAI.maxAttackDistance))
                 {
-                    monsterAI.ChangeState(MonsterState.Attack);
+                    monsterAI.ChangeState(MonsterAIState.Attack);
                 }
                 else if (monsterAI.IsTargetInRange(monsterAI.maxChaseDistance))
                 {
-                    monsterAI.ChangeState(MonsterState.Attack);
+                    monsterAI.ChangeState(MonsterAIState.Attack);
                 }
                 else
                 {
-                    monsterAI.ChangeState(MonsterState.Patrol);
+                    monsterAI.ChangeState(MonsterAIState.Patrol);
                 }
             }
         }

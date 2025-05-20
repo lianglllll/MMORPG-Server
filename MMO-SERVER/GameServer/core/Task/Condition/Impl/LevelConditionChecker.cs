@@ -21,15 +21,9 @@ namespace GameServer.Core.Task.Condition.Impl
             return true;
         }
 
-        public bool IsConditionMet(ConditionData condition, object arg)
+        public bool UnInitCondition(ConditionData condition, GameCharacter chr)
         {
-            // 假设 arg 是玩家对象
-            GameCharacter player = (GameCharacter)arg;
-            if(player.Level >= condition.TargetValue)
-            {
-                return true;
-            }
-            return false;
+            return true;
         }
 
         public bool UpdateCondition(ConditionData condition, GameCharacter chr, Dictionary<string, object> args)

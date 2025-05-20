@@ -17,19 +17,19 @@ namespace SceneServer.Core.Combat.AI.MonsterAIStateImpl
         {
             if (monsterAI.CheckExceedMaxBrithDistance())
             {
-                monsterAI.ChangeState(MonsterState.Rturn);
+                monsterAI.ChangeState(MonsterAIState.Rturn);
                 goto End;
             }
 
             if (monsterAI.IsTargetInRange(monsterAI.maxAttackDistance))
             {
-                monsterAI.ChangeState(MonsterState.Attack);
+                monsterAI.ChangeState(MonsterAIState.Attack);
                 goto End;
             }
             
             if (!monsterAI.IsTargetInRange(monsterAI.maxChaseDistance))
             {
-                monsterAI.ChangeState(MonsterState.Patrol);
+                monsterAI.ChangeState(MonsterAIState.Patrol);
                 monsterAI.ClearTarget();
                 goto End;
             }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameServer.Core.Task.Event
+namespace Common.Summer.Tools.GameEvent
 {
     public enum GameEventType
     {
@@ -21,6 +21,7 @@ namespace GameServer.Core.Task.Event
         CriticalHit,            // 参数: (DamageAmount)
 
         // ===== 探索与移动 =====
+        ReachPosition,
         AreaEntered,         // 参数: (AreaID)
         HiddenItemFound,     // 参数: (ItemID)
         TeleportUsed,        // 参数: (FromLocation, ToLocation)

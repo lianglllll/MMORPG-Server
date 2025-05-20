@@ -14,9 +14,9 @@ namespace GameServer.Core.Task.Condition.Impl
             return true;
         }
 
-        public bool IsConditionMet(ConditionData condition, object arg)
+        public bool UnInitCondition(ConditionData condition, GameCharacter chr)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public bool UpdateCondition(ConditionData condition, GameCharacter chr, Dictionary<string, object> args)

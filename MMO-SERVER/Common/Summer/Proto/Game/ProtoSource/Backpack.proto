@@ -144,6 +144,9 @@ message DiscardItemResponse{
 	int32  resultCode		= 2;
 	string resultMsg		= 3;
 	int32 seq				= 4;
+
+	int32 itemId			= 5;
+	int32 count				= 6;
 }
 
 // 背包中的装备穿戴请求
@@ -185,6 +188,9 @@ message PickUpSceneItemToGameResponse{
 	int32 entityId		= 1;
 	int32 resultCode	= 2;
 	string resultMsg	= 3;
+	// 附加信息
+	int32 itemId		= 4;
+	int32 count			= 5;
 }
 
 

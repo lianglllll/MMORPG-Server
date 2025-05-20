@@ -37,6 +37,12 @@ enum SceneProtocl{
 	SCENE_PROTOCL_DISCARD_GAME_ITEM_TO_SCENE_RESP	= 40028;	// [DiscardGameItemToSceneResponse]
 	SCENE_PROTOCL_CHANGE_EQUIPMENT_TO_SCENE_REQ		= 40029;	// [ChangeEquipmentToSceneRequest]
 	SCENE_PROTOCL_CHANGE_EQUIPMENT_TO_SCENE_RESP	= 40030;	// [ChangeEquipmentToSceneResponse]
+
+
+	SCENE_PROTOCL_REGISTER_TASK_CONDITION_TO_SCENE_REQ		= 40031;	// [RegisterTaskConditionToSceneRequest]
+	SCENE_PROTOCL_REGISTER_TASK_CONDITION_TO_SCENE_RESP		= 40032;	// [RegisterTaskConditionToSceneresponse]
+	SCENE_PROTOCL_UN_REGISTER_TASK_CONDITION_TO_SCENE_REQ	= 40033;	// [UnRegisterTaskConditionToSceneRequest]
+	SCENE_PROTOCL_UN_REGISTER_TASK_CONDITION_TO_SCENE_RESP	= 40034;	// [UnRegisterTaskConditionToSceneResponse]
 }
 enum SceneType {
     SCENE_TYPE_NULL             = 0;
@@ -61,11 +67,12 @@ message RegisterToSceneResponse{
 
 // Gameµ÷ÓÃ
 message CharacterEnterSceneRequest{
-	int32 taskId												= 1;
-	string sessionId											= 2;
-	int32 gameGateServerId										= 3;
-	HS.Protobuf.DBProxy.DBCharacter.DBCharacterNode dbChrNode	= 4;
-	repeated NetEquipmentNode equips							= 5;
+	int32 taskId													= 1;
+	string sessionId												= 2;
+	int32 gameGateServerId											= 3;
+	HS.Protobuf.DBProxy.DBCharacter.DBCharacterNode dbChrNode		= 4;
+	repeated NetEquipmentNode equips								= 5;
+	repeated RegisterTaskConditionToSceneRequest needListenConds	= 6;
 }
 message SelfCharacterEnterSceneResponse{
 	int32 taskId = 1;
@@ -290,8 +297,26 @@ message ChangeEquipmentToSceneResponse{
 }
 
 
+message TaskConditionDataNode{
+	int32 taskId				= 1;
+	string conditionType		= 2;
+	repeated string Parameters	= 3;
+}
+message RegisterTaskConditionToSceneRequest{
+	int32 entityId							= 1;
+	int32 taskId							= 2;
+	repeated TaskConditionDataNode conds	= 3;
+}
+message RegisterTaskConditionToSceneresponse{
+}
 
-
+message UnRegisterTaskConditionToSceneRequest{
+	int32 entityId				= 1;
+	int32  taskId				= 2;
+	repeated string condTypes	= 3;
+}
+message UnRegisterTaskConditionToSceneResponse{
+}
 
 
 

@@ -16,11 +16,15 @@ namespace SceneServer.Core.Model.Item
             base.Init(pos, dir, scale);
             m_netItemNode = new NetItemNode(); 
             m_netItemNode.NetItemDataNode = itemDataNode;
+
             var transform = new NetTransform();
             m_netItemNode.Transform = transform;
             transform.Position = new NetVector3();
             transform.Rotation = new NetVector3();
             transform.Scale = new NetVector3();
+            m_netItemNode.Transform.Position = Position;
+            m_netItemNode.Transform.Rotation = Rotation;
+            m_netItemNode.Transform.Scale    = Scale;
         }
     }
 }

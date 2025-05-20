@@ -41,34 +41,37 @@ namespace HS.Protobuf.GameTask {
             "ZBgCIAEoCRIOCgZ0YXNrSWQYAyABKAUiSQoXQ2xhaW1UYXNrUmV3YXJkc1Jl",
             "cXVlc3QSEQoJc2Vzc2lvbklkGAEgASgJEgsKA2NJZBgCIAEoCRIOCgZ0YXNr",
             "SWQYAyABKAUiRwoVUmVUYWtlR2FtZVRhc2tSZXF1ZXN0EhEKCXNlc3Npb25J",
-            "ZBgBIAEoCRILCgNjSWQYAiABKAkSDgoGdGFza0lkGAMgASgFKtwCChBHYW1l",
-            "VGFza1Byb3RvY29sEhsKF0dBTUVfVEFTS19QUk9UT0NPTF9OT05FEAASLwop",
-            "R0FNRV9UQVNLX1BST1RPQ09MX0dFVF9BTExfR0FNRV9UQVNLU19SRVEQuZEC",
-            "EjAKKkdBTUVfVEFTS19QUk9UT0NPTF9HRVRfQUxMX0dBTUVfVEFTS1NfUkVT",
-            "UBC6kQISOAoyR0FNRV9UQVNLX1BST1RPQ09MX0dBTUVfVEFTS19DSEFOR0Vf",
-            "T1BFUkFUSU9OX1JFU1AQvJECEiwKJkdBTUVfVEFTS19QUk9UT0NPTF9UQUtF",
-            "X0dBTUVfVEFTS1NfUkVREL2RAhIvCilHQU1FX1RBU0tfUFJPVE9DT0xfUkVf",
-            "VEFLRV9HQU1FX1RBU0tTX1JFURC/kQISLwopR0FNRV9UQVNLX1BST1RPQ09M",
-            "X0NMQUlNX1RBU0tfUkVXQVJEU19SRVEQwZECKr4CCgxHYW1lVGFza1R5cGUS",
-            "FwoTR0FNRV9UQVNLX1RZUEVfTk9ORRAAEh0KGUdBTUVfVEFTS19UWVBFX01B",
-            "SU5fU1RPUlkQARIdChlHQU1FX1RBU0tfVFlQRV9TSURFX1NUT1JZEAISGQoV",
-            "R0FNRV9UQVNLX1RZUEVfQ09NTU9OEAMSGAoUR0FNRV9UQVNLX1RZUEVfREFJ",
-            "TFkQBBIYChRHQU1FX1RBU0tfVFlQRV9HVUlMRBAFEhoKFkdBTUVfVEFTS19U",
-            "WVBFX0ZBQ1RJT04QBhIXChNHQU1FX1RBU0tfVFlQRV9ISURFEAcSGAoUR0FN",
-            "RV9UQVNLX1RZUEVfQ1lDTEUQCBIeChpHQU1FX1RBU0tfVFlQRV9BQ0hJRVZF",
-            "TUVOVBAJEhkKFUdBTUVfVEFTS19UWVBFX0NVU1RPTRAKKvwBCg1HYW1lVGFz",
-            "a1N0YXRlEhgKFEdBTUVfVEFTS19TVEFURV9OT05FEAASGgoWR0FNRV9UQVNL",
-            "X1NUQVRFX0xPQ0tFRBABEhwKGEdBTUVfVEFTS19TVEFURV9VTkxPQ0tFRBAC",
-            "Eh8KG0dBTUVfVEFTS19TVEFURV9JTl9QUk9HUkVTUxADEh0KGUdBTUVfVEFT",
-            "S19TVEFURV9DT01QTEVURUQQBBIcChhHQU1FX1RBU0tfU1RBVEVfUkVXQVJE",
-            "RUQQBRIaChZHQU1FX1RBU0tfU1RBVEVfRkFJTEVEEAYSHQoZR0FNRV9UQVNL",
-            "X1NUQVRFX0FCQU5ET05FRBAHKvYBChtHYW1lVGFza0NoYW5nZU9wZXJhdGlv",
-            "blR5cGUSKAokR0FNRV9UQVNLX0NIQU5HRV9PUEVSQVRJT05fVFlQRV9OT05F",
-            "EAASKQolR0FNRV9UQVNLX0NIQU5HRV9PUEVSQVRJT05fVFlQRV9TVEFURRAB",
-            "Ei0KKUdBTUVfVEFTS19DSEFOR0VfT1BFUkFUSU9OX1RZUEVfQ09ORElUSU9O",
-            "EAISJwojR0FNRV9UQVNLX0NIQU5HRV9PUEVSQVRJT05fVFlQRV9BREQQAxIq",
-            "CiZHQU1FX1RBU0tfQ0hBTkdFX09QRVJBVElPTl9UWVBFX1JFTU9WRRAEYgZw",
-            "cm90bzM="));
+            "ZBgBIAEoCRILCgNjSWQYAiABKAkSDgoGdGFza0lkGAMgASgFIlUKIVNlY25l",
+            "VHJpZ2dlclRhc2tDb25kaXRpb25SZXNwb25zZRILCgNjSWQYASABKAkSEAoI",
+            "Y29uZFR5cGUYAiABKAkSEQoJcGFyYW1ldGVyGAMgASgJKpgDChBHYW1lVGFz",
+            "a1Byb3RvY29sEhsKF0dBTUVfVEFTS19QUk9UT0NPTF9OT05FEAASLwopR0FN",
+            "RV9UQVNLX1BST1RPQ09MX0dFVF9BTExfR0FNRV9UQVNLU19SRVEQuZECEjAK",
+            "KkdBTUVfVEFTS19QUk9UT0NPTF9HRVRfQUxMX0dBTUVfVEFTS1NfUkVTUBC6",
+            "kQISOAoyR0FNRV9UQVNLX1BST1RPQ09MX0dBTUVfVEFTS19DSEFOR0VfT1BF",
+            "UkFUSU9OX1JFU1AQvJECEiwKJkdBTUVfVEFTS19QUk9UT0NPTF9UQUtFX0dB",
+            "TUVfVEFTS1NfUkVREL2RAhIvCilHQU1FX1RBU0tfUFJPVE9DT0xfUkVfVEFL",
+            "RV9HQU1FX1RBU0tTX1JFURC/kQISLwopR0FNRV9UQVNLX1BST1RPQ09MX0NM",
+            "QUlNX1RBU0tfUkVXQVJEU19SRVEQwZECEjoKNEdBTUVfVEFTS19QUk9UT0NP",
+            "TF9TQ0VORV9UUklHR0VSX1RBU0tfQ09ORElUSU9OX1JFU1AQxJECKr4CCgxH",
+            "YW1lVGFza1R5cGUSFwoTR0FNRV9UQVNLX1RZUEVfTk9ORRAAEh0KGUdBTUVf",
+            "VEFTS19UWVBFX01BSU5fU1RPUlkQARIdChlHQU1FX1RBU0tfVFlQRV9TSURF",
+            "X1NUT1JZEAISGQoVR0FNRV9UQVNLX1RZUEVfQ09NTU9OEAMSGAoUR0FNRV9U",
+            "QVNLX1RZUEVfREFJTFkQBBIYChRHQU1FX1RBU0tfVFlQRV9HVUlMRBAFEhoK",
+            "FkdBTUVfVEFTS19UWVBFX0ZBQ1RJT04QBhIXChNHQU1FX1RBU0tfVFlQRV9I",
+            "SURFEAcSGAoUR0FNRV9UQVNLX1RZUEVfQ1lDTEUQCBIeChpHQU1FX1RBU0tf",
+            "VFlQRV9BQ0hJRVZFTUVOVBAJEhkKFUdBTUVfVEFTS19UWVBFX0NVU1RPTRAK",
+            "KvwBCg1HYW1lVGFza1N0YXRlEhgKFEdBTUVfVEFTS19TVEFURV9OT05FEAAS",
+            "GgoWR0FNRV9UQVNLX1NUQVRFX0xPQ0tFRBABEhwKGEdBTUVfVEFTS19TVEFU",
+            "RV9VTkxPQ0tFRBACEh8KG0dBTUVfVEFTS19TVEFURV9JTl9QUk9HUkVTUxAD",
+            "Eh0KGUdBTUVfVEFTS19TVEFURV9DT01QTEVURUQQBBIcChhHQU1FX1RBU0tf",
+            "U1RBVEVfUkVXQVJERUQQBRIaChZHQU1FX1RBU0tfU1RBVEVfRkFJTEVEEAYS",
+            "HQoZR0FNRV9UQVNLX1NUQVRFX0FCQU5ET05FRBAHKvYBChtHYW1lVGFza0No",
+            "YW5nZU9wZXJhdGlvblR5cGUSKAokR0FNRV9UQVNLX0NIQU5HRV9PUEVSQVRJ",
+            "T05fVFlQRV9OT05FEAASKQolR0FNRV9UQVNLX0NIQU5HRV9PUEVSQVRJT05f",
+            "VFlQRV9TVEFURRABEi0KKUdBTUVfVEFTS19DSEFOR0VfT1BFUkFUSU9OX1RZ",
+            "UEVfQ09ORElUSU9OEAISJwojR0FNRV9UQVNLX0NIQU5HRV9PUEVSQVRJT05f",
+            "VFlQRV9BREQQAxIqCiZHQU1FX1RBU0tfQ0hBTkdFX09QRVJBVElPTl9UWVBF",
+            "X1JFTU9WRRAEYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.GameTask.GameTaskProtocol), typeof(global::HS.Protobuf.GameTask.GameTaskType), typeof(global::HS.Protobuf.GameTask.GameTaskState), typeof(global::HS.Protobuf.GameTask.GameTaskChangeOperationType), }, null, new pbr::GeneratedClrTypeInfo[] {
@@ -78,7 +81,8 @@ namespace HS.Protobuf.GameTask {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameTask.GameTaskChangeOperationResponse), global::HS.Protobuf.GameTask.GameTaskChangeOperationResponse.Parser, new[]{ "SessionId", "TaskId", "Opration", "NewState", "NewConditions", "NewNode" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameTask.TakeGameTaskRequest), global::HS.Protobuf.GameTask.TakeGameTaskRequest.Parser, new[]{ "SessionId", "CId", "TaskId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameTask.ClaimTaskRewardsRequest), global::HS.Protobuf.GameTask.ClaimTaskRewardsRequest.Parser, new[]{ "SessionId", "CId", "TaskId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameTask.ReTakeGameTaskRequest), global::HS.Protobuf.GameTask.ReTakeGameTaskRequest.Parser, new[]{ "SessionId", "CId", "TaskId" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameTask.ReTakeGameTaskRequest), global::HS.Protobuf.GameTask.ReTakeGameTaskRequest.Parser, new[]{ "SessionId", "CId", "TaskId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.GameTask.SecneTriggerTaskConditionResponse), global::HS.Protobuf.GameTask.SecneTriggerTaskConditionResponse.Parser, new[]{ "CId", "CondType", "Parameter" }, null, null, null, null)
           }));
     }
     #endregion
@@ -111,6 +115,10 @@ namespace HS.Protobuf.GameTask {
     /// ClaimTaskRewardsRequest
     /// </summary>
     [pbr::OriginalName("GAME_TASK_PROTOCOL_CLAIM_TASK_REWARDS_REQ")] ClaimTaskRewardsReq = 35009,
+    /// <summary>
+    /// [SecneTriggerTaskConditionResponse]
+    /// </summary>
+    [pbr::OriginalName("GAME_TASK_PROTOCOL_SCENE_TRIGGER_TASK_CONDITION_RESP")] SceneTriggerTaskConditionResp = 35012,
   }
 
   public enum GameTaskType {
@@ -2055,6 +2063,269 @@ namespace HS.Protobuf.GameTask {
           }
           case 24: {
             TaskId = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class SecneTriggerTaskConditionResponse : pb::IMessage<SecneTriggerTaskConditionResponse>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<SecneTriggerTaskConditionResponse> _parser = new pb::MessageParser<SecneTriggerTaskConditionResponse>(() => new SecneTriggerTaskConditionResponse());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<SecneTriggerTaskConditionResponse> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::HS.Protobuf.GameTask.GameTaskReflection.Descriptor.MessageTypes[7]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public SecneTriggerTaskConditionResponse() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public SecneTriggerTaskConditionResponse(SecneTriggerTaskConditionResponse other) : this() {
+      cId_ = other.cId_;
+      condType_ = other.condType_;
+      parameter_ = other.parameter_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public SecneTriggerTaskConditionResponse Clone() {
+      return new SecneTriggerTaskConditionResponse(this);
+    }
+
+    /// <summary>Field number for the "cId" field.</summary>
+    public const int CIdFieldNumber = 1;
+    private string cId_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string CId {
+      get { return cId_; }
+      set {
+        cId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "condType" field.</summary>
+    public const int CondTypeFieldNumber = 2;
+    private string condType_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string CondType {
+      get { return condType_; }
+      set {
+        condType_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "parameter" field.</summary>
+    public const int ParameterFieldNumber = 3;
+    private string parameter_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string Parameter {
+      get { return parameter_; }
+      set {
+        parameter_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as SecneTriggerTaskConditionResponse);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(SecneTriggerTaskConditionResponse other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (CId != other.CId) return false;
+      if (CondType != other.CondType) return false;
+      if (Parameter != other.Parameter) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (CId.Length != 0) hash ^= CId.GetHashCode();
+      if (CondType.Length != 0) hash ^= CondType.GetHashCode();
+      if (Parameter.Length != 0) hash ^= Parameter.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (CId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(CId);
+      }
+      if (CondType.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(CondType);
+      }
+      if (Parameter.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(Parameter);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (CId.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(CId);
+      }
+      if (CondType.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(CondType);
+      }
+      if (Parameter.Length != 0) {
+        output.WriteRawTag(26);
+        output.WriteString(Parameter);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (CId.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(CId);
+      }
+      if (CondType.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(CondType);
+      }
+      if (Parameter.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Parameter);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(SecneTriggerTaskConditionResponse other) {
+      if (other == null) {
+        return;
+      }
+      if (other.CId.Length != 0) {
+        CId = other.CId;
+      }
+      if (other.CondType.Length != 0) {
+        CondType = other.CondType;
+      }
+      if (other.Parameter.Length != 0) {
+        Parameter = other.Parameter;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            CId = input.ReadString();
+            break;
+          }
+          case 18: {
+            CondType = input.ReadString();
+            break;
+          }
+          case 26: {
+            Parameter = input.ReadString();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            CId = input.ReadString();
+            break;
+          }
+          case 18: {
+            CondType = input.ReadString();
+            break;
+          }
+          case 26: {
+            Parameter = input.ReadString();
             break;
           }
         }

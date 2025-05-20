@@ -94,7 +94,7 @@ namespace SceneServer.Core.Model.Actor
         protected override void ReviveAfter()
         {
             // 状态机切换
-            m_AI.ChangeState(MonsterState.None);
+            m_AI.ChangeState(MonsterAIState.None);
         }
         protected override void RecvDamageAfter(Damage damage)
         {
@@ -105,7 +105,7 @@ namespace SceneServer.Core.Model.Actor
 
             // 切换为hit状态
             LookAtTarget(m_moveToTarget);
-            m_AI.ChangeState(MonsterState.Hurt, true);
+            m_AI.ChangeState(MonsterAIState.Hurt, true);
 
             m_netActorNode.NetActorState = NetActorState.Hurt;
             // todo 这个状态可能需要我们自己去控制，而不是让客户端自己去表现。
@@ -117,7 +117,7 @@ namespace SceneServer.Core.Model.Actor
             ChangeActorStateAndSend(NetActorState.Death);
 
             // 状态机切换
-            m_AI.ChangeState(MonsterState.Death);
+            m_AI.ChangeState(MonsterAIState.Death);
 
             DeathAfter(killerID);
         }

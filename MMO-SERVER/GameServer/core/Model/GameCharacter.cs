@@ -1,6 +1,6 @@
 ﻿using Common.Summer.Core;
+using Common.Summer.Tools.GameEvent;
 using GameServer.Core.Task;
-using GameServer.Core.Task.Event;
 using GameServer.InventorySystem;
 using GameServer.Net;
 using Google.Protobuf;
@@ -103,6 +103,7 @@ namespace GameServer.Core.Model
                 using (var ms = new MemoryStream())
                 {
                     m_backPackManager.NetItemInventoryDataNode.WriteTo(ms);
+                    ms.Position = 0;
                     chrInventorys.BackpackData = ByteString.FromStream(ms);
                 }
             }
@@ -111,6 +112,7 @@ namespace GameServer.Core.Model
                 using (var ms = new MemoryStream())
                 {
                     m_equipmentManager.NetItemInventoryDataNode.WriteTo(ms);
+                    ms.Position = 0;
                     chrInventorys.EquipsData = ByteString.FromStream(ms);
                 }
             }

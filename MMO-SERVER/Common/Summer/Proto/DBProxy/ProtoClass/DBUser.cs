@@ -488,7 +488,7 @@ namespace HS.Protobuf.DBProxy.DBUser {
     public const int AccessLevelFieldNumber = 10;
     private string accessLevel_ = "";
     /// <summary>
-    /// АэИз "admin", "user"}
+    /// АэИз "admin", "user"
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]

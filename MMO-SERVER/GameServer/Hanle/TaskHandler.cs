@@ -2,6 +2,7 @@
 using Common.Summer.Net;
 using Common.Summer.Tools;
 using GameServer.Core.Model;
+using GameServer.Core.Task.Condition;
 using GameServer.Net;
 using HS.Protobuf.Chat;
 using HS.Protobuf.GameTask;
@@ -25,12 +26,17 @@ namespace GameServer.Hanle
             ProtoHelper.Instance.Register<ReTakeGameTaskRequest>((int)GameTaskProtocol.ReTakeGameTasksReq);
             ProtoHelper.Instance.Register<ClaimTaskRewardsRequest>((int)GameTaskProtocol.ClaimTaskRewardsReq);
 
+            ProtoHelper.Instance.Register<SecneTriggerTaskConditionResponse>((int)GameTaskProtocol.SceneTriggerTaskConditionResp);
+
+
             // 消息的订阅
             MessageRouter.Instance.Subscribe<GetAllGameTasksRequest>(HandleGetAllGameTasksRequest);
             MessageRouter.Instance.Subscribe<TakeGameTaskRequest>(HandleTakeGameTaskRequest);
             MessageRouter.Instance.Subscribe<ReTakeGameTaskRequest>(HandleReTakeGameTaskRequest);
             MessageRouter.Instance.Subscribe<ClaimTaskRewardsRequest>(HandleClaimTaskRewardsRequest);
+            MessageRouter.Instance.Subscribe<SecneTriggerTaskConditionResponse>(HandleSecneTriggerTaskConditionResponse);
         }
+
 
         private void HandleGetAllGameTasksRequest(Connection conn, GetAllGameTasksRequest message)
         {
@@ -82,5 +88,18 @@ namespace GameServer.Hanle
         End:
             return;
         }
+
+        private void HandleSecneTriggerTaskConditionResponse(Connection conn, SecneTriggerTaskConditionResponse message)
+        {
+            var chr = GameCharacterManager.Instance.GetGameCharacterByCid(message.CId);
+            if (chr == null)
+            {
+                goto End;
+            }
+            chr.CharacterEventSystem.Trigger(message.CondType, TaskConditionParser.Instance.ParseRemoteArgs(message.CondType, message.Parameter));
+        End:
+            return;
+        }
+
     }
 }

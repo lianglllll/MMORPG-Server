@@ -149,7 +149,9 @@ namespace GameServer.InventorySystem
                 goto End;
             }
             ItemDict[newGridIdx] = item;
+
             HasChanged = true;
+
             result = true;
         End:
             return result;
@@ -162,6 +164,10 @@ namespace GameServer.InventorySystem
                 goto End;
             }
             ItemDict.TryAdd(targetGridIdx, gameItem);
+            gameItem.GridIdx = targetGridIdx;
+
+            HasChanged = true;
+
         End:
             return result;
         }
@@ -175,8 +181,10 @@ namespace GameServer.InventorySystem
             {
                 return null;
             }
-            HasChanged = true;
             ItemDict.TryRemove(gridIdx, out var value);
+            
+            HasChanged = true;
+            
             return value;
         }
         public int RemoveItem(int itemId, int count = 1)
@@ -219,17 +227,16 @@ namespace GameServer.InventorySystem
         }
         public int Discard(int girdIdx, int count = 1)
         {
-            // 安全校验
+            int result = 0;
+
             if (count <= 0)
             {
-                return 0;
+                goto End;
             }
             if (!ItemDict.TryGetValue(girdIdx, out var item))
             {
-                return 0;
+                goto End;
             }
-
-            HasChanged = true;
 
             // 丢弃一部分
             if (count < item.Count)
@@ -237,7 +244,7 @@ namespace GameServer.InventorySystem
                 item.Count -= count;
                 GameItem newItem = _CreateItem(item.ItemDefine, count, 0);
                 _SendDiscardGameItemToSceneRequest(newItem);
-                return count;
+                result = count;
             }
             else
             {
@@ -245,9 +252,13 @@ namespace GameServer.InventorySystem
                 RemoveGrid(girdIdx);
                 int tmpAmount = item.Count;
                 _SendDiscardGameItemToSceneRequest(item);
-                return tmpAmount;
+                result = tmpAmount;
             }
 
+            HasChanged = true;
+
+        End:
+            return result;
         }
         public bool UseItem(int gridIdx, int count)
         {
@@ -270,6 +281,8 @@ namespace GameServer.InventorySystem
             // 具体item使用的调用代码
             // todo
 
+            HasChanged = true;
+
         End:
             return result;
         }
@@ -284,6 +297,7 @@ namespace GameServer.InventorySystem
         /// <returns></returns>
         private int _CaculateMaxRemainCount(int itemId, ref GameItem firstSameItem, ref int firstEmptyItemIndex)
         {
+            var def = StaticDataManager.Instance.ItemDefinedDict[itemId];
             // 记录可用数量
             var amounter = 0;
             for (int i = 0; i < Capacity; ++i)
@@ -301,7 +315,6 @@ namespace GameServer.InventorySystem
                 }
                 else
                 {
-                    var def = StaticDataManager.Instance.ItemDefinedDict[i];
                     amounter += def.Capicity;
                     if (firstEmptyItemIndex == -1)
                     {

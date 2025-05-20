@@ -1,14 +1,15 @@
 ﻿using Common.Summer.Core;
+using Common.Summer.Tools.GameEvent;
 using GameServer.Core.Model;
 using GameServer.Core.Task.Condition;
 using GameServer.Core.Task.Condition.Impl;
-using GameServer.Core.Task.Event;
 using GameServer.Core.Task.Reward;
 using GameServer.Core.Task.Reward.Impl;
 using GameServer.Utils;
 using HS.Protobuf.DBProxy.DBCharacter;
 using HS.Protobuf.DBProxy.DBTask;
 using HS.Protobuf.GameTask;
+using HS.Protobuf.Scene;
 using Newtonsoft.Json;
 using Serilog;
 using System;
@@ -21,29 +22,38 @@ namespace GameServer.Core.Task
 {
     public class GameTaskManager
     {
+        private bool m_isInit;
         private GameCharacter m_owner;
         private Dictionary<int, GameTask> m_allTasks = new();
         private Dictionary<string, Dictionary<int, GameTask>> conditions = new();
 
+        public bool IsInit => m_isInit;
+
         public void Init(GameCharacter owner, DBCharacterTasks tasks)
         {
+            m_isInit = false;
             m_owner = owner;
 
             // 事件注册
-            m_owner.CharacterEventSystem.Subscribe("KillMonster", HandleKillMonsterEvent);
-            m_owner.CharacterEventSystem.Subscribe("CollectItem", HandleCollectItemEvent);
-            m_owner.CharacterEventSystem.Subscribe("LevelUp", HandleLevelUpEvent);
-            m_owner.CharacterEventSystem.Subscribe("EnterGame", HandleEnterGameEvent);
+            m_owner.CharacterEventSystem.Subscribe(GameEventType.EnemyKilled.ToString(), HandleKillMonsterEvent);
+            m_owner.CharacterEventSystem.Subscribe(GameEventType.ItemCollected.ToString(), HandleCollectItemEvent);
+            m_owner.CharacterEventSystem.Subscribe(GameEventType.LevelUp.ToString(), HandleLevelUpEvent);
+            m_owner.CharacterEventSystem.Subscribe(GameEventType.EnterGame.ToString(), HandleEnterGameEvent);
+            m_owner.CharacterEventSystem.Subscribe(GameEventType.ReachPosition.ToString(), HandleReachPosition);
 
             // 解析我们现有的数据
             LoadTasks(tasks);
 
             // 示例：每天 04:00 刷新
             // 处理日常任务和限时任务
-            DateTime nextRefresh = DateTime.Today.AddDays(1).AddHours(4);
-            TimeSpan delay = nextRefresh - DateTime.Now;
-            Scheduler.Instance.AddTask(RefreshDailyTasks, delay.Milliseconds, 1);
+            /*            DateTime nextRefresh = DateTime.Today.AddDays(1).AddHours(4);
+                        TimeSpan delay = nextRefresh - DateTime.Now;
+                        Scheduler.Instance.AddTask(RefreshDailyTasks, delay.Milliseconds, 1);*/
+
+            m_isInit = true;
         }
+
+
         private void RefreshDailyTasks()
         {
             foreach (var task in m_allTasks.Values)
@@ -170,6 +180,16 @@ namespace GameServer.Core.Task
                 task.UpdateProgress(conditionTypte, args);
             }
         }
+        private void HandleReachPosition(Dictionary<string, object> args)
+        {
+            string conditionTypte = "ReachPosition";
+            conditions.TryGetValue(conditionTypte, out var tasks);
+            if (tasks == null) return;
+            foreach (var task in tasks.Values)
+            {
+                task.UpdateProgress(conditionTypte, args);
+            }
+        }
         #endregion
 
         #region tools
@@ -279,6 +299,35 @@ namespace GameServer.Core.Task
             resp.SessionId = m_owner.SessionId;
             m_owner.SendToGate(resp);
         }
+
+        public List<RegisterTaskConditionToSceneRequest> GetNeedSceneProgressCondistions()
+        {
+            List<RegisterTaskConditionToSceneRequest> result = new List<RegisterTaskConditionToSceneRequest> ();
+
+            foreach(var task in m_allTasks.Values)
+            {
+                if (task.GameTaskState != GameTaskState.Locked && task.GameTaskState != GameTaskState.InProgress) continue;
+                var req = new RegisterTaskConditionToSceneRequest ();
+                req.TaskId = task.TaskId;
+                foreach(var cond in task.Progress)
+                {
+                    if (!TaskConditionParser.Instance.IsNeedRegisterToScene(cond, m_owner)) continue;
+
+                    var dataNode = new TaskConditionDataNode();
+                    dataNode.TaskId = task.TaskId;
+                    dataNode.ConditionType = cond.condType;
+                    dataNode.Parameters.Add(cond.Parameters);
+                    req.Conds.Add(dataNode);
+                }
+
+                if(req.Conds.Count > 0)
+                {
+                    result.Add(req);
+                }
+            }
+            return result;
+        }
+
         #endregion
     }
 }

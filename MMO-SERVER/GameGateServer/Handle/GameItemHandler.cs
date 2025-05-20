@@ -16,7 +16,7 @@ namespace GameGateServer.Handle
 {
     public class GameItemHandler : Singleton<GameItemHandler>
     {
-        public bool Init()
+        public override void Init()
         {
             // 协议注册
             ProtoHelper.Instance.Register<GetItemInventoryDataRequest>((int)BackpackProtocol.GetItemInventoryDataReq);
@@ -31,17 +31,26 @@ namespace GameGateServer.Handle
             ProtoHelper.Instance.Register<WearEquipResponse>((int)BackpackProtocol.WearEquipResp);
             ProtoHelper.Instance.Register<UnloadEquipRequest>((int)BackpackProtocol.UnloadEquipReq);
             ProtoHelper.Instance.Register<UnloadEquipResponse>((int)BackpackProtocol.UnloadEquipResp);
+            ProtoHelper.Instance.Register<PickUpSceneItemRequest>((int)SceneProtocl.PickupSceneItemReq);
+            ProtoHelper.Instance.Register<PickupSceneItemResponse>((int)SceneProtocl.PickupSceneItemResp);
 
             // 消息的订阅
             MessageRouter.Instance.Subscribe<GetItemInventoryDataRequest>(HandleGetItemInventoryDataRequest);
             MessageRouter.Instance.Subscribe<GetItemInventoryDataResponse>(HandleGetItemInventoryDataResponse);
             MessageRouter.Instance.Subscribe<ChangeItemPositionRequest>(HandleChangeItemPositionRequest);
+            MessageRouter.Instance.Subscribe<ChangeItemPositionResponse>(HandleChangeItemPositionResponse);
             MessageRouter.Instance.Subscribe<UseItemRequest>(HandleUseItemRequest);
+            MessageRouter.Instance.Subscribe<UseItemResponse>(HandleUseItemResponse);
             MessageRouter.Instance.Subscribe<DiscardItemRequest>(HandleDiscardItemRequest);
+            MessageRouter.Instance.Subscribe<DiscardItemResponse>(HandleDiscardItemResponse);
             MessageRouter.Instance.Subscribe<WearEquipRequest>(HandleWearEquipRequest);
+            MessageRouter.Instance.Subscribe<WearEquipResponse>(HandleWearEquipRequest);
             MessageRouter.Instance.Subscribe<UnloadEquipRequest>(HandleUnloadEquipRequest);
-            return true;
+            MessageRouter.Instance.Subscribe<UnloadEquipResponse>(HandleUnloadEquipRequest);
+            MessageRouter.Instance.Subscribe<PickUpSceneItemRequest>(HandlePickUpSceneItemRequest);
+            MessageRouter.Instance.Subscribe<PickupSceneItemResponse>(HandlePickupSceneItemResponse);
         }
+
         private void HandleGetItemInventoryDataRequest(Connection conn, GetItemInventoryDataRequest message)
         {
             var session = conn.Get<Session>();
@@ -67,6 +76,7 @@ namespace GameGateServer.Handle
         End:
             return;
         }
+
         private void HandleChangeItemPositionRequest(Connection conn, ChangeItemPositionRequest message)
         {
             var session = conn.Get<Session>();
@@ -80,6 +90,19 @@ namespace GameGateServer.Handle
         End:
             return;
         }
+        private void HandleChangeItemPositionResponse(Connection conn, ChangeItemPositionResponse message)
+        {
+            var session = SessionManager.Instance.GetSessionBySessionId(message.SessionId);
+            if (session == null)
+            {
+                goto End;
+            }
+            message.SessionId = "";
+            session.Send(message);
+        End:
+            return;
+        }
+
         private void HandleUseItemRequest(Connection conn, UseItemRequest message)
         {
             var session = conn.Get<Session>();
@@ -93,6 +116,19 @@ namespace GameGateServer.Handle
         End:
             return;
         }
+        private void HandleUseItemResponse(Connection conn, UseItemResponse message)
+        {
+            var session = SessionManager.Instance.GetSessionBySessionId(message.SessionId);
+            if (session == null)
+            {
+                goto End;
+            }
+            message.SessionId = "";
+            session.Send(message);
+        End:
+            return;
+        }
+
         private void HandleDiscardItemRequest(Connection conn, DiscardItemRequest message)
         {
             var session = conn.Get<Session>();
@@ -106,6 +142,19 @@ namespace GameGateServer.Handle
         End:
             return;
         }
+        private void HandleDiscardItemResponse(Connection conn, DiscardItemResponse message)
+        {
+            var session = SessionManager.Instance.GetSessionBySessionId(message.SessionId);
+            if (session == null)
+            {
+                goto End;
+            }
+            message.SessionId = "";
+            session.Send(message);
+        End:
+            return;
+        }
+
         private void HandleWearEquipRequest(Connection conn, WearEquipRequest message)
         {
             var session = conn.Get<Session>();
@@ -119,6 +168,19 @@ namespace GameGateServer.Handle
         End:
             return;
         }
+        private void HandleWearEquipRequest(Connection conn, WearEquipResponse message)
+        {
+            var session = SessionManager.Instance.GetSessionBySessionId(message.SessionId);
+            if (session == null)
+            {
+                goto End;
+            }
+            message.SessionId = "";
+            session.Send(message);
+        End:
+            return;
+        }
+
         private void HandleUnloadEquipRequest(Connection conn, UnloadEquipRequest message)
         {
             var session = conn.Get<Session>();
@@ -129,6 +191,43 @@ namespace GameGateServer.Handle
             message.SessionId = session.Id;
             message.CId = session.m_cId;
             ServersMgr.Instance.SendToGameServer(message);
+        End:
+            return;
+        }
+        private void HandleUnloadEquipRequest(Connection conn, UnloadEquipResponse message)
+        {
+            var session = SessionManager.Instance.GetSessionBySessionId(message.SessionId);
+            if (session == null)
+            {
+                goto End;
+            }
+            message.SessionId = "";
+            session.Send(message);
+        End:
+            return;
+        }
+
+        private void HandlePickUpSceneItemRequest(Connection conn, PickUpSceneItemRequest message)
+        {
+            var session = conn.Get<Session>();
+            if (session == null)
+            {
+                goto End;
+            }
+            message.SessionId = session.Id;
+            ServersMgr.Instance.SendToSceneServer(session.curSceneId, message);
+        End:
+            return;
+        }
+        private void HandlePickupSceneItemResponse(Connection conn, PickupSceneItemResponse message)
+        {
+            var session = SessionManager.Instance.GetSessionBySessionId(message.SessionId);
+            if (session == null)
+            {
+                goto End;
+            }
+            message.SessionId = "";
+            session.Send(message);
         End:
             return;
         }

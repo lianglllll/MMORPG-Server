@@ -9,6 +9,7 @@ enum GameTaskProtocol{
 	GAME_TASK_PROTOCOL_TAKE_GAME_TASKS_REQ				= 35005;	// TakeGameTaskRequest
 	GAME_TASK_PROTOCOL_RE_TAKE_GAME_TASKS_REQ			= 35007;	// ReTakeGameTaskRequest
 	GAME_TASK_PROTOCOL_CLAIM_TASK_REWARDS_REQ			= 35009;	// ClaimTaskRewardsRequest
+	GAME_TASK_PROTOCOL_SCENE_TRIGGER_TASK_CONDITION_RESP	= 35012;	// [SecneTriggerTaskConditionResponse]
 }
 
 enum GameTaskType{
@@ -92,3 +93,10 @@ message ReTakeGameTaskRequest{
 	// 
 	int32 taskId		= 3;
 }
+
+message SecneTriggerTaskConditionResponse{
+	string cId			= 1;
+	string condType		= 2;
+	string parameter	= 3;
+}
+

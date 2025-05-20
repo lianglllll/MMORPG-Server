@@ -25,7 +25,7 @@ namespace SceneServer.Core.Combat.AI.MonsterAIStateImpl
             // 优先级：危险 > 战斗 > 巡逻
             if (monsterAI.IsTargetInRange(monsterAI.maxChaseDistance))
             {
-                monsterAI.ChangeState(MonsterState.Chase);
+                monsterAI.ChangeState(MonsterAIState.Chase);
                 goto End;
             }
 

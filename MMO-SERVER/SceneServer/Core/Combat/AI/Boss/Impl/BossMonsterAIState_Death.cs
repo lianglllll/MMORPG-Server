@@ -17,7 +17,7 @@ namespace SceneServer.Core.Combat.AI.MonsterAIStateImpl
             // 检测死亡状态退出
             if (!monsterAI.Monster.IsDeath)
             {
-                monsterAI.ChangeState(MonsterState.Patrol);
+                monsterAI.ChangeState(MonsterAIState.Patrol);
             }
         }
     }

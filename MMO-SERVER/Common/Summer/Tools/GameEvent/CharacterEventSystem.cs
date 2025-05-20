@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameServer.Core.Task.Event
+namespace Common.Summer.Tools.GameEvent
 {
     public class CharacterEventSystem
     {
         private Dictionary<string, Action<Dictionary<string, object>>> m_eventListeners = new();
+        private static readonly Dictionary<string, object> EmptyParameters = new();
+
         public void Subscribe(string eventType, Action<Dictionary<string, object>> handler)
         {
             if (!m_eventListeners.ContainsKey(eventType))
@@ -38,7 +40,7 @@ namespace GameServer.Core.Task.Event
         {
             if (m_eventListeners.ContainsKey(eventType))
             {
-                m_eventListeners[eventType]?.Invoke(parameters ?? new Dictionary<string, object>());
+                m_eventListeners[eventType]?.Invoke(parameters ?? EmptyParameters);
             }
         }
     }

@@ -24,7 +24,7 @@
     "Icon": "Texture/Task/Default.png",
     "Pre_conditions": "Level:1",
     "Target_conditions": "ReachPosition:100,1,100;",
-    "Reward_items": "",
+    "Reward_items": "Item:1005,1",
     "Next_chains": "",
     "Daily_refresh_time": "",
     "Expire_time": ""
@@ -84,7 +84,7 @@
     "Icon": "Texture/Task/Default.png",
     "Pre_conditions": "",
     "Target_conditions": "KillMonster:1001=5;KillMonster:1002;",
-    "Reward_items": "Item:1",
+    "Reward_items": "Item:1,1",
     "Next_chains": "",
     "Daily_refresh_time": "",
     "Expire_time": ""

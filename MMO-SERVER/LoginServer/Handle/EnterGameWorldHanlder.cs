@@ -10,13 +10,14 @@ using HS.Protobuf.GameGateMgr;
 using HS.Protobuf.Login;
 using LoginGateServer.Net;
 using LoginServer.Net;
+using System.Collections.Concurrent;
 
 namespace LoginServer.Handle
 {
     public class EnterGameWorldHanlder : Singleton<EnterGameWorldHanlder>
     {
         private IdGenerator m_idGenerator = new IdGenerator();
-        private Dictionary<int, IMessage> m_tasks = new Dictionary<int, IMessage>();
+        private ConcurrentDictionary<int, IMessage> m_tasks = new();
 
         public bool Init()
         {
@@ -48,7 +49,7 @@ namespace LoginServer.Handle
             //查询数据库
             GetAllDBWorldNodeRequest req = new();
             int taskId = m_idGenerator.GetId();
-            m_tasks.Add(taskId, message);
+            m_tasks.TryAdd(taskId, message);
             req.TaskId = taskId;
             ServersMgr.Instance.SendMsgToDBProxy(req);
         }
@@ -86,7 +87,7 @@ namespace LoginServer.Handle
 
         End1:
             // 清理资源
-            m_tasks.Remove(message.TaskId);
+            m_tasks.Remove(message.TaskId, out _);
             m_idGenerator.ReturnId(message.TaskId);
             gateConn.Send(resp);
         End2:
@@ -107,7 +108,7 @@ namespace LoginServer.Handle
             }
 
             int taskId = m_idGenerator.GetId();
-            m_tasks.Add(taskId, message);
+            m_tasks.TryAdd(taskId, message);
             RegisterSessionToGGMRequest req = new();
             req.TaskId = taskId;
             req.WorldId = message.WorldId;
@@ -156,7 +157,7 @@ namespace LoginServer.Handle
 
         End1:
             // 清理资源
-            m_tasks.Remove(message.TaskId);
+            m_tasks.Remove(message.TaskId, out _);
             m_idGenerator.ReturnId(message.TaskId);
             gateConn.Send(resp);
         End2:

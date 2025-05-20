@@ -31,12 +31,12 @@ namespace SceneServer.Core.Combat.AI.MonsterAIStateImpl
                 {
                     if (monsterAI.IsTargetInRange(monsterAI.maxChaseDistance))
                     {
-                        monsterAI.ChangeState(MonsterState.Chase);
+                        monsterAI.ChangeState(MonsterAIState.Chase);
                     }
                     else
                     {
                         monsterAI.ClearTarget();
-                        monsterAI.ChangeState(MonsterState.Patrol);
+                        monsterAI.ChangeState(MonsterAIState.Patrol);
                     }
                     goto End;
                 }

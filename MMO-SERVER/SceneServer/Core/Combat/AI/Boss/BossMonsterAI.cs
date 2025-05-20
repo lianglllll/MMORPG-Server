@@ -57,7 +57,7 @@ namespace SceneServer.Core.Combat.AI
             }
 
             // 默认
-            ChangeState(MonsterState.Patrol);
+            ChangeState(MonsterAIState.Patrol);
         }
         protected override void Dothing(float deltaTime)
         {
@@ -73,7 +73,7 @@ namespace SceneServer.Core.Combat.AI
 
         public Random random = new();
 
-        public override void ChangeState(MonsterState state, bool reCurrstate = false)
+        public override void ChangeState(MonsterAIState state, bool reCurrstate = false)
         {
             if (m_curState == state && !reCurrstate) return;
             m_curState = state;
@@ -82,25 +82,25 @@ namespace SceneServer.Core.Combat.AI
 
             switch (m_curState)
             {
-                case MonsterState.Patrol:
+                case MonsterAIState.Patrol:
                     m_stateMachine.ChangeState<BossMonsterAIState_Patrol>(reCurrstate);
                     break;
-                case MonsterState.Chase:
+                case MonsterAIState.Chase:
                     m_stateMachine.ChangeState<BossMonsterAIState_Chase>(reCurrstate);
                     break;
-                case MonsterState.Death:
+                case MonsterAIState.Death:
                     m_stateMachine.ChangeState<BossMonsterAIState_Death>(reCurrstate);
                     break;
-                case MonsterState.Flee:
+                case MonsterAIState.Flee:
                     m_stateMachine.ChangeState<BossMonsterAIState_Flee>(reCurrstate);
                     break;
-                case MonsterState.Hurt:
+                case MonsterAIState.Hurt:
                     m_stateMachine.ChangeState<BossMonsterAIState_Hurt>(reCurrstate);
                     break;
-                case MonsterState.Attack:
+                case MonsterAIState.Attack:
                     m_stateMachine.ChangeState<BossMonsterAIState_Attack>(reCurrstate);
                     break;
-                case MonsterState.Rturn:
+                case MonsterAIState.Rturn:
                     m_stateMachine.ChangeState<BossMonsterAIState_ReturnBrith>(reCurrstate);
                     break;
                 default:

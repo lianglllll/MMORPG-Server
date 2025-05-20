@@ -17,12 +17,12 @@ namespace SceneServer.Core.Combat.AI.WoodenDummy
         public WoodenDummyMonsterAI(SceneMonster owner, int fps = 10) : base(fps)
         {
             m_owner = owner;
-            ChangeState(MonsterState.Idle);
+            ChangeState(MonsterAIState.Idle);
         }
 
         public SceneMonster Monster => m_owner;
 
-        public override void ChangeState(MonsterState state, bool reCurrstate = false)
+        public override void ChangeState(MonsterAIState state, bool reCurrstate = false)
         {
             if (m_curState == state && !reCurrstate) return;
             m_curState = state;
@@ -31,13 +31,13 @@ namespace SceneServer.Core.Combat.AI.WoodenDummy
 
             switch (m_curState)
             {
-                case MonsterState.Idle:
+                case MonsterAIState.Idle:
                     m_stateMachine.ChangeState<WoodenDummyMonsterAIState_Idle>(reCurrstate);
                     break;
-                case MonsterState.Hurt:
+                case MonsterAIState.Hurt:
                     m_stateMachine.ChangeState<WoodenDummyMonsterAIState_Hurt>(reCurrstate);
                     break;                
-                case MonsterState.Death:
+                case MonsterAIState.Death:
                     m_stateMachine.ChangeState<WoodenDummyMonsterAIState_Death>(reCurrstate);
                     break;
                 default:

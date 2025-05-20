@@ -134,9 +134,6 @@ namespace SceneServer.Core.Scene
                     }
                 }
                 conn.Send(sResp);
-
-
-
             });
         }
         public void CharacterLeaveScene(int entityId)
@@ -235,17 +232,12 @@ namespace SceneServer.Core.Scene
         public void ItemExitScene(int entityId)
         {
             m_actionQueue.Enqueue(() => {
-                var item = SceneItemManager.GetEItemByEntityId(entityId);
-                if (item == null)
-                {
-                    goto End;
-                }
 
                 // 广播通知其他玩家
                 var resp = new OtherEntityLeaveSceneResponse();
                 resp.SceneId = SceneId;
-                resp.EntityId = item.EntityId;
-                var handle = m_aoiZoneManager.GetAoiEntityById(item.EntityId);
+                resp.EntityId = entityId;
+                var handle = m_aoiZoneManager.GetAoiEntityById(entityId);
                 var units = SceneEntityManager.Instance.GetSceneEntitiesByIds(handle.ViewEntity);
                 foreach (var cc in units.OfType<SceneCharacter>())
                 {
@@ -254,7 +246,7 @@ namespace SceneServer.Core.Scene
                 }
 
                 // 退出aoi空间
-                m_aoiZoneManager.Exit(item.EntityId);
+                m_aoiZoneManager.Exit(entityId);
             End:
                 return;
             });

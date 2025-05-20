@@ -10,7 +10,7 @@ using YamlDotNet.Serialization;
 
 namespace SceneServer.Core.Combat.AI
 {
-    public enum MonsterState
+    public enum MonsterAIState
     {
         None,
         Patrol,
@@ -32,7 +32,7 @@ namespace SceneServer.Core.Combat.AI
 
         // 状态机
         protected StateMachine m_stateMachine;
-        protected MonsterState m_curState;
+        protected MonsterAIState m_curState;
 
         public BaseMonsterAI(int fps) {
             m_fps = fps;
@@ -56,7 +56,7 @@ namespace SceneServer.Core.Combat.AI
         protected virtual void Dothing(float deltaTime)
         {
         }
-        public virtual void ChangeState(MonsterState state, bool reCurrstate = false) { 
+        public virtual void ChangeState(MonsterAIState state, bool reCurrstate = false) { 
         
         }
     }

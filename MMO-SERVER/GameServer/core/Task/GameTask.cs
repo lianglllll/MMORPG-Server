@@ -3,8 +3,10 @@ using GameServer.Core.Model;
 using GameServer.Core.Task.Condition;
 using GameServer.Core.Task.Reward;
 using GameServer.Utils;
+using Google.Protobuf;
 using HS.Protobuf.DBProxy.DBTask;
 using HS.Protobuf.GameTask;
+using HS.Protobuf.Scene;
 using Newtonsoft.Json;
 using Serilog;
 using System;
@@ -29,6 +31,7 @@ namespace GameServer.Core.Task
     [Serializable]
     public class RewardData
     {
+        public int taskId;
         public string rewardType;         
         public string[] Parameters;     
     }
@@ -45,7 +48,7 @@ namespace GameServer.Core.Task
         private StateMachine        m_machine;
         private List<RewardData>    m_reward;
 
-        #region
+        #region GetSet
         public TaskDefine TaskDefine => m_taskDefine;
         public GameTaskState GameTaskState
         {
@@ -85,6 +88,7 @@ namespace GameServer.Core.Task
         public int TaskId => m_taskDefine.Task_id;
         public GameCharacter Owner => m_owner;
         #endregion
+
         #region 生命周期
         public void Init(GameCharacter chr, TaskDefine def, DBTaskNode dbNode = null)
         {
@@ -143,10 +147,12 @@ namespace GameServer.Core.Task
             {
                 TaskRewardParser.Instance.GrantRewards(item, Owner);
             }
+            ChangeState(GameTaskState.Rewarded);
         End:
             return;
         }
         #endregion
+
         #region tools
         public void ChangeState(GameTaskState newState, bool isReEntry = false, bool dontSendMsg = false)
         {
@@ -195,7 +201,7 @@ namespace GameServer.Core.Task
         }
         public void ResetTask()
         {
-            ChangeState(GameTaskState.Locked, true);
+            ChangeState(GameTaskState.InProgress, true);
         }
         public void ClearProgress()
         {
@@ -243,6 +249,7 @@ namespace GameServer.Core.Task
                 var rewardType = typeParts[0];
                 dict.Add(new RewardData
                 {
+                    taskId = TaskId,
                     rewardType = rewardType,
                     Parameters = typeParts.Length > 1 ? typeParts[1].Split(',') : Array.Empty<string>(),
                 });
@@ -277,6 +284,52 @@ namespace GameServer.Core.Task
             resp.SessionId = Owner.SessionId;
             Owner.SendToGate(resp);
         }
+
+        public bool CheckAndRegisterConditionToSceneServer()
+        {
+            bool isNeedSend = false;
+
+            var req = new RegisterTaskConditionToSceneRequest();
+            req.EntityId = m_owner.EntityId;
+            req.TaskId = TaskId;
+            foreach (var condition in Progress)
+            {
+                if(!TaskConditionParser.Instance.IsNeedRegisterToScene(condition, Owner))
+                {
+                    continue;
+                }
+                isNeedSend = true;
+
+                var dataNode = new TaskConditionDataNode();
+                dataNode.TaskId = TaskId;
+                dataNode.ConditionType = condition.condType;
+                dataNode.Parameters.Add(condition.Parameters);
+                req.Conds.Add(dataNode);
+            }
+            if (isNeedSend && Owner.GameTaskManager.IsInit)
+            {
+                // 初始化的时候也可能调用发送，但是其实不需要的。
+                m_owner.SendToScene(req);
+            }
+            return isNeedSend;
+        }
+        public bool UnRegisterConditionToSceneServer()
+        {
+            if (!Owner.GameTaskManager.IsInit) return true;
+
+            var req = new UnRegisterTaskConditionToSceneRequest();
+            req.EntityId = m_owner.EntityId;    
+            req.TaskId = TaskId;
+            foreach(var condition in Progress)
+            {
+                if(TaskConditionParser.Instance.IsNeedRegisterToScene(condition, Owner))
+                {
+                    req.CondTypes.Add(condition.condType);
+                }
+            }
+            m_owner.SendToScene(req);
+            return true;
+        }
         #endregion
     }
 
@@ -297,10 +350,14 @@ namespace GameServer.Core.Task
     }
     public class GameTaskLockState : GameTaskStateBase
     {
+        private bool isRegisterToScene;
+
         public override void Enter()
         {
+            isRegisterToScene = false;
+
             // 注册未满足的解锁条件
-            foreach(var cond in m_gameTask.Progress)
+            foreach (var cond in m_gameTask.Progress)
             {
                 m_taskManager.Subscribe(cond.condType, m_gameTask);
             }
@@ -309,6 +366,11 @@ namespace GameServer.Core.Task
             {
                 m_gameTask.ChangeState(GameTaskState.Unlocked);
             }
+            else
+            {
+                // 看看有没有条件是需要scene支持的
+                isRegisterToScene = m_gameTask.CheckAndRegisterConditionToSceneServer();
+            }
         }
         public override void Exit()
         {
@@ -316,6 +378,11 @@ namespace GameServer.Core.Task
             foreach (var cond in m_gameTask.Progress)
             {
                 m_taskManager.UnSubscribe(cond.condType, m_gameTask);
+            }
+
+            if (isRegisterToScene)
+            {
+                m_gameTask.UnRegisterConditionToSceneServer();
             }
 
             m_gameTask.ClearProgress();
@@ -356,8 +423,12 @@ namespace GameServer.Core.Task
     }
     public class GameTaskInProgressState : GameTaskStateBase
     {
+        private bool isRegisterToScene;
+
         public override void Enter()
         {
+            isRegisterToScene = false;
+
             // 注册未满足的解锁条件
             foreach (var cond in m_gameTask.Progress)
             {
@@ -369,6 +440,11 @@ namespace GameServer.Core.Task
             {
                 m_gameTask.ChangeState(GameTaskState.Completed);
             }
+            else
+            {
+                // 看看有没有条件是需要scene支持的
+                isRegisterToScene = m_gameTask.CheckAndRegisterConditionToSceneServer();
+            }
         }
         public override void Exit()
         {
@@ -376,6 +452,11 @@ namespace GameServer.Core.Task
             foreach (var cond in m_gameTask.Progress)
             {
                 m_taskManager.UnSubscribe(cond.condType, m_gameTask);
+            }
+
+            if (isRegisterToScene)
+            {
+                m_gameTask.UnRegisterConditionToSceneServer();
             }
 
             m_gameTask.ClearProgress();
