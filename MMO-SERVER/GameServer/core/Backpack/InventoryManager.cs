@@ -443,7 +443,9 @@ namespace GameServer.InventorySystem
         }
         private GameItem _CreateItem(NetItemDataNode netItemDataNode)
         {
+            var def = StaticDataManager.Instance.ItemDefinedDict[netItemDataNode.ItemId];
             GameItem newItem = null;
+
             switch (netItemDataNode.ItemType)
             {
                 case ItemType.Consumable:

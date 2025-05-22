@@ -78,12 +78,12 @@ namespace SceneServer.Core.Scene
         }
         private void Update()
         {
-            m_spawnManager.Update(MyTime.deltaTime);
-            m_fightManager.Update(MyTime.deltaTime);
             while (m_actionQueue.TryDequeue(out var action))
             {
                 action?.Invoke();
             }
+            m_spawnManager.Update(MyTime.deltaTime);
+            m_fightManager.Update(MyTime.deltaTime);
         }
 
         public void CharacterEnterScene(Connection conn, CharacterEnterSceneRequest message)

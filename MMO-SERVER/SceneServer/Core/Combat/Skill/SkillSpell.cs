@@ -85,7 +85,7 @@ namespace SceneServer.Core.Combat.Skills
                 return;
             }
 
-            //执行技能
+            // 执行技能
             skill.Use(sco);
 
             //广播，可能本帧有很多人施法节能，那就收集本帧的info，等到下一帧再发出去

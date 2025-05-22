@@ -136,15 +136,18 @@ namespace SceneServer.Core.Combat.Skills
         {
             Target = sco;
             RunTime = 0;
+
             curSkillState = SkillStage.Intonate;
             OnIntonate();
+
+            Owner.CurUseSkill = this;
+            //扣除mp
+            Owner.ChangeMP(-Define.Cost);
+
             return CastResult.Success;
         }
         protected virtual void OnIntonate()
         {
-            Owner.CurUseSkill = this;
-            //扣除mp
-            Owner.ChangeMP(-Define.Cost);
         }
         protected virtual void OnActive()
         {

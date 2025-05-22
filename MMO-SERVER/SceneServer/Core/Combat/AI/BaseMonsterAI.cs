@@ -47,9 +47,8 @@ namespace SceneServer.Core.Combat.AI
             m_cumulativeTime += deltaTime;
             if (m_cumulativeTime > m_updateTime)
             {
-                m_stateMachine.Update(deltaTime);
+                m_stateMachine.Update(m_cumulativeTime);
                 Dothing(m_cumulativeTime);
-
                 m_cumulativeTime = 0;
             }
         }

@@ -147,7 +147,7 @@ namespace GameServer.Core.Task
             {
                 TaskRewardParser.Instance.GrantRewards(item, Owner);
             }
-            ChangeState(GameTaskState.Rewarded);
+            ChangeState(GameTaskState.Rewarded, false, true);
         End:
             return;
         }

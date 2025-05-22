@@ -45,6 +45,7 @@ namespace GameServer.core.Model.BaseItem
             m_netItemDataNode = new NetItemDataNode() { ItemId = m_itemDefine.ID };
             this.m_netItemDataNode.Amount = amount;
             this.m_netItemDataNode.GridIdx = gridIdx;
+            m_netItemDataNode.ItemType = GetItemType();
         }
 
         public ItemType GetItemType()

@@ -61,7 +61,7 @@ namespace SceneServer.Core.Model.Actor
             // 给monster注入灵魂
             switch (m_spawner.AIName)
             {
-                case "Monster":
+                case "Boss":
                     m_AI = new BossMonsterAI(this, m_spawner.PatrolPath);
                     break;
                 case "WoodenDummy":
@@ -93,7 +93,7 @@ namespace SceneServer.Core.Model.Actor
         }
         protected override void ReviveAfter()
         {
-            // 状态机切换
+            // 状态机切换 其实是切换到默认状态
             m_AI.ChangeState(MonsterAIState.None);
         }
         protected override void RecvDamageAfter(Damage damage)

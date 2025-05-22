@@ -1,4 +1,5 @@
 ﻿using Common.Summer.Core;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace SceneServer.Core.Combat.AI.MonsterAIStateImpl
 {
     public class BossMonsterAIState_Attack : BossMonsterAIState
     {
-        public float attackInterval = 2f;
+        public float attackInterval = 1f;
         public float remainAttackCD;
 
         public override void Enter()
@@ -19,12 +20,12 @@ namespace SceneServer.Core.Combat.AI.MonsterAIStateImpl
 
         public override void Update(float deltaTime)
         {
-            if(!monsterAI.Monster.IsCanAttack())
+            if (!monsterAI.Monster.IsCanAttack())
             {
                 goto End;
             }
-            remainAttackCD -= deltaTime;
 
+            remainAttackCD -= deltaTime;
             if (remainAttackCD <= 0)
             {
                 if (!monsterAI.IsTargetInRange(monsterAI.maxAttackDistance))

@@ -186,19 +186,25 @@ namespace GameServer.Hanle
         }
         private void HandleWearEquipRequest(Connection conn, WearEquipRequest message)
         {
+            var resp = new WearEquipResponse();
+
             GameCharacter chr = GameCharacterManager.Instance.GetGameCharacterByCid(message.CId);
             if (chr == null)
             {
-                goto End;
+                goto End2;
             }
 
             var item = chr.BackPackManager.GetItemByGridIdx(message.GridIndex);
             if(item == null || !(item is GameEquipment gameEquipment))
             {
-                goto End;
+                goto End2;
             }
             chr.EquipmentManager.WearEquipment(gameEquipment, message.EquipSlotType);
-        End:
+
+        End1:
+            resp.SessionId = chr.SessionId;
+            chr.SendToGate(resp);
+        End2:
             return;
         }
         private void HandleUnloadEquipRequest(Connection conn, UnloadEquipRequest message)
@@ -209,6 +215,10 @@ namespace GameServer.Hanle
                 goto End;
             }
             chr.EquipmentManager.UnloadEquipment(message.Type, true);
+            var resp = new UnloadEquipResponse();
+            resp.SessionId = chr.SessionId;
+            chr.SendToGate(resp);
+            
         End:
             return;
         }

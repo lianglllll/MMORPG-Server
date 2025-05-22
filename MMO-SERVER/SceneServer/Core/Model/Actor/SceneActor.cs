@@ -23,9 +23,9 @@ namespace SceneServer.Core.Model.Actor
         protected AttributeManager m_attributeManager = new();
 
         // skill
-        protected Skill? m_curUseSkill;
-        protected SkillSpell m_skillSpell = new();
-        protected SkillManager m_skillManager = new();
+        protected Skill         m_curUseSkill;
+        protected SkillSpell    m_skillSpell = new();
+        protected SkillManager  m_skillManager = new();
 
         // buff
         public BuffManager m_buffManager = new();
@@ -109,7 +109,7 @@ namespace SceneServer.Core.Model.Actor
 
             m_define = StaticDataManager.Instance.unitDefineDict[professionId];
             m_attributeManager.Init(m_define, level, equips);
-            m_curUseSkill = null;
+            CurUseSkill = null;
             m_skillSpell.Init(this);
             m_skillManager.Init(this);
             m_buffManager.Init(this);
@@ -161,10 +161,13 @@ namespace SceneServer.Core.Model.Actor
         public bool ChangeActorState(NetActorState state)
         {
             m_netActorNode.NetActorState = state;
+
+            // 中断当前执行的技能
             if(m_netActorNode.NetActorState != NetActorState.Skill)
             {
                 _CancelCurSkill();
             }
+
             return true;
         }
         public bool ChangeActorMode(NetActorMode mode)
@@ -275,12 +278,12 @@ namespace SceneServer.Core.Model.Actor
         #region tools
         private void _CancelCurSkill()
         {
-            if(m_curUseSkill == null)
+            if(CurUseSkill == null)
             {
                 goto End;
             }
-            m_curUseSkill.CancelSkill();
-            m_curUseSkill = null;
+            CurUseSkill.CancelSkill();
+            CurUseSkill = null;
 
         End:
             return;
