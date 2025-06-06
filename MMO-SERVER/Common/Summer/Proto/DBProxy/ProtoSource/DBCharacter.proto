@@ -18,42 +18,40 @@ enum DBCharacterProtocl{
 }
 
 message DBCharacterStatisticsNode{
-	int32 killCount = 1;
-	int32 deathCount = 2; 
+	int32 killCount		= 1;
+	int32 deathCount	= 2; 
     int32 taskCompleted = 3; 
 }
 message DBCharacterStatusNode{
-	int32 hp = 1;
-	int32 mp = 2;
-	int32 exp = 4;
-	int32 curSceneId = 5;
-	int32 x = 6;
-	int32 y = 7;
-	int32 z = 8;
+	int32 hp			= 1;
+	int32 mp			= 2;
+	int32 exp			= 3;
+	int32 curSceneId	= 4;
+	int32 x				= 5;
+	int32 y				= 6;
+	int32 z				= 7;
 }
 message DBCharacterAssetsNode{
-	bytes backpackData = 1;
-	bytes equipsData = 2;
-	map<string, int32> currency = 3;    // 新增字段：货币种类及数量
-    repeated string achievements = 4;	// 新增字段：成就列表
-    repeated string titles = 5;			// 新增字段：头衔列表
+	map<string, int32> currency		= 1;    // 新增字段：货币种类及数量
+    repeated string achievements	= 2;	// 新增字段：成就列表
+    repeated string titles			= 3;	// 新增字段：头衔列表
 }
 message DBCharacterSocialNode {
-    string guildId = 1; // 公会ID
-    string faction = 2; // 阵营
+    string guildId				= 1; // 公会ID
+    string faction				= 2; // 阵营
     repeated string friendsList = 3; // 好友列表
 }
 message DBCharacterSkillNode {
-    int32 skillId = 1;       // 技能ID
-    int32 level = 2;         // 技能等级
+    int32 skillId	= 1;	// 技能ID
+    int32 level		= 2;	// 技能等级
 }
 message DBCharacterEquipSkillNode{
-	int32 skillId = 1;
-	int32 pos = 2;
+	int32 skillId	= 1;
+	int32 pos		= 2;
 }
 message DBCharacterCombatNode {
-    repeated DBCharacterSkillNode skills = 1;					// 技能列表
-    repeated DBCharacterEquipSkillNode equippedSkills = 2;      // 装备技能列表 (存储已装备技能的ID)
+    repeated DBCharacterSkillNode skills				= 1;	// 技能列表
+    repeated DBCharacterEquipSkillNode equippedSkills	= 2;    // 装备技能列表 (存储已装备技能的ID)
 }
 message DBCharacterTasks{
 	repeated HS.Protobuf.DBProxy.DBTask.DBTaskNode tasks	= 1;
@@ -62,7 +60,6 @@ message DBInventorys{
 	bytes backpackData	= 1;
 	bytes equipsData	= 2;
 }
-
 message DBCharacterNode{
 	string cId									= 1;
 	string uId									= 2;
@@ -74,55 +71,55 @@ message DBCharacterNode{
 	DBCharacterStatisticsNode chrStatistics		= 8;
 	DBCharacterStatusNode chrStatus				= 9;
 	DBCharacterAssetsNode chrAssets				= 10;
-	DBCharacterSocialNode chrSocial				= 11; 
+	DBCharacterSocialNode chrSocial				= 11;
 	DBCharacterCombatNode chrCombat				= 12;
-	DBCharacterTasks chrTasks					= 13; 
+	DBCharacterTasks chrTasks					= 13;
 	DBInventorys chrInventorys					= 14;
 }
 
 message GetDBCharacterByCidRequest{
-	int32 taskId = 1;
-	string cId = 2;
+	int32 taskId						= 1;
+	string cId							= 2;
 	google.protobuf.FieldMask read_mask = 3;	// 不包含顶层的基础信息
 }
 message GetDBCharacterByCidReponse{
-	int32 taskId = 1;
-	int32 resultCode = 2;
-	string resultMsg = 3;
+	int32 taskId			= 1;
+	int32 resultCode		= 2;
+	string resultMsg		= 3;
 	DBCharacterNode chrNode = 4;
 }
 
 message AddDBCharacterRequset{
-	int32 taskId = 1;
+	int32 taskId			= 1;
 	DBCharacterNode chrNode = 2;
 }
 message AddDBCharacterResponse{
-	int32 taskId = 1;
-	int32 resultCode = 2;
-	string resultMsg = 3;
-	string cId = 4;
+	int32 taskId		= 1;
+	int32 resultCode	= 2;
+	string resultMsg	= 3;
+	string cId			= 4;
 }
 
 message DeleteDBCharacterByCidRequest{
-	int32 taskId = 1;
-	string cId = 2;
+	int32 taskId	= 1;
+	string cId		= 2;
 }
 message DeleteDBCharacterByCidResponse{
-	int32 taskId = 1;
-	int32 resultCode = 2;
-	string resultMsg = 3;
+	int32 taskId		= 1;
+	int32 resultCode	= 2;
+	string resultMsg	= 3;
 }
 
 message GetDBCharactersByUidRequest{
-	int32 taskId = 1;
-	string uId = 2;
-	int32 worldId = 3;
+	int32 taskId						= 1;
+	string uId							= 2;
+	int32 worldId						= 3;
 	google.protobuf.FieldMask read_mask = 4;	
 }
 message GetDBCharactersByUidResponse{
-	int32 taskId = 1;
-	int32 resultCode = 2;
-	string resultMsg = 3;
+	int32 taskId					= 1;
+	int32 resultCode				= 2;
+	string resultMsg				= 3;
 	repeated DBCharacterNode cNodes = 4;
 }
 

@@ -9,7 +9,7 @@ namespace Common.Summer.Tools
         public virtual void UnInit()
         {
             // 反初始化，一般用于释放资源
-        }
+        } 
         public virtual void Enter() { }
         public virtual void Exit() { }
         public virtual void Update(float deltaTime) { }

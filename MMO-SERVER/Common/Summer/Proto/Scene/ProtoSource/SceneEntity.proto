@@ -6,23 +6,23 @@ import "Game/ProtoSource/Backpack.proto";
 package HS.Protobuf.SceneEntity;
 
 message NetTransform{
-	HS.Protobuf.Common.NetVector3 position = 1;
-	HS.Protobuf.Common.NetVector3 rotation = 2;
-	HS.Protobuf.Common.NetVector3 scale = 3;
+	HS.Protobuf.Common.NetVector3 position	= 1;
+	HS.Protobuf.Common.NetVector3 rotation	= 2;
+	HS.Protobuf.Common.NetVector3 scale		= 3;
 }
 
 enum SceneEntityType{
-	SCENE_ENTITY_TYPE_NONE = 0;
-	SCENE_ENTITY_TYPE_ACTOR = 1;
-	SCENE_ENTITY_TYPE_ITEM = 2;
-	SCENE_ENTITY_TYPE_INTERACTIVO = 3;
+	SCENE_ENTITY_TYPE_NONE			= 0;
+	SCENE_ENTITY_TYPE_ACTOR			= 1;
+	SCENE_ENTITY_TYPE_ITEM			= 2;
+	SCENE_ENTITY_TYPE_INTERACTIVO	= 3;
 }
 
 // Actor
 enum NetActorType{
-    NET_ACTOR_TYPE_CHARACTER = 0;
-    NET_ACTOR_TYPE_MONSTER = 1;
-    NET_ACTOR_TYPE_NPC = 2;
+    NET_ACTOR_TYPE_CHARACTER	= 0;
+    NET_ACTOR_TYPE_MONSTER		= 1;
+    NET_ACTOR_TYPE_NPC			= 2;
 }
 enum NetActorMode {
     NET_ACTOR_MODE_NONE				= 0;
@@ -52,41 +52,7 @@ enum NetActorState {
     NET_ACTOR_STATE_CUSTOM		= 14;	// ×Ô¶¨Òå×´Ì¬
     NET_ACTOR_STATE_CHANGEHIGHT = 15;  
 }
-enum NetActorSmallState {
-    NET_ACTOR_SMALL_STATE_NONE = 0;
 
-    NET_ACTOR_STATE_SAMLL_MOTION_SLOW_WALK = 1;
-    NET_ACTOR_STATE_SAMLL_MOTION_NORMAL_WALK = 2;
-    NET_ACTOR_STATE_SAMLL_MOTION_RUN = 3;
-    NET_ACTOR_STATE_SAMLL_MOTION_RUN_STOP = 4;
-    NET_ACTOR_STATE_SAMLL_MOTION_NORMAL_WALK_STOP = 5;
-
-    NET_ACTOR_STATE_SAMLL_JUMP_UP = 6;
-
-    NET_ACTOR_STATE_SAMLL_FALLING_SUSTAINED = 7;
-    NET_ACTOR_STATE_SAMLL_FALLING_END = 8;
-
-    NET_ACTOR_STATE_SAMLL_CROUCH_SUSTAINED = 9;
-    NET_ACTOR_STATE_SAMLL_CROUCH_MOVE = 10;
-
-    NET_ACTOR_STATE_SAMLL_PRONE_SUSTAINED = 11;
-    NET_ACTOR_STATE_SAMLL_PRONE_MOVE = 12;
-
-    NET_ACTOR_STATE_SAMLL_DEATH_SUSTAINED = 13;
-    NET_ACTOR_STATE_SAMLL_DEATH_UP = 14;
-
-    NET_ACTOR_STATE_SAMLL_HIT_UP = 15;
-    NET_ACTOR_STATE_SAMLL_HIT_DOWN = 16;
-    NET_ACTOR_STATE_SAMLL_HIT_LEFT = 17;
-    NET_ACTOR_STATE_SAMLL_HIT_RIGHT = 18;
-    NET_ACTOR_STATE_SAMLL_HIT_FRONT = 19;
-    NET_ACTOR_STATE_SAMLL_HIT_BACK = 20;
-
-    NET_ACTOR_STATE_SAMLL_DIZZY_SUSTAINED = 21;
-
-    NET_ACTOR_STATE_SAMLL_KNOCK_BACK = 22;
-    NET_ACTOR_STATE_SAMLL_KNOCK_UP = 23;
-}
 message NetActorNode {
     int32 entityId			= 1;
     NetTransform transform	= 2;
@@ -106,7 +72,6 @@ message NetActorNode {
 	NetActorType netActorType	= 13;
 	NetActorMode netActorMode	= 14;
     NetActorState netActorState = 15;
-    NetActorSmallState netActorSmallState = 16;
 
 	HS.Protobuf.Combat.Skill.FixedSkillGroupInfo fixedSkillGroupInfo	= 18;
     // repeated HS.Protobuf.Backpack.ItemInfo wornEquipments				= 19;

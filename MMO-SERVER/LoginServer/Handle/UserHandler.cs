@@ -47,10 +47,6 @@ namespace LoginServer.Handle
         {
             // 先找缓存
 
-
-
-
-
             //查询数据库
             GetDBUserRequest getDBUserRequest = new GetDBUserRequest();
             getDBUserRequest.UserName = message.Username;

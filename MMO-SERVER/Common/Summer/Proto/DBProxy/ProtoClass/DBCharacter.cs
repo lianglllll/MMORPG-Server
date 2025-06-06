@@ -29,80 +29,79 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
             "UHJveHkvUHJvdG9Tb3VyY2UvREJUYXNrLnByb3RvIlkKGURCQ2hhcmFjdGVy",
             "U3RhdGlzdGljc05vZGUSEQoJa2lsbENvdW50GAEgASgFEhIKCmRlYXRoQ291",
             "bnQYAiABKAUSFQoNdGFza0NvbXBsZXRlZBgDIAEoBSJxChVEQkNoYXJhY3Rl",
-            "clN0YXR1c05vZGUSCgoCaHAYASABKAUSCgoCbXAYAiABKAUSCwoDZXhwGAQg",
-            "ASgFEhIKCmN1clNjZW5lSWQYBSABKAUSCQoBeBgGIAEoBRIJCgF5GAcgASgF",
-            "EgkKAXoYCCABKAUi8AEKFURCQ2hhcmFjdGVyQXNzZXRzTm9kZRIUCgxiYWNr",
-            "cGFja0RhdGEYASABKAwSEgoKZXF1aXBzRGF0YRgCIAEoDBJWCghjdXJyZW5j",
-            "eRgDIAMoCzJELkhTLlByb3RvYnVmLkRCUHJveHkuREJDaGFyYWN0ZXIuREJD",
-            "aGFyYWN0ZXJBc3NldHNOb2RlLkN1cnJlbmN5RW50cnkSFAoMYWNoaWV2ZW1l",
-            "bnRzGAQgAygJEg4KBnRpdGxlcxgFIAMoCRovCg1DdXJyZW5jeUVudHJ5EgsK",
-            "A2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoBToCOAEiTgoVREJDaGFyYWN0ZXJT",
-            "b2NpYWxOb2RlEg8KB2d1aWxkSWQYASABKAkSDwoHZmFjdGlvbhgCIAEoCRIT",
-            "CgtmcmllbmRzTGlzdBgDIAMoCSI2ChREQkNoYXJhY3RlclNraWxsTm9kZRIP",
-            "Cgdza2lsbElkGAEgASgFEg0KBWxldmVsGAIgASgFIjkKGURCQ2hhcmFjdGVy",
-            "RXF1aXBTa2lsbE5vZGUSDwoHc2tpbGxJZBgBIAEoBRILCgNwb3MYAiABKAUi",
-            "sgEKFURCQ2hhcmFjdGVyQ29tYmF0Tm9kZRJFCgZza2lsbHMYASADKAsyNS5I",
-            "Uy5Qcm90b2J1Zi5EQlByb3h5LkRCQ2hhcmFjdGVyLkRCQ2hhcmFjdGVyU2tp",
-            "bGxOb2RlElIKDmVxdWlwcGVkU2tpbGxzGAIgAygLMjouSFMuUHJvdG9idWYu",
-            "REJQcm94eS5EQkNoYXJhY3Rlci5EQkNoYXJhY3RlckVxdWlwU2tpbGxOb2Rl",
-            "IkkKEERCQ2hhcmFjdGVyVGFza3MSNQoFdGFza3MYASADKAsyJi5IUy5Qcm90",
-            "b2J1Zi5EQlByb3h5LkRCVGFzay5EQlRhc2tOb2RlIjgKDERCSW52ZW50b3J5",
-            "cxIUCgxiYWNrcGFja0RhdGEYASABKAwSEgoKZXF1aXBzRGF0YRgCIAEoDCKX",
-            "BQoPREJDaGFyYWN0ZXJOb2RlEgsKA2NJZBgBIAEoCRILCgN1SWQYAiABKAkS",
-            "DwoHd29ybGRJZBgDIAEoBRIUCgxwcm9mZXNzaW9uSWQYBCABKAUSDwoHY2hy",
-            "TmFtZRgFIAEoCRINCgVsZXZlbBgGIAEoBRIZChFjcmVhdGlvblRpbWVzdGFt",
-            "cBgHIAEoAxJRCg1jaHJTdGF0aXN0aWNzGAggASgLMjouSFMuUHJvdG9idWYu",
-            "REJQcm94eS5EQkNoYXJhY3Rlci5EQkNoYXJhY3RlclN0YXRpc3RpY3NOb2Rl",
-            "EkkKCWNoclN0YXR1cxgJIAEoCzI2LkhTLlByb3RvYnVmLkRCUHJveHkuREJD",
-            "aGFyYWN0ZXIuREJDaGFyYWN0ZXJTdGF0dXNOb2RlEkkKCWNockFzc2V0cxgK",
-            "IAEoCzI2LkhTLlByb3RvYnVmLkRCUHJveHkuREJDaGFyYWN0ZXIuREJDaGFy",
-            "YWN0ZXJBc3NldHNOb2RlEkkKCWNoclNvY2lhbBgLIAEoCzI2LkhTLlByb3Rv",
-            "YnVmLkRCUHJveHkuREJDaGFyYWN0ZXIuREJDaGFyYWN0ZXJTb2NpYWxOb2Rl",
-            "EkkKCWNockNvbWJhdBgMIAEoCzI2LkhTLlByb3RvYnVmLkRCUHJveHkuREJD",
-            "aGFyYWN0ZXIuREJDaGFyYWN0ZXJDb21iYXROb2RlEkMKCGNoclRhc2tzGA0g",
-            "ASgLMjEuSFMuUHJvdG9idWYuREJQcm94eS5EQkNoYXJhY3Rlci5EQkNoYXJh",
-            "Y3RlclRhc2tzEkQKDWNockludmVudG9yeXMYDiABKAsyLS5IUy5Qcm90b2J1",
-            "Zi5EQlByb3h5LkRCQ2hhcmFjdGVyLkRCSW52ZW50b3J5cyJoChpHZXREQkNo",
-            "YXJhY3RlckJ5Q2lkUmVxdWVzdBIOCgZ0YXNrSWQYASABKAUSCwoDY0lkGAIg",
-            "ASgJEi0KCXJlYWRfbWFzaxgDIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5GaWVs",
-            "ZE1hc2silgEKGkdldERCQ2hhcmFjdGVyQnlDaWRSZXBvbnNlEg4KBnRhc2tJ",
-            "ZBgBIAEoBRISCgpyZXN1bHRDb2RlGAIgASgFEhEKCXJlc3VsdE1zZxgDIAEo",
-            "CRJBCgdjaHJOb2RlGAQgASgLMjAuSFMuUHJvdG9idWYuREJQcm94eS5EQkNo",
-            "YXJhY3Rlci5EQkNoYXJhY3Rlck5vZGUiagoVQWRkREJDaGFyYWN0ZXJSZXF1",
-            "c2V0Eg4KBnRhc2tJZBgBIAEoBRJBCgdjaHJOb2RlGAIgASgLMjAuSFMuUHJv",
-            "dG9idWYuREJQcm94eS5EQkNoYXJhY3Rlci5EQkNoYXJhY3Rlck5vZGUiXAoW",
-            "QWRkREJDaGFyYWN0ZXJSZXNwb25zZRIOCgZ0YXNrSWQYASABKAUSEgoKcmVz",
-            "dWx0Q29kZRgCIAEoBRIRCglyZXN1bHRNc2cYAyABKAkSCwoDY0lkGAQgASgJ",
-            "IjwKHURlbGV0ZURCQ2hhcmFjdGVyQnlDaWRSZXF1ZXN0Eg4KBnRhc2tJZBgB",
-            "IAEoBRILCgNjSWQYAiABKAkiVwoeRGVsZXRlREJDaGFyYWN0ZXJCeUNpZFJl",
-            "c3BvbnNlEg4KBnRhc2tJZBgBIAEoBRISCgpyZXN1bHRDb2RlGAIgASgFEhEK",
-            "CXJlc3VsdE1zZxgDIAEoCSJ6ChtHZXREQkNoYXJhY3RlcnNCeVVpZFJlcXVl",
-            "c3QSDgoGdGFza0lkGAEgASgFEgsKA3VJZBgCIAEoCRIPCgd3b3JsZElkGAMg",
-            "ASgFEi0KCXJlYWRfbWFzaxgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5GaWVs",
-            "ZE1hc2silwEKHEdldERCQ2hhcmFjdGVyc0J5VWlkUmVzcG9uc2USDgoGdGFz",
-            "a0lkGAEgASgFEhIKCnJlc3VsdENvZGUYAiABKAUSEQoJcmVzdWx0TXNnGAMg",
-            "ASgJEkAKBmNOb2RlcxgEIAMoCzIwLkhTLlByb3RvYnVmLkRCUHJveHkuREJD",
-            "aGFyYWN0ZXIuREJDaGFyYWN0ZXJOb2RlIlkKFlNhdmVEQkNoYXJhY3RlclJl",
-            "cXVlc3QSPwoFY05vZGUYASABKAsyMC5IUy5Qcm90b2J1Zi5EQlByb3h5LkRC",
-            "Q2hhcmFjdGVyLkRCQ2hhcmFjdGVyTm9kZSqRBAoSREJDaGFyYWN0ZXJQcm90",
-            "b2NsEhwKGERCQ0hBUkFDVEVSX1BST1RPQ0xfTk9ORRAAEjQKLkRCQ0hBUkFD",
-            "VEVSX1BST1RPQ0xfR0VUX0RCQ0hBUkFDVEVSX0JZX0NJRF9SRVEQuY4DEjUK",
-            "L0RCQ0hBUkFDVEVSX1BST1RPQ0xfR0VUX0RCQ0hBUkFDVEVSX0JZX0NJRF9S",
-            "RVNQELqOAxItCidEQkNIQVJBQ1RFUl9QUk9UT0NMX0FERF9EQkNIQVJBQ1RF",
-            "Ul9SRVEQu44DEi4KKERCQ0hBUkFDVEVSX1BST1RPQ0xfQUREX0RCQ0hBUkFD",
-            "VEVSX1JFU1AQvI4DEjcKMURCQ0hBUkFDVEVSX1BST1RPQ0xfREVMRVRFX0RC",
-            "Q0hBUkFDVEVSX0JZX0NJRF9SRVEQvY4DEjgKMkRCQ0hBUkFDVEVSX1BST1RP",
-            "Q0xfREVMRVRFX0RCQ0hBUkFDVEVSX0JZX0NJRF9SRVNQEL6OAxI1Ci9EQkNI",
-            "QVJBQ1RFUl9QUk9UT0NMX0dFVF9EQkNIQVJBQ1RFUlNfQllfVUlEX1JFURC/",
-            "jgMSNgowREJDSEFSQUNURVJfUFJPVE9DTF9HRVRfREJDSEFSQUNURVJTX0JZ",
-            "X1VJRF9SRVNQEMCOAxIvCilEQkNIQVJBQ1RFUl9QUk9UT0NMX1NBVkVfREJD",
-            "SEFSQUNURVJTX1JFURDBjgNiBnByb3RvMw=="));
+            "clN0YXR1c05vZGUSCgoCaHAYASABKAUSCgoCbXAYAiABKAUSCwoDZXhwGAMg",
+            "ASgFEhIKCmN1clNjZW5lSWQYBCABKAUSCQoBeBgFIAEoBRIJCgF5GAYgASgF",
+            "EgkKAXoYByABKAUixgEKFURCQ2hhcmFjdGVyQXNzZXRzTm9kZRJWCghjdXJy",
+            "ZW5jeRgBIAMoCzJELkhTLlByb3RvYnVmLkRCUHJveHkuREJDaGFyYWN0ZXIu",
+            "REJDaGFyYWN0ZXJBc3NldHNOb2RlLkN1cnJlbmN5RW50cnkSFAoMYWNoaWV2",
+            "ZW1lbnRzGAIgAygJEg4KBnRpdGxlcxgDIAMoCRovCg1DdXJyZW5jeUVudHJ5",
+            "EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoBToCOAEiTgoVREJDaGFyYWN0",
+            "ZXJTb2NpYWxOb2RlEg8KB2d1aWxkSWQYASABKAkSDwoHZmFjdGlvbhgCIAEo",
+            "CRITCgtmcmllbmRzTGlzdBgDIAMoCSI2ChREQkNoYXJhY3RlclNraWxsTm9k",
+            "ZRIPCgdza2lsbElkGAEgASgFEg0KBWxldmVsGAIgASgFIjkKGURCQ2hhcmFj",
+            "dGVyRXF1aXBTa2lsbE5vZGUSDwoHc2tpbGxJZBgBIAEoBRILCgNwb3MYAiAB",
+            "KAUisgEKFURCQ2hhcmFjdGVyQ29tYmF0Tm9kZRJFCgZza2lsbHMYASADKAsy",
+            "NS5IUy5Qcm90b2J1Zi5EQlByb3h5LkRCQ2hhcmFjdGVyLkRCQ2hhcmFjdGVy",
+            "U2tpbGxOb2RlElIKDmVxdWlwcGVkU2tpbGxzGAIgAygLMjouSFMuUHJvdG9i",
+            "dWYuREJQcm94eS5EQkNoYXJhY3Rlci5EQkNoYXJhY3RlckVxdWlwU2tpbGxO",
+            "b2RlIkkKEERCQ2hhcmFjdGVyVGFza3MSNQoFdGFza3MYASADKAsyJi5IUy5Q",
+            "cm90b2J1Zi5EQlByb3h5LkRCVGFzay5EQlRhc2tOb2RlIjgKDERCSW52ZW50",
+            "b3J5cxIUCgxiYWNrcGFja0RhdGEYASABKAwSEgoKZXF1aXBzRGF0YRgCIAEo",
+            "DCKXBQoPREJDaGFyYWN0ZXJOb2RlEgsKA2NJZBgBIAEoCRILCgN1SWQYAiAB",
+            "KAkSDwoHd29ybGRJZBgDIAEoBRIUCgxwcm9mZXNzaW9uSWQYBCABKAUSDwoH",
+            "Y2hyTmFtZRgFIAEoCRINCgVsZXZlbBgGIAEoBRIZChFjcmVhdGlvblRpbWVz",
+            "dGFtcBgHIAEoAxJRCg1jaHJTdGF0aXN0aWNzGAggASgLMjouSFMuUHJvdG9i",
+            "dWYuREJQcm94eS5EQkNoYXJhY3Rlci5EQkNoYXJhY3RlclN0YXRpc3RpY3NO",
+            "b2RlEkkKCWNoclN0YXR1cxgJIAEoCzI2LkhTLlByb3RvYnVmLkRCUHJveHku",
+            "REJDaGFyYWN0ZXIuREJDaGFyYWN0ZXJTdGF0dXNOb2RlEkkKCWNockFzc2V0",
+            "cxgKIAEoCzI2LkhTLlByb3RvYnVmLkRCUHJveHkuREJDaGFyYWN0ZXIuREJD",
+            "aGFyYWN0ZXJBc3NldHNOb2RlEkkKCWNoclNvY2lhbBgLIAEoCzI2LkhTLlBy",
+            "b3RvYnVmLkRCUHJveHkuREJDaGFyYWN0ZXIuREJDaGFyYWN0ZXJTb2NpYWxO",
+            "b2RlEkkKCWNockNvbWJhdBgMIAEoCzI2LkhTLlByb3RvYnVmLkRCUHJveHku",
+            "REJDaGFyYWN0ZXIuREJDaGFyYWN0ZXJDb21iYXROb2RlEkMKCGNoclRhc2tz",
+            "GA0gASgLMjEuSFMuUHJvdG9idWYuREJQcm94eS5EQkNoYXJhY3Rlci5EQkNo",
+            "YXJhY3RlclRhc2tzEkQKDWNockludmVudG9yeXMYDiABKAsyLS5IUy5Qcm90",
+            "b2J1Zi5EQlByb3h5LkRCQ2hhcmFjdGVyLkRCSW52ZW50b3J5cyJoChpHZXRE",
+            "QkNoYXJhY3RlckJ5Q2lkUmVxdWVzdBIOCgZ0YXNrSWQYASABKAUSCwoDY0lk",
+            "GAIgASgJEi0KCXJlYWRfbWFzaxgDIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5G",
+            "aWVsZE1hc2silgEKGkdldERCQ2hhcmFjdGVyQnlDaWRSZXBvbnNlEg4KBnRh",
+            "c2tJZBgBIAEoBRISCgpyZXN1bHRDb2RlGAIgASgFEhEKCXJlc3VsdE1zZxgD",
+            "IAEoCRJBCgdjaHJOb2RlGAQgASgLMjAuSFMuUHJvdG9idWYuREJQcm94eS5E",
+            "QkNoYXJhY3Rlci5EQkNoYXJhY3Rlck5vZGUiagoVQWRkREJDaGFyYWN0ZXJS",
+            "ZXF1c2V0Eg4KBnRhc2tJZBgBIAEoBRJBCgdjaHJOb2RlGAIgASgLMjAuSFMu",
+            "UHJvdG9idWYuREJQcm94eS5EQkNoYXJhY3Rlci5EQkNoYXJhY3Rlck5vZGUi",
+            "XAoWQWRkREJDaGFyYWN0ZXJSZXNwb25zZRIOCgZ0YXNrSWQYASABKAUSEgoK",
+            "cmVzdWx0Q29kZRgCIAEoBRIRCglyZXN1bHRNc2cYAyABKAkSCwoDY0lkGAQg",
+            "ASgJIjwKHURlbGV0ZURCQ2hhcmFjdGVyQnlDaWRSZXF1ZXN0Eg4KBnRhc2tJ",
+            "ZBgBIAEoBRILCgNjSWQYAiABKAkiVwoeRGVsZXRlREJDaGFyYWN0ZXJCeUNp",
+            "ZFJlc3BvbnNlEg4KBnRhc2tJZBgBIAEoBRISCgpyZXN1bHRDb2RlGAIgASgF",
+            "EhEKCXJlc3VsdE1zZxgDIAEoCSJ6ChtHZXREQkNoYXJhY3RlcnNCeVVpZFJl",
+            "cXVlc3QSDgoGdGFza0lkGAEgASgFEgsKA3VJZBgCIAEoCRIPCgd3b3JsZElk",
+            "GAMgASgFEi0KCXJlYWRfbWFzaxgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5G",
+            "aWVsZE1hc2silwEKHEdldERCQ2hhcmFjdGVyc0J5VWlkUmVzcG9uc2USDgoG",
+            "dGFza0lkGAEgASgFEhIKCnJlc3VsdENvZGUYAiABKAUSEQoJcmVzdWx0TXNn",
+            "GAMgASgJEkAKBmNOb2RlcxgEIAMoCzIwLkhTLlByb3RvYnVmLkRCUHJveHku",
+            "REJDaGFyYWN0ZXIuREJDaGFyYWN0ZXJOb2RlIlkKFlNhdmVEQkNoYXJhY3Rl",
+            "clJlcXVlc3QSPwoFY05vZGUYASABKAsyMC5IUy5Qcm90b2J1Zi5EQlByb3h5",
+            "LkRCQ2hhcmFjdGVyLkRCQ2hhcmFjdGVyTm9kZSqRBAoSREJDaGFyYWN0ZXJQ",
+            "cm90b2NsEhwKGERCQ0hBUkFDVEVSX1BST1RPQ0xfTk9ORRAAEjQKLkRCQ0hB",
+            "UkFDVEVSX1BST1RPQ0xfR0VUX0RCQ0hBUkFDVEVSX0JZX0NJRF9SRVEQuY4D",
+            "EjUKL0RCQ0hBUkFDVEVSX1BST1RPQ0xfR0VUX0RCQ0hBUkFDVEVSX0JZX0NJ",
+            "RF9SRVNQELqOAxItCidEQkNIQVJBQ1RFUl9QUk9UT0NMX0FERF9EQkNIQVJB",
+            "Q1RFUl9SRVEQu44DEi4KKERCQ0hBUkFDVEVSX1BST1RPQ0xfQUREX0RCQ0hB",
+            "UkFDVEVSX1JFU1AQvI4DEjcKMURCQ0hBUkFDVEVSX1BST1RPQ0xfREVMRVRF",
+            "X0RCQ0hBUkFDVEVSX0JZX0NJRF9SRVEQvY4DEjgKMkRCQ0hBUkFDVEVSX1BS",
+            "T1RPQ0xfREVMRVRFX0RCQ0hBUkFDVEVSX0JZX0NJRF9SRVNQEL6OAxI1Ci9E",
+            "QkNIQVJBQ1RFUl9QUk9UT0NMX0dFVF9EQkNIQVJBQ1RFUlNfQllfVUlEX1JF",
+            "URC/jgMSNgowREJDSEFSQUNURVJfUFJPVE9DTF9HRVRfREJDSEFSQUNURVJT",
+            "X0JZX1VJRF9SRVNQEMCOAxIvCilEQkNIQVJBQ1RFUl9QUk9UT0NMX1NBVkVf",
+            "REJDSEFSQUNURVJTX1JFURDBjgNiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::Google.Protobuf.WellKnownTypes.FieldMaskReflection.Descriptor, global::HS.Protobuf.DBProxy.DBTask.DBTaskReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterProtocl), }, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterStatisticsNode), global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterStatisticsNode.Parser, new[]{ "KillCount", "DeathCount", "TaskCompleted" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterStatusNode), global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterStatusNode.Parser, new[]{ "Hp", "Mp", "Exp", "CurSceneId", "X", "Y", "Z" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterAssetsNode), global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterAssetsNode.Parser, new[]{ "BackpackData", "EquipsData", "Currency", "Achievements", "Titles" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
+            new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterAssetsNode), global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterAssetsNode.Parser, new[]{ "Currency", "Achievements", "Titles" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterSocialNode), global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterSocialNode.Parser, new[]{ "GuildId", "Faction", "FriendsList" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterSkillNode), global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterSkillNode.Parser, new[]{ "SkillId", "Level" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterEquipSkillNode), global::HS.Protobuf.DBProxy.DBCharacter.DBCharacterEquipSkillNode.Parser, new[]{ "SkillId", "Pos" }, null, null, null, null),
@@ -506,7 +505,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     }
 
     /// <summary>Field number for the "exp" field.</summary>
-    public const int ExpFieldNumber = 4;
+    public const int ExpFieldNumber = 3;
     private int exp_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -518,7 +517,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     }
 
     /// <summary>Field number for the "curSceneId" field.</summary>
-    public const int CurSceneIdFieldNumber = 5;
+    public const int CurSceneIdFieldNumber = 4;
     private int curSceneId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -530,7 +529,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     }
 
     /// <summary>Field number for the "x" field.</summary>
-    public const int XFieldNumber = 6;
+    public const int XFieldNumber = 5;
     private int x_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -542,7 +541,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     }
 
     /// <summary>Field number for the "y" field.</summary>
-    public const int YFieldNumber = 7;
+    public const int YFieldNumber = 6;
     private int y_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -554,7 +553,7 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     }
 
     /// <summary>Field number for the "z" field.</summary>
-    public const int ZFieldNumber = 8;
+    public const int ZFieldNumber = 7;
     private int z_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -628,23 +627,23 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
         output.WriteInt32(Mp);
       }
       if (Exp != 0) {
-        output.WriteRawTag(32);
+        output.WriteRawTag(24);
         output.WriteInt32(Exp);
       }
       if (CurSceneId != 0) {
-        output.WriteRawTag(40);
+        output.WriteRawTag(32);
         output.WriteInt32(CurSceneId);
       }
       if (X != 0) {
-        output.WriteRawTag(48);
+        output.WriteRawTag(40);
         output.WriteInt32(X);
       }
       if (Y != 0) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(48);
         output.WriteInt32(Y);
       }
       if (Z != 0) {
-        output.WriteRawTag(64);
+        output.WriteRawTag(56);
         output.WriteInt32(Z);
       }
       if (_unknownFields != null) {
@@ -666,23 +665,23 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
         output.WriteInt32(Mp);
       }
       if (Exp != 0) {
-        output.WriteRawTag(32);
+        output.WriteRawTag(24);
         output.WriteInt32(Exp);
       }
       if (CurSceneId != 0) {
-        output.WriteRawTag(40);
+        output.WriteRawTag(32);
         output.WriteInt32(CurSceneId);
       }
       if (X != 0) {
-        output.WriteRawTag(48);
+        output.WriteRawTag(40);
         output.WriteInt32(X);
       }
       if (Y != 0) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(48);
         output.WriteInt32(Y);
       }
       if (Z != 0) {
-        output.WriteRawTag(64);
+        output.WriteRawTag(56);
         output.WriteInt32(Z);
       }
       if (_unknownFields != null) {
@@ -772,23 +771,23 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
             Mp = input.ReadInt32();
             break;
           }
-          case 32: {
+          case 24: {
             Exp = input.ReadInt32();
             break;
           }
-          case 40: {
+          case 32: {
             CurSceneId = input.ReadInt32();
             break;
           }
-          case 48: {
+          case 40: {
             X = input.ReadInt32();
             break;
           }
-          case 56: {
+          case 48: {
             Y = input.ReadInt32();
             break;
           }
-          case 64: {
+          case 56: {
             Z = input.ReadInt32();
             break;
           }
@@ -815,23 +814,23 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
             Mp = input.ReadInt32();
             break;
           }
-          case 32: {
+          case 24: {
             Exp = input.ReadInt32();
             break;
           }
-          case 40: {
+          case 32: {
             CurSceneId = input.ReadInt32();
             break;
           }
-          case 48: {
+          case 40: {
             X = input.ReadInt32();
             break;
           }
-          case 56: {
+          case 48: {
             Y = input.ReadInt32();
             break;
           }
-          case 64: {
+          case 56: {
             Z = input.ReadInt32();
             break;
           }
@@ -876,8 +875,6 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public DBCharacterAssetsNode(DBCharacterAssetsNode other) : this() {
-      backpackData_ = other.backpackData_;
-      equipsData_ = other.equipsData_;
       currency_ = other.currency_.Clone();
       achievements_ = other.achievements_.Clone();
       titles_ = other.titles_.Clone();
@@ -890,34 +887,10 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
       return new DBCharacterAssetsNode(this);
     }
 
-    /// <summary>Field number for the "backpackData" field.</summary>
-    public const int BackpackDataFieldNumber = 1;
-    private pb::ByteString backpackData_ = pb::ByteString.Empty;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pb::ByteString BackpackData {
-      get { return backpackData_; }
-      set {
-        backpackData_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
-    /// <summary>Field number for the "equipsData" field.</summary>
-    public const int EquipsDataFieldNumber = 2;
-    private pb::ByteString equipsData_ = pb::ByteString.Empty;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pb::ByteString EquipsData {
-      get { return equipsData_; }
-      set {
-        equipsData_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
     /// <summary>Field number for the "currency" field.</summary>
-    public const int CurrencyFieldNumber = 3;
+    public const int CurrencyFieldNumber = 1;
     private static readonly pbc::MapField<string, int>.Codec _map_currency_codec
-        = new pbc::MapField<string, int>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForInt32(16, 0), 26);
+        = new pbc::MapField<string, int>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForInt32(16, 0), 10);
     private readonly pbc::MapField<string, int> currency_ = new pbc::MapField<string, int>();
     /// <summary>
     /// 新增字段：货币种类及数量
@@ -929,9 +902,9 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     }
 
     /// <summary>Field number for the "achievements" field.</summary>
-    public const int AchievementsFieldNumber = 4;
+    public const int AchievementsFieldNumber = 2;
     private static readonly pb::FieldCodec<string> _repeated_achievements_codec
-        = pb::FieldCodec.ForString(34);
+        = pb::FieldCodec.ForString(18);
     private readonly pbc::RepeatedField<string> achievements_ = new pbc::RepeatedField<string>();
     /// <summary>
     /// 新增字段：成就列表
@@ -943,9 +916,9 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     }
 
     /// <summary>Field number for the "titles" field.</summary>
-    public const int TitlesFieldNumber = 5;
+    public const int TitlesFieldNumber = 3;
     private static readonly pb::FieldCodec<string> _repeated_titles_codec
-        = pb::FieldCodec.ForString(42);
+        = pb::FieldCodec.ForString(26);
     private readonly pbc::RepeatedField<string> titles_ = new pbc::RepeatedField<string>();
     /// <summary>
     /// 新增字段：头衔列表
@@ -971,8 +944,6 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (BackpackData != other.BackpackData) return false;
-      if (EquipsData != other.EquipsData) return false;
       if (!Currency.Equals(other.Currency)) return false;
       if(!achievements_.Equals(other.achievements_)) return false;
       if(!titles_.Equals(other.titles_)) return false;
@@ -983,8 +954,6 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (BackpackData.Length != 0) hash ^= BackpackData.GetHashCode();
-      if (EquipsData.Length != 0) hash ^= EquipsData.GetHashCode();
       hash ^= Currency.GetHashCode();
       hash ^= achievements_.GetHashCode();
       hash ^= titles_.GetHashCode();
@@ -1006,14 +975,6 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (BackpackData.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteBytes(BackpackData);
-      }
-      if (EquipsData.Length != 0) {
-        output.WriteRawTag(18);
-        output.WriteBytes(EquipsData);
-      }
       currency_.WriteTo(output, _map_currency_codec);
       achievements_.WriteTo(output, _repeated_achievements_codec);
       titles_.WriteTo(output, _repeated_titles_codec);
@@ -1027,14 +988,6 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (BackpackData.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteBytes(BackpackData);
-      }
-      if (EquipsData.Length != 0) {
-        output.WriteRawTag(18);
-        output.WriteBytes(EquipsData);
-      }
       currency_.WriteTo(ref output, _map_currency_codec);
       achievements_.WriteTo(ref output, _repeated_achievements_codec);
       titles_.WriteTo(ref output, _repeated_titles_codec);
@@ -1048,12 +1001,6 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (BackpackData.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeBytesSize(BackpackData);
-      }
-      if (EquipsData.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeBytesSize(EquipsData);
-      }
       size += currency_.CalculateSize(_map_currency_codec);
       size += achievements_.CalculateSize(_repeated_achievements_codec);
       size += titles_.CalculateSize(_repeated_titles_codec);
@@ -1068,12 +1015,6 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
     public void MergeFrom(DBCharacterAssetsNode other) {
       if (other == null) {
         return;
-      }
-      if (other.BackpackData.Length != 0) {
-        BackpackData = other.BackpackData;
-      }
-      if (other.EquipsData.Length != 0) {
-        EquipsData = other.EquipsData;
       }
       currency_.Add(other.currency_);
       achievements_.Add(other.achievements_);
@@ -1094,22 +1035,14 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            BackpackData = input.ReadBytes();
-            break;
-          }
-          case 18: {
-            EquipsData = input.ReadBytes();
-            break;
-          }
-          case 26: {
             currency_.AddEntriesFrom(input, _map_currency_codec);
             break;
           }
-          case 34: {
+          case 18: {
             achievements_.AddEntriesFrom(input, _repeated_achievements_codec);
             break;
           }
-          case 42: {
+          case 26: {
             titles_.AddEntriesFrom(input, _repeated_titles_codec);
             break;
           }
@@ -1129,22 +1062,14 @@ namespace HS.Protobuf.DBProxy.DBCharacter {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
-            BackpackData = input.ReadBytes();
-            break;
-          }
-          case 18: {
-            EquipsData = input.ReadBytes();
-            break;
-          }
-          case 26: {
             currency_.AddEntriesFrom(ref input, _map_currency_codec);
             break;
           }
-          case 34: {
+          case 18: {
             achievements_.AddEntriesFrom(ref input, _repeated_achievements_codec);
             break;
           }
-          case 42: {
+          case 26: {
             titles_.AddEntriesFrom(ref input, _repeated_titles_codec);
             break;
           }

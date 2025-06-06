@@ -89,25 +89,23 @@ message SlaveTimeServerInfoNode{
 
 
 enum GateCommand{
-	GATE_COMMAND_NONE = 0;
-	GATE_COMMAND_START = 1;
-	GATE_COMMAND_STOP = 2;
+	GATE_COMMAND_NONE	= 0;
+	GATE_COMMAND_START	= 1;
+	GATE_COMMAND_STOP	= 2;
 	GATE_COMMAND_RESUME = 3;
-	GATE_COMMAND_END = 4;
+	GATE_COMMAND_END	= 4;
 }
 
 enum ServerStatus {
-    SERVER_STATUS_ACTIVE = 0;   // 工作中
-    SERVER_STATUS_PAUSED = 1;   // 暂停
-    SERVER_STATUS_INACTIVE = 2; // 非工作状态
+    SERVER_STATUS_ACTIVE	= 0;	// 工作中
+    SERVER_STATUS_PAUSED	= 1;	// 暂停
+    SERVER_STATUS_INACTIVE	= 2;	// 非工作状态
 }
 
 
 //============================================Transform==========================================
 
 // 网络三维向量
-
-
 message NetVector3{
 	int32 x = 1; //这里的数值是unity中数值*1000得到的整数值
 	int32 y = 2;
@@ -116,16 +114,12 @@ message NetVector3{
 
 //============================================心跳检测==========================================
 message CSHeartBeatRequest{
-
 }
 message CSHeartBeatResponse{
-
 }
 message SSHeartBeatRequest{
-
 }
 message SSHeartBeatResponse{
-
 }
 
 
