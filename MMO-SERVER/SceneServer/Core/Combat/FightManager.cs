@@ -99,27 +99,26 @@ namespace SceneServer.Core.Combat
                 goto End;
             }
 
-            Dictionary<int, SpellCastResponse> dict = new();
             int curSceneId = SceneManager.Instance.SceneId;
+            Dictionary<int, SpellCastResponse> dict = new();
             while (spellSkillQueue.TryDequeue(out var castInfo))
             {
-                var entityAoiView = SceneManager.Instance.AoiZone.GetAoiEntityById(castInfo.CasterId);
-                var relativeEntityIds = entityAoiView.GetViewEntityIds();
-                relativeEntityIds.Add(castInfo.CasterId);
-                foreach (var entityId in relativeEntityIds)
+                var units = SceneManager.Instance.GetAoiEntitysById(castInfo.CasterId);
+                foreach (var entity in units)
                 {
-                    if (!dict.TryGetValue((int)entityId, out var resp))
+                    if (!(entity is SceneCharacter)) continue;
+                    if (!dict.TryGetValue((int)entity.EntityId, out var resp))
                     {
                         resp = new SpellCastResponse();
                         resp.SceneId = curSceneId;
-                        dict.Add((int)entityId, resp);
+                        dict.Add((int)entity.EntityId, resp);
                     }
                     resp.List.Add(castInfo);
                 }
             }
 
-            var units = SceneEntityManager.Instance.GetSceneEntitiesByIds(dict.Keys.ToList());
-            foreach (var cc in units.OfType<SceneCharacter>())
+            var chrs = SceneEntityManager.Instance.GetSceneEntitiesByIds(dict.Keys.ToList()).OfType<SceneCharacter>();
+            foreach (var cc in chrs)
             {
                 var resp = dict[cc.EntityId];
                 resp.SessionId = cc.SessionId;
@@ -136,26 +135,21 @@ namespace SceneServer.Core.Combat
             Dictionary<int, DamageResponse> dict = new();
             while (damageQueue.TryDequeue(out var damage))
             {
-                var entityAoiView = SceneManager.Instance.AoiZone.GetAoiEntityById(damage.TargetId);
-
-                // todo
-                if (entityAoiView == null) continue;
-
-                var relativeEntityIds = entityAoiView.GetViewEntityIds();
-                relativeEntityIds.Add(damage.TargetId);
-                foreach (var entityId in relativeEntityIds)
+                var units = SceneManager.Instance.GetAoiEntitysById(damage.TargetId);
+                foreach (var entity in units)
                 {
-                    if (!dict.TryGetValue((int)entityId, out var resp))
+                    if (!(entity is SceneCharacter)) continue;
+                    if (!dict.TryGetValue((int)entity.EntityId, out var resp))
                     {
                         resp = new DamageResponse();
-                        dict.Add((int)entityId, resp);
+                        dict.Add((int)entity.EntityId, resp);
                     }
                     resp.Damages.Add(damage);
                 }
             }
 
-            var units = SceneEntityManager.Instance.GetSceneEntitiesByIds(dict.Keys.ToList());
-            foreach (var cc in units.OfType<SceneCharacter>())
+            var chrs = SceneEntityManager.Instance.GetSceneEntitiesByIds(dict.Keys.ToList()).OfType<SceneCharacter>();
+            foreach (var cc in chrs)
             {
                 var resp = dict[cc.EntityId];
                 resp.SessionId = cc.SessionId;
@@ -164,34 +158,27 @@ namespace SceneServer.Core.Combat
         }
         private void BroadcastProperties()
         {
-            if(propertyUpdateQueue.Count == 0)
-            {
-                return;
-            }
+            if(propertyUpdateQueue.Count == 0)return; 
 
             Dictionary<int, ActorPropertyUpdateRsponse> dict = new();
             while (propertyUpdateQueue.TryDequeue(out var propertyUpdate))
             {
-                var entityAoiView = SceneManager.Instance.AoiZone.GetAoiEntityById(propertyUpdate.EntityId);
+                var units = SceneManager.Instance.GetAoiEntitysById(propertyUpdate.EntityId);
 
-                // todo
-                if (entityAoiView == null) continue;
-
-                var relativeEntityIds = entityAoiView.GetViewEntityIds();
-                relativeEntityIds.Add(propertyUpdate.EntityId);
-                foreach (var entityId in relativeEntityIds)
+                foreach (var entity in units)
                 {
-                    if(!dict.TryGetValue((int)entityId, out var resp))
+                    if (!(entity is SceneCharacter)) continue;
+                    if (!dict.TryGetValue((int)entity.EntityId, out var resp))
                     {
                         resp = new ActorPropertyUpdateRsponse();
-                        dict.Add((int)entityId, resp);
+                        dict.Add((int)entity.EntityId, resp);
                     }
                     resp.Propertys.Add(propertyUpdate);
                 }
             }
 
-            var units = SceneEntityManager.Instance.GetSceneEntitiesByIds(dict.Keys.ToList());
-            foreach (var cc in units.OfType<SceneCharacter>())
+            var chrs = SceneEntityManager.Instance.GetSceneEntitiesByIds(dict.Keys.ToList()).OfType<SceneCharacter>();
+            foreach (var cc in chrs)
             {
                 var resp = dict[cc.EntityId];
                 resp.SessionId = cc.SessionId;

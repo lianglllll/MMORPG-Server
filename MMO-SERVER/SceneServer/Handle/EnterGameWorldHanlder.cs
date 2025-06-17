@@ -41,7 +41,7 @@ namespace SceneServer.Handle
             if(chr == null) {
                 goto End;       
             }
-            SceneManager.Instance.CharacterLeaveScene(message.EntityId);
+            SceneManager.Instance.CharacterExitScene(message.EntityId);
             resp.CId = chr.Cid;
             resp.SceneSaveDatea = new NeedSaveSceneData();
             resp.SceneSaveDatea.Position = chr.Position;

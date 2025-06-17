@@ -29,22 +29,13 @@ namespace SceneServer.Combat.Skills
             Vector3 pos = (Vector3)actor.Position * 0.001f;
 
             // 通过aoi查找矩形范围内的角色
-            // var hanle = SceneManager.Instance.AoiZone.Refresh(actor.EntityId, new Vector2(range, range));
-            var hanle = SceneManager.Instance.AoiZone.GetAoiEntityById(actor.EntityId);
-            if (hanle.ViewEntity == null)
-            {
-                goto End;
-            }
-
-            var all = SceneEntityManager.Instance.GetSceneEntitiesByIds(hanle.ViewEntity).OfType<SceneActor>().ToList();
-            if (includeSelf)
-            {
-                all.Add(actor);
-            }
+            var units = SceneManager.Instance.GetAoiEntitysById(actor.EntityId).OfType<SceneActor>();
 
             // 筛选圆形范围
-            foreach (var target in all)
+            foreach (var target in units)
             {
+                if(target.EntityId == actor.EntityId && !includeSelf) continue;
+
                 Vector3 targetPos = target.Position;
                 var dis = Vector3.Distance(pos, targetPos * 0.001f);
                 if(!float.IsNaN(dis) && dis <= range * 0.001f)
@@ -57,21 +48,17 @@ namespace SceneServer.Combat.Skills
         }
 
         //  某SceneActor为中心的扇形区域
-        public static List<SceneActor> GetEntitiesInSectorAroundSceneActor(SceneActor actor, float detectionAngle, float detectionRadius)
+        public static List<SceneActor> GetEntitiesInSectorAroundSceneActor(SceneActor actor, float detectionAngle, float detectionRadius, bool includeSelf = false)
         {
             var result = new List<SceneActor>();
 
-            // 通过aoi查找矩形范围内的角色
-            // var hanle = SceneManager.Instance.AoiZone.Refresh(actor.EntityId, new Vector2(detectionRadius, detectionRadius));
-            var hanle = SceneManager.Instance.AoiZone.GetAoiEntityById(actor.EntityId);
-            if (hanle.ViewEntity == null)
-            {
-                goto End;
-            }
-            var all = SceneEntityManager.Instance.GetSceneEntitiesByIds(hanle.ViewEntity).OfType<SceneActor>();
+            // 通过aoi查找范围内的角色
+            var units = SceneManager.Instance.GetAoiEntitysById(actor.EntityId).OfType<SceneActor>();
 
-            foreach (var target in all)
+            foreach (var target in units)
             {
+                if (target.EntityId == actor.EntityId && !includeSelf) continue;
+
                 if (AreaEntitiesFinder.CheckForLegalSectorArea(actor, target, detectionAngle, detectionRadius))
                 {
                     result.Add(target);
@@ -82,20 +69,17 @@ namespace SceneServer.Combat.Skills
         }
 
         // 某entity为中心的矩形区域
-        public static List<SceneActor> GetEntitiesInRectangleAroundEntity(SceneActor actor,float length, float width)
+        public static List<SceneActor> GetEntitiesInRectangleAroundEntity(SceneActor actor,float length, float width, bool includeSelf = false)
         {
             var result = new List<SceneActor>();
 
             // 通过aoi查找矩形范围内的角色
-            // var hanle = SceneManager.Instance.AoiZone.Refresh(actor.EntityId, new Vector2(length, length));
-            var hanle = SceneManager.Instance.AoiZone.GetAoiEntityById(actor.EntityId);
-            if (hanle.ViewEntity == null)
+            var units = SceneManager.Instance.GetAoiEntitysById(actor.EntityId).OfType<SceneActor>();
+
+            foreach (var target in units)
             {
-                goto End;
-            }
-            var all = SceneEntityManager.Instance.GetSceneEntitiesByIds(hanle.ViewEntity).OfType<SceneActor>();
-            foreach (var target in all)
-            {
+                if (target.EntityId == actor.EntityId && !includeSelf) continue;
+
                 if (AreaEntitiesFinder.CheckForLegalRectangularArea(actor, target, length, width))
                 {
                     result.Add(target);

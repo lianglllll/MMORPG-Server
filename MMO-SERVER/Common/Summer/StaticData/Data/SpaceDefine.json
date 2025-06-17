@@ -5,7 +5,8 @@
     "Resource": "Game",
     "Kind": "场景",
     "AllowPK": 0,
-    "RevivalPointS": "[0]"
+    "RevivalPointS": "[0]",
+    "Area": "[0,0,1000,1000]"
   },
   "1": {
     "SID": 1,
@@ -13,7 +14,8 @@
     "Resource": "Scene1",
     "Kind": "场景",
     "AllowPK": 0,
-    "RevivalPointS": "[1001,1002]"
+    "RevivalPointS": "[1001,1002]",
+    "Area": "[0,0,1000,1000]"
   },
   "2": {
     "SID": 2,
@@ -21,6 +23,7 @@
     "Resource": "Scene2",
     "Kind": "场景",
     "AllowPK": 0,
-    "RevivalPointS": "[2001,2002]"
+    "RevivalPointS": "[2001,2002]",
+    "Area": "[0,0,1000,1000]"
   }
 }

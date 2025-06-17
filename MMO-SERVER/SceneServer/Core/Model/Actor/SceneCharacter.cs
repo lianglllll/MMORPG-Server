@@ -6,6 +6,8 @@ using HS.Protobuf.Common;
 using HS.Protobuf.DBProxy.DBCharacter;
 using HS.Protobuf.Scene;
 using HS.Protobuf.SceneEntity;
+using SceneServer.AOIMap.NineSquareGrid;
+using SceneServer.Core.Model.Item;
 using SceneServer.Core.Scene;
 using SceneServer.Core.Task;
 using SceneServer.Net;
@@ -200,6 +202,55 @@ namespace SceneServer.Core.Model.Actor
             msg.SessionId = m_session.SesssionId;
             m_session.Send(msg);
         }
+        #endregion
+
+        #region AOI
+        public override void OnUnitEnter(IAOIUnit unit)
+        {
+            if(unit == null) return;
+            OtherEntityEnterSceneResponse resp = new();
+            resp.SceneId = SceneManager.Instance.SceneId;
+            if(unit is SceneActor actor)
+            {
+                resp.EntityType = SceneEntityType.Actor;
+                resp.ActorNode = actor.NetActorNode;
+            }
+            else if (unit is SceneItem item)
+            {
+                resp.EntityType = SceneEntityType.Item;
+                resp.ItemNode = item.NetItemNode;
+            }
+            Send(resp);
+        }
+        public override void OnUnitLeave(IAOIUnit unit)
+        {
+            if (unit == null) return;
+            SceneEntity entity = unit as SceneEntity;
+            var resp = new OtherEntityLeaveSceneResponse();
+            resp.SceneId = SceneManager.Instance.SceneId;
+            resp.EntityId = entity.EntityId;
+            Send(resp);
+        }
+        public override void OnPosError()
+        {
+            base.OnPosError();
+/*            //传送回默认出生点
+            Space sp = null;
+            if (currentSpace == null)
+            {
+                sp = SpaceManager.Instance.GetSpaceById(0);
+            }
+            else
+            {
+                sp = currentSpace;
+            }
+            var pointDef = DataManager.Instance.revivalPointDefindeDict.Values.Where(def => def.SID == sp.SpaceId).First();
+            if (pointDef != null)
+            {
+                TransmitSpace(sp, new Core.Vector3Int(pointDef.X, pointDef.Y, pointDef.Z));
+            }*/
+        }
+
         #endregion
     }
 }

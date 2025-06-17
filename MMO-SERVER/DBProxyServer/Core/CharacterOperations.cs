@@ -70,8 +70,6 @@ namespace DBProxyServer.Core
                                 if (!chr.Contains("chrAssets")) break;
                                 DBCharacterAssetsNode characterAssetsNode = new();
                                 cNode.ChrAssets = characterAssetsNode;
-                                characterAssetsNode.BackpackData = ByteString.CopyFrom(chr["chrAssets"]["backpackData"].AsBsonBinaryData.Bytes);
-                                characterAssetsNode.EquipsData = ByteString.CopyFrom(chr["chrAssets"]["equipsData"].AsBsonBinaryData.Bytes);
                                 var currencyData = chr["chrAssets"]["currency"].AsBsonDocument.ToDictionary(k => k.Name, v => v.Value.ToInt32());
                                 foreach (var entry in currencyData)
                                 {
@@ -212,8 +210,6 @@ namespace DBProxyServer.Core
                                 case "chrAssets":
                                     DBCharacterAssetsNode characterAssetsNode = new();
                                     cNode.ChrAssets = characterAssetsNode;
-                                    characterAssetsNode.BackpackData = ByteString.CopyFrom(chr["chrAssets"]["backpackData"].AsBsonBinaryData.Bytes);
-                                    characterAssetsNode.EquipsData = ByteString.CopyFrom(chr["chrAssets"]["equipsData"].AsBsonBinaryData.Bytes);
                                     var currencyData = chr["chrAssets"]["currency"].AsBsonDocument.ToDictionary(k => k.Name, v => v.Value.ToInt32());
                                     foreach (var entry in currencyData)
                                     {
@@ -342,8 +338,6 @@ namespace DBProxyServer.Core
                 {
                     BsonDocument characterAssets = new BsonDocument
                     {
-                        { "backpackData", new BsonBinaryData(cNode.ChrAssets.BackpackData.ToByteArray()) },
-                        { "equipsData", new BsonBinaryData(cNode.ChrAssets.EquipsData.ToByteArray()) },
                         { "currency", new BsonDocument(cNode.ChrAssets.Currency) },       // 将货币映射为BsonDocument
                         { "achievements", new BsonArray(cNode.ChrAssets.Achievements) },  // 将成就列表转为BsonArray
                         { "titles", new BsonArray(cNode.ChrAssets.Titles) }               // 将头衔列表转为BsonArray
@@ -524,8 +518,6 @@ namespace DBProxyServer.Core
                 {
                     var assetsDoc = new BsonDocument
                     {
-                        ["backpackData"] = new BsonBinaryData(cNode.ChrAssets.BackpackData.ToByteArray()),
-                        ["equipsData"] = new BsonBinaryData(cNode.ChrAssets.EquipsData.ToByteArray()),
                         ["currency"] = new BsonDocument(cNode.ChrAssets.Currency),
                         ["achievements"] = new BsonArray(cNode.ChrAssets.Achievements),
                         ["titles"] = new BsonArray(cNode.ChrAssets.Titles)

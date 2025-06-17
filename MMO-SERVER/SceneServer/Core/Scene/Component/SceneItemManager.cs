@@ -52,7 +52,7 @@ namespace SceneServer.Core.Scene.Component
             itemEntityDict.Remove(entityId, out result);
 
             // 场景中移除
-            SceneManager.Instance.ItemExitScene(entityId);
+            SceneManager.Instance.ItemExitScene(result);
 
         End:
             return result;
