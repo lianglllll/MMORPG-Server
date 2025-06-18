@@ -1,4 +1,5 @@
 using Common.Summer.Core;
+using Serilog;
 
 namespace SceneServer.AOIMap.NineSquareGrid
 {
@@ -92,8 +93,8 @@ namespace SceneServer.AOIMap.NineSquareGrid
         {
             m_minX = minX;
             m_minY = minY;
-            m_minX = maxX;
-            m_minY = maxY;
+            m_maxX = maxX;
+            m_maxY = maxY;
             // 计算水平方向格子数量，向上取整
             m_xCnts = (int)Math.Ceiling((maxX - minX) / (float)m_cellSize);
             // 计算垂直方向格子数量，向上取整
@@ -222,7 +223,7 @@ namespace SceneServer.AOIMap.NineSquareGrid
                 int newX = x + dx[i];
                 int newY = y + dy[i];
 
-                //注意边界问题
+                // 注意边界问题
                 if (newX >= 0 && newX < XCnts && newY >= 0 && newY < YCnts)
                 {
                     int _gid = newY * XCnts + newX;
@@ -237,8 +238,15 @@ namespace SceneServer.AOIMap.NineSquareGrid
 
         private int _GetGridIdByPos(float x, float y)
         {
-            int idx = ((int)x - MinX) / m_cellSize;
-            int idy = ((int)y - MinY) / m_cellSize;
+            // 检查是否超出地图范围（MinX ≤ x ≤ MaxX）
+            if (x < MinX || x >= MaxX || y < MinY || y >= MaxY)
+                return -9; // 超出范围，返回异常值
+
+            // 计算格子索引（确保 x 和 y 在合法范围内）
+            int idx = (int)((x - MinX) / m_cellSize);
+            int idy = (int)((y - MinY) / m_cellSize);
+
+            // 返回格子ID
             return idy * XCnts + idx;
         }
         private Grid _GetGridByPos(float posX, float posY)
@@ -246,7 +254,7 @@ namespace SceneServer.AOIMap.NineSquareGrid
             var gid = _GetGridIdByPos(posX, posY);
             if (!Grids.TryGetValue(gid, out var gird))
             {
-                Console.WriteLine($"\n GetGridByPos is null: gid={gid}");
+                Log.Warning($"\n GetGridByPos is null: gid={gid}");
             }
             return gird;
         }

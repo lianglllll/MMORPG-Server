@@ -210,7 +210,8 @@ namespace SceneServer.Core.Model.Actor
             if(unit == null) return;
             OtherEntityEnterSceneResponse resp = new();
             resp.SceneId = SceneManager.Instance.SceneId;
-            if(unit is SceneActor actor)
+            resp.SessionId = SessionId;
+            if (unit is SceneActor actor)
             {
                 resp.EntityType = SceneEntityType.Actor;
                 resp.ActorNode = actor.NetActorNode;
@@ -228,6 +229,7 @@ namespace SceneServer.Core.Model.Actor
             SceneEntity entity = unit as SceneEntity;
             var resp = new OtherEntityLeaveSceneResponse();
             resp.SceneId = SceneManager.Instance.SceneId;
+            resp.SessionId = SessionId;
             resp.EntityId = entity.EntityId;
             Send(resp);
         }
