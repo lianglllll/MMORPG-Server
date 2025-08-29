@@ -1,5 +1,14 @@
+.vs/
+.vscode/
 bin/
 obj/
 
+*.userprefs
+*.unityproj
+*.DS_Store
+*.vsconfig
+
 /pids.txt
-/GameServer_Old
+
+# proto
+Common/Summer/Proto/**/ProtoClass
