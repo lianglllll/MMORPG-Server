@@ -1,9 +1,10 @@
-﻿using Serilog;
+﻿using Common.Summer;
 using Common.Summer.Core;
-using Serilog.Sinks.SystemConsole.Themes;
+using Common.Summer.MyLog;
 using LoginGateServer.Net;
 using LoginGateServer.Utils;
-using Common.Summer.MyLog;
+using Serilog;
+using Serilog.Sinks.SystemConsole.Themes;
 
 namespace LoginGateServer
 {
@@ -11,7 +12,7 @@ namespace LoginGateServer
     {
         private static bool Init()
         {
-            SerilogManager.Instance.Init();
+            CommonMgr.Instance.Init();
             Config.Init();
 
             Log.Information("\x1b[32m" + @"

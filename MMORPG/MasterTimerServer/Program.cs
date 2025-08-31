@@ -1,9 +1,10 @@
-﻿using Serilog;
+﻿using Common.Summer;
 using Common.Summer.Core;
 using Common.Summer.MyLog;
-using MasterTimerServer.Utils;
 using MasterTimerServer.Core;
 using MasterTimerServer.Net;
+using MasterTimerServer.Utils;
+using Serilog;
 
 namespace MasterTimerServer
 {
@@ -13,7 +14,7 @@ namespace MasterTimerServer
         {
             Config.Init();
 
-            SerilogManager.Instance.Init();
+            CommonMgr.Instance.Init();
             Log.Information("\x1b[32m" + @"
                       _____                _____          
                      /\    \              /\    \         

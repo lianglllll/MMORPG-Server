@@ -1,14 +1,15 @@
-﻿using System;
-using Serilog;
+﻿using Common.Summer;
+using Common.Summer.Core;
+using Common.Summer.MyLog;
+using GameServer.Core.Model;
+using GameServer.Core.Task;
 using GameServer.Net;
 using GameServer.Utils;
-using Common.Summer.Core;
-using Serilog.Sinks.SystemConsole.Themes;
-using System.Collections.Generic;
-using Common.Summer.MyLog;
 using Newtonsoft.Json;
-using GameServer.Core.Task;
-using GameServer.Core.Model;
+using Serilog;
+using Serilog.Sinks.SystemConsole.Themes;
+using System;
+using System.Collections.Generic;
 
 namespace GameServer
 {
@@ -17,7 +18,7 @@ namespace GameServer
         private static bool Init()
         {
 
-            SerilogManager.Instance.Init();
+            CommonMgr.Instance.Init();
             Config.Init();                      // 加载服务器配置
             //DataManager.Instance.Init();        // 加载json配置文件
             //SkillSanner.Start();                // 加载自定义技能类

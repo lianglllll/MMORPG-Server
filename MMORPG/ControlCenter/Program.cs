@@ -1,8 +1,9 @@
-﻿using Serilog;
+﻿using Common.Summer;
 using Common.Summer.Core;
-using ControlCenter.Utils;
-using ControlCenter.Core;
 using Common.Summer.MyLog;
+using ControlCenter.Core;
+using ControlCenter.Utils;
+using Serilog;
 
 namespace ControlCenter
 {
@@ -11,7 +12,7 @@ namespace ControlCenter
         private static bool Init()
         {
             Config.Init();
-            SerilogManager.Instance.Init();
+            CommonMgr.Instance.Init();
             Log.Information("\x1b[32m" + @"
                       _____                    _____          
                      /\    \                  /\    \         

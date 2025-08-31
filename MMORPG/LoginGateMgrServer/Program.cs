@@ -1,8 +1,9 @@
-﻿using Serilog;
+﻿using Common.Summer;
 using Common.Summer.Core;
-using LoginServer.Utils;
-using LoginGateMgrServer.Net;
 using Common.Summer.MyLog;
+using LoginGateMgrServer.Net;
+using LoginServer.Utils;
+using Serilog;
 
 namespace LoginGateMgrServer
 {
@@ -10,7 +11,7 @@ namespace LoginGateMgrServer
     {
         private static bool Init()
         {
-            SerilogManager.Instance.Init();
+            CommonMgr.Instance.Init();
             Config.Init();                      
             Scheduler.Instance.Start(Config.Server.updateHz);
             Log.Information("\x1b[32m" + @"

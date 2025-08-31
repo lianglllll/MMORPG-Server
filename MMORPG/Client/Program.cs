@@ -15,6 +15,7 @@ using HS.Protobuf.Common;
 using Common.Summer.MyLog;
 using Common.Summer.Server;
 using System.Collections;
+using Common.Summer;
 
 namespace ClientTest
 {
@@ -234,7 +235,7 @@ namespace ClientTest
 
         static void Main(string[] args)
         {
-            SerilogManager.Instance.Init();
+            CommonMgr.Instance.Init();
             // Thread.Sleep(2000);
 
             //ProtoHelper.Register<UserLoginRequest>((int)LoginProtocl.UserLoginRequest);

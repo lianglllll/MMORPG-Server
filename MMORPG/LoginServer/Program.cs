@@ -1,9 +1,10 @@
-﻿using Serilog;
+﻿using Common.Summer;
 using Common.Summer.Core;
-using Serilog.Sinks.SystemConsole.Themes;
+using Common.Summer.MyLog;
 using LoginServer.Net;
 using LoginServer.Utils;
-using Common.Summer.MyLog;
+using Serilog;
+using Serilog.Sinks.SystemConsole.Themes;
 
 namespace LoginServer
 {
@@ -11,7 +12,7 @@ namespace LoginServer
     {
         private static bool Init()
         {
-            SerilogManager.Instance.Init();
+            CommonMgr.Instance.Init();
             Config.Init();                      
             Scheduler.Instance.Start(Config.Server.updateHz);
 

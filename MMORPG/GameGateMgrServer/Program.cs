@@ -1,9 +1,10 @@
-﻿using Serilog;
+﻿using Common.Summer;
 using Common.Summer.Core;
-using Serilog.Sinks.SystemConsole.Themes;
-using GameGateMgrServer.Utils;
-using GameGateMgrServer.Net;
 using Common.Summer.MyLog;
+using GameGateMgrServer.Net;
+using GameGateMgrServer.Utils;
+using Serilog;
+using Serilog.Sinks.SystemConsole.Themes;
 
 namespace GameGateMgrServer
 {
@@ -11,7 +12,7 @@ namespace GameGateMgrServer
     {
         private static bool Init()
         {
-            SerilogManager.Instance.Init();
+            CommonMgr.Instance.Init();
             Config.Init();                      
             Scheduler.Instance.Start(Config.Server.updateHz);
 

@@ -1,13 +1,14 @@
-﻿using Serilog;
+﻿using Common.Summer;
 using Common.Summer.Core;
-using Serilog.Sinks.SystemConsole.Themes;
-using DBProxyServer.Utils;
-using DBProxyServer.Net;
+using Common.Summer.MyLog;
 using DBProxyServer.Core;
 using DBProxyServer.Handle;
-using HS.Protobuf.DBProxy.DBWorld;
-using Common.Summer.MyLog;
+using DBProxyServer.Net;
+using DBProxyServer.Utils;
 using HS.Protobuf.DBProxy.DBTask;
+using HS.Protobuf.DBProxy.DBWorld;
+using Serilog;
+using Serilog.Sinks.SystemConsole.Themes;
 
 namespace DBProxyServer
 {
@@ -15,7 +16,7 @@ namespace DBProxyServer
     {
         private static bool Init()
         {
-            SerilogManager.Instance.Init();
+            CommonMgr.Instance.Init();
             Log.Information("\x1b[32m" + @"
                       _____                    _____          
                      /\    \                  /\    \         

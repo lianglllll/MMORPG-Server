@@ -1,9 +1,10 @@
-﻿using Serilog;
-using SceneServer.Utils;
+﻿using Common.Summer;
 using Common.Summer.Core;
-using Serilog.Sinks.SystemConsole.Themes;
-using SceneServer.Net;
 using Common.Summer.MyLog;
+using SceneServer.Net;
+using SceneServer.Utils;
+using Serilog;
+using Serilog.Sinks.SystemConsole.Themes;
 
 namespace SceneServer
 {
@@ -11,7 +12,7 @@ namespace SceneServer
     {
         private static bool Init(string[] args)
         {
-            SerilogManager.Instance.Init();
+            CommonMgr.Instance.Init();
 
             string configPath = "config.yaml";
             for (int i = 0; i < args.Length; i++)
