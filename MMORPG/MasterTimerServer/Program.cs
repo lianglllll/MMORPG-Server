@@ -1,7 +1,5 @@
 ﻿using Common.Summer;
 using Common.Summer.Core;
-using Common.Summer.MyLog;
-using MasterTimerServer.Core;
 using MasterTimerServer.Net;
 using MasterTimerServer.Utils;
 using Serilog;

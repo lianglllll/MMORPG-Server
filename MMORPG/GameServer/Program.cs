@@ -1,15 +1,10 @@
 ﻿using Common.Summer;
 using Common.Summer.Core;
-using Common.Summer.MyLog;
 using GameServer.Core.Model;
-using GameServer.Core.Task;
 using GameServer.Net;
 using GameServer.Utils;
-using Newtonsoft.Json;
 using Serilog;
-using Serilog.Sinks.SystemConsole.Themes;
 using System;
-using System.Collections.Generic;
 
 namespace GameServer
 {
@@ -17,7 +12,6 @@ namespace GameServer
     {
         private static bool Init()
         {
-
             CommonMgr.Instance.Init();
             Config.Init();                      // 加载服务器配置
             //DataManager.Instance.Init();        // 加载json配置文件

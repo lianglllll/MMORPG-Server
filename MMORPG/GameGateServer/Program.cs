@@ -1,10 +1,8 @@
 ﻿using Common.Summer;
 using Common.Summer.Core;
-using Common.Summer.MyLog;
 using GameGateServer.Net;
 using GameGateServer.Utils;
 using Serilog;
-using Serilog.Sinks.SystemConsole.Themes;
 
 namespace GameGateServer
 {

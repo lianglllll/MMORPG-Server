@@ -1,10 +1,8 @@
 ﻿using Common.Summer;
 using Common.Summer.Core;
-using Common.Summer.MyLog;
 using LoginGateServer.Net;
 using LoginGateServer.Utils;
 using Serilog;
-using Serilog.Sinks.SystemConsole.Themes;
 
 namespace LoginGateServer
 {
