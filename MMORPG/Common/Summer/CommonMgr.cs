@@ -1,4 +1,5 @@
-﻿using Common.Summer.Tools;
+﻿using Common.Summer.StaticData;
+using Common.Summer.Tools;
 using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
 using System.Collections.Generic;
@@ -45,6 +46,7 @@ namespace Common.Summer
                 .CreateLogger();
 
             // errorcode
+            ErrorCode.GetCode("OK");
         }
     }
 }
