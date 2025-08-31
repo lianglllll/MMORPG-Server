@@ -320,6 +320,16 @@ visual stiudio 2022
 
 
 
+## 项目下载
+
+1.本项目一共有3个git仓库，你需要把他们全部拉取放到一个文件夹下。
+
+   ![image-20250901002110044](E:\MyProject\MMORPG\MMORPG-Server\README.assets\image-20250901002110044.png)
+
+2.需要对share仓库进行初始化工作，里面有readme文件可以查看步骤。
+
+
+
 ## 资源服务器部署
 
 **1.搞一个服务器**
