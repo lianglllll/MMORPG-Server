@@ -12,3 +12,7 @@ obj/
 
 # proto
 Common/Summer/Proto/**/ProtoClass
+
+# data
+Common/Summer/StaticData/Data/
+Common/Summer/StaticData/DataDefine/
