@@ -312,7 +312,7 @@
 
 
 
-## 所需工具
+## 1.所需工具
 
 Unity 2022.3.59.f1
 
@@ -320,7 +320,7 @@ visual stiudio 2022
 
 
 
-## 项目下载
+## 2.项目下载
 
 1.本项目一共有3个git仓库，你需要把他们全部拉取放到一个文件夹下。
 
@@ -330,7 +330,7 @@ visual stiudio 2022
 
 
 
-## 资源服务器部署
+## 3.资源服务器部署
 
 **1.搞一个服务器**
 
@@ -389,17 +389,19 @@ PC文件夹就存放我们PC平台下的热更资源包、Android同理
 
 
 
+## 4.mongodb数据库下载
+
+下载教程自行寻找，安装完毕后创建一个mmorpg的数据库
+
+![image-20250921152545581](E:\MyProject\MMORPG\MMORPG-Server\README.assets\image-20250921152545581.png)
 
 
 
+## 5.启动
 
+在vs将整个工程编译之后，启动服务器需要执行下面这个脚本Start1.bat,关闭的话就是Stop1.bat 
 
-
-
-
-
-
-
+![image-20250921152738108](E:\MyProject\MMORPG\MMORPG-Server\README.assets\image-20250921152738108.png) 
 
 
 
